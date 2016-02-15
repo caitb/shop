@@ -227,6 +227,7 @@
         <module>shop-service</module>
         <module>shop-dao</module>
         <module>shop-common</module>
+        <module>shop-service</module>
     </modules>
 
 </project>

@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.user;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -7,12 +9,12 @@ import java.util.List;
  */
 public interface UserMapper {
 
-    void add(User user);
+    void add(@Param("user") User user);
 
-    User findById(Long id);
+    User findById(@Param("id") Long id);
 
-    User findByUserNameAndPwd(String userName, String password);
+    User findByUserNameAndPwd(@Param("userName")String userName, @Param("password")String password);
 
-    List<User> listByCondition(User user);
+    List<User> listByCondition(@Param("user") User user);
 
 }

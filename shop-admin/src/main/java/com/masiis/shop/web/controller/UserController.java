@@ -37,7 +37,7 @@ public class UserController {
 
         /* 已登陆 */
         HttpSession session = request.getSession();
-        if(!session.isNew()){
+        if(!session.isNew() && session.getAttribute("user") != null){
             mav.setViewName("user/index");
             return mav;
         }
@@ -46,8 +46,9 @@ public class UserController {
 
         //用户名或密码为空
         if(StringUtil.isEmpty(user.getUserName()) || StringUtil.isEmpty(user.getPassword())){
-            mav.setViewName("redirect:user/login");
+            mav.setViewName("redirect:toLogin");
             mav.addObject("user", user);
+            return mav;
         }
 
         User u = this.userService.findByUserNameAndPwd(user.getUserName(), KeysUtil.md5Encrypt(user.getPassword()));
@@ -60,7 +61,7 @@ public class UserController {
 
         //登陆成功
         session.setAttribute("user", user);
-        mav.setViewName("index");
+        mav.setViewName("/index");
         return mav;
     }
 

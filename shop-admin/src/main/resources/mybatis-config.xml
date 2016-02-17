@@ -49,4 +49,5 @@
         <typeAlias alias="Product" type="org.mybatis.spring.model.Product"/>
         <typeAlias alias="Category" type="org.mybatis.spring.model.Category"/>
     </typeAliases> -->
+
 </configuration>

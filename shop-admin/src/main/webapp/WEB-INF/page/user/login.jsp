@@ -18,6 +18,7 @@
 </head>
 
 <body class="login" mycollectionplug="bind">
+<form action="<%=basePath%>user/login.do" method="post">
 <div class="login_m">
     <div class="login_logo"><img src="<%=basePath%>static/images/logo.png" width="196" height="46"></div>
     <div class="login_boder">
@@ -26,11 +27,11 @@
 
             <h2>USERNAME</h2>
             <label>
-                <input type="text" id="username" class="txt_input txt_input2" onfocus="if (value ==&#39;Your name&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;Your name&#39;}" value="Your name">
+                <input type="text"     id="userName" name="userName" class="txt_input txt_input2" onfocus="if (value ==&#39;Your name&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;Your name&#39;}" value="Your name">
             </label>
             <h2>PASSWORD</h2>
             <label>
-                <input type="password" name="textfield2" id="userpwd" class="txt_input" onfocus="if (value ==&#39;******&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;******&#39;}" value="******">
+                <input type="password" id="password" name="password" class="txt_input" onfocus="if (value ==&#39;******&#39;){value =&#39;&#39;}" onblur="if (value ==&#39;&#39;){value=&#39;******&#39;}" value="******">
             </label>
 
 
@@ -81,6 +82,6 @@
         <!--login_padding  Sign up end-->
     </div><!--login_boder end-->
 </div><!--login_m end-->
-
+</form>
 
 </body></html>

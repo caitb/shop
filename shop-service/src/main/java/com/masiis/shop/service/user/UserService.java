@@ -16,6 +16,10 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
+    public User findById(Long id){
+        return this.userMapper.findById(id);
+    }
+
     public User findByUserNameAndPwd(String userName, String password){
         return this.userMapper.findByUserNameAndPwd(userName, password);
     }

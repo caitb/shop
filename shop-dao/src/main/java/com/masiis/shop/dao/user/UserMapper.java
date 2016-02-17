@@ -1,4 +1,4 @@
-package com.masiis.shop.dao.login.mapper;
+package com.masiis.shop.dao.user;
 
 import java.util.List;
 

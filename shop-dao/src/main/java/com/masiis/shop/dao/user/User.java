@@ -1,4 +1,4 @@
-package com.masiis.shop.dao.login.mapper;
+package com.masiis.shop.dao.user;
 
 /**
  * Created by cai_tb on 16/2/16.

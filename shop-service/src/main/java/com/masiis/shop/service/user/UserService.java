@@ -1,7 +1,8 @@
-package com.masiis.shop.service.login;
+package com.masiis.shop.service.user;
 
-import com.masiis.shop.dao.login.mapper.User;
-import com.masiis.shop.dao.login.mapper.UserMapper;
+import com.masiis.shop.dao.user.User;
+import com.masiis.shop.dao.user.UserMapper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * Created by cai_tb on 16/2/16.
  */
+@Service
 public class UserService {
 
     @Resource

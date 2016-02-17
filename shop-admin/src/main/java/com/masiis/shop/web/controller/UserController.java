@@ -3,11 +3,10 @@ package com.masiis.shop.web.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
-import com.masiis.shop.dao.login.mapper.User;
-import com.masiis.shop.service.login.UserService;
+import com.masiis.shop.dao.user.User;
+import com.masiis.shop.service.user.UserService;
 import com.masiis.shop.web.utils.KeysUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 

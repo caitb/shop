@@ -243,7 +243,7 @@
         <module>shop-admin</module>
         <module>shop-service</module>
         <module>shop-dao</module>
-        <module>shop-common</module>
+        <module>shop-base</module>
         <module>shop-web</module>
     </modules>
 

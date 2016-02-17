@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/user")
 public class UserController {
 
+    @RequestMapping("/toLogin")
+    public String toLogin(HttpServletRequest request, HttpServletResponse response){
+        return "login";
+    }
+
     @RequestMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response, User user){
         return "index";

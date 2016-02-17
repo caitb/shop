@@ -10,12 +10,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1">
     <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/default.css" />
-    <link rel="stylesheet" type="text/css" href="/js/themes/default/easyui.css" />
-    <link rel="stylesheet" type="text/css" href="/js/themes/icon.css" />
-    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.easyui.js"></script>
-    <script type="text/javascript" src='/js/outlook2.js'> </script>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/themes/icon.css" />
+    <script type="text/javascript" src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>static/js/jquery.easyui.js"></script>
+    <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'> </script>
 
     <script type="text/javascript">
         var _menus = {"menus":[

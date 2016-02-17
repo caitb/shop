@@ -8,6 +8,8 @@ public class User {
     private Long id;
     private String userName;
     private String trueName;
+    private String password;
+    private String email;
     private String sex;
     private Integer age;
     private String phone;
@@ -34,6 +36,22 @@ public class User {
 
     public void setTrueName(String trueName) {
         this.trueName = trueName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSex() {
@@ -66,6 +84,8 @@ public class User {
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", trueName='" + trueName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 ", sex='" + sex + '\'' +
                 ", age=" + age +
                 ", phone='" + phone + '\'' +

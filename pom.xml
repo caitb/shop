@@ -17,6 +17,7 @@
         <mybatis-spring.version>1.1.1</mybatis-spring.version>
         <mysql.version>5.1.36</mysql.version>
         <servlet.version>2.5</servlet.version>
+        <nexus.url>http://101.201.208.177:9090/nexus</nexus.url>
     </properties>
 
 
@@ -219,24 +220,41 @@
         </pluginManagement>
     </build>
 
-    <!-- 仓库地址 -->
     <repositories>
         <repository>
-            <id>central</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
+            <id>Maven</id>
+            <name>nexus server</name>
+            <url>${nexus.url}/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Maven</id>
+            <name>nexus server</name>
+            <url>${nexus.url}/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <modules>
         <module>shop-admin</module>
         <module>shop-service</module>
         <module>shop-dao</module>
-        <module>shop-common</module>
+        <module>shop-base</module>
+        <module>shop-web</module>
     </modules>
 
 </project>

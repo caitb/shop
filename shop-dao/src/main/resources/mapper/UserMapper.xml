@@ -36,8 +36,11 @@
     <select id="listByCondition" resultMap="userMap">
         SELECT * FROM b_user
         <where>
-            <if test="user.userName != null">
-                user_name = #{user.userName}
+            <if test="userName != null">
+                user_name = #{userName}
+            </if>
+            <if test="phone != null">
+                AND phone = #{phone}
             </if>
         </where>
     </select>

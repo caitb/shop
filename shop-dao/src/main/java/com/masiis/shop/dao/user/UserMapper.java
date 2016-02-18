@@ -15,6 +15,6 @@ public interface UserMapper {
 
     User findByUserNameAndPwd(@Param("userName")String userName, @Param("password")String password);
 
-    List<User> listByCondition(@Param("user")User user);
+    List<User> listByCondition(@Param("userName")String userName, @Param("phone")String phone);
 
 }

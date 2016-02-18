@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cai_tb on 16/2/16.
@@ -32,8 +34,8 @@ public class UserController {
      * @param response
      * @return
      */
-    @RequestMapping("/toLogin")
-    public String toLogin(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("/login.shtml")
+    public String login(HttpServletRequest request, HttpServletResponse response){
         return "user/login";
     }
 
@@ -43,8 +45,8 @@ public class UserController {
      * @param response
      * @return
      */
-    @RequestMapping("/userList")
-    public String userList(HttpServletRequest request, HttpServletResponse response){
+    @RequestMapping("/list.shtml")
+    public String list(HttpServletRequest request, HttpServletResponse response){
         return "user/userList";
     }
 
@@ -112,15 +114,21 @@ public class UserController {
                              Integer pageNum,
                              Integer pageSize
                             ){
+
+        ModelAndView mav = new ModelAndView("user/userList");
+
         pageNum  = pageNum  == null ? 1  : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
 
         PageHelper.startPage(pageNum, pageSize);
         List<User> users = this.userService.listUserByCondition(user);
-        PageInfo<User> pageInfo = new PageInfo<>();
+        PageInfo<User> pageInfo = new PageInfo<>(users);
 
-        ModelAndView mav = new ModelAndView("user/userList");
-        mav.addObject("pageInfo", pageInfo);
+        Map<String, Object> usersMap = new HashMap<>();
+        usersMap.put("total", pageInfo.getTotal());
+        usersMap.put("users", users);
+
+        mav.addObject("usersMap", usersMap);
         return mav;
     }
 

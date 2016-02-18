@@ -6,7 +6,8 @@
 %>
 
 <link rel="stylesheet" href="<%=basePath%>static/js/themes/default/easyui.css" />
-<script type="text/javascript" src="/static/js/${jsPath}/dateFormat.js"></script>
+<script src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
+<script src="<%=basePath%>static/js/jquery.easyui.min.js"></script>
 <script>
     function updateActions(index){
         $('#userList').datagrid('updateRow', {
@@ -71,7 +72,7 @@
 
     $(function(){
         $('#userList').datagrid({
-            url: '/user/findAll.do',
+            url: '<%=basePath%>user/list.do',
             width: '100%',
             pagination: true,
             singleSelect:true,
@@ -80,12 +81,37 @@
             columns: [[
                 {field: 'cb', width: '20%', checkbox : true},
                 {field: 'id', title: 'id', width: '20%', hidden: true},
-                {field: 'phone', title: 'phone', width: '20%',
+                {field: 'userName', title: '用户名', width: '20%',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'nickName', title: 'nickName', width: '20%',
+                {field: 'trueName', title: '姓名', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'password', title: '密码', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'email', title: '邮箱', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'sex', title: '性别', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'age', title: '年龄', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'phone', title: '电话', width: '20%',
                     editor:{
                         type: 'text'
                     }

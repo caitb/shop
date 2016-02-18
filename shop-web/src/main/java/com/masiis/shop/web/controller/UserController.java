@@ -1,6 +1,6 @@
 package com.masiis.shop.web.controller;
 
-import com.masiis.shop.dao.login.mapper.User;
+import com.masiis.shop.dao.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

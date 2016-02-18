@@ -11,10 +11,10 @@
 <head id="Head1">
     <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/themes/default/easyui.css" />
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/themes/icon.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/jquery-easyui/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/jquery-easyui/themes/icon.css" />
     <script type="text/javascript" src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>static/js/jquery.easyui.js"></script>
+    <script type="text/javascript" src="<%=basePath%>static/js/jquery-easyui/jquery.easyui.js"></script>
     <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'> </script>
 
     <script type="text/javascript">

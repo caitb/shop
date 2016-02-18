@@ -1,5 +1,7 @@
 package com.masiis.shop.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
@@ -115,7 +117,7 @@ public class UserController {
                              User user,
                              Integer pageNum,
                              Integer pageSize
-                            ){
+                            ) throws JsonProcessingException {
 
         pageNum  = pageNum  == null ? 1  : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
@@ -128,7 +130,10 @@ public class UserController {
         usersMap.put("total", pageInfo.getTotal());
         usersMap.put("rows", users);
 
-        return usersMap;
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(usersMap);
+
+        //return usersMap;
     }
 
     /**

@@ -6,6 +6,7 @@
 %>
 
 <link rel="stylesheet" href="<%=basePath%>static/js/themes/default/easyui.css" />
+<link rel="stylesheet" href="<%=basePath%>static/js/themes/icons.css" />
 <script src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
 <script src="<%=basePath%>static/js/jquery.easyui.min.js"></script>
 <script>
@@ -84,6 +85,10 @@
                 {field: 'userName', title: '用户名', width: '20%',
                     editor:{
                         type: 'text'
+                    },
+                    formatter:function(value,row,index){
+                        alert(value);
+                        return "ooooo";
                     }
                 },
                 {field: 'trueName', title: '姓名', width: '20%',
@@ -163,8 +168,9 @@
     <input id="uid" disabled style="line-height:26px;border:1px solid #ccc">
     <span>用户名字:</span>
     <input id="nickName" style="line-height:26px;border:1px solid #ccc">
-    <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
+    <a href="#" class="easyui-linkbutton" onclick="doSearch()">查询</a>
+    <a href="#" class="easyui-linkbutton" onclick="insert()">添加用户</a>
 </div>
-<a href="#" class="easyui-linkbutton" onclick="insert()">添加用户</a>
+
 
 <div id="userList"></div>

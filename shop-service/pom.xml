@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>com.masiis.shop</groupId>
-            <artifactId>shop-common</artifactId>
+            <artifactId>shop-base</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

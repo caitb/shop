@@ -8,6 +8,7 @@ import com.masiis.shop.service.user.UserService;
 import com.masiis.shop.web.utils.KeysUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -109,13 +110,12 @@ public class UserController {
      * @return
      */
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response,
+    @ResponseBody
+    public Object list(HttpServletRequest request, HttpServletResponse response,
                              User user,
                              Integer pageNum,
                              Integer pageSize
                             ){
-
-        ModelAndView mav = new ModelAndView("user/userList");
 
         pageNum  = pageNum  == null ? 1  : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
@@ -126,10 +126,9 @@ public class UserController {
 
         Map<String, Object> usersMap = new HashMap<>();
         usersMap.put("total", pageInfo.getTotal());
-        usersMap.put("users", users);
+        usersMap.put("rows", users);
 
-        mav.addObject("usersMap", usersMap);
-        return mav;
+        return usersMap;
     }
 
     /**

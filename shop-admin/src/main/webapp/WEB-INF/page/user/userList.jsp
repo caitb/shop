@@ -5,10 +5,10 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<link rel="stylesheet" href="<%=basePath%>static/js/themes/default/easyui.css" />
-<link rel="stylesheet" href="<%=basePath%>static/js/themes/icons.css" />
-<script src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
-<script src="<%=basePath%>static/js/jquery.easyui.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/default/easyui.css" />
+<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/icons.css" />
+<script src="<%=basePath%>static/js/jquery.min.js"></script>
+<script src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
 <script>
     function updateActions(index){
         $('#userList').datagrid('updateRow', {
@@ -87,8 +87,7 @@
                         type: 'text'
                     },
                     formatter:function(value,row,index){
-                        alert(value);
-                        return "ooooo";
+                        return value;
                     }
                 },
                 {field: 'trueName', title: '姓名', width: '20%',

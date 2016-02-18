@@ -5,86 +5,140 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
+<link rel="stylesheet" href="<%=basePath%>static/js/themes/default/easyui.css" />
+<script type="text/javascript" src="/static/js/${jsPath}/dateFormat.js"></script>
+<script>
+    function updateActions(index){
+        $('#userList').datagrid('updateRow', {
+            index: index,
+            row: {}
+        });
+    }
+    function getRowIndex(target){
+        var tr = $(target).closest('tr.datagrid-row');
+        return parseInt(tr.attr('datagrid-row-index'));
+    }
+    function editrow(target){
+        $('#userList').datagrid('beginEdit', getRowIndex(target));
+    }
+    function deleterow(target){alert('deleterow');
+        $.messager.confirm('Confirm', '你确定要删除?', function(r){
+            if(r){console.log('del: '+$('#userList').datagrid('getRows')[getRowIndex(target)].id);
+                $('#userList').datagrid('deleteRow', getRowIndex(target));
+                $.ajax({
+                    url: '/user/delete.do',
+                    data: {uid: $('#userList').datagrid('getRows')[getRowIndex(target)].id},
+                    success: function(data){
+                        if(data.msg == 'true'){
+                            alert('保存成功');
+                        }else{
+                            alert('保存失败');
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function saverow(target){
+        $('#userList').datagrid('endEdit', getRowIndex(target));
+    }
+    function cancelrow(target){alert('cancelrow');
+        $('#userList').datagrid('cancelEdit', getRowIndex(target));
+    }
+    function insert(){
+        var row = $('#userList').datagrid('getSelected');
+        if(row){
+            var index = $('#userList').datagrid('getRowIndex', row);
+        }else{
+            index = 0;
+        }
+        $('#userList').datagrid('insertRow', {
+            index: index,
+            row: {
+                status: 'P'
+            }
+        });
+        $('#userList').datagrid('selectRow', index);
+        $('#userList').datagrid('beginEdit', index);
+    }
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head id="Head1">
-    <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css" />
-    <script type="text/javascript" src="<%=basePath%>static/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript">
+    function doSearch(){
+        $('#userList').datagrid('load',{
+            uid: $('#uid').val(),
+            nickName: $('#nickName').val()
+        });
+    }
 
-    </script>
+    $(function(){
+        $('#userList').datagrid({
+            url: '/user/findAll.do',
+            width: '100%',
+            pagination: true,
+            singleSelect:true,
+            rownumbers : true,//行号
+            idField:'id',
+            columns: [[
+                {field: 'cb', width: '20%', checkbox : true},
+                {field: 'id', title: 'id', width: '20%', hidden: true},
+                {field: 'phone', title: 'phone', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'nickName', title: 'nickName', width: '20%',
+                    editor:{
+                        type: 'text'
+                    }
+                },
+                {field: 'action', title: '操作', width: '20%', align: 'center',
+                    formatter: function(value, row, index){
+                        if(row.editing){
+                            var s = '<a href="#" onclick="saverow(this)">保存</a>';
+                            var c = '<a href="#" onclick="cancelrow(this)">取消</a>';
+                            return s + c;
+                        }else{
+                            var e = '<a href="#" onclick="editrow(this)">编辑</a>';
+                            var d = '<a href="#" onclick="deleterow(this)">删除</a>';
+                            return e + d;
+                        }
+                    }
+                }
+            ]],
+            onBeforeEdit: function(index, row){
+                row.editing = true;
+                updateActions(index);
+            },
+            onAfterEdit: function(index, row){
+                row.editing = false;
+                updateActions(index);
+                $.ajax({
+                    url: '/user/update.do',
+                    data: {id: row.id, phone: row.phone, nickName: row.nickName},
+                    success: function(data){
+                        data = eval(data);
+                        if(data.msg == 'true'){
+                            alert('保存成功');
+                        }else{
+                            alert('保存失败');
+                        }
+                    }
+                });
+            },
+            onCancelEdit: function(index, row){
+                row.editing = false;
+                updateActions(index);
+            }
+        });
 
-</head>
-<body class="easyui-layout" style="overflow-y: hidden"  scroll="no">
-<noscript>
-    <div style=" position:absolute; z-index:100000; height:2046px;top:0px;left:0px; width:100%; background:white; text-align:center;">
-        <img src="images/noscript.gif" alt='抱歉，请开启脚本支持！' />
-    </div></noscript>
-<div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
-        background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
-        line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-    <span style="float:right; padding-right:20px;" class="head">欢迎 16素材 <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a></span>
-    <span style="padding-left:10px; font-size: 16px; "><img src="images/blocks.gif" width="20" height="20" align="absmiddle" /> 16素材网  www.16sucai.com</span>
+    });
+</script>
+<div id="tb" style="padding:3px">
+    <span>用户ID:</span>
+    <input id="uid" disabled style="line-height:26px;border:1px solid #ccc">
+    <span>用户名字:</span>
+    <input id="nickName" style="line-height:26px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" plain="true" onclick="doSearch()">查询</a>
 </div>
-<div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-    <div class="footer">By 疯狂秀才 Email:bjhxl@59ibox.cn</div>
-</div>
-<div region="west" split="true" title="导航菜单" style="width:180px;" id="west">
-    <div class="easyui-accordion" fit="true" border="false">
-        <!--  导航内容 -->
+<a href="#" class="easyui-linkbutton" onclick="insert()">添加用户</a>
 
-    </div>
-
-</div>
-<div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
-    <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
-        <div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
-
-            <h1>Welcome to jQuery UI!</h1>
-
-        </div>
-    </div>
-</div>
-
-
-<!--修改密码窗口-->
-<div id="w" class="easyui-window" title="修改密码" collapsible="false" minimizable="false"
-     maximizable="false" icon="icon-save"  style="width: 300px; height: 150px; padding: 5px;
-        background: #fafafa;">
-    <div class="easyui-layout" fit="true">
-        <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
-            <table cellpadding=3>
-                <tr>
-                    <td>新密码：</td>
-                    <td><input id="txtNewPass" type="Password" class="txt01" /></td>
-                </tr>
-                <tr>
-                    <td>确认密码：</td>
-                    <td><input id="txtRePass" type="Password" class="txt01" /></td>
-                </tr>
-            </table>
-        </div>
-        <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
-            <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >
-                确定</a> <a class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)"
-                          onclick="closeLogin()">取消</a>
-        </div>
-    </div>
-</div>
-
-<div id="mm" class="easyui-menu" style="width:150px;">
-    <div id="mm-tabclose">关闭</div>
-    <div id="mm-tabcloseall">全部关闭</div>
-    <div id="mm-tabcloseother">除此之外全部关闭</div>
-    <div class="menu-sep"></div>
-    <div id="mm-tabcloseright">当前页右侧全部关闭</div>
-    <div id="mm-tabcloseleft">当前页左侧全部关闭</div>
-    <div class="menu-sep"></div>
-    <div id="mm-exit">退出</div>
-</div>
-
-
-</body>
-</html>
+<div id="userList"></div>

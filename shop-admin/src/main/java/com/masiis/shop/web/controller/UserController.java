@@ -26,11 +26,35 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    /**
+     * 登陆页面
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/toLogin")
     public String toLogin(HttpServletRequest request, HttpServletResponse response){
         return "user/login";
     }
 
+    /**
+     * 用户列表页面
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/userList")
+    public String userList(HttpServletRequest request, HttpServletResponse response){
+        return "user/userList";
+    }
+
+    /**
+     * 登陆逻辑
+     * @param request
+     * @param response
+     * @param user      登陆参数
+     * @return
+     */
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user){
         ModelAndView mav = new ModelAndView();
@@ -52,13 +76,13 @@ public class UserController {
         }
 
         User u = this.userService.findByUserNameAndPwd(user.getUserName(), KeysUtil.md5Encrypt(user.getPassword()));
-        User u1 = new User();
-        u1.setUserName("admin");
-        u1.setTrueName("admin");
-        u1.setPassword(KeysUtil.md5Encrypt("000000"));
-        u1.setEmail("admin@qq.com");
-        u1.setPhone("13669660493");
-        this.userService.addUser(u1);
+//        User u1 = new User();
+//        u1.setUserName("admin");
+//        u1.setTrueName("admin");
+//        u1.setPassword(KeysUtil.md5Encrypt("000000"));
+//        u1.setEmail("admin@qq.com");
+//        u1.setPhone("13669660493");
+//        this.userService.addUser(u1);
 
         //用户名或密码不对
         if (u == null){
@@ -73,6 +97,15 @@ public class UserController {
         return mav;
     }
 
+    /**
+     * 条件分页查询用户数据
+     * @param request
+     * @param response
+     * @param user        用户相关查询条件
+     * @param pageNum     当前页
+     * @param pageSize    每页显示条数
+     * @return
+     */
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response,
                              User user,
@@ -91,6 +124,12 @@ public class UserController {
         return mav;
     }
 
+    /**
+     * 添加用户
+     * @param request
+     * @param response
+     * @param user      新添用户数据
+     */
     @RequestMapping("/add")
     public void add(HttpServletRequest request, HttpServletResponse response, User user){
         if (StringUtil.isNotEmpty(user.getPassword())){

@@ -9,6 +9,7 @@ import com.masiis.shop.dao.user.User;
 import com.masiis.shop.service.user.UserService;
 import com.masiis.shop.web.utils.KeysUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -106,7 +107,8 @@ public class UserController {
      * 条件分页查询用户数据
      * @param request
      * @param response
-     * @param user        用户相关查询条件
+     * @param userName    用户名
+     * @param phone       电话号码
      * @param pageNum     当前页
      * @param pageSize    每页显示条数
      * @return
@@ -114,16 +116,19 @@ public class UserController {
     @RequestMapping("/list")
     @ResponseBody
     public Object list(HttpServletRequest request, HttpServletResponse response,
-                             User user,
+                             String userName,
+                             String phone,
                              Integer pageNum,
                              Integer pageSize
                             ) throws JsonProcessingException {
 
+        userName = StringUtil.isEmpty(userName) ? null : userName;
+        phone    = StringUtil.isEmpty(phone)    ? null : phone;
         pageNum  = pageNum  == null ? 1  : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
 
         PageHelper.startPage(pageNum, pageSize);
-        List<User> users = this.userService.listUserByCondition(user);
+        List<User> users = this.userService.listUserByCondition(userName, phone);
         PageInfo<User> pageInfo = new PageInfo<>(users);
 
         Map<String, Object> usersMap = new HashMap<>();

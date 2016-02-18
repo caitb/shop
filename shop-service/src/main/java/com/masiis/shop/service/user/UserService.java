@@ -24,8 +24,8 @@ public class UserService {
         return this.userMapper.findByUserNameAndPwd(userName, password);
     }
 
-    public List<User> listUserByCondition(User user){
-        return this.userMapper.listByCondition(user);
+    public List<User> listUserByCondition(String userName, String phone){
+        return this.userMapper.listByCondition(userName, phone);
     }
 
     public void addUser(User user){

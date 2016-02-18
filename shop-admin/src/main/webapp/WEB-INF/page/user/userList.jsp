@@ -66,8 +66,8 @@
 
     function doSearch(){
         $('#userList').datagrid('load',{
-            uid: $('#uid').val(),
-            nickName: $('#nickName').val()
+            userName: $('#userName').val(),
+            phone: $('#phone').val()
         });
     }
 
@@ -80,9 +80,9 @@
             rownumbers : true,//行号
             idField:'id',
             columns: [[
-                {field: 'cb', width: '20%', checkbox : true},
-                {field: 'id', title: 'id', width: '20%', hidden: true},
-                {field: 'userName', title: '用户名', width: '20%',
+                {field: 'cb', width: '10%', checkbox : true},
+                {field: 'id', title: 'id', width: '10%', hidden: true},
+                {field: 'userName', title: '用户名', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     },
@@ -90,37 +90,32 @@
                         return value;
                     }
                 },
-                {field: 'trueName', title: '姓名', width: '20%',
+                {field: 'trueName', title: '姓名', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'password', title: '密码', width: '20%',
+                {field: 'email', title: '邮箱', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'email', title: '邮箱', width: '20%',
+                {field: 'sex', title: '性别', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'sex', title: '性别', width: '20%',
+                {field: 'age', title: '年龄', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'age', title: '年龄', width: '20%',
+                {field: 'phone', title: '电话', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
                     }
                 },
-                {field: 'phone', title: '电话', width: '20%',
-                    editor:{
-                        type: 'text'
-                    }
-                },
-                {field: 'action', title: '操作', width: '20%', align: 'center',
+                {field: 'action', title: '操作', width: '10%', align: 'center',
                     formatter: function(value, row, index){
                         if(row.editing){
                             var s = '<a href="#" onclick="saverow(this)">保存</a>';
@@ -163,10 +158,10 @@
     });
 </script>
 <div id="tb" style="padding:3px">
-    <span>用户ID:</span>
-    <input id="uid" disabled style="line-height:26px;border:1px solid #ccc">
-    <span>用户名字:</span>
-    <input id="nickName" style="line-height:26px;border:1px solid #ccc">
+    <span>用户名:</span>
+    <input id="userName" style="line-height:26px;border:1px solid #ccc">
+    <span>手机号:</span>
+    <input id="phone" style="line-height:26px;border:1px solid #ccc">
     <a href="#" class="easyui-linkbutton" onclick="doSearch()">查询</a>
     <a href="#" class="easyui-linkbutton" onclick="insert()">添加用户</a>
 </div>

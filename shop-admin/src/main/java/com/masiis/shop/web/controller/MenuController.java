@@ -35,6 +35,7 @@ public class MenuController {
         for (BUserMenu bm : list) {
             menus.add(bm.getMenuId());
         }
+        request.setAttribute("userID", userID);
         request.setAttribute("menuIds", org.apache.commons.lang.StringUtils.join(menus, ','));
         return "menu/userMenu";
     }
@@ -64,5 +65,14 @@ public class MenuController {
             menus.add(bm.getMenuId());
         }
         return org.apache.commons.lang.StringUtils.join(menus, ',');
+    }
+
+    @RequestMapping("/save")
+    @ResponseBody
+    public String updateUserMenu(HttpServletRequest request, HttpServletResponse response, Long userID, String menuIDs) {
+        menuService.updateUserMenu(userID, menuIDs.split(","));
+        JSONObject res = new JSONObject();
+        res.put("isError", false);
+        return res.toJSONString();
     }
 }

@@ -2,7 +2,9 @@ package com.masiis.shop.service.menu;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import com.masiis.shop.dao.menu.*;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +33,7 @@ public class MenuService {
 
     /**
      * 获取用户菜单
+     *
      * @param userID
      * @return
      */
@@ -38,5 +41,23 @@ public class MenuService {
         BUserMenuExample bme = new BUserMenuExample();
         bme.createCriteria().andUserIdEqualTo(userID);
         return bUserMenuMapper.selectByExample(bme);
+    }
+
+    /**
+     * 更新用户菜单:先删除后添加
+     *
+     * @return
+     */
+    public void updateUserMenu(Long userID, String[] menuIDs) {
+        BUserMenuExample bme = new BUserMenuExample();
+        bme.createCriteria().andUserIdEqualTo(userID);
+        int n = bUserMenuMapper.deleteByExample(bme);
+        BUserMenu bm = null;
+        for (String menuID : menuIDs) {
+            bm = new BUserMenu();
+            bm.setMenuId(Long.parseLong(menuID));
+            bm.setUserId(userID);
+            bUserMenuMapper.insert(bm);
+        }
     }
 }

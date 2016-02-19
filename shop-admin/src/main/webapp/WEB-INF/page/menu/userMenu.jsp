@@ -34,9 +34,25 @@
             });
             treePanel.request({
                 url: '/menu/getTreeData',
-                initCheckedValues: '${menuIds}'
+                initCheckedValuesStr: '${menuIds}'
             });
             $('#submit').bind("click", function () {
+//                $('#res2').html(treePanel.getCheckedIdStringIncludeParent());
+                $.ajax({
+                    type: 'POST',
+                    url: '/menu/save',
+                    data: {userID: '${userID}', menuIDs: treePanel.getCheckedIdStringIncludeParent()},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data) {
+                            if (data.isError=="true") {
+                                alert("保存失败");
+                            } else {
+                                alert("保存成功");
+                            }
+                        }
+                    }
+                });
 
             })
         });
@@ -47,23 +63,17 @@
     <div id="tree_panel"></div>
 </div>
 <div style="float:left;width:400px;">
-
-    <div id="tree_panel2"></div>
-
-    <h4>
-        测试
-    </h4>
-    1、不包含子节点未全选时的父节点
-    <br/>
-    <input type="button" value="获取勾选节点文本" onclick="$('#res1').html(treePanel.getCheckedTextArray().join(','))"/>
-    <input type="button" value="获取勾选节点值" onclick="$('#res1').html(treePanel.getCheckedIdString())"/>
-    <div id="res1"></div>
-    <br/>
-    <br/>
-    2、包含子节点未全选时的父节点
-    <br/>
-    <input type="button" value="获取勾选节点values"
-           onclick="$('#res2').html(treePanel.getCheckedIdStringIncludeParent())"/>
+    <%--1、不包含子节点未全选时的父节点--%>
+    <%--<br/>--%>
+    <%--<input type="button" value="获取勾选节点文本" onclick="$('#res1').html(treePanel.getCheckedTextArray().join(','))"/>--%>
+    <%--<input type="button" value="获取勾选节点值" onclick="$('#res1').html(treePanel.getCheckedIdString())"/>--%>
+    <%--<div id="res1"></div>--%>
+    <%--<br/>--%>
+    <%--<br/>--%>
+    <%--2、包含子节点未全选时的父节点--%>
+    <%--<br/>--%>
+    <%--<input type="button" value="获取勾选节点values"--%>
+           <%--onclick="$('#res2').html(treePanel.getCheckedIdStringIncludeParent())"/>--%>
     <div id="res2"></div>
     <br/>
     <input id="submit" type="button" value="提交"/>

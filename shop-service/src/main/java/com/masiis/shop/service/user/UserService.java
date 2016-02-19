@@ -32,4 +32,8 @@ public class UserService {
         this.userMapper.add(user);
     }
 
+    public void updateUser(User user){
+        this.userMapper.updateById(user);
+    }
+
 }

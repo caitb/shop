@@ -9,7 +9,6 @@ import com.masiis.shop.dao.user.User;
 import com.masiis.shop.service.user.UserService;
 import com.masiis.shop.web.utils.KeysUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,6 +51,17 @@ public class UserController {
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response){
         return "user/userList";
+    }
+
+    /**
+     * 添加用户页面
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/add.shtml")
+    public String add(HttpServletRequest request, HttpServletResponse response){
+        return "user/addUser";
     }
 
     /**
@@ -148,11 +158,18 @@ public class UserController {
      * @param user      新添用户数据
      */
     @RequestMapping("/add")
-    public void add(HttpServletRequest request, HttpServletResponse response, User user){
+    @ResponseBody
+    public String add(HttpServletRequest request, HttpServletResponse response, User user){
         if (StringUtil.isNotEmpty(user.getPassword())){
             user.setPassword(KeysUtil.md5Encrypt(user.getPassword()));
         }
 
-        this.userService.addUser(user);
+        if(user.getId() == null){
+            this.userService.addUser(user);
+        }else{
+            this.userService.updateUser(user);
+        }
+
+        return "保存成功";
     }
 }

@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/default/easyui.css" />
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/icon.css" />
-    <script type="text/javascript" src="<%=basePath%>static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'> </script>
 
@@ -21,7 +21,7 @@
         var _menus = {"menus":[
             {"menuid":"1","icon":"icon-sys","menuname":"系统管理",
                 "menus":[{"menuname":"菜单管理","icon":"icon-nav","url":"http://www.16sucai.com"},
-                    {"menuname":"添加用户","icon":"icon-add","url":"demo.html"},
+                    {"menuname":"添加用户","icon":"icon-add","url":"<%=basePath%>user/add.shtml"},
                     {"menuname":"用户管理","icon":"icon-users","url":"<%=basePath%>user/list.shtml"},
                     {"menuname":"角色管理","icon":"icon-role","url":"demo2.html"},
                     {"menuname":"权限设置","icon":"icon-set","url":"demo.html"},

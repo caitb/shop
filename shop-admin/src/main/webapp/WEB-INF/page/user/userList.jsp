@@ -6,8 +6,8 @@
 %>
 
 <link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/default/easyui.css" />
-<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/icons.css" />
-<script src="<%=basePath%>static/js/jquery.min.js"></script>
+<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/icon.css" />
+<script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 <script src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
 <script>
     function updateActions(index){
@@ -32,9 +32,9 @@
                     data: {uid: $('#userList').datagrid('getRows')[getRowIndex(target)].id},
                     success: function(data){
                         if(data.msg == 'true'){
-                            alert('保存成功');
+                            alert('删除成功');
                         }else{
-                            alert('保存失败');
+                            alert('删除失败');
                         }
                     }
                 });
@@ -44,7 +44,7 @@
     function saverow(target){
         $('#userList').datagrid('endEdit', getRowIndex(target));
     }
-    function cancelrow(target){alert('cancelrow');
+    function cancelrow(target){
         $('#userList').datagrid('cancelEdit', getRowIndex(target));
     }
     function insert(){
@@ -95,6 +95,11 @@
                         type: 'text'
                     }
                 },
+                {field: 'password', title: '密码', width: '10%', align: 'center',
+                    editor:{
+                        type: 'text'
+                    }
+                },
                 {field: 'email', title: '邮箱', width: '10%', align: 'center',
                     editor:{
                         type: 'text'
@@ -137,15 +142,20 @@
                 row.editing = false;
                 updateActions(index);
                 $.ajax({
-                    url: '/user/update.do',
-                    data: {id: row.id, phone: row.phone, nickName: row.nickName},
-                    success: function(data){
-                        data = eval(data);
-                        if(data.msg == 'true'){
-                            alert('保存成功');
-                        }else{
-                            alert('保存失败');
-                        }
+                    url: '/user/add.do',
+                    type: 'post',
+                    data: {
+                        id: row.id,
+                        userName: row.userName,
+                        trueName: row.trueName,
+                        password: row.password,
+                        email: row.email,
+                        sex: row.sex,
+                        age: row.age,
+                        phone: row.phone
+                    },
+                    success: function(msg){
+                        alert(msg);
                     }
                 });
             },

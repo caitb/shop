@@ -52,5 +52,20 @@
         VALUES
         (#{user.userName}, #{user.trueName}, #{user.password}, #{user.email}, #{user.sex}, #{user.age}, #{user.phone})
     </insert>
+
+    <!-- 根据id更新记录 -->
+    <update id="updateById">
+        UPDATE b_user
+        SET
+        user_name = #{user.userName},
+        true_name  = #{user.trueName},
+        password  = #{user.password},
+        email     = #{user.email},
+        sex       = #{user.sex},
+        age       = #{user.age},
+        phone     = #{user.phone}
+        WHERE
+        id = #{user.id}
+    </update>
     
 </mapper>

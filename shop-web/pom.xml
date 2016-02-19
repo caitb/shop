@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.masiis.shop</groupId>
-            <artifactId>shop-common</artifactId>
+            <artifactId>shop-base</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -144,7 +144,7 @@
 
 
     <build>
-        <finalName>shop-admin</finalName>
+        <finalName>shop-web</finalName>
 
         <resources>
             <!-- 忽略测试用例 -->

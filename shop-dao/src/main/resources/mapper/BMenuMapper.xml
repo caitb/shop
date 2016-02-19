@@ -7,7 +7,7 @@
       <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="icon" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="url" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="parent_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="parent_id" jdbcType="BIGINT" javaType="java.lang.Long" />
       <arg column="is_deleted" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
       <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
@@ -144,7 +144,7 @@
         #{url,jdbcType=VARCHAR},
       </if>
       <if test="parentId != null" >
-        #{parentId,jdbcType=INTEGER},
+        #{parentId,jdbcType=BIGINT},
       </if>
       <if test="isDeleted != null" >
         #{isDeleted,jdbcType=INTEGER},
@@ -185,7 +185,7 @@
         url = #{record.url,jdbcType=VARCHAR},
       </if>
       <if test="record.parentId != null" >
-        parent_id = #{record.parentId,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=BIGINT},
       </if>
       <if test="record.isDeleted != null" >
         is_deleted = #{record.isDeleted,jdbcType=INTEGER},
@@ -213,7 +213,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       icon = #{record.icon,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
-      parent_id = #{record.parentId,jdbcType=INTEGER},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
       is_deleted = #{record.isDeleted,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -236,7 +236,7 @@
         url = #{url,jdbcType=VARCHAR},
       </if>
       <if test="parentId != null" >
-        parent_id = #{parentId,jdbcType=INTEGER},
+        parent_id = #{parentId,jdbcType=BIGINT},
       </if>
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=INTEGER},

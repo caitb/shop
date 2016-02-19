@@ -385,52 +385,52 @@ public class BMenuExample {
             return (Criteria) this;
         }
 
-        public Criteria andParentIdEqualTo(Integer value) {
+        public Criteria andParentIdEqualTo(Long value) {
             addCriterion("parent_id =", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotEqualTo(Integer value) {
+        public Criteria andParentIdNotEqualTo(Long value) {
             addCriterion("parent_id <>", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdGreaterThan(Integer value) {
+        public Criteria andParentIdGreaterThan(Long value) {
             addCriterion("parent_id >", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andParentIdGreaterThanOrEqualTo(Long value) {
             addCriterion("parent_id >=", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdLessThan(Integer value) {
+        public Criteria andParentIdLessThan(Long value) {
             addCriterion("parent_id <", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdLessThanOrEqualTo(Integer value) {
+        public Criteria andParentIdLessThanOrEqualTo(Long value) {
             addCriterion("parent_id <=", value, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdIn(List<Integer> values) {
+        public Criteria andParentIdIn(List<Long> values) {
             addCriterion("parent_id in", values, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotIn(List<Integer> values) {
+        public Criteria andParentIdNotIn(List<Long> values) {
             addCriterion("parent_id not in", values, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdBetween(Integer value1, Integer value2) {
+        public Criteria andParentIdBetween(Long value1, Long value2) {
             addCriterion("parent_id between", value1, value2, "parentId");
             return (Criteria) this;
         }
 
-        public Criteria andParentIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andParentIdNotBetween(Long value1, Long value2) {
             addCriterion("parent_id not between", value1, value2, "parentId");
             return (Criteria) this;
         }

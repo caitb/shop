@@ -18,35 +18,7 @@
     <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'> </script>
 
     <script type="text/javascript">
-        var _menus = {"menus":[
-            {"menuid":"1","icon":"icon-sys","menuname":"系统管理",
-                "menus":[{"menuname":"菜单管理","icon":"icon-nav","url":"http://www.16sucai.com"},
-                    {"menuname":"添加用户","icon":"icon-add","url":"<%=basePath%>user/add.shtml"},
-                    {"menuname":"用户管理","icon":"icon-users","url":"<%=basePath%>user/list.shtml"},
-                    {"menuname":"角色管理","icon":"icon-role","url":"demo2.html"},
-                    {"menuname":"权限设置","icon":"icon-set","url":"demo.html"},
-                    {"menuname":"系统日志","icon":"icon-log","url":"demo.html"}
-                ]
-            },{"menuid":"8","icon":"icon-sys","menuname":"员工管理",
-                "menus":[{"menuname":"员工列表","icon":"icon-nav","url":"demo.html"},
-                    {"menuname":"视频监控","icon":"icon-nav","url":"demo1.html"}
-                ]
-            },{"menuid":"56","icon":"icon-sys","menuname":"部门管理",
-                "menus":[{"menuname":"添加部门","icon":"icon-nav","url":"demo1.html"},
-                    {"menuname":"部门列表","icon":"icon-nav","url":"demo2.html"}
-                ]
-            },{"menuid":"28","icon":"icon-sys","menuname":"财务管理",
-                "menus":[{"menuname":"收支分类","icon":"icon-nav","url":"demo.html"},
-                    {"menuname":"报表统计","icon":"icon-nav","url":"demo1.html"},
-                    {"menuname":"添加支出","icon":"icon-nav","url":"demo.html"}
-                ]
-            },{"menuid":"39","icon":"icon-sys","menuname":"商城管理",
-                "menus":[{"menuname":"商品分","icon":"icon-nav","url":"/shop/productcatagory.aspx"},
-                    {"menuname":"商品列表","icon":"icon-nav","url":"/shop/product.aspx"},
-                    {"menuname":"商品订单","icon":"icon-nav","url":"/shop/orders.aspx"}
-                ]
-            }
-        ]};
+        var _menus = {"menus":[{"icon":"icon-sys","menuid":1,"menuname":"系统管理","menus":[{"icon":"icon-sys","menuid":2,"menuname":"添加用户","menus":[],"parentId":1},{"icon":"icon-sys","menuid":3,"menuname":"用户管理","menus":[],"parentId":1},{"icon":"icon-sys","menuid":4,"menuname":"角色管理","menus":[],"parentId":1},{"icon":"icon-sys","menuid":5,"menuname":"权限设置","menus":[],"parentId":1},{"icon":"icon-sys","menuid":6,"menuname":"系统日志","menus":[],"parentId":1}],"parentId":0},{"icon":"icon-sys","menuid":7,"menuname":"员工管理","menus":[{"icon":"icon-sys","menuid":8,"menuname":"员工列表","menus":[],"parentId":7},{"icon":"icon-sys","menuid":9,"menuname":"视频监控","menus":[],"parentId":7}],"parentId":0},{"icon":"icon-sys","menuid":10,"menuname":"部门管理","menus":[{"icon":"icon-sys","menuid":11,"menuname":"添加部门","menus":[],"parentId":10},{"icon":"icon-sys","menuid":12,"menuname":"部门列表","menus":[],"parentId":10}],"parentId":0},{"icon":"icon-sys","menuid":13,"menuname":"财务管理","menus":[{"icon":"icon-sys","menuid":14,"menuname":"收支分类","menus":[],"parentId":13},{"icon":"icon-sys","menuid":15,"menuname":"报表统计","menus":[],"parentId":13}],"parentId":0},{"icon":"icon-sys","menuid":16,"menuname":"添加支出","menus":[],"parentId":0},{"icon":"icon-sys","menuid":17,"menuname":"商城管理","menus":[{"icon":"icon-sys","menuid":18,"menuname":"商品分","menus":[],"parentId":17},{"icon":"icon-sys","menuid":19,"menuname":"商品列表","menus":[],"parentId":17},{"icon":"icon-sys","menuid":20,"menuname":"商品订单","menus":[],"parentId":17}],"parentId":0}]};
         //设置登录窗口
         function openPwd() {
             $('#w').window({

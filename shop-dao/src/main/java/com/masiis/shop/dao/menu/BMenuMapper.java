@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 public interface BMenuMapper {
-
     int countByExample(BMenuExample example);
 
     int deleteByExample(BMenuExample example);
@@ -23,7 +22,7 @@ public interface BMenuMapper {
         "update_time, rank, ",
         "remark)",
         "values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, ",
-        "#{icon,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, ",
+        "#{icon,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, ",
         "#{isDeleted,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP}, #{rank,jdbcType=INTEGER}, ",
         "#{remark,jdbcType=VARCHAR})"
@@ -55,7 +54,7 @@ public interface BMenuMapper {
         "set name = #{name,jdbcType=VARCHAR},",
           "icon = #{icon,jdbcType=VARCHAR},",
           "url = #{url,jdbcType=VARCHAR},",
-          "parent_id = #{parentId,jdbcType=INTEGER},",
+          "parent_id = #{parentId,jdbcType=BIGINT},",
           "is_deleted = #{isDeleted,jdbcType=INTEGER},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",

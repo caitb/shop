@@ -11,7 +11,7 @@ public class BMenu {
 
     private String url;
 
-    private Integer parentId;
+    private Long parentId;
 
     private Integer isDeleted;
 
@@ -23,7 +23,7 @@ public class BMenu {
 
     private String remark;
 
-    public BMenu(Long id, String name, String icon, String url, Integer parentId, Integer isDeleted, Date createTime, Date updateTime, Integer rank, String remark) {
+    public BMenu(Long id, String name, String icon, String url, Long parentId, Integer isDeleted, Date createTime, Date updateTime, Integer rank, String remark) {
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -72,11 +72,11 @@ public class BMenu {
         this.url = url == null ? null : url.trim();
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 

@@ -11,7 +11,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<head>
+
+
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/default/easyui.css">
     <script id="jquery_183" type="text/javascript" class="library" src="<%=basePath%>static/js/jquery.min.js"></script>
     <script id="others_jquery_easyui_131" type="text/javascript" class="library"
@@ -49,16 +50,15 @@
                                 alert("保存失败");
                             } else {
                                 alert("保存成功");
+                                closeDialog();
                             }
                         }
                     }
                 });
 
-            })
+            });
         });
     </script>
-</head>
-<body>
 <div style="float:left;width:300px;">
     <div id="tree_panel"></div>
 </div>
@@ -76,7 +76,7 @@
            <%--onclick="$('#res2').html(treePanel.getCheckedIdStringIncludeParent())"/>--%>
     <div id="res2"></div>
     <br/>
-    <input id="submit" type="button" value="提交"/>
+        <a class="easyui-linkbutton" href="#" onclick="javascript:closeDialog();">取消</a>&nbsp;&nbsp;
+        <a id="submit" class="easyui-linkbutton" href="#">保存</a>
 </div>
-</body>
 

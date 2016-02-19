@@ -5,11 +5,33 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic'>
 <link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/default/easyui.css" />
 <link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="<%=basePath%>static/css/avgrund.css">
+<link rel="stylesheet" href="<%=basePath%>static/css/avgrund-demo.css">
 <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 <script src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/avgrund.js"></script>
 <script>
+    /* 模态框 */
+    function openDialog(target) {
+        $.ajax({
+            url: '<%=basePath%>menu/userMenu.do',
+            type: 'post',
+            data: {userID:$('#userList').datagrid('getRows')[getRowIndex(target)].id},
+            success: function(data) {
+                $('#default-popup').prepend(data);
+                Avgrund.show( "#default-popup" );
+            }
+        });
+    }
+    function closeDialog() {
+        $('#default-popup').empty();
+        Avgrund.hide();
+    }
+
+
     function updateActions(index){
         $('#userList').datagrid('updateRow', {
             index: index,
@@ -23,7 +45,7 @@
     function editrow(target){
         $('#userList').datagrid('beginEdit', getRowIndex(target));
     }
-    function deleterow(target){alert('deleterow');
+    function deleterow(target){
         $.messager.confirm('Confirm', '你确定要删除?', function(r){
             if(r){console.log('del: '+$('#userList').datagrid('getRows')[getRowIndex(target)].id);
                 $('#userList').datagrid('deleteRow', getRowIndex(target));
@@ -76,7 +98,7 @@
             url: '<%=basePath%>user/list.do',
             width: '100%',
             pagination: true,
-            singleSelect:true,
+            singleSelect:false,
             rownumbers : true,//行号
             idField:'id',
             columns: [[
@@ -96,6 +118,9 @@
                     }
                 },
                 {field: 'password', title: '密码', width: '10%', align: 'center',
+                    formatter: function(value, row, index){
+                        return '******';
+                    },
                     editor:{
                         type: 'text'
                     }
@@ -122,14 +147,16 @@
                 },
                 {field: 'action', title: '操作', width: '10%', align: 'center',
                     formatter: function(value, row, index){
+                        var sq = '<a href="#" onclick="javascript:openDialog(this);">授权</a>';
+
                         if(row.editing){
-                            var s = '<a href="#" onclick="saverow(this)">保存</a>';
-                            var c = '<a href="#" onclick="cancelrow(this)">取消</a>';
-                            return s + c;
+                            var s = '<a href="#" onclick="saverow(this)">保存</a>&nbsp;&nbsp;';
+                            var c = '<a href="#" onclick="cancelrow(this)">取消</a>&nbsp;&nbsp;';
+                            return s + c + sq;
                         }else{
-                            var e = '<a href="#" onclick="editrow(this)">编辑</a>';
-                            var d = '<a href="#" onclick="deleterow(this)">删除</a>';
-                            return e + d;
+                            var e = '<a href="#" onclick="editrow(this)">编辑</a>&nbsp;&nbsp;';
+                            var d = '<a href="#" onclick="deleterow(this)">删除</a>&nbsp;&nbsp;';
+                            return e + d + sq;
                         }
                     }
                 }
@@ -165,8 +192,18 @@
             }
         });
 
+        var p = $('#userList').datagrid('getPager');
+        $(p).pagination({
+            pageSize: 10,//每页显示的记录条数，默认为10
+            pageList: [5, 10, 15],//可以设置每页记录条数的列表
+            beforePageText: '第',//页数文本框前显示的汉字
+            afterPageText: '页    共 {pages} 页',
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+        });
+
     });
 </script>
+
 <div id="tb" style="padding:3px">
     <span>用户名:</span>
     <input id="userName" style="line-height:26px;border:1px solid #ccc">
@@ -175,6 +212,8 @@
     <a href="#" class="easyui-linkbutton" onclick="doSearch()">查询</a>
     <a href="#" class="easyui-linkbutton" onclick="insert()">添加用户</a>
 </div>
-
-
 <div id="userList"></div>
+
+<%-- 模态框 --%>
+<aside id="default-popup" class="avgrund-popup">
+</aside>

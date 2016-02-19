@@ -144,7 +144,7 @@
 
 
     <build>
-        <finalName>shop-admin</finalName>
+        <finalName>shop-web</finalName>
 
         <resources>
             <!-- 忽略测试用例 -->

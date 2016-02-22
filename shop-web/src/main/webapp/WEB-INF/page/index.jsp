@@ -10,12 +10,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1">
     <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>css/default.css" />
-    <link rel="stylesheet" type="text/css" href="/js/themes/default/easyui.css" />
-    <link rel="stylesheet" type="text/css" href="/js/themes/icon.css" />
-    <script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.easyui.js"></script>
-    <script type="text/javascript" src='/js/outlook2.js'> </script>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/js/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/js/themes/icon.css" />
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>/static/js/jquery.easyui.js"></script>
+    <script type="text/javascript" src='<%=basePath%>/static/js/outlook2.js'> </script>
 
     <script type="text/javascript">
         var _menus = {"menus":[
@@ -136,7 +136,7 @@
         background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
     <span style="float:right; padding-right:20px;" class="head">欢迎 16素材 <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a></span>
-    <span style="padding-left:10px; font-size: 16px; "><img src="images/blocks.gif" width="20" height="20" align="absmiddle" /> 16素材网  www.16sucai.com</span>
+    <span style="padding-left:10px; font-size: 16px; "><img src="<%=basePath%>/static/images/blocks.gif" width="20" height="20" align="absmiddle" /> 16素材网  www.16sucai.com</span>
 </div>
 <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
     <div class="footer">By 疯狂秀才 Email:bjhxl@59ibox.cn</div>

@@ -80,9 +80,7 @@ public class MenuController {
     private List<BMenu> bm_list = null;
     private String userMenuIds = "";
 
-    @RequestMapping("/loadMainMenu")
-    @ResponseBody
-    public String loadMainMenu(HttpServletRequest request, HttpServletResponse response, Long userID) throws JsonProcessingException {
+    public String loadMainMenu(Long userID) throws JsonProcessingException {
         bm_list = menuService.getData();
         List<BUserMenu> list = menuService.getUserMenu(userID);
         List<Long> menus = new ArrayList();

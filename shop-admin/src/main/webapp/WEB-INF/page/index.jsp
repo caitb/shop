@@ -11,14 +11,17 @@
 <head id="Head1">
     <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css"/>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/default/easyui.css"/>
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/icon.css"/>
     <script type="text/javascript" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>static/class/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
     <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'></script>
 
     <script type="text/javascript">
-        var _menus = '${menus}';
+        var _menus    = ${menus};
+console.log(${menus});
+
         //设置登录窗口
         function openPwd() {
             $('#w').window({

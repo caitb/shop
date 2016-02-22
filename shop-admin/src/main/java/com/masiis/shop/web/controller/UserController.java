@@ -36,8 +36,6 @@ public class UserController {
 
     @Resource
     private UserService userService;
-    @Resource
-    private MenuService menuService;
 
     /**
      * 登陆页面
@@ -90,7 +88,7 @@ public class UserController {
         /* 已登陆 */
         HttpSession session = request.getSession();
         if (!session.isNew() && session.getAttribute("user") != null) {
-            mav.setViewName("index");
+            mav.setViewName("redirect:/main/index");
             return mav;
         }
 
@@ -98,31 +96,24 @@ public class UserController {
 
         //用户名或密码为空
         if (StringUtil.isEmpty(user.getUserName()) || StringUtil.isEmpty(user.getPassword())) {
-            mav.setViewName("redirect:toLogin");
+            mav.setViewName("redirect:login.shtml");
             mav.addObject("user", user);
             return mav;
         }
 
         User u = this.userService.findByUserNameAndPwd(user.getUserName(), KeysUtil.md5Encrypt(user.getPassword()));
-//        User u1 = new User();
-//        u1.setUserName("admin");
-//        u1.setTrueName("admin");
-//        u1.setPassword(KeysUtil.md5Encrypt("000000"));
-//        u1.setEmail("admin@qq.com");
-//        u1.setPhone("13669660493");
-//        this.userService.addUser(u1);
 
         //用户名或密码不对
         if (u == null) {
-            mav.setViewName("redirect:toLogin");
+            mav.setViewName("redirect:login.shtml");
             mav.addObject("user", user);
             return mav;
         }
-        String menus = loadMainMenu(u.getId());
-        request.setAttribute("menus", menus);
+
         //登陆成功
-        session.setAttribute("user", user);
-        mav.setViewName("/index");
+        session.setAttribute("user", u);
+        mav.setViewName("redirect:/main/index");
+
         return mav;
     }
 
@@ -188,38 +179,4 @@ public class UserController {
         return "保存成功";
     }
 
-    private List<BMenu> bm_list = null;
-    private String userMenuIds = "";
-
-    public String loadMainMenu(Long userID) throws JsonProcessingException {
-        bm_list = menuService.getData();
-        List<BUserMenu> list = menuService.getUserMenu(userID);
-        List<Long> menus = new ArrayList();
-        for (BUserMenu bm : list) {
-            menus.add(bm.getMenuId());
-        }
-        userMenuIds = org.apache.commons.lang.StringUtils.join(menus, ',');
-        JSONObject jo = new JSONObject();
-        List<Tree> tree_list = new ArrayList<>();
-        getTreeJson(0l, tree_list);
-        jo.put("menus", tree_list);
-        return jo.toJSONString();
-    }
-
-    private Tree tree = null;
-
-    private void getTreeJson(Long pid, List<Tree> tree_list) {
-        for (BMenu bm : bm_list) {
-            if (userMenuIds.contains(bm.getId().toString()) && bm.getParentId() == pid) {
-                tree = new Tree();
-                tree.setMenuid(bm.getId());
-                tree.setIcon(bm.getIcon());
-                tree.setMenuname(bm.getName());
-                tree.setParentId(bm.getParentId());
-                tree.setUrl(bm.getUrl());
-                tree_list.add(tree);
-                getTreeJson(bm.getId(), tree.getMenus());
-            }
-        }
-    }
 }

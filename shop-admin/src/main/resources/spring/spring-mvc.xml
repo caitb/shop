@@ -60,6 +60,14 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean id="loginInterceptor" class="com.masiis.shop.web.interceptors.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/page/" />
 		<property name="suffix" value=".jsp" />

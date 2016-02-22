@@ -40,7 +40,7 @@
 </div>
 
 
-<script type="text/javascript" src="<%=basePath%>static/js/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/jquery.idealforms.js"></script>
 <script type="text/javascript">

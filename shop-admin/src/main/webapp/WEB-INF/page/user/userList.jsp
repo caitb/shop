@@ -6,12 +6,12 @@
 %>
 
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic'>
-<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/default/easyui.css" />
-<link rel="stylesheet" href="<%=basePath%>static/js/easyui/themes/icon.css" />
+<link rel="stylesheet" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css" />
+<link rel="stylesheet" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/icon.css" />
 <link rel="stylesheet" href="<%=basePath%>static/css/avgrund.css">
 <link rel="stylesheet" href="<%=basePath%>static/css/avgrund-demo.css">
 <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
-<script src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
+<script src="<%=basePath%>static/class/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/avgrund.js"></script>
 <script>
     /* 模态框 */

@@ -13,10 +13,10 @@
 %>
 
 
-<link rel="stylesheet" type="text/css" href="<%=basePath%>static/js/easyui/themes/default/easyui.css">
-<script id="jquery_183" type="text/javascript" class="library" src="<%=basePath%>static/js/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css">
+<script id="jquery_183" type="text/javascript" class="library" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 <script id="others_jquery_easyui_131" type="text/javascript" class="library"
-        src="<%=basePath%>static/js/easyui/jquery.easyui.min.js"></script>
+        src="<%=basePath%>static/class/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>static/js/ux/common_tree_panel.js"></script>
 <script>
     var treePanel;

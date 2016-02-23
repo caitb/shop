@@ -34,14 +34,14 @@
             isAutoLink: false
         });
         treePanel.request({
-            url: '/menu/getTreeData',
+            url: '/menu/getTreeData.do',
             initCheckedValuesStr: '${menuIds}'
         });
         $('#submit').bind("click", function () {
 //                $('#res2').html(treePanel.getCheckedIdStringIncludeParent());
             $.ajax({
                 type: 'POST',
-                url: '/menu/save',
+                url: '/menu/save.do',
                 data: {userID: '${userID}', menuIDs: treePanel.getCheckedIdStringIncludeParent()},
                 dataType: 'json',
                 success: function (data) {

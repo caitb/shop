@@ -66,6 +66,10 @@
 			<mvc:mapping path="/**"/>
 			<bean id="loginInterceptor" class="com.masiis.shop.web.interceptors.LoginInterceptor"/>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean id="accessInterceptor" class="com.masiis.shop.web.interceptors.AccessInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

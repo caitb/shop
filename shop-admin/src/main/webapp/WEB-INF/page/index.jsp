@@ -11,16 +11,24 @@
 <head id="Head1">
     <title>漂亮的easyui后台框架演示-css后台模板-www.16sucai.com</title>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/css/default.css"/>
-    <link rel="stylesheet" type="text/css"
-          href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/icon.css"/>
+    <%--<link rel="stylesheet" type="text/css" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.min.css" />--%>
+
+    <link rel="stylesheet" href="<%=basePath%>static/css/menu.css" type="text/css" />
+    <link rel="stylesheet" href="<%=basePath%>static/css/jquery-tool.css" type="text/css" />
+
     <script type="text/javascript" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>static/class/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
     <script type="text/javascript" src='<%=basePath%>static/js/outlook2.js'></script>
 
+    <script type="text/javascript" src="<%=basePath%>static/js/jquery.tools.min.js"></script>
+    <script type="text/javascript" src="<%=basePath%>static/js/menu.js"></script>
+
     <script type="text/javascript">
         var _menus    = ${menus};
-console.log(${menus});
+        var basePath  = '<%=basePath%>';
+        console.log(${menus});
 
         //设置登录窗口
         function openPwd() {
@@ -115,7 +123,7 @@ console.log(${menus});
 <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
     <div class="footer">By 疯狂秀才 Email:bjhxl@59ibox.cn</div>
 </div>
-<div region="west" split="true" title="导航菜单" style="width:180px;" id="west">
+<div region="west" split="true" title="导航菜单" style="width:200px;" id="west">
     <div class="easyui-accordion" fit="true" border="false">
         <!--  导航内容 -->
 
@@ -169,6 +177,6 @@ console.log(${menus});
     <div id="mm-exit">退出</div>
 </div>
 
-
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 </body>
 </html>

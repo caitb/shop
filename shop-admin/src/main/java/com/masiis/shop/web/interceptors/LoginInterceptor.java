@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * Created by cai_tb on 16/2/17.
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    private static final String[] IGNORE_URI = {"/login.shtml", "/login", "/index"};
+    private static final String[] IGNORE_URI = {"/login.shtml", "/login"};
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

@@ -21,14 +21,24 @@ public class MenuService {
     @Resource
     private BUserMenuMapper bUserMenuMapper;
 
+
+    /**
+     * 获取菜单项
+     * @param id
+     * @return
+     */
+    public BMenu findById(Long id){
+        return bMenuMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 获取菜单列表
      *
      * @return
      * @throws JsonProcessingException
      */
-    public List<BMenu> getData() throws JsonProcessingException {
-        return bMenuMapper.selectByExample(new BMenuExample());
+    public List<BMenu> getData(BMenuExample bMenuExample) throws JsonProcessingException {
+        return bMenuMapper.selectByExample(bMenuExample);
     }
 
     /**

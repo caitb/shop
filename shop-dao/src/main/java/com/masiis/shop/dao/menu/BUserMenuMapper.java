@@ -50,4 +50,7 @@ public interface BUserMenuMapper {
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(BUserMenu record);
+
+
+    List<Long> findMenuIdsByUserId(Long userId);
 }

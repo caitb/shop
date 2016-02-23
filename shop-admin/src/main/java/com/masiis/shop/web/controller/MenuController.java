@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.dao.menu.BMenu;
+import com.masiis.shop.dao.menu.BMenuExample;
 import com.masiis.shop.dao.menu.BUserMenu;
 import com.masiis.shop.service.menu.MenuService;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class MenuController {
     @ResponseBody
     public String getTreeData(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
         //JSONObject res = new JSONObject();
-        List<BMenu> data = menuService.getData();
+        List<BMenu> data = menuService.getData(new BMenuExample());
 //        if(null==data){
 //            res.put("isError", true);
 //            res.put("Message", "获取数据失败");

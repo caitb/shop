@@ -3,6 +3,7 @@ package com.masiis.shop.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.masiis.shop.dao.menu.BMenu;
+import com.masiis.shop.dao.menu.BMenuExample;
 import com.masiis.shop.dao.menu.BUserMenu;
 import com.masiis.shop.dao.menu.Tree;
 import com.masiis.shop.dao.user.User;
@@ -47,7 +48,7 @@ public class MainController {
     private String userMenuIds = "";
 
     public String loadMainMenu(Long userID) throws JsonProcessingException {
-        bm_list = menuService.getData();
+        bm_list = menuService.getData(new BMenuExample());
         List<BUserMenu> list = menuService.getUserMenu(userID);
         List<Long> menus = new ArrayList();
         for (BUserMenu bm : list) {

@@ -115,7 +115,7 @@
 <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
         background: url(<%=basePath%>static/images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-    <span style="float:right; padding-right:20px;" class="head">欢迎 16素材 <a href="#" id="editpass">修改密码</a> <a href="#"
+    <span style="float:right; padding-right:20px;" class="head">欢迎 ${user.userName} <a href="#" id="editpass">修改密码</a> <a href="#"
                                                                                                               id="loginOut">安全退出</a></span>
     <span style="padding-left:10px; font-size: 16px; "><img src="<%=basePath%>static/images/mailian.png" width="20" height="20"
                                                             align="absmiddle"/> 麦士商城后台管理系统</span>

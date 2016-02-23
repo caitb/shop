@@ -1,9 +1,13 @@
 package com.masiis.shop.dao.user;
 
+import java.io.Serializable;
+
 /**
  * Created by cai_tb on 16/2/16.
  */
-public class User {
+public class User implements Serializable{
+
+    private static final long serialVersionUID = -569045179971149387L;
 
     private Long id;
     private String userName;

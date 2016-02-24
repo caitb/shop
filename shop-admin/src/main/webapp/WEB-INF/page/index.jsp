@@ -121,7 +121,7 @@
                                                             align="absmiddle"/> 麦士商城后台管理系统</span>
 </div>
 <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">
-    <div class="footer">By 疯狂秀才 Email:bjhxl@59ibox.cn</div>
+    <div class="footer">麦士商城 www.maishi.com</div>
 </div>
 <div region="west" split="true" title="导航菜单" style="width:200px;" id="west">
     <div class="easyui-accordion" fit="true" border="false">

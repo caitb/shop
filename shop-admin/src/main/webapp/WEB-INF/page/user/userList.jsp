@@ -147,7 +147,6 @@
                 },
                 {field: 'action', title: '操作', width: '10%', align: 'center',
                     formatter: function(value, row, index){
-                        window.console.log('value: ' + value + ';row: ' + row.id + ';index: ' + index);
                         var sq = '<a href="#" onclick="javascript:openDialog(' + row.id + ');">授权</a>';
 
                         if(row.editing){

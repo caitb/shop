@@ -1,16 +1,15 @@
-package com.masiis.shop.web.utils;
+package com.masiis.shop.common.util;
 
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.SecureRandom;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 
 /**
  * 密匙工具类(包含des加密与md5加密)

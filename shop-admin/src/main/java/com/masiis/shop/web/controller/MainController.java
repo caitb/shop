@@ -2,11 +2,9 @@ package com.masiis.shop.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.masiis.shop.dao.menu.BMenu;
-import com.masiis.shop.dao.menu.BMenuExample;
-import com.masiis.shop.dao.menu.BUserMenu;
-import com.masiis.shop.dao.menu.Tree;
-import com.masiis.shop.dao.user.User;
+import com.masiis.shop.dao.menu.*;
+import com.masiis.shop.dao.user.SysUser;
+import com.masiis.shop.dao.usermenu.SysUserMenu;
 import com.masiis.shop.service.menu.MenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,23 +32,23 @@ public class MainController {
 
         ModelAndView mav = new ModelAndView("index");
 
-        User user = (User)request.getSession().getAttribute("user");
-        if (user != null){
-            String menus = loadMainMenu(user.getId());
+        SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
+        if (sysUser != null){
+            String menus = loadMainMenu(sysUser.getId());
             mav.addObject("menus", menus);
         }
 
         return mav;
     }
 
-    private List<BMenu> bm_list = null;
+    private List<SysMenu> bm_list = null;
     private String userMenuIds = "";
 
     public String loadMainMenu(Long userID) throws JsonProcessingException {
-        bm_list = menuService.getData(new BMenuExample());
-        List<BUserMenu> list = menuService.getUserMenu(userID);
+        bm_list = menuService.getData(new SysMenuExample());
+        List<SysUserMenu> list = menuService.getUserMenu(userID);
         List<Long> menus = new ArrayList();
-        for (BUserMenu bm : list) {
+        for (SysUserMenu bm : list) {
             menus.add(bm.getMenuId());
         }
         userMenuIds = org.apache.commons.lang.StringUtils.join(menus, ',');
@@ -65,7 +62,7 @@ public class MainController {
     private Tree tree = null;
 
     private void getTreeJson(Long pid, List<Tree> tree_list) {
-        for (BMenu bm : bm_list) {
+        for (SysMenu bm : bm_list) {
             if (userMenuIds.contains(bm.getId().toString()) && bm.getParentId() == pid) {
                 tree = new Tree();
                 tree.setMenuid(bm.getId());

@@ -1,18 +1,15 @@
 package com.masiis.shop.web.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
-import com.masiis.shop.dao.menu.BMenu;
-import com.masiis.shop.dao.menu.BUserMenu;
-import com.masiis.shop.dao.menu.Tree;
-import com.masiis.shop.dao.user.User;
-import com.masiis.shop.service.menu.MenuService;
+import com.masiis.shop.common.util.KeysUtil;
+import com.masiis.shop.dao.user.SysUser;
+import com.masiis.shop.dao.user.SysUserExample;
+import com.masiis.shop.dao.user.SysUserExample.Criteria;
 import com.masiis.shop.service.user.UserService;
-import com.masiis.shop.web.utils.KeysUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +19,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,11 +74,11 @@ public class UserController {
      *
      * @param request
      * @param response
-     * @param user     登陆参数
+     * @param sysUser     登陆参数
      * @return
      */
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, User user) throws JsonProcessingException {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser) throws JsonProcessingException {
         ModelAndView mav = new ModelAndView();
 
         /* 已登陆 */
@@ -95,23 +91,29 @@ public class UserController {
         /* 未登陆 */
 
         //用户名或密码为空
-        if (StringUtil.isEmpty(user.getUserName()) || StringUtil.isEmpty(user.getPassword())) {
+        if (StringUtil.isEmpty(sysUser.getUserName()) || StringUtil.isEmpty(sysUser.getPassword())) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", user);
+            mav.addObject("user", sysUser);
             return mav;
         }
 
-        User u = this.userService.findByUserNameAndPwd(user.getUserName(), KeysUtil.md5Encrypt(user.getPassword()));
+        SysUserExample sysUserExample = new SysUserExample();
+        sysUserExample
+                .createCriteria()
+                .andUserNameEqualTo(sysUser.getUserName())
+                .andPasswordEqualTo(KeysUtil.md5Encrypt(sysUser.getPassword()));
+
+        List<SysUser> sysUsers = this.userService.findByExample(sysUserExample);
 
         //用户名或密码不对
-        if (u == null) {
+        if (sysUsers == null || sysUsers.size() <= 0) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", user);
+            mav.addObject("user", sysUser);
             return mav;
         }
 
         //登陆成功
-        session.setAttribute("user", u);
+        session.setAttribute("user", sysUsers.get(0));
         mav.setViewName("redirect:/main/index");
 
         return mav;
@@ -137,18 +139,26 @@ public class UserController {
                        Integer pageSize
     ) throws JsonProcessingException {
 
-        userName = StringUtil.isEmpty(userName) ? null : userName;
-        phone = StringUtil.isEmpty(phone) ? null : phone;
         pageNum = pageNum == null ? 1 : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
 
+        //添加查询条件
+        SysUserExample sysUserExample = new SysUserExample();
+        Criteria criteria = sysUserExample.createCriteria();
+        if (StringUtil.isNotEmpty(userName)){
+            criteria.andUserNameEqualTo(userName);
+        }
+        if(StringUtil.isNotEmpty(phone)){
+            criteria.andPhoneEqualTo(phone);
+        }
+
         PageHelper.startPage(pageNum, pageSize);
-        List<User> users = this.userService.listUserByCondition(userName, phone);
-        PageInfo<User> pageInfo = new PageInfo<>(users);
+        List<SysUser> sysUsers = this.userService.findByExample(sysUserExample);
+        PageInfo<SysUser> pageInfo = new PageInfo<>(sysUsers);
 
         Map<String, Object> usersMap = new HashMap<>();
         usersMap.put("total", pageInfo.getTotal());
-        usersMap.put("rows", users);
+        usersMap.put("rows", sysUsers);
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(usersMap);
@@ -161,19 +171,19 @@ public class UserController {
      *
      * @param request
      * @param response
-     * @param user     新添用户数据
+     * @param sysUser     新添用户数据
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String add(HttpServletRequest request, HttpServletResponse response, User user) {
-        if (StringUtil.isNotEmpty(user.getPassword())) {
-            user.setPassword(KeysUtil.md5Encrypt(user.getPassword()));
+    public String add(HttpServletRequest request, HttpServletResponse response, SysUser sysUser) {
+        if (StringUtil.isNotEmpty(sysUser.getPassword())) {
+            sysUser.setPassword(KeysUtil.md5Encrypt(sysUser.getPassword()));
         }
 
-        if (user.getId() == null) {
-            this.userService.addUser(user);
+        if (sysUser.getId() == null) {
+            this.userService.addSysUser(sysUser);
         } else {
-            this.userService.updateUser(user);
+            this.userService.updateSysUserById(sysUser);
         }
 
         return "保存成功";

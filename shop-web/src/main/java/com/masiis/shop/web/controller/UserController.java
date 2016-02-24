@@ -1,5 +1,6 @@
 package com.masiis.shop.web.controller;
 
+import com.masiis.shop.dao.user.SysUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +20,7 @@ public class UserController {
 
     @RequestMapping(value = "/login",produces = "text/json;charset=UTF-8")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response, User user,
+    public String login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser,
                         String signature, String timestamp, String nonce, String echostr){
         String token = "masiiswxtest09";
         String[] arrs = {token, timestamp, nonce};

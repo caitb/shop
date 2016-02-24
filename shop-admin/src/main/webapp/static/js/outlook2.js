@@ -35,9 +35,11 @@ function InitLeftMenu() {
 		//menulist += '</ul>';
 
 		menulist += '<div title="' + n.menuname + '" style="overflow:auto;padding:10px;">';
+		menulist += '<ul>';
 		$.each(n.menus, function(j, o) {
-			menulist += '<a target="mainFrame" href="' + basePath + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a>';
+			menulist += '<li><a target="mainFrame" href="' + basePath + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a></li>';
 		});
+		menulist += '</ul>';
 		menulist += '</div>';
 
 
@@ -52,7 +54,7 @@ function InitLeftMenu() {
 
 	$(".easyui-accordion").append(menulist);
 
-	$('.easyui-accordion li a').click(function(){
+	$('.easyui-accordion div a').click(function(){
 		var tabTitle = $(this).text();
 		var url = $(this).attr("href");
 		addTab(tabTitle,url);

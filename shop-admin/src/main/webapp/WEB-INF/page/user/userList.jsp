@@ -15,11 +15,11 @@
 <script type="text/javascript" src="<%=basePath%>static/js/avgrund.js"></script>
 <script>
     /* 模态框 */
-    function openDialog(target) {
+    function openDialog(uid) {
         $.ajax({
             url: '<%=basePath%>menu/userMenu.do',
             type: 'post',
-            data: {userID:$('#userList').datagrid('getRows')[getRowIndex(target)].id},
+            data: {userID: uid},
             success: function(data) {
                 $('#default-popup').prepend(data);
                 Avgrund.show( "#default-popup" );
@@ -98,7 +98,7 @@
             url: '<%=basePath%>user/list.do',
             width: '100%',
             pagination: true,
-            singleSelect:false,
+            singleSelect:true,
             rownumbers : true,//行号
             idField:'id',
             columns: [[
@@ -147,7 +147,8 @@
                 },
                 {field: 'action', title: '操作', width: '10%', align: 'center',
                     formatter: function(value, row, index){
-                        var sq = '<a href="#" onclick="javascript:openDialog(this);">授权</a>';
+                        window.console.log('value: ' + value + ';row: ' + row.id + ';index: ' + index);
+                        var sq = '<a href="#" onclick="javascript:openDialog(' + row.id + ');">授权</a>';
 
                         if(row.editing){
                             var s = '<a href="#" onclick="saverow(this)">保存</a>&nbsp;&nbsp;';

@@ -3,9 +3,8 @@ package com.masiis.shop.web.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.dao.menu.BMenu;
-import com.masiis.shop.dao.menu.BMenuExample;
-import com.masiis.shop.dao.menu.BUserMenu;
+import com.masiis.shop.dao.menu.*;
+import com.masiis.shop.dao.usermenu.SysUserMenu;
 import com.masiis.shop.service.menu.MenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +27,9 @@ public class MenuController {
 
     @RequestMapping("/userMenu")
     public String load(HttpServletRequest request, HttpServletResponse response, Long userID) {
-        List<BUserMenu> list = menuService.getUserMenu(userID);
+        List<SysUserMenu> list = menuService.getUserMenu(userID);
         List<Long> menus = new ArrayList();
-        for (BUserMenu bm : list) {
+        for (SysUserMenu bm : list) {
             menus.add(bm.getMenuId());
         }
         request.setAttribute("userID", userID);
@@ -42,7 +41,7 @@ public class MenuController {
     @ResponseBody
     public String getTreeData(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
         //JSONObject res = new JSONObject();
-        List<BMenu> data = menuService.getData(new BMenuExample());
+        List<SysMenu> data = menuService.getData(new SysMenuExample());
 //        if(null==data){
 //            res.put("isError", true);
 //            res.put("Message", "获取数据失败");
@@ -57,9 +56,9 @@ public class MenuController {
     @RequestMapping("/getUserMenu")
     @ResponseBody
     public String getUserMenu(HttpServletRequest request, HttpServletResponse response, Long userID) {
-        List<BUserMenu> list = menuService.getUserMenu(userID);
+        List<SysUserMenu> list = menuService.getUserMenu(userID);
         List<Long> menus = new ArrayList();
-        for (BUserMenu bm : list) {
+        for (SysUserMenu bm : list) {
             menus.add(bm.getMenuId());
         }
         return org.apache.commons.lang.StringUtils.join(menus, ',');

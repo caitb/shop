@@ -1,9 +1,10 @@
 package com.masiis.shop.web.interceptors;
 
 
-import com.masiis.shop.dao.menu.BMenu;
-import com.masiis.shop.dao.menu.BMenuExample;
-import com.masiis.shop.dao.user.User;
+import com.masiis.shop.dao.menu.SysMenu;
+import com.masiis.shop.dao.user.SysUser;
+import com.masiis.shop.dao.usermenu.SysUserMenu;
+import com.masiis.shop.dao.usermenu.SysUserMenuExample;
 import com.masiis.shop.service.UserMenu.UserMenuService;
 import com.masiis.shop.service.menu.MenuService;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -41,15 +41,19 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
         }
 
         if(!flag){
-            User user = (User)request.getSession().getAttribute("user");
-            if(user == null){
+            SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
+            if(sysUser == null){
                 request.getRequestDispatcher("/user/login.shtml").forward(request, response);
                 flag = false;
             }else{
-                List<Long> menuIds = userMenuService.findMenuIdsByUserId(user.getId());
-                for(Long menuId : menuIds){
-                    BMenu bMenu = menuService.findById(menuId);
-                    if(bMenu.getUrl() != null && (url.contains("index") || url.contains(bMenu.getUrl())) ){
+                SysUserMenuExample sysUserMenuExample = new SysUserMenuExample();
+                sysUserMenuExample
+                        .createCriteria()
+                        .andUserIdEqualTo(sysUser.getId());
+                List<SysUserMenu> sysUserMenus = userMenuService.findByExample(sysUserMenuExample);
+                for(SysUserMenu sysUserMenu : sysUserMenus){
+                    SysMenu sysMenu = menuService.findById(sysUserMenu.getMenuId());
+                    if(sysMenu.getUrl() != null && (url.contains("index") || url.contains(sysMenu.getUrl())) ){
                         flag = true;
                         break;
                     }

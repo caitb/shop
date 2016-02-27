@@ -1,15 +1,14 @@
 package com.masiis.shop.service.menu;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import com.masiis.shop.dao.menu.*;
-import org.springframework.core.convert.converter.Converter;
+import com.masiis.shop.dao.usermenu.SysUserMenu;
+import com.masiis.shop.dao.usermenu.SysUserMenuExample;
+import com.masiis.shop.dao.usermenu.SysUserMenuMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by ZhaoLiang on 2016/2/18.
@@ -17,9 +16,9 @@ import java.util.Locale;
 @Service
 public class MenuService {
     @Resource
-    private BMenuMapper bMenuMapper;
+    private SysMenuMapper sysMenuMapper;
     @Resource
-    private BUserMenuMapper bUserMenuMapper;
+    private SysUserMenuMapper sysUserMenuMapper;
 
 
     /**
@@ -27,8 +26,8 @@ public class MenuService {
      * @param id
      * @return
      */
-    public BMenu findById(Long id){
-        return bMenuMapper.selectByPrimaryKey(id);
+    public SysMenu findById(Long id){
+        return sysMenuMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -37,8 +36,8 @@ public class MenuService {
      * @return
      * @throws JsonProcessingException
      */
-    public List<BMenu> getData(BMenuExample bMenuExample) throws JsonProcessingException {
-        return bMenuMapper.selectByExample(bMenuExample);
+    public List<SysMenu> getData(SysMenuExample sysMenuExample) throws JsonProcessingException {
+        return sysMenuMapper.selectByExample(sysMenuExample);
     }
 
     /**
@@ -47,10 +46,10 @@ public class MenuService {
      * @param userID
      * @return
      */
-    public List<BUserMenu> getUserMenu(Long userID) {
-        BUserMenuExample bme = new BUserMenuExample();
-        bme.createCriteria().andUserIdEqualTo(userID);
-        return bUserMenuMapper.selectByExample(bme);
+    public List<SysUserMenu> getUserMenu(Long userID) {
+        SysUserMenuExample sysUserMenuExample = new SysUserMenuExample();
+        sysUserMenuExample.createCriteria().andUserIdEqualTo(userID);
+        return sysUserMenuMapper.selectByExample(sysUserMenuExample);
     }
 
     /**
@@ -59,15 +58,15 @@ public class MenuService {
      * @return
      */
     public void updateUserMenu(Long userID, String[] menuIDs) {
-        BUserMenuExample bme = new BUserMenuExample();
-        bme.createCriteria().andUserIdEqualTo(userID);
-        int n = bUserMenuMapper.deleteByExample(bme);
-        BUserMenu bm = null;
+        SysUserMenuExample sysUserMenuExample = new SysUserMenuExample();
+        sysUserMenuExample.createCriteria().andUserIdEqualTo(userID);
+        int n = sysUserMenuMapper.deleteByExample(sysUserMenuExample);
+        SysUserMenu bm = null;
         for (String menuID : menuIDs) {
-            bm = new BUserMenu();
+            bm = new SysUserMenu();
             bm.setMenuId(Long.parseLong(menuID));
             bm.setUserId(userID);
-            bUserMenuMapper.insert(bm);
+            sysUserMenuMapper.insert(bm);
         }
     }
 }

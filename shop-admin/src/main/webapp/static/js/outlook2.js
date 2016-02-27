@@ -9,29 +9,39 @@ function InitLeftMenu() {
 
     $(".easyui-accordion").empty();
     var menulist = "";
-   
+	    menulist += '<div class="easyui-accordion" data-options="multiple:true" style="width:500px;height1:300px;">';
+
     $.each(_menus.menus, function(i, n) {
-		menulist += '<ul class="expmenu-freebie">';
-		menulist +=    '<li>';
-		menulist +=    '<!-- Start Freebie -->';
-		menulist +=       '<ul class="expmenu">';
-		menulist +=          '<li>';
-		menulist +=             '<div class="header">';
-		menulist +=                '<span class="label" style="background-image: url(/static/images/menu-icon/messages.png);">'+ n.menuname+'</span>';
-		menulist +=                '<span class="arrow up"></span>';
-		menulist +=             '</div>';
-		menulist +=             '<ul class="menu" style="display: none;">';
+		//menulist += '<ul class="expmenu-freebie">';
+		//menulist +=    '<li>';
+		//menulist +=    '<!-- Start Freebie -->';
+		//menulist +=       '<ul class="expmenu">';
+		//menulist +=          '<li>';
+		//menulist +=             '<div class="header">';
+		//menulist +=                '<span class="label" style="background-image: url(/static/images/menu-icon/messages.png);">'+ n.menuname+'</span>';
+		//menulist +=                '<span class="arrow up"></span>';
+		//menulist +=             '</div>';
+		//menulist +=             '<ul class="menu" style="display: none;">';
+        //
+		//$.each(n.menus, function(j, o) {
+		//	menulist += '<li><a  target="mainFrame" href="' + basePath + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a></li> ';
+		//});
+        //
+		//menulist +=             '</ul>';
+		//menulist +=           '</li>';
+		//menulist +=       '</ul>';
+		//menulist +=    '<!-- End Freebie -->';
+		//menulist +=    '</li>';
+		//menulist += '</ul>';
 
+		menulist += '<div title="' + n.menuname + '" style="overflow:auto;padding:10px;">';
+		menulist += '<ul>';
 		$.each(n.menus, function(j, o) {
-			menulist += '<li><a  target="mainFrame" href="' + basePath + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a></li> ';
+			menulist += '<li><a target="mainFrame" href="' + basePath + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a></li>';
 		});
-
-		menulist +=             '</ul>';
-		menulist +=           '</li>';
-		menulist +=       '</ul>';
-		menulist +=    '<!-- End Freebie -->';
-		menulist +=    '</li>';
 		menulist += '</ul>';
+		menulist += '</div>';
+
 
         //menulist += '<div title="'+n.menuname+'"  icon="'+n.icon+'" style="overflow:auto;">';
         //menulist += '<ul>';
@@ -40,11 +50,11 @@ function InitLeftMenu() {
         //});
         //menulist += '</ul></div>';
     });
+	menulist += '</div>';
 
 	$(".easyui-accordion").append(menulist);
-	//$(".easyui-accordion").append('<ul id="expmenu-freebie"><li><!-- Start Freebie --><ul class="expmenu"><li><div class="header"><span class="label" style="background-image: url(/static/images/menu-icon/messages.png);">Messages</span><span class="arrow up"></span></div><ul class="menu"><li>Notification Settings</li><li class="selected">Email Alerts</li><li>Privacy Settings</li></ul></li><li><div class="header"><span class="label" style="background-image: url(/static/images/menu-icon/user.png);">User Controls</span><span class="arrow up"></span></div><ul class="menu"><li><input type="range" name="range" min="0" max="100" value="35" style="width: 100%;" /></li></ul></li><li><div class="header"><span class="label" style="background-image: url(/static/images/menu-icon/pc.png);">Screen Settings</span><span class="arrow down"></span></div><ul class="menu" style="display:none"><li>Your settings</li></ul></li><li><div class="header"><span class="label" style="background-image: url(/static/images/menu-icon/search.png);">Search</span></div></li></ul><!-- End Freebie --></li></ul>');
 
-	$('.easyui-accordion li a').click(function(){
+	$('.easyui-accordion div a').click(function(){
 		var tabTitle = $(this).text();
 		var url = $(this).attr("href");
 		addTab(tabTitle,url);

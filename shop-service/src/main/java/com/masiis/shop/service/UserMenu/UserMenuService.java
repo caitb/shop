@@ -1,6 +1,8 @@
 package com.masiis.shop.service.UserMenu;
 
-import com.masiis.shop.dao.menu.BUserMenuMapper;
+import com.masiis.shop.dao.usermenu.SysUserMenu;
+import com.masiis.shop.dao.usermenu.SysUserMenuExample;
+import com.masiis.shop.dao.usermenu.SysUserMenuMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,9 +15,14 @@ import java.util.List;
 public class UserMenuService {
 
     @Resource
-    private BUserMenuMapper bUserMenuMapper;
+    private SysUserMenuMapper sysUserMenuMapper;
 
-    public List<Long> findMenuIdsByUserId(Long userId){
-        return bUserMenuMapper.findMenuIdsByUserId(userId);
+    /**
+     * 根据条件查询
+     * @param sysUserMenuExample
+     * @return
+     */
+    public List<SysUserMenu> findByExample(SysUserMenuExample sysUserMenuExample){
+        return sysUserMenuMapper.selectByExample(sysUserMenuExample);
     }
 }

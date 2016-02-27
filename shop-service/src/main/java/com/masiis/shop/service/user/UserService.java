@@ -1,7 +1,6 @@
 package com.masiis.shop.service.user;
 
-import com.masiis.shop.dao.user.User;
-import com.masiis.shop.dao.user.UserMapper;
+import com.masiis.shop.dao.user.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,26 +13,27 @@ import java.util.List;
 public class UserService {
 
     @Resource
-    private UserMapper userMapper;
+    private SysUserMapper sysUserMapper;
 
-    public User findById(Long id){
-        return this.userMapper.findById(id);
+    /**
+     * 根据条件查询sysUser
+     * @param sysUserExample
+     * @return
+     */
+    public List<SysUser> findByExample(SysUserExample sysUserExample){
+        return sysUserMapper.selectByExample(sysUserExample);
     }
 
-    public User findByUserNameAndPwd(String userName, String password){
-        return this.userMapper.findByUserNameAndPwd(userName, password);
+    /**
+     * 保存sysUser
+     * @param sysUser
+     */
+    public void addSysUser(SysUser sysUser){
+        sysUserMapper.insert(sysUser);
     }
 
-    public List<User> listUserByCondition(String userName, String phone){
-        return this.userMapper.listByCondition(userName, phone);
-    }
-
-    public void addUser(User user){
-        this.userMapper.add(user);
-    }
-
-    public void updateUser(User user){
-        this.userMapper.updateById(user);
+    public void updateSysUserById(SysUser sysUser){
+        sysUserMapper.updateByPrimaryKey(sysUser);
     }
 
 }

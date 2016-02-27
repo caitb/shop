@@ -1,4 +1,4 @@
-package com.masiis.shop.web.weixin.bean;
+package com.masiis.shop.web.common.beans;
 
 /**
  * Created by lzh on 2016/2/23.

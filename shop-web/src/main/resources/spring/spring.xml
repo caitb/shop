@@ -23,9 +23,7 @@
 		</property>
 	</bean>
 
-	<!--<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>-->
-
-	<context:component-scan base-package="com" >
+	<context:component-scan base-package="com.masiis.shop" >
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"  type="annotation" /> 
 	</context:component-scan>
 

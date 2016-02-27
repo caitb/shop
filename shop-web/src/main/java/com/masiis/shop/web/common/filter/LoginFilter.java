@@ -32,6 +32,11 @@ public class LoginFilter implements Filter{
 
         String uri = request.getRequestURI();
         System.out.println("uri:" + uri);
+
+        // 开发阶段可以先跳过
+        chain.doFilter(request, response);
+        return;
+        /*
         if((request.getContextPath() + "verify/actk").equals(uri)
                 || (request.getContextPath() + "verify/wxcheck").equals(uri)){
             // 放行
@@ -57,7 +62,7 @@ public class LoginFilter implements Filter{
         String reUrl = basepath + "verify/wxcheck?"
                 + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
 
-        response.sendRedirect(reUrl);
+        response.sendRedirect(reUrl);*/
     }
 
     @Override

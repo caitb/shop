@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Bootstrap表格插件 - Bootstrap后台管理系统模版Ace下载</title>
+    <title>麦士商城 - 后台管理系统</title>
     <meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文"/>
     <meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -399,13 +399,13 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
-                        <a href="#">Home</a>
+                        <a href="#">首页</a>
                     </li>
 
-                    <li>
-                        <a href="#">Tables</a>
-                    </li>
-                    <li class="active">Simple &amp; Dynamic</li>
+                    <%--<li>--%>
+                        <%--<a href="#">管理员管理</a>--%>
+                    <%--</li>--%>
+                    <%--<li class="active">管理员列表</li>--%>
                 </ul><!-- .breadcrumb -->
 
                 <div class="nav-search" id="nav-search">
@@ -420,15 +420,15 @@
             </div>
 
             <div class="page-content">
-                <div class="page-header">
-                    <h1>
-                        Tables
-                        <small>
-                            <i class="icon-double-angle-right"></i>
-                            Static &amp; Dynamic Tables
-                        </small>
-                    </h1>
-                </div><!-- /.page-header -->
+                <%--<div class="page-header">--%>
+                    <%--<h1>--%>
+                        <%--管理员管理--%>
+                        <%--<small>--%>
+                            <%--<i class="icon-double-angle-right"></i>--%>
+                            <%--管理员列表--%>
+                        <%--</small>--%>
+                    <%--</h1>--%>
+                <%--</div><!-- /.page-header -->--%>
 
                 <div class="row" id="main_content">
                     <!-- /.col -->

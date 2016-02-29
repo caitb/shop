@@ -47,12 +47,39 @@
 </head>
 
 <body>
+<!--模态窗口 提示 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <div class="navbar navbar-default" id="navbar">
     <script type="text/javascript">
         try {
             ace.settings.check('navbar', 'fixed')
         } catch (e) {
         }
+
+        /*$(function(){
+            $('#loginOut').click(function () {
+
+
+            })
+        })*/
     </script>
 
     <div class="navbar-container" id="navbar-container">
@@ -308,7 +335,7 @@
                         <li class="divider"></li>
 
                         <li>
-                            <a href="#">
+                            <a href="#" id="loginOut">
                                 <i class="icon-off"></i>
                                 退出
                             </a>

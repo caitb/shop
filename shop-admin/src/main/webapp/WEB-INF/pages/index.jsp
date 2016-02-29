@@ -527,6 +527,7 @@
 <!-- inline scripts related to this page -->
 
 <script type="text/javascript">
+    var pbMenus = window.eval('(' + '${pbMenus}' + ')') ;
     function createMenu(sMenu, level, data){
         sMenu += level==1 ? '<ul class="nav nav-list">' : '<ul class="submenu">';
         for(var i in data){

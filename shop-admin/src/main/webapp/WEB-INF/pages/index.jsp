@@ -283,8 +283,8 @@
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <img class="nav-user-photo" src="<%=basePath%>static/ace/avatars/user.jpg" alt="Jason's Photo"/>
 								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
+									<small>欢迎,</small>
+									${pbUser.userName}
 								</span>
 
                         <i class="icon-caret-down"></i>

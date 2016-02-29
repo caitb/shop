@@ -3,6 +3,7 @@ package com.masiis.shop.service;
 import com.masiis.shop.dao.pbuser.PbUser;
 import com.masiis.shop.dao.pbuser.PbUserExample;
 import com.masiis.shop.dao.pbuser.PbUserMapper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by cai_tb on 16/2/29.
  */
-
+@Service
 public class PbUserService {
 
     @Resource

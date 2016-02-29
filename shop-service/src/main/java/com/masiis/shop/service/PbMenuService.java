@@ -7,6 +7,7 @@ import com.masiis.shop.dao.pbmenu.PbMenuMapper;
 import com.masiis.shop.dao.pbusermenu.PbUserMenu;
 import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
 import com.masiis.shop.dao.pbusermenu.PbUserMenuMapper;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Created by cai_tb on 16/2/29.
  */
+@Service
 public class PbMenuService {
 
     @Resource

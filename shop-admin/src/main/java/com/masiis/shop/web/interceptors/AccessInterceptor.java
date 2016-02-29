@@ -1,12 +1,6 @@
 package com.masiis.shop.web.interceptors;
 
 
-import com.masiis.shop.dao.menu.SysMenu;
-import com.masiis.shop.dao.user.SysUser;
-import com.masiis.shop.dao.usermenu.SysUserMenu;
-import com.masiis.shop.dao.usermenu.SysUserMenuExample;
-import com.masiis.shop.service.UserMenu.UserMenuService;
-import com.masiis.shop.service.menu.MenuService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -20,51 +14,51 @@ import java.util.List;
  * Created by cai_tb on 16/2/23.
  */
 public class AccessInterceptor extends HandlerInterceptorAdapter {
-
-    private static final String[] IGNORE_URI = {"/login.shtml", "/login"};
-
-    @Resource
-    private MenuService menuService;
-    @Resource
-    private UserMenuService userMenuService;
-
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        boolean flag = false;
-        String  url  = request.getRequestURL().toString();
-
-        for (String s : IGNORE_URI) {
-            if (url.contains(s)) {
-                flag = true;
-                break;
-            }
-        }
-
-        if(!flag){
-            SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
-            if(sysUser == null){
-                request.getRequestDispatcher("/user/login.shtml").forward(request, response);
-                flag = false;
-            }else{
-                SysUserMenuExample sysUserMenuExample = new SysUserMenuExample();
-                sysUserMenuExample
-                        .createCriteria()
-                        .andUserIdEqualTo(sysUser.getId());
-                List<SysUserMenu> sysUserMenus = userMenuService.findByExample(sysUserMenuExample);
-                for(SysUserMenu sysUserMenu : sysUserMenus){
-                    SysMenu sysMenu = menuService.findById(sysUserMenu.getMenuId());
-                    if(sysMenu.getUrl() != null && (url.contains("index") || url.contains(sysMenu.getUrl())) ){
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return flag;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        super.postHandle(request, response, handler, modelAndView);
-    }
+//
+//    private static final String[] IGNORE_URI = {"/login.shtml", "/login"};
+//
+//    @Resource
+//    private MenuService menuService;
+//    @Resource
+//    private UserMenuService userMenuService;
+//
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        boolean flag = false;
+//        String  url  = request.getRequestURL().toString();
+//
+//        for (String s : IGNORE_URI) {
+//            if (url.contains(s)) {
+//                flag = true;
+//                break;
+//            }
+//        }
+//
+//        if(!flag){
+//            SysUser sysUser = (SysUser)request.getSession().getAttribute("user");
+//            if(sysUser == null){
+//                request.getRequestDispatcher("/user/login.shtml").forward(request, response);
+//                flag = false;
+//            }else{
+//                SysUserMenuExample sysUserMenuExample = new SysUserMenuExample();
+//                sysUserMenuExample
+//                        .createCriteria()
+//                        .andUserIdEqualTo(sysUser.getId());
+//                List<SysUserMenu> sysUserMenus = userMenuService.findByExample(sysUserMenuExample);
+//                for(SysUserMenu sysUserMenu : sysUserMenus){
+//                    SysMenu sysMenu = menuService.findById(sysUserMenu.getMenuId());
+//                    if(sysMenu.getUrl() != null && (url.contains("index") || url.contains(sysMenu.getUrl())) ){
+//                        flag = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        return flag;
+//    }
+//
+//    @Override
+//    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+//        super.postHandle(request, response, handler, modelAndView);
+//    }
 }

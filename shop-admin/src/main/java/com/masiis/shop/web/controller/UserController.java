@@ -83,7 +83,7 @@ public class UserController {
         /* 已登陆 */
         HttpSession session = request.getSession();
         if (!session.isNew() && session.getAttribute("user") != null) {
-            mav.setViewName("redirect:/main/index");
+            mav.setViewName("redirect:/main/index.shtml");
             return mav;
         }
 
@@ -113,7 +113,7 @@ public class UserController {
 
         //登陆成功
         session.setAttribute("user", sysUsers.get(0));
-        mav.setViewName("redirect:/main/index");
+        mav.setViewName("redirect:/main/index.shtml");
 
         return mav;
     }

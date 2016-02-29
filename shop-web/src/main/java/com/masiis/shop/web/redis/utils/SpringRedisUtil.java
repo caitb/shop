@@ -27,6 +27,18 @@ public class SpringRedisUtil {
         });
     }
 
+    public static void saveEx(final String key, Object value, final long expires) {
+
+        final byte[] vbytes = SerializeUtil.serialize(value);
+        redisTemplate.execute(new RedisCallback<Object>() {
+            public Object doInRedis(RedisConnection connection)
+                    throws DataAccessException {
+                connection.setEx(redisTemplate.getStringSerializer().serialize(key), expires, vbytes);
+                return null;
+            }
+        });
+    }
+
     public static <T> T get(final String key, Class<T> elementType) {
         return redisTemplate.execute(new RedisCallback<T>() {
             public T doInRedis(RedisConnection connection)

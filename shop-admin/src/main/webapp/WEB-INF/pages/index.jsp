@@ -60,7 +60,7 @@
             <a href="#" class="navbar-brand">
                 <small>
                     <i class="icon-leaf"></i>
-                    Ace Admin
+                    麦士商城 后台管理系统
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
@@ -294,14 +294,14 @@
                         <li>
                             <a href="#">
                                 <i class="icon-cog"></i>
-                                Settings
+                                设置
                             </a>
                         </li>
 
                         <li>
                             <a href="#">
                                 <i class="icon-user"></i>
-                                Profile
+                                个人资料
                             </a>
                         </li>
 
@@ -310,7 +310,7 @@
                         <li>
                             <a href="#">
                                 <i class="icon-off"></i>
-                                Logout
+                                退出
                             </a>
                         </li>
                     </ul>
@@ -586,10 +586,6 @@
         }
     });
 </script>
-<script type="text/javascript">
-    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe9e1d61340ff3d9495a8cca04ebdb49d' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<a href="http://www.iteblog.com">过往记忆</a>
+
 </body>
 </html>

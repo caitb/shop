@@ -20,32 +20,8 @@ public class UserController {
 
     @RequestMapping(value = "/login",produces = "text/json;charset=UTF-8")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser,
-                        String signature, String timestamp, String nonce, String echostr){
-        String token = "masiiswxtest09";
-        String[] arrs = {token, timestamp, nonce};
-        Arrays.sort(arrs);
-        String bigStr = arrs[0] + arrs[1] + arrs[2];
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        md.update(bigStr.getBytes());
-        byte[] messageDigest = md.digest();
-        StringBuffer hexString = new StringBuffer();
-        // 字节数组转换为 十六进制 数
-        for (int i = 0; i < messageDigest.length; i++) {
-            String shaHex = Integer.toHexString(messageDigest[i] & 0xFF).toLowerCase();
-            if (shaHex.length() < 2) {
-                hexString.append(0);
-            }
-            hexString.append(shaHex);
-        }
-        if(hexString.toString().equals(signature)){
-            return echostr;
-        }
-        return "fail";
+    public String login(HttpServletRequest request, HttpServletResponse response){
+
+        return "";
     }
 }

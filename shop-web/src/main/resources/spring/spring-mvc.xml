@@ -61,13 +61,13 @@
 	</mvc:annotation-driven>
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/page/" />
+		<property name="prefix" value="/WEB-INF/pages/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
 
 	<!-- Scans within the base package of the application for @Components to 
 		configure as beans -->
-	<context:component-scan base-package="com" >
+	<context:component-scan base-package="com.masiis.shop.web.controller" >
 		<context:exclude-filter expression="org.springframework.stereotype.Repository"  type="annotation" />
 		<context:exclude-filter expression="org.springframework.stereotype.Service"  type="annotation" />
 	</context:component-scan>

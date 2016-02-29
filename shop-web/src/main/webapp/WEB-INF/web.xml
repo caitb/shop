@@ -38,6 +38,15 @@
     </filter-mapping>
 
     <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.masiis.shop.web.common.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>DruidWebStatFilter</filter-name>
         <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
         <init-param>
@@ -110,16 +119,7 @@
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
-    
-    <filter>
-        <filter-name>loginFilter</filter-name>
-        <filter-class>com.masiis.shop.web.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>loginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

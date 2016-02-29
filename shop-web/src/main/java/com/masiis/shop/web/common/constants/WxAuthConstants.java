@@ -47,5 +47,9 @@ public class WxAuthConstants {
     /**
      * 刷新token
      */
-    public static final String URL_REFRESH_TOKEN = "";
+    public static final String URL_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
+    /**
+     * 刷新token的grant_type类型
+     */
+    public static final String GRANT_TYPE_RFTOKEN = "refresh_token";
 }

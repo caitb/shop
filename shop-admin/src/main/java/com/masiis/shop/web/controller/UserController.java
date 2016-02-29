@@ -92,7 +92,7 @@ public class UserController {
         //用户名或密码为空
         if (StringUtil.isEmpty(pbUser.getUserName()) || StringUtil.isEmpty(pbUser.getPassword())) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", pbUser);
+            mav.addObject("pbUser", pbUser);
             return mav;
         }
 
@@ -102,17 +102,17 @@ public class UserController {
                 .andUserNameEqualTo(pbUser.getUserName())
                 .andPasswordEqualTo(KeysUtil.md5Encrypt(pbUser.getPassword()));
 
-        List<PbUser> sysUsers = this.pbUserService.findByExample(sysUserExample);
+        List<PbUser> pbUsers = this.pbUserService.findByExample(sysUserExample);
 
         //用户名或密码不对
-        if (sysUsers == null || sysUsers.size() <= 0) {
+        if (pbUsers == null || pbUsers.size() <= 0) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", pbUser);
+            mav.addObject("pbUser", pbUser);
             return mav;
         }
 
         //登陆成功
-        session.setAttribute("user", sysUsers.get(0));
+        session.setAttribute("pbUser", pbUsers.get(0));
         mav.setViewName("redirect:/main/index.shtml");
 
         return mav;

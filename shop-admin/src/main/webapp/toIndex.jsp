@@ -7,11 +7,7 @@
 
 <html>
 <head>
-    <title>Title</title>
-    <link rel="stylesheet" href="<%=basePath%>static/class/jquery-easyui-1.4.4/themes/default/easyui.css" type="text/css" />
-
-    <script type="text/javascript" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="<%=basePath%>static/class/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+    <title>到首页</title>
 </head>
 <body>
 <%

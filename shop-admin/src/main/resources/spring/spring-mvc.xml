@@ -61,16 +61,16 @@
 	</mvc:annotation-driven>
 
 	<!-- 拦截器 -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<bean id="loginInterceptor" class="com.masiis.shop.web.interceptors.LoginInterceptor"/>
-		</mvc:interceptor>
+	<!--<mvc:interceptors>-->
 		<!--<mvc:interceptor>-->
 			<!--<mvc:mapping path="/**"/>-->
-			<!--<bean id="accessInterceptor" class="com.masiis.shop.web.interceptors.AccessInterceptor" />-->
+			<!--<bean id="loginInterceptor" class="com.masiis.shop.web.interceptors.LoginInterceptor"/>-->
 		<!--</mvc:interceptor>-->
-	</mvc:interceptors>
+		<!--&lt;!&ndash;<mvc:interceptor>&ndash;&gt;-->
+			<!--&lt;!&ndash;<mvc:mapping path="/**"/>&ndash;&gt;-->
+			<!--&lt;!&ndash;<bean id="accessInterceptor" class="com.masiis.shop.web.interceptors.AccessInterceptor" />&ndash;&gt;-->
+		<!--&lt;!&ndash;</mvc:interceptor>&ndash;&gt;-->
+	<!--</mvc:interceptors>-->
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/page/" />

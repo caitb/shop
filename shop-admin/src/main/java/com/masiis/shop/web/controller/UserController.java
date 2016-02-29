@@ -6,10 +6,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.util.KeysUtil;
-import com.masiis.shop.dao.user.SysUser;
-import com.masiis.shop.dao.user.SysUserExample;
-import com.masiis.shop.dao.user.SysUserExample.Criteria;
-import com.masiis.shop.service.user.UserService;
+import com.masiis.shop.dao.pbuser.PbUser;
+import com.masiis.shop.dao.pbuser.PbUserExample;
+import com.masiis.shop.service.PbUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +30,7 @@ import java.util.Map;
 public class UserController {
 
     @Resource
-    private UserService userService;
+    private PbUserService pbUserService;
 
     /**
      * 登陆页面
@@ -74,11 +73,11 @@ public class UserController {
      *
      * @param request
      * @param response
-     * @param sysUser     登陆参数
+     * @param pbUser     登陆参数
      * @return
      */
     @RequestMapping("/login")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser) throws JsonProcessingException {
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, PbUser pbUser) throws JsonProcessingException {
         ModelAndView mav = new ModelAndView();
 
         /* 已登陆 */
@@ -91,24 +90,24 @@ public class UserController {
         /* 未登陆 */
 
         //用户名或密码为空
-        if (StringUtil.isEmpty(sysUser.getUserName()) || StringUtil.isEmpty(sysUser.getPassword())) {
+        if (StringUtil.isEmpty(pbUser.getUserName()) || StringUtil.isEmpty(pbUser.getPassword())) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", sysUser);
+            mav.addObject("user", pbUser);
             return mav;
         }
 
-        SysUserExample sysUserExample = new SysUserExample();
+        PbUserExample sysUserExample = new PbUserExample();
         sysUserExample
                 .createCriteria()
-                .andUserNameEqualTo(sysUser.getUserName())
-                .andPasswordEqualTo(KeysUtil.md5Encrypt(sysUser.getPassword()));
+                .andUserNameEqualTo(pbUser.getUserName())
+                .andPasswordEqualTo(KeysUtil.md5Encrypt(pbUser.getPassword()));
 
-        List<SysUser> sysUsers = this.userService.findByExample(sysUserExample);
+        List<PbUser> sysUsers = this.pbUserService.findByExample(sysUserExample);
 
         //用户名或密码不对
         if (sysUsers == null || sysUsers.size() <= 0) {
             mav.setViewName("redirect:login.shtml");
-            mav.addObject("user", sysUser);
+            mav.addObject("user", pbUser);
             return mav;
         }
 
@@ -143,8 +142,8 @@ public class UserController {
         pageSize = pageSize == null ? 10 : pageSize;
 
         //添加查询条件
-        SysUserExample sysUserExample = new SysUserExample();
-        Criteria criteria = sysUserExample.createCriteria();
+        PbUserExample sysUserExample = new PbUserExample();
+        PbUserExample.Criteria criteria = sysUserExample.createCriteria();
         if (StringUtil.isNotEmpty(userName)){
             criteria.andUserNameEqualTo(userName);
         }
@@ -153,8 +152,8 @@ public class UserController {
         }
 
         PageHelper.startPage(pageNum, pageSize);
-        List<SysUser> sysUsers = this.userService.findByExample(sysUserExample);
-        PageInfo<SysUser> pageInfo = new PageInfo<>(sysUsers);
+        List<PbUser> sysUsers = this.pbUserService.findByExample(sysUserExample);
+        PageInfo<PbUser> pageInfo = new PageInfo<>(sysUsers);
 
         Map<String, Object> usersMap = new HashMap<>();
         usersMap.put("total", pageInfo.getTotal());
@@ -171,19 +170,19 @@ public class UserController {
      *
      * @param request
      * @param response
-     * @param sysUser     新添用户数据
+     * @param pbUser     新添用户数据
      */
     @RequestMapping("/add")
     @ResponseBody
-    public String add(HttpServletRequest request, HttpServletResponse response, SysUser sysUser) {
-        if (StringUtil.isNotEmpty(sysUser.getPassword())) {
-            sysUser.setPassword(KeysUtil.md5Encrypt(sysUser.getPassword()));
+    public String add(HttpServletRequest request, HttpServletResponse response, PbUser pbUser) {
+        if (StringUtil.isNotEmpty(pbUser.getPassword())) {
+            pbUser.setPassword(KeysUtil.md5Encrypt(pbUser.getPassword()));
         }
 
-        if (sysUser.getId() == null) {
-            this.userService.addSysUser(sysUser);
+        if (pbUser.getId() == null) {
+            this.pbUserService.add(pbUser);
         } else {
-            this.userService.updateSysUserById(sysUser);
+            this.pbUserService.updateByPrimaryKey(pbUser);
         }
 
         return "保存成功";

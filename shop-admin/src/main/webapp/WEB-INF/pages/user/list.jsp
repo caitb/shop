@@ -14,6 +14,7 @@
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js"></script>
+
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
 <!-- Latest compiled and minified Locales -->
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
@@ -24,6 +25,7 @@
 
         <div class="row">
             <div class="col-xs-12">
+
                 <div class="table-responsive">
                     <div id="toolbar">
                         <button id="remove" class="btn btn-danger" disabled>
@@ -159,13 +161,13 @@
 //                                        },
 //                                        footerFormatter: totalPriceFormatter
 //                                    },
-                                    {
-                                        //field: 'operate',
-                                        title: 'Item Operate',
-                                        align: 'center',
-                                        events: operateEvents,
-                                        formatter: operateFormatter
-                                    }
+                                        {
+                                            //field: 'operate',
+                                            title: '操作项',
+                                            align: 'center',
+                                            events: operateEvents,
+                                            formatter: operateFormatter
+                                        }
                                     ]
                                 ]
                             });
@@ -174,7 +176,8 @@
                                 $table.bootstrapTable('resetView');
                             }, 200);
                             $table.on('check.bs.table uncheck.bs.table ' +
-                                    'check-all.bs.table uncheck-all.bs.table', function () {alert('ooo: ');
+                                    'check-all.bs.table uncheck-all.bs.table', function () {
+                                alert('ooo: ');
                                 $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
 
                                 // save your data, here just save the current page
@@ -231,8 +234,8 @@
 
                         function operateFormatter(value, row, index) {
                             return [
-                                '<a class="like" href="javascript:void(0)" title="Like">',
-                                '<i class="glyphicon glyphicon-heart"></i>',
+                                '<a class="like" href="javascript:void(0)" title="Like">授权',
+                                //'<i class="glyphicon glyphicon-heart"></i>',
                                 '</a>  ',
                                 '<a class="remove" href="javascript:void(0)" title="Remove">',
                                 '<i class="glyphicon glyphicon-remove"></i>',
@@ -242,7 +245,20 @@
 
                         window.operateEvents = {
                             'click .like': function (e, value, row, index) {
-                                alert('You click like action, row: ' + JSON.stringify(row));
+                                //alert('You click like action, row: ' + JSON.stringify(row));
+                                $('#myModal .modal-body').empty();
+                                $.ajax({
+                                    url: '<%=basePath%>menu/treeMenu.shtml',
+                                    data: {userId: row.id},
+                                    success: function(data){
+                                        //alert(data);
+                                        $('#myModal .modal-body').html(data);
+                                    }
+                                });
+                                $('#myModal').modal({
+                                    show:true,
+                                    backdrop:true
+                                });
                             },
                             'click .remove': function (e, value, row, index) {
                                 console.log('删除: ' + row.id);
@@ -282,7 +298,8 @@
                                         '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'
                                     ],
                                     eachSeries = function (arr, iterator, callback) {
-                                        callback = callback || function () {};
+                                        callback = callback || function () {
+                                                };
                                         if (!arr.length) {
                                             return callback();
                                         }
@@ -291,7 +308,8 @@
                                             iterator(arr[completed], function (err) {
                                                 if (err) {
                                                     callback(err);
-                                                    callback = function () {};
+                                                    callback = function () {
+                                                    };
                                                 }
                                                 else {
                                                     completed += 1;
@@ -317,7 +335,7 @@
 
                             var done = false;
                             // Attach handlers for all browsers
-                            script.onload = script.onreadystatechange = function() {
+                            script.onload = script.onreadystatechange = function () {
                                 if (!done && (!this.readyState ||
                                         this.readyState == 'loaded' || this.readyState == 'complete')) {
                                     done = true;
@@ -343,3 +361,4 @@
 
     </div><!-- /.col -->
 </div>
+

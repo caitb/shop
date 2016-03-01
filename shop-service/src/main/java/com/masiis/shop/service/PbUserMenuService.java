@@ -41,4 +41,12 @@ public class PbUserMenuService {
     public void updateByExample(PbUserMenu pbUserMenu, PbUserMenuExample pbUserMenuExample){
         pbUserMenuMapper.updateByExample(pbUserMenu, pbUserMenuExample);
     }
+
+    /**
+     * 根据条件删除记录
+     * @param pbUserMenuExample
+     */
+    public void deleteByExample(PbUserMenuExample pbUserMenuExample){
+        pbUserMenuMapper.deleteByExample(pbUserMenuExample);
+    }
 }

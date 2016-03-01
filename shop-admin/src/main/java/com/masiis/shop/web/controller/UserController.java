@@ -8,10 +8,14 @@ import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.pbuser.PbUser;
 import com.masiis.shop.dao.pbuser.PbUserExample;
+import com.masiis.shop.dao.pbusermenu.PbUserMenu;
+import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
+import com.masiis.shop.service.PbUserMenuService;
 import com.masiis.shop.service.PbUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +37,8 @@ public class UserController {
 
     @Resource
     private PbUserService pbUserService;
+    @Resource
+    private PbUserMenuService pbUserMenuService;
 
     /**
      * 登陆页面
@@ -188,6 +195,37 @@ public class UserController {
         }
 
         return "保存成功";
+    }
+
+    /**
+     * 保存用户菜单权限信息
+     * @param request
+     * @param response
+     * @param userId
+     * @param pbMenuIds
+     * @return
+     */
+    @RequestMapping("/updateUserMenu.do")
+    @ResponseBody
+    public String updateUserMenu(HttpServletRequest request, HttpServletResponse response,
+                                 Long userId,
+                                 @RequestParam(value = "pbMenuIds[]") Long[] pbMenuIds){
+
+        PbUserMenuExample pbUserMenuExample = new PbUserMenuExample();
+        PbUserMenuExample.Criteria criteria = pbUserMenuExample.createCriteria();
+        criteria.andPbUserIdEqualTo(userId);
+        pbUserMenuService.deleteByExample(pbUserMenuExample);
+
+        PbUserMenu pbUserMenu = new PbUserMenu();
+        for(Long pbMenuId : pbMenuIds){
+            pbUserMenu.setPbUserId(userId);
+            pbUserMenu.setPbMenuId(pbMenuId);
+            pbUserMenu.setCreateTime(new Date());
+            pbUserMenu.setUpdateTime(new Date());
+            pbUserMenuService.add(pbUserMenu);
+        }
+
+        return "success";
     }
 
 }

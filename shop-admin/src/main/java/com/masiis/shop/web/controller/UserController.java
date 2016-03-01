@@ -127,6 +127,18 @@ public class UserController {
     }
 
     /**
+     * 退出
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("/loginOut.shtml")
+    public String loginOut(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("pbUser");
+        return "user/login";
+    }
+    /**
      * 条件分页查询用户数据
      * @param request
      * @param response

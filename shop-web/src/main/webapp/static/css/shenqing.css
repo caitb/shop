@@ -38,7 +38,7 @@ body .kang div {
   margin-left: 10px;
 }
 body .kang div h2 {
-  color: #F55D2E;
+  color: #FF5200;
   font-size: 15px;
   font-weight: 600;
 }
@@ -65,9 +65,10 @@ body .he h1 {
 }
 body main {
   width: 100%;
-  height: auto;
+  -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  position: relative;
 }
 body main .sec1 {
   width: 100%;
@@ -90,7 +91,7 @@ body main .sec1 div {
   -webkit-box-orient: vertical;
 }
 body main .sec1 div h2 {
-  color: #F55D2E;
+  color: #FF5200;
   font-size: 15px;
   font-weight: 600;
 }
@@ -116,7 +117,9 @@ body main .sec2 p {
   background: #F74A11;
 }
 body main .sec2 p a {
+  width: 100%;
   display: block;
   color: #FCFFFF;
   font-size: 15px;
+  text-align: center;
 }

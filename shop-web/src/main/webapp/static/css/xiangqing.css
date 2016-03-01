@@ -5,20 +5,26 @@ body {
   height: 100%;
   background: #F6F6F6;
   min-width: 320px;
-  overflow: auto;
 }
 a {
   -webkit-tap-highlight-color: transparent;
 }
-body .banner {
+body .wrap {
+  width: 100%;
+  -webkit-box-flex: 1;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 42px;
+}
+body .wrap .banner {
   width: 100%;
   margin-bottom: 5px;
 }
-body .banner img {
+body .wrap .banner img {
   display: block;
   width: 100%;
 }
-body .price {
+body .wrap .price {
   width: 100%;
   height: 44px;
   background: white;
@@ -27,25 +33,25 @@ body .price {
   -webkit-box-orient: vertical;
   -webkit-box-pack: center;
 }
-body .price p:nth-child(2) {
+body .wrap .price p:nth-child(2) {
   text-indent: 8px;
 }
-body .price p {
+body .wrap .price p {
   color: #787878;
   font-size: 13px;
   font-weight: 600;
   text-indent: 10px;
 }
-body .price p b {
+body .wrap .price p b {
   color: #FF7D54;
   font-size: 13px;
 }
-body .price p span {
+body .wrap .price p span {
   color: #A8A8A8;
   font-size: 12px;
   padding-left: 20px;
 }
-body .dlpople {
+body .wrap .dlpople {
   width: 100%;
   height: 38px;
   background: white;
@@ -53,35 +59,35 @@ body .dlpople {
   -webkit-box-pack: justify;
   -webkit-box-align: center;
 }
-body .dlpople p {
+body .wrap .dlpople p {
   text-indent: 10px;
   color: #666868;
   font-size: 14px;
 }
-body .dlpople p b {
+body .wrap .dlpople p b {
   color: #A0A0A0;
   font-size: 12px;
 }
-body .dlpople p span {
+body .wrap .dlpople p span {
   color: #FF7D56;
   font-size: 12px;
 }
-body .dlpople p:nth-child(2) {
+body .wrap .dlpople p:nth-child(2) {
   padding-right: 10px;
 }
-body nav {
+body .wrap nav {
   width: 100%;
   height: 80px;
   display: -webkit-box;
   background: white;
   margin-top: 5px;
 }
-body nav ul {
+body .wrap nav ul {
   width: 100%;
   height: 100%;
   display: -webkit-box;
 }
-body nav ul li {
+body .wrap nav ul li {
   width: 1px;
   -webkit-box-flex: 1;
   display: -webkit-box;
@@ -89,12 +95,12 @@ body nav ul li {
   -webkit-box-align: center;
   -webkit-box-pack: center;
 }
-body nav ul li h1 img {
+body .wrap nav ul li h1 img {
   display: block;
   width: 60%;
   margin: 0 auto;
 }
-body nav ul li span {
+body .wrap nav ul li span {
   display: block;
   text-align: center;
   margin-top: 4px;
@@ -102,7 +108,7 @@ body nav ul li span {
   font-size: 14px;
   font-weight: 600;
 }
-body .tuw {
+body .wrap .tuw {
   width: 100%;
   height: 30px;
   display: -webkit-box;
@@ -110,43 +116,42 @@ body .tuw {
   background: white;
   margin-top: 5px;
 }
-body .tuw h1 {
+body .wrap .tuw h1 {
   font-size: 14px;
   font-weight: 600;
   text-indent: 10px;
 }
-body main {
+body .wrap main {
   width: 100%;
-  height: 100%;
+  height: auto;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  padding-bottom: 4.2rem;
 }
-body main .sec1 {
+body .wrap main .sec1 {
   width: 100%;
   background: white;
   margin-top: 5px;
 }
-body main .sec1 img {
+body .wrap main .sec1 img {
   display: block;
   width: 100%;
 }
-body main .sec1 h2 {
+body .wrap main .sec1 h2 {
   color: #F5531F;
   font-size: 14px;
   margin-top: 5px;
   padding-left: 10px;
 }
-body main .sec1 p {
+body .wrap main .sec1 p {
   font-size: 12px;
   color: #999999;
   padding-left: 10px;
   margin-top: 2px;
 }
-body main .sec1 p:last-child {
+body .wrap main .sec1 p:last-child {
   padding-bottom: 5px;
 }
-body main .sec2 {
+body .wrap main .sec2 {
   width: 100%;
   height: 96px;
   background: white;
@@ -155,9 +160,8 @@ body main .sec2 {
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: end;
-  padding-bottom: 10px;
 }
-body main .sec2 p {
+body .wrap main .sec2 p {
   font-size: 12px;
   color: #ABABAB;
 }

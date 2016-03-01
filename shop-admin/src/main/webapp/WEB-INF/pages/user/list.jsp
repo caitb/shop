@@ -63,6 +63,18 @@
                             $table.bootstrapTable({
                                 //height: getHeight(),
                                 striped: true,
+                                rowStyle: function rowStyle(value, row, index) {
+                                    return {
+                                        classes: 'text-nowrap another-class',
+                                        css: {}
+                                    };
+                                },
+                                formatShowingRows: function(pageFrom, pageTo, totalRows){
+                                  return '当前显示 ' + pageFrom + " 到 " + pageTo + ', 总共 ' + totalRows;
+                                },
+                                formatRecordsPerPage: function(pageNumber){
+                                    return '每页显示' + pageNumber + '条数据';
+                                },
                                 columns: [
                                     [
                                         {

@@ -8,9 +8,14 @@ import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.pbuser.PbUser;
 import com.masiis.shop.dao.pbuser.PbUserExample;
+import com.masiis.shop.dao.pbusermenu.PbUserMenu;
+import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
+import com.masiis.shop.service.PbUserMenuService;
 import com.masiis.shop.service.PbUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +37,8 @@ public class UserController {
 
     @Resource
     private PbUserService pbUserService;
+    @Resource
+    private PbUserMenuService pbUserMenuService;
 
     /**
      * 登陆页面
@@ -53,7 +61,7 @@ public class UserController {
      */
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response) {
-        return "user/userList";
+        return "user/list";
     }
 
     /**
@@ -120,49 +128,50 @@ public class UserController {
 
     /**
      * 条件分页查询用户数据
-     *
      * @param request
      * @param response
-     * @param userName 用户名
-     * @param phone    电话号码
-     * @param pageNum  当前页
-     * @param pageSize 每页显示条数
+     * @param search
+     * @param sort
+     * @param order
+     * @param offset
+     * @param limit
      * @return
+     * @throws JsonProcessingException
      */
     @RequestMapping("/list")
     @ResponseBody
     public Object list(HttpServletRequest request, HttpServletResponse response,
-                       String userName,
-                       String phone,
-                       Integer pageNum,
-                       Integer pageSize
+                       String search,
+                       String sort,
+                       String order,
+                       Integer offset,
+                       Integer limit
     ) throws JsonProcessingException {
 
-        pageNum = pageNum == null ? 1 : pageNum;
-        pageSize = pageSize == null ? 10 : pageSize;
+        Map<String, Object> pbUsersMap = new HashMap<>();
 
-        //添加查询条件
-        PbUserExample sysUserExample = new PbUserExample();
-        PbUserExample.Criteria criteria = sysUserExample.createCriteria();
-        if (StringUtil.isNotEmpty(userName)){
-            criteria.andUserNameEqualTo(userName);
-        }
-        if(StringUtil.isNotEmpty(phone)){
-            criteria.andPhoneEqualTo(phone);
+
+        PbUserExample pbUserExample = new PbUserExample();
+        PbUserExample.Criteria criteria = pbUserExample.createCriteria();
+        if(StringUtils.isNotBlank(search)){
+            criteria.andUserNameLike(search);
         }
 
-        PageHelper.startPage(pageNum, pageSize);
-        List<PbUser> sysUsers = this.pbUserService.findByExample(sysUserExample);
-        PageInfo<PbUser> pageInfo = new PageInfo<>(sysUsers);
+        offset = offset==null ? 0 : offset;
+        limit  = limit ==null ? 0 : limit;
+        Integer pageNo = offset/10 + 1;
+        if(StringUtils.isNotBlank(sort)){
+            PageHelper.startPage(pageNo, limit, sort + " " + order);
+        }else{
+            PageHelper.startPage(pageNo, limit);
+        }
+        List<PbUser> pbUsers = pbUserService.findByExample(pbUserExample);
+        PageInfo<PbUser> pageInfo = new PageInfo<>(pbUsers);
 
-        Map<String, Object> usersMap = new HashMap<>();
-        usersMap.put("total", pageInfo.getTotal());
-        usersMap.put("rows", sysUsers);
+        pbUsersMap.put("total", pageInfo.getTotal());
+        pbUsersMap.put("rows", pbUsers);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(usersMap);
-
-        //return usersMap;
+        return pbUsersMap;
     }
 
     /**
@@ -186,6 +195,37 @@ public class UserController {
         }
 
         return "保存成功";
+    }
+
+    /**
+     * 保存用户菜单权限信息
+     * @param request
+     * @param response
+     * @param userId
+     * @param pbMenuIds
+     * @return
+     */
+    @RequestMapping("/updateUserMenu.do")
+    @ResponseBody
+    public String updateUserMenu(HttpServletRequest request, HttpServletResponse response,
+                                 Long userId,
+                                 @RequestParam(value = "pbMenuIds[]") Long[] pbMenuIds){
+
+        PbUserMenuExample pbUserMenuExample = new PbUserMenuExample();
+        PbUserMenuExample.Criteria criteria = pbUserMenuExample.createCriteria();
+        criteria.andPbUserIdEqualTo(userId);
+        pbUserMenuService.deleteByExample(pbUserMenuExample);
+
+        PbUserMenu pbUserMenu = new PbUserMenu();
+        for(Long pbMenuId : pbMenuIds){
+            pbUserMenu.setPbUserId(userId);
+            pbUserMenu.setPbMenuId(pbMenuId);
+            pbUserMenu.setCreateTime(new Date());
+            pbUserMenu.setUpdateTime(new Date());
+            pbUserMenuService.add(pbUserMenu);
+        }
+
+        return "success";
     }
 
 }

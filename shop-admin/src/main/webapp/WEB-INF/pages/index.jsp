@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Bootstrap表格插件 - Bootstrap后台管理系统模版Ace下载</title>
+    <title>麦士商城 - 后台管理系统</title>
     <meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文"/>
     <meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -34,6 +34,7 @@
     <![endif]-->
 
     <!-- inline styles related to this page -->
+
 
     <!-- ace settings handler -->
     <script src="<%=basePath%>static/ace/js/ace-extra.min.js"></script>
@@ -399,13 +400,13 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home home-icon"></i>
-                        <a href="#">Home</a>
+                        <a href="#">首页</a>
                     </li>
 
-                    <li>
-                        <a href="#">Tables</a>
-                    </li>
-                    <li class="active">Simple &amp; Dynamic</li>
+                    <%--<li>--%>
+                        <%--<a href="#">管理员管理</a>--%>
+                    <%--</li>--%>
+                    <%--<li class="active">管理员列表</li>--%>
                 </ul><!-- .breadcrumb -->
 
                 <div class="nav-search" id="nav-search">
@@ -420,15 +421,15 @@
             </div>
 
             <div class="page-content">
-                <div class="page-header">
-                    <h1>
-                        Tables
-                        <small>
-                            <i class="icon-double-angle-right"></i>
-                            Static &amp; Dynamic Tables
-                        </small>
-                    </h1>
-                </div><!-- /.page-header -->
+                <%--<div class="page-header">--%>
+                    <%--<h1>--%>
+                        <%--管理员管理--%>
+                        <%--<small>--%>
+                            <%--<i class="icon-double-angle-right"></i>--%>
+                            <%--管理员列表--%>
+                        <%--</small>--%>
+                    <%--</h1>--%>
+                <%--</div><!-- /.page-header -->--%>
 
                 <div class="row" id="main_content">
                     <!-- /.col -->
@@ -488,10 +489,39 @@
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="icon-double-angle-up icon-only bigger-110"></i>
     </a>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        授权列表
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    在这里添加一些文本
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSubmit">
+                        提交更改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
 </div><!-- /.main-container -->
 
 <!-- basic scripts -->
-
 
 <!--[if !IE]> -->
 
@@ -527,6 +557,7 @@
 <!-- inline scripts related to this page -->
 
 <script type="text/javascript">
+    var pbMenus = window.eval('(' + '${pbMenus}' + ')') ;
     function createMenu(sMenu, level, data){
         sMenu += level==1 ? '<ul class="nav nav-list">' : '<ul class="submenu">';
         for(var i in data){

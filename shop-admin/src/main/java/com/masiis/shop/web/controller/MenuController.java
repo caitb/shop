@@ -1,11 +1,18 @@
 package com.masiis.shop.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.dao.pbmenu.PbMenu;
+import com.masiis.shop.dao.pbmenu.PbMenuExample;
 import com.masiis.shop.dao.pbuser.PbUser;
+import com.masiis.shop.dao.pbusermenu.PbUserMenu;
+import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
 import com.masiis.shop.service.PbMenuService;
+import com.masiis.shop.service.PbUserMenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,17 +27,43 @@ import java.util.List;
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @Resource
     private PbMenuService pbMenuService;
+    @Resource
+    private PbUserMenuService pbUserMenuService;
 
     @RequestMapping("/menu.shtml")
     public String menu(){
         return "menu/menu";
     }
 
+    @RequestMapping("/treeMenu.shtml")
+    public ModelAndView treeMenu(HttpServletRequest request, HttpServletResponse response, Long userId) throws JsonProcessingException {
+
+        ModelAndView mav = new ModelAndView("menu/tree_menu");
+
+        List<PbMenu> pbMenus = pbMenuService.findByExample(new PbMenuExample());
+        String pbMenusJson = objectMapper.writeValueAsString(pbMenus);
+
+        PbUserMenuExample pbUserMenuExample = new PbUserMenuExample();
+        PbUserMenuExample.Criteria criteria = pbUserMenuExample.createCriteria();
+        criteria.andPbUserIdEqualTo(userId);
+        List<PbUserMenu> pbUserMenus = pbUserMenuService.findByExample(pbUserMenuExample);
+        String pbUserMenusJson = objectMapper.writeValueAsString(pbUserMenus);
+
+        mav.addObject("pbMenusJson", pbMenusJson);
+        mav.addObject("pbUserMenusJson", pbUserMenusJson);
+        mav.addObject("userId", userId);
+
+        return mav;
+    }
+
     @RequestMapping("/list.do")
     @ResponseBody
-    public Object list(HttpServletRequest request, HttpServletResponse response, Long userID) {
+    public Object list(HttpServletRequest request, HttpServletResponse response){
 
         HttpSession session = request.getSession();
         PbUser pbUser = (PbUser)session.getAttribute("pbUser");

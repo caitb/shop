@@ -8,4 +8,6 @@ public class SysConstants {
      * cookie的名称
      */
     public static final String COOKIE_WX_ID_NAME = "wx_usr_coo";
+
+    public static final String COOKIE_AES_KEY = "p^5iMmJz!5q=awMT";
 }

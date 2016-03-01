@@ -95,7 +95,7 @@
 
         <div class="navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="grey">
+                <li class="grey" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-tasks"></i>
                         <span class="badge badge-grey">4</span>
@@ -168,7 +168,7 @@
                     </ul>
                 </li>
 
-                <li class="purple">
+                <li class="purple" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-bell-alt icon-animated-bell"></i>
                         <span class="badge badge-important">8</span>
@@ -232,7 +232,7 @@
                     </ul>
                 </li>
 
-                <li class="green">
+                <li class="green" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-envelope icon-animated-vertical"></i>
                         <span class="badge badge-success">5</span>
@@ -309,7 +309,7 @@
 
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="<%=basePath%>static/ace/avatars/user.jpg" alt="Jason's Photo"/>
+                        <img class="nav-user-photo" style="display: none;" src="<%=basePath%>static/ace/avatars/user.jpg" alt="Jason's Photo"/>
 								<span class="user-info">
 									<small>欢迎,</small>
 									${pbUser.userName}
@@ -369,7 +369,7 @@
                 }
             </script>
 
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="display: none;">
                 <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
                     <button class="btn btn-success">
                         <i class="icon-signal"></i>
@@ -464,7 +464,7 @@
             </div><!-- /.page-content -->
         </div><!-- /.main-content -->
 
-        <div class="ace-settings-container" id="ace-settings-container">
+        <div class="ace-settings-container" id="ace-settings-container" style="display: none;">
             <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
                 <i class="icon-cog bigger-150"></i>
             </div>

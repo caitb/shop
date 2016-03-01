@@ -161,6 +161,8 @@ public class UserController {
         limit  = limit ==null ? 0 : limit;
         Integer pageNo = offset/10 + 1;
         if(StringUtils.isNotBlank(sort)){
+            if("userName".equals(sort)) sort = "user_name";
+            if("trueName".equals(sort)) sort = "true_name";
             PageHelper.startPage(pageNo, limit, sort + " " + order);
         }else{
             PageHelper.startPage(pageNo, limit);

@@ -29,7 +29,10 @@
                 <div class="table-responsive">
                     <div id="toolbar">
                         <button id="remove" class="btn btn-danger" disabled>
-                            <i class="glyphicon glyphicon-remove"></i> Delete
+                            <i class="glyphicon glyphicon-remove"></i> 删除
+                        </button>
+                        <button id="add" class="btn btn-primary" id="add">
+                            <i class="glyphicon glyphicon-add"></i> 添加
                         </button>
                     </div>
                     <table id="table"
@@ -37,12 +40,12 @@
                            data-search="true"
                            data-show-refresh="true"
                            data-show-toggle="true"
-                           data-show-columns="true"
-                           data-show-export="true"
+                           <%--data-show-columns="true"--%>
+                           <%--data-show-export="true"--%>
                            data-detail-view="true"
                            data-detail-formatter="detailFormatter"
                            data-minimum-count-columns="2"
-                           data-show-pagination-switch="true"
+                           <%--data-show-pagination-switch="true"--%>
                            data-pagination="true"
                            data-id-field="id"
                            data-page-list="[10, 25, 50, 100, ALL]"
@@ -59,6 +62,7 @@
                         function initTable() {
                             $table.bootstrapTable({
                                 //height: getHeight(),
+                                striped: true,
                                 columns: [
                                     [
                                         {
@@ -85,7 +89,7 @@
                                             field: 'userName',
                                             title: '用户名',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
@@ -93,23 +97,26 @@
                                             field: 'trueName',
                                             title: '姓名',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
                                         {
                                             field: 'password',
                                             title: '密码',
-                                            sortable: true,
-                                            editable: true,
+                                            //sortable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
+                                            formatter: function(value, row, index){
+                                                return '******';
+                                            },
                                             align: 'center'
                                         },
                                         {
                                             field: 'email',
                                             title: '邮箱',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
@@ -117,7 +124,7 @@
                                             field: 'sex',
                                             title: '性别',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
@@ -125,7 +132,7 @@
                                             field: 'age',
                                             title: '年龄',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
@@ -133,7 +140,7 @@
                                             field: 'phone',
                                             title: '电话',
                                             sortable: true,
-                                            editable: true,
+                                            //editable: true,
                                             footerFormatter: totalNameFormatter,
                                             align: 'center'
                                         },
@@ -177,7 +184,6 @@
                             }, 200);
                             $table.on('check.bs.table uncheck.bs.table ' +
                                     'check-all.bs.table uncheck-all.bs.table', function () {
-                                alert('ooo: ');
                                 $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
 
                                 // save your data, here just save the current page
@@ -187,7 +193,7 @@
                             $table.on('expand-row.bs.table', function (e, index, row, $detail) {
                                 if (index % 2 == 1) {
                                     $detail.html('Loading from ajax request...');
-                                    $.get('/item/json', function (res) {
+                                    $.get('/user/list.do', function (res) {
                                         $detail.html(res.replace(/\n/g, '<br>'));
                                     });
                                 }
@@ -234,11 +240,11 @@
 
                         function operateFormatter(value, row, index) {
                             return [
-                                '<a class="like" href="javascript:void(0)" title="Like">授权',
+                                '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权',
                                 //'<i class="glyphicon glyphicon-heart"></i>',
                                 '</a>  ',
-                                '<a class="remove" href="javascript:void(0)" title="Remove">',
-                                '<i class="glyphicon glyphicon-remove"></i>',
+                                '<a class="remove" href="javascript:void(0)" title="Remove">冻结',
+                                //'<i class="glyphicon glyphicon-remove"></i>',
                                 '</a>'
                             ].join('');
                         }
@@ -352,6 +358,28 @@
                             // We handle everything using the script element injection
                             return undefined;
                         }
+
+                        $('#add').on('click', function(){
+                            $('#addModalLabel').html('添加管理员');
+                            $('#addModal').modal({
+                                show:true,
+                                backdrop:true
+                            });
+                        });
+                        $('#addSubmit').on('click', function(){
+                            $.ajax({
+                                url: '<%=basePath%>user/add.do',
+                                type: 'post',
+                                data: $('#userForm').serialize(),
+                                success: function(data){
+                                    alert(data);
+                                    $('#addModal').modal({
+                                        show:false,
+                                        backdrop:false
+                                    });
+                                }
+                            });
+                        });
                     </script>
 
 

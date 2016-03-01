@@ -36,9 +36,11 @@ public class LoginFilter implements Filter{
         // 开发阶段可以先跳过
         chain.doFilter(request, response);
         return;
-        /*
-        if((request.getContextPath() + "verify/actk").equals(uri)
-                || (request.getContextPath() + "verify/wxcheck").equals(uri)){
+
+        // 过滤静态资源,以及一些放行的路径
+        /*if(uri.startsWith(request.getContextPath() + "/static/")
+                ||(request.getContextPath() + "/verify/actk").equals(uri)
+                || (request.getContextPath() + "/verify/wxcheck").equals(uri)){
             // 放行
             chain.doFilter(request, response);
             return;
@@ -59,10 +61,10 @@ public class LoginFilter implements Filter{
         rp.creatSign();
 
         String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
-        String reUrl = basepath + "verify/wxcheck?"
+        String reUrl = request.getContextPath() + "/verify/wxcheck?"
                 + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
 
-        response.sendRedirect(reUrl);*/
+        request.getRequestDispatcher(reUrl).forward(request, response);*/
     }
 
     @Override

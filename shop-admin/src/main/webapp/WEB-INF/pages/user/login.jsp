@@ -295,10 +295,7 @@
         jQuery('#'+id).addClass('visible');
     }
 </script>
-<script type="text/javascript">
-    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe9e1d61340ff3d9495a8cca04ebdb49d' type='text/javascript'%3E%3C/script%3E"));
-</script>
+
 <script>
     function submit(){
         $('#loginForm').submit();

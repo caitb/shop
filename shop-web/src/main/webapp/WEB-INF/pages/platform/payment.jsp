@@ -25,7 +25,7 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="<%=path%>/pages/platform/Registration-T.jsp"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="<%=path%>/lo/registration-T"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>申请合伙人</p>
 </header>
 <main>

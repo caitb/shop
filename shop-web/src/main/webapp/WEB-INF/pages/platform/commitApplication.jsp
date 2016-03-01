@@ -26,7 +26,7 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="<%=path%>/pages/platform/index.jsp"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="<%=path%>/lo/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>授权书申请 </p>
 </header>
 <p class="cp" style="margin-top:10px;">

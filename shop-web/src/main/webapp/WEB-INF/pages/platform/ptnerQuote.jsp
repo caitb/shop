@@ -1,3 +1,5 @@
+<%-- 申请合伙人 --%>
+
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -23,7 +25,7 @@
     </header>
     <div class="kang">
         <p class="photo">
-            <a href="<%=path%>/pages/platform/details.jsp">
+            <a href="<%=path%>/lo/detail">
                 <img src="<%=path%>/static/images/shenqing_1.png" alt="">
             </a>
         </p>

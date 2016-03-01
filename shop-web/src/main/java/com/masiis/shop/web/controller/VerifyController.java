@@ -1,6 +1,7 @@
 package com.masiis.shop.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.CookieUtils;
 import com.masiis.shop.common.util.HttpClientUtils;
@@ -32,7 +33,7 @@ import java.net.URLEncoder;
  */
 @Controller
 @RequestMapping("/verify")
-public class VerifyController {
+public class VerifyController extends BaseController{
     private Logger log = Logger.getLogger(this.getClass());
 
     @RequestMapping("/actk")
@@ -42,33 +43,41 @@ public class VerifyController {
             request.setAttribute("state", state);
             return "";
         }
+
         if(StringUtils.isBlank(state)){
             return "";
         }
+
+        // 解析state,并验证有效性
+        RedirectParam rp = null;
+        try{
+            rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
+        } catch (Exception e) {
+            log.error("json解析错误:" + e.getMessage());
+            rp = null;
+        }
         // 获取access_token
         System.out.println("开始获取access_token...");
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
-                        + "appid=wx7c874d5a102dccef&"
-                        + "secret=67f21b9a5df948c9dbf203393d8fb1a1&"
-                        + "code=" + code + "&"
-                        + "grant_type=authorization_code";
+        String url = WxAuthConstants.URL_GET_ACCESS_TOKEN
+                        + "?appid=" + WxAuthConstants.APPID
+                        + "&secret=" + WxAuthConstants.APPSECRET
+                        + "&code=" + code
+                        + "&grant_type=" + WxAuthConstants.GRANT_TYPE_ACCESSTOKEN;
         String result = HttpClientUtils.httpGet(url);
         System.out.println("result:" + result);
-        AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
         ErrorRes resErr = JSONObject.parseObject(result, ErrorRes.class);
         if(StringUtils.isBlank(resErr.getErrcode())){
+            AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
             // 登录
             request.getSession().setAttribute("login", "login");
             try {
-                return "redirect:" + URLDecoder.decode(state, "UTF-8");
+                return createRedirectRes(URLDecoder.decode(state, "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 return "index";
             }
-        }else{
-            // 请求失败
-
         }
+        // 请求失败
 
         return "redirect:/";
     }
@@ -117,7 +126,7 @@ public class VerifyController {
                 String result = HttpClientUtils.httpGet(checkTokenUrl);
                 ErrorRes resBean = JSONObject.parseObject(result, ErrorRes.class);
                 if (resBean != null && "0".equals(resBean.getErrcode())) {
-                    // token仍有效,跳转目标链接
+                    // token仍有效,进行登录操作,并跳转目标链接
                     return "redirect:" + rp.getSurl();
                 } else if (resBean != null
                         && (WxResCodeCons.ACCESS_TOKEN_INVALID.equals(resBean.getErrcode())
@@ -140,7 +149,7 @@ public class VerifyController {
                     // 刷新token成功,授权继续,此处保存access_token,refreshtoken和openid;
 
                     // 跳转目标页面;
-                    return "redirect:" + rp.getSurl();
+                    return createRedirectRes(rp.getSurl());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());

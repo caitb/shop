@@ -52,4 +52,6 @@ public class WxAuthConstants {
      * 刷新token的grant_type类型
      */
     public static final String GRANT_TYPE_RFTOKEN = "refresh_token";
+
+    public static final String GRANT_TYPE_ACCESSTOKEN = "authorization_code";
 }

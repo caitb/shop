@@ -32,4 +32,12 @@ public class BaseController {
         }
         return ip;
     }
+
+    protected String createRedirectRes(String uri){
+        return "redirect:" + uri;
+    }
+
+    protected String createForwardRes(String uri){
+        return "forward:" + uri;
+    }
 }

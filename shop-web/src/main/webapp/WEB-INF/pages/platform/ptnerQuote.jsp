@@ -23,7 +23,7 @@
     </header>
     <div class="kang">
         <p class="photo">
-            <a href="<%=path%>/static/html/xiangqing.html">
+            <a href="<%=path%>/pages/platform/details.jsp">
                 <img src="<%=path%>/static/images/shenqing_1.png" alt="">
             </a>
         </p>

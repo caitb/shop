@@ -1,8 +1,8 @@
 package com.masiis.shop.service;
 
-import com.masiis.shop.dao.pbusermenu.PbUserMenu;
-import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
-import com.masiis.shop.dao.pbusermenu.PbUserMenuMapper;
+import com.masiis.shop.dao.PbUserMenu;
+import com.masiis.shop.dao.PbUserMenuExample;
+import com.masiis.shop.dao.PbUserMenuMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

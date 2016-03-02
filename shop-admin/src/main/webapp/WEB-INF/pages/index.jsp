@@ -16,6 +16,7 @@
 
     <!-- basic styles -->
     <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css" rel="stylesheet"/>
     <link href="<%=basePath%>static/ace/css/font-awesome.min.css" rel="stylesheet"/>
 
     <!--[if IE 7]>

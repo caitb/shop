@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.domain.product;
+package com.masiis.shop.web.platform.beans.product;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.

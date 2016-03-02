@@ -8,8 +8,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
     <title>麦士商城 - 后台管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文"/>
     <meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -95,7 +95,7 @@
 
         <div class="navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="grey">
+                <li class="grey" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-tasks"></i>
                         <span class="badge badge-grey">4</span>
@@ -168,7 +168,7 @@
                     </ul>
                 </li>
 
-                <li class="purple">
+                <li class="purple" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-bell-alt icon-animated-bell"></i>
                         <span class="badge badge-important">8</span>
@@ -232,7 +232,7 @@
                     </ul>
                 </li>
 
-                <li class="green">
+                <li class="green" style="display:none;">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <i class="icon-envelope icon-animated-vertical"></i>
                         <span class="badge badge-success">5</span>
@@ -309,7 +309,7 @@
 
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="<%=basePath%>static/ace/avatars/user.jpg" alt="Jason's Photo"/>
+                        <img class="nav-user-photo" style="display: none;" src="<%=basePath%>static/ace/avatars/user.jpg" alt="Jason's Photo"/>
 								<span class="user-info">
 									<small>欢迎,</small>
 									${pbUser.userName}
@@ -369,7 +369,7 @@
                 }
             </script>
 
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="display: none;">
                 <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
                     <button class="btn btn-success">
                         <i class="icon-signal"></i>
@@ -436,7 +436,7 @@
                     <%--<li class="active">管理员列表</li>--%>
                 </ul><!-- .breadcrumb -->
 
-                <div class="nav-search" id="nav-search">
+                <div class="nav-search" id="nav-search" style="display: none;">
                     <form class="form-search">
 								<span class="input-icon">
 									<input type="text" placeholder="Search ..." class="nav-search-input"
@@ -464,7 +464,7 @@
             </div><!-- /.page-content -->
         </div><!-- /.main-content -->
 
-        <div class="ace-settings-container" id="ace-settings-container">
+        <div class="ace-settings-container" id="ace-settings-container" style="display: none;">
             <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
                 <i class="icon-cog bigger-150"></i>
             </div>
@@ -539,6 +539,78 @@
                             data-dismiss="modal">关闭
                     </button>
                     <button type="button" class="btn btn-primary" id="btnSubmit">
+                        提交更改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="addModalLabel">
+                        模态框标题
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="userForm" action="<%=basePath%>user/add.do" method="post">
+                        <div class="form-group">
+                            <label for="userName" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="userName" name="userName" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="trueName" class="col-sm-2 control-label">姓名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="trueName" name="trueName" placeholder="姓名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex" class="col-sm-2 control-label">性别</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">年龄</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-2 control-label">电话</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="电话">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="addSubmit">
                         提交更改
                     </button>
                 </div>

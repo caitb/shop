@@ -27,7 +27,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
         if (!flag) {
             HttpSession session = request.getSession();
-            if (session.isNew() || session.getAttribute("user") == null){
+            if (session.isNew() || session.getAttribute("pbUser") == null){
                 request.getRequestDispatcher("/user/login.shtml").forward(request, response);
             }else{
                 flag = true;

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.ComSkuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.ComSku" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="price_cost" property="priceCost" jdbcType="DECIMAL" />
+        <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
+        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id, name, spu_id, create_time, create_man, modify_time, modify_man, bar_code, price_cost, 
+        price_market, price_retail, remark
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.ComSkuExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from com_sku
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="countByExample" parameterType="com.masiis.shop.dao.ComSkuExample" resultType="java.lang.Integer" >
+        select count(*) from com_sku
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update com_sku
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.spuId != null" >
+                spu_id = #{record.spuId,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createMan != null" >
+                create_man = #{record.createMan,jdbcType=BIGINT},
+            </if>
+            <if test="record.modifyTime != null" >
+                modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.modifyMan != null" >
+                modify_man = #{record.modifyMan,jdbcType=BIGINT},
+            </if>
+            <if test="record.barCode != null" >
+                bar_code = #{record.barCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.priceCost != null" >
+                price_cost = #{record.priceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="record.priceMarket != null" >
+                price_market = #{record.priceMarket,jdbcType=DECIMAL},
+            </if>
+            <if test="record.priceRetail != null" >
+                price_retail = #{record.priceRetail,jdbcType=DECIMAL},
+            </if>
+            <if test="record.remark != null" >
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update com_sku
+        set id = #{record.id,jdbcType=INTEGER},
+            name = #{record.name,jdbcType=VARCHAR},
+            spu_id = #{record.spuId,jdbcType=INTEGER},
+            create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            create_man = #{record.createMan,jdbcType=BIGINT},
+            modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{record.modifyMan,jdbcType=BIGINT},
+            bar_code = #{record.barCode,jdbcType=VARCHAR},
+            price_cost = #{record.priceCost,jdbcType=DECIMAL},
+            price_market = #{record.priceMarket,jdbcType=DECIMAL},
+            price_retail = #{record.priceRetail,jdbcType=DECIMAL},
+            remark = #{record.remark,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.ComSku" >
+        update com_sku
+        <set >
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="spuId != null" >
+                spu_id = #{spuId,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null" >
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null" >
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyMan != null" >
+                modify_man = #{modifyMan,jdbcType=BIGINT},
+            </if>
+            <if test="barCode != null" >
+                bar_code = #{barCode,jdbcType=VARCHAR},
+            </if>
+            <if test="priceCost != null" >
+                price_cost = #{priceCost,jdbcType=DECIMAL},
+            </if>
+            <if test="priceMarket != null" >
+                price_market = #{priceMarket,jdbcType=DECIMAL},
+            </if>
+            <if test="priceRetail != null" >
+                price_retail = #{priceRetail,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.ComSkuExample" >
+        delete from com_sku
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+</mapper>

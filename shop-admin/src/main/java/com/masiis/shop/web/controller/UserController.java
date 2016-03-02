@@ -166,13 +166,15 @@ public class UserController {
         PbUserExample pbUserExample = new PbUserExample();
         PbUserExample.Criteria criteria = pbUserExample.createCriteria();
         if(StringUtils.isNotBlank(search)){
-            criteria.andUserNameLike(search);
+            criteria.andUserNameLike("%" + search + "%");
         }
 
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 0 : limit;
         Integer pageNo = offset/10 + 1;
         if(StringUtils.isNotBlank(sort)){
+            if("userName".equals(sort)) sort = "user_name";
+            if("trueName".equals(sort)) sort = "true_name";
             PageHelper.startPage(pageNo, limit, sort + " " + order);
         }else{
             PageHelper.startPage(pageNo, limit);
@@ -184,6 +186,20 @@ public class UserController {
         pbUsersMap.put("rows", pbUsers);
 
         return pbUsersMap;
+    }
+
+    @RequestMapping("/load.shtml")
+    public ModelAndView load(HttpServletRequest request, HttpServletResponse response, Long id){
+        ModelAndView mav = new ModelAndView("user/edit");
+
+        PbUser pbUser = null;
+        if(id != null){
+            pbUser = pbUserService.findByPrimaryKey(id);
+        }
+
+        mav.addObject("pbUser", pbUser);
+
+        return mav;
     }
 
     /**

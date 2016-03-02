@@ -27,13 +27,13 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="<%=path%>/pages/platform/details.jsp"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="<%=path%>/lo/detail"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>申请试用</p>
 </header>
 <main>
     <section class="sec2">
         <p class="photo">
-            <a href="<%=path%>/pages/platform/details.jsp">
+            <a href="<%=path%>/lo/detail">
                 <img src="<%=path%>/static/images/shenqing_1.png" alt="">
             </a>
         </p>

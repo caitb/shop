@@ -3,8 +3,8 @@ package com.masiis.shop.admin.controller.system;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.dao.PbMenu;
-import com.masiis.shop.dao.PbUser;
+import com.masiis.shop.dao.generate.PbMenu;
+import com.masiis.shop.dao.generate.PbUser;
 import com.masiis.shop.admin.service.system.PbMenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

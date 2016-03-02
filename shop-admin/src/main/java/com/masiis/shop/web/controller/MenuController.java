@@ -2,11 +2,7 @@ package com.masiis.shop.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.dao.pbmenu.PbMenu;
-import com.masiis.shop.dao.pbmenu.PbMenuExample;
-import com.masiis.shop.dao.pbuser.PbUser;
-import com.masiis.shop.dao.pbusermenu.PbUserMenu;
-import com.masiis.shop.dao.pbusermenu.PbUserMenuExample;
+import com.masiis.shop.dao.*;
 import com.masiis.shop.service.PbMenuService;
 import com.masiis.shop.service.PbUserMenuService;
 import org.springframework.stereotype.Controller;

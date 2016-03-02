@@ -60,7 +60,6 @@
             <input type="text" id="age" name="age" value="${pbUser.age}" class="col-xs-10 col-sm-5" />
         </div>
     </div>
-
     <div class="space-4"></div>
 
     <div class="form-group">
@@ -70,7 +69,18 @@
             <input type="text" id="phone" name="phone" value="${pbUser.phone}" class="col-xs-10 col-sm-5" />
         </div>
     </div>
-
     <div class="space-4"></div>
+
+    <div class="form-group">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-3">
+            <a href="http://www.bootcss.com/" class="button button-glow button-rounded button-raised button-primary">取消</a>
+        </div>
+
+        <div class="col-sm-3">
+            <a href="http://www.bootcss.com/" class="button button-glow button-rounded button-raised button-primary">保存</a>
+        </div>
+        <div class="col-sm-6"></div>
+    </div>
 
 </form>

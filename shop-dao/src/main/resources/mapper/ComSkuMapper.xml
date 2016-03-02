@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.generate.ComSkuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.ComSku" >
+<mapper namespace="com.masiis.shop.dao.po.ComSkuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSku" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
@@ -81,7 +81,7 @@
         price_market, price_retail, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.ComSkuExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComSkuExample" >
         select
         <if test="distinct" >
             distinct
@@ -96,7 +96,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.ComSkuExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComSkuExample" resultType="java.lang.Integer" >
         select count(*) from com_sku
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -167,7 +167,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.ComSku" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComSku" >
         update com_sku
         <set >
             <if test="name != null" >
@@ -207,7 +207,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.ComSkuExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComSkuExample" >
         delete from com_sku
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

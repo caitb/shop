@@ -29,7 +29,7 @@ public class LoginFilter implements Filter{
         System.out.println("uri:" + uri);
 
         // 开发阶段可以先跳过
-        chain.doFilter(request, response);
+        //hain.doFilter(request, response);
         return;
 
         // 过滤静态资源,以及一些放行的路径

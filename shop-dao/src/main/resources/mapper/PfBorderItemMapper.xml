@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.generate.PfBorderItemMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.PfBorderItem" >
+<mapper namespace="com.masiis.shop.dao.po.PfBorderItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderItem" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
@@ -81,7 +81,7 @@
         is_comment, is_return, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.PfBorderItemExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfBorderItemExample" >
         select
         <if test="distinct" >
             distinct
@@ -96,7 +96,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.PfBorderItemExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.po.PfBorderItemExample" resultType="java.lang.Integer" >
         select count(*) from pf_border_item
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -167,7 +167,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.PfBorderItem" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
         update pf_border_item
         <set >
             <if test="createTime != null" >
@@ -207,7 +207,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.PfBorderItemExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.PfBorderItemExample" >
         delete from pf_border_item
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

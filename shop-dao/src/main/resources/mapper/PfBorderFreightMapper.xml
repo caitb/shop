@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.generate.PfBorderFreightMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.PfBorderFreight" >
+<mapper namespace="com.masiis.shop.dao.po.PfBorderFreightMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderFreight" >
         <result column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT" />
@@ -74,7 +74,7 @@
         id, create_time, pf_corder_id, ship_man_id, ship_man_name, freight
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.PfBorderFreightExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfBorderFreightExample" >
         select
         <if test="distinct" >
             distinct
@@ -89,7 +89,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.PfBorderFreightExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.po.PfBorderFreightExample" resultType="java.lang.Integer" >
         select count(*) from pf_border_freight
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -136,7 +136,7 @@
         </if>
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.PfBorderFreightExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.PfBorderFreightExample" >
         delete from pf_border_freight
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

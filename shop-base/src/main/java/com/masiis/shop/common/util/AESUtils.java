@@ -17,7 +17,7 @@ import javax.crypto.spec.SecretKeySpec;
  * Created by lzh on 2016/3/1.
  */
 public class AESUtils {
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         String content = "test";
         String password = "masiis";
         //加密
@@ -27,7 +27,7 @@ public class AESUtils {
         //解密
         String decryptResult = decrypt(encryptResult,password);
         System.out.println("解密后：" + new String(decryptResult));
-    }*/
+    }
 
     /**
      * 加密

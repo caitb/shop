@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.ComAreaMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.ComArea" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="name_en" property="nameEn" jdbcType="VARCHAR" />
+        <result column="shortname_en" property="shortnameEn" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id, create_time, create_man, code, name, pid, level, name_en, shortname_en, sort, 
+        remark
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.ComAreaExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from com_area
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="countByExample" parameterType="com.masiis.shop.dao.ComAreaExample" resultType="java.lang.Integer" >
+        select count(*) from com_area
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update com_area
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createMan != null" >
+                create_man = #{record.createMan,jdbcType=BIGINT},
+            </if>
+            <if test="record.code != null" >
+                code = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pid != null" >
+                pid = #{record.pid,jdbcType=INTEGER},
+            </if>
+            <if test="record.level != null" >
+                level = #{record.level,jdbcType=INTEGER},
+            </if>
+            <if test="record.nameEn != null" >
+                name_en = #{record.nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="record.shortnameEn != null" >
+                shortname_en = #{record.shortnameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sort != null" >
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.remark != null" >
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update com_area
+        set id = #{record.id,jdbcType=INTEGER},
+            create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            create_man = #{record.createMan,jdbcType=BIGINT},
+            code = #{record.code,jdbcType=VARCHAR},
+            name = #{record.name,jdbcType=VARCHAR},
+            pid = #{record.pid,jdbcType=INTEGER},
+            level = #{record.level,jdbcType=INTEGER},
+            name_en = #{record.nameEn,jdbcType=VARCHAR},
+            shortname_en = #{record.shortnameEn,jdbcType=VARCHAR},
+            sort = #{record.sort,jdbcType=INTEGER},
+            remark = #{record.remark,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.ComArea" >
+        update com_area
+        <set >
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null" >
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null" >
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="level != null" >
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="nameEn != null" >
+                name_en = #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="shortnameEn != null" >
+                shortname_en = #{shortnameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null" >
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.ComAreaExample" >
+        delete from com_area
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+</mapper>

@@ -166,7 +166,7 @@ public class UserController {
         PbUserExample pbUserExample = new PbUserExample();
         PbUserExample.Criteria criteria = pbUserExample.createCriteria();
         if(StringUtils.isNotBlank(search)){
-            criteria.andUserNameLike(search);
+            criteria.andUserNameLike("%" + search + "%");
         }
 
         offset = offset==null ? 0 : offset;
@@ -186,6 +186,20 @@ public class UserController {
         pbUsersMap.put("rows", pbUsers);
 
         return pbUsersMap;
+    }
+
+    @RequestMapping("/load.shtml")
+    public ModelAndView load(HttpServletRequest request, HttpServletResponse response, Long id){
+        ModelAndView mav = new ModelAndView("user/edit");
+
+        PbUser pbUser = null;
+        if(id != null){
+            pbUser = pbUserService.findByPrimaryKey(id);
+        }
+
+        mav.addObject("pbUser", pbUser);
+
+        return mav;
     }
 
     /**

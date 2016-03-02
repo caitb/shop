@@ -62,6 +62,7 @@
                         function initTable() {
                             $table.bootstrapTable({
                                 //height: getHeight(),
+                                locale: 'zh-CN',
                                 striped: true,
                                 rowStyle: function rowStyle(value, row, index) {
                                     return {
@@ -70,10 +71,16 @@
                                     };
                                 },
                                 formatShowingRows: function(pageFrom, pageTo, totalRows){
-                                  return '当前显示 ' + pageFrom + " 到 " + pageTo + ', 总共 ' + totalRows;
+                                    return '当前显示 ' + pageFrom + " 到 " + pageTo + ', 总共 ' + totalRows;
                                 },
                                 formatRecordsPerPage: function(pageNumber){
                                     return '每页显示' + pageNumber + '条数据';
+                                },
+                                formatSearch: function(){
+                                    return "请输入关键字";
+                                },
+                                formatNoMatches: function(){
+                                    return "没有找到数据哦!";
                                 },
                                 columns: [
                                     [
@@ -203,12 +210,11 @@
                                 // push or splice the selections if you want to save all data selections
                             });
                             $table.on('expand-row.bs.table', function (e, index, row, $detail) {
-                                if (index % 2 == 1) {
-                                    $detail.html('Loading from ajax request...');
-                                    $.get('/user/list.do', function (res) {
-                                        $detail.html(res.replace(/\n/g, '<br>'));
-                                    });
-                                }
+                                $detail.html('数据加载中...');
+                                $.get('/user/load.shtml', {id: row.id}, function (res) {
+                                    //$detail.html(res.replace(/\n/g, '<br>'));
+                                    $detail.html(res);
+                                });
                             });
                             $table.on('all.bs.table', function (e, name, args) {
                                 console.log(name, args);
@@ -252,10 +258,12 @@
 
                         function operateFormatter(value, row, index) {
                             return [
+                                '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑',
+                                '</a>',
                                 '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权',
                                 //'<i class="glyphicon glyphicon-heart"></i>',
                                 '</a>  ',
-                                '<a class="remove" href="javascript:void(0)" title="Remove">冻结',
+                                '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">冻结',
                                 //'<i class="glyphicon glyphicon-remove"></i>',
                                 '</a>'
                             ].join('');
@@ -263,7 +271,6 @@
 
                         window.operateEvents = {
                             'click .like': function (e, value, row, index) {
-                                //alert('You click like action, row: ' + JSON.stringify(row));
                                 $('#myModal .modal-body').empty();
                                 $.ajax({
                                     url: '<%=basePath%>menu/treeMenu.shtml',

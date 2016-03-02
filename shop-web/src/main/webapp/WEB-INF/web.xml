@@ -39,7 +39,7 @@
 
     <filter>
         <filter-name>loginFilter</filter-name>
-        <filter-class>com.masiis.shop.web.common.filter.LoginFilter</filter-class>
+        <filter-class>com.masiis.shop.web.platform.filter.LoginFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>loginFilter</filter-name>

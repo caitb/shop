@@ -49,11 +49,11 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<bean id="loginInterceptor" class="com.masiis.shop.web.interceptors.LoginInterceptor"/>
+			<bean id="loginInterceptor" class="com.masiis.shop.admin.interceptors.LoginInterceptor"/>
 		</mvc:interceptor>
 		<!--<mvc:interceptor>-->
 			<!--<mvc:mapping path="/**"/>-->
-			<!--<bean id="accessInterceptor" class="com.masiis.shop.web.interceptors.AccessInterceptor" />-->
+			<!--<bean id="accessInterceptor" class="AccessInterceptor" />-->
 		<!--</mvc:interceptor>-->
 	</mvc:interceptors>
 

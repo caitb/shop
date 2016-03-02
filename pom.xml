@@ -278,7 +278,6 @@
 
     <modules>
         <module>shop-admin</module>
-        <module>shop-service</module>
         <module>shop-dao</module>
         <module>shop-base</module>
         <module>shop-web</module>

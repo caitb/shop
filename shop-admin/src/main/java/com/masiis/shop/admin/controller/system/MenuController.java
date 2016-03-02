@@ -33,13 +33,13 @@ public class MenuController {
 
     @RequestMapping("/menu.shtml")
     public String menu(){
-        return "menu/menu";
+        return "system/menu";
     }
 
     @RequestMapping("/treeMenu.shtml")
     public ModelAndView treeMenu(HttpServletRequest request, HttpServletResponse response, Long userId) throws JsonProcessingException {
 
-        ModelAndView mav = new ModelAndView("menu/tree_menu");
+        ModelAndView mav = new ModelAndView("system/tree_menu");
 
         List<PbMenu> pbMenus = pbMenuService.findByExample(new PbMenuExample());
         String pbMenusJson = objectMapper.writeValueAsString(pbMenus);

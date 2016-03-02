@@ -5,10 +5,20 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>麦士商城 - 后台管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+<link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-table.css">
 <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-editable.css">
+<link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css">
 <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/examples.css">
+
 
 <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
@@ -18,6 +28,11 @@
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
 <!-- Latest compiled and minified Locales -->
 <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+
+</head>
+
+<body>
+<div class="container-fluid">
 
 <div class="row">
     <div class="col-xs-12">
@@ -409,3 +424,7 @@
     </div><!-- /.col -->
 </div>
 
+</div>
+</body>
+
+</html>

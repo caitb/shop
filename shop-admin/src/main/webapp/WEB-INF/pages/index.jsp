@@ -441,6 +441,7 @@
                 <%--</div><!-- /.page-header -->--%>
 
                 <div class="row" id="main_content">
+                    <iframe id="innerContent" name="innerContent" width="100%" height="620px" marginheight="0" marginwidth="0" style="border: none;"></iframe>
                     <!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content -->
@@ -645,7 +646,7 @@
             var hasChildren = data[i].children && data[i].children.length > 0 || false;
 
             sMenu += '<li>';
-            sMenu += hasChildren ? '<a class="dropdown-toggle" href="' + data[i].url + '">' : '<a href="' + data[i].url + '">';
+            sMenu += hasChildren ? '<a class="dropdown-toggle" href="' + data[i].url + '" target="innerContent">' : '<a href="' + data[i].url + '">';
             sMenu +=     '<i class="' + data[i].icon + '"></i>';
             sMenu +=     '<span class="menu-text">' + data[i].name + '</span>';
             sMenu += hasChildren ? '<b class="arrow icon-angle-right"></b>' : '';

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.generate.ComCategoryMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.ComCategory" >
+<mapper namespace="com.masiis.shop.dao.po.ComCategoryMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComCategory" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
@@ -80,7 +80,7 @@
         remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.ComCategoryExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComCategoryExample" >
         select
         <if test="distinct" >
             distinct
@@ -95,7 +95,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.ComCategoryExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComCategoryExample" resultType="java.lang.Integer" >
         select count(*) from com_category
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -162,7 +162,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.ComCategory" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComCategory" >
         update com_category
         <set >
             <if test="createTime != null" >
@@ -199,7 +199,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.ComCategoryExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComCategoryExample" >
         delete from com_category
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

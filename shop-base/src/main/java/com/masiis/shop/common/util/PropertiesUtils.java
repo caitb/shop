@@ -20,10 +20,6 @@ import org.springframework.util.PropertiesPersister;
 
 /**
  * @description: 属性文件读取工具类
- * @author yuweichao
- * @mail yuweichao@sunlands.com
- * @date 2014-10-21
- * @version V1.0
  */
 public class PropertiesUtils {
 

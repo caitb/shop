@@ -38,27 +38,4 @@
 
     $.fn.zTree.init($("#treeMenu"), setting, pbMenus);
 
-    $('#btnSubmit').on('click', function(){
-        var zTree = $.fn.zTree.getZTreeObj("treeMenu");
-        var treeNodes = zTree.getCheckedNodes(true);
-
-        var menuIds = [];
-        for(var i in treeNodes){
-            menuIds.push(treeNodes[i].id);
-        }
-
-        $.ajax({
-            url: '<%=basePath%>user/updateUserMenu.do',
-            data: {userId: userId,pbMenuIds: menuIds},
-            success: function(data){
-                alert(data);
-                $('#myModal').modal({
-                    show:false,
-                    backdrop:false
-                });
-            }
-        })
-
-    });
-
 </script>

@@ -1,6 +1,6 @@
-/*
+ï»¿/*
  * ComAgentLevel.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * ´úÀíµÈ¼¶±í
+ * ä»£ç†ç­‰çº§è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,27 +19,27 @@ import java.util.Date;
 public class ComAgentLevel {
 
     /**
-     * ´úÀíµÈ¼¶
+     * ä»£ç†ç­‰çº§
      */
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´úÀíµÈ¼¶Ãû³Æ
+     * ä»£ç†ç­‰çº§åç§°
      */
     private String name;
     /**
-     * Í¼Æ¬µØÖ·
+     * å›¾ç‰‡åœ°å€
      */
     private String imgUrl;
     /**
-     * ÄÃ»õÃÅ¼÷
+     * æ‹¿è´§é—¨æ§›
      */
     private BigDecimal lower;
     /**
-     * ÕÛ¿Û
+     * æŠ˜æ‰£
      */
     private BigDecimal discount;
     private String remark;

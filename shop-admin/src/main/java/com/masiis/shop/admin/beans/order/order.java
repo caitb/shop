@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.domain.order;
+package com.masiis.shop.admin.beans.order;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.

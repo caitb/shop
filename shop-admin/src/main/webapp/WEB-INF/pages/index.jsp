@@ -436,7 +436,7 @@
                     <%--<li class="active">管理员列表</li>--%>
                 </ul><!-- .breadcrumb -->
 
-                <div class="nav-search" id="nav-search">
+                <div class="nav-search" id="nav-search" style="display: none;">
                     <form class="form-search">
 								<span class="input-icon">
 									<input type="text" placeholder="Search ..." class="nav-search-input"

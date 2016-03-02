@@ -526,10 +526,7 @@
                 data: {userId: userId,pbMenuIds: menuIds},
                 success: function(data){
                     alert(data);
-                    $('#myModal').modal({
-                        show:false,
-                        backdrop:false
-                    });
+                    $('#myModal').modal('hide');
                 }
             });
 
@@ -543,10 +540,7 @@
                 data: $('#userForm').serialize(),
                 success: function (data) {
                     alert(data);
-                    $('#addModal').modal({
-                        show: false,
-                        backdrop: false
-                    });
+                    $('#addModal').modal('hide');
                 }
             });
         });

@@ -70,6 +70,8 @@ public class VerifyController extends BaseController{
             AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
             // 登录
             request.getSession().setAttribute("login", "login");
+            // 保存redis
+            //SpringRedisUtil.save("", "");
             try {
                 return createRedirectRes(URLDecoder.decode(state, "UTF-8"));
             } catch (UnsupportedEncodingException e) {

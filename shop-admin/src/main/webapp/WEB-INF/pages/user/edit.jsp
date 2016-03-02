@@ -5,8 +5,9 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 
-<form class="form-horizontal" role="form">
+<form class="form-horizontal" id="uForm" role="form" action="<%=basePath%>user/add.do">
 
+    <input type="hidden" id="uid" name="id" value="${pbUser.id}" />
     <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right" for="userName">用户名</label>
 
@@ -60,7 +61,6 @@
             <input type="text" id="age" name="age" value="${pbUser.age}" class="col-xs-10 col-sm-5" />
         </div>
     </div>
-
     <div class="space-4"></div>
 
     <div class="form-group">
@@ -70,7 +70,27 @@
             <input type="text" id="phone" name="phone" value="${pbUser.phone}" class="col-xs-10 col-sm-5" />
         </div>
     </div>
-
     <div class="space-4"></div>
 
+    <div class="form-group">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon">取消</a>
+            <a href="javascript:void(0)" class="button button-glow button-rounded button-raised button-primary" id="save">保存</a>
+        </div>
+    </div>
+
 </form>
+
+<script>
+    $('#save').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>user/add.do',
+            type: 'post',
+            data: $('#uForm').serialize(),
+            success: function(data){
+                alert(data);
+            }
+        });
+    });
+</script>

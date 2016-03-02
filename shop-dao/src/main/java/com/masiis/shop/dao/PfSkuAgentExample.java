@@ -1,6 +1,6 @@
 /*
  * PfSkuAgentExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfSkuAgentExample {
     }
 
     /**
-     * Æ½Ì¨sku´úÀíÉèÖÃ±í
+     * å¹³å°skuä»£ç†è®¾ç½®è¡¨
 
      * 
      * @author masiis
@@ -409,7 +409,7 @@ public class PfSkuAgentExample {
     }
 
     /**
-     * Æ½Ì¨sku´úÀíÉèÖÃ±í
+     * å¹³å°skuä»£ç†è®¾ç½®è¡¨
 
      * 
      * @author masiis

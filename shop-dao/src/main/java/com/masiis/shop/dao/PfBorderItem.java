@@ -1,6 +1,6 @@
 /*
  * PfBorderItem.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Æ½Ì¨´úÀí¶©µ¥ÉÌÆ·×Ó±í
+ * å¹³å°ä»£ç†è®¢å•å•†å“å­è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -20,43 +20,43 @@ public class PfBorderItem {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ¶©µ¥id
+     * è®¢å•id
      */
     private Long pfBorderId;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * skuÃû³Æ
+     * skuåç§°
      */
     private String skuName;
     /**
-     * ÊıÁ¿
+     * æ•°é‡
      */
     private Integer quantity;
     /**
-     * µ¥¼Û
+     * å•ä»·
      */
     private BigDecimal unitPrice;
     /**
-     * ×Ü¼Û
+     * æ€»ä»·
      */
     private BigDecimal totalPrice;
     /**
-     * ÆÀÂÛ±êÖ¾Î»(0Î´ÆÀÂÛ1ÒÑÆÀÂÛ)
+     * è¯„è®ºæ ‡å¿—ä½(0æœªè¯„è®º1å·²è¯„è®º)
      */
     private Integer isComment;
     /**
-     * ÍË»»»õ±êÖ¾Î»(0Î´ÍË»»1ÒÑÍË»»)
+     * é€€æ¢è´§æ ‡å¿—ä½(0æœªé€€æ¢1å·²é€€æ¢)
      */
     private Integer isReturn;
     private String remark;

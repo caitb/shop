@@ -1,6 +1,6 @@
 /*
  * ComSku.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * ÉÌÆ·SKU±í
+ * å•†å“SKUè¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -20,47 +20,47 @@ public class ComSku {
 
     private Integer id;
     /**
-     * skuÃû³Æ
+     * skuåç§°
      */
     private String name;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private Date modifyTime;
     /**
-     * ĞŞ¸ÄÈË
+     * ä¿®æ”¹äºº
      */
     private Long modifyMan;
     /**
-     * skuÌõÂë
+     * skuæ¡ç 
      */
     private String barCode;
     /**
-     * ³É±¾¼Û
+     * æˆæœ¬ä»·
      */
     private BigDecimal priceCost;
     /**
-     * ÊĞ³¡¼Û
+     * å¸‚åœºä»·
      */
     private BigDecimal priceMarket;
     /**
-     * ÏúÊÛ¼Û
+     * é”€å”®ä»·
      */
     private BigDecimal priceRetail;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

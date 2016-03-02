@@ -1,6 +1,6 @@
 /*
  * ComBrand.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ·ÅÆ±í
+ * å“ç‰Œè¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -20,15 +20,15 @@ public class ComBrand {
     private Integer id;
     private Date createTime;
     /**
-     * Æ·ÅÆÖĞÎÄÃû
+     * å“ç‰Œä¸­æ–‡å
      */
     private String cname;
     /**
-     * Æ·ÅÆÓ¢ÎÄÃû
+     * å“ç‰Œè‹±æ–‡å
      */
     private String ename;
     /**
-     * logo±ê¼Ç
+     * logoæ ‡è®°
      */
     private String logoUrl;
     private String remark;

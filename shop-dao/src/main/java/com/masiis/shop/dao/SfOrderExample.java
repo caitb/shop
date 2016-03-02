@@ -1,6 +1,6 @@
 /*
  * SfOrderExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -60,7 +60,7 @@ public class SfOrderExample {
     }
 
     /**
-     * ÉÌÆÌ¶©µ¥±í
+     * å•†é“ºè®¢å•è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -159,7 +159,7 @@ public class SfOrderExample {
     }
 
     /**
-     * ÉÌÆÌ¶©µ¥±í
+     * å•†é“ºè®¢å•è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

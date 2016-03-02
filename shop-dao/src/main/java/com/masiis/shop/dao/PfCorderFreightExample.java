@@ -1,6 +1,6 @@
 /*
  * PfCorderFreightExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfCorderFreightExample {
     }
 
     /**
-     * Æ½Ì¨·ÖÏú¶©µ¥ÔËµ¥±í
+     * å¹³å°åˆ†é”€è®¢å•è¿å•è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -416,7 +416,7 @@ public class PfCorderFreightExample {
     }
 
     /**
-     * Æ½Ì¨·ÖÏú¶©µ¥ÔËµ¥±í
+     * å¹³å°åˆ†é”€è®¢å•è¿å•è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

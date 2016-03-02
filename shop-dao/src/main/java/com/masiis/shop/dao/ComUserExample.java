@@ -1,6 +1,6 @@
 /*
  * ComUserExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class ComUserExample {
     }
 
     /**
-     * ÓÃ»§±í£¨°üÀ¨´úÀíºÍ·ÖÏúÓÃ»§£©
+     * ç”¨æˆ·è¡¨ï¼ˆåŒ…æ‹¬ä»£ç†å’Œåˆ†é”€ç”¨æˆ·ï¼‰
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -1384,7 +1384,7 @@ public class ComUserExample {
     }
 
     /**
-     * ÓÃ»§±í£¨°üÀ¨´úÀíºÍ·ÖÏúÓÃ»§£©
+     * ç”¨æˆ·è¡¨ï¼ˆåŒ…æ‹¬ä»£ç†å’Œåˆ†é”€ç”¨æˆ·ï¼‰
      * 
      * @author masiis
      * @version 1.0 2016-03-02

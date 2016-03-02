@@ -1,6 +1,6 @@
 /*
  * PfBorderOperationLogExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfBorderOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨´úÀí¶©µ¥²Ù×÷ÈÕÖ¾±í
+     * å¹³å°ä»£ç†è®¢å•æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -408,7 +408,7 @@ public class PfBorderOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨´úÀí¶©µ¥²Ù×÷ÈÕÖ¾±í
+     * å¹³å°ä»£ç†è®¢å•æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

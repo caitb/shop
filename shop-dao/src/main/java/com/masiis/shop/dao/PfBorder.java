@@ -1,6 +1,6 @@
 /*
  * PfBorder.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Æ½Ì¨´úÀí¶©µ¥±í
+ * å¹³å°ä»£ç†è®¢å•è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -20,115 +20,115 @@ public class PfBorder {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ¶©µ¥±àÂë
+     * è®¢å•ç¼–ç 
      */
     private String orderCode;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * ÉÏÒ»¼¶ÓÃ»§id£¬¿É¿Õ
+     * ä¸Šä¸€çº§ç”¨æˆ·idï¼Œå¯ç©º
      */
     private Long userPid;
     /**
-     * Âò¼ÒÁôÑÔ
+     * ä¹°å®¶ç•™è¨€
      */
     private String userMassage;
     /**
-     * Æ½Ì¨¹©Ó¦ÉÌid(ÔİÊ±²»ÓÃ£¬±£Áô)
+     * å¹³å°ä¾›åº”å•†id(æš‚æ—¶ä¸ç”¨ï¼Œä¿ç•™)
      */
     private Integer supplierId;
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private Date modifyTime;
     /**
-     * ĞŞ¸ÄÈË
+     * ä¿®æ”¹äºº
      */
     private Long modifyMan;
     /**
-     * Ó¦ÊÕ·ÑÓÃ
+     * åº”æ”¶è´¹ç”¨
      */
     private BigDecimal receivableAmount;
     /**
-     * ¶©µ¥·ÑÓÃ
+     * è®¢å•è´¹ç”¨
      */
     private BigDecimal orderAmount;
     /**
-     * ÉÌÆ·×Ü·ÑÓÃ
+     * å•†å“æ€»è´¹ç”¨
      */
     private BigDecimal productAmount;
     /**
-     * ÔË·Ñ
+     * è¿è´¹
      */
     private BigDecimal shipAmount;
     /**
-     * Ö§¸¶½ğ¶î
+     * æ”¯ä»˜é‡‘é¢
      */
     private BigDecimal payAmount;
     /**
-     * Ö§¸¶Ê±¼ä
+     * æ”¯ä»˜æ—¶é—´
      */
     private Date payTime;
     /**
-     * ÅäËÍÉÌid
+     * é…é€å•†id
      */
     private Integer shipManId;
     /**
-     * ÅäËÍÉÌÃû³Æ
+     * é…é€å•†åç§°
      */
     private String shipManName;
     /**
-     * ·¢»õÊ±¼ä
+     * å‘è´§æ—¶é—´
      */
     private Date deliveryTime;
     /**
-     * ÅäËÍ±¸×¢£¬Ö»¹¤×÷ÈÕËÍ»õ¡¢¶¼¿ÉËÍ»õ
+     * é…é€å¤‡æ³¨ï¼Œåªå·¥ä½œæ—¥é€è´§ã€éƒ½å¯é€è´§
      */
     private String shipRemark;
     /**
-     * »»»õ¶©µ¥ºÅ
+     * æ¢è´§è®¢å•å·
      */
     private Long replaceOrderId;
     /**
-     * ¶©µ¥×´Ì¬
+     * è®¢å•çŠ¶æ€
      */
     private Integer orderStatus;
     /**
-     * ÎïÁ÷×´Ì¬
+     * ç‰©æµçŠ¶æ€
      */
     private Integer shipStatus;
     /**
-     * Ö§¸¶×´Ì¬
+     * æ”¯ä»˜çŠ¶æ€
      */
     private Integer payStatus;
     /**
-     * ·¢»õ±êÖ¾Î»(0Î´·¢»õ1ÒÑ·¢»õ)
+     * å‘è´§æ ‡å¿—ä½(0æœªå‘è´§1å·²å‘è´§)
      */
     private Integer isShip;
     /**
-     * »»»õ±êÖ¾Î»(0Î´»»»õ1ÒÑ»»»õ)
+     * æ¢è´§æ ‡å¿—ä½(0æœªæ¢è´§1å·²æ¢è´§)
      */
     private Integer isReplace;
     /**
-     * ÊÕ»õ±êÖ¾Î»(0Î´ÊÕ»õ1ÒÑÊÕ»õ)
+     * æ”¶è´§æ ‡å¿—ä½(0æœªæ”¶è´§1å·²æ”¶è´§)
      */
     private Integer isReceipt;
     /**
-     * È·ÈÏÊÕ»õÊ±¼ä
+     * ç¡®è®¤æ”¶è´§æ—¶é—´
      */
     private Date receiptTime;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

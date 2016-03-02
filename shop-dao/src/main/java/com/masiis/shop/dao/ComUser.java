@@ -1,6 +1,6 @@
 /*
  * ComUser.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ÓÃ»§±í£¨°üÀ¨´úÀíºÍ·ÖÏúÓÃ»§£©
+ * ç”¨æˆ·è¡¨ï¼ˆåŒ…æ‹¬ä»£ç†å’Œåˆ†é”€ç”¨æˆ·ï¼‰
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,95 +19,95 @@ public class ComUser {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * Î¢ĞÅÓÃ»§Î¨Ò»±êÊ¶
+     * å¾®ä¿¡ç”¨æˆ·å”¯ä¸€æ ‡è¯†
      */
     private String openid;
     /**
-     * Î¢ĞÅêÇ³Æ
+     * å¾®ä¿¡æ˜µç§°
      */
     private String wxNkName;
     /**
-     * Î¢ĞÅºÅ
+     * å¾®ä¿¡å·
      */
     private String wxId;
     /**
-     * Î¢ĞÅÍ·Ïñurl
+     * å¾®ä¿¡å¤´åƒurl
      */
     private String wxHeadImg;
     /**
-     * Î¢ĞÅaccess_token
+     * å¾®ä¿¡access_token
      */
     private String accessToken;
     /**
-     * Î¢ĞÅrefresh_token
+     * å¾®ä¿¡refresh_token
      */
     private String refreshToken;
     /**
-     * access_token¹ıÆÚÊ±¼ä
+     * access_tokenè¿‡æœŸæ—¶é—´
      */
     private Date atokenExpire;
     /**
-     * refreshtoken¹ıÆÚÊ±¼ä
+     * refreshtokenè¿‡æœŸæ—¶é—´
      */
     private Date rtokenExpire;
     /**
-     * ÕæÊµĞÕÃû
+     * çœŸå®å§“å
      */
     private String realName;
     /**
-     * ÊÖ»úºÅ
+     * æ‰‹æœºå·
      */
     private String mobile;
     /**
-     * Éí·İÖ¤ºÅ
+     * èº«ä»½è¯å·
      */
     private String idCard;
     /**
-     * Éí·İÖ¤ÕıÃæ
+     * èº«ä»½è¯æ­£é¢
      */
     private String idCardFrontUrl;
     /**
-     * Éí·İÖ¤±³Ãæ
+     * èº«ä»½è¯èƒŒé¢
      */
     private String idCardBackUrl;
     /**
-     * ·¢»õÊ¡id
+     * å‘è´§çœid
      */
     private Integer provinceId;
     /**
-     * ·¢»õÊ¡Ãû³Æ
+     * å‘è´§çœåç§°
      */
     private String provinceName;
     /**
-     * ·¢»õÊĞid
+     * å‘è´§å¸‚id
      */
     private Integer cityId;
     /**
-     * ·¢»õÊĞÃû³Æ
+     * å‘è´§å¸‚åç§°
      */
     private String cityName;
     /**
-     * ·¢»õÇøid
+     * å‘è´§åŒºid
      */
     private Integer regionId;
     /**
-     * ·¢»õÇøÃû³Æ
+     * å‘è´§åŒºåç§°
      */
     private String regionName;
     /**
-     * ·¢»õµØÖ·
+     * å‘è´§åœ°å€
      */
     private String address;
     /**
-     * ÊÇ·ñ´úÀíÉÌ(0·ñ1ÊÇ)
+     * æ˜¯å¦ä»£ç†å•†(0å¦1æ˜¯)
      */
     private Integer isAgent;
     /**
-     * ĞÔ±ğ(0Å®1ÄĞ)
+     * æ€§åˆ«(0å¥³1ç”·)
      */
     private Integer sex;
 

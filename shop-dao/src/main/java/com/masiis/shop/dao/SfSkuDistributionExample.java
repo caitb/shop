@@ -1,6 +1,6 @@
 /*
  * SfSkuDistributionExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class SfSkuDistributionExample {
     }
 
     /**
-     * ÉÌÆÌSKU·ÖÏú·ÖÈó±í
+     * å•†é“ºSKUåˆ†é”€åˆ†æ¶¦è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -360,7 +360,7 @@ public class SfSkuDistributionExample {
     }
 
     /**
-     * ÉÌÆÌSKU·ÖÏú·ÖÈó±í
+     * å•†é“ºSKUåˆ†é”€åˆ†æ¶¦è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

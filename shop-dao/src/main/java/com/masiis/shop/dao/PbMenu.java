@@ -1,6 +1,6 @@
 /*
  * PbMenu.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -18,43 +18,43 @@ import java.util.Date;
 public class PbMenu {
 
     /**
-     * Ö÷¼ü
+     * ä¸»é”®
      */
     private Long id;
     /**
-     * ²Ëµ¥Ãû³Æ
+     * èœå•åç§°
      */
     private String name;
     /**
-     * Í¼±ê
+     * å›¾æ ‡
      */
     private String icon;
     /**
-     * ÏµÍ³url
+     * ç³»ç»Ÿurl
      */
     private String url;
     /**
-     * ¸¸id
+     * çˆ¶id
      */
     private Long parentId;
     /**
-     * ÊÇ·ñÉ¾³ı(0Î´É¾³ı1ÒÑÉ¾³ı)
+     * æ˜¯å¦åˆ é™¤(0æœªåˆ é™¤1å·²åˆ é™¤)
      */
     private Integer isDeleted;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private Date updateTime;
     /**
-     * ÅÅĞò
+     * æ’åº
      */
     private Integer rank;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

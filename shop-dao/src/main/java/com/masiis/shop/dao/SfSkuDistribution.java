@@ -1,6 +1,6 @@
 /*
  * SfSkuDistribution.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.math.BigDecimal;
 
 /**
- * ÉÌÆÌSKU·ÖÏú·ÖÈó±í
+ * å•†é“ºSKUåˆ†é”€åˆ†æ¶¦è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,15 +19,15 @@ public class SfSkuDistribution {
 
     private Integer id;
     /**
-     * SKUÖ÷¼üID
+     * SKUä¸»é”®ID
      */
     private Integer skuId;
     /**
-     * ´ÓĞ¡µ½´ó¶ÔÓ¦·ÖÈó
+     * ä»å°åˆ°å¤§å¯¹åº”åˆ†æ¶¦
      */
     private Integer sort;
     /**
-     * ÕÛ¿Û(ÀıÈç0.35Îª35%Ò²¾ÍÊÇ3.5ÕÛ)
+     * æŠ˜æ‰£(ä¾‹å¦‚0.35ä¸º35%ä¹Ÿå°±æ˜¯3.5æŠ˜)
      */
     private BigDecimal discount;
     private String remark;

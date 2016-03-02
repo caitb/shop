@@ -1,6 +1,6 @@
 /*
  * PfUserSku.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨ÓÃ»§´úÀíÉÌÆ·¹ØÏµ±í
+ * å¹³å°ç”¨æˆ·ä»£ç†å•†å“å…³ç³»è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,43 +19,43 @@ public class PfUserSku {
 
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ÊÚÈ¨Êé±àÂë
+     * æˆæƒä¹¦ç¼–ç 
      */
     private String code;
     /**
-     * ¸¸¼¶id(0µÄÊ±ºòÆ½Ì¨ÉóºË)
+     * çˆ¶çº§id(0çš„æ—¶å€™å¹³å°å®¡æ ¸)
      */
     private Integer pid;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * ´úÀíµÈ¼¶id
+     * ä»£ç†ç­‰çº§id
      */
     private Integer agentLevelId;
     /**
-     * ÊÇ·ñ¸¶¿î(0Î´¸¶¿î1ÒÑ¸¶¿î)
+     * æ˜¯å¦ä»˜æ¬¾(0æœªä»˜æ¬¾1å·²ä»˜æ¬¾)
      */
     private Integer isPay;
     /**
-     * ÊÚÈ¨ÊéÉú³É±êÖ¾Î»(0Î´Éú³É1ÒÑÉú³É)
+     * æˆæƒä¹¦ç”Ÿæˆæ ‡å¿—ä½(0æœªç”Ÿæˆ1å·²ç”Ÿæˆ)
      */
     private Integer isCertificate;
     /**
-     * ´úÀí¶©µ¥id
+     * ä»£ç†è®¢å•id
      */
     private Long pfCorderId;
     /**
-     * ÊÇ·ñÊÚÈ¨0Î´ÊÚÈ¨1ÒÑÊÚÈ¨
+     * æ˜¯å¦æˆæƒ0æœªæˆæƒ1å·²æˆæƒ
      */
     private Integer isAuthorized;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

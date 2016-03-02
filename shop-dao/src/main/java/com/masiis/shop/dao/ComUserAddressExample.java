@@ -1,6 +1,6 @@
 /*
  * ComUserAddressExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class ComUserAddressExample {
     }
 
     /**
-     * ÓÃ»§µØÖ·±í
+     * ç”¨æˆ·åœ°å€è¡¨
 
      * 
      * @author masiis
@@ -897,7 +897,7 @@ public class ComUserAddressExample {
     }
 
     /**
-     * ÓÃ»§µØÖ·±í
+     * ç”¨æˆ·åœ°å€è¡¨
 
      * 
      * @author masiis

@@ -1,6 +1,6 @@
 /*
  * PbUser.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -17,25 +17,25 @@ public class PbUser {
 
     private Long id;
     /**
-     * ÓÃ»§Ãû
+     * ç”¨æˆ·å
      */
     private String userName;
     /**
-     * ÕæÊµĞÕÃû
+     * çœŸå®å§“å
      */
     private String trueName;
     private String password;
     private String email;
     /**
-     * ĞÔ±ğ
+     * æ€§åˆ«
      */
     private String sex;
     /**
-     * ÄêÁä
+     * å¹´é¾„
      */
     private Integer age;
     /**
-     * ÊÖ»úºÅ
+     * æ‰‹æœºå·
      */
     private String phone;
 

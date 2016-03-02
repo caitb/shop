@@ -1,6 +1,6 @@
 /*
  * ComUserAddress.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ÓÃ»§µØÖ·±í
+ * ç”¨æˆ·åœ°å€è¡¨
 
  * 
  * @author masiis
@@ -20,59 +20,59 @@ public class ComUserAddress {
 
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * ÓÃ»§Ãû³Æ
+     * ç”¨æˆ·åç§°
      */
     private String name;
     /**
-     * ÓÊ±à
+     * é‚®ç¼–
      */
     private String zip;
     /**
-     * Ê¡id
+     * çœid
      */
     private Integer provinceId;
     /**
-     * Ê¡Ãû³Æ
+     * çœåç§°
      */
     private String provinceName;
     /**
-     * ÊĞid
+     * å¸‚id
      */
     private Integer cityId;
     /**
-     * ÊĞÃû³Æ
+     * å¸‚åç§°
      */
     private String cityName;
     /**
-     * Çøid
+     * åŒºid
      */
     private Integer regionId;
     /**
-     * ÇøÃû³Æ
+     * åŒºåç§°
      */
     private String regionName;
     /**
-     * ÏêÏ¸µØÖ·
+     * è¯¦ç»†åœ°å€
      */
     private String address;
     /**
-     * ÊÖ»úºÅÂë
+     * æ‰‹æœºå·ç 
      */
     private String mobile;
     /**
-     * ÊÇ·ñÄ¬ÈÏ(0·ñ1ÊÇ)
+     * æ˜¯å¦é»˜è®¤(0å¦1æ˜¯)
      */
     private Integer isDefault;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

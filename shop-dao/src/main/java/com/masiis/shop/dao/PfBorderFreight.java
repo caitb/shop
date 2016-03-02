@@ -1,6 +1,6 @@
 /*
  * PfBorderFreight.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨´úÀí¶©µ¥ÔËµ¥±í
+ * å¹³å°ä»£ç†è®¢å•è¿å•è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,23 +19,23 @@ public class PfBorderFreight {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ¶©µ¥id
+     * è®¢å•id
      */
     private Long pfCorderId;
     /**
-     * ÅäËÍÉÌid
+     * é…é€å•†id
      */
     private Integer shipManId;
     /**
-     * ÅäËÍÉÌÃû³Æ
+     * é…é€å•†åç§°
      */
     private String shipManName;
     /**
-     * ÔËµ¥ºÅ
+     * è¿å•å·
      */
     private String freight;
 

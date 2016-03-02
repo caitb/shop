@@ -1,6 +1,6 @@
 /*
  * PfUserCertificate.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨ÓÃ»§ÊÚÈ¨Êé±í
+ * å¹³å°ç”¨æˆ·æˆæƒä¹¦è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,63 +19,63 @@ public class PfUserCertificate {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ÊÚÈ¨Êé±àÂë
+     * æˆæƒä¹¦ç¼–ç 
      */
     private String code;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer pfUserSkuId;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * Éí·İÖ¤ºÅÂë
+     * èº«ä»½è¯å·ç 
      */
     private String idCard;
     /**
-     * ÊÖ»úºÅ
+     * æ‰‹æœºå·
      */
     private String mobile;
     /**
-     * Î¢ĞÅºÅ
+     * å¾®ä¿¡å·
      */
     private String wxId;
     /**
-     * ¿ªÊ¼Ê±¼ä
+     * å¼€å§‹æ—¶é—´
      */
     private Date beginTime;
     /**
-     * ½áÊøÊ±¼ä
+     * ç»“æŸæ—¶é—´
      */
     private Date endTime;
     /**
-     * ´úÀíµÈ¼¶
+     * ä»£ç†ç­‰çº§
      */
     private Integer agentLevelId;
     /**
-     * ÊÚÈ¨ÊéÍ¼Æ¬µØÖ·
+     * æˆæƒä¹¦å›¾ç‰‡åœ°å€
      */
     private String imgUrl;
     /**
-     * ×´Ì¬(0Î´ÉóºË1ÒÑÉóºË)
+     * çŠ¶æ€(0æœªå®¡æ ¸1å·²å®¡æ ¸)
      */
     private Integer status;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

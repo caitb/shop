@@ -1,6 +1,6 @@
 /*
  * PfBorderConsigneeExample.java
- * Copyright(C) 2014-2016 麦士集团
+ * Copyright(C) 2014-2016 楹﹀＋闆嗗洟
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfBorderConsigneeExample {
     }
 
     /**
-     * 平台代理订单收货人信息表
+     * 骞冲彴浠ｇ悊璁㈠崟鏀惰揣浜轰俊鎭〃
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -840,7 +840,7 @@ public class PfBorderConsigneeExample {
     }
 
     /**
-     * 平台代理订单收货人信息表
+     * 骞冲彴浠ｇ悊璁㈠崟鏀惰揣浜轰俊鎭〃
      * 
      * @author masiis
      * @version 1.0 2016-03-02

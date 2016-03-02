@@ -1,6 +1,6 @@
 /*
  * PfUserTrialExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfUserTrialExample {
     }
 
     /**
-     * Æ½Ì¨ÓÃ»§ÊÔÓÃÉêÇë±í
+     * å¹³å°ç”¨æˆ·è¯•ç”¨ç”³è¯·è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -680,7 +680,7 @@ public class PfUserTrialExample {
     }
 
     /**
-     * Æ½Ì¨ÓÃ»§ÊÔÓÃÉêÇë±í
+     * å¹³å°ç”¨æˆ·è¯•ç”¨ç”³è¯·è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

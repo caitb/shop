@@ -1,6 +1,6 @@
 /*
  * PfSkuAgent.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.math.BigDecimal;
 
 /**
- * Æ½Ì¨sku´úÀíÉèÖÃ±í
+ * å¹³å°skuä»£ç†è®¾ç½®è¡¨
 
  * 
  * @author masiis
@@ -20,19 +20,19 @@ public class PfSkuAgent {
 
     private Integer id;
     /**
-     * SKUÖ÷¼üID
+     * SKUä¸»é”®ID
      */
     private Integer skuId;
     /**
-     * ´úÀíµÈ¼¶±íID
+     * ä»£ç†ç­‰çº§è¡¨ID
      */
     private Integer agentLevelId;
     /**
-     * ÕÛ¿Û(ÀıÈç0.35Îª35%Ò²¾ÍÊÇ3.5ÕÛ)
+     * æŠ˜æ‰£(ä¾‹å¦‚0.35ä¸º35%ä¹Ÿå°±æ˜¯3.5æŠ˜)
      */
     private BigDecimal discount;
     /**
-     * ÄÃ»õÊıÁ¿
+     * æ‹¿è´§æ•°é‡
      */
     private Integer quantity;
     private String remark;

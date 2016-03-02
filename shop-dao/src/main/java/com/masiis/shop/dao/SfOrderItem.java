@@ -1,6 +1,6 @@
 /*
  * SfOrderItem.java
- * Copyright(C) 2014-2016 麦士集团
+ * Copyright(C) 2014-2016 楹﹀＋闆嗗洟
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -8,7 +8,7 @@
 package com.masiis.shop.dao;
 
 /**
- * 商铺订单商品子表
+ * 鍟嗛摵璁㈠崟鍟嗗搧瀛愯〃
  * 
  * @author masiis
  * @version 1.0 2016-03-02

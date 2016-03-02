@@ -1,6 +1,6 @@
 /*
  * ComSkuImage.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ÉÌÆ·SKUÍ¼Æ¬±í
+ * å•†å“SKUå›¾ç‰‡è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,47 +19,47 @@ public class ComSkuImage {
 
     private Integer id;
     /**
-     * ´´½¨ÈÕÆÚ
+     * åˆ›å»ºæ—¥æœŸ
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * Í¼Æ¬Ãû³Æ
+     * å›¾ç‰‡åç§°
      */
     private String imgName;
     /**
-     * Í¼Æ¬µØÖ·
+     * å›¾ç‰‡åœ°å€
      */
     private String imgUrl;
     /**
-     * ĞŞ¸ÄÈÕÆÚ
+     * ä¿®æ”¹æ—¥æœŸ
      */
     private Date modifyTime;
     /**
-     * ĞŞ¸ÄÈË
+     * ä¿®æ”¹äºº
      */
     private Long modifyMan;
     /**
-     * Ä¬ÈÏ±êÖ¾(0·ñ1ÊÇ)
+     * é»˜è®¤æ ‡å¿—(0å¦1æ˜¯)
      */
     private Integer isDefault;
     /**
-     * Í¼Æ¬ĞòºÅ¡£SKUÀïµÄÍ¼Æ¬Õ¹Ê¾Ë³Ğò£¬Êı¾İÔ½Ğ¡Ô½¿¿Ç°¡£ÒªÇóÊÇÕıÕûÊı¡£
+     * å›¾ç‰‡åºå·ã€‚SKUé‡Œçš„å›¾ç‰‡å±•ç¤ºé¡ºåºï¼Œæ•°æ®è¶Šå°è¶Šé å‰ã€‚è¦æ±‚æ˜¯æ­£æ•´æ•°ã€‚
      */
     private Integer sort;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

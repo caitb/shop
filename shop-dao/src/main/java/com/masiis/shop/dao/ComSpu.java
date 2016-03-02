@@ -1,6 +1,6 @@
 /*
  * ComSpu.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ÉÌÆ·spu±í
+ * å•†å“spuè¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -18,55 +18,55 @@ import java.util.Date;
 public class ComSpu extends ComSpuKey {
 
     /**
-     * Æ·ÅÆid
+     * å“ç‰Œid
      */
     private Integer brandId;
     /**
-     * ×îºóÒ»´ÎÉÏ¼ÜÊ±¼ä
+     * æœ€åä¸€æ¬¡ä¸Šæ¶æ—¶é—´
      */
     private Date upTime;
     /**
-     * ×îºóÒ»´ÎÏÂ¼ÜÊ±¼ä
+     * æœ€åä¸€æ¬¡ä¸‹æ¶æ—¶é—´
      */
     private Date downTime;
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private Date modifyTime;
     /**
-     * ĞŞ¸ÄÈË
+     * ä¿®æ”¹äºº
      */
     private Long modifyMan;
     /**
-     * ¹ã¸æÓï
+     * å¹¿å‘Šè¯­
      */
     private String slogan;
     /**
-     * ¿ÉÊÔÓÃ±êÖ¾Î»(0·ñ1ÊÇ)
+     * å¯è¯•ç”¨æ ‡å¿—ä½(0å¦1æ˜¯)
      */
     private Integer isTrial;
     /**
-     * ÉÌÆ·ÃèÊö
+     * å•†å“æè¿°
      */
     private String content;
     /**
-     * ÖØÁ¿
+     * é‡é‡
      */
     private Long weight;
     /**
-     * ³¤
+     * é•¿
      */
     private Long packLength;
     /**
-     * ¿í
+     * å®½
      */
     private Long packWidth;
     /**
-     * ¸ß
+     * é«˜
      */
     private Long packHeight;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

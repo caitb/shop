@@ -1,4 +1,4 @@
-﻿/*
+/*
  * ComAgentLevel.java
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.

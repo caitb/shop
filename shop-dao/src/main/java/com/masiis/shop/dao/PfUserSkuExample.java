@@ -1,6 +1,6 @@
 /*
  * PfUserSkuExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfUserSkuExample {
     }
 
     /**
-     * Æ½Ì¨ÓÃ»§´úÀíÉÌÆ·¹ØÏµ±í
+     * å¹³å°ç”¨æˆ·ä»£ç†å•†å“å…³ç³»è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -656,7 +656,7 @@ public class PfUserSkuExample {
     }
 
     /**
-     * Æ½Ì¨ÓÃ»§´úÀíÉÌÆ·¹ØÏµ±í
+     * å¹³å°ç”¨æˆ·ä»£ç†å•†å“å…³ç³»è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

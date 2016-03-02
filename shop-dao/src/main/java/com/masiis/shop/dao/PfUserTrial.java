@@ -1,6 +1,6 @@
 /*
  * PfUserTrial.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨ÓÃ»§ÊÔÓÃÉêÇë±í
+ * å¹³å°ç”¨æˆ·è¯•ç”¨ç”³è¯·è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,43 +19,43 @@ public class PfUserTrial {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * ×´Ì¬(0Î´´¦Àí1Í¨¹ı2¾Ü¾ø)
+     * çŠ¶æ€(0æœªå¤„ç†1é€šè¿‡2æ‹’ç»)
      */
     private Integer status;
     /**
-     * ÉêÇëÀíÓÉ
+     * ç”³è¯·ç†ç”±
      */
     private String reason;
     /**
-     * ĞÕÃû
+     * å§“å
      */
     private String name;
     /**
-     * ÊÖ»úºÅ
+     * æ‰‹æœºå·
      */
     private String mobile;
     /**
-     * Î¢ĞÅºÅ
+     * å¾®ä¿¡å·
      */
     private String weixinId;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

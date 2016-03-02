@@ -1,6 +1,6 @@
 /*
  * SfUserRelation.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ·ÖÏúÓÃ»§¹ØÏµ±í
+ * åˆ†é”€ç”¨æˆ·å…³ç³»è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,19 +19,19 @@ public class SfUserRelation {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * ÉÏÒ»¼¶ÓÃ»§id
+     * ä¸Šä¸€çº§ç”¨æˆ·id
      */
     private Long parentUserId;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

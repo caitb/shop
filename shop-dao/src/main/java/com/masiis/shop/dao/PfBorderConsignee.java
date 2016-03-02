@@ -1,6 +1,6 @@
 /*
  * PfBorderConsignee.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨´úÀí¶©µ¥ÊÕ»õÈËĞÅÏ¢±í
+ * å¹³å°ä»£ç†è®¢å•æ”¶è´§äººä¿¡æ¯è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,51 +19,51 @@ public class PfBorderConsignee {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ¶©µ¥ºÅ
+     * è®¢å•å·
      */
     private Long pfBorderId;
     /**
-     * ÓÃ»§id
+     * ç”¨æˆ·id
      */
     private Long userId;
     /**
-     * ÊÕ»õÈËÃû³Æ
+     * æ”¶è´§äººåç§°
      */
     private String consignee;
     /**
-     * ÊÕ»õÈËÊÖ»úºÅ
+     * æ”¶è´§äººæ‰‹æœºå·
      */
     private String mobile;
     /**
-     * Ê¡id
+     * çœid
      */
     private Integer provinceId;
     /**
-     * Ê¡Ãû³Æ
+     * çœåç§°
      */
     private String provinceName;
     /**
-     * ÊĞid
+     * å¸‚id
      */
     private Integer cityId;
     /**
-     * ÊĞÃû³Æ
+     * å¸‚åç§°
      */
     private String cityName;
     /**
-     * Çøid
+     * åŒºid
      */
     private Integer regionId;
     /**
-     * ÇøÃû³Æ
+     * åŒºåç§°
      */
     private String regionName;
     /**
-     * ¾ßÌåµØÖ·
+     * å…·ä½“åœ°å€
      */
     private String address;
     private String remark;

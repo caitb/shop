@@ -1,6 +1,6 @@
 /*
  * PfBorderOperationLog.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨´úÀí¶©µ¥²Ù×÷ÈÕÖ¾±í
+ * å¹³å°ä»£ç†è®¢å•æ“ä½œæ—¥å¿—è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,23 +19,23 @@ public class PfBorderOperationLog {
 
     private Long id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ¶©µ¥ºÅ
+     * è®¢å•å·
      */
     private Long pfBorderId;
     /**
-     * ¶©µ¥×´Ì¬
+     * è®¢å•çŠ¶æ€
      */
     private Integer pfBorderStatus;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

@@ -1,6 +1,6 @@
 /*
  * PfCorderOperationLogExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfCorderOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨·ÖÏú¶©µ¥²Ù×÷ÈÕÖ¾±í
+     * å¹³å°åˆ†é”€è®¢å•æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -408,7 +408,7 @@ public class PfCorderOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨·ÖÏú¶©µ¥²Ù×÷ÈÕÖ¾±í
+     * å¹³å°åˆ†é”€è®¢å•æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

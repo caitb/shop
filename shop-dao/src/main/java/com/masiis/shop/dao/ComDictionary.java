@@ -1,6 +1,6 @@
 /*
  * ComDictionary.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -8,7 +8,7 @@
 package com.masiis.shop.dao;
 
 /**
- * ×Öµä±í
+ * å­—å…¸è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -17,19 +17,19 @@ public class ComDictionary {
 
     private Integer id;
     /**
-     * ±êÊ¶Âë
+     * æ ‡è¯†ç 
      */
     private String code;
     /**
-     * ¼ü
+     * é”®
      */
     private Integer key;
     /**
-     * Öµ
+     * å€¼
      */
     private String value;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

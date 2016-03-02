@@ -1,6 +1,6 @@
 /*
  * PbOperationLogExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -60,7 +60,7 @@ public class PbOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨ºóÌ¨²Ù×÷ÈÕÖ¾±í
+     * å¹³å°åå°æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -159,7 +159,7 @@ public class PbOperationLogExample {
     }
 
     /**
-     * Æ½Ì¨ºóÌ¨²Ù×÷ÈÕÖ¾±í
+     * å¹³å°åå°æ“ä½œæ—¥å¿—è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

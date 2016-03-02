@@ -1,6 +1,6 @@
 /*
  * PfSkuStock.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * Æ½Ì¨ÉÌÆ·SKU¿â´æ±í
+ * å¹³å°å•†å“SKUåº“å­˜è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,31 +19,31 @@ public class PfSkuStock {
 
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * Æ½Ì¨¹©Ó¦ÉÌid(ÔİÊ±²»ÓÃ£¬±£Áô)
+     * å¹³å°ä¾›åº”å•†id(æš‚æ—¶ä¸ç”¨ï¼Œä¿ç•™)
      */
     private Integer supplierId;
     /**
-     * spuÖ÷¼üid
+     * spuä¸»é”®id
      */
     private Integer spuId;
     /**
-     * skuÖ÷¼üid
+     * skuä¸»é”®id
      */
     private Integer skuId;
     /**
-     * ¿â´æÁ¿
+     * åº“å­˜é‡
      */
     private Integer stock;
     /**
-     * ¶³½á¿â´æÁ¿
+     * å†»ç»“åº“å­˜é‡
      */
     private Integer frozenStock;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

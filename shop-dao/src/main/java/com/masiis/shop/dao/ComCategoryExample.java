@@ -1,6 +1,6 @@
 /*
  * ComCategoryExample.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class ComCategoryExample {
     }
 
     /**
-     * ÉÌÆ··ÖÀà±í
+     * å•†å“åˆ†ç±»è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -656,7 +656,7 @@ public class ComCategoryExample {
     }
 
     /**
-     * ÉÌÆ··ÖÀà±í
+     * å•†å“åˆ†ç±»è¡¨
      * 
      * @author masiis
      * @version 1.0 2016-03-02

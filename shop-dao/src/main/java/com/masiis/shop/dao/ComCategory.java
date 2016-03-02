@@ -1,6 +1,6 @@
 /*
  * ComCategory.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * ÉÌÆ··ÖÀà±í
+ * å•†å“åˆ†ç±»è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -18,47 +18,47 @@ import java.util.Date;
 public class ComCategory {
 
     /**
-     * Ö÷¼üid
+     * ä¸»é”®id
      */
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ĞŞ¸ÄÊ±¼ä
+     * ä¿®æ”¹æ—¶é—´
      */
     private Date modifyTime;
     /**
-     * ĞŞ¸ÄÈË
+     * ä¿®æ”¹äºº
      */
     private Long modifyMan;
     /**
-     * Ãû³Æ
+     * åç§°
      */
     private String name;
     /**
-     * µÈ¼¶
+     * ç­‰çº§
      */
     private Byte level;
     /**
-     * ¸¸id
+     * çˆ¶id
      */
     private Integer pid;
     /**
-     * Õ¹Ê¾Ë³Ğò(ÉıĞò)
+     * å±•ç¤ºé¡ºåº(å‡åº)
      */
     private Integer sort;
     /**
-     * ÊÇ·ñÆôÓÃ£º0 ·ñ 1 ÊÇ
+     * æ˜¯å¦å¯ç”¨ï¼š0 å¦ 1 æ˜¯
      */
     private Integer isValidate;
     /**
-     * ±¸×¢
+     * å¤‡æ³¨
      */
     private String remark;
 

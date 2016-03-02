@@ -1,6 +1,6 @@
 /*
  * PfUserCertificateExample.java
- * Copyright(C) 2014-2016 麦士集团
+ * Copyright(C) 2014-2016 楹﹀＋闆嗗洟
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -61,7 +61,7 @@ public class PfUserCertificateExample {
     }
 
     /**
-     * 平台用户授权书表
+     * 骞冲彴鐢ㄦ埛鎺堟潈涔﹁〃
      * 
      * @author masiis
      * @version 1.0 2016-03-02
@@ -928,7 +928,7 @@ public class PfUserCertificateExample {
     }
 
     /**
-     * 平台用户授权书表
+     * 骞冲彴鐢ㄦ埛鎺堟潈涔﹁〃
      * 
      * @author masiis
      * @version 1.0 2016-03-02

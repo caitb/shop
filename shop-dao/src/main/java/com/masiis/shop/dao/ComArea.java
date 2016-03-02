@@ -1,6 +1,6 @@
 /*
  * ComArea.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -10,7 +10,7 @@ package com.masiis.shop.dao;
 import java.util.Date;
 
 /**
- * µØÖ·±í
+ * åœ°å€è¡¨
  * 
  * @author masiis
  * @version 1.0 2016-03-02
@@ -19,39 +19,39 @@ public class ComArea {
 
     private Integer id;
     /**
-     * ´´½¨Ê±¼ä
+     * åˆ›å»ºæ—¶é—´
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ±àÂë
+     * ç¼–ç 
      */
     private String code;
     /**
-     * Ãû³Æ
+     * åç§°
      */
     private String name;
     /**
-     * ¸¸id
+     * çˆ¶id
      */
     private Integer pid;
     /**
-     * Ê÷µÈ¼¶
+     * æ ‘ç­‰çº§
      */
     private Integer level;
     /**
-     * Æ´ÒôÈ«³Æ
+     * æ‹¼éŸ³å…¨ç§°
      */
     private String nameEn;
     /**
-     * Æ´Òô¼ò³Æ
+     * æ‹¼éŸ³ç®€ç§°
      */
     private String shortnameEn;
     /**
-     * ÅÅĞò£¬Ğ¡µ½´ó
+     * æ’åºï¼Œå°åˆ°å¤§
      */
     private Integer sort;
     private String remark;

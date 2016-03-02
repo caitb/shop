@@ -1,6 +1,6 @@
 /*
  * ComSpuKey.java
- * Copyright(C) 2014-2016 ÂóÊ¿¼¯ÍÅ
+ * Copyright(C) 2014-2016 éº¦å£«é›†å›¢
  * All rights reserved.
  * -----------------------------------------------
  * 2016-03-02 Created
@@ -13,35 +13,35 @@ public class ComSpuKey {
 
     private Integer id;
     /**
-     * spuÃû³Æ
+     * spuåç§°
      */
     private String name;
     /**
-     * ´´½¨ÈÕÆÚ
+     * åˆ›å»ºæ—¥æœŸ
      */
     private Date createTime;
     /**
-     * ´´½¨ÈË
+     * åˆ›å»ºäºº
      */
     private Long createMan;
     /**
-     * ÉÌÆ··ÖÀàid
+     * å•†å“åˆ†ç±»id
      */
     private Integer categoryId;
     /**
-     * ÉÌÆ··ÖÀàÃû³Æ
+     * å•†å“åˆ†ç±»åç§°
      */
     private String categoryName;
     /**
-     * ÉÌÆ·×´Ì¬(0Î´ÉóºË1ÒÑÉóºË)
+     * å•†å“çŠ¶æ€(0æœªå®¡æ ¸1å·²å®¡æ ¸)
      */
     private Integer status;
     /**
-     * ÉÏÏÂ¼Ü±êÖ¾(0ÏÂ¼Ü1ÉÏ¼Ü)
+     * ä¸Šä¸‹æ¶æ ‡å¿—(0ä¸‹æ¶1ä¸Šæ¶)
      */
     private Integer isSale;
     /**
-     * É¾³ı±êÖ¾(0·ñ1ÊÇ)
+     * åˆ é™¤æ ‡å¿—(0å¦1æ˜¯)
      */
     private Integer isDelete;
 

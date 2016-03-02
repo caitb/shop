@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.PbUserMenuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.PbUserMenu" >
+<mapper namespace="com.masiis.shop.dao.generate.PbUserMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.PbUserMenu" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="pb_user_id" property="pbUserId" jdbcType="BIGINT" />
         <result column="pb_menu_id" property="pbMenuId" jdbcType="BIGINT" />
@@ -73,7 +73,7 @@
         id, pb_user_id, pb_menu_id, create_time, update_time
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.PbUserMenuExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.PbUserMenuExample" >
         select
         <if test="distinct" >
             distinct
@@ -88,7 +88,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.PbUserMenuExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.PbUserMenuExample" resultType="java.lang.Integer" >
         select count(*) from pb_user_menu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -131,7 +131,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.PbUserMenu" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.PbUserMenu" >
         update pb_user_menu
         <set >
             <if test="pbUserId != null" >
@@ -150,7 +150,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.PbUserMenuExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.PbUserMenuExample" >
         delete from pb_user_menu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

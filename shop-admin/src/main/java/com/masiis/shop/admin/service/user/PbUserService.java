@@ -1,8 +1,8 @@
 package com.masiis.shop.admin.service.user;
 
-import com.masiis.shop.dao.PbUser;
-import com.masiis.shop.dao.PbUserExample;
-import com.masiis.shop.dao.PbUserMapper;
+import com.masiis.shop.dao.generate.PbUser;
+import com.masiis.shop.dao.generate.PbUserExample;
+import com.masiis.shop.dao.generate.PbUserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

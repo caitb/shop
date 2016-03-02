@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.PfSkuStockMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.PfSkuStock" >
+<mapper namespace="com.masiis.shop.dao.generate.PfSkuStockMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.PfSkuStock" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
@@ -76,7 +76,7 @@
         id, create_time, supplier_id, spu_id, sku_id, stock, frozen_stock, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.PfSkuStockExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.PfSkuStockExample" >
         select
         <if test="distinct" >
             distinct
@@ -91,7 +91,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.PfSkuStockExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.PfSkuStockExample" resultType="java.lang.Integer" >
         select count(*) from pf_sku_stock
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -146,7 +146,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.PfSkuStock" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.PfSkuStock" >
         update pf_sku_stock
         <set >
             <if test="createTime != null" >
@@ -174,7 +174,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.PfSkuStockExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.PfSkuStockExample" >
         delete from pf_sku_stock
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

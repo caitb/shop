@@ -1,7 +1,7 @@
 package com.masiis.shop.admin.service.system;
 
 
-import com.masiis.shop.dao.*;
+import com.masiis.shop.dao.generate.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

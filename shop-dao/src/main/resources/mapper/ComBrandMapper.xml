@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.ComBrandMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.ComBrand" >
+<mapper namespace="com.masiis.shop.dao.generate.ComBrandMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.generate.ComBrand" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="cname" property="cname" jdbcType="VARCHAR" />
@@ -74,7 +74,7 @@
         id, create_time, cname, ename, logo_url, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.ComBrandExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.generate.ComBrandExample" >
         select
         <if test="distinct" >
             distinct
@@ -89,7 +89,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.ComBrandExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.generate.ComBrandExample" resultType="java.lang.Integer" >
         select count(*) from com_brand
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -136,7 +136,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.ComBrand" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.generate.ComBrand" >
         update com_brand
         <set >
             <if test="createTime != null" >
@@ -158,7 +158,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.ComBrandExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.generate.ComBrandExample" >
         delete from com_brand
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

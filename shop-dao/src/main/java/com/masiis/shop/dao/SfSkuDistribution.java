@@ -1,0 +1,65 @@
+/*
+ * SfSkuDistribution.java
+ * Copyright(C) 2014-2016 麦士集团
+ * All rights reserved.
+ * -----------------------------------------------
+ * 2016-03-02 Created
+ */
+package com.masiis.shop.dao;
+
+import java.math.BigDecimal;
+
+/**
+ * 商铺SKU分销分润表
+ * 
+ * @author masiis
+ * @version 1.0 2016-03-02
+ */
+public class SfSkuDistribution {
+
+    private Integer id;
+    /**
+     * SKU主键ID
+     */
+    private Integer skuId;
+    /**
+     * 从小到大对应分润
+     */
+    private Integer sort;
+    /**
+     * 折扣(例如0.35为35%也就是3.5折)
+     */
+    private BigDecimal discount;
+    private String remark;
+
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    public Integer getSkuId() {
+        return skuId;
+    }
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
+    public Integer getSort() {
+        return sort;
+    }
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+}

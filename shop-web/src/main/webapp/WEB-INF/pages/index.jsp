@@ -32,6 +32,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <div class="swiper-container">
                             <div class="swiper-wrapper">
                                 <c:forEach items="urls" var="url">
+                                    <%
+                                        out.write("url: ");
+                                    %>
+                                    ${url}
                                     <div class="swiper-slide"><img src="${url}" alt=""></div>
                                 </c:forEach>
                                 <div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>
@@ -81,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <h2>抗引力—快速瘦脸精华</h2>
                             <h1>￥328 <span>成为合伙人可查看</span></h1>
                             <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/lo/quote">我要合伙</a>
+                            <a href="<%=path%>/index/banner<%--/lo/quote--%>">我要合伙</a>
                         </div>
                         <div>
                             <img src="<%=path%>/static/images/cp_1.png" alt="">

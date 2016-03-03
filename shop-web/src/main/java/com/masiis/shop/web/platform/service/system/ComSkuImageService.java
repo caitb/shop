@@ -28,4 +28,5 @@ public class ComSkuImageService {
         System.out.println(comSkuImageMap.selectAllComSkuImage());
         return comSkuImageMap.selectAllComSkuImage();
     }
+
 }

@@ -13,4 +13,6 @@ public interface ComSkuImageMap {
      * @return
      */
     public List<ComSkuImage> selectAllComSkuImage();
+
+
 }

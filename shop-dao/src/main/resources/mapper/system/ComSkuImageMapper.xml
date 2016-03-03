@@ -18,4 +18,5 @@
     <select id="selectAllComSkuImage" resultMap="ImageResultMap">
         select id, img_name,img_url from com_sku_image
     </select>
+
 </mapper>

@@ -31,9 +31,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="banner">
                    <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>
+                                <c:forEach items="urls" var="url">
+                                    <div class="swiper-slide"><img src="${url}" alt=""></div>
+                                </c:forEach>
                                 <div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>
-                                <div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>
+                                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>--%>
                             </div>
                                 <!-- 如果需要分页器 -->
                             <div class="swiper-pagination"></div>

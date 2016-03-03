@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItemMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItem" >
+<mapper namespace="com.masiis.shop.dao.PfBorderItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderItem" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
@@ -16,202 +16,51 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_border_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
 
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
+        insert into pf_border_item (id, create_time, pf_border_id, 
+            spu_id, sku_id, sku_name, 
+            quantity, unit_price, total_price, 
+            is_comment, is_return, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT}, 
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, 
+            #{quantity,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
+            #{isComment,jdbcType=INTEGER}, #{isReturn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
 
-    <sql id="Base_Column_List" >
-        id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, unit_price, total_price, 
-        is_comment, is_return, remark
-    </sql>
-
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItemExample" >
-        select
-        <if test="distinct" >
-            distinct
-        </if>
-        <include refid="Base_Column_List" />
-        from pf_border_item
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-        <if test="orderByClause != null" >
-            order by ${orderByClause}
-        </if>
-    </select>
-
-    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItemExample" resultType="java.lang.Integer" >
-        select count(*) from pf_border_item
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </select>
-
-    <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
         update pf_border_item
-        <set >
-            <if test="record.id != null" >
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
-            <if test="record.createTime != null" >
-                create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.pfBorderId != null" >
-                pf_border_id = #{record.pfBorderId,jdbcType=BIGINT},
-            </if>
-            <if test="record.spuId != null" >
-                spu_id = #{record.spuId,jdbcType=INTEGER},
-            </if>
-            <if test="record.skuId != null" >
-                sku_id = #{record.skuId,jdbcType=INTEGER},
-            </if>
-            <if test="record.skuName != null" >
-                sku_name = #{record.skuName,jdbcType=VARCHAR},
-            </if>
-            <if test="record.quantity != null" >
-                quantity = #{record.quantity,jdbcType=INTEGER},
-            </if>
-            <if test="record.unitPrice != null" >
-                unit_price = #{record.unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="record.totalPrice != null" >
-                total_price = #{record.totalPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="record.isComment != null" >
-                is_comment = #{record.isComment,jdbcType=INTEGER},
-            </if>
-            <if test="record.isReturn != null" >
-                is_return = #{record.isReturn,jdbcType=INTEGER},
-            </if>
-            <if test="record.remark != null" >
-                remark = #{record.remark,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-
-    <update id="updateByExample" parameterType="map" >
-        update pf_border_item
-        set id = #{record.id,jdbcType=BIGINT},
-            create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            pf_border_id = #{record.pfBorderId,jdbcType=BIGINT},
-            spu_id = #{record.spuId,jdbcType=INTEGER},
-            sku_id = #{record.skuId,jdbcType=INTEGER},
-            sku_name = #{record.skuName,jdbcType=VARCHAR},
-            quantity = #{record.quantity,jdbcType=INTEGER},
-            unit_price = #{record.unitPrice,jdbcType=DECIMAL},
-            total_price = #{record.totalPrice,jdbcType=DECIMAL},
-            is_comment = #{record.isComment,jdbcType=INTEGER},
-            is_return = #{record.isReturn,jdbcType=INTEGER},
-            remark = #{record.remark,jdbcType=VARCHAR}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItem" >
-        update pf_border_item
-        <set >
-            <if test="createTime != null" >
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="pfBorderId != null" >
-                pf_border_id = #{pfBorderId,jdbcType=BIGINT},
-            </if>
-            <if test="spuId != null" >
-                spu_id = #{spuId,jdbcType=INTEGER},
-            </if>
-            <if test="skuId != null" >
-                sku_id = #{skuId,jdbcType=INTEGER},
-            </if>
-            <if test="skuName != null" >
-                sku_name = #{skuName,jdbcType=VARCHAR},
-            </if>
-            <if test="quantity != null" >
-                quantity = #{quantity,jdbcType=INTEGER},
-            </if>
-            <if test="unitPrice != null" >
-                unit_price = #{unitPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="totalPrice != null" >
-                total_price = #{totalPrice,jdbcType=DECIMAL},
-            </if>
-            <if test="isComment != null" >
-                is_comment = #{isComment,jdbcType=INTEGER},
-            </if>
-            <if test="isReturn != null" >
-                is_return = #{isReturn,jdbcType=INTEGER},
-            </if>
-            <if test="remark != null" >
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-        </set>
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            sku_name = #{skuName,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            unit_price = #{unitPrice,jdbcType=DECIMAL},
+            total_price = #{totalPrice,jdbcType=DECIMAL},
+            is_comment = #{isComment,jdbcType=INTEGER},
+            is_return = #{isReturn,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfBorderItemExample" >
-        delete from pf_border_item
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, unit_price, 
+        total_price, is_comment, is_return, remark
+        from pf_border_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, unit_price, 
+        total_price, is_comment, is_return, remark
+        from pf_border_item
+    </select>
 
 </mapper>

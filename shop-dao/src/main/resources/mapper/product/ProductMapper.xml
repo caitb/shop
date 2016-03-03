@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ProductMapper" >
+    <resultMap id="ProductResultMap" type="com.masiis.shop.dao.beans.product.Product" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
+        <result column="price_cost" property="priceCost" jdbcType="DECIMAL" />
+        <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
+        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="name" property="spuName" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+        <result column="stock" property="stock" jdbcType="INTEGER" />
+    </resultMap>
+    <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="img_name" property="imgName" jdbcType="VARCHAR" />
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
+        SELECT sku.name,sku.price_retail,sku.remark,
+                spu.name,spu.slogan,spu.content,
+                sku_stok.stock
+        FROM com_sku sku
+        LEFT JOIN com_spu spu ON sku.spu_id = spu.id
+        LEFT JOIN pf_sku_stock sku_stok ON sku_stok.sku_id = sku.id
+        WHERE sku.id = #{skuId}
+    </select>
+
+    <select id="getSkuImgById" resultMap="SkuImgResultMap" parameterType="String">
+       SELECT img_url,img_name,sort
+       FROM com_sku_image
+       WHERE sku_id = #{skuId}
+    </select>
+</mapper>

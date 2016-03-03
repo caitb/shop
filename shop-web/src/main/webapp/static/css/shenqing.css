@@ -30,7 +30,7 @@ body .kang .photo img {
   height: 55px;
 }
 body .kang div {
-  width: 80%;
+  -webkit-box-flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-pack: center;
@@ -40,7 +40,6 @@ body .kang div {
 body .kang div h2 {
   color: #FF5200;
   font-size: 15px;
-  font-weight: 600;
 }
 body .kang div p {
   width: 100%;
@@ -50,17 +49,16 @@ body .kang div p {
 body .he {
   width: 100%;
   height: 38px;
-  margin-top: 5px;
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
   background: white;
+  border-bottom: 1px solid #f6f6f6;
 }
 body .he h1 {
   background: url("../images/shenqing_2.png") no-repeat;
   background-size: 20%;
   color: #333333;
-  font-weight: 600;
   padding-left: 25px;
 }
 body main {
@@ -73,10 +71,10 @@ body main {
 body main .sec1 {
   width: 100%;
   height: 55px;
-  margin-top: 5px;
   background: white;
   display: -webkit-box;
   -webkit-box-align: center;
+  border-bottom: 1px solid #f6f6f6;
 }
 body main .sec1 img {
   display: block;
@@ -91,9 +89,8 @@ body main .sec1 div {
   -webkit-box-orient: vertical;
 }
 body main .sec1 div h2 {
-  color: #FF5200;
+  color: #333333;
   font-size: 15px;
-  font-weight: 600;
 }
 body main .sec1 div p {
   width: 100%;
@@ -104,10 +101,12 @@ body main .sec1_2 div {
   margin-left: 42px;
 }
 body main .sec2 {
-  width: 100%;
+  margin: 0 10px;
   display: -webkit-box;
   height: 42px;
-  margin-top: 15px;
+  margin-top: 1rem;
+  border-radius: 5px;
+  overflow: hidden;
 }
 body main .sec2 p {
   display: -webkit-box;

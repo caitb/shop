@@ -16,36 +16,36 @@ public interface PbUserMenuMapper {
      * @param id
      * @return
      */
-    PbUserMenu selectById(Long id);
+    PbUserMenu selectById(@Param("id")Long id);
 
     /**
      * 根据条件查询记录
      * @param pbUserMenu
      * @return
      */
-    List<PbUserMenu> selectByCondition(@Param("pbUserMenu") PbUserMenu pbUserMenu);
+    List<PbUserMenu> selectByCondition(@Param("pbUserMenu")PbUserMenu pbUserMenu);
 
     /**
      * 添加一条记录
      * @param pbUserMenu
      */
-    void insert(PbUserMenu pbUserMenu);
+    void insert(@Param("pbUserMenu")PbUserMenu pbUserMenu);
 
     /**
      * 根据id更新一条记录
      * @param pbUserMenu
      */
-    void updateById(PbUserMenu pbUserMenu);
+    void updateById(@Param("pbUserMenu")PbUserMenu pbUserMenu);
 
     /**
      * 根据id删除一条记录
      * @param id
      */
-    void deleteById(Long id);
+    void deleteById(@Param("id")Long id);
 
     /**
      * 根据pb_user_id删除记录
      * @param pbUserId
      */
-    void deleteByPbUserId(Long pbUserId);
+    void deleteByPbUserId(@Param("pbUserId")Long pbUserId);
 }

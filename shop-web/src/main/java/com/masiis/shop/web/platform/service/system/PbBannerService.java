@@ -1,13 +1,15 @@
 package com.masiis.shop.web.platform.service.system;
 
 
-import com.masiis.shop.dao.platform.system.ComSkuImageMap;
-import com.masiis.shop.dao.po.ComSkuImage;
+
+import com.masiis.shop.dao.platform.system.PbBannerMapper;
+import com.masiis.shop.dao.po.PbBanner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 
 /**
  * Created by muchaofeng on 2016/3/2.
@@ -15,18 +17,17 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ComSkuImageService {
+public class PbBannerService {
     @Resource
-    private ComSkuImageMap comSkuImageMap;
+    private PbBannerMapper pbBannerMapper;
 
     /**
      * 获取所有图片
      *
      * @return
      */
-    public List<ComSkuImage> findImage(){
-        System.out.println(comSkuImageMap.selectAllComSkuImage());
-        return comSkuImageMap.selectAllComSkuImage();
+    public List<PbBanner> findPbBanner(){
+        return pbBannerMapper.selectAllPbBanner();
     }
 
 }

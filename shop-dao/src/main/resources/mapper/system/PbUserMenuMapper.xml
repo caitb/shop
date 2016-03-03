@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.PbUserMenuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.PbUserMenu" >
+<mapper namespace="com.masiis.shop.dao.platform.system.PbUserMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbUserMenu" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="pb_user_id" property="pbUserId" jdbcType="BIGINT" />
         <result column="pb_menu_id" property="pbMenuId" jdbcType="BIGINT" />
@@ -29,10 +29,10 @@
             <if test="pbUserMenu.id != null">
                 id = #{pbUserMenu.id}
             </if>
-            <if test="pbUserId != null">
+            <if test="pbUserMenu.pbUserId != null">
                 AND pb_user_id = #{pbUserMenu.pbUserId}
             </if>
-            <if test="pbMenuId">
+            <if test="pbUserMenu.pbMenuId != null">
                 AND pb_menu_id = #{pbUserMenu.pbMenuId}
             </if>
         </where>

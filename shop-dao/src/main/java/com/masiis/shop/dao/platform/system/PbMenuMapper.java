@@ -19,22 +19,22 @@ public interface PbMenuMapper {
 
     /**
      * 根据条件查询记录
-     * @param pbUser
+     * @param pbMenu
      * @return
      */
-    List<PbMenu> selectByCondition(PbMenu pbUser);
+    List<PbMenu> selectByCondition(PbMenu pbMenu);
 
     /**
      * 添加一条记录
-     * @param pbUser
+     * @param pbMenu
      */
-    void insert(PbMenu pbUser);
+    void insert(PbMenu pbMenu);
 
     /**
      * 根据id更新一条记录
-     * @param pbUser
+     * @param pbMenu
      */
-    void updateById(PbMenu pbUser);
+    void updateById(PbMenu pbMenu);
 
     /**
      * 根据id删除一条记录

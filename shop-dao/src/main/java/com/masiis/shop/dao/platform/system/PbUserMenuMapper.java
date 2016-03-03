@@ -2,6 +2,7 @@ package com.masiis.shop.dao.platform.system;
 
 
 import com.masiis.shop.dao.po.PbUserMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,22 +20,22 @@ public interface PbUserMenuMapper {
 
     /**
      * 根据条件查询记录
-     * @param pbUser
+     * @param pbUserMenu
      * @return
      */
-    List<PbUserMenu> selectByCondition(PbUserMenu pbUser);
+    List<PbUserMenu> selectByCondition(@Param("pbUserMenu") PbUserMenu pbUserMenu);
 
     /**
      * 添加一条记录
-     * @param pbUser
+     * @param pbUserMenu
      */
-    void insert(PbUserMenu pbUser);
+    void insert(PbUserMenu pbUserMenu);
 
     /**
      * 根据id更新一条记录
-     * @param pbUser
+     * @param pbUserMenu
      */
-    void updateById(PbUserMenu pbUser);
+    void updateById(PbUserMenu pbUserMenu);
 
     /**
      * 根据id删除一条记录

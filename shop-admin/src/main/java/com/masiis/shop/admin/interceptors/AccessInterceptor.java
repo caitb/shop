@@ -44,7 +44,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
 //                sysUserMenuExample
 //                        .createCriteria()
 //                        .andUserIdEqualTo(sysUser.getId());
-//                List<SysUserMenu> sysUserMenus = userMenuService.findByExample(sysUserMenuExample);
+//                List<SysUserMenu> sysUserMenus = userMenuService.findByCondition(sysUserMenuExample);
 //                for(SysUserMenu sysUserMenu : sysUserMenus){
 //                    SysMenu sysMenu = menuService.findById(sysUserMenu.getMenuId());
 //                    if(sysMenu.getUrl() != null && (url.contains("index") || url.contains(sysMenu.getUrl())) ){

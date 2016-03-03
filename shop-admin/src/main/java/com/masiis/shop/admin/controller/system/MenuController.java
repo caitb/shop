@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.admin.service.system.PbMenuService;
 import com.masiis.shop.admin.service.system.PbUserMenuService;
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.PbMenu;
+import com.masiis.shop.dao.po.PbUser;
+import com.masiis.shop.dao.po.PbUserMenu;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,13 +43,12 @@ public class MenuController {
 
         ModelAndView mav = new ModelAndView("system/tree_menu");
 
-        List<PbMenu> pbMenus = pbMenuService.findByExample(new PbMenuExample());
+        List<PbMenu> pbMenus = pbMenuService.findByCondition(new PbMenu());
         String pbMenusJson = objectMapper.writeValueAsString(pbMenus);
 
-        PbUserMenuExample pbUserMenuExample = new PbUserMenuExample();
-        PbUserMenuExample.Criteria criteria = pbUserMenuExample.createCriteria();
-        criteria.andPbUserIdEqualTo(userId);
-        List<PbUserMenu> pbUserMenus = pbUserMenuService.findByExample(pbUserMenuExample);
+        PbUserMenu pbUserMenuC = new PbUserMenu();
+        pbUserMenuC.setPbUserId(userId);
+        List<PbUserMenu> pbUserMenus = pbUserMenuService.findByCondition(pbUserMenuC);
         String pbUserMenusJson = objectMapper.writeValueAsString(pbUserMenus);
 
         mav.addObject("pbMenusJson", pbMenusJson);

@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.service.system;
 
+import com.masiis.shop.dao.platform.system.PbUserMenuMapper;
+import com.masiis.shop.dao.po.PbUserMenu;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,11 +18,11 @@ public class PbUserMenuService {
 
     /**
      * 根据条件查询
-     * @param pbUserMenuExample
+     * @param pbUserMenu
      * @return
      */
-    public List<PbUserMenu> findByExample(PbUserMenuExample pbUserMenuExample){
-        return pbUserMenuMapper.selectByExample(pbUserMenuExample);
+    public List<PbUserMenu> findByCondition(PbUserMenu pbUserMenu){
+        return pbUserMenuMapper.selectByCondition(pbUserMenu);
     }
 
     /**
@@ -32,18 +34,10 @@ public class PbUserMenuService {
     }
 
     /**
-     * 根据条件更新记录
-     * @param pbUserMenu
+     * 根据pbUserId删除记录
+     * @param pbUserId
      */
-    public void updateByExample(PbUserMenu pbUserMenu, PbUserMenuExample pbUserMenuExample){
-        pbUserMenuMapper.updateByExample(pbUserMenu, pbUserMenuExample);
-    }
-
-    /**
-     * 根据条件删除记录
-     * @param pbUserMenuExample
-     */
-    public void deleteByExample(PbUserMenuExample pbUserMenuExample){
-        pbUserMenuMapper.deleteByExample(pbUserMenuExample);
+    public void deleteByPbUserId(Long pbUserId){
+        pbUserMenuMapper.deleteByPbUserId(pbUserId);
     }
 }

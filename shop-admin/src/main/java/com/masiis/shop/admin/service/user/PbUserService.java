@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.service.user;
 
+import com.masiis.shop.dao.platform.system.PbUserMapper;
+import com.masiis.shop.dao.po.PbUser;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,17 +21,17 @@ public class PbUserService {
      * @param id
      * @return
      */
-    public PbUser findByPrimaryKey(Long id){
-        return pbUserMapper.selectByPrimaryKey(id);
+    public PbUser findByid(Long id){
+        return pbUserMapper.selectById(id);
     }
 
     /**
      * 根据条件查询
-     * @param pbUserExample
+     * @param pbUser
      * @return
      */
-    public List<PbUser> findByExample(PbUserExample pbUserExample){
-        return pbUserMapper.selectByExample(pbUserExample);
+    public List<PbUser> findByCondition(PbUser pbUser){
+        return pbUserMapper.selectByCondition(pbUser);
     }
 
     /**
@@ -44,7 +46,7 @@ public class PbUserService {
      * 根据ID更新记录
      * @param pbUser
      */
-    public void updateByPrimaryKey(PbUser pbUser){
-        pbUserMapper.updateByPrimaryKey(pbUser);
+    public void updateById(PbUser pbUser){
+        pbUserMapper.updateById(pbUser);
     }
 }

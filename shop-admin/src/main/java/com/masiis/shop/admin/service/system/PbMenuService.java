@@ -1,7 +1,10 @@
 package com.masiis.shop.admin.service.system;
 
 
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.platform.system.PbMenuMapper;
+import com.masiis.shop.dao.platform.system.PbUserMenuMapper;
+import com.masiis.shop.dao.po.PbMenu;
+import com.masiis.shop.dao.po.PbUserMenu;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,29 +27,27 @@ public class PbMenuService {
      * @param id
      * @return
      */
-    public PbMenu findByPrimaryKey(Long id){
-        return pbMenuMapper.selectByPrimaryKey(id);
+    public PbMenu findById(Long id){
+        return pbMenuMapper.selectById(id);
     }
 
     /**
      * 查找用户菜单项
-     * @param userId
+     * @param pbUserId
      * @return
      */
-    public List<PbMenu> findByPbUserId(Long userId){
+    public List<PbMenu> findByPbUserId(Long pbUserId){
         List<PbMenu> pbMenus = new ArrayList<>();
 
-        if(userId == null){
+        if(pbUserId == null){
             return pbMenus;
         }
-
-        PbUserMenuExample pbUserMenuExample = new PbUserMenuExample();
-        PbUserMenuExample.Criteria criteria = pbUserMenuExample.createCriteria();
-        criteria.andPbUserIdEqualTo(userId);
-        List<PbUserMenu> pbUserMenus = pbUserMenuMapper.selectByExample(pbUserMenuExample);
+        PbUserMenu pbUserMenuC = new PbUserMenu();
+        pbUserMenuC.setPbUserId(pbUserId);
+        List<PbUserMenu> pbUserMenus = pbUserMenuMapper.selectByCondition(pbUserMenuC);
 
         for(PbUserMenu pbUserMenu : pbUserMenus){
-            PbMenu pbMenu = pbMenuMapper.selectByPrimaryKey(pbUserMenu.getPbMenuId());
+            PbMenu pbMenu = pbMenuMapper.selectById(pbUserMenu.getPbMenuId());
             if(pbMenu != null) pbMenus.add(pbMenu);
         }
         return pbMenus;
@@ -54,11 +55,11 @@ public class PbMenuService {
 
     /**
      * 根据条件查询
-     * @param pbMenuExample
+     * @param pbMenu
      * @return
      */
-    public List<PbMenu> findByExample(PbMenuExample pbMenuExample){
-        return pbMenuMapper.selectByExample(pbMenuExample);
+    public List<PbMenu> findByCondition(PbMenu pbMenu){
+        return pbMenuMapper.selectByCondition(pbMenu);
     }
 
     /**
@@ -73,7 +74,7 @@ public class PbMenuService {
      * 根据ID更新记录
      * @param pbMenu
      */
-    public void updateByPrimaryKey(PbMenu pbMenu){
-        pbMenuMapper.updateByPrimaryKey(pbMenu);
+    public void updateById(PbMenu pbMenu){
+        pbMenuMapper.updateById(pbMenu);
     }
 }

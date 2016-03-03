@@ -30,3 +30,8 @@ body div p {
   text-indent: 10px;
   color: #A2A2A2;
 }
+body div h3,
+body div h4 {
+  color: #FF5200;
+  text-indent: 10px;
+}

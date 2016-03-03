@@ -17,31 +17,33 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-body main {
+body .wrap {
+  -webkit-box-flex: 1;
+}
+body .wrap main {
   width: 100%;
   height: 80%;
-  position: relative;
 }
-body main .sec1 {
+body .wrap main .sec1 {
   margin-bottom: 5px;
   width: 100%;
 }
-body main .sec1 div {
+body .wrap main .sec1 div {
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
   background: white;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-body main .sec1 div p {
+body .wrap main .sec1 div p {
   text-indent: 10px;
   color: #444444;
   line-height: 40px;
 }
-body main .sec1 div p b {
+body .wrap main .sec1 div p b {
   color: #B2B2B2;
 }
-body main .sec1 div p span {
+body .wrap main .sec1 div p span {
   font-size: 12px;
   color: #B2B2B2;
   display: block;
@@ -49,26 +51,26 @@ body main .sec1 div p span {
   line-height: 40px;
   margin-right: 10px;
 }
-body main .sec2 {
+body .wrap main .sec2 {
   width: 100%;
   background: white;
 }
-body main .sec2 h2 {
+body .wrap main .sec2 h2 {
   color: #444444;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
   text-indent: 10px;
 }
-body main .sec2 p {
+body .wrap main .sec2 p {
   text-indent: 10px;
   color: #444444;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
 }
-body main .sec2 p b {
+body .wrap main .sec2 p b {
   color: #B2B2B2;
 }
-body main .sec2 p span {
+body .wrap main .sec2 p span {
   font-size: 12px;
   color: #B2B2B2;
   display: block;
@@ -76,7 +78,7 @@ body main .sec2 p span {
   line-height: 40px;
   margin-right: 10px;
 }
-body main .sec3 {
+body .wrap main .sec3 {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -84,7 +86,7 @@ body main .sec3 {
   display: -webkit-box;
   margin-top: 20px;
 }
-body main .sec3 a {
+body .wrap main .sec3 a {
   display: block;
   -webkit-box-flex: 1;
   background: #F74A11;
@@ -92,7 +94,7 @@ body main .sec3 a {
   line-height: 40px;
   color: white;
 }
-body main .sec3 a:nth-child(2) {
+body .wrap main .sec3 a:nth-child(2) {
   -webkit-box-flex: 2;
   background: #DA3600;
 }

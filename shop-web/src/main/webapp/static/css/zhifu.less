@@ -14,16 +14,14 @@ body{
     height: 100%;
     display: -webkit-box;
     -webkit-box-orient:vertical;
-    main{
+    .wrap{
+        -webkit-box-flex:1;
+        main{
         width: 100%;
          .dingdan{
             width: 100%;
             padding-top: 10px;
             background: white;
-            h2{
-                font-size: 15px;
-                text-align: center;
-            }
             p{
                 font-size: 12px;
                 color: #999999;
@@ -37,12 +35,11 @@ body{
             }
         .xinz{
             width: 100%;
-            height: 55px;
+            height: 40px;
             display: -webkit-box;
             -webkit-box-align:center;
             background: white;
             -webkit-box-pack:center;
-            display: none;
             p{
                 background: url("../images/xz.png") no-repeat 5px;
                 text-indent: 20px;
@@ -56,7 +53,8 @@ body{
                     background: white;
                     display: -webkit-box;
                     -webkit-box-align:center;
-                 -webkit-box-pack:justify;
+                     -webkit-box-pack:justify;
+                     display: none;
                     img{
                         display:inline-block;
                         width: 15px;
@@ -76,6 +74,7 @@ body{
                                 margin-right: 10px;
                             }
                         }
+                      
                         p{
                             width:100%;
                             overflow: hidden;
@@ -129,6 +128,10 @@ body{
                 }
                 h3{
                     color: #999999;
+                    font-size: 12px;
+                    span{
+                        font-size: 12px;
+                    }
                 }
                 p{
                     width:100%;
@@ -158,7 +161,7 @@ body{
                      width: 80%;
                      display: inline-block;
                  }
-                 span{
+                 span,b{
                      color: #FF7F5A;
                      display: inline-block;
                      float: right;
@@ -166,21 +169,48 @@ body{
                      margin-right: 10px;
                      font-size: 12px;
                  }
+                 b{
+                   color: #999999;  
+                 }
              }
              h1{
                  width: 100%;
                  height: 40px;
                  line-height: 40px;
-                 text-indent: 10px;
                  border-bottom: 1px solid #f6f6f6;
                  color: #999999;
                  font-size: 12px;
-                 span,b{
+                 text-align: right;
+                 span{
                      color: #FF7F5A;
+                     font-size: 12px;
+                     padding-right: 10px;
+                 }
+                 b{
                      font-size: 12px;
                  }
              }
          }
+        .sec4{
+            width: 100%;
+            display: -webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-box-pack:center;
+            -webkit-box-align:center;
+            background: white;
+            padding: 10px 0;
+            margin-top: 10px;
+            p{
+                font-size: 12px;
+            }
+            span{
+                color: #FF5200;
+                font-size:12px;
+            }
+            b{
+                font-size: 12px;
+            }
+        }
         .weixin,.xianxia{
             display: block;
             background: #45A5CF;
@@ -195,4 +225,5 @@ body{
             background: #F74A11;
         }
         }
+    }
 }

@@ -1,15 +1,10 @@
 package com.masiis.shop.web.platform.controller.system;
 
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.ComSkuImageExample;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.system.ComSkuImageService;
+//import com.masiis.shop.web.platform.service.system.ComSkuImageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by muchaofeng on 2016/3/2.
@@ -19,7 +14,7 @@ import java.util.List;
 @RequestMapping("/index")
 public class IndexController extends BaseController {
 
-    private ComSkuImageService comSkuImageService;
+    //private ComSkuImageService comSkuImageService;
 
     @RequestMapping("banner")
     public ModelAndView BannerList(){

@@ -121,27 +121,27 @@
                                             valign: 'middle',
                                             sortable: true,
                                             footerFormatter: totalTextFormatter
-                                        }
-                                        ],
-                                        [
-                                            {
+                                        }],
+                                            [{
                                                 field: 'mobile',
                                                 title: '手机号码',
                                                 sortable: true,
                                                 //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                valign: 'middle',
+                                                footerFormatter: totalNameFormatter
                                             },
                                             {
-                                                field: 'weixin_id',
+                                                field: 'weixinId',
                                                 title: '微信号',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                valign: 'middle'
                                             },
                                             {
-                                                field: 'sku_id',
+                                                field: 'skuId',
                                                 title: '申请商品',
                                                 //sortable: true,
                                                 //editable: true,
@@ -149,7 +149,8 @@
                                                 /*formatter: function (value, row, index) {
                                                     return '******';
                                                 },*/
-                                                align: 'center'
+                                                align: 'center',
+                                                valign: 'middle'
                                             },
                                             {
                                                 field: 'com_user_id',
@@ -157,7 +158,8 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                valign: 'middle'
                                             },
                                             {
                                                 field: 'sex',
@@ -165,7 +167,8 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                valign: 'middle'
                                             },
                                             {
                                                 field: 'age',
@@ -173,6 +176,7 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
+                                                valign: 'middle',
                                                 align: 'center'
                                             },
                                             {
@@ -181,14 +185,16 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
+                                                valign: 'middle',
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'create_time',
+                                                field: 'createTime',
                                                 title: '申请时间',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
+                                                valign: 'middle',
                                                 align: 'center'
                                             },
 //                                        {
@@ -216,8 +222,9 @@
 //                                        footerFormatter: totalPriceFormatter
 //                                    },
                                             {
-                                                field: '<c:if test="status==0"></c:if>',
+                                                field: '<c:if test="status==1">通过</c:if>',
                                                 title: '操作项',
+                                                valign: 'middle',
                                                 align: 'center',
                                                 events: operateEvents,
                                                 formatter: operateFormatter

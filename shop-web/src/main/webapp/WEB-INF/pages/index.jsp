@@ -31,11 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="banner">
                    <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <c:forEach items="urls" var="url">
-                                    <%
-                                        out.write("url: ");
-                                    %>
-                                    ${url}
+                                <c:forEach items="${urls}" var="url">
                                     <div class="swiper-slide"><img src="${url}" alt=""></div>
                                 </c:forEach>
                                 <div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>

@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.user;
 
-import com.masiis.shop.dao.po.PbUser;
+
+import po.PbUser;
 
 import java.util.List;
 

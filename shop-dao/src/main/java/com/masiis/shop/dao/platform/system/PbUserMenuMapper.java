@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.system;
 
-import com.masiis.shop.dao.po.PbUserMenu;
+
+import po.PbUserMenu;
 
 import java.util.List;
 

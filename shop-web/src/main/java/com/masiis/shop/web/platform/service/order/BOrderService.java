@@ -1,7 +1,7 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.masiis.shop.dao.platform.order.BOrderMapper;
-import com.masiis.shop.dao.platform.order.BorderItemMapper;
+import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderItem;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ import java.util.List;
 @Service
 public class BOrderService {
     @Resource
-    private BOrderMapper bOrderMapper;
+    private PfBorderMapper bOrderMapper;
     @Resource
-    private BorderItemMapper borderItemMapper;
+    private PfBorderItemMapper borderItemMapper;
     /**
      * 添加订单
      * @param pfBorder

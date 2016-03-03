@@ -10,8 +10,7 @@ package com.masiis.shop.dao.platform.order;
 import com.masiis.shop.dao.po.PfBorderItem;
 import java.util.List;
 
-public interface BorderItemMapper {
-
+public interface PfBorderItemMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(PfBorderItem record);

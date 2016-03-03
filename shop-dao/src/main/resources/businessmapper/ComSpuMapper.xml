@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.po.ComSpuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSpu" >
+<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpu" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <id column="name" property="name" jdbcType="VARCHAR" />
         <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -92,7 +92,7 @@
         weight, pack_length, pack_width, pack_height, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComSpuExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpuExample" >
         select
         <if test="distinct" >
             distinct
@@ -107,7 +107,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComSpuExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpuExample" resultType="java.lang.Integer" >
         select count(*) from com_spu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -218,7 +218,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComSpu" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpu" >
         update com_spu
         <set >
             <if test="brandId != null" >
@@ -272,7 +272,7 @@
           and is_delete = #{isDelete,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComSpuExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComSpuExample" >
         delete from com_spu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

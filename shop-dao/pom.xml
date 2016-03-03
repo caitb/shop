@@ -47,7 +47,7 @@
                     <!--<execution>-->
                         <!--<id>Generate MyBatis Artifacts</id>-->
                         <!--<goals>-->
-                            <!--<goal>po</goal>-->
+                            <!--<goal>com.masiis.shop.dao.po</goal>-->
                         <!--</goals>-->
                     <!--</execution>-->
                 <!--</executions>-->

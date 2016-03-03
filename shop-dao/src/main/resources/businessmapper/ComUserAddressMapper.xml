@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.po.ComUserAddressMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAddress" >
+<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddressMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddress" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -84,7 +84,7 @@
         region_id, region_name, address, mobile, is_default, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComUserAddressExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddressExample" >
         select
         <if test="distinct" >
             distinct
@@ -99,7 +99,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComUserAddressExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddressExample" resultType="java.lang.Integer" >
         select count(*) from com_user_address
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -182,7 +182,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComUserAddress" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddress" >
         update com_user_address
         <set >
             <if test="createTime != null" >
@@ -231,7 +231,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComUserAddressExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComUserAddressExample" >
         delete from com_user_address
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

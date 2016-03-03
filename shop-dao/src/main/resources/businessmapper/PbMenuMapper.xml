@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.po.PbMenuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbMenu" >
+<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenu" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="icon" property="icon" jdbcType="VARCHAR" />
@@ -78,7 +78,7 @@
         id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PbMenuExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenuExample" >
         select
         <if test="distinct" >
             distinct
@@ -93,7 +93,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.po.PbMenuExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenuExample" resultType="java.lang.Integer" >
         select count(*) from pb_menu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -156,7 +156,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.PbMenu" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenu" >
         update pb_menu
         <set >
             <if test="name != null" >
@@ -190,7 +190,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.PbMenuExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PbMenuExample" >
         delete from pb_menu
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.po.ComAgentLevelMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComAgentLevel" >
+<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevelMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevel" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -75,7 +75,7 @@
         id, create_time, name, img_url, lower, discount, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComAgentLevelExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevelExample" >
         select
         <if test="distinct" >
             distinct
@@ -90,7 +90,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComAgentLevelExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevelExample" resultType="java.lang.Integer" >
         select count(*) from com_agent_level
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -141,7 +141,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComAgentLevel" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevel" >
         update com_agent_level
         <set >
             <if test="createTime != null" >
@@ -166,7 +166,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComAgentLevelExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.ComAgentLevelExample" >
         delete from com_agent_level
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

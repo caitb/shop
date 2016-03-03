@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.po.PfCorderMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfCorder" >
+<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorderMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorder" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
@@ -102,7 +102,7 @@
         receipt_time, remark
     </sql>
 
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfCorderExample" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorderExample" >
         select
         <if test="distinct" >
             distinct
@@ -117,7 +117,7 @@
         </if>
     </select>
 
-    <select id="countByExample" parameterType="com.masiis.shop.dao.po.PfCorderExample" resultType="java.lang.Integer" >
+    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorderExample" resultType="java.lang.Integer" >
         select count(*) from pf_corder
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
@@ -260,7 +260,7 @@
         </if>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.PfCorder" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorder" >
         update pf_corder
         <set >
             <if test="createTime != null" >
@@ -354,7 +354,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.PfCorderExample" >
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfCorderExample" >
         delete from pf_corder
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificateMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificate" >
+<mapper namespace="com.masiis.shop.dao.PfUserCertificateMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserCertificate" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="code" property="code" jdbcType="VARCHAR" />
@@ -20,230 +20,57 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_certificate
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
 
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue" >
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue" >
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue" >
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
-            </foreach>
-        </where>
-    </sql>
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserCertificate" >
+        insert into pf_user_certificate (id, create_time, code, 
+            pf_user_sku_id, user_id, spu_id, 
+            sku_id, id_card, mobile, 
+            wx_id, begin_time, end_time, 
+            agent_level_id, img_url, status, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
+            #{pfUserSkuId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, 
+            #{skuId,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+            #{wxId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+            #{agentLevelId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
 
-    <sql id="Base_Column_List" >
-        id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark
-    </sql>
-
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificateExample" >
-        select
-        <if test="distinct" >
-            distinct
-        </if>
-        <include refid="Base_Column_List" />
-        from pf_user_certificate
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-        <if test="orderByClause != null" >
-            order by ${orderByClause}
-        </if>
-    </select>
-
-    <select id="countByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificateExample" resultType="java.lang.Integer" >
-        select count(*) from pf_user_certificate
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </select>
-
-    <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserCertificate" >
         update pf_user_certificate
-        <set >
-            <if test="record.id != null" >
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
-            <if test="record.createTime != null" >
-                create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.code != null" >
-                code = #{record.code,jdbcType=VARCHAR},
-            </if>
-            <if test="record.pfUserSkuId != null" >
-                pf_user_sku_id = #{record.pfUserSkuId,jdbcType=INTEGER},
-            </if>
-            <if test="record.userId != null" >
-                user_id = #{record.userId,jdbcType=BIGINT},
-            </if>
-            <if test="record.spuId != null" >
-                spu_id = #{record.spuId,jdbcType=INTEGER},
-            </if>
-            <if test="record.skuId != null" >
-                sku_id = #{record.skuId,jdbcType=INTEGER},
-            </if>
-            <if test="record.idCard != null" >
-                id_card = #{record.idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="record.mobile != null" >
-                mobile = #{record.mobile,jdbcType=VARCHAR},
-            </if>
-            <if test="record.wxId != null" >
-                wx_id = #{record.wxId,jdbcType=VARCHAR},
-            </if>
-            <if test="record.beginTime != null" >
-                begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.endTime != null" >
-                end_time = #{record.endTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.agentLevelId != null" >
-                agent_level_id = #{record.agentLevelId,jdbcType=INTEGER},
-            </if>
-            <if test="record.imgUrl != null" >
-                img_url = #{record.imgUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="record.status != null" >
-                status = #{record.status,jdbcType=INTEGER},
-            </if>
-            <if test="record.remark != null" >
-                remark = #{record.remark,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-
-    <update id="updateByExample" parameterType="map" >
-        update pf_user_certificate
-        set id = #{record.id,jdbcType=BIGINT},
-            create_time = #{record.createTime,jdbcType=TIMESTAMP},
-            code = #{record.code,jdbcType=VARCHAR},
-            pf_user_sku_id = #{record.pfUserSkuId,jdbcType=INTEGER},
-            user_id = #{record.userId,jdbcType=BIGINT},
-            spu_id = #{record.spuId,jdbcType=INTEGER},
-            sku_id = #{record.skuId,jdbcType=INTEGER},
-            id_card = #{record.idCard,jdbcType=VARCHAR},
-            mobile = #{record.mobile,jdbcType=VARCHAR},
-            wx_id = #{record.wxId,jdbcType=VARCHAR},
-            begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
-            end_time = #{record.endTime,jdbcType=TIMESTAMP},
-            agent_level_id = #{record.agentLevelId,jdbcType=INTEGER},
-            img_url = #{record.imgUrl,jdbcType=VARCHAR},
-            status = #{record.status,jdbcType=INTEGER},
-            remark = #{record.remark,jdbcType=VARCHAR}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
-        </if>
-    </update>
-
-    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificate" >
-        update pf_user_certificate
-        <set >
-            <if test="createTime != null" >
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="code != null" >
-                code = #{code,jdbcType=VARCHAR},
-            </if>
-            <if test="pfUserSkuId != null" >
-                pf_user_sku_id = #{pfUserSkuId,jdbcType=INTEGER},
-            </if>
-            <if test="userId != null" >
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
-            <if test="spuId != null" >
-                spu_id = #{spuId,jdbcType=INTEGER},
-            </if>
-            <if test="skuId != null" >
-                sku_id = #{skuId,jdbcType=INTEGER},
-            </if>
-            <if test="idCard != null" >
-                id_card = #{idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="mobile != null" >
-                mobile = #{mobile,jdbcType=VARCHAR},
-            </if>
-            <if test="wxId != null" >
-                wx_id = #{wxId,jdbcType=VARCHAR},
-            </if>
-            <if test="beginTime != null" >
-                begin_time = #{beginTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="endTime != null" >
-                end_time = #{endTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="agentLevelId != null" >
-                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
-            </if>
-            <if test="imgUrl != null" >
-                img_url = #{imgUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null" >
-                status = #{status,jdbcType=INTEGER},
-            </if>
-            <if test="remark != null" >
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-        </set>
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            code = #{code,jdbcType=VARCHAR},
+            pf_user_sku_id = #{pfUserSkuId,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            id_card = #{idCard,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            wx_id = #{wxId,jdbcType=VARCHAR},
+            begin_time = #{beginTime,jdbcType=TIMESTAMP},
+            end_time = #{endTime,jdbcType=TIMESTAMP},
+            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            img_url = #{imgUrl,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.com.masiis.shop.dao.po.PfUserCertificateExample" >
-        delete from pf_user_certificate
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
-        </if>
-    </delete>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark
+        from pf_user_certificate
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark
+        from pf_user_certificate
+    </select>
 
 </mapper>

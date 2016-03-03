@@ -5,7 +5,7 @@
  * -----------------------------------------------
  * 2016-03-03 Created
  */
-package po;
+package com.masiis.shop.dao.po;
 
 /**
  * 平台后台操作日志表

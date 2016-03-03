@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 
 /**
+ * spring-session示例
  * @autor jipengkun
  */
 @Controller

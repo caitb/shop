@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.po.PbUserMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbUserMenu" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="pb_user_id" property="pbUserId" jdbcType="BIGINT" />
+        <result column="pb_menu_id" property="pbMenuId" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, pb_user_id, pb_menu_id, create_time, update_time
+        FROM
+               pb_user_menu
+        WHERE
+               id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+               id, pb_user_id, pb_menu_id, create_time, update_time
+        FROM
+               pb_user_menu
+        <where>
+            <if test="pbUserMenu.id != null">
+                id = #{pbUserMenu.id}
+            </if>
+            <if test="pbUserId != null">
+                AND pb_user_id = #{pbUserMenu.pbUserId}
+            </if>
+            <if test="pbMenuId">
+                AND pb_menu_id = #{pbUserMenu.pbMenuId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO
+                    pb_user_menu (pb_user_id, pb_menu_id, create_time, update_time)
+        VALUES
+                    (#{pbUserMenu.pbUserId}, #{pbUserMenu.pbMenuId}, #{pbUserMenu.createTime}, #{pbUserMenu.updateTime})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE pb_user_menu
+        SET
+               pb_user_id = #{pbUserMenu.pbUserId},
+               pb_menu_id = #{pbUserMenu.pbMenuId},
+               create_time = #{pbUserMenu.createTime},
+               update_time = #{pbUserMenu.updateTime}
+        WHERE
+               id = #{pbUserMenu.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM pb_user_menu WHERE id = #{id}
+    </delete>
+
+    <!-- 根据pb_user_id删除记录 -->
+    <delete id="deleteByPbUserId">
+        DELETE FROM pb_user_menu WHERE pb_user_id = #{pbUserId}
+    </delete>
+
+</mapper>

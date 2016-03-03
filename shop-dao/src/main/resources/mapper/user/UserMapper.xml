@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.po.ComUserMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUser">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="wx_nk_name" property="wxNkName" jdbcType="VARCHAR"/>
+        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR"/>
+        <result column="access_token" property="accessToken" jdbcType="VARCHAR"/>
+        <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR"/>
+        <result column="atoken_expire" property="atokenExpire" jdbcType="TIMESTAMP"/>
+        <result column="rtoken_expire" property="rtokenExpire" jdbcType="TIMESTAMP"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="INTEGER"/>
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="region_id" property="regionId" jdbcType="INTEGER"/>
+        <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
+        atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
+        province_id, province_name, city_id, city_name, region_id, region_name, address,
+        is_agent, sex
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComUserExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from com_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="countByExample" parameterType="com.masiis.shop.dao.po.ComUserExample" resultType="java.lang.Integer">
+        select count(*) from com_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
+        update com_user
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.openid != null">
+                openid = #{record.openid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wxNkName != null">
+                wx_nk_name = #{record.wxNkName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wxId != null">
+                wx_id = #{record.wxId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wxHeadImg != null">
+                wx_head_img = #{record.wxHeadImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.accessToken != null">
+                access_token = #{record.accessToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.refreshToken != null">
+                refresh_token = #{record.refreshToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.atokenExpire != null">
+                atoken_expire = #{record.atokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.rtokenExpire != null">
+                rtoken_expire = #{record.rtokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.realName != null">
+                real_name = #{record.realName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.idCard != null">
+                id_card = #{record.idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="record.idCardFrontUrl != null">
+                id_card_front_url = #{record.idCardFrontUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.idCardBackUrl != null">
+                id_card_back_url = #{record.idCardBackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.provinceId != null">
+                province_id = #{record.provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="record.provinceName != null">
+                province_name = #{record.provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cityId != null">
+                city_id = #{record.cityId,jdbcType=INTEGER},
+            </if>
+            <if test="record.cityName != null">
+                city_name = #{record.cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.regionId != null">
+                region_id = #{record.regionId,jdbcType=INTEGER},
+            </if>
+            <if test="record.regionName != null">
+                region_name = #{record.regionName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isAgent != null">
+                is_agent = #{record.isAgent,jdbcType=INTEGER},
+            </if>
+            <if test="record.sex != null">
+                sex = #{record.sex,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map">
+        update com_user
+        set id = #{record.id,jdbcType=BIGINT},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        openid = #{record.openid,jdbcType=VARCHAR},
+        wx_nk_name = #{record.wxNkName,jdbcType=VARCHAR},
+        wx_id = #{record.wxId,jdbcType=VARCHAR},
+        wx_head_img = #{record.wxHeadImg,jdbcType=VARCHAR},
+        access_token = #{record.accessToken,jdbcType=VARCHAR},
+        refresh_token = #{record.refreshToken,jdbcType=VARCHAR},
+        atoken_expire = #{record.atokenExpire,jdbcType=TIMESTAMP},
+        rtoken_expire = #{record.rtokenExpire,jdbcType=TIMESTAMP},
+        real_name = #{record.realName,jdbcType=VARCHAR},
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+        id_card = #{record.idCard,jdbcType=VARCHAR},
+        id_card_front_url = #{record.idCardFrontUrl,jdbcType=VARCHAR},
+        id_card_back_url = #{record.idCardBackUrl,jdbcType=VARCHAR},
+        province_id = #{record.provinceId,jdbcType=INTEGER},
+        province_name = #{record.provinceName,jdbcType=VARCHAR},
+        city_id = #{record.cityId,jdbcType=INTEGER},
+        city_name = #{record.cityName,jdbcType=VARCHAR},
+        region_id = #{record.regionId,jdbcType=INTEGER},
+        region_name = #{record.regionName,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        is_agent = #{record.isAgent,jdbcType=INTEGER},
+        sex = #{record.sex,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.masiis.shop.dao.po.ComUser">
+        update com_user
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="openid != null">
+                openid = #{openid,jdbcType=VARCHAR},
+            </if>
+            <if test="wxNkName != null">
+                wx_nk_name = #{wxNkName,jdbcType=VARCHAR},
+            </if>
+            <if test="wxId != null">
+                wx_id = #{wxId,jdbcType=VARCHAR},
+            </if>
+            <if test="wxHeadImg != null">
+                wx_head_img = #{wxHeadImg,jdbcType=VARCHAR},
+            </if>
+            <if test="accessToken != null">
+                access_token = #{accessToken,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshToken != null">
+                refresh_token = #{refreshToken,jdbcType=VARCHAR},
+            </if>
+            <if test="atokenExpire != null">
+                atoken_expire = #{atokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rtokenExpire != null">
+                rtoken_expire = #{rtokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="idCard != null">
+                id_card = #{idCard,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardFrontUrl != null">
+                id_card_front_url = #{idCardFrontUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardBackUrl != null">
+                id_card_back_url = #{idCardBackUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="regionId != null">
+                region_id = #{regionId,jdbcType=INTEGER},
+            </if>
+            <if test="regionName != null">
+                region_name = #{regionName,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="isAgent != null">
+                is_agent = #{isAgent,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteByExample" parameterType="com.masiis.shop.dao.po.ComUserExample">
+        delete from com_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+
+</mapper>

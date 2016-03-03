@@ -1,4 +1,4 @@
-package com.masiis.shop.dao.beans;
+package com.masiis.shop.dao.beans.product;
 
 import com.masiis.shop.dao.po.ComSku;
 

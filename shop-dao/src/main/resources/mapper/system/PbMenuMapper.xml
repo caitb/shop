@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.po.PbMenuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbMenu" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="rank" property="rank" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark
+        FROM
+               pb_menu
+        WHERE
+        id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark
+        FROM
+        pb_menu
+        <where>
+            <if test="pbMenu.id != null">
+                id = #{pbMenu.id}
+            </if>
+            <if test="pbMenu.name != null">
+                AND name = #{pbMenu.name}
+            </if>
+            <if test="pbMenu.parentId">
+                AND parent_id = #{pbMenu.parentId}
+            </if>
+            <if test="pbMenu.isDeleted != null">
+                AND id_deleted = #{pbMenu.isDeleted}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO
+                    pb_menu (name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark)
+        VALUES
+                    (#{pbMenu.name}, #{pbMenu.icon}, #{pbMenu.url}, #{pbMenu.parentId}, #{pbMenu.isDeleted}, #{pbMenu.createTime}, #{pbMenu.updateTime}, #{pbMenu.rank}, #{pbMenu.remark})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE pb_menu
+        SET
+               name        = #{pbMenu.name},
+               icon        = #{pbMenu.icon},
+               url         = #{pbMenu.url},
+               parent_id   = #{pbMenu.parentId},
+               is_deleted  = #{pbMenu.isDeleted},
+               create_time = #{pbMenu.createTime},
+               update_time = #{pbMenu.updateTime},
+               rank        = #{pbMenu.rank},
+               remark      = #{pbMenu.remark}
+        WHERE
+               id = #{pbMenu.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM pb_menu WHERE id = #{id}
+    </delete>
+
+</mapper>

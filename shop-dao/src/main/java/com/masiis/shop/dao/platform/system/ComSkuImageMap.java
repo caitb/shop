@@ -12,7 +12,7 @@ public interface ComSkuImageMap {
      * 查首页所有的图片
      * @return
      */
-    public List<ComSkuImage> selectAllComSkuImage();
+    public List<ComSkuImage> selectAllComSkuImage(); 
 
 
 }

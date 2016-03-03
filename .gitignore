@@ -1,5 +1,4 @@
 /.idea
 /test
 /target
-/kyl-end.iml
-/mshop.iml
+/*.iml

@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  * @author masiis
  * @version 1.0 2016-03-03
  */
-public class ComUser {
+public class ComUser implements Serializable {
 
     private Long id;
     /**

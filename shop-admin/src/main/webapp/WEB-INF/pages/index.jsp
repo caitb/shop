@@ -57,12 +57,6 @@
         } catch (e) {
         }
 
-        /*$(function(){
-            $('#loginOut').click(function () {
-
-
-            })
-        })*/
     </script>
 
     <div class="navbar-container" id="navbar-container">
@@ -571,6 +565,9 @@
             ]
         });
 
+        $('#loginOut').click(function () {
+            location.href = '/user/loginOut.shtml';
+        });
 
         $('table th input:checkbox').on('click', function () {
             var that = this;

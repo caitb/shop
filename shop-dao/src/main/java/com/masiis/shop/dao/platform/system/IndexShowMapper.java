@@ -13,13 +13,13 @@ public interface IndexShowMapper {
      * 查首页所有轮播图片
      * @return
      */
-    public List<PbBanner> selectAllPbBanner();
+    List<PbBanner> selectAllPbBanner();
 
     /**
      * 查首页所有展示商品信息
      * @return
      */
-    public List<IndexComSku> selectAllIndexComSku();
+    List<IndexComSku> selectAllIndexComSku();
 
 
 }

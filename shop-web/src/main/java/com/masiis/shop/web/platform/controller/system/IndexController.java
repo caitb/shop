@@ -26,7 +26,7 @@ public class IndexController extends BaseController {
     private IndexShowService indexShowService;
 
     @RequestMapping("show")
-    public ModelAndView BannerList(HttpSession session){
+    public ModelAndView BannerList()throws Exception{
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片

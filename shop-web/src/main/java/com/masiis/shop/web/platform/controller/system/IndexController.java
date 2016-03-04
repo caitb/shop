@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.system;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
 import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class IndexController extends BaseController {
     private IndexShowService indexShowService;
 
     @RequestMapping("show")
-    public ModelAndView BannerList()throws Exception{
+    public ModelAndView BannerList(HttpServletRequest request)throws Exception{
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片
@@ -51,6 +53,11 @@ public class IndexController extends BaseController {
         }
         //封装展示商品信息集合
         modelAndView.addObject("indexComSkus",indexComSkus);
+
+
+//        HttpSession session = request.getSession();
+//        //获取用户信息
+//        PbUser pbUser =(PbUser)session.getAttribute("comUser");
         modelAndView.setViewName("index");
         return modelAndView;
     }

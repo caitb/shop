@@ -25,9 +25,9 @@ public class Product extends ComSku {
 
     private Integer agentLevel;//代理商级别
 
-    private BigDecimal discount;//代理商折扣
+    private String discountLevel;//代理商折扣区间
 
-    private Integer quantity;//数量
+    private Long shipAmount;//快递费用
 
     public String getSpuName() {
         return spuName;
@@ -85,19 +85,19 @@ public class Product extends ComSku {
         this.agentLevel = agentLevel;
     }
 
-    public BigDecimal getDiscount() {
-        return discount;
+    public String getDiscountLevel() {
+        return discountLevel;
     }
 
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
+    public void setDiscountLevel(String discountLevel) {
+        this.discountLevel = discountLevel;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Long getShipAmount() {
+        return shipAmount;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setShipAmount(Long shipAmount) {
+        this.shipAmount = shipAmount;
     }
 }

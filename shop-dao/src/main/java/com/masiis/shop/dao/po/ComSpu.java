@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -69,6 +70,11 @@ public class ComSpu extends ComSpuKey {
      * 备注
      */
     private String remark;
+
+    /**
+     * 试用运费
+     */
+    private Long shipAmount;
 
     public Integer getBrandId() {
         return brandId;
@@ -147,5 +153,13 @@ public class ComSpu extends ComSpuKey {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Long getShipAmount() {
+        return shipAmount;
+    }
+
+    public void setShipAmount(Long shipAmount) {
+        this.shipAmount = shipAmount;
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.PfSkuAgentMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSkuAgent" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="discount" property="discount" jdbcType="DECIMAL" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_sku_agent
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent" >
+        insert into pf_sku_agent (id, sku_id, agent_level_id, 
+            discount, quantity, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, 
+            #{discount,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent" >
+        update pf_sku_agent
+        set sku_id = #{skuId,jdbcType=INTEGER},
+            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            discount = #{discount,jdbcType=DECIMAL},
+            quantity = #{quantity,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, sku_id, agent_level_id, discount, quantity, remark
+        from pf_sku_agent
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, sku_id, agent_level_id, discount, quantity, remark
+        from pf_sku_agent
+    </select>
+
+    <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, sku_id, agent_level_id, discount, quantity, remark
+        from pf_sku_agent
+        where sku_id = #{sku_id,jdbcType=INTEGER}
+    </select>
+
+</mapper>

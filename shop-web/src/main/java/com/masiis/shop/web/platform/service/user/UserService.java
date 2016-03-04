@@ -6,13 +6,16 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Service
+@Transactional
 public class UserService {
 
     @Resource
@@ -33,6 +36,7 @@ public class UserService {
 
     /**
      * 添加用户地址
+     *
      * @param comUserAddress
      */
     public void addComUserAddress(ComUserAddress comUserAddress) {
@@ -44,6 +48,7 @@ public class UserService {
 
     /**
      * 修改用户地址
+     *
      * @param comUserAddress
      */
     public void updateComUserAddress(ComUserAddress comUserAddress) {
@@ -55,6 +60,7 @@ public class UserService {
 
     /**
      * 根据id查找用户地址
+     *
      * @param id
      * @return
      */
@@ -62,4 +68,13 @@ public class UserService {
         return comUserAddressMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据userid查找用户地址
+     *
+     * @param userId
+     * @return
+     */
+    public List<ComUserAddress> getComUserAddress(Long userId) {
+        return comUserAddressMapper.selectAllByComUserId(userId);
+    }
 }

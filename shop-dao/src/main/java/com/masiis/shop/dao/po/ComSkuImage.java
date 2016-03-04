@@ -63,6 +63,11 @@ public class ComSkuImage {
      */
     private String remark;
 
+    /**
+     * 完整的图片URL地址
+     */
+    private String fullImgUrl;
+
     public Integer getId() {
         return id;
     }
@@ -134,5 +139,13 @@ public class ComSkuImage {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getFullImgUrl() {
+        return fullImgUrl;
+    }
+
+    public void setFullImgUrl(String fullImgUrl) {
+        this.fullImgUrl = fullImgUrl;
     }
 }

@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.order;
 
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,9 @@ public class BOrderController extends BaseController {
     public String partnersApply(HttpServletRequest request,
                                 HttpServletResponse response,
                                 Long skuId) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("userId");
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         //String str = request.getSession().getAttribute("comUser").toString();
+        SpringRedisUtil.get("a",comUser.getClass());
         return "platform/order/shenqing";
     }
 

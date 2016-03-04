@@ -12,6 +12,7 @@ a {
 body .wrap {
   width: 100%;
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   overflow: hidden;
   padding-bottom: 50px;
   position: relative;
@@ -69,9 +70,12 @@ body .wrap nav ul {
 body .wrap nav ul li {
   width: 1px;
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
+  -moz-box-orient: vertical;
+  -moz-box-align: center;
 }
 body .wrap nav ul li a {
   display: block;
@@ -96,7 +100,6 @@ body .wrap .tuij {
   background: white;
   color: #333333;
   font-size: 14px;
-  font-weight: 600;
   line-height: 30px;
   text-indent: 5px;
   margin-top: 5px;
@@ -108,16 +111,20 @@ body .wrap main .sec1 {
   width: 100%;
   margin-top: 5px;
   display: -webkit-box;
+  display: -moz-box;
   -webkit-box-pack: justify;
+  -moz-box-pack: justify;
 }
 body .wrap main .sec1 div {
-  margin-left: 2%;
+  margin-left: 5px;
   -webkit-box-flex: 1;
-  width: 1px;
+  -moz-box-flex: 1;
   background: #fff;
-  margin-right: 2%;
+  margin-right: 5px;
   display: -webkit-box;
+  display: -moz-box;
   -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
   padding-bottom: 5px;
 }
 body .wrap main .sec1 div img {
@@ -126,49 +133,59 @@ body .wrap main .sec1 div img {
 }
 body .wrap main .sec1 div h2 {
   font-size: 14px;
-  color: #6F6F6F;
+  color: #333;
   padding: 2px 0 0px 0;
   text-indent: 5px;
 }
 body .wrap main .sec1 div h1 {
   font-size: 12px;
   color: #FF6B3B;
-  text-indent: 5px;
+  text-indent: 3px;
 }
 body .wrap main .sec1 div h1 span {
   font-size: 12px;
-  color: #A2A2A2;
+  color: #666;
 }
-body .wrap main .sec1 div p {
+body .wrap main .sec1 div h3 {
+  width: 100%;
+}
+body .wrap main .sec1 div h3 p {
   font-size: 12px;
   color: #A2A2A2;
   text-indent: 5px;
+  margin-top: 5px;
+  float: left;
 }
-body .wrap main .sec1 div p span {
+body .wrap main .sec1 div h3 p span {
   color: #FF6531;
   font-size: 12px;
 }
-body .wrap main .sec1 div a {
+body .wrap main .sec1 div h3 a {
   display: inline-block;
   color: white;
+  float: right;
   padding: 0px 4px 0px 4px;
   border-radius: 5px;
   background: #FF5200;
-  margin-left: 5px;
   font-size: 12px;
+  margin-top: 5px;
+  margin-right: 10px;
 }
 body .wrap main .sec1 div:nth-child(2) {
   margin-left: 0;
 }
 body .wrap .sec2 {
   width: 100%;
-  height: 96px;
-  background: white;
+  padding: 20px 0;
   margin-top: 5px;
   display: -webkit-box;
+  display: -moz-box;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
+  -moz-box-orient: vertical;
+  -moz-box-align: center;
+  -moz-box-pack: center;
 }
 body .wrap .sec2 p {
   font-size: 12px;
@@ -178,29 +195,41 @@ body footer {
   width: 100%;
   height: 3.5rem;
   display: -webkit-box;
+  display: -moz-box;
   overflow: hidden;
-  position: fixed;
-  bottom: 0;
 }
-body footer div:nth-child(1) {
+body footer .btm:nth-child(1) {
   background: #DA3600;
 }
-body footer div {
+body footer .btm {
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   background: #F74A11;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
 }
-body footer div span {
+body footer .btm span {
   display: block;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   text-align: center;
   line-height: 25px;
   color: white;
   font-size: 14px;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
+  display: -moz-box;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
 }
-body footer div span img {
+body footer .btm span img {
   display: block;
-  margin: 0 auto;
-  width: 18%;
+  width: 20px;
+  height: 20px;
   margin-top: 3px;
 }

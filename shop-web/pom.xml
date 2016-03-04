@@ -35,7 +35,6 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <finalName>shop-web</finalName>
 

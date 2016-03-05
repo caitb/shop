@@ -26,7 +26,18 @@
         <result column="img_name" property="imgName" jdbcType="VARCHAR" />
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="is_default" property="isDefault" jdbcType="INTEGER" />
     </resultMap>
+    <resultMap id="DiscountLevelResultMap" type="com.masiis.shop.dao.po.ComAgentLevel" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+        <result column="lower" property="lower" jdbcType="DECIMAL" />
+        <result column="discount" property="discount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
 
     <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
         SELECT sku.name,sku.price_retail,sku.remark,
@@ -39,8 +50,12 @@
     </select>
 
     <select id="getSkuImgById" resultMap="SkuImgResultMap" parameterType="String">
-       SELECT img_url,img_name,sort
+       SELECT img_url,img_name,sort,is_default
        FROM com_sku_image
        WHERE sku_id = #{skuId}
+    </select>
+
+    <select id="agentLevelDiscount" resultMap="DiscountLevelResultMap">
+        SELECT * FROM com_agent_level ORDER BY id ASC
     </select>
 </mapper>

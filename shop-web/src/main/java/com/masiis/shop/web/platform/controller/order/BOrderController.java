@@ -1,13 +1,16 @@
 package com.masiis.shop.web.platform.controller.order;
 
-import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,17 +22,31 @@ import javax.servlet.http.HttpServletResponse;
 public class BOrderController extends BaseController {
 
     /**
+     *
+     */
+    @Resource
+    private ComSkuMapper comSkuMapper;
+    @Resource
+    private ComSkuImageMapper comSkuImageMapper;
+
+    /**
      * 合伙人申请
      *
      * @return
      */
     @RequestMapping("/apply")
-    public String partnersApply(HttpServletRequest request,
-                                HttpServletResponse response,
-                                Long skuId) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("userId");
-        //String str = request.getSession().getAttribute("comUser").toString();
-        return "platform/order/shenqing";
+    public ModelAndView partnersApply(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "skuId", required = false) Integer skuId) {
+//        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ModelAndView mv = new ModelAndView();
+        skuId = 1;
+        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
+        ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
+        mv.addObject("skuName", comSku.getName());
+        mv.addObject("skuImg", comSkuImage.getImgUrl());
+        mv.setViewName("platform/order/shenqing");
+        return mv;
     }
 
     @RequestMapping("/register")

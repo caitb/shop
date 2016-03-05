@@ -73,41 +73,43 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </li>
                     </ul>
                 </nav>-->
-                 <h1 class="tuij">推荐产品</h1>
+                 <h1 class="tuij"> <a href="<%=path%>/index/show<%--/lo/quote--%>">推荐产品</a></h1>
                  <main>
                      <section class="sec1">
+                        <%--<div>--%>
+                            <%--<img src="<%=path%>/static/images/cp_1.png" alt="">--%>
+                            <%--<h2>抗引力—快速瘦脸精华</h2>--%>
+                            <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
+                            <%--<p>超过<span>9999</span>人代理</p>--%>
+                            <%--<a href="<%=path%>/index/show&lt;%&ndash;/lo/quote&ndash;%&gt;">我要合伙</a>--%>
+                        <%--</div>--%>
+                         <c:forEach items="${indexComSkus}" var="Sku">
                         <div>
-                            <img src="<%=path%>/static/images/cp_1.png" alt="">
-                            <h2>抗引力—快速瘦脸精华</h2>
-                            <h1>￥328 <span>成为合伙人可查看</span></h1>
+                            <img src="${Sku.imgUrl}" alt="">
+                            <h2>${Sku.comSku.name}</h2>
+                            <h1>￥${Sku.comSku.priceRetail} <span>成为合伙人可查看</span></h1>
                             <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/index/banner<%--/lo/quote--%>">我要合伙</a>
+                            <a href="<%=path%>/index/show">我要合伙</a>
                         </div>
-                        <div>
-                            <img src="<%=path%>/static/images/cp_1.png" alt="">
-                            <h2>抗引力—快速瘦脸精华</h2>
-                            <h1>￥328 <span>成为合伙人可查看</span></h1>
-                            <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/lo/quote">我要合伙</a>
-                        </div>
+                         </c:forEach>
                     </section>
-                     <section class="sec1">
+                     <%--<section class="sec1">--%>
 
-                        <div>
-                            <img src="<%=path%>/static/images/cp_1.png" alt="">
-                            <h2>抗引力—快速瘦脸精华</h2>
-                            <h1>￥328 <span>成为合伙人可查看</span></h1>
-                            <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/lo/quote">我要合伙</a>
-                        </div>
-                        <div>
-                            <img src="<%=path%>/static/images/cp_1.png" alt="">
-                            <h2>抗引力—快速瘦脸精华</h2>
-                            <h1>￥328 <span>成为合伙人可查看</span></h1>
-                            <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/lo/quote">我要合伙</a>
-                        </div>
-                    </section>
+                        <%--<div>--%>
+                            <%--<img src="<%=path%>/static/images/cp_1.png" alt="">--%>
+                            <%--<h2>抗引力—快速瘦脸精华</h2>--%>
+                            <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
+                            <%--<p>超过<span>9999</span>人代理</p>--%>
+                            <%--<a href="<%=path%>/lo/quote">我要合伙</a>--%>
+                        <%--</div>--%>
+                        <%--<div>--%>
+                            <%--<img src="<%=path%>/static/images/cp_1.png" alt="">--%>
+                            <%--<h2>抗引力—快速瘦脸精华</h2>--%>
+                            <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
+                            <%--<p>超过<span>9999</span>人代理</p>--%>
+                            <%--<a href="<%=path%>/lo/quote">我要合伙</a>--%>
+                        <%--</div>--%>
+                    <%--</section>--%>
                  </main>
         </div>
     </div>

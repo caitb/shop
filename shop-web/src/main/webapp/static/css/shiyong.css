@@ -16,19 +16,23 @@ body {
   height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-orient: vertical;
 }
 body main {
   width: 100%;
   height: 100%;
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
 }
 body main .sec2 {
   width: 100%;
   height: 78px;
-  margin-top: 5px;
   background: white;
   display: -webkit-box;
   -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-align: center;
   border-bottom: 1px solid #f6f6f6;
 }
 body main .sec2 .photo {
@@ -42,10 +46,14 @@ body main .sec2 .photo img {
 }
 body main .sec2 div {
   -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
   margin-left: 10px;
 }
 body main .sec2 div h2 {
@@ -54,7 +62,7 @@ body main .sec2 div h2 {
 }
 body main .sec2 div h2 span {
   float: right;
-  color: #FF7F5A;
+  color: #999999;
   margin-right: 10px;
 }
 body main .sec2 div h3 {
@@ -80,7 +88,6 @@ body main .sec3 p {
   text-indent: 10px;
   border-bottom: 1px solid #f6f6f6;
   color: #999999;
-  font-size: 12px;
 }
 body main .sec3 p input {
   border: none;
@@ -106,8 +113,7 @@ body main .sec3 h1 {
   color: #999999;
   text-align: right;
 }
-body main .sec3 h1 span,
-body main .sec3 h1 b {
+body main .sec3 h1 span {
   color: #FF7F5A;
   font-size: 12px;
 }

@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.controller.product;
 
-import com.masiis.shop.dao.po.PbUser;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +26,17 @@ public class ProductController extends BaseController {
     private ProductService productService;
 
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
-    public Product getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
+    public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/product/product");
         HttpSession session = request.getSession();
-        PbUser pbUser = (PbUser) session.getAttribute("pbUser");//权限需要验证添加
+        ComUser comUser = (ComUser) session.getAttribute("comUser");
         Product productDetails = productService.getSkuDetails(skuId);
-        return productDetails;
+        if(comUser !=null && comUser.getIsAgent()==1){
+            productDetails.setIsPartner(true);
+            productDetails.setDiscountLevel(productService.getDiscountByAgentLevel());
+        }
+        mav.addObject("productDetails",productDetails);
+        return mav;
     }
 
 }

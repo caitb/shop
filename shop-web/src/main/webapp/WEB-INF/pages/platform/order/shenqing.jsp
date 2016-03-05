@@ -1,39 +1,38 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/shenqing.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/s/iscroll.js"></script>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/shenqing.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <script src="../js/jquery-1.8.3.min.js"></script>
+    <script src="../js/iscroll.js"></script>
 </head>
 <body>
 <header class="xq_header">
-    <a href="#" onclick="javascript:history.back(-1);"><img src="../images/xq_rt.png" alt=""></a>
-    <p>申请合伙人</p>
+    <a href="xiangqing.html"><img src="../images/xq_rt.png" alt=""></a>
+    <p>合伙人申请</p>
 </header>
 <div class="kang">
-    <p class="photo">
-        <a href="../html/xiangqing.html">
-            <img src="../images/shenqing_1.png" alt="">
-        </a>
-    </p>
-    <div>
-        <h2>抗引力——快速瘦脸精华</h2>
-        <p>激活细胞内部胶原蛋白新生能量，抚平肌肤深层皱纹，增强弹性，
-            焕醒肌肤年轻活力，重塑皮肤强劲支撑力。</p>
-    </div>
+    <a href="../html/xiangqing.html">
+        <p class="photo">
 
+            <img src="../images/shenqing_1.png" alt="">
+        </p>
+        <div>
+            <h2>${skuName}</h2>
+            <p>激活细胞内部胶原蛋白新生能量，抚平肌肤深层皱纹，增强弹性，
+                焕醒肌肤年轻活力，重塑皮肤强劲支撑力。</p>
+        </div>
+    </a>
 </div>
 <div class="he">
     <h1>合伙人特权</h1>

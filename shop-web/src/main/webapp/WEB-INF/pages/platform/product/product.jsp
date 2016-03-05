@@ -38,11 +38,13 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>${productDetails.priceMarket}</b><span><c:if test="productDetails.isPartner">${productDetails.discountLevel}</c:if></span></p>
+            <p><b>￥${productDetails.priceRetail}</b><span><c:choose><c:when test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
+                <c:otherwise>成为合伙人后可查看利润</c:otherwise></c:choose>
+            </span></p>
         </div>
         <div class="dlpople">
             <p>快递：<span>到付</span></p>
-            <p>代理人数：<b>超过<span>9999</span>人</b></p>
+            <p>代理人数：<b><span>${productDetails.agentNum}</span>人</b></p>
         </div>
         <div class="dlpople">
             <p>库存</p>

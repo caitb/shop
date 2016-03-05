@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="admin">
             <img src="<%=path%>/static/images/admin.png" alt="">
             <h3>王平—欢迎您登入</h3>
-            <span><a href="bangding.html" style="color:white;">绑定账号</a></span>
+            <span><a href="<%=path%>/binding/bindingPhone" style="color:white;">绑定账号</a></span>
         </div>
         <div class="banner">
             <div class="swiper-container">
@@ -82,17 +82,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </li>
             </ul>
         </nav>-->
-        <h1 class="tuij"><a href="<%=path%>/index/show<%--/lo/quote--%>">推荐产品</a></h1>
+        <h1 class="tuij">推荐产品</h1>
         <main>
             <section class="sec1">
-
                     <c:forEach items="${indexComSkus}" var="Sku">
                         <div>
-                            <img src="${Sku.imgUrl}" alt="">
+                            <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt="">
                             <h2>${Sku.comSku.name}</h2>
-                            <h1>￥${Sku.comSku.priceRetail} <span>成为合伙人可查看</span></h1>
-                            <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/index/show">我要合伙</a>
+                            <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel} </span></h1>
+                            <p>超过<span>${Sku.agentNum}</span>人代理</p>
+                            <a href="<%=path%>/lo/quote">我要合伙</a>
                         </div>
                     </c:forEach>
 

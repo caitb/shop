@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @autor jipengkun
+ * @autor JingHao
  */
 @Controller
 @RequestMapping("/product")

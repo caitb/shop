@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by ZhaoLiang on 2016/3/2.
+ * Created by JingHao on 2016/3/2.
  */
 public class Product extends ComSku {
 
@@ -28,6 +28,8 @@ public class Product extends ComSku {
     private String discountLevel;//代理商折扣区间
 
     private Long shipAmount;//快递费用
+
+    private Integer agentNum;//代理人数
 
     public String getSpuName() {
         return spuName;
@@ -99,5 +101,13 @@ public class Product extends ComSku {
 
     public void setShipAmount(Long shipAmount) {
         this.shipAmount = shipAmount;
+    }
+
+    public Integer getAgentNum() {
+        return agentNum;
+    }
+
+    public void setAgentNum(Integer agentNum) {
+        this.agentNum = agentNum;
     }
 }

@@ -18,4 +18,5 @@ public interface PfUserTrialMapper {
      */
     List<PfUserTrial> findByCondition(@Param("trial")PfUserTrial trial);
 
+    int updateByPrimaryKey(PfUserTrial pfUserTrial);
 }

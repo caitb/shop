@@ -9,7 +9,15 @@ import com.masiis.shop.dao.po.ComSkuImage;
  */
 public class IndexComSku extends ComSkuImage {
 
+    private  String discountLevel;
     private ComSku comSku;//商品属性
+
+    public void setDiscountLevel(String discountLevel) {
+        this.discountLevel = discountLevel;
+    }
+    public String getDiscountLevel() {
+        return discountLevel;
+    }
 
     public void setComSku(ComSku comSku) {
         this.comSku = comSku;

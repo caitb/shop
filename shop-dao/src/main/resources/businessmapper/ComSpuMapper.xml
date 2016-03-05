@@ -18,11 +18,12 @@
         <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
         <result column="slogan" property="slogan" jdbcType="VARCHAR" />
         <result column="is_trial" property="isTrial" jdbcType="INTEGER" />
-        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
         <result column="weight" property="weight" jdbcType="DECIMAL" />
         <result column="pack_length" property="packLength" jdbcType="DECIMAL" />
         <result column="pack_width" property="packWidth" jdbcType="DECIMAL" />
         <result column="pack_height" property="packHeight" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -47,15 +48,15 @@
             modify_time, modify_man, slogan, 
             is_trial, content, weight, 
             pack_length, pack_width, pack_height, 
-            remark)
+            ship_amount, remark)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
             #{createMan,jdbcType=BIGINT}, #{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
             #{status,jdbcType=INTEGER}, #{isSale,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
             #{brandId,jdbcType=INTEGER}, #{upTime,jdbcType=TIMESTAMP}, #{downTime,jdbcType=TIMESTAMP}, 
             #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{slogan,jdbcType=VARCHAR}, 
-            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, 
+            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL}, 
             #{packLength,jdbcType=DECIMAL}, #{packWidth,jdbcType=DECIMAL}, #{packHeight,jdbcType=DECIMAL}, 
-            #{remark,jdbcType=VARCHAR})
+            #{shipAmount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSpu" >
@@ -67,11 +68,12 @@
             modify_man = #{modifyMan,jdbcType=BIGINT},
             slogan = #{slogan,jdbcType=VARCHAR},
             is_trial = #{isTrial,jdbcType=INTEGER},
-            content = #{content,jdbcType=VARCHAR},
+            content = #{content,jdbcType=LONGVARCHAR},
             weight = #{weight,jdbcType=DECIMAL},
             pack_length = #{packLength,jdbcType=DECIMAL},
             pack_width = #{packWidth,jdbcType=DECIMAL},
             pack_height = #{packHeight,jdbcType=DECIMAL},
+            ship_amount = #{shipAmount,jdbcType=DECIMAL},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
           and name = #{name,jdbcType=VARCHAR}
@@ -87,7 +89,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
         select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
         is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
-        content, weight, pack_length, pack_width, pack_height, remark
+        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
         from com_spu
         where id = #{id,jdbcType=INTEGER}
           and name = #{name,jdbcType=VARCHAR}
@@ -103,7 +105,7 @@
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
         is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
-        content, weight, pack_length, pack_width, pack_height, remark
+        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
         from com_spu
     </select>
 

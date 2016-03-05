@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.controller.order;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,9 +41,9 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         skuId = 1;
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
-        ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
+//        ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
         mv.addObject("skuName", comSku.getName());
-        mv.addObject("skuImg", comSkuImage.getImgUrl());
+//        mv.addObject("skuImg", comSkuImage.getImgUrl());
         mv.setViewName("platform/order/shenqing");
         return mv;
     }

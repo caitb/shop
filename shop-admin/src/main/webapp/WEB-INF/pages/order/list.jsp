@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
     String path = request.getContextPath();
@@ -114,79 +113,61 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter
                                         }, {
-                                            title: '姓名',
-                                            field: 'name',
-                                            rowspan: 2,
-                                            align: 'center',
-                                            valign: 'middle',
-                                            sortable: true,
-                                            footerFormatter: totalTextFormatter
-                                        }],
-                                            [{
+                                            title: '详情',
+                                            colspan: 8,
+                                            align: 'center'
+                                        }
+                                        ],
+                                        [
+                                            {
+                                                field: 'name',
+                                                title: '姓名',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
                                                 field: 'mobile',
                                                 title: '手机号码',
                                                 sortable: true,
                                                 //editable: true,
-                                                align: 'center',
-                                                valign: 'middle',
-                                                footerFormatter: totalNameFormatter
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
                                             },
                                             {
                                                 field: 'weixinId',
                                                 title: '微信号',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                valign: 'middle'
-                                            },
-                                            {
-                                                field: 'skuId',
-                                                title: '申请商品',
                                                 //sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                /*formatter: function (value, row, index) {
-                                                    return '******';
-                                                },*/
-                                                align: 'center',
-                                                valign: 'middle'
+                                                align: 'center'
                                             },
                                             {
-                                                field: 'com_user_id',
+                                                field: 'skuName',
+                                                title: '申请商品',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'referrer',
                                                 title: '推荐人',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                valign: 'middle'
-                                            },
-                                            {
-                                                field: 'sex',
-                                                title: '性别',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                valign: 'middle'
-                                            },
-                                            {
-                                                field: 'age',
-                                                title: '年龄',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                valign: 'middle',
                                                 align: 'center'
                                             },
                                             {
-                                                field: '<a href="#">查看</a>',
                                                 title: '申请理由',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                valign: 'middle',
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return '<a href="http://www.baidu.com">查看</a>';
+                                                }
                                             },
                                             {
                                                 field: 'createTime',
@@ -194,7 +175,6 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                valign: 'middle',
                                                 align: 'center'
                                             },
 //                                        {
@@ -222,9 +202,8 @@
 //                                        footerFormatter: totalPriceFormatter
 //                                    },
                                             {
-                                                field: '<c:if test="status==1">通过</c:if>',
+                                                //field: 'operate',
                                                 title: '操作项',
-                                                valign: 'middle',
                                                 align: 'center',
                                                 events: operateEvents,
                                                 formatter: operateFormatter
@@ -293,12 +272,15 @@
 
                             function operateFormatter(value, row, index) {
                                 return [
-                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑',
+                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">通过',
                                     '</a>',
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权',
+                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">拒绝',
                                     //'<i class="glyphicon glyphicon-heart"></i>',
                                     '</a>  ',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">冻结',
+                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">已通过',
+                                    //'<i class="glyphicon glyphicon-remove"></i>',
+                                    '</a>',
+                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">已拒绝',
                                     //'<i class="glyphicon glyphicon-remove"></i>',
                                     '</a>'
                                 ].join('');

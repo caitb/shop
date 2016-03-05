@@ -4,8 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.PfUserTrialService;
+import com.masiis.shop.dao.beans.order.PfUserTrialProduct;
+import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,11 +24,10 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/trial")
-public class PfUserTrialController{
+public class PfUserTrialController extends BaseController{
 
     @Resource
     private PfUserTrialService trialService;
-
 
     /**
      * 用户列表页面
@@ -79,13 +83,26 @@ public class PfUserTrialController{
         Integer pageNo = offset/10 + 1;
 
         PageHelper.startPage(pageNo, limit);
-        PfUserTrial trial = new PfUserTrial();
+        PfUserTrialProduct pfUserTrialProduct = new PfUserTrialProduct();
 
-        List<PfUserTrial> pfUserTrials = trialService.findByCondition(trial);
-        PageInfo<PfUserTrial> pageInfo = new PageInfo<PfUserTrial>(pfUserTrials);
+       List<PfUserTrialProduct> pfUserTrialProducts = trialService.findByCondition(pfUserTrialProduct);
+        for (PfUserTrialProduct userTrialProduct:pfUserTrialProducts) {
+            SfUserRelation sfUserRelation = trialService.findByUserId(userTrialProduct.getId());
+            ComSku comSku = trialService.findBySkuId(userTrialProduct.getSkuId());
+            if (comSku!=null){
+                userTrialProduct.setSkuName(comSku.getName());
+            }
+//            if (sfUserRelation!=null) {
+//                ComUser comUser = trialService.findByParentId(sfUserRelation.getParentUserId());
+//                if (comUser!=null){
+//                    userTrialProduct.setReferrer(comUser.getRealName());
+//                }
+//            }
+        }
+        PageInfo<PfUserTrialProduct> pageInfo = new PageInfo<PfUserTrialProduct>(pfUserTrialProducts);
 
         map.put("total", pageInfo.getTotal());
-        map.put("rows", pfUserTrials);
+        map.put("rows", pfUserTrialProducts);
 
         return map;
     }

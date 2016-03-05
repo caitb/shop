@@ -29,6 +29,8 @@ public class Product extends ComSku {
 
     private Long shipAmount;//快递费用
 
+    private Integer agentNum;//代理人数
+
     public String getSpuName() {
         return spuName;
     }
@@ -99,5 +101,13 @@ public class Product extends ComSku {
 
     public void setShipAmount(Long shipAmount) {
         this.shipAmount = shipAmount;
+    }
+
+    public Integer getAgentNum() {
+        return agentNum;
+    }
+
+    public void setAgentNum(Integer agentNum) {
+        this.agentNum = agentNum;
     }
 }

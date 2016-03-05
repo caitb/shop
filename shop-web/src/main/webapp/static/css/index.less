@@ -50,10 +50,15 @@ body{
             }
         }
         .all{
-            .next{
-                float: right;
-                margin-right: 10px;
-                height: 20px;
+            a{
+                display: block;
+                width: 100%;
+                height: 100%;
+                .next{
+                    float: right;
+                    margin-right: 10px;
+                    height: 20px;
+                }
             }
         }
         nav{
@@ -196,6 +201,11 @@ body{
             }
         }
     }
+    .bottom{
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
     footer{
         width: 100%;
         height:3.5rem;
@@ -207,6 +217,7 @@ body{
             background: #DA3600;
         }
         .btm{
+            width: 1px;
             -webkit-box-flex:1;
             -moz-box-flex:1;
             background: #F74A11;

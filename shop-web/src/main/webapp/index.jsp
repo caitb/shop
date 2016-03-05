@@ -9,5 +9,6 @@
     window.location.href = "<%=path%>/lo/index";
 </script>
 <body>
+request.g
 </body>
 </html>

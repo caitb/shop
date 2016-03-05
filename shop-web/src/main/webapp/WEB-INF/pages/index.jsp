@@ -87,7 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <section class="sec1">
                     <c:forEach items="${indexComSkus}" var="Sku">
                         <div>
-                            <img src="${Sku.imgUrl}" alt="">
+                            <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt="">
                             <h2>${Sku.comSku.name}</h2>
                             <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel} </span></h1>
                             <p>超过<span>${Sku.agentNum}</span>人代理</p>

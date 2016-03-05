@@ -23,9 +23,10 @@ public class ProductService {
     private ProductMapper productMapper;
 
     /**
-     * 根据商品ID展示商品属性详情
-     * @param skuId
-     */
+      * @Author 贾晶豪
+      * @Date 2016/3/5 0005 下午 2:30
+      * 根据商品ID展示商品属性详情
+      */
     public Product getSkuDetails(String skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
@@ -39,8 +40,10 @@ public class ProductService {
         return product;
     }
     /**
-     * 代理商折扣，基础数据
-     */
+      * @Author 贾晶豪
+      * @Date 2016/3/5 0005 下午 2:30
+      * 代理商折扣，基础数据
+      */
     public String getDiscountByAgentLevel() throws Exception {
         String discountLevel = null;
         List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
@@ -49,5 +52,4 @@ public class ProductService {
         }
         return discountLevel;
     }
-
 }

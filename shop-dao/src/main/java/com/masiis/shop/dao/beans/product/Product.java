@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by ZhaoLiang on 2016/3/2.
+ * Created by JingHao on 2016/3/2.
  */
 public class Product extends ComSku {
 

@@ -44,7 +44,7 @@
         </div>
         <div class="dlpople">
             <p>快递：<span>到付</span></p>
-            <p>代理人数：<b>超过<span>9999</span>人</b></p>
+            <p>代理人数：<b><span>${productDetails.agentNum}</span>人</b></p>
         </div>
         <div class="dlpople">
             <p>库存</p>

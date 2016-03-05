@@ -8,7 +8,7 @@ import com.masiis.shop.dao.po.ComSkuImage;
 import java.util.List;
 
 /**
- * Created by ZhaoLiang on 2016/3/2.
+ * Created by JingHao on 2016/3/2.
  */
 public interface ProductMapper {
 

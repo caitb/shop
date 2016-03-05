@@ -38,7 +38,7 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>${productDetails.priceMarket}</b><span><c:choose><c:when test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
+            <p><b>￥${productDetails.priceRetail}</b><span><c:choose><c:when test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
                 <c:otherwise>成为合伙人后可查看利润</c:otherwise></c:choose>
             </span></p>
         </div>

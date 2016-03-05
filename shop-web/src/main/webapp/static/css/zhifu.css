@@ -35,14 +35,16 @@ body .wrap .box main .drap {
   display: -moz-box;
   -moz-box-orient: vertical;
   -moz-box-align: center;
-  padding: 20px 0 15px 0;
+  padding: 20px 0 20px 0;
 }
-body .wrap .box main .drap img {
+body .wrap .box main .drap h2 img {
   display: block;
+  width: 70%;
+  margin: 0 auto;
 }
 body .wrap .box main .drap p {
   color: #999999;
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 12px;
 }
 body .wrap .box main .xinxi p:nth-child(2) {
@@ -233,14 +235,23 @@ body .wrap .box main .sec4 {
   padding: 10px 0;
 }
 body .wrap .box main .sec4 p {
+  margin: 0 auto;
   font-size: 12px;
+  width: 100px;
+  display: -webkit-box;
+  display: -moz-box;
 }
-body .wrap .box main .sec4 span {
+body .wrap .box main .sec4 p span {
+  display: block;
   color: #FF5200;
   font-size: 12px;
+  text-align: left;
 }
-body .wrap .box main .sec4 b {
+body .wrap .box main .sec4 p b {
   font-size: 12px;
+  text-align: right;
+  display: block;
+  width: 50px;
 }
 body .wrap .box main .weixin,
 body .wrap .box main .xianxia {

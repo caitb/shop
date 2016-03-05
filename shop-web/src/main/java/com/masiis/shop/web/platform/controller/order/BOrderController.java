@@ -47,20 +47,49 @@ public class BOrderController extends BaseController {
         ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
         mv.addObject("skuName", comSku.getName());
         mv.addObject("skuImg", skuImg + comSkuImage.getImgUrl());
-        mv.addObject("skuImgAlt",comSkuImage.getImgName());
+        mv.addObject("skuImgAlt", comSkuImage.getImgName());
         mv.setViewName("platform/order/shenqing");
         return mv;
     }
+
     /**
      * 合伙人注册一
+     *
      * @author ZhaoLiang
      * @date 2016/3/5 14:27
      */
     @RequestMapping("/register")
     public ModelAndView partnersRegister(HttpServletRequest request,
-                                   HttpServletResponse response) {
+                                         HttpServletResponse response) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("platform/order/zhuce");
+        return mv;
+    }
+
+    /**
+     * 合伙人注册确认
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/5 14:27
+     */
+    @RequestMapping("/registerConfirm")
+    public ModelAndView partnersRegisterConfirm(HttpServletRequest request,
+                                                HttpServletResponse response) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("platform/order/zhuce2");
+        return mv;
+    }
+
+    /**
+     * 合伙人支付
+     * @author ZhaoLiang
+     * @date 2016/3/5 16:32
+     */
+    @RequestMapping("/pay")
+    public ModelAndView paretnersPay(HttpServletRequest request,
+                                     HttpServletResponse response) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("platform/order/zhifu");
         return mv;
     }
 }

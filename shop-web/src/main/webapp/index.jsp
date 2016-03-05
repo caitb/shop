@@ -6,7 +6,7 @@
 %>
 <html>
 <script>
-    window.location.href = "<%=path%>/lo/index";
+    window.location.href = "<%=path%>/index";
 </script>
 <body>
 request.g

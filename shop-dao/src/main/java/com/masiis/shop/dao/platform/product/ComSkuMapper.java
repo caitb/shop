@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComSku;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface ComSkuMapper {
@@ -20,4 +22,11 @@ public interface ComSkuMapper {
     List<ComSku> selectAll();
 
     int updateByPrimaryKey(ComSku record);
+
+    /**
+     * 查找申请商品
+     * @param skuId
+     * @return
+     */
+    ComSku findBySkuId(@Param("id") Integer skuId);
 }

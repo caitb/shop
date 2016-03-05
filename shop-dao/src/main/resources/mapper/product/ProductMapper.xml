@@ -19,9 +19,6 @@
         <result column="slogan" property="slogan" jdbcType="VARCHAR" />
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
         <result column="stock" property="stock" jdbcType="INTEGER" />
-        <result column="agent_level_id" property="agentLevel" jdbcType="INTEGER" />
-        <result column="discount" property="discount" jdbcType="DECIMAL" />
-        <result column="quantity" property="quantity" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
         <id column="id" property="id" jdbcType="INTEGER" />
@@ -31,16 +28,24 @@
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="is_default" property="isDefault" jdbcType="INTEGER" />
     </resultMap>
+    <resultMap id="DiscountLevelResultMap" type="com.masiis.shop.dao.po.ComAgentLevel" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+        <result column="lower" property="lower" jdbcType="DECIMAL" />
+        <result column="discount" property="discount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
 
     <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
         SELECT sku.name,sku.price_retail,sku.remark,
                 spu.name,spu.slogan,spu.content,
-                sku_stok.stock,
-                sku_agent.agent_level_id,sku_agent.discount,sku_agent.quantity
+                sku_stok.stock
         FROM com_sku sku
         LEFT JOIN com_spu spu ON sku.spu_id = spu.id
         LEFT JOIN pf_sku_stock sku_stok ON sku_stok.sku_id = sku.id
-        LEFT JOIN pf_sku_agent sku_agent ON sku_agent.sku_id = sku.id
         WHERE sku.id = #{skuId}
     </select>
 
@@ -48,5 +53,9 @@
        SELECT img_url,img_name,sort,is_default
        FROM com_sku_image
        WHERE sku_id = #{skuId}
+    </select>
+
+    <select id="agentLevelDiscount" resultMap="DiscountLevelResultMap">
+        SELECT * FROM com_agent_level ORDER BY id ASC
     </select>
 </mapper>

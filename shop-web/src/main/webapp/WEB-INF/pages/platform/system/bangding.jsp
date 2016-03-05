@@ -32,16 +32,16 @@
         </div>
         <section class="input_t phone">
             <p>手机号：</p>
-            <input type="text">
+            <input type="text" name="phone" value="">
         </section>
         <section class="input_t">
             <p>验证码：</p>
-            <input type="text">
+            <input type="text" name="verificationCode" value="">
             <h4>获取验证码</h4>
         </section>
         <section class="input_t mima">
             <p>密码：</p>
-            <input type="password">
+            <input type="password" name="password" value="">
         </section>
         <p class="rodia">
             <input type="checkbox" id="fu" checked>

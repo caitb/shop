@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="admin">
             <img src="<%=path%>/static/images/admin.png" alt="">
             <h3>王平—欢迎您登入</h3>
-            <span><a href="bangding.html" style="color:white;">绑定账号</a></span>
+            <span><a href="<%=path%>/binding/bindingPhone" style="color:white;">绑定账号</a></span>
         </div>
         <div class="banner">
             <div class="swiper-container">

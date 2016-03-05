@@ -2,9 +2,11 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PbBanner;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +28,14 @@ public class IndexController extends BaseController {
 
     @Resource
     private IndexShowService indexShowService;
+    @Resource
+    private ProductService productService;
 
     @RequestMapping("/index")
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
+        HttpSession session = request.getSession();
+        //获取用户信息
+        ComUser comUser =(ComUser)session.getAttribute("comUser");
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片
@@ -43,24 +50,27 @@ public class IndexController extends BaseController {
         //封装图片地址集合
         modelAndView.addObject("urls",urls);
 
+        //获取商品图片地址常量
+        String skuValue = PropertiesUtils.getStringValue("index_product_100_100_url");
         //获取主页展示商品信息
         List<IndexComSku> indexComSkus = indexShowService.findIndexComSku();
         for (IndexComSku indexComSku:indexComSkus) {
             //获取商品图片地址
-            String url = value + indexComSku.getImgUrl();
+            String url = skuValue + indexComSku.getImgUrl();
             //重新封装商品图片地址
             indexComSku.setImgUrl(url);
+            //判断会员权限
+            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());
+//            if(comUser!=null && comUser.getIsAgent()==1){
+//                //确定代理权限，显示优惠区间
+//                indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());
+//            }else{
+//                indexComSku.setDiscountLevel("成为合伙人可查看");
+//            }
         }
         //封装展示商品信息集合
         modelAndView.addObject("indexComSkus",indexComSkus);
-
-
-//        HttpSession session = request.getSession();
-//        //获取用户信息
-//        PbUser pbUser =(PbUser)session.getAttribute("comUser");
         modelAndView.setViewName("index");
         return modelAndView;
     }
-
-
 }

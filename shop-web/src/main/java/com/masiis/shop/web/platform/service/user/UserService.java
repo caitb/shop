@@ -1,10 +1,12 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.dao.po.PfUserTrial;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ public class UserService {
     private ComUserMapper comUserMapper;
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
+    @Resource
+    private PfUserTrialMapper pfUserTrialMapper;
+
 
     /**
      * 根据用户id获取用户
@@ -76,5 +81,12 @@ public class UserService {
      */
     public List<ComUserAddress> getComUserAddress(Long userId) {
         return comUserAddressMapper.selectAllByComUserId(userId);
+    }
+    /**
+     *
+     * @param pfUserTrial
+     */
+    public void updateUserTrial(PfUserTrial pfUserTrial){
+        int i = pfUserTrialMapper.updateByPrimaryKey(pfUserTrial);
     }
 }

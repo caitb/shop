@@ -25,8 +25,8 @@
 
 
     <!-- Le styles -->
-    <link href="<%=basePath%>static/class/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="<%=basePath%>static/class/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
+    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -35,324 +35,328 @@
 
 </head>
 
-<body data-spy="scroll" data-target=".subnav" data-offset="50">
-
-<div class="container-fluid">
+<body>
     <form class="form-horizontal">
-
-        <hr/>
-        <h4>商品属性</h4>
-        <hr/>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <fieldset>
-
-                    <div class="control-group">
-                        <label class="control-label" for="productName">商品名称</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="productName">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="productNo">商品货号</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="productNo">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="productCode">商品条码</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="productCode">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="select01">商品分类</label>
-                        <div class="controls">
-                            <select id="select01">
-                                <option>请选择</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                            <select id="select02">
-                                <option>请选择</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                            <select id="select03">
-                                <option>请选择</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="select01">商品品牌</label>
-                        <div class="controls">
-                            <select id="select04">
-                                <option>请选择</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-
-                </fieldset>
+        <div class="form-group">
+            <label for="skuName" class="col-sm-4 control-label">商品名称</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="skuName" placeholder="商品名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="skuNo" class="col-sm-4 control-label">商品货号</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="skuNo" placeholder="商品货号">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="skuCode" class="col-sm-4 control-label">商品条码</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="skuCode" placeholder="商品条码">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="skuC" class="col-sm-4 control-label">商品分类</label>
+            <div class="col-sm-1">
+                <select class="form-control" id="skuC">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <select class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="col-sm-1">
+                <select class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="brandId" class="col-sm-4 control-label">商品品牌</label>
+            <div class="col-sm-4">
+                <select class="form-control" id="brandId">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
             </div>
         </div>
 
-        <hr/>
-        <h4>价格设置</h4>
-        <hr/>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <fieldset>
-
-                    <div class="control-group">
-                        <label class="control-label" for="costPrice">成本价</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="costPrice">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="marketPrice">市场价</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="marketPrice">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="retailPrice">零售价</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="retailPrice">
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label">是否允许试用</label>
-                        <div class="controls">
-                            <label class="radio">
-                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-                                是
-                            </label>
-                            <label class="radio">
-                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                否
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="tryFreight">试用运费</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="tryFreight">
-                        </div>
-                    </div>
-                </fieldset>
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-5">
+                <div class="alert alert-success" role="alert">
+                    <strong>价格设置</strong>
+                </div>
             </div>
         </div>
 
-
-        <hr/>
-            <h4>合伙人设置</h4>
-        <hr/>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <fieldset>
-
-                    <div class="control-group">
-                        <label class="control-label" for="advanced">高级</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="advanced">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="intermediate">中级</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="intermediate">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="primary">初级</label>
-                        <div class="controls">
-                            <input type="text" class="input-xlarge" id="primary">
-                        </div>
-                    </div>
-
-                </fieldset>
+        <div class="form-group">
+            <label for="costPrice" class="col-sm-4 control-label">成本价</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="costPrice" placeholder="成本价">
             </div>
         </div>
+        <div class="form-group">
+            <label for="marketPrice" class="col-sm-4 control-label">市场价</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="marketPrice" placeholder="市场价">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="retailPrice" class="col-sm-4 control-label">零售价</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="retailPrice" placeholder="零售价">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">是否允许试用</label>
+            <div class="col-sm-4">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        是
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        否
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="freight" class="col-sm-4 control-label">运费设置</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="freight" placeholder="运费设置">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-5">
+                <div class="alert alert-success" role="alert">
+                    <strong>合伙人设置</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="advanced" class="col-sm-4 control-label">高级</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="advanced" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+            <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="advancedCount" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="intermediate" class="col-sm-4 control-label">中级</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="intermediate" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+            <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="intermediateCount" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="primary" class="col-sm-4 control-label">初级</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="primary" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+            <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="primaryCount" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-5">
+                <div class="alert alert-success" role="alert">
+                    <strong>分销设置</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="reciprocal1" class="col-sm-4 control-label">倒数第一</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="reciprocal1" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+        </div>
+        <div class="form-group">
+            <label for="reciprocal2" class="col-sm-4 control-label">倒数第二</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="reciprocal2" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+        </div>
+        <div class="form-group">
+            <label for="reciprocal3" class="col-sm-4 control-label">倒数第三</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="reciprocal3" placeholder="">
+            </div>
+            <label class="col-sm-2">每件商品100元</label>
+        </div>
+
+        <hr/>
+
+        <div class="form-group">
+            <label for="inShort" class="col-sm-4 control-label">一句话介绍</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="inShort" placeholder="一句话介绍">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">商品介绍</label>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3"></label>
+            <div class="col-sm-8">
+                <script id="editor" type="text/plain" style="height: 500px"></script>
+                <script type="text/javascript">
+
+                    //实例化编辑器
+                    //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+                    var ue = UE.getEditor('editor');
+
+
+                    function isFocus(e){
+                        alert(UE.getEditor('editor').isFocus());
+                        UE.dom.domUtils.preventDefault(e)
+                    }
+                    function setblur(e){
+                        UE.getEditor('editor').blur();
+                        UE.dom.domUtils.preventDefault(e)
+                    }
+                    function insertHtml() {
+                        var value = prompt('插入html代码', '');
+                        UE.getEditor('editor').execCommand('insertHtml', value)
+                    }
+                    function createEditor() {
+                        enableBtn();
+                        UE.getEditor('editor');
+                    }
+                    function getAllHtml() {
+                        alert(UE.getEditor('editor').getAllHtml())
+                    }
+                    function getContent() {
+                        var arr = [];
+                        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+                        arr.push("内容为：");
+                        arr.push(UE.getEditor('editor').getContent());
+                        alert(arr.join("\n"));
+                    }
+                    function getPlainTxt() {
+                        var arr = [];
+                        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+                        arr.push("内容为：");
+                        arr.push(UE.getEditor('editor').getPlainTxt());
+                        alert(arr.join('\n'))
+                    }
+                    function setContent(isAppendTo) {
+                        var arr = [];
+                        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+                        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
+                        alert(arr.join("\n"));
+                    }
+                    function setDisabled() {
+                        UE.getEditor('editor').setDisabled('fullscreen');
+                        disableBtn("enable");
+                    }
+
+                    function setEnabled() {
+                        UE.getEditor('editor').setEnabled();
+                        enableBtn();
+                    }
+
+                    function getText() {
+                        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+                        var range = UE.getEditor('editor').selection.getRange();
+                        range.select();
+                        var txt = UE.getEditor('editor').selection.getText();
+                        alert(txt)
+                    }
+
+                    function getContentTxt() {
+                        var arr = [];
+                        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+                        arr.push("编辑器的纯文本内容为：");
+                        arr.push(UE.getEditor('editor').getContentTxt());
+                        alert(arr.join("\n"));
+                    }
+                    function hasContent() {
+                        var arr = [];
+                        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+                        arr.push("判断结果为：");
+                        arr.push(UE.getEditor('editor').hasContents());
+                        alert(arr.join("\n"));
+                    }
+                    function setFocus() {
+                        UE.getEditor('editor').focus();
+                    }
+                    function deleteEditor() {
+                        disableBtn();
+                        UE.getEditor('editor').destroy();
+                    }
+                    function disableBtn(str) {
+                        var div = document.getElementById('btns');
+                        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+                        for (var i = 0, btn; btn = btns[i++];) {
+                            if (btn.id == str) {
+                                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+                            } else {
+                                btn.setAttribute("disabled", "true");
+                            }
+                        }
+                    }
+                    function enableBtn() {
+                        var div = document.getElementById('btns');
+                        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+                        for (var i = 0, btn; btn = btns[i++];) {
+                            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+                        }
+                    }
+
+                    function getLocalData () {
+                        alert(UE.getEditor('editor').execCommand( "getlocaldata" ));
+                    }
+
+                    function clearLocalData () {
+                        UE.getEditor('editor').execCommand( "clearlocaldata" );
+                        alert("已清空草稿箱")
+                    }
+                </script>
+            </div>
+        </div>
+
     </form>
-
-
-    <script id="editor" type="text/plain" style="width:1024px;height:500px;"></script>
-    <div id="btns">
-        <div>
-            <button onclick="getAllHtml()">获得整个html的内容</button>
-            <button onclick="getContent()">获得内容</button>
-            <button onclick="setContent()">写入内容</button>
-            <button onclick="setContent(true)">追加内容</button>
-            <button onclick="getContentTxt()">获得纯文本</button>
-            <button onclick="getPlainTxt()">获得带格式的纯文本</button>
-            <button onclick="hasContent()">判断是否有内容</button>
-            <button onclick="setFocus()">使编辑器获得焦点</button>
-            <button onmousedown="isFocus(event)">编辑器是否获得焦点</button>
-            <button onmousedown="setblur(event)">编辑器失去焦点</button>
-
-        </div>
-        <div>
-            <button onclick="getText()">获得当前选中的文本</button>
-            <button onclick="insertHtml()">插入给定的内容</button>
-            <button id="enable" onclick="setEnabled()">可以编辑</button>
-            <button onclick="setDisabled()">不可编辑</button>
-            <button onclick=" UE.getEditor('editor').setHide()">隐藏编辑器</button>
-            <button onclick=" UE.getEditor('editor').setShow()">显示编辑器</button>
-            <button onclick=" UE.getEditor('editor').setHeight(300)">设置高度为300默认关闭了自动长高</button>
-        </div>
-
-        <div>
-            <button onclick="getLocalData()">获取草稿箱内容</button>
-            <button onclick="clearLocalData()">清空草稿箱</button>
-        </div>
-
-    </div>
-    <div>
-        <button onclick="createEditor()">
-            创建编辑器
-        </button>
-        <button onclick="deleteEditor()">
-            删除编辑器
-        </button>
-    </div>
-
-    <script type="text/javascript">
-
-        //实例化编辑器
-        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-        var ue = UE.getEditor('editor');
-
-
-        function isFocus(e) {
-            alert(UE.getEditor('editor').isFocus());
-            UE.dom.domUtils.preventDefault(e)
-        }
-        function setblur(e) {
-            UE.getEditor('editor').blur();
-            UE.dom.domUtils.preventDefault(e)
-        }
-        function insertHtml() {
-            var value = prompt('插入html代码', '');
-            UE.getEditor('editor').execCommand('insertHtml', value)
-        }
-        function createEditor() {
-            enableBtn();
-            UE.getEditor('editor');
-        }
-        function getAllHtml() {
-            alert(UE.getEditor('editor').getAllHtml())
-        }
-        function getContent() {
-            var arr = [];
-            arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-            arr.push("内容为：");
-            arr.push(UE.getEditor('editor').getContent());
-            alert(arr.join("\n"));
-        }
-        function getPlainTxt() {
-            var arr = [];
-            arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
-            arr.push("内容为：");
-            arr.push(UE.getEditor('editor').getPlainTxt());
-            alert(arr.join('\n'))
-        }
-        function setContent(isAppendTo) {
-            var arr = [];
-            arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-            UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
-            alert(arr.join("\n"));
-        }
-        function setDisabled() {
-            UE.getEditor('editor').setDisabled('fullscreen');
-            disableBtn("enable");
-        }
-
-        function setEnabled() {
-            UE.getEditor('editor').setEnabled();
-            enableBtn();
-        }
-
-        function getText() {
-            //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-            var range = UE.getEditor('editor').selection.getRange();
-            range.select();
-            var txt = UE.getEditor('editor').selection.getText();
-            alert(txt)
-        }
-
-        function getContentTxt() {
-            var arr = [];
-            arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-            arr.push("编辑器的纯文本内容为：");
-            arr.push(UE.getEditor('editor').getContentTxt());
-            alert(arr.join("\n"));
-        }
-        function hasContent() {
-            var arr = [];
-            arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-            arr.push("判断结果为：");
-            arr.push(UE.getEditor('editor').hasContents());
-            alert(arr.join("\n"));
-        }
-        function setFocus() {
-            UE.getEditor('editor').focus();
-        }
-        function deleteEditor() {
-            disableBtn();
-            UE.getEditor('editor').destroy();
-        }
-        function disableBtn(str) {
-            var div = document.getElementById('btns');
-            var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-            for (var i = 0, btn; btn = btns[i++];) {
-                if (btn.id == str) {
-                    UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-                } else {
-                    btn.setAttribute("disabled", "true");
-                }
-            }
-        }
-        function enableBtn() {
-            var div = document.getElementById('btns');
-            var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
-            for (var i = 0, btn; btn = btns[i++];) {
-                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
-            }
-        }
-
-        function getLocalData() {
-            alert(UE.getEditor('editor').execCommand("getlocaldata"));
-        }
-
-        function clearLocalData() {
-            UE.getEditor('editor').execCommand("clearlocaldata");
-            alert("已清空草稿箱")
-        }
-    </script>
-
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary center">保存更改</button>
-        <button class="btn">取消</button>
-    </div>
-</div>
-
 </body>
 </html>

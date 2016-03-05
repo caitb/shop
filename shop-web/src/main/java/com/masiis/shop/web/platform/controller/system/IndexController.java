@@ -21,14 +21,14 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/index")
+//@RequestMapping("/index")
 public class IndexController extends BaseController {
 
     @Resource
     private IndexShowService indexShowService;
 
-    @RequestMapping("show")
-    public ModelAndView BannerList(HttpServletRequest request)throws Exception{
+    @RequestMapping("/index")
+    public ModelAndView indexList(HttpServletRequest request)throws Exception{
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片
@@ -61,4 +61,6 @@ public class IndexController extends BaseController {
         modelAndView.setViewName("index");
         return modelAndView;
     }
+
+
 }

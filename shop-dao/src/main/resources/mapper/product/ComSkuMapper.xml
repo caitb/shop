@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.ComSkuMapper" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComSkuMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSku" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -53,6 +53,11 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, name, spu_id, create_time, create_man, modify_time, modify_man, bar_code, 
         price_cost, price_market, price_retail, remark
+        from com_sku
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select name
         from com_sku
         where id = #{id,jdbcType=INTEGER}
     </select>

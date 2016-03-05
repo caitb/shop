@@ -1,6 +1,5 @@
 package com.masiis.shop.admin.service.order;
 
-import com.masiis.shop.dao.beans.order.PfUserTrialProduct;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.order.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -26,14 +25,14 @@ public class PfUserTrialService {
     public SfUserRelationMapper userRelationMapper;
     @Resource
     public ComSkuMapper comSkuMapper;
-    /**
-     * 查询试用列表
-     * @param
-     * @return
-     */
-    public List<PfUserTrialProduct> findByCondition(PfUserTrialProduct pfUserTrialProduct) {
-        return pfTrialMapper.findByCondition(pfUserTrialProduct);
-    }
+//    /**
+//     * 查询试用列表
+//     * @param
+//     * @return
+//     */
+//    public List<PfUserTrialProduct> findByCondition(PfUserTrialProduct pfUserTrialProduct) {
+//        return pfTrialMapper.findByCondition(pfUserTrialProduct);
+//    }
     /**
      * 查询用户和推荐人关系对象
      * @param id

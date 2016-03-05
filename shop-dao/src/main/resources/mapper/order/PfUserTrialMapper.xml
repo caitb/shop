@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.order.PfUserTrialMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.order.PfUserTrialProduct" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="user_id" property="userId" jdbcType="BIGINT" />
-        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="status" property="status" jdbcType="INTEGER" />
-        <result column="reason" property="reason" jdbcType="VARCHAR" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-        <result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="real_name" property="referrer" jdbcType="VARCHAR" />
-    </resultMap>
+    <!--<resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.order.PfUserTrialProduct" >-->
+        <!--<id column="id" property="id" jdbcType="BIGINT" />-->
+        <!--<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />-->
+        <!--<result column="user_id" property="userId" jdbcType="BIGINT" />-->
+        <!--<result column="spu_id" property="spuId" jdbcType="INTEGER" />-->
+        <!--<result column="sku_id" property="skuId" jdbcType="INTEGER" />-->
+        <!--<result column="status" property="status" jdbcType="INTEGER" />-->
+        <!--<result column="reason" property="reason" jdbcType="VARCHAR" />-->
+        <!--<result column="name" property="name" jdbcType="VARCHAR" />-->
+        <!--<result column="mobile" property="mobile" jdbcType="VARCHAR" />-->
+        <!--<result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />-->
+        <!--<result column="remark" property="remark" jdbcType="VARCHAR" />-->
+        <!--<result column="real_name" property="referrer" jdbcType="VARCHAR" />-->
+    <!--</resultMap>-->
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from pf_user_trial
@@ -59,11 +59,11 @@
         from com_user
         where id = #{parentUserId}
     </select>-->
-    <select id="findByCondition" resultMap="BaseResultMap" >
-        select put.id, put.create_time, put.user_id, put.spu_id, put.sku_id, put.status, put.reason, put.name, put.mobile, put.weixin_id,
-        put.remark ,com_user.real_name
-        from pf_user_trial put
-        LEFT JOIN com_user on put.user_id = com_user.id
-    </select>
+    <!--<select id="findByCondition" resultMap="BaseResultMap" >-->
+        <!--select put.id, put.create_time, put.user_id, put.spu_id, put.sku_id, put.status, put.reason, put.name, put.mobile, put.weixin_id,-->
+        <!--put.remark ,com_user.real_name-->
+        <!--from pf_user_trial put-->
+        <!--LEFT JOIN com_user on put.user_id = com_user.id-->
+    <!--</select>-->
 
 </mapper>

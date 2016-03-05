@@ -6,7 +6,6 @@ import com.github.pagehelper.PageInfo;
 
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.PfUserTrialService;
-import com.masiis.shop.dao.beans.order.PfUserTrialProduct;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
@@ -81,28 +80,28 @@ public class PfUserTrialController extends BaseController{
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 0 : limit;
         Integer pageNo = offset/10 + 1;
-
-        PageHelper.startPage(pageNo, limit);
-        PfUserTrialProduct pfUserTrialProduct = new PfUserTrialProduct();
-
-       List<PfUserTrialProduct> pfUserTrialProducts = trialService.findByCondition(pfUserTrialProduct);
-        for (PfUserTrialProduct userTrialProduct:pfUserTrialProducts) {
-            SfUserRelation sfUserRelation = trialService.findByUserId(userTrialProduct.getId());
-            ComSku comSku = trialService.findBySkuId(userTrialProduct.getSkuId());
-            if (comSku!=null){
-                userTrialProduct.setSkuName(comSku.getName());
-            }
-//            if (sfUserRelation!=null) {
-//                ComUser comUser = trialService.findByParentId(sfUserRelation.getParentUserId());
-//                if (comUser!=null){
-//                    userTrialProduct.setReferrer(comUser.getRealName());
-//                }
+//
+//        PageHelper.startPage(pageNo, limit);
+//        PfUserTrialProduct pfUserTrialProduct = new PfUserTrialProduct();
+//
+//       List<PfUserTrialProduct> pfUserTrialProducts = trialService.findByCondition(pfUserTrialProduct);
+//        for (PfUserTrialProduct userTrialProduct:pfUserTrialProducts) {
+//            SfUserRelation sfUserRelation = trialService.findByUserId(userTrialProduct.getId());
+//            ComSku comSku = trialService.findBySkuId(userTrialProduct.getSkuId());
+//            if (comSku!=null){
+//                userTrialProduct.setSkuName(comSku.getName());
 //            }
-        }
-        PageInfo<PfUserTrialProduct> pageInfo = new PageInfo<PfUserTrialProduct>(pfUserTrialProducts);
+////            if (sfUserRelation!=null) {
+////                ComUser comUser = trialService.findByParentId(sfUserRelation.getParentUserId());
+////                if (comUser!=null){
+////                    userTrialProduct.setReferrer(comUser.getRealName());
+////                }
+////            }
+//        }
+//        PageInfo<PfUserTrialProduct> pageInfo = new PageInfo<PfUserTrialProduct>(pfUserTrialProducts);
 
-        map.put("total", pageInfo.getTotal());
-        map.put("rows", pfUserTrialProducts);
+//        map.put("total", pageInfo.getTotal());
+//        map.put("rows", pfUserTrialProducts);
 
         return map;
     }

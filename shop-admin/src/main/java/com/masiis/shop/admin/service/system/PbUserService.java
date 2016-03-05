@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.service.user;
+package com.masiis.shop.admin.service.system;
 
 import com.masiis.shop.dao.platform.system.PbUserMapper;
 import com.masiis.shop.dao.po.PbUser;

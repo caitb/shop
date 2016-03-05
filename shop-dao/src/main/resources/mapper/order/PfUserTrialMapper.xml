@@ -1,69 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.order.PfUserTrialMapper" >
-    <!--<resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.order.PfUserTrialProduct" >-->
-        <!--<id column="id" property="id" jdbcType="BIGINT" />-->
-        <!--<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />-->
-        <!--<result column="user_id" property="userId" jdbcType="BIGINT" />-->
-        <!--<result column="spu_id" property="spuId" jdbcType="INTEGER" />-->
-        <!--<result column="sku_id" property="skuId" jdbcType="INTEGER" />-->
-        <!--<result column="status" property="status" jdbcType="INTEGER" />-->
-        <!--<result column="reason" property="reason" jdbcType="VARCHAR" />-->
-        <!--<result column="name" property="name" jdbcType="VARCHAR" />-->
-        <!--<result column="mobile" property="mobile" jdbcType="VARCHAR" />-->
-        <!--<result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />-->
-        <!--<result column="remark" property="remark" jdbcType="VARCHAR" />-->
-        <!--<result column="real_name" property="referrer" jdbcType="VARCHAR" />-->
-    <!--</resultMap>-->
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserTrial" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-        delete from pf_user_trial
-        where id = #{id,jdbcType=BIGINT}
-    </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
-        insert into pf_user_trial (id, create_time, user_id, 
-            spu_id, sku_id, status, 
-            reason, name, mobile, 
-            weixin_id, remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-            #{reason,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-            #{weixinId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
-    </insert>
-
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
-        update pf_user_trial
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            user_id = #{userId,jdbcType=BIGINT},
-            spu_id = #{spuId,jdbcType=INTEGER},
-            sku_id = #{skuId,jdbcType=INTEGER},
-            status = #{status,jdbcType=INTEGER},
-            reason = #{reason,jdbcType=VARCHAR},
-            name = #{name,jdbcType=VARCHAR},
-            mobile = #{mobile,jdbcType=VARCHAR},
-            weixin_id = #{weixinId,jdbcType=VARCHAR},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, 
-        remark
-        from pf_user_trial
-        where id = #{id,jdbcType=BIGINT}
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark
+        FROM
+               pf_user_trial
+        WHERE
+               id = #{id}
     </select>
 
-    <!--<select id="findByParentId" resultType="com.masiis.shop.dao.po.ComUser" parameterType="java.lang.Long" >
-        select real_name
-        from com_user
-        where id = #{parentUserId}
-    </select>-->
-    <!--<select id="findByCondition" resultMap="BaseResultMap" >-->
-        <!--select put.id, put.create_time, put.user_id, put.spu_id, put.sku_id, put.status, put.reason, put.name, put.mobile, put.weixin_id,-->
-        <!--put.remark ,com_user.real_name-->
-        <!--from pf_user_trial put-->
-        <!--LEFT JOIN com_user on put.user_id = com_user.id-->
-    <!--</select>-->
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+               id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark
+        FROM
+               pf_user_trial
+        <where>
+            <if test="pfUserTrial.id != null">
+                id = #{pfUserTrial.id}
+            </if>
+            <if test="pfUserTrial.userId != null">
+                AND user_id = #{pfUserTrial.id}
+            </if>
+            <if test="pfUserTrial.spuId != null">
+                AND spu_id = #{pfUserTrial.spuId}
+            </if>
+            <if test="pfUserTrial.skuId != null">
+                AND sku_id = #{pfUserTrial.skuId}
+            </if>
+            <if test="pfUserTrial.name != null">
+                AND name = #{pfUserTrial.name}
+            </if>
+            <if test="pfUserTrial.mobile != null">
+                AND mobile = #{pfUserTrial.mobile}
+            </if>
+            <if test="pfUserTrial.weixinId != null">
+                AND weixin_id = #{pfUserTrial.weixinId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO pf_user_trial
+        (create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark)
+        VALUES
+        (create_time = #{pfUserTrial.createTime}, user_id = #{pfUserTrial.userId}, spu_id = #{pfUserTrial.spuId}, sku_id = #{pfUserTrial.skuId}, status = #{pfUserTrial.status}, reason = #{pfUserTrial.reason}, name = #{pfUserTrial.name}, mobile = #{pfUserTrial.mobile}, weixin_id = #{pfUserTrial.weixinId}, remark = #{pfUserTrial.remark})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE pf_user_trial
+        SET
+               create_time = #{pfUserTrial.createTime},
+               user_id = #{pfUserTrial.userId},
+               spu_id = #{pfUserTrial.spuId},
+               sku_id = #{pfUserTrial.skuId},
+               status = #{pfUserTrial.status},
+               reason = #{pfUserTrial.reason},
+               name = #{pfUserTrial.name},
+               mobile = #{pfUserTrial.mobile},
+               weixin_id = #{pfUserTrial.weixinId},
+               remark = #{pfUserTrial.remark}
+        WHERE
+               id = #{pfUserTrial.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM pf_user_trial WHERE id = #{id}
+    </delete>
+
 
 </mapper>

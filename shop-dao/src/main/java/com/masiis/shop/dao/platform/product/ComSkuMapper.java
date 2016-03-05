@@ -15,8 +15,6 @@ import java.util.List;
 public interface ComSkuMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(ComSku record);
-
     ComSku selectByPrimaryKey(Integer id);
 
     List<ComSku> selectAll();
@@ -29,4 +27,46 @@ public interface ComSkuMapper {
      * @return
      */
     ComSku findBySkuId(@Param("skuId") Integer skuId);
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 根据id查询一条记录
+     * @param id
+     * @return
+     */
+    ComSku selectById(@Param("id")Long id);
+
+    /**
+     * 根据条件查询记录
+     * @param comSku
+     * @return
+     */
+    List<ComSku> selectByCondition(@Param("comSku")ComSku comSku);
+
+    /**
+     * 添加一条记录
+     * @param comSku
+     */
+    int insert(@Param("comSku")ComSku comSku);
+
+    /**
+     * 根据id更新一条记录
+     * @param comSku
+     */
+    void updateById(@Param("comSku")ComSku comSku);
+
+    /**
+     * 根据id删除一条记录
+     * @param id
+     */
+    void deleteById(@Param("id")Long id);
 }

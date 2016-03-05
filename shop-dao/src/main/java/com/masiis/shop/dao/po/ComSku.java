@@ -67,73 +67,114 @@ public class ComSku {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
+
     public Integer getSpuId() {
         return spuId;
     }
+
     public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getCreateMan() {
         return createMan;
     }
+
     public void setCreateMan(Long createMan) {
         this.createMan = createMan;
     }
+
     public Date getModifyTime() {
         return modifyTime;
     }
+
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
     public Long getModifyMan() {
         return modifyMan;
     }
+
     public void setModifyMan(Long modifyMan) {
         this.modifyMan = modifyMan;
     }
+
     public String getBarCode() {
         return barCode;
     }
+
     public void setBarCode(String barCode) {
-        this.barCode = barCode == null ? null : barCode.trim();
+        this.barCode = barCode;
     }
+
     public BigDecimal getPriceCost() {
         return priceCost;
     }
+
     public void setPriceCost(BigDecimal priceCost) {
         this.priceCost = priceCost;
     }
+
     public BigDecimal getPriceMarket() {
         return priceMarket;
     }
+
     public void setPriceMarket(BigDecimal priceMarket) {
         this.priceMarket = priceMarket;
     }
+
     public BigDecimal getPriceRetail() {
         return priceRetail;
     }
+
     public void setPriceRetail(BigDecimal priceRetail) {
         this.priceRetail = priceRetail;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "ComSku{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", spuId=" + spuId +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", modifyTime=" + modifyTime +
+                ", modifyMan=" + modifyMan +
+                ", barCode='" + barCode + '\'' +
+                ", priceCost=" + priceCost +
+                ", priceMarket=" + priceMarket +
+                ", priceRetail=" + priceRetail +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

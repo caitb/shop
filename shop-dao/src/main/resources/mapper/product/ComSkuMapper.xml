@@ -21,18 +21,18 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSku" >
-        insert into com_sku (id, name, spu_id, 
-            create_time, create_man, modify_time, 
-            modify_man, bar_code, price_cost, 
-            price_market, price_retail, remark
-            )
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{spuId,jdbcType=INTEGER}, 
-            #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, 
-            #{modifyMan,jdbcType=BIGINT}, #{barCode,jdbcType=VARCHAR}, #{priceCost,jdbcType=DECIMAL}, 
-            #{priceMarket,jdbcType=DECIMAL}, #{priceRetail,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
-            )
-    </insert>
+    <!--<insert id="insert" parameterType="com.masiis.shop.dao.po.ComSku" >-->
+        <!--insert into com_sku (id, name, spu_id, -->
+            <!--create_time, create_man, modify_time, -->
+            <!--modify_man, bar_code, price_cost, -->
+            <!--price_market, price_retail, remark-->
+            <!--)-->
+        <!--values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{spuId,jdbcType=INTEGER}, -->
+            <!--#{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, -->
+            <!--#{modifyMan,jdbcType=BIGINT}, #{barCode,jdbcType=VARCHAR}, #{priceCost,jdbcType=DECIMAL}, -->
+            <!--#{priceMarket,jdbcType=DECIMAL}, #{priceRetail,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}-->
+            <!--)-->
+    <!--</insert>-->
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSku" >
         update com_sku
@@ -67,5 +67,79 @@
         price_cost, price_market, price_retail, remark
         from com_sku
     </select>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, name, spu_id, create_time, create_man, modify_time, modify_man, bar_code, price_cost, price_market, price_retail, remark
+        FROM
+               com_sku
+        WHERE
+               id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+               id, name, spu_id, create_time, create_man, modify_time, modify_man, bar_code, price_cost, price_market, price_retail, remark
+        FROM
+               com_sku
+        <where>
+            <if test="comSku.id != null">
+                id = #{comSku.id}
+            </if>
+            <if test="comSku.spuId != null">
+                AND spu_id = #{comSku.spuId}
+            </if>
+            <if test="comSku.name != null">
+                AND name = #{comSku.name}
+            </if>
+            <if test="comSku.barCode != null">
+                AND bar_code = #{comSku.barCode}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO com_sku
+        (name, spu_id, create_time, create_man, modify_time, modify_man, bar_code, price_cost, price_market, price_retail, remark)
+        VALUES
+        (name = #{comSku.name}, spu_id = #{comSku.spuId}, create_time = #{comSku.createTime}, create_man = #{comSku.createMan}, modify_time = #{comSku.modifyTime}, modify_man = #{comSku.modifyMan}, bar_code = #{comSku.barCode}, price_cost = #{comSku.priceCost}, price_market = #{comSku.priceMarket}, price_retail = #{comSku.priceRetail}, remark = #{comSku.remark})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE com_sku
+        SET
+               name = #{comSku.name},
+               spu_id = #{comSku.spuId},
+               create_time = #{comSku.createTime},
+               create_man = #{comSku.createMan},
+               modify_time = #{comSku.modifyTime},
+               modify_man = #{comSku.modifyMan},
+               bar_code = #{comSku.barCode},
+               price_cost = #{comSku.priceCost},
+               price_market = #{comSku.priceMarket},
+               price_retail = #{comSku.priceRetail},
+               remark = #{comSku.remark}
+        WHERE
+               id = #{com_sku.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM com_sku WHERE id = #{id}
+    </delete>
 
 </mapper>

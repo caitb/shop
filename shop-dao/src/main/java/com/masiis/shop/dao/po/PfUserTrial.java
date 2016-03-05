@@ -29,11 +29,11 @@ public class PfUserTrial {
     /**
      * spu主键id
      */
-    private Integer spuId;
+    private Long spuId;
     /**
      * sku主键id
      */
-    private Integer skuId;
+    private Long skuId;
     /**
      * 状态(0未处理1通过2拒绝)
      */
@@ -62,67 +62,105 @@ public class PfUserTrial {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public Integer getSpuId() {
+
+    public Long getSpuId() {
         return spuId;
     }
-    public void setSpuId(Integer spuId) {
+
+    public void setSpuId(Long spuId) {
         this.spuId = spuId;
     }
-    public Integer getSkuId() {
+
+    public Long getSkuId() {
         return skuId;
     }
-    public void setSkuId(Integer skuId) {
+
+    public void setSkuId(Long skuId) {
         this.skuId = skuId;
     }
+
     public Integer getStatus() {
         return status;
     }
+
     public void setStatus(Integer status) {
         this.status = status;
     }
+
     public String getReason() {
         return reason;
     }
+
     public void setReason(String reason) {
-        this.reason = reason == null ? null : reason.trim();
+        this.reason = reason;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
+
     public String getMobile() {
         return mobile;
     }
+
     public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
+        this.mobile = mobile;
     }
+
     public String getWeixinId() {
         return weixinId;
     }
+
     public void setWeixinId(String weixinId) {
-        this.weixinId = weixinId == null ? null : weixinId.trim();
+        this.weixinId = weixinId;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "PfUserTrial{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", userId=" + userId +
+                ", spuId=" + spuId +
+                ", skuId=" + skuId +
+                ", status=" + status +
+                ", reason='" + reason + '\'' +
+                ", name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", weixinId='" + weixinId + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

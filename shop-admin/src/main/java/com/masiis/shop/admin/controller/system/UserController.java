@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.admin.service.system.PbUserMenuService;
-import com.masiis.shop.admin.service.user.PbUserService;
+import com.masiis.shop.admin.service.system.PbUserService;
 import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.PbUserMenu;

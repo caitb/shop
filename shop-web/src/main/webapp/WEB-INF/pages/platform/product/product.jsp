@@ -38,7 +38,9 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>${productDetails.priceMarket}</b><span><c:if test="productDetails.isPartner">${productDetails.discountLevel}</c:if></span></p>
+            <p><b>${productDetails.priceMarket}</b><span><c:choose><c:when test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
+                <c:otherwise>成为合伙人后可查看利润</c:otherwise></c:choose>
+            </span></p>
         </div>
         <div class="dlpople">
             <p>快递：<span>到付</span></p>

@@ -29,7 +29,7 @@ public class ProductService {
     public Product getSkuDetails(String skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
-        String productImgValue = PropertiesUtils.getStringValue("index_banner_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_200_200_url");
         if(skuImgList!=null && skuImgList.size()>0){
             for(ComSkuImage comSkuImage:skuImgList){
                 comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

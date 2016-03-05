@@ -27,8 +27,8 @@
         var phone = $("#phoneId")[0].value;
         var wechat = $("#wechatId")[0].value;
         var applyReason = $("#applyReasonId")[0].value;
-        var spuId ="";
-        var skuId = "";
+        var spuId =$("#spuId")[0].value;
+        var skuId = $("#skuId")[0].value;
         var isPhone = checkPhone(phone);
         if(!isPhone){
             alert("手机号格式不对");
@@ -58,11 +58,11 @@
         <div>
             <h2>${product.name}<span>x1</span></h2>
             <h3>规格：<span>默认</span></h3>
-            <p>零售价：<span>￥${product.priceRetail}</span></p>
+            <p>零售价：<span>￥${product.shipAmount}</span></p>
         </div>
     </section>
     <section class="sec3">
-        <p>运费<span>300.0</span></p>
+        <p>运费<span>${product.priceRetail}</span></p>
         <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥300</span>　<b style="font-size:12px">合计：</b><span>￥${product.priceRetail}</span></h1>
         <p>申请理由：<input type="text" id="applyReasonId"></p>
     </section>
@@ -70,6 +70,8 @@
         申请人信息
     </h1>
     <section class="sec4">
+        <input id="skuId" type="hidden" value="${product.id}"/>
+        <input id="spuId" type="hidden" value="${product.spuId}"/>
         <p>姓名：<input id="nameId" type="text"></p>
         <p>手机号：<input id="phoneId" type="tel"></p>
         <p>验证码：<input id="validateNumberId" type="text"><span>获取验证码</span></p>

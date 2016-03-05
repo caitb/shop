@@ -26,7 +26,12 @@ public class IndexComSku {
     private  String discountLevel;//优惠区间
     private ComSku comSku;//商品属性
     private Integer agentNum;//代理人数
+    private Boolean isPartner = false;//是否为合伙人
 
+    public Boolean getIsPartner() {
+        return isPartner;
+    }
+    public void setIsPartner(Boolean isPartner) {this.isPartner = isPartner;}
     public void setAgentNum(Integer agentNum) {this.agentNum = agentNum;}
     public Integer getAgentNum() {return agentNum;}
     public Integer getId() {

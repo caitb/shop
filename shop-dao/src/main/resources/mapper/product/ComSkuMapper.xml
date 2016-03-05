@@ -59,7 +59,7 @@
     <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select name
         from com_sku
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{skuId,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >

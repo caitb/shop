@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.beans.order.PfUserTrialProduct;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.dao.po.SfUserRelation;
@@ -16,7 +18,10 @@ public interface PfUserTrialMapper {
      * @param trial
      * @return
      */
-    List<PfUserTrial> findByCondition(@Param("trial")PfUserTrial trial);
+    List<PfUserTrialProduct> findByCondition(@Param("pfUserTrialProduct")PfUserTrialProduct pfUserTrialProduct);
+
+    ComUser findByParentId(@Param("parentUserId")Long parentUserId);
 
     int updateByPrimaryKey(PfUserTrial pfUserTrial);
+    int  insert(PfUserTrial pfUserTrial);
 }

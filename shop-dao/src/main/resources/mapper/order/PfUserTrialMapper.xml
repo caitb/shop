@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.order.PfUserTrialMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserTrial" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.beans.order.PfUserTrialProduct" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
@@ -13,6 +13,7 @@
         <result column="mobile" property="mobile" jdbcType="VARCHAR" />
         <result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="real_name" property="referrer" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -53,10 +54,16 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <!--<select id="findByParentId" resultType="com.masiis.shop.dao.po.ComUser" parameterType="java.lang.Long" >
+        select real_name
+        from com_user
+        where id = #{parentUserId}
+    </select>-->
     <select id="findByCondition" resultMap="BaseResultMap" >
-        select id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, 
-        remark
-        from pf_user_trial
+        select put.id, put.create_time, put.user_id, put.spu_id, put.sku_id, put.status, put.reason, put.name, put.mobile, put.weixin_id,
+        put.remark ,com_user.real_name
+        from pf_user_trial put
+        LEFT JOIN com_user on put.user_id = com_user.id
     </select>
 
 </mapper>

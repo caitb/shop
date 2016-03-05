@@ -28,5 +28,5 @@ public interface ComSkuMapper {
      * @param skuId
      * @return
      */
-    ComSku findBySkuId(@Param("id") Integer skuId);
+    ComSku findBySkuId(@Param("skuId") Integer skuId);
 }

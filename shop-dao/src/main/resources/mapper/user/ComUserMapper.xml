@@ -91,11 +91,7 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="findByParentId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select real_name
-        from com_user
-        where id = #{parentUserId,jdbcType=BIGINT}
-    </select>
+
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,

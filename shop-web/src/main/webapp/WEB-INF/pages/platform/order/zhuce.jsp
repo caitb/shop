@@ -73,7 +73,7 @@
             </p>
         </section>
         <section class="sec4">
-            <a href="../html/zhuce2.html">下一步</a>
+            <a href="<%=path%>/border/registerConfirm">下一步</a>
         </section>
     </main>
     

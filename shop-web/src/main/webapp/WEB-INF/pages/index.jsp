@@ -82,17 +82,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </li>
             </ul>
         </nav>-->
-        <h1 class="tuij"><a href="<%=path%>/index/show<%--/lo/quote--%>">推荐产品</a></h1>
+        <h1 class="tuij">推荐产品</h1>
         <main>
             <section class="sec1">
-
                     <c:forEach items="${indexComSkus}" var="Sku">
                         <div>
                             <img src="${Sku.imgUrl}" alt="">
                             <h2>${Sku.comSku.name}</h2>
-                            <h1>￥${Sku.comSku.priceRetail} <span>成为合伙人可查看</span></h1>
+                            <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel} </span></h1>
                             <p>超过<span>9999</span>人代理</p>
-                            <a href="<%=path%>/index/show">我要合伙</a>
+                            <a href="<%=path%>/lo/quote">我要合伙</a>
                         </div>
                     </c:forEach>
 

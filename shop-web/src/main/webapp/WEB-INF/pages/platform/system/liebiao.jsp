@@ -40,7 +40,7 @@
                     <h2>${indexComSkus.comSku.name}</h2>
                     <h1>￥${indexComSkus.comSku.priceRetail} <span>${indexComSkus.discountLevel}</span></h1>
                     <h3>
-                        <p>超过<span>9999</span>人代理</p>
+                        <p>超过<span>${indexComSkus.agentNum}</span>人代理</p>
                         <a href="shenqing.html" class="he">我要合伙</a>
                         <a href="javascript:;" class="ok">您已合伙</a>
                     </h3>

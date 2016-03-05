@@ -23,6 +23,7 @@
         <result column="is_default" property="isDefault" jdbcType="INTEGER" />
         <result column="sort" property="sort" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="agent_num" property="agentNum" jdbcType="VARCHAR" />
         <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku">
             <id column="id" property="id" jdbcType="INTEGER" />
             <result column="name" property="name" jdbcType="VARCHAR" />
@@ -43,9 +44,10 @@
         select id,name ,img_url  from pb_banner
     </select>
     <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Integer">
-        SELECT sku_image.img_name,sku_image.img_url, sku.name,sku.price_retail
-        FROM com_sku_image sku_image
-        LEFT JOIN com_sku sku ON sku_image.sku_id = sku.id
+        SELECT sku_image.img_name,sku_image.img_url, sku.name,sku.price_retail,sku_statistic.agent_num
+        FROM com_sku sku
+        LEFT JOIN com_sku_image sku_image ON  sku.id = sku_image.sku_id
+        RIGHT JOIN pf_sku_statistic sku_statistic on sku.id = sku_statistic.sku_id
         WHERE sku_image.is_default = 1
     </select>
 

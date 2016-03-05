@@ -62,6 +62,14 @@ public class UserService {
         }
         comUserAddressMapper.updateByPrimaryKey(comUserAddress);
     }
+    /**
+     * 更新用户信息
+     * @author  hanzengzhi
+     * @date  2016/3/5 15:22
+     */
+    public int updateComUser(ComUser comUser){
+        return comUserMapper.updateByPrimaryKey(comUser);
+    }
 
     /**
      * 根据id查找用户地址
@@ -88,5 +96,14 @@ public class UserService {
      */
     public void updateUserTrial(PfUserTrial pfUserTrial){
         int i = pfUserTrialMapper.updateByPrimaryKey(pfUserTrial);
+    }
+
+    /**
+     * 试用表插入
+     * @author  hanzengzhi
+     * @date  2016/3/5 15:19
+     */
+    public int insertUserTrial(PfUserTrial pfUserTrial){
+        return pfUserTrialMapper.insert(pfUserTrial);
     }
 }

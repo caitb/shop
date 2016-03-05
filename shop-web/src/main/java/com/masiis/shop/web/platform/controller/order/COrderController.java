@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.masiis.shop.dao.beans.product.Product;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
@@ -21,7 +22,7 @@ import java.util.Date;
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Controller
-@RequestMapping("/corder")
+@RequestMapping("/lo/corder")
 public class COrderController extends BaseController {
 
     @Resource
@@ -47,11 +48,16 @@ public class COrderController extends BaseController {
     @RequestMapping("/applyTrialToPage.json")
     public String applyTrialToPage(HttpServletRequest request,
                                    HttpServletResponse response,
+                                   @RequestParam(value = "spuId", required = true) Integer spuId,
                                    @RequestParam(value = "skuId", required = true) Integer skuId,
                                    Model model)throws Exception{
         if (StringUtils.isEmpty(skuId)){
+            skuId = 1;
         }
-        Product productDetails = productService.getSkuDetails("1");
+        if (StringUtils.isEmpty(spuId)){
+            spuId = 1;
+        }
+        Product productDetails = productService.applyTrialToPageService(skuId,spuId);
         model.addAttribute("product",productDetails);
         return "platform/order/shiyong";
     }
@@ -72,10 +78,10 @@ public class COrderController extends BaseController {
             @RequestParam(value = "wechat", required = true) String wechat
     ) {
         if (StringUtils.isEmpty(skuId)){
-
+            skuId = 111;
         }
         if (StringUtils.isEmpty(spuId)){
-
+            spuId = 222;
         }
         if (StringUtils.isEmpty(name)){
 
@@ -86,18 +92,25 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(wechat)){
 
         }
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        if (comUser==null){
+            comUser = new ComUser();
+            comUser.setId(1L);
+        }
+        comUser.setWxId(wechat);
+        comUser.setRealName(name);
+        comUser.setMobile(phone);
         PfUserTrial pfUserTrial = new PfUserTrial();
-        pfUserTrial.setId(1L);
-        pfUserTrial.setUserId(11111L);
-        pfUserTrial.setSkuId(11);
-        pfUserTrial.setSpuId(222);
+        pfUserTrial.setUserId(comUser.getId());
+        pfUserTrial.setSkuId(skuId);
+        pfUserTrial.setSpuId(spuId);
         pfUserTrial.setStatus(0);
         pfUserTrial.setReason(applyReason);
         pfUserTrial.setName(name);
         pfUserTrial.setMobile(phone);
         pfUserTrial.setWeixinId(wechat);
         pfUserTrial.setCreateTime(new Date());
-        cOrderService.trialApplyService(pfUserTrial);
+        cOrderService.trialApplyService(comUser,pfUserTrial);
         return "";
     }
 

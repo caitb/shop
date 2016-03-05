@@ -23,4 +23,5 @@ public interface PfUserTrialMapper {
     ComUser findByParentId(@Param("parentUserId")Long parentUserId);
 
     int updateByPrimaryKey(PfUserTrial pfUserTrial);
+    int  insert(PfUserTrial pfUserTrial);
 }

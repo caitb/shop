@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComSpuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSpu" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="name" property="name" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <id column="create_man" property="createMan" jdbcType="BIGINT" />
+        <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+        <id column="category_name" property="categoryName" jdbcType="VARCHAR" />
+        <id column="status" property="status" jdbcType="INTEGER" />
+        <id column="is_sale" property="isSale" jdbcType="INTEGER" />
+        <id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+        <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+        <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
+        <result column="down_time" property="downTime" jdbcType="TIMESTAMP" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+        <result column="is_trial" property="isTrial" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+        <result column="weight" property="weight" jdbcType="DECIMAL" />
+        <result column="pack_length" property="packLength" jdbcType="DECIMAL" />
+        <result column="pack_width" property="packWidth" jdbcType="DECIMAL" />
+        <result column="pack_height" property="packHeight" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from com_spu
+        where id = #{id,jdbcType=INTEGER}
+          and name = #{name,jdbcType=VARCHAR}
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+          and create_man = #{createMan,jdbcType=BIGINT}
+          and category_id = #{categoryId,jdbcType=INTEGER}
+          and category_name = #{categoryName,jdbcType=VARCHAR}
+          and status = #{status,jdbcType=INTEGER}
+          and is_sale = #{isSale,jdbcType=INTEGER}
+          and is_delete = #{isDelete,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSpu" >
+        insert into com_spu (id, name, create_time, 
+            create_man, category_id, category_name, 
+            status, is_sale, is_delete, 
+            brand_id, up_time, down_time, 
+            modify_time, modify_man, slogan, 
+            is_trial, content, weight, 
+            pack_length, pack_width, pack_height, 
+            ship_amount, remark)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{createMan,jdbcType=BIGINT}, #{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{isSale,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
+            #{brandId,jdbcType=INTEGER}, #{upTime,jdbcType=TIMESTAMP}, #{downTime,jdbcType=TIMESTAMP}, 
+            #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{slogan,jdbcType=VARCHAR}, 
+            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL}, 
+            #{packLength,jdbcType=DECIMAL}, #{packWidth,jdbcType=DECIMAL}, #{packHeight,jdbcType=DECIMAL}, 
+            #{shipAmount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSpu" >
+        update com_spu
+        set brand_id = #{brandId,jdbcType=INTEGER},
+            up_time = #{upTime,jdbcType=TIMESTAMP},
+            down_time = #{downTime,jdbcType=TIMESTAMP},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            slogan = #{slogan,jdbcType=VARCHAR},
+            is_trial = #{isTrial,jdbcType=INTEGER},
+            content = #{content,jdbcType=LONGVARCHAR},
+            weight = #{weight,jdbcType=DECIMAL},
+            pack_length = #{packLength,jdbcType=DECIMAL},
+            pack_width = #{packWidth,jdbcType=DECIMAL},
+            pack_height = #{packHeight,jdbcType=DECIMAL},
+            ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+          and name = #{name,jdbcType=VARCHAR}
+          and create_time = #{createTime,jdbcType=TIMESTAMP}
+          and create_man = #{createMan,jdbcType=BIGINT}
+          and category_id = #{categoryId,jdbcType=INTEGER}
+          and category_name = #{categoryName,jdbcType=VARCHAR}
+          and status = #{status,jdbcType=INTEGER}
+          and is_sale = #{isSale,jdbcType=INTEGER}
+          and is_delete = #{isDelete,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
+        is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
+        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
+        from com_spu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
+        is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
+        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
+        from com_spu
+    </select>
+
+</mapper>

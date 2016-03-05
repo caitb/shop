@@ -10,22 +10,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/shenqing.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <script src="../js/jquery-1.8.3.min.js"></script>
-    <script src="../js/iscroll.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/shenqing.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
 <header class="xq_header">
-    <a href="xiangqing.html"><img src="../images/xq_rt.png" alt=""></a>
+    <a href="xiangqing.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
 <div class="kang">
     <a href="../html/xiangqing.html">
         <p class="photo">
 
-            <img src="../images/shenqing_1.png" alt="">
+            <img src="${skuImg}" alt="${skuImgAlt}">
         </p>
         <div>
             <h2>${skuName}</h2>
@@ -39,35 +39,35 @@
 </div>
 <main>
     <section class="sec1">
-        <img src="../images/shenqing_3.png" alt="">
+        <img src="<%=path%>/static/images/shenqing_3.png" alt="">
         <div>
             <h2>独立店铺</h2>
             <p>拥有自己的独立店铺进行推广装修等</p>
         </div>
     </section>
     <section class="sec1">
-        <img src="../images/shenqing_4.png" alt="">
+        <img src="<%=path%>/static/images/shenqing_4.png" alt="">
         <div>
             <h2>寻找合伙人</h2>
             <p>可以用采购价格购买商品，赚取利差</p>
         </div>
     </section>
     <section class="sec1">
-        <img src="../images/shenqing_5.png" alt="">
+        <img src="<%=path%>/static/images/shenqing_5.png" alt="">
         <div>
             <h2>推广渠道</h2>
             <p>平台提供多样的推广渠道编辑推广自己商品</p>
         </div>
     </section>
     <section class="sec1">
-        <img src="../images/shenqing_6.png" alt="">
+        <img src="<%=path%>/static/images/shenqing_6.png" alt="">
         <div>
             <h2>团队管理</h2>
             <p>提供完善的售后和团队管理工具</p>
         </div>
     </section>
     <section class="sec1">
-        <img src="../images/shenqing_7.png" alt="">
+        <img src="<%=path%>/static/images/shenqing_7.png" alt="">
         <div>
             <h2>平台补助</h2>
             <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
@@ -79,7 +79,7 @@
         </div>
     </section>
     <section class="sec2">
-        <p><a href="../html/zhuce.html">继续</a></p>
+        <p><a href="<%=path%>/border/register">继续</a></p>
     </section>
 </main>
 </body>

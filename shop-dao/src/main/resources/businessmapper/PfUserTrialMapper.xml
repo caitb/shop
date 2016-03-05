@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.PfUserTrialMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserTrial" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_trial
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
+        insert into pf_user_trial (id, create_time, user_id, 
+            spu_id, sku_id, status, 
+            reason, name, mobile, 
+            weixin_id, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{reason,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+            #{weixinId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
+        update pf_user_trial
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            reason = #{reason,jdbcType=VARCHAR},
+            name = #{name,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            weixin_id = #{weixinId,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, 
+        remark
+        from pf_user_trial
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, 
+        remark
+        from pf_user_trial
+    </select>
+
+</mapper>

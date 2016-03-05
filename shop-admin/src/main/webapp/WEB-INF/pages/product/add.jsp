@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -11,6 +12,7 @@
 <head>
     <title>完整demo</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.all.js"></script>
     <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
@@ -56,44 +58,80 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="skuC" class="col-sm-4 control-label">商品分类</label>
+            <label for="skuC1" class="col-sm-4 control-label">商品分类</label>
             <div class="col-sm-1">
-                <select class="form-control" id="skuC">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control" id="skuC1" name="skuC1">
                 </select>
             </div>
             <div class="col-sm-1">
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control" id="skuC2" name="skuC2">
                 </select>
             </div>
             <div class="col-sm-1">
-                <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control" id="skuC3" name="skuC3">
                 </select>
             </div>
+            <script>
+                var categories = window.eval('(' + '${categories}' + ')');
+                var categoryArr = [[],[],[]];
+                for(var i in categories){
+                    if(categories[i].level == 1){
+                        categoryArr[0].push(categories[i]);
+                    }
+                    if(categories[i].level == 2){
+                        categoryArr[1].push(categories[i]);
+                    }
+                    if(categories[i].level == 3){
+                        categoryArr[2].push(categories[i]);
+                    }
+
+//                    categories[i].children = [];
+//                    for(var s in categories){
+//                        if(categories[s].pid = categories[i].id) categories[i].children.push(categories[s]);
+//                    }
+                }
+
+                var $skuC1 = $('#skuC1');
+                var $skuC2 = $('#skuC2');
+                var $skuC3 = $('#skuC3');
+                $skuC1.html('<option value="-1">请选择</option>');
+                for(var i in categoryArr[0]){
+                    $skuC1.append('<option value="' + categoryArr[0][i].id + '">' + categoryArr[0][i].name + '</option>');
+                }
+
+                $skuC1.change(function(){
+                    $skuC2.empty().html('<option value="-1">请选择</option>');
+                    $skuC3.empty().html('<option value="-1">请选择</option>');
+                    for(var i in categoryArr[1]){
+                        if(categoryArr[1][i].pid = $(this).val()){
+                            for(var sub in categoryArr[1][i].children){
+                                $skuC3.append('<option value="' + categoryArr[1][i].children[sub].id + '">' + categoryArr[1][i].children[sub].name + '</option>');
+                            }
+                        }
+                    }
+                });
+
+                $skuC2.change(function(){
+                    $skuC3.empty().html('<option value="-1">请选择</option>');
+                    for(var i in categoryArr[1]){
+                        if(categoryArr[2][i].pid = $(this).val()){
+                            for(var sub in categoryArr[2][i].children){
+                                $skuC3.append('<option value="' + categoryArr[2][i].children[sub].id + '">' + categoryArr[2][i].children[sub].name + '</option>');
+                            }
+                        }
+                    }
+                });
+
+
+            </script>
         </div>
         <div class="form-group">
             <label for="brandId" class="col-sm-4 control-label">商品品牌</label>
             <div class="col-sm-4">
-                <select class="form-control" id="brandId">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                <select class="form-control" id="brandId" name="brandId">
+                    <c:forEach items="${brands}" var="brand">
+                    <option value="${brand.id}">${brand.cname}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>

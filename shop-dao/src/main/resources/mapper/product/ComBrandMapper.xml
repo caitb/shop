@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComBrandMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComBrand" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="cname" property="cname" jdbcType="VARCHAR" />
+        <result column="ename" property="ename" jdbcType="VARCHAR" />
+        <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, create_time, cname, ename, logo_url, remark
+        FROM
+               com_brand
+        WHERE
+               id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+               id, create_time, cname, ename, logo_url, remark
+        FROM
+               com_brand
+        <where>
+            <if test="comBrand.id != null">
+                id = #{comBrand.id}
+            </if>
+            <if test="comBrand.cname != null">
+                AND cname = #{comBrand.cname}
+            </if>
+            <if test="comBrand.ename != null">
+                AND ename = #{comBrand.ename}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO
+                    com_brand (create_time, cname, ename, logo_url, remark)
+        VALUES
+                    (create_time = #{comBrand.createTime}, cname = #{comBrand.cname}, ename = #{comBrand.ename}, logo_url = #{comBrand.logoUrl}, remark = #{comBrand.remark})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE com_brand
+        SET
+               create_time = #{comBrand.createTime},
+               cname       = #{comBrand.cname},
+               ename       = #{comBrand.ename},
+               logo_url    = #{comBrand.logoUrl},
+               remark      = #{comBrand.remark}
+        WHERE
+               id = #{comBrand.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM com_brand WHERE id = #{id}
+    </delete>
+
+
+</mapper>

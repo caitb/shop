@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComCategoryMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComCategory" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="level" property="level" jdbcType="TINYINT" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="is_validate" property="isValidate" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <!-- 根据id查询一条记录 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+               id, create_time, create_man, modify_time, modify_man, name, level, pid, sort, is_validate, remark
+        FROM
+               com_category
+        WHERE
+               id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        id, create_time, create_man, modify_time, modify_man, name, level, pid, sort, is_validate, remark
+        FROM
+        com_category
+        <where>
+            <if test="comCategory.id != null">
+                id = #{comCategory.id}
+            </if>
+            <if test="comCategory.pid != null">
+                AND pid = #{comCategory.pid}
+            </if>
+            <if test="comCategory.name != null">
+                AND name = #{comCategory.ename}
+            </if>
+            <if test="comCategory.level != null">
+                AND level = #{comCategory.level}
+            </if>
+        </where>
+    </select>
+
+    <!-- 添加一条记录 -->
+    <insert id="insert">
+        INSERT INTO
+        com_category (create_time, create_man, modify_time, modify_man, name, level, pid, sort, is_validate, remark)
+        VALUES
+        (create_time = #{comCategory.createTime}, create_man = #{comCategory.createMan}, modify_time = #{comCategory.modifyTime}, modify_man = #{comCategory.modifyMan}, name = #{comCategory.name}, level = #{comCategory.level}, pid = #{comCategory.pid}, sort = #{comCategory.sort}, is_validate = #{comCategory.isValidate}, remark = #{comCategory.remark})
+    </insert>
+
+    <!-- 根据id更新一条记录 -->
+    <update id="updateById">
+        UPDATE com_category
+        SET
+               create_time = #{comCategory.createTime},
+               create_man  = #{comCategory.createMan},
+               modify_time = #{comCategory.modifyTime},
+               modify_man  = #{comCategory.modifyMan},
+               name        = #{comCategory.name},
+               level       = #{comCategory.level},
+               pid         = #{comCategory.pid},
+               sort        = #{comCategory.sort},
+               is_validate = #{comCategory.isValidate},
+               remark      = #{comCategory.remark}
+        WHERE
+               id = #{comCategory.id}
+    </update>
+
+    <!-- 根据id删除一条记录 -->
+    <delete id="deleteById">
+        DELETE FROM com_category WHERE id = #{id}
+    </delete>
+
+</mapper>

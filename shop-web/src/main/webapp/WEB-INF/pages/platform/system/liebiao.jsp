@@ -36,7 +36,7 @@
             <section class="sec1">
                 <c:forEach items="${indexComSkus}" var="indexComSkus">
                 <div>
-                    <a href="xiangqing.html"><img src="${indexComSkus.imgUrl}" alt=""></a>
+                    <a href="/product/${indexComSkus.id}"><img src="${indexComSkus.imgUrl}" alt=""></a>
                     <h2>${indexComSkus.comSku.name}</h2>
                     <h1>￥${indexComSkus.comSku.priceRetail} <span>${indexComSkus.discountLevel}</span></h1>
                     <h3>

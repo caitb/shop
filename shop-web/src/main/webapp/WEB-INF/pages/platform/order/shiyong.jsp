@@ -34,7 +34,7 @@
             alert("手机号格式不对");
             return;
         }
-        $.post("/lo/corder/trialApply.json",
+        $.post("/corder/trialApply.json",
                 {
                     "spuId":spuId,
                     "skuId":skuId,
@@ -52,7 +52,7 @@
     <section class="sec2">
         <p class="photo">
             <a href="../html/xiangqing.html">
-                <img src="../images/shenqing_1.png" alt="">
+                <img src="${skuDefaultImg}" alt="${skuImgAlt}">
             </a>
         </p>
         <div>

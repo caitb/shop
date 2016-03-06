@@ -37,23 +37,23 @@
 </head>
 
 <body>
-    <form class="form-horizontal">
+    <form class="form-horizontal" id="skuForm">
         <div class="form-group">
-            <label for="skuName" class="col-sm-4 control-label">商品名称</label>
+            <label for="name" class="col-sm-4 control-label">商品名称</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="skuName" placeholder="商品名称">
+                <input type="text" class="form-control" id="name" name="skuNo" placeholder="商品名称">
             </div>
         </div>
         <div class="form-group">
             <label for="skuNo" class="col-sm-4 control-label">商品货号</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="skuNo" placeholder="商品货号">
+                <input type="text" class="form-control" id="skuNo" name="skuNo" placeholder="商品货号">
             </div>
         </div>
         <div class="form-group">
-            <label for="skuCode" class="col-sm-4 control-label">商品条码</label>
+            <label for="barCode" class="col-sm-4 control-label">商品条码</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="skuCode" placeholder="商品条码">
+                <input type="text" class="form-control" id="barCode" name="barCode" placeholder="商品条码">
             </div>
         </div>
         <div class="form-group">
@@ -67,7 +67,7 @@
                 </select>
             </div>
             <div class="col-sm-1">
-                <select class="form-control" id="skuC3" name="skuC3">
+                <select class="form-control" id="skuC3" name="categoryId">
                 </select>
             </div>
             <script>
@@ -146,21 +146,21 @@
         </div>
 
         <div class="form-group">
-            <label for="costPrice" class="col-sm-4 control-label">成本价</label>
+            <label for="priceCost" class="col-sm-4 control-label">成本价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="costPrice" placeholder="成本价">
+                <input type="text" class="form-control" id="priceCost" name="priceCost" placeholder="成本价">
             </div>
         </div>
         <div class="form-group">
-            <label for="marketPrice" class="col-sm-4 control-label">市场价</label>
+            <label for="priceMarket" class="col-sm-4 control-label">市场价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="marketPrice" placeholder="市场价">
+                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场价">
             </div>
         </div>
         <div class="form-group">
-            <label for="retailPrice" class="col-sm-4 control-label">零售价</label>
+            <label for="priceRetail" class="col-sm-4 control-label">零售价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="retailPrice" placeholder="零售价">
+                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="零售价">
             </div>
         </div>
         <div class="form-group">
@@ -168,22 +168,22 @@
             <div class="col-sm-4">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" name="isTrial" id="isTrial1" value="1" checked>
                         是
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        <input type="radio" name="isTrial" id="isTrial2" value="0">
                         否
                     </label>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label for="freight" class="col-sm-4 control-label">运费设置</label>
+            <label for="shipAmount" class="col-sm-4 control-label">运费设置</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="freight" placeholder="运费设置">
+                <input type="text" class="form-control" id="shipAmount" name="shipAmount" placeholder="运费设置">
             </div>
         </div>
 
@@ -199,34 +199,34 @@
         <div class="form-group">
             <label for="advanced" class="col-sm-4 control-label">高级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advanced" placeholder="">
+                <input type="text" class="form-control" id="advanced" name="discount" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advancedCount" placeholder="">
+                <input type="text" class="form-control" id="advancedCount" name="quantity" placeholder="">
             </div>
         </div>
         <div class="form-group">
             <label for="intermediate" class="col-sm-4 control-label">中级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediate" placeholder="">
+                <input type="text" class="form-control" id="intermediate" name="discount" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediateCount" placeholder="">
+                <input type="text" class="form-control" id="intermediateCount" name="quantity" placeholder="">
             </div>
         </div>
         <div class="form-group">
             <label for="primary" class="col-sm-4 control-label">初级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="primary" placeholder="">
+                <input type="text" class="form-control" id="primary" name="discount" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="primaryCount" placeholder="">
+                <input type="text" class="form-control" id="primaryCount" name="quantity" placeholder="">
             </div>
         </div>
 
@@ -393,6 +393,26 @@
                     }
                 </script>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-5"></label>
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-lg btn-default">重置</button>
+                <button type="button" class="btn btn-lg btn-info" id="skuSave">保存</button>
+            </div>
+            <script>
+                $('#skuSave').on('click', function(){
+                    $.ajax({
+                        url: '<%=basePath%>product/add.do',
+                        type: 'post',
+                        data: $('#skuForm').serialize(),
+                        success: function(msg){
+                            alert(msg);
+                        }
+                    });
+                });
+            </script>
         </div>
 
     </form>

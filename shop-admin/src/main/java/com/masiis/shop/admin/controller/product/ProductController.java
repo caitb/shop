@@ -6,8 +6,11 @@ import com.masiis.shop.admin.service.product.BrandService;
 import com.masiis.shop.admin.service.product.CategoryService;
 import com.masiis.shop.dao.po.ComBrand;
 import com.masiis.shop.dao.po.ComCategory;
+import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComSpu;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -41,5 +44,14 @@ public class ProductController {
         mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
 
         return mav;
+    }
+
+    @RequestMapping("/add.do")
+    @ResponseBody
+    public Object add(HttpServletRequest request, HttpServletResponse response,
+                      ComSpu comSpu,
+                      ComSku comSku){
+
+        return "保存成功!";
     }
 }

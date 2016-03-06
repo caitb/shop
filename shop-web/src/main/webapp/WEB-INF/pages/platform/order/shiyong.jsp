@@ -52,7 +52,7 @@
     <section class="sec2">
         <p class="photo">
             <a href="../html/xiangqing.html">
-                <img src="../images/shenqing_1.png" alt="">
+                <img src="${skuDefaultImg}" alt="${skuImgAlt}">
             </a>
         </p>
         <div>

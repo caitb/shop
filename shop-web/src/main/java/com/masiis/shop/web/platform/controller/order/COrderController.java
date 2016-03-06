@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
@@ -58,6 +59,12 @@ public class COrderController extends BaseController {
             spuId = 1;
         }
         Product productDetails = productService.applyTrialToPageService(skuId,spuId);
+        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+        model.addAttribute("skuName", productDetails.getName());
+        if (productDetails.getComSkuImages()!=null&&productDetails.getComSkuImages().size()>0){
+            model.addAttribute("skuDefaultImg",skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
+            model.addAttribute("skuImgAlt", productDetails.getComSkuImages().get(0).getImgName());
+        }
         model.addAttribute("product",productDetails);
         return "platform/order/shiyong";
     }

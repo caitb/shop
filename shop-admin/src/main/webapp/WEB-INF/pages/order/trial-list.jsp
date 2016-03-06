@@ -28,6 +28,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="<%=basePath%>static/js/date-util.js"></script>
 
 </head>
 
@@ -104,19 +105,34 @@
                                                 rowspan: 2,
                                                 align: 'center',
                                                 valign: 'middle'
-                                            }, {
-                                            title: 'ID',
-                                            field: 'id',
+                                            },
+                                            {
+                                            title: '序号',
                                             rowspan: 2,
                                             align: 'center',
                                             valign: 'middle',
-                                            sortable: true,
-                                            footerFormatter: totalTextFormatter
-                                        }, {
+                                            footerFormatter: totalTextFormatter,
+                                            formatter: function(value, row, index){
+                                                return index + 1;
+                                            }
+                                            },
+                                            {
+                                                title: 'ID',
+                                                field: 'id',
+                                                rowspan: 2,
+                                                align: 'center',
+                                                valign: 'middle',
+                                                sortable: true,
+                                                footerFormatter: totalTextFormatter,
+                                                formatter: function(value, row, index){
+                                                    return row.pfUserTrial.id;
+                                                }
+                                            },
+                                            {
                                             title: '详情',
                                             colspan: 8,
                                             align: 'center'
-                                        }
+                                            }
                                         ],
                                         [
                                             {
@@ -167,28 +183,34 @@
                                                 }
                                             },
                                             {
-                                                field: 'sex',
-                                                title: '性别',
+                                                field: 'm',
+                                                title: '推荐人',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'age',
-                                                title: '年龄',
+                                                field: 'shen',
+                                                title: '申请理由',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.pfUserTrial.reason;
+                                                }
                                             },
                                             {
                                                 field: 'phone',
-                                                title: '电话',
+                                                title: '申请时间',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return new Date(row.pfUserTrial.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                                                }
                                             },
 //                                        {
 //                                        field: 'price',

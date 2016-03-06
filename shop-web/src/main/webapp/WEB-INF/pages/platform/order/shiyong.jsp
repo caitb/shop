@@ -34,7 +34,7 @@
             alert("手机号格式不对");
             return;
         }
-        $.post("/lo/corder/trialApply.json",
+        $.post("/corder/trialApply.json",
                 {
                     "spuId":spuId,
                     "skuId":skuId,

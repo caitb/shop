@@ -95,7 +95,7 @@ public class UserService {
      * @param pfUserTrial
      */
     public void updateUserTrial(PfUserTrial pfUserTrial){
-        int i = pfUserTrialMapper.updateByPrimaryKey(pfUserTrial);
+        pfUserTrialMapper.updateById(pfUserTrial);
     }
 
     /**
@@ -103,7 +103,7 @@ public class UserService {
      * @author  hanzengzhi
      * @date  2016/3/5 15:19
      */
-    public int insertUserTrial(PfUserTrial pfUserTrial){
-        return pfUserTrialMapper.insert(pfUserTrial);
+    public void insertUserTrial(PfUserTrial pfUserTrial){
+        pfUserTrialMapper.insert(pfUserTrial);
     }
 }

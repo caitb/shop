@@ -22,7 +22,7 @@ import java.util.Date;
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Controller
-@RequestMapping("/lo/corder")
+@RequestMapping("/corder")
 public class COrderController extends BaseController {
 
     @Resource
@@ -70,18 +70,18 @@ public class COrderController extends BaseController {
     @ResponseBody
     public String trialApply(
             HttpServletRequest request,
-            @RequestParam(value = "skuId", required = true) Integer skuId,
-            @RequestParam(value = "spuId", required = true) Integer spuId,
+            @RequestParam(value = "skuId", required = true) Long skuId,
+            @RequestParam(value = "spuId", required = true) Long spuId,
             @RequestParam(value = "applyReason", required = false) String applyReason,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "phone", required = true) String phone,
             @RequestParam(value = "wechat", required = true) String wechat
     ) {
         if (StringUtils.isEmpty(skuId)){
-            skuId = 111;
+            skuId = 111L;
         }
         if (StringUtils.isEmpty(spuId)){
-            spuId = 222;
+            spuId = 222L;
         }
         if (StringUtils.isEmpty(name)){
 
@@ -100,6 +100,7 @@ public class COrderController extends BaseController {
         comUser.setWxId(wechat);
         comUser.setRealName(name);
         comUser.setMobile(phone);
+
         PfUserTrial pfUserTrial = new PfUserTrial();
         pfUserTrial.setUserId(comUser.getId());
         pfUserTrial.setSkuId(skuId);

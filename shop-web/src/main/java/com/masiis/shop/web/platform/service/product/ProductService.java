@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.ProductMapper;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComAgentLevel;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
 import org.springframework.beans.factory.annotation.Autowired;

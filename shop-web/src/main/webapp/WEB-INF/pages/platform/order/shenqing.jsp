@@ -25,7 +25,7 @@
     <a href="../html/xiangqing.html">
         <p class="photo">
 
-            <img src="${skuImg}" alt="${skuImgAlt}">
+            <img src="${skuImg}">
         </p>
         <div>
             <h2>${skuName}</h2>

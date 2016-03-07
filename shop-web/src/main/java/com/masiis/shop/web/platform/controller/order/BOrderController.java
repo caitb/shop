@@ -47,7 +47,6 @@ public class BOrderController extends BaseController {
         ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
         mv.addObject("skuName", comSku.getName());
         mv.addObject("skuImg", skuImg + comSkuImage.getImgUrl());
-        mv.addObject("skuImgAlt", comSkuImage.getImgName());
         mv.setViewName("platform/order/shenqing");
         return mv;
     }

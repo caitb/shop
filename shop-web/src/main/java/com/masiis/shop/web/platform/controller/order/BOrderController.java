@@ -1,20 +1,24 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.ProductSimple;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.ComSpu;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @autor jipengkun
@@ -23,9 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/border")
 public class BOrderController extends BaseController {
 
-
     @Resource
     private ProductService productService;
+    @Resource
+    private SkuAgentService skuAgentService;
+    @Resource
+    private SkuService skuService;
 
     /**
      * 合伙人申请
@@ -41,6 +48,7 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         skuId = 1;
         ProductSimple productSimple = productService.getSkuSimple(skuId);
+        mv.addObject("skuId", skuId);
         mv.addObject("skuName", productSimple.getSkuName());
         mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
         mv.addObject("slogan", productSimple.getSlogan());
@@ -61,11 +69,32 @@ public class BOrderController extends BaseController {
                                          @RequestParam(value = "parentUserId", required = false) Long parentUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
         skuId = 1;
-        ProductSimple productSimple = productService.getSkuSimple(skuId);
+        //获取商品信息
+        ComSku comSku = skuService.getSkuById(skuId);
+        //获取商品代理信息
+        List<PfSkuAgent> pfSkuAgents = null;
         if (parentUserId == null) {
-
+            pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+        } else {
+            //do
+            pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
         }
-        mv.addObject("skuName", productSimple.getSkuName());
+        //获取代理信息
+        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
+        StringBuffer sb = new StringBuffer();
+        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+            sb.append("<p>");
+            for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                    sb.append(comAgentLevel.getName());
+                }
+            }
+            sb.append("<b>商品数量：</b> <span>" + pfSkuAgent.getQuantity() + "</span>");
+            sb.append("<b>金额：</b> <span>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+            sb.append("<p>");
+        }
+        mv.addObject("skuName", comSku.getName());
+        mv.addObject("agentInfo", sb.toString());
         mv.setViewName("platform/order/zhuce");
         return mv;
     }
@@ -82,6 +111,16 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("platform/order/zhuce2");
         return mv;
+    }
+    @ResponseBody
+    @RequestMapping("/registerConfirm/save")
+    public String partnersRegisterConfirmDo(HttpServletRequest request,
+                                            HttpServletResponse response) {
+        JSONObject obj = new JSONObject();
+        obj.put("isError", false);
+        obj.put("url", "/border/pay");
+        obj.put("message", "");
+        return obj.toJSONString();
     }
 
     /**

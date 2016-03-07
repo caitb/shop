@@ -8,6 +8,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,8 @@ public class BOrderController extends BaseController {
     private SkuAgentService skuAgentService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private UserService userService;
 
     /**
      * 合伙人申请
@@ -118,6 +121,7 @@ public class BOrderController extends BaseController {
                                                 @RequestParam(value = "skuName", required = false) String skuName,
                                                 @RequestParam(value = "levelName", required = false) String levelName,
                                                 @RequestParam(value = "amount", required = false) BigDecimal amount) {
+        ComUser comUser = userService.getUserByMobile(mobile);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/zhuce2");
         modelAndView.addObject("name", name);
@@ -127,6 +131,7 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("skuName", skuName);
         modelAndView.addObject("levelName", levelName);
         modelAndView.addObject("amount", amount);
+        modelAndView.addObject("pName",comUser.getRealName());
         return modelAndView;
     }
 

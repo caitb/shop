@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +65,12 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 代理商折扣，基础数据
      */
-    public String getDiscountByAgentLevel() throws Exception {
+    public String getDiscountByAgentLevel(BigDecimal priceRetail) throws Exception {
         String discountLevel = null;
         List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
         if (comAgentLevels != null && comAgentLevels.size() > 0) {
-            discountLevel = comAgentLevels.get(0).getDiscount() + "-" + comAgentLevels.get(comAgentLevels.size() - 1).getDiscount();
+            DecimalFormat myFormat = new DecimalFormat("0.00");
+            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount()))+ "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
         }
         return discountLevel;
     }

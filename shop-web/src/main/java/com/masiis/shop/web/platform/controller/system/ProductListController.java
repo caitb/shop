@@ -44,7 +44,7 @@ public class ProductListController {
             //确定代理权限
             indexComSku.setIsPartner(true);
             //显示优惠区间
-            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());
+            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel(indexComSku.getComSku().getPriceRetail()));
 //            if(comUser!=null && comUser.getIsAgent()==1){
 //            indexComSku.setIsPartner(true);
 //                //确定代理权限，显示优惠区间

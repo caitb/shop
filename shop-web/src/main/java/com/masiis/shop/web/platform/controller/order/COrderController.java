@@ -49,16 +49,12 @@ public class COrderController extends BaseController {
     @RequestMapping("/applyTrialToPage.json")
     public String applyTrialToPage(HttpServletRequest request,
                                    HttpServletResponse response,
-                                   @RequestParam(value = "spuId", required = true) Integer spuId,
                                    @RequestParam(value = "skuId", required = true) Integer skuId,
                                    Model model)throws Exception{
         if (StringUtils.isEmpty(skuId)){
             skuId = 1;
         }
-        if (StringUtils.isEmpty(spuId)){
-            spuId = 1;
-        }
-        Product productDetails = productService.applyTrialToPageService(skuId,spuId);
+        Product productDetails = productService.applyTrialToPageService(skuId);
         String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
         model.addAttribute("skuName", productDetails.getName());
         if (productDetails.getComSkuImages()!=null&&productDetails.getComSkuImages().size()>0){

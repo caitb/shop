@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.SfSkuDistributionMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfSkuDistribution" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="discount" property="discount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <!-- 根据id查找记录 -->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+               id,
+               sku_id,
+               sort,
+               discount,
+               remark
+        from
+               sf_sku_distribution
+        where
+               id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap" >
+        select
+               id,
+               sku_id,
+               sort,
+               discount,
+               remark
+        from
+               sf_sku_distribution
+
+               <where>
+                   <if test="sfSkuDistribution.id != null">
+                       AND id = #{sfSkuDistribution.id}
+                   </if>
+                   <if test="sfSkuDistribution.skuId != null">
+                       AND sku_id = #{sfSkuDistribution.skuId}
+                   </if>
+                   <if test="sfSkuDistribution.sort != null">
+                       AND sort = #{sfSkuDistribution.sort}
+                   </if>
+               </where>
+    </select>
+
+    <!-- 保存记录 -->
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >
+        insert into sf_sku_distribution
+                    (
+                    sku_id,
+                    sort,
+                    discount,
+                    remark
+                    )
+        values
+                    (
+                     #{skuId},
+                     #{sort},
+                     #{discount},
+                     #{remark}
+                    )
+    </insert>
+
+    <!-- 根据id更新记录 -->
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >
+        update sf_sku_distribution
+        set
+               sku_id   = #{sfSkuDistribution.skuId},
+               sort     = #{sfSkuDistribution.sort},
+               discount = #{sfSkuDistribution.discount},
+               remark   = #{sfSkuDistribution.remark}
+        where
+               id = #{sfSkuDistribution.id}
+    </update>
+
+    <!-- 根据id删除记录 -->
+    <delete id="deleteById" parameterType="java.lang.Integer" >
+        delete from sf_sku_distribution where id = #{id}
+    </delete>
+
+</mapper>

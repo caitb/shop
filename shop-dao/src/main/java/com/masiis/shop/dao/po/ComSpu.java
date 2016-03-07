@@ -76,83 +76,114 @@ public class ComSpu extends ComSpuKey {
      */
     private Long shipAmount;
 
+    /**
+     * 货号
+     * @return
+     */
+    private String artNo;
+
     public Integer getBrandId() {
         return brandId;
     }
+
     public void setBrandId(Integer brandId) {
         this.brandId = brandId;
     }
+
     public Date getUpTime() {
         return upTime;
     }
+
     public void setUpTime(Date upTime) {
         this.upTime = upTime;
     }
+
     public Date getDownTime() {
         return downTime;
     }
+
     public void setDownTime(Date downTime) {
         this.downTime = downTime;
     }
+
     public Date getModifyTime() {
         return modifyTime;
     }
+
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+
     public Long getModifyMan() {
         return modifyMan;
     }
+
     public void setModifyMan(Long modifyMan) {
         this.modifyMan = modifyMan;
     }
+
     public String getSlogan() {
         return slogan;
     }
+
     public void setSlogan(String slogan) {
-        this.slogan = slogan == null ? null : slogan.trim();
+        this.slogan = slogan;
     }
+
     public Integer getIsTrial() {
         return isTrial;
     }
+
     public void setIsTrial(Integer isTrial) {
         this.isTrial = isTrial;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
+
     public Long getWeight() {
         return weight;
     }
+
     public void setWeight(Long weight) {
         this.weight = weight;
     }
+
     public Long getPackLength() {
         return packLength;
     }
+
     public void setPackLength(Long packLength) {
         this.packLength = packLength;
     }
+
     public Long getPackWidth() {
         return packWidth;
     }
+
     public void setPackWidth(Long packWidth) {
         this.packWidth = packWidth;
     }
+
     public Long getPackHeight() {
         return packHeight;
     }
+
     public void setPackHeight(Long packHeight) {
         this.packHeight = packHeight;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 
     public Long getShipAmount() {
@@ -161,5 +192,34 @@ public class ComSpu extends ComSpuKey {
 
     public void setShipAmount(Long shipAmount) {
         this.shipAmount = shipAmount;
+    }
+
+    public String getArtNo() {
+        return artNo;
+    }
+
+    public void setArtNo(String artNo) {
+        this.artNo = artNo;
+    }
+
+    @Override
+    public String toString() {
+        return "ComSpu{" +
+                "brandId=" + brandId +
+                ", upTime=" + upTime +
+                ", downTime=" + downTime +
+                ", modifyTime=" + modifyTime +
+                ", modifyMan=" + modifyMan +
+                ", slogan='" + slogan + '\'' +
+                ", isTrial=" + isTrial +
+                ", content='" + content + '\'' +
+                ", weight=" + weight +
+                ", packLength=" + packLength +
+                ", packWidth=" + packWidth +
+                ", packHeight=" + packHeight +
+                ", remark='" + remark + '\'' +
+                ", shipAmount=" + shipAmount +
+                ", artNo='" + artNo + '\'' +
+                '}';
     }
 }

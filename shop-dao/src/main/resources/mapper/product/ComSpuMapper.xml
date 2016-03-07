@@ -24,6 +24,7 @@
         <result column="pack_width" property="packWidth" jdbcType="DECIMAL" />
         <result column="pack_height" property="packHeight" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="art_no" property="artNo" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 

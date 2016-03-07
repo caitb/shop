@@ -15,6 +15,9 @@
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/js/zyFile.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/control/js/zyUpload.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/js/jq22.js"></script>
     <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
     <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/lang/zh-cn/zh-cn.js"></script>
@@ -29,6 +32,7 @@
     <!-- Le styles -->
     <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
     <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<%=basePath%>static/class/upload-plugin/control/css/zyUpload.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -262,6 +266,12 @@
         </div>
 
         <hr/>
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">主图</label>
+            <div class="col-sm-4 upload-widget" id="upload-widget">
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="inShort" class="col-sm-4 control-label">一句话介绍</label>

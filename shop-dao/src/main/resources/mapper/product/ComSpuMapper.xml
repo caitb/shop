@@ -24,81 +24,156 @@
         <result column="pack_width" property="packWidth" jdbcType="DECIMAL" />
         <result column="pack_height" property="packHeight" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="art_no" property="artNo" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="map" >
-        delete from com_spu
-        where id = #{id,jdbcType=INTEGER}
-          and name = #{name,jdbcType=VARCHAR}
-          and create_time = #{createTime,jdbcType=TIMESTAMP}
-          and create_man = #{createMan,jdbcType=BIGINT}
-          and category_id = #{categoryId,jdbcType=INTEGER}
-          and category_name = #{categoryName,jdbcType=VARCHAR}
-          and status = #{status,jdbcType=INTEGER}
-          and is_sale = #{isSale,jdbcType=INTEGER}
-          and is_delete = #{isDelete,jdbcType=INTEGER}
-    </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSpu" >
-        insert into com_spu (id, name, create_time, 
-            create_man, category_id, category_name, 
-            status, is_sale, is_delete, 
-            brand_id, up_time, down_time, 
-            modify_time, modify_man, slogan, 
-            is_trial, content, weight, 
-            pack_length, pack_width, pack_height, 
-            ship_amount, remark)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-            #{createMan,jdbcType=BIGINT}, #{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, 
-            #{status,jdbcType=INTEGER}, #{isSale,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
-            #{brandId,jdbcType=INTEGER}, #{upTime,jdbcType=TIMESTAMP}, #{downTime,jdbcType=TIMESTAMP}, 
-            #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT}, #{slogan,jdbcType=VARCHAR}, 
-            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL}, 
-            #{packLength,jdbcType=DECIMAL}, #{packWidth,jdbcType=DECIMAL}, #{packHeight,jdbcType=DECIMAL}, 
-            #{shipAmount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
+    <!-- 根据id查找记录 -->
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        id,
+        name,
+        create_time,
+        create_man,
+        category_id,
+        category_name,
+        status,
+        is_sale,
+        is_delete,
+        brand_id,
+        up_time,
+        down_time,
+        modify_time,
+        modify_man,
+        slogan,
+        is_trial,
+        content,
+        weight,
+        pack_length,
+        pack_width,
+        pack_height,
+        ship_amount, remark
+        from
+        com_spu
+        where
+        id = #{id}
+    </select>
+
+    <!-- 根据条件查询记录 -->
+    <select id="selectByCondition" resultMap="BaseResultMap" >
+        SELECT
+                id,
+                name,
+                create_time,
+                create_man,
+                category_id,
+                category_name,
+                status, is_sale,
+                is_delete,
+                brand_id,
+                up_time,
+                down_time,
+                modify_time,
+                modify_man,
+                slogan,
+                is_trial,
+                content,
+                weight,
+                pack_length,
+                pack_width,
+                pack_height,
+                ship_amount,
+                remark
+        FROM
+                com_spu
+
+                <where>
+                    <if test="comSpu.id != null">
+                        id = #{comSpu.id}
+                    </if>
+                </where>
+    </select>
+
+    <!-- 保存记录 -->
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSpu" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO com_spu
+                   (
+                   name,
+                   create_time,
+                   create_man,
+                   category_id,
+                   category_name,
+                   status,
+                   is_sale,
+                   is_delete,
+                   brand_id,
+                   up_time,
+                   down_time,
+                   modify_time,
+                   modify_man,
+                   slogan,
+                   is_trial,
+                   content,
+                   weight,
+                   pack_length,
+                   pack_width,
+                   pack_height,
+                   ship_amount,
+                   remark
+                   )
+        values
+                   (
+                   #{comSpu.name},
+                   #{comSpu.createTime},
+                   #{comSpu.createMan},
+                   #{comSpu.categoryId},
+                   #{comSpu.categoryName},
+                   #{comSpu.status},
+                   #{comSpu.isSale},
+                   #{comSpu.isDelete},
+                   #{comSpu.brandId},
+                   #{comSpu.upTime},
+                   #{comSpu.downTime},
+                   #{comSpu.modifyTime},
+                   #{comSpu.modifyMan},
+                   #{comSpu.slogan},
+                   #{comSpu.isTrial},
+                   #{comSpu.content},
+                   #{comSpu.weight},
+                   #{comSpu.packLength},
+                   #{comSpu.packWidth},
+                   #{comSpu.packHeight},
+                   #{comSpu.shipAmount},
+                   #{comSpu.remark}
+                   )
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComSpu" >
+    <!-- 根据id更新记录 -->
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.ComSpu" >
         update com_spu
-        set brand_id = #{brandId,jdbcType=INTEGER},
-            up_time = #{upTime,jdbcType=TIMESTAMP},
-            down_time = #{downTime,jdbcType=TIMESTAMP},
-            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-            modify_man = #{modifyMan,jdbcType=BIGINT},
-            slogan = #{slogan,jdbcType=VARCHAR},
-            is_trial = #{isTrial,jdbcType=INTEGER},
-            content = #{content,jdbcType=LONGVARCHAR},
-            weight = #{weight,jdbcType=DECIMAL},
-            pack_length = #{packLength,jdbcType=DECIMAL},
-            pack_width = #{packWidth,jdbcType=DECIMAL},
-            pack_height = #{packHeight,jdbcType=DECIMAL},
-            ship_amount = #{shipAmount,jdbcType=DECIMAL},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
-          and name = #{name,jdbcType=VARCHAR}
-          and create_time = #{createTime,jdbcType=TIMESTAMP}
-          and create_man = #{createMan,jdbcType=BIGINT}
-          and category_id = #{categoryId,jdbcType=INTEGER}
-          and category_name = #{categoryName,jdbcType=VARCHAR}
-          and status = #{status,jdbcType=INTEGER}
-          and is_sale = #{isSale,jdbcType=INTEGER}
-          and is_delete = #{isDelete,jdbcType=INTEGER}
+        set
+               brand_id = #{comSpu.brandId},
+               up_time = #{comSpu.upTime},
+               down_time = #{comSpu.downTime},
+               modify_time = #{comSpu.modifyTime},
+               modify_man = #{comSpu.modifyMan},
+               slogan = #{comSpu.slogan},
+               is_trial = #{comSpu.isTrial},
+               content = #{comSpu.content},
+               weight = #{comSpu.weight},
+               pack_length = #{comSpu.packLength},
+               pack_width = #{comSpu.packWidth},
+               pack_height = #{comSpu.packHeight},
+               ship_amount = #{comSpu.shipAmount},
+               remark = #{comSpu.remark}
+        where
+               id = #{id}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
-        is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
-        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
-        from com_spu
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select id, name, create_time, create_man, category_id, category_name, status, is_sale, 
-        is_delete, brand_id, up_time, down_time, modify_time, modify_man, slogan, is_trial, 
-        content, weight, pack_length, pack_width, pack_height, ship_amount, remark
-        from com_spu
-    </select>
+    <!-- 根据id删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM com_spu WHERE id = #{id}
+    </delete>
 
 </mapper>

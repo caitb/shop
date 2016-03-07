@@ -4,7 +4,6 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PbBanner;
-import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
@@ -60,7 +59,7 @@ public class IndexController extends BaseController {
             //重新封装商品图片地址
             indexComSku.setImgUrl(url);
             //判断会员权限
-            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());
+            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel(indexComSku.getComSku().getPriceRetail()));
 //            if(comUser!=null && comUser.getIsAgent()==1){
 //                //确定代理权限，显示优惠区间
 //                indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());

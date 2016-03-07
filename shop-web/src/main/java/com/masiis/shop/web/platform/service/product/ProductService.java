@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +37,10 @@ public class ProductService {
     private ProductSimpleMapper productSimpleMapper;
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/5 0005 下午 2:30
-      * 根据商品ID展示商品属性详情
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/5 0005 下午 2:30
+     * 根据商品ID展示商品属性详情
+     */
     public Product getSkuDetails(String skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         if (product != null && product.getName().length() > 40) {
@@ -57,32 +59,36 @@ public class ProductService {
         }
         return product;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/5 0005 下午 2:30
-      * 代理商折扣，基础数据
-      */
-    public String getDiscountByAgentLevel() throws Exception {
+     * @Author 贾晶豪
+     * @Date 2016/3/5 0005 下午 2:30
+     * 代理商折扣，基础数据
+     */
+    public String getDiscountByAgentLevel(BigDecimal priceRetail) throws Exception {
         String discountLevel = null;
         List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
         if (comAgentLevels != null && comAgentLevels.size() > 0) {
-            discountLevel = comAgentLevels.get(0).getDiscount() + "-" + comAgentLevels.get(comAgentLevels.size()-1).getDiscount();
+            DecimalFormat myFormat = new DecimalFormat("0.00");
+            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount()))+ "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
         }
         return discountLevel;
     }
+
     /**
      * 跳转到试用申请页
-     * @author  hanzengzhi
-     * @date  2016/3/5 16:19
+     *
+     * @author hanzengzhi
+     * @date 2016/3/5 16:19
      */
-    public Product applyTrialToPageService(Integer skuId,Integer spuId){
+    public Product applyTrialToPageService(Integer skuId) {
         Product product = null;
         try {
             product = getSkuDetails(skuId.toString());
-            if (product!=null){
+            if (product != null) {
                 //获取运费
-                ComSpu comSpu =  comSpuMapper.selectByPrimaryKey(spuId);
-                if (comSpu!=null){
+                ComSpu comSpu = comSpuMapper.selectByPrimaryKey(product.getSpuId());
+                if (comSpu != null) {
                     //获取默认图片
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
                     List<ComSkuImage> comSkuImages = new ArrayList<ComSkuImage>();
@@ -93,10 +99,12 @@ public class ProductService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  product;
+        return product;
     }
+
     /**
      * 获取SKU简单数据
+     *
      * @param skuId
      * @return
      * @throws Exception

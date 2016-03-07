@@ -55,7 +55,7 @@
     <div class="footer">
         <section class="sec3">
             <p><a href="zhuce.html">返回修改</a></p>
-            <p><a href="zhifu.jsp">确认</a></p>
+            <p><input id="submit" name="submit" type="button" text="确定"></p>
         </section>
     </div>
 </div>
@@ -64,6 +64,25 @@
 <script>
     var myScroll = new IScroll("body", {
         preventDefault: false
+    })
+    $(function () {
+        $("#submit").bind("click", function () {
+            var paraData;
+            $.ajax({
+                url: "<%=basePath%>border/registerConfirm/save",
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.isError == false) {
+                        window.location.href = "<%=basePath%>" + data.url;
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+
     })
 </script>
 </html>

@@ -6,7 +6,7 @@
 %>
 <html>
 <script>
-    window.location.href = "<%=path%>/userAddress/toAddAddressPage.json";
+    window.location.href = "<%=path%>/index";
 </script>
 <body>
 request.g

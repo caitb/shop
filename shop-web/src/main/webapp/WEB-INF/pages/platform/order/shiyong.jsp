@@ -43,7 +43,9 @@
                     "phone" : phone,
                     "wechat" : wechat
                 },function(data) {
-
+                    if(data == "success"){
+                        window.location.href = "<%=path%>/corder/continueStroll"
+                    }
                 });
     }
 
@@ -58,7 +60,7 @@
         <div>
             <h2>${product.name}<span>x1</span></h2>
             <h3>规格：<span>默认</span></h3>
-            <p>零售价：<span>￥${product.shipAmount}</span></p>
+            <p>零售价：<span>￥${product.priceRetail}</span></p>
         </div>
     </section>
     <section class="sec3">

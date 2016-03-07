@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,15 @@ public class COrderController extends BaseController {
         request.getSession().setAttribute("userId","1");
         return "index";
     }
-
+    /**
+     * 跳转到使用申请成功界面
+     * @author  hanzengzhi
+     * @date  2016/3/7 19:34
+     */
+    @RequestMapping("/continueStroll")
+    public String toContinueStroll(HttpServletRequest request, HttpServletResponse response){
+        return "platform/order/jixuguangguang";
+    }
     /**
      * 跳转到试用申请界面
      * @author  hanzengzhi
@@ -73,6 +82,7 @@ public class COrderController extends BaseController {
     @ResponseBody
     public String trialApply(
             HttpServletRequest request,
+            HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Long skuId,
             @RequestParam(value = "spuId", required = true) Long spuId,
             @RequestParam(value = "applyReason", required = false) String applyReason,
@@ -104,6 +114,25 @@ public class COrderController extends BaseController {
         comUser.setRealName(name);
         comUser.setMobile(phone);
 
+        if (comUser.getCreateTime()==null){
+            comUser.setCreateTime(new Date());
+        }
+        if (StringUtils.isEmpty(comUser.getOpenid())){
+            comUser.setOpenid("openid");
+        }
+        if (StringUtils.isEmpty(comUser.getAccessToken())){
+            comUser.setAccessToken("accessToken");
+        }
+        if (StringUtils.isEmpty(comUser.getRefreshToken())){
+            comUser.setRefreshToken("refreshToken");
+        }
+        if (StringUtils.isEmpty(comUser.getAtokenExpire())){
+            comUser.setAtokenExpire(new Date());
+        }
+        if (StringUtils.isEmpty(comUser.getRtokenExpire())){
+            comUser.setRtokenExpire(new Date());
+        }
+
         PfUserTrial pfUserTrial = new PfUserTrial();
         pfUserTrial.setUserId(comUser.getId());
         pfUserTrial.setSkuId(skuId);
@@ -115,7 +144,7 @@ public class COrderController extends BaseController {
         pfUserTrial.setWeixinId(wechat);
         pfUserTrial.setCreateTime(new Date());
         cOrderService.trialApplyService(comUser,pfUserTrial);
-        return "";
+        return "success";
     }
 
 }

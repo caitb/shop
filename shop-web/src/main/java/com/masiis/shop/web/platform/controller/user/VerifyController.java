@@ -100,12 +100,12 @@ public class VerifyController extends BaseController {
                 log.error("json解析错误:" + e.getMessage());
                 rp = null;
             }
-            if(rp == null
-                    || StringUtils.isBlank(rp.getCode())
-                    // 校验state参数完整性
-                    || !DigestUtils.sha1Hex(this.toString()).equals(rp.getSignCk())) {
-                throw new BusinessException("state参数不正确,调用异常!");
-            }
+//            if(rp == null
+//                    || StringUtils.isBlank(rp.getCode())
+//                    // 校验state参数完整性
+//                    || !DigestUtils.sha1Hex(this.toString()).equals(rp.getSignCk())) {
+//                throw new BusinessException("state参数不正确,调用异常!");
+//            }
 
             // 验证cookie
             Cookie cookie = CookieUtils.getCookie(request, SysConstants.COOKIE_WX_ID_NAME);

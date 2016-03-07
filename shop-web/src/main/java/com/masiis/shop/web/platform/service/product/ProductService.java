@@ -81,13 +81,13 @@ public class ProductService {
      * @author hanzengzhi
      * @date 2016/3/5 16:19
      */
-    public Product applyTrialToPageService(Integer skuId, Integer spuId) {
+    public Product applyTrialToPageService(Integer skuId) {
         Product product = null;
         try {
             product = getSkuDetails(skuId.toString());
             if (product != null) {
                 //获取运费
-                ComSpu comSpu = comSpuMapper.selectByPrimaryKey(spuId);
+                ComSpu comSpu = comSpuMapper.selectByPrimaryKey(product.getSpuId());
                 if (comSpu != null) {
                     //获取默认图片
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);

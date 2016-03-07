@@ -30,7 +30,11 @@
         var spuId =$("#spuId")[0].value;
         var skuId = $("#skuId")[0].value;
         var isPhone = checkPhone(phone);
-        if(!isPhone){
+        if (!checkNumber(wechat)){
+            alert("微信号格式不对");
+            return;
+        }
+        if(!checkNumber(phone)||!isPhone){
             alert("手机号格式不对");
             return;
         }

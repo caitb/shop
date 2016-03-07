@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,12 @@ public class UserAddressController {
     @Resource
     private ComAreaService comAreaService;
 
-    @RequestMapping("/toAddAddressPage.json")
+    /**
+     * 跳转到新增地址界面
+     * @author  hanzengzhi
+     * @date  2016/3/7 23:27
+     */
+    @RequestMapping("/toAddAddressPage.html")
     public String toAddAddressPage(HttpServletRequest request,
                                    HttpServletResponse response,Model model)throws JsonProcessingException{
         List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
@@ -40,7 +46,11 @@ public class UserAddressController {
         model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));
         return "platform/order/xinjiandizhi";
     }
-
+    /**
+     * 新增地址
+     * @author  hanzengzhi
+     * @date  2016/3/7 23:27
+     */
     @RequestMapping("/addAddress.json")
     public String addAddress(HttpServletRequest request,
                              HttpServletResponse response,
@@ -80,5 +90,36 @@ public class UserAddressController {
             java.lang.System.out.println();
         }
         return null;
+    }
+    /**
+     * 跳转到管理地址界面
+     * @author  hanzengzhi
+     * @date  2016/3/7 22:59
+     */
+    @RequestMapping("/toManageAddressPage.html")
+    public String toManageAddressPage(HttpServletRequest request,
+                                HttpServletResponse response){
+        return "platform/order/guanli";
+    }
+    /**
+     * 获得用户地址
+     * @author  hanzengzhi
+     * @date  2016/3/7 23:26
+     */
+    @RequestMapping("/getUserAddressByUserId.do")
+    @ResponseBody
+    public String getUserAddressByUserId(HttpServletRequest request,
+                                         HttpServletResponse response)throws JsonProcessingException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        ComUserAddress comUserAddress = new ComUserAddress();
+        if (comUser!=null){
+            comUserAddress.setUserId(comUser.getId());
+        }else{
+            comUserAddress.setUserId(1L);
+        }
+        List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
+        String returnJson = objectMapper.writeValueAsString(comUserAddressList);
+        return returnJson;
     }
 }

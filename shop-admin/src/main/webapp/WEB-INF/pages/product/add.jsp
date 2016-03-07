@@ -22,12 +22,6 @@
     <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/lang/zh-cn/zh-cn.js"></script>
 
-    <style type="text/css">
-        div {
-            width: 100%;
-        }
-    </style>
-
 
     <!-- Le styles -->
     <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">

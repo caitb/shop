@@ -16,6 +16,35 @@
     <link rel="stylesheet" href="<%=path%>/static/css/bangding.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <script src="<%=path%>/static/js/checkUtil.js"></script>
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var isPassword;
+            $("#phoneId").blur(function(){
+                var phone= $("#phoneId").val();
+                var isPhone= checkPhone(phone);
+                if(!isPhone){
+                    alert("手机号格式不对");
+                    return;
+                }
+            });
+
+            $("#passwordId").blur(function(){
+                var password = $("#passwordId").val();
+                isPassword= isWordAndNum(password);
+                //alert(password);
+                if(isPassword){
+                    alert("密码只支持数字或字母");
+                    //return;
+                }
+            });
+            if(isPassword){
+                alert("gdfgdfgd");
+                return;
+            }
+        });
+    </script>
 </head>
 <body>
    
@@ -32,7 +61,7 @@
         </div>
         <section class="input_t phone">
             <p>手机号：</p>
-            <input type="text" name="phone" value="">
+            <input type="text" id="phoneId" name="phone" value="">
         </section>
         <section class="input_t">
             <p>验证码：</p>
@@ -41,7 +70,7 @@
         </section>
         <section class="input_t mima">
             <p>密码：</p>
-            <input type="password" name="password" value="">
+            <input type="password" id="passwordId" name="password" value="">
         </section>
         <p class="rodia">
             <input type="checkbox" id="fu" checked>

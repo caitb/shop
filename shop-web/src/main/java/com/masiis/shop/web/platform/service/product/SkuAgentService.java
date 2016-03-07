@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.service.product;
 
-import com.masiis.shop.dao.beans.product.PfSkuAgentMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +19,7 @@ public class SkuAgentService {
 
     /**
      * 获取SKU代理数据
+     *
      * @param skuId
      * @return
      */

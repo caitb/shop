@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ProductSimpleMapper" >
+    <resultMap id="ProductSimpleResultMap" type="com.masiis.shop.dao.beans.product.ProductSimple" >
+        <id column="id" property="skuId" jdbcType="INTEGER" />
+        <result column="name" property="skuName" jdbcType="VARCHAR" />
+        <result column="img_url" property="skuDefaultImgURL" jdbcType="INTEGER" />
+        <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectBySkuId" resultMap="ProductSimpleResultMap" >
+        select csk.id,csk.name,csp.slogan,cski.img_url from com_sku csk
+        inner join com_spu csp on csk.spu_id=csp.id
+        inner join com_sku_image cski on csk.id=cski.sku_id
+        where csk.id=#{skuId} and cski.is_default=1
+    </select>
+
+</mapper>

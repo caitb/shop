@@ -18,15 +18,15 @@ import java.math.BigDecimal;
  */
 public class PfSkuAgent {
 
-    private Integer id;
+    private Long id;
     /**
      * SKU主键ID
      */
-    private Integer skuId;
+    private Long skuId;
     /**
      * 代理等级表ID
      */
-    private Integer agentLevelId;
+    private Long agentLevelId;
     /**
      * 折扣(例如0.35为35%也就是3.5折)
      */
@@ -37,40 +37,63 @@ public class PfSkuAgent {
     private Integer quantity;
     private String remark;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public Integer getSkuId() {
+
+    public Long getSkuId() {
         return skuId;
     }
-    public void setSkuId(Integer skuId) {
+
+    public void setSkuId(Long skuId) {
         this.skuId = skuId;
     }
-    public Integer getAgentLevelId() {
+
+    public Long getAgentLevelId() {
         return agentLevelId;
     }
-    public void setAgentLevelId(Integer agentLevelId) {
+
+    public void setAgentLevelId(Long agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
+
     public BigDecimal getDiscount() {
         return discount;
     }
+
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
+
     public Integer getQuantity() {
         return quantity;
     }
+
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "PfSkuAgent{" +
+                "id=" + id +
+                ", skuId=" + skuId +
+                ", agentLevelId=" + agentLevelId +
+                ", discount=" + discount +
+                ", quantity=" + quantity +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

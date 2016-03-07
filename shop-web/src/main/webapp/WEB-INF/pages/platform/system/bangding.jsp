@@ -30,6 +30,39 @@
                 }
             });
 
+            $("#codeId").click(function(){
+                alert($("#phoneId").val());
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/binding/securityCode",
+                    data:"phone="+$("#phoneId").val(),
+                    dataType:"Json",
+                    success:function(result){
+                        alert("短信发送成功,请注意查收!");
+//                        alert(result.code);
+                    }
+                });
+            });
+
+            $("#codeValueId").blur(function(){
+//                alert("sdfsdfsfs");
+                var $value= $("#codeValueId").val();
+                if($value==null || $value==""){
+                    alert("验证码不能为空");
+                    return;
+                }
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/binding/verificationCode.do",
+                    data:"verificationCode="+$("#codeValueId").val(),
+                    dataType:"Json",
+                    success:function(result){
+//                        alert("123456");
+                        alert(result.msg);
+                    }
+                });
+            });
+
             $("#passwordId").blur(function(){
                 var password = $("#passwordId").val();
                 isPassword= isWordAndNum(password);
@@ -37,6 +70,8 @@
                 if(isPassword){
                     alert("密码只支持数字或字母");
                     //return;
+                }else{
+                    alert("密码设置成功");
                 }
             });
             if(isPassword){
@@ -65,8 +100,8 @@
         </section>
         <section class="input_t">
             <p>验证码：</p>
-            <input type="text" name="verificationCode" value="">
-            <h4>获取验证码</h4>
+            <input type="text" id="codeValueId" name="verificationCode" value="">
+            <h4><input type="button"  id="codeId" value="获取验证码"/></h4>
         </section>
         <section class="input_t mima">
             <p>密码：</p>

@@ -104,7 +104,11 @@ public class UserService {
      * @date  2016/3/5 15:19
      */
     public void insertUserTrial(PfUserTrial pfUserTrial){
-        pfUserTrialMapper.insert(pfUserTrial);
+        try {
+            pfUserTrialMapper.insert(pfUserTrial);
+        }catch (Exception e){
+
+        }
     }
 
     /**

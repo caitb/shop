@@ -7,7 +7,9 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+import com.masiis.shop.dao.po.ComCategory;
 import com.masiis.shop.dao.po.ComUserAddress;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +25,6 @@ public interface ComUserAddressMapper {
     int updateByPrimaryKey(ComUserAddress record);
 
     List<ComUserAddress> selectAllByComUserId(Long ComUserId);
+
+    List<ComUserAddress> queryComUserAddressesByParam(@Param("comUserAddress")ComUserAddress comUserAddress);
 }

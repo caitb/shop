@@ -90,7 +90,7 @@
 </div>
 <footer>
     <section class="sec3">
-        <p><a href="javascript:;">申请试用</a></p>
+        <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}">申请试用</a></p>
         <p><a href="<%=path%>/lo/quote">申请合伙人</a></p>
     </section>
 </footer>

@@ -60,7 +60,7 @@ public class RedirectParam {
                 '}';
     }
 
-    public void creatSign(){
-        this.signCk = DigestUtils.sha1Hex(this.toString());
-    }
+//    public void creatSign(){
+//        this.signCk = DigestUtils.sha1Hex(this.toString());
+//    }
 }

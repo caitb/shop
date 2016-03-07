@@ -2,9 +2,11 @@ package com.masiis.shop.web.platform.service.product;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
+import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.ProductMapper;
+import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
@@ -29,6 +31,8 @@ public class ProductService {
     private ComSpuMapper comSpuMapper;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
+    @Resource
+    private ProductSimpleMapper productSimpleMapper;
 
     /**
       * @Author 贾晶豪

@@ -10,9 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/binding")
 public class BindingController {
-    @RequestMapping("bindingPhone")
-   public String BindingPhone() throws Exception{
+
+   /**
+    * 跳转到绑定界面
+    * @author muchaofeng
+    * @date 2016/3/7 13:52
+    */
+
+    @RequestMapping("bindingList")
+   public String BindingList() throws Exception{
        return "platform/system/bangding";
    }
+    /**
+     * 发送验证码
+     * @author muchaofeng
+     * @date 2016/3/7 13:53
+     */
 
+    @RequestMapping("securityCode")
+    public String SecurityCode(String phone ) throws Exception{
+
+        return  "";//^[0-9a-zA-Z]{6,16}$
+    }
 }

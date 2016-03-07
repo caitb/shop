@@ -91,4 +91,13 @@ public class ProductService {
         }
         return  product;
     }
+    /**
+     * 获取SKU简单数据
+     * @param skuId
+     * @return
+     * @throws Exception
+     */
+    public ProductSimple getSkuSimple(Integer skuId) throws Exception {
+        return productSimpleMapper.selectBySkuId(skuId);
+    }
 }

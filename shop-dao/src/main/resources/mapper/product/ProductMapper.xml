@@ -41,7 +41,7 @@
 
 
     <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
-        SELECT sku.name,sku.price_retail,sku.remark,
+        SELECT sku.id,sku.name,sku.price_retail,sku.remark,
                 spu.name,spu.slogan,spu.content,
                 sku_stok.stock,
                 sku_static.agent_num

@@ -107,11 +107,16 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/registerConfirm")
     public ModelAndView partnersRegisterConfirm(HttpServletRequest request,
-                                                HttpServletResponse response) {
+                                                HttpServletResponse response,
+                                                @RequestParam(value = "name", required = true) String name,
+                                                @RequestParam(value = "mobile", required = true) String mobile,
+                                                @RequestParam(value = "weixinId", required = true) String weixinId,
+                                                @RequestParam(value = "parentMobile", required = true) String parentMobile) {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("platform/order/zhuce2");
         return mv;
     }
+
     @ResponseBody
     @RequestMapping("/registerConfirm/save")
     public String partnersRegisterConfirmDo(HttpServletRequest request,

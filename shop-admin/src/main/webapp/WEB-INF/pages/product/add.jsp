@@ -15,9 +15,9 @@
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/ueditor.all.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/js/zyFile.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/zyFile.js"></script>
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/control/js/zyUpload.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/js/jq22.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/upload-plugin/core/jq22.js"></script>
     <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
     <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
     <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/ueditor/lang/zh-cn/zh-cn.js"></script>

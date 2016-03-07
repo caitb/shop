@@ -7,7 +7,7 @@ import com.masiis.shop.admin.beans.order.TrialInfo;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.PfUserTrialService;
 import com.masiis.shop.admin.service.product.SkuService;
-import com.masiis.shop.admin.service.user.UserService;
+import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserTrial;
@@ -30,7 +30,7 @@ public class PfUserTrialController extends BaseController {
     @Resource
     private PfUserTrialService trialService;
     @Resource
-    private UserService userService;
+    private ComUserService comUserService;
     @Resource
     private SkuService skuService;
 
@@ -59,7 +59,7 @@ public class PfUserTrialController extends BaseController {
         List<TrialInfo> trialInfos = new ArrayList<>();
         if(pfUserTrials != null && pfUserTrials.size() > 0){
             for(PfUserTrial pfUserTrial : pfUserTrials){
-                ComUser comUser = userService.findById(pfUserTrial.getUserId());
+                ComUser comUser = comUserService.findById(pfUserTrial.getUserId());
                 ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
 
                 TrialInfo trialInfo = new TrialInfo();

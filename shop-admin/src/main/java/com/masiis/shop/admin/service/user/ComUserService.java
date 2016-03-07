@@ -11,7 +11,7 @@ import java.util.List;
  * Created by cai_tb on 16/3/5.
  */
 @Service
-public class UserService {
+public class ComUserService {
 
     @Resource
     private ComUserMapper comUserMapper;

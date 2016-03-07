@@ -32,7 +32,7 @@ public class LoginController extends BaseController {
         if (comUser != null) {
             request.getSession().setAttribute("comUser", comUser);
         }
-        return "index";
+       return "index";
     }
 
     /**

@@ -56,6 +56,7 @@
        SELECT img_url,img_name,sort,is_default
        FROM com_sku_image
        WHERE sku_id = #{skuId}
+       ORDER BY sort ASC
     </select>
 
     <select id="agentLevelDiscount" resultMap="DiscountLevelResultMap">

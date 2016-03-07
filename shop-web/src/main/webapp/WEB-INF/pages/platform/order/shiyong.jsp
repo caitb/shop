@@ -63,7 +63,7 @@
     </section>
     <section class="sec3">
         <p>运费<span>${product.priceRetail}</span></p>
-        <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥300</span>　<b style="font-size:12px">合计：</b><span>￥${product.priceRetail}</span></h1>
+        <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>${product.shipAmount}</span>　<b style="font-size:12px">合计：</b><span>￥${product.priceRetail}</span></h1>
         <p>申请理由：<input type="text" id="applyReasonId"></p>
     </section>
     <h1 class="pople">

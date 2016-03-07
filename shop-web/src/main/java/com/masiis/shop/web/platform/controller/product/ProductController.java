@@ -33,7 +33,7 @@ public class ProductController extends BaseController {
         Product productDetails = productService.getSkuDetails(skuId);
         if(comUser !=null && comUser.getIsAgent()==1){
             productDetails.setIsPartner(true);
-            productDetails.setDiscountLevel(productService.getDiscountByAgentLevel());
+            productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
         }
         mav.addObject("productDetails",productDetails);
         return mav;

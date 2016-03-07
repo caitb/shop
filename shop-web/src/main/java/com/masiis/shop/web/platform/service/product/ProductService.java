@@ -1,12 +1,11 @@
 package com.masiis.shop.web.platform.service.product;
 
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.ProductMapper;
-import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComAgentLevel;
-import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +37,9 @@ public class ProductService {
       */
     public Product getSkuDetails(String skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        if(product!= null && product.getName().length()>40){
+            product.setName(product.getName().substring(0,41)+"......");
+        }
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
         String productImgValue = PropertiesUtils.getStringValue("index_product_200_200_url");
         if(skuImgList!=null && skuImgList.size()>0){

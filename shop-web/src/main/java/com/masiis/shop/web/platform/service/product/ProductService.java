@@ -87,7 +87,7 @@ public class ProductService {
             product = getSkuDetails(skuId.toString());
             if (product != null) {
                 //获取运费
-                ComSpu comSpu = comSpuMapper.selectByPrimaryKey(product.getSpuId());
+                ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
                 if (comSpu != null) {
                     //获取默认图片
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);

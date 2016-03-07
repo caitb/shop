@@ -35,15 +35,18 @@ public class ProductService {
       * @Date 2016/3/5 0005 下午 2:30
       * 根据商品ID展示商品属性详情
       */
-    public Product getSkuDetails(String skuId) throws Exception{
+    public Product getSkuDetails(String skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
-        if(product!= null && product.getName().length()>40){
-            product.setName(product.getName().substring(0,41)+"......");
+        if (product != null && product.getName().length() > 40) {
+            product.setName(product.getName().substring(0, 41) + "......");
+        }
+        if (product != null && product.getSlogan().length() > 50) {
+            product.setSlogan(product.getSlogan().substring(0, 51) + "......");
         }
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
         String productImgValue = PropertiesUtils.getStringValue("index_product_200_200_url");
-        if(skuImgList!=null && skuImgList.size()>0){
-            for(ComSkuImage comSkuImage:skuImgList){
+        if (skuImgList != null && skuImgList.size() > 0) {
+            for (ComSkuImage comSkuImage : skuImgList) {
                 comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
             }
             product.setComSkuImages(skuImgList);

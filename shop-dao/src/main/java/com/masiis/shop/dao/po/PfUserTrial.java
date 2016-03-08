@@ -29,7 +29,7 @@ public class PfUserTrial {
     /**
      * spu主键id
      */
-    private Long spuId;
+    private Integer spuId;
     /**
      * sku主键id
      */
@@ -83,11 +83,11 @@ public class PfUserTrial {
         this.userId = userId;
     }
 
-    public Long getSpuId() {
+    public Integer getSpuId() {
         return spuId;
     }
 
-    public void setSpuId(Long spuId) {
+    public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
 

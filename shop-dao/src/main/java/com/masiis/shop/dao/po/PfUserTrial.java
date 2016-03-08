@@ -33,7 +33,7 @@ public class PfUserTrial {
     /**
      * sku主键id
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 状态(0未处理1通过2拒绝)
      */
@@ -91,11 +91,11 @@ public class PfUserTrial {
         this.spuId = spuId;
     }
 
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 

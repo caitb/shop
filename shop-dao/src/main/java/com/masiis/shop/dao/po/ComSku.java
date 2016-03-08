@@ -26,7 +26,7 @@ public class ComSku {
     /**
      * spu主键id
      */
-    private Long spuId;
+    private Integer spuId;
     /**
      * 创建时间
      */
@@ -80,11 +80,11 @@ public class ComSku {
         this.name = name;
     }
 
-    public Long getSpuId() {
+    public Integer getSpuId() {
         return spuId;
     }
 
-    public void setSpuId(Long spuId) {
+    public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
 

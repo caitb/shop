@@ -102,4 +102,11 @@ public class PfUserTrialController extends BaseController {
         trialService.reason(pfUserTrial);
         return "redirect:list.shtml";
     }
+
+    @RequestMapping("cha.do")
+    @ResponseBody
+    public String cha(Long id){
+        String reason = trialService.selectById(id);
+        return reason;
+    }
 }

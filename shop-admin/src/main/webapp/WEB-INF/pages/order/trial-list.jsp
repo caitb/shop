@@ -211,7 +211,7 @@
                                                     return row.pfUserTrial.reason;
                                                 }*/
                                                 formatter: function(value, row, index){
-                                                    return '<a href="http://www.baidu.com">查看</a>';
+                                                    return '<a href="javascript:void(0)" onclick="cha('+row.pfUserTrial.id+')">查看</a>';
                                                 }
                                             },
                                             {
@@ -414,6 +414,25 @@
                                 eachSeries(scripts, getScript, initTable);
                             });
 
+
+
+                            function cha(id){
+                                $.ajax({
+                                    url:'<%=basePath%>trial/cha.do',
+                                    data:{id:id},
+                                    success: function(result){
+                                        $('#liyou').html(result);
+                                        $('#myM').modal({
+                                            show: true,
+                                            backdrop: true
+                                        });
+                                    }
+                                })
+                            }
+
+
+
+
                             function getScript(url, callback) {
                                 var head = document.getElementsByTagName('head')[0];
                                 var script = document.createElement('script');
@@ -558,6 +577,36 @@
                     </button>
                     <button type="button" class="btn btn-primary" id="addSubmit">
                         提交
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+
+    <div class="modal fade" id="myM" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="title" >
+                        申请理由
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <span id="liyou"></span>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
                     </button>
                 </div>
             </div><!-- /.modal-content -->

@@ -55,4 +55,8 @@ public class PfUserTrialService {
     public void insert(PfCorder pfCorder) {
         pfCorderMapper.insert(pfCorder);
     }
+
+    public String selectById(Long id) {
+        return pfUserTrialMapper.selectReasonById(id);
+    }
 }

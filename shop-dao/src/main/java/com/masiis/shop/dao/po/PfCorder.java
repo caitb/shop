@@ -39,6 +39,7 @@ public class PfCorder {
      * 用户id
      */
     private Long userId;
+
     /**
      * 上一级用户id，可空
      */
@@ -136,6 +137,18 @@ public class PfCorder {
      */
     private String remark;
 
+    /**
+     *申请商品id
+     */
+    private Integer skuId;
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
 
     public Long getId() {
         return id;

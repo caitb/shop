@@ -18,15 +18,15 @@ import java.math.BigDecimal;
  */
 public class PfSkuAgent {
 
-    private Long id;
+    private Integer id;
     /**
      * SKU主键ID
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 代理等级表ID
      */
-    private Long agentLevelId;
+    private Integer agentLevelId;
     /**
      * 折扣(例如0.35为35%也就是3.5折)
      */
@@ -37,27 +37,27 @@ public class PfSkuAgent {
     private Integer quantity;
     private String remark;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 
-    public Long getAgentLevelId() {
+    public Integer getAgentLevelId() {
         return agentLevelId;
     }
 
-    public void setAgentLevelId(Long agentLevelId) {
+    public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
 

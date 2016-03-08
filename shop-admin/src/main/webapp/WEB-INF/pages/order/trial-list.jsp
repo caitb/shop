@@ -117,7 +117,7 @@
                                                 return index + 1;
                                             }
                                             },
-                                            {
+                                            /*{
                                                 title: 'ID',
                                                 field: 'id',
                                                 rowspan: 2,
@@ -128,7 +128,7 @@
                                                 formatter: function(value, row, index){
                                                     return row.pfUserTrial.id;
                                                 }
-                                            },
+                                            },*/
                                             {
                                             title: '详情',
                                             colspan: 8,

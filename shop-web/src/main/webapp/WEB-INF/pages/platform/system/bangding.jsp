@@ -42,9 +42,9 @@
             $("#phoneId").blur(function(){
                 Iphone= $("#phoneId").val();
                 isPhone= checkPhone(Iphone);
-//                alert(isPhone);
                 if(!isPhone){
-                    alert("手机号格式不对");
+//                    alert("手机号格式不对");
+                    $("#phoneId").val("本系统暂时只接受中国大陆手机号码格式");
                     return;
                 }
             });
@@ -57,7 +57,8 @@
                     data:"phone="+$("#phoneId").val(),
                     dataType:"Json",
                     success:function(result){
-                        alert("短信发送成功,请注意查收!");
+//                        alert("短信发送成功,请注意查收!");
+                        $("#codeValueId").val("短信发送成功,请注意查收!");
 //                        alert(result.code);
                     }
                 });
@@ -66,7 +67,8 @@
             $("#codeValueId").blur(function(){
                 $value= $("#codeValueId").val();
                 if($value==null || $value==""){
-                    alert("验证码不能为空");
+                    $("#codeValueId").val("验证码不能为空");
+//                    alert("验证码不能为空");
                     return;
                 }
                 $.ajax({
@@ -76,6 +78,7 @@
                     dataType:"Json",
                     success:function(result){
                         alert(result.msg);
+                        $("#codeValueId").val(result.msg);
                     }
                 });
             });
@@ -84,10 +87,12 @@
                 password = $("#passwordId").val();
                 isPassword= isWordAndNum(password);
                 if(isPassword){
-                   alert("密码只能包含数字字母");
+//                   alert("密码只能包含数字字母");
+                    $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
-                    alert("密码不能为空");
+//                    alert("密码不能为空");
+                    $("#passwordTip").html("密码不能为空");
                     return;
                 }
             });
@@ -100,7 +105,8 @@
                     alert("请重新输入");
                     return;
                 }else if(password==null || password==""){
-                    alert("密码不能为空");
+//                    alert("密码不能为空");
+                    $("#passwordTip").html("密码不能为空");
                     return;
                 }else{
                     $.ajax({
@@ -113,6 +119,7 @@
                         },
                         error:function(result){
                             alert("验证码输入有误");
+                            $("#codeValueId").val("验证码输入有误");
                         }
                     });
                 }
@@ -146,7 +153,7 @@
         </section>
         <section class="input_t mima">
             <p>密码：</p>
-            <input type="password" id="passwordId" name="password" value="">
+            <input type="password" id="passwordId" name="password"><span id="passwordTip"></span>
         </section>
         <p class="rodia">
             <input type="checkbox" id="fu" checked>

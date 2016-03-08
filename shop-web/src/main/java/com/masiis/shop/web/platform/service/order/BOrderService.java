@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;

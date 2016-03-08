@@ -27,7 +27,7 @@
         <p>3.支付订单</p>
     </div>
     <p class="xuanze">
-        选择商品：<span>抗引力—快速瘦脸精华</span>
+        选择商品：<span>${skuName}</span>
     </p>
     <main>
         <section class="sec1">
@@ -35,27 +35,27 @@
                 <p>申请人信息　<b style="color:#999999">您可以凭手机号登录麦链商城</b></p>
             </div>
             <div>
-                <p>姓名： <b>王平</b></p>
+                <p>姓名： <b>${name}</b></p>
             </div>
             <div>
-                <p>手机号： <b>18611536163</b><span>(已验证)</span></p>
+                <p>手机号： <b>${mobile}</b><span>(已验证)</span></p>
             </div>
             <div>
-                <p>微信： <b>abcsdjksd</b></p>
+                <p>微信： <b>${weixinId}</b></p>
             </div>
         </section>
         <section class="sec2">
             <h2>合伙人信息</h2>
-            <p>上级合伙人手机号： <b>18611536163</b><span>王平</span></p>
-            <p>合伙人等级： <b>高级合伙人</b></p>
-            <p>需要缴纳货款： <b>￥10200</b></p>
+            <p>合伙人等级： <b>${levelName}</b></p>
+            <p>需要缴纳货款： <b>￥${amount}</b></p>
+            <p>上级合伙人手机号： <b>${parentMobile}</b><span>王平</span></p>
         </section>
 
     </main>
     <div class="footer">
         <section class="sec3">
             <p><a href="zhuce.html">返回修改</a></p>
-            <p><a href="zhifu.jsp">确认</a></p>
+            <p><input id="submit" name="submit" type="button" text="确定"></p>
         </section>
     </div>
 </div>
@@ -64,6 +64,25 @@
 <script>
     var myScroll = new IScroll("body", {
         preventDefault: false
+    })
+    $(function () {
+        $("#submit").bind("click", function () {
+            var paraData;
+            $.ajax({
+                url: "<%=basePath%>border/registerConfirm/save",
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.isError == false) {
+                        window.location.href = "<%=basePath%>" + data.url;
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        });
+
     })
 </script>
 </html>

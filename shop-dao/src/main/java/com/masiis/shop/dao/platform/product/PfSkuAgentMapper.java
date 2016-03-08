@@ -3,15 +3,14 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-04 Created
  */
-package com.masiis.shop.dao.beans.product;
+package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.PfSkuAgent;
 import java.util.List;
 
 public interface PfSkuAgentMapper {
-
     int deleteByPrimaryKey(Integer id);
 
     int insert(PfSkuAgent record);

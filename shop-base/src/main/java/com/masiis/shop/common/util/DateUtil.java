@@ -804,9 +804,7 @@ public class DateUtil {
     }
     /**
      * 判断当前日是不是周六或周日
-     * @param String
-     * @author 
-     * @throws ParseException 
+     * @throws ParseException
      */
     public static boolean isWeekend(Date date) throws ParseException{
 	    Calendar cal = Calendar.getInstance();
@@ -862,8 +860,7 @@ public class DateUtil {
 
     /**
      * 判断当前日是不是周六
-     * @param String
-     * @author 
+     * @author
      * @throws ParseException 
      */
     public static boolean isWeekSAT(Date date) throws ParseException{
@@ -878,8 +875,7 @@ public class DateUtil {
     }
     /**
      * 判断当前日是不是周日
-     * @param String
-     * @author 
+     * @author
      * @throws ParseException 
      */
     public static boolean isWeekSUN(Date date) throws ParseException{

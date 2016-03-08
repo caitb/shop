@@ -29,7 +29,7 @@ public interface PfUserTrialMapper {
      * 添加一条记录
      * @param pfUserTrial
      */
-    void insert(@Param("pfUserTrial")PfUserTrial pfUserTrial);
+    void insert(PfUserTrial pfUserTrial);
 
     /**
      * 根据id更新一条记录

@@ -29,8 +29,7 @@
         </p>
         <div>
             <h2>${skuName}</h2>
-            <p>激活细胞内部胶原蛋白新生能量，抚平肌肤深层皱纹，增强弹性，
-                焕醒肌肤年轻活力，重塑皮肤强劲支撑力。</p>
+            <p>${slogan}</p>
         </div>
     </a>
 </div>
@@ -79,7 +78,7 @@
         </div>
     </section>
     <section class="sec2">
-        <p><a href="<%=path%>/border/register">继续</a></p>
+        <p><a href="<%=path%>/border/register?skuId=${skuId}">继续</a></p>
     </section>
 </main>
 </body>

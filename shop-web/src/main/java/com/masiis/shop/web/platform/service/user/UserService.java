@@ -104,6 +104,19 @@ public class UserService {
      * @date  2016/3/5 15:19
      */
     public void insertUserTrial(PfUserTrial pfUserTrial){
-        pfUserTrialMapper.insert(pfUserTrial);
+        try {
+            pfUserTrialMapper.insert(pfUserTrial);
+        }catch (Exception e){
+
+        }
+    }
+
+    /**
+     * 通过手机号获取用户
+     * @param mobile
+     * @return
+     */
+    public ComUser getUserByMobile(String mobile){
+        return comUserMapper.selectByMobile(mobile);
     }
 }

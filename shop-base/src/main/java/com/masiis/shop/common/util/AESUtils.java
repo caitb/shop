@@ -38,7 +38,10 @@ public class AESUtils {
     public static String encrypt(String content, String password) {
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128, new SecureRandom(password.getBytes()));
+            //kgen.init(128, new SecureRandom(password.getBytes()));
+            SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+            sr.setSeed(password.getBytes());
+            kgen.init(128, sr);
             SecretKey secretKey = kgen.generateKey();
 
             byte[] enCodeFormat = secretKey.getEncoded();
@@ -73,7 +76,9 @@ public class AESUtils {
     public static String decrypt(String content, String password) {
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128, new SecureRandom(password.getBytes()));
+            SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+            sr.setSeed(password.getBytes());
+            kgen.init(128, sr);
             SecretKey secretKey = kgen.generateKey();
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");

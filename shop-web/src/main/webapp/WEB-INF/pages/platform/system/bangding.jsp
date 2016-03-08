@@ -50,6 +50,8 @@
 //                    alert("手机号格式不对");
                     $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
                     return;
+                }else{
+                    $("#phoneTip").html("");
                 }
             });
             $("#codeId").click(function(){
@@ -61,7 +63,6 @@
                     data:"phone="+$("#phoneId").val(),
                     dataType:"Json",
                     success:function(result){
-//                        alert("短信发送成功,请注意查收!");
                         $("#codeValueId").val("短信发送成功,请注意查收!");
 //                        alert(result.code);
                     }
@@ -72,7 +73,6 @@
                 $value= $("#codeValueId").val();
                 if($value==null || $value==""){
                     $("#codeValueId").val("验证码不能为空");
-//                    alert("验证码不能为空");
                     return;
                 }
                 $.ajax({
@@ -91,12 +91,13 @@
                 password = $("#passwordId").val();
                 isPassword= isWordAndNum(password);
                 if(isPassword){
-//                   alert("密码只能包含数字字母");
                     $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
                     $("#passwordTip").html("密码不能为空");
                     return;
+                }else{
+                    $("#passwordTip").html("");
                 }
             });
             $(".bd").click(function(){
@@ -105,13 +106,12 @@
                 isPhone= checkPhone(phone);
                 isPassword= isWordAndNum(password);
                 if(!isPhone ){
-                    $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
+                    $("#phoneTip").html("只接受中国大陆号码");
                     return;
                 }else if(isPassword){
                     $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
-//                    alert("密码不能为空");
                     $("#passwordTip").html("密码不能为空");
                     return;
                 }else{
@@ -149,7 +149,7 @@
         </div>
         <section class="input_t phone">
             <p>手机号：</p>
-            <input type="text" id="phoneId" name="phone" ><span id="phoneTip"></span>
+            <input type="text" id="phoneId" name="phone" ><span id="phoneTip" style="color-rendering:#a5142f "></span>
         </section>
         <section class="input_t">
             <p>验证码：</p>

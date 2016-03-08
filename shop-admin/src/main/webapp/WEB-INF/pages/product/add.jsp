@@ -39,13 +39,13 @@
         <div class="form-group">
             <label for="name" class="col-sm-4 control-label">商品名称</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="name" name="skuNo" placeholder="商品名称">
+                <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
             </div>
         </div>
         <div class="form-group">
-            <label for="skuNo" class="col-sm-4 control-label">商品货号</label>
+            <label for="artNo" class="col-sm-4 control-label">商品货号</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="skuNo" name="skuNo" placeholder="商品货号">
+                <input type="text" class="form-control" id="artNo" name="artNo" placeholder="商品货号">
             </div>
         </div>
         <div class="form-group">
@@ -65,6 +65,7 @@
                 </select>
             </div>
             <div class="col-sm-1">
+                <input type="hidden" id="categoryName" name="categoryName" value="">
                 <select class="form-control" id="skuC3" name="categoryId">
                 </select>
             </div>
@@ -120,6 +121,10 @@
                     for(var sub in c3['sub'+$(this).val()]){
                         $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
                     }
+                });
+
+                $skuC3.change(function(){
+                    $('#categoryName').val($(this).find('option[value="'+$(this).val()+'"]').html());
                 });
             </script>
         </div>
@@ -197,34 +202,34 @@
         <div class="form-group">
             <label for="advanced" class="col-sm-4 control-label">高级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advanced" name="discount" placeholder="">
+                <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advancedCount" name="quantity" placeholder="">
+                <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
             </div>
         </div>
         <div class="form-group">
             <label for="intermediate" class="col-sm-4 control-label">中级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediate" name="discount" placeholder="">
+                <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediateCount" name="quantity" placeholder="">
+                <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
             </div>
         </div>
         <div class="form-group">
             <label for="primary" class="col-sm-4 control-label">初级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="primary" name="discount" placeholder="">
+                <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="primaryCount" name="quantity" placeholder="">
+                <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
             </div>
         </div>
 
@@ -240,21 +245,21 @@
         <div class="form-group">
             <label for="reciprocal1" class="col-sm-4 control-label">倒数第一</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal1" placeholder="">
+                <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
         </div>
         <div class="form-group">
             <label for="reciprocal2" class="col-sm-4 control-label">倒数第二</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal2" placeholder="">
+                <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
         </div>
         <div class="form-group">
             <label for="reciprocal3" class="col-sm-4 control-label">倒数第三</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal3" placeholder="">
+                <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
         </div>
@@ -263,8 +268,7 @@
 
         <div class="form-group">
             <label class="col-sm-4 control-label">主图</label>
-            <div class="col-sm-4 upload-widget" id="upload-widget">
-            </div>
+            <div class="col-sm-4 upload-widget" id="upload-widget"></div>
         </div>
 
         <div class="form-group">
@@ -273,12 +277,14 @@
                 <input type="text" class="form-control" id="inShort" placeholder="一句话介绍">
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm-4 control-label">商品介绍</label>
             <div class="col-sm-4">
-
+                <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
             </div>
         </div>
+
         <div class="form-group">
             <label class="col-sm-3"></label>
             <div class="col-sm-8">
@@ -407,6 +413,7 @@
             </div>
             <script>
                 $('#skuSave').on('click', function(){
+                    $('#content').val(UE.getEditor('editor').getAllHtml());
                     $.ajax({
                         url: '<%=basePath%>product/add.do',
                         type: 'post',

@@ -6,7 +6,8 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -23,12 +24,15 @@
         function times(){
             s--;
             $("#codeId").val("剩余" + s + "s");
+            $("#codeId").attr({"disabled":"disabled"});
             t = setTimeout(function (){times();}, 1000);
             if ( s <= 0 ){
                 s = 60;
-                $("#codeId").prop("disabled", false);
+                $("#codeId").removeAttr("disabled");
+//                $("#codeId").prop("disabled", false);
                 $("#codeId").val("获取验证码");
                 clearTimeout(t);
+
             }
         }
 
@@ -44,7 +48,7 @@
                 isPhone= checkPhone(Iphone);
                 if(!isPhone){
 //                    alert("手机号格式不对");
-                    $("#phoneId").val("本系统暂时只接受中国大陆手机号码格式");
+                    $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
                     return;
                 }
             });
@@ -91,7 +95,6 @@
                     $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
-//                    alert("密码不能为空");
                     $("#passwordTip").html("密码不能为空");
                     return;
                 }
@@ -101,8 +104,11 @@
                 phone= $("#phoneId").val();
                 isPhone= checkPhone(phone);
                 isPassword= isWordAndNum(password);
-                if(isPhone == isPassword){
-                    alert("请重新输入");
+                if(!isPhone ){
+                    $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
+                    return;
+                }else if(isPassword){
+                    $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
 //                    alert("密码不能为空");
@@ -118,7 +124,6 @@
                             location.href="<%=path%>/binding/bindingComUse.html";
                         },
                         error:function(result){
-                            alert("验证码输入有误");
                             $("#codeValueId").val("验证码输入有误");
                         }
                     });
@@ -144,7 +149,7 @@
         </div>
         <section class="input_t phone">
             <p>手机号：</p>
-            <input type="text" id="phoneId" name="phone" value="">
+            <input type="text" id="phoneId" name="phone" ><span id="phoneTip"></span>
         </section>
         <section class="input_t">
             <p>验证码：</p>

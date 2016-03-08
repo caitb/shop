@@ -52,23 +52,23 @@ public class IndexController extends BaseController {
         //获取商品图片地址常量
         String skuValue = PropertiesUtils.getStringValue("index_product_100_100_url");
         //获取主页展示商品信息
-        List<IndexComSku> indexComSkus = indexShowService.findIndexComSku();
-        for (IndexComSku indexComSku:indexComSkus) {
+        List<IndexComSku> indexComS = indexShowService.findIndexComSku();
+        for (IndexComSku indexCom:indexComS) {
             //获取商品图片地址
-            String url = skuValue + indexComSku.getImgUrl();
+            String url = skuValue + indexCom.getImgUrl();
             //重新封装商品图片地址
-            indexComSku.setImgUrl(url);
-            //判断会员权限
-            indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel(indexComSku.getComSku().getPriceRetail()));
-//            if(comUser!=null && comUser.getIsAgent()==1){
-//                //确定代理权限，显示优惠区间
-//                indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel());
-//            }else{
-//                indexComSku.setDiscountLevel("成为合伙人可查看");
-//            }
+            indexCom.setImgUrl(url);
+            if(comUser!=null && comUser.getIsAgent()==1){
+                //判断会员权限
+                indexCom.setIsPartner(true);
+                //确定代理权限，显示优惠区间
+                indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
+            }else{
+                indexCom.setDiscountLevel("成为合伙人可查看");
+            }
         }
         //封装展示商品信息集合
-        modelAndView.addObject("indexComSkus",indexComSkus);
+        modelAndView.addObject("indexComS",indexComS);
         modelAndView.setViewName("index");
         return modelAndView;
     }

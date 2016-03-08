@@ -12,6 +12,15 @@ public class TrialInfo {
     private PfUserTrial pfUserTrial;
     private ComUser comUser;
     private ComSku comSku;
+    private String referrer;
+
+    public String getReferrer() {
+        return referrer;
+    }
+
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
+    }
 
     public PfUserTrial getPfUserTrial() {
         return pfUserTrial;

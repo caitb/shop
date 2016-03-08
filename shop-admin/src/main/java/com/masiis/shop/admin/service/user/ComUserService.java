@@ -28,4 +28,8 @@ public class ComUserService {
     public List<ComUser> listByCondition(ComUser comUser){
         return null;
     }
+
+    public String findByParentId(Long userId) {
+        return comUserMapper.findByParentId(userId);
+    }
 }

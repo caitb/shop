@@ -25,7 +25,7 @@ public class CertificateService {
       * @Date 2016/3/7 0007 下午 5:51
       * 授权书列表
       */
-    public List<CertificateInfo> getCertificates(Map<String, Object> params) {
+    public List<CertificateInfo> getCertificates(Map<String, Object> params) throws Exception{
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificateInfo(params);
         if (certificateInfoList != null && certificateInfoList.size() > 0) {
             for (CertificateInfo certificateInfo : certificateInfoList) {

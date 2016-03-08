@@ -47,7 +47,7 @@ public class PfUserTrialController extends BaseController {
                        String order,
                        Integer offset,
                        Integer limit
-                       ){
+    ){
 
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 10 : limit;
@@ -60,11 +60,13 @@ public class PfUserTrialController extends BaseController {
         if(pfUserTrials != null && pfUserTrials.size() > 0){
             for(PfUserTrial pfUserTrial : pfUserTrials){
                 ComUser comUser = userService.findById(pfUserTrial.getUserId());
+                String referrer = userService.findByParentId(pfUserTrial.getUserId());
                 ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
 
                 TrialInfo trialInfo = new TrialInfo();
                 trialInfo.setPfUserTrial(pfUserTrial);
                 trialInfo.setComUser(comUser);
+                trialInfo.setReferrer(referrer);
                 trialInfo.setComSku(comSku);
 
                 trialInfos.add(trialInfo);
@@ -78,4 +80,30 @@ public class PfUserTrialController extends BaseController {
         return pageMap;
     }
 
+
+    @RequestMapping("pass")
+    public String pass(PfUserTrial pfUserTrial){
+        trialService.pass(pfUserTrial);
+        pfUserTrial = trialService.findById(pfUserTrial.getId());
+        SfUserRelation sfUserRelation =  trialService.findPidById(pfUserTrial.getUserId());
+
+        PfCorder pfCorder = new PfCorder();
+
+        pfCorder.setCreateTime(new Date());
+        pfCorder.setCreateMan(pfUserTrial.getId());
+        pfCorder.setOrderCode("00000");
+        pfCorder.setOrderType(0);
+        pfCorder.setUserId(pfUserTrial.getUserId());
+        pfCorder.setUserPid(sfUserRelation.getParentUserId());
+        pfCorder.setUserMassage("");
+        pfCorder.setSupplierId(0);
+        trialService.insert(pfCorder);
+
+        return "redirect:list.shtml";
+    }
+    @RequestMapping("reason")
+    public String reason(PfUserTrial pfUserTrial){
+        trialService.reason(pfUserTrial);
+        return "redirect:list.shtml";
+    }
 }

@@ -30,7 +30,11 @@
         var spuId =$("#spuId")[0].value;
         var skuId = $("#skuId")[0].value;
         var isPhone = checkPhone(phone);
-        if(!isPhone){
+        if (!checkNumber(wechat)){
+            alert("微信号格式不对");
+            return;
+        }
+        if(!checkNumber(phone)||!isPhone){
             alert("手机号格式不对");
             return;
         }
@@ -43,7 +47,9 @@
                     "phone" : phone,
                     "wechat" : wechat
                 },function(data) {
-
+                    if(data == "success"){
+                        window.location.href = "<%=path%>/corder/continueStroll"
+                    }
                 });
     }
 
@@ -58,7 +64,7 @@
         <div>
             <h2>${product.name}<span>x1</span></h2>
             <h3>规格：<span>默认</span></h3>
-            <p>零售价：<span>￥${product.shipAmount}</span></p>
+            <p>零售价：<span>￥${product.priceRetail}</span></p>
         </div>
     </section>
     <section class="sec3">

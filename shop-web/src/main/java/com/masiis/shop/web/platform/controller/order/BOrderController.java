@@ -8,10 +8,12 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -33,6 +35,8 @@ public class BOrderController extends BaseController {
     private SkuAgentService skuAgentService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private UserService userService;
 
     /**
      * 合伙人申请
@@ -84,13 +88,15 @@ public class BOrderController extends BaseController {
         StringBuffer sb = new StringBuffer();
         for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
             sb.append("<p>");
+            sb.append("<label>");
             for (ComAgentLevel comAgentLevel : comAgentLevels) {
                 if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
                     sb.append(comAgentLevel.getName());
                 }
             }
-            sb.append("<b>商品数量：</b> <span>" + pfSkuAgent.getQuantity() + "</span>");
-            sb.append("<b>金额：</b> <span>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+            sb.append("</label>");
+            sb.append("<b>商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
+            sb.append("<b>金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
             sb.append("<p>");
         }
         mv.addObject("skuName", comSku.getName());
@@ -108,13 +114,25 @@ public class BOrderController extends BaseController {
     @RequestMapping("/registerConfirm")
     public ModelAndView partnersRegisterConfirm(HttpServletRequest request,
                                                 HttpServletResponse response,
-                                                @RequestParam(value = "name", required = true) String name,
-                                                @RequestParam(value = "mobile", required = true) String mobile,
-                                                @RequestParam(value = "weixinId", required = true) String weixinId,
-                                                @RequestParam(value = "parentMobile", required = true) String parentMobile) {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("platform/order/zhuce2");
-        return mv;
+                                                @RequestParam(value = "name", required = false) String name,
+                                                @RequestParam(value = "mobile", required = false) String mobile,
+                                                @RequestParam(value = "weixinId", required = false) String weixinId,
+                                                @RequestParam(value = "parentMobile", required = false) String parentMobile,
+                                                @RequestParam(value = "skuName", required = false) String skuName,
+                                                @RequestParam(value = "levelName", required = false) String levelName,
+                                                @RequestParam(value = "amount", required = false) BigDecimal amount) {
+        ComUser comUser = userService.getUserByMobile(mobile);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("platform/order/zhuce2");
+        modelAndView.addObject("name", name);
+        modelAndView.addObject("mobile", mobile);
+        modelAndView.addObject("weixinId", weixinId);
+        modelAndView.addObject("parentMobile", parentMobile);
+        modelAndView.addObject("skuName", skuName);
+        modelAndView.addObject("levelName", levelName);
+        modelAndView.addObject("amount", amount);
+        modelAndView.addObject("pName",comUser.getRealName());
+        return modelAndView;
     }
 
     @ResponseBody

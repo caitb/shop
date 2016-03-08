@@ -68,13 +68,13 @@
             and id = #{comUserAddress.id}
         </if>
         <if test="comUserAddress.userId != null">
-            AND pid = #{comUserAddress.userId}
+            AND user_id = #{comUserAddress.userId}
         </if>
         <if test="comUserAddress.name != null">
-            AND pid = #{comUserAddress.name}
+            AND name = #{comUserAddress.name}
         </if>
         <if test="comUserAddress.zip != null">
-            AND pid = #{comUserAddress.zip}
+            AND zip = #{comUserAddress.zip}
         </if>
     </select>
 

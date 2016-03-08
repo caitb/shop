@@ -29,7 +29,7 @@
         <p>3.支付订单</p>
     </div>
     <p class="xuanze">
-        选择商品：<span>抗引力—快速瘦脸精华</span>
+        选择商品：<span>${skuName}</span>
     </p>
     <main>
         <section class="sec1">
@@ -37,21 +37,21 @@
                 <p>申请人信息　<b style="color:#999999">您可以凭手机号登录麦链商城</b></p>
             </div>
             <div>
-                <p>姓名： <input type="text" placeholder=""></p>
+                <p>姓名： <input id="name" name="name" type="text" placeholder=""></p>
             </div>
 
             <div>
-                <p>手机号： <input type="text"></p>
+                <p>手机号： <input id="mobile" name="mobile" type="text"></p>
             </div>
             <div>
                 <p>验证码： <input type="text"><span>获取验证码</span></p>
             </div>
 
             <div>
-                <p>微信号：<input type="text"></p>
+                <p>微信号：<input id="weixinId" name="weixinId" type="text"></p>
             </div>
             <div>
-                <p>上级合伙人电话： <input type="text"></p>
+                <p>上级合伙人电话： <input id="parentMobile" name="parentMobile" type="text"></p>
             </div>
         </section>
         <section class="sec2">
@@ -65,7 +65,7 @@
             </p>
         </section>
         <section class="sec4">
-            <a href="<%=path%>/border/registerConfirm">下一步</a>
+            <a href="javascript:;" onclick="submit()"> 下一步</a>
         </section>
     </main>
 
@@ -79,6 +79,27 @@
     var myScroll = new IScroll("body", {
         preventDefault: false
     })
+
+    var submit = function () {
+        var paraData = {};
+        paraData.name = $("#name").val();
+        paraData.mobile = $("#mobile").val();
+        paraData.weixinId = $("#weixinId").val();
+        paraData.parentMobile = $("#parentMobile").val();
+        paraData.levelName = $(".sec2 .on label").html();
+        paraData.amount = $(".sec2 .on [name='amount']").html();
+        if (paraData.levelName == null || paraData.amount == null) {
+            alert("NNN");
+            return;
+        }
+        window.location.href = "<%=basePath%>border/registerConfirm?name='" + paraData.name
+        + "&mobile=" + paraData.mobile
+        + "&weixinId=" + paraData.weixinId
+        + "&parentMobile=" + paraData.parentMobile
+        + "&skuName=${skuName}"
+        + "&levelName=" + paraData.levelName
+        + "&amount=" + paraData.amount;
+    }
 </script>
 
 </body>

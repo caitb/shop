@@ -58,11 +58,15 @@
     </select>
 
     <!-- 添加一条记录 -->
-    <insert id="insert">
-        INSERT INTO pf_user_trial
-        (create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark)
-        VALUES
-        (create_time = #{pfUserTrial.createTime}, user_id = #{pfUserTrial.userId}, spu_id = #{pfUserTrial.spuId}, sku_id = #{pfUserTrial.skuId}, status = #{pfUserTrial.status}, reason = #{pfUserTrial.reason}, name = #{pfUserTrial.name}, mobile = #{pfUserTrial.mobile}, weixin_id = #{pfUserTrial.weixinId}, remark = #{pfUserTrial.remark})
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
+        insert into pf_user_trial (id, create_time, user_id,
+            spu_id, sku_id, status,
+            reason, name, mobile,
+            weixin_id, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT},
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+            #{reason,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+            #{weixinId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <!-- 根据id更新一条记录 -->

@@ -29,11 +29,11 @@ public class PfUserTrial {
     /**
      * spu主键id
      */
-    private Long spuId;
+    private Integer spuId;
     /**
      * sku主键id
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 状态(0未处理1通过2拒绝)
      */
@@ -83,19 +83,19 @@ public class PfUserTrial {
         this.userId = userId;
     }
 
-    public Long getSpuId() {
+    public Integer getSpuId() {
         return spuId;
     }
 
-    public void setSpuId(Long spuId) {
+    public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
 
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 

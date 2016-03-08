@@ -16,12 +16,27 @@ import java.util.Date;
  * @author masiis
  * @version 1.0 2016-03-03
  */
-public class ComSpu extends ComSpuKey {
+public class ComSpu {
+
+    /**
+     * 主键id
+     */
+    private Integer id;
+
+    /**
+     * 名字
+     */
+    private String name;
 
     /**
      * 品牌id
      */
     private Integer brandId;
+
+    private Date createTime;
+
+    private Long createMan;
+
     /**
      * 最后一次上架时间
      */
@@ -38,10 +53,22 @@ public class ComSpu extends ComSpuKey {
      * 修改人
      */
     private Long modifyMan;
+
+    private Integer categoryId;
+
+    private String categoryName;
+
+    private Integer status;
+
     /**
      * 广告语
      */
     private String slogan;
+
+    private Integer isSale;
+
+    private Integer isDelete;
+
     /**
      * 可试用标志位(0否1是)
      */
@@ -82,12 +109,44 @@ public class ComSpu extends ComSpuKey {
      */
     private String artNo;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getBrandId() {
         return brandId;
     }
 
     public void setBrandId(Integer brandId) {
         this.brandId = brandId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getCreateMan() {
+        return createMan;
+    }
+
+    public void setCreateMan(Long createMan) {
+        this.createMan = createMan;
     }
 
     public Date getUpTime() {
@@ -122,12 +181,52 @@ public class ComSpu extends ComSpuKey {
         this.modifyMan = modifyMan;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getSlogan() {
         return slogan;
     }
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;
+    }
+
+    public Integer getIsSale() {
+        return isSale;
+    }
+
+    public void setIsSale(Integer isSale) {
+        this.isSale = isSale;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public Integer getIsTrial() {
@@ -205,12 +304,21 @@ public class ComSpu extends ComSpuKey {
     @Override
     public String toString() {
         return "ComSpu{" +
-                "brandId=" + brandId +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", brandId=" + brandId +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
                 ", upTime=" + upTime +
                 ", downTime=" + downTime +
                 ", modifyTime=" + modifyTime +
                 ", modifyMan=" + modifyMan +
+                ", categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", status=" + status +
                 ", slogan='" + slogan + '\'' +
+                ", isSale=" + isSale +
+                ", isDelete=" + isDelete +
                 ", isTrial=" + isTrial +
                 ", content='" + content + '\'' +
                 ", weight=" + weight +

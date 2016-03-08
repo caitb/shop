@@ -27,7 +27,7 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping("/index")
-    public String toIndex(HttpServletRequest request, HttpServletResponse response) {
+    public String toIndex(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ComUser comUser = userService.getUserById(1l);
         if (comUser != null) {
             request.getSession().setAttribute("comUser", comUser);

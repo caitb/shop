@@ -83,18 +83,18 @@ public class COrderController extends BaseController {
     public String trialApply(
             HttpServletRequest request,
             HttpServletResponse response,
-            @RequestParam(value = "skuId", required = true) Long skuId,
-            @RequestParam(value = "spuId", required = true) Long spuId,
+            @RequestParam(value = "skuId", required = true) Integer skuId,
+            @RequestParam(value = "spuId", required = true) Integer spuId,
             @RequestParam(value = "applyReason", required = false) String applyReason,
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "phone", required = true) String phone,
             @RequestParam(value = "wechat", required = true) String wechat
     ) {
         if (StringUtils.isEmpty(skuId)){
-            skuId = 111L;
+            skuId = 111;
         }
         if (StringUtils.isEmpty(spuId)){
-            spuId = 222L;
+            spuId = 222;
         }
         if (StringUtils.isEmpty(name)){
 

@@ -45,4 +45,5 @@ public interface PfUserTrialMapper {
 
     void reason(@Param("pfUserTrial") PfUserTrial pfUserTrial);
 
+    String selectReasonById(Long id);
 }

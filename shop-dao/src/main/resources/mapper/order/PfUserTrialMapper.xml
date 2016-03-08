@@ -25,6 +25,14 @@
         WHERE
                id = #{id}
     </select>
+    <select id="selectReasonById" resultType="String">
+        SELECT
+               reason
+        FROM
+               pf_user_trial
+        WHERE
+               id = #{id}
+    </select>
 
     <!-- 根据条件查询记录 -->
     <select id="selectByCondition" resultMap="BaseResultMap">

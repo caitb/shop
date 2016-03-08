@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.ProductSimple;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -11,6 +12,7 @@ import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,8 @@ public class BOrderController extends BaseController {
     private UserService userService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private UserSkuService userSkuService;
 
     /**
      * 合伙人申请
@@ -226,35 +230,68 @@ public class BOrderController extends BaseController {
     @RequestMapping("/registerConfirm/save.do")
     public String partnersRegisterConfirmDo(HttpServletRequest request,
                                             HttpServletResponse response,
+                                            @RequestParam(value = "realName", required = true) String realName,
+                                            @RequestParam(value = "mobile", required = true) String mobile,
+                                            @RequestParam(value = "weixinId", required = true) String weixinId,
                                             @RequestParam(value = "skuId", required = true) Integer skuId,
-                                            @RequestParam(value = "levelId", required = true) Integer levelId
-    ) {
+                                            @RequestParam(value = "levelId", required = true) Integer levelId,
+                                            @RequestParam(value = "parentUserId", required = true) Long parentUserId,
+                                            @RequestParam(value = "userMassage", required = true) String userMassage) throws Exception {
+        //处理用户数据
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        comUser.setRealName(realName);
+        comUser.setMobile(mobile);
+        comUser.setWxId(weixinId);
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
         ComSku comSku = skuService.getSkuById(skuId);
         //折扣后单价
         BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
         //折扣后总价
-        BigDecimal totalPrice=unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
+        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
+        //处理订单数据
         PfBorder order = new PfBorder();
         order.setCreateTime(new Date());
         order.setCreateMan(comUser.getId());
         order.setOrderCode("");
         order.setUserId(comUser.getId());
-        //order.setUserPid("");
-
-        order.setPayAmount(new BigDecimal(0));
-        order.setPayStatus(0);
-        order.setIsReceipt(0);
-        order.setIsReplace(0);
-        order.setIsShip(0);
+        order.setUserPid(parentUserId);
+        order.setUserMassage(userMassage);
+        order.setSupplierId(0);
+        order.setReceivableAmount(totalPrice);
         order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
-
+        order.setProductAmount(totalPrice);
+        order.setShipAmount(new BigDecimal(0));
+        order.setPayAmount(new BigDecimal(0));
         order.setOrderStatus(0);
-        //order.set
-
+        order.setShipStatus(0);
+        order.setPayStatus(0);
+        order.setIsShip(0);
+        order.setIsReplace(0);
+        order.setIsReceipt(0);
+        //处理订单商品数据
         List<PfBorderItem> orderItems = new ArrayList<>();
+        PfBorderItem pfBorderItem = new PfBorderItem();
+        pfBorderItem.setCreateTime(new Date());
+        pfBorderItem.setSpuId(comSku.getSpuId());
+        pfBorderItem.setSkuId(comSku.getId());
+        pfBorderItem.setSkuName(comSku.getName());
+        pfBorderItem.setQuantity(pfSkuAgent.getQuantity());
+        pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
+        pfBorderItem.setUnitPrice(unitPrice);
+        pfBorderItem.setTotalPrice(totalPrice);
+        pfBorderItem.setIsComment(0);
+        pfBorderItem.setIsReturn(0);
+        orderItems.add(pfBorderItem);
+        //处理用户sku关系数据
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(parentUserId, comSku.getId());//获取上级代理ID
         PfUserSku userSku = new PfUserSku();
+        userSku.setCreateTime(new Date());
+        userSku.setPid(pfUserSku.getId());
+        userSku.setUserId(comUser.getId());
+        userSku.setSkuId(comSku.getId());
+        userSku.setAgentLevelId(levelId);
+        userSku.setIsPay(0);
+        userSku.setIsCertificate(0);
         bOrderService.AddBOrder(order, orderItems, userSku, comUser);
         JSONObject obj = new JSONObject();
         obj.put("isError", false);

@@ -34,7 +34,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public ComUser getUserById(Long userId) {
+    public ComUser getUserById(Long userId) throws Exception{
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         return comUser;
     }
@@ -44,7 +44,7 @@ public class UserService {
      *
      * @param comUserAddress
      */
-    public void addComUserAddress(ComUserAddress comUserAddress) {
+    public void addComUserAddress(ComUserAddress comUserAddress) throws Exception{
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }
@@ -56,7 +56,7 @@ public class UserService {
      *
      * @param comUserAddress
      */
-    public void updateComUserAddress(ComUserAddress comUserAddress) {
+    public void updateComUserAddress(ComUserAddress comUserAddress) throws Exception{
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }

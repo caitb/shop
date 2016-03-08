@@ -7,6 +7,7 @@
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
         <result column="order_type" property="orderType" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="user_pid" property="userPid" jdbcType="BIGINT" />
         <result column="user_massage" property="userMassage" jdbcType="VARCHAR" />
@@ -46,6 +47,7 @@
                 create_man,
                 order_code,
                 order_type,
+                sku_id,
                 user_id,
                 user_pid,
                 user_massage,
@@ -77,6 +79,7 @@
                 #{pfCorder.createMan},
                 #{pfCorder.orderCode,jdbcType=VARCHAR},
                 #{pfCorder.orderType,jdbcType=INTEGER},
+                #{pfCorder.skuId,jdbcType=INTEGER},
                 #{pfCorder.userId,jdbcType=BIGINT},
                 #{pfCorder.userPid,jdbcType=BIGINT},
                 #{pfCorder.userMassage,jdbcType=VARCHAR},

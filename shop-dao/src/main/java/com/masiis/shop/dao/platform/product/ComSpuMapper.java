@@ -14,7 +14,7 @@ public interface ComSpuMapper {
      * @param id
      * @return
      */
-    ComSpu selectById(Long id);
+    ComSpu selectById(Integer id);
 
     /**
      * 根据条件查询记录
@@ -27,7 +27,7 @@ public interface ComSpuMapper {
      * 添加一条记录
      * @param comSpu
      */
-    Long insert(ComSpu comSpu);
+    Integer insert(ComSpu comSpu);
 
     /**
      * 根据id更新一条记录

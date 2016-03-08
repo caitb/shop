@@ -2,16 +2,20 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.util.CCPRestSmsSDK;
+import com.masiis.shop.common.util.KeysUtil;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.platform.service.system.IndexShowService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Random;
 
@@ -22,6 +26,9 @@ import java.util.Random;
 @Controller
 @RequestMapping("/binding")
 public class BindingController {
+
+    @Resource
+    private UserService userService;
 
    /**
     * 跳转到绑定界面
@@ -91,4 +98,26 @@ public class BindingController {
         }
         return result.toString();
     }
+    /**
+     * 绑定用户信息
+     * @author muchaofeng
+     * @date 2016/3/8 11:28
+     */
+    @RequestMapping("bindingComUse.html")
+    public ModelAndView BindingComUse(HttpServletRequest request,String phone,String password)throws  Exception{
+        HttpSession session = request.getSession();
+        //获取用户信息
+//        ComUser comUser1=new ComUser();
+//        comUser1.setRealName("王平");
+//        session.setAttribute("comUser",comUser1);
+        ComUser comUser =(ComUser)session.getAttribute("comUser");
+        comUser.setMobile(phone);
+        comUser.setPassword(KeysUtil.md5Encrypt(password));
+        userService.updateComUser(comUser);
+        session.setAttribute("comUser",comUser);
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("platform/system/bangdingchenggong");
+        return mav;
+    }
 }
+

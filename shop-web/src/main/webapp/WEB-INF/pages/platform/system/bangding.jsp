@@ -19,22 +19,41 @@
     <script src="<%=path%>/static/js/checkUtil.js"></script>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript">
+        var s = 60, t;
+        function times(){
+            s--;
+            $("#codeId").val("剩余" + s + "s");
+            t = setTimeout(function (){times();}, 1000);
+            if ( s <= 0 ){
+                s = 60;
+                $("#codeId").prop("disabled", false);
+                $("#codeId").val("获取验证码");
+                clearTimeout(t);
+            }
+        }
+
+
+        var phone;
+        var $value;
+        var password;
+        var isPassword;
+        var isPhone;
         $(function(){
-            var isPassword;
             $("#phoneId").blur(function(){
-                var phone= $("#phoneId").val();
-                var isPhone= checkPhone(phone);
+                Iphone= $("#phoneId").val();
+                isPhone= checkPhone(Iphone);
+//                alert(isPhone);
                 if(!isPhone){
                     alert("手机号格式不对");
                     return;
                 }
             });
-
             $("#codeId").click(function(){
-                alert($("#phoneId").val());
+                times();
+//                alert($("#phoneId").val());
                 $.ajax({
                     type:"POST",
-                    url : "<%=path%>/binding/securityCode",
+                    url : "<%=path%>/binding/securityCode.do",
                     data:"phone="+$("#phoneId").val(),
                     dataType:"Json",
                     success:function(result){
@@ -45,8 +64,7 @@
             });
 
             $("#codeValueId").blur(function(){
-//                alert("sdfsdfsfs");
-                var $value= $("#codeValueId").val();
+                $value= $("#codeValueId").val();
                 if($value==null || $value==""){
                     alert("验证码不能为空");
                     return;
@@ -57,27 +75,50 @@
                     data:"verificationCode="+$("#codeValueId").val(),
                     dataType:"Json",
                     success:function(result){
-//                        alert("123456");
                         alert(result.msg);
                     }
                 });
             });
 
             $("#passwordId").blur(function(){
-                var password = $("#passwordId").val();
+                password = $("#passwordId").val();
                 isPassword= isWordAndNum(password);
-                //alert(password);
                 if(isPassword){
-                    alert("密码只支持数字或字母");
-                    //return;
-                }else{
-                    alert("密码设置成功");
+                   alert("密码只能包含数字字母");
+                    return;
+                }else if(password==null || password==""){
+                    alert("密码不能为空");
+                    return;
                 }
             });
-            if(isPassword){
-                alert("gdfgdfgd");
-                return;
-            }
+            $(".bd").click(function(){
+                password = $("#passwordId").val();
+                phone= $("#phoneId").val();
+                isPhone= checkPhone(phone);
+                isPassword= isWordAndNum(password);
+                if(isPhone == isPassword){
+                    alert("请重新输入");
+                    return;
+                }else if(password==null || password==""){
+                    alert("密码不能为空");
+                    return;
+                }else{
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/binding/verificationCode.do",
+                        data:"verificationCode="+$("#codeValueId").val(),
+                        dataType:"Json",
+                        success:function(result){
+                            location.href="<%=path%>/binding/bindingComUse.html";
+                        },
+                        error:function(result){
+                            alert("验证码输入有误");
+                        }
+                    });
+                }
+
+            });
+
         });
     </script>
 </head>
@@ -111,7 +152,7 @@
             <input type="checkbox" id="fu" checked>
                 <label for="fu">同意《代理商注册协议》</label>
         </p>
-        <a href="bangdingchenggong.html" class="bd">绑定帐号</a>
+        <a href="javascript:;" class="bd">绑定帐号</a>
     </div>
 </body>
 </html>

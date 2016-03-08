@@ -50,7 +50,7 @@
                     </p>
                     <div>
                         <h2>抗引力——快速瘦脸精华</h2>
-                        <h3>规格：<span>默认</span></h3>
+                        <h3></h3>
                         <p><span>￥298</span><b style="float:right; margin-right:10px;font-size:12px;">x1</b></p>
                     </div>
                 </section>

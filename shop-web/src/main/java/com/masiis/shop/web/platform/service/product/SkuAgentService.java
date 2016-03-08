@@ -39,4 +39,13 @@ public class SkuAgentService {
     public List<ComAgentLevel> getComAgentLevel() {
         return comAgentLevelMapper.selectAll();
     }
+
+    /**
+     * 根据sku和代理等级获取sku代理数据
+     * @author ZhaoLiang
+     * @date 2016/3/8 14:26
+     */
+    public PfSkuAgent getBySkuIdAndLevelId(Integer skuId, Integer levelId) {
+        return pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
+    }
 }

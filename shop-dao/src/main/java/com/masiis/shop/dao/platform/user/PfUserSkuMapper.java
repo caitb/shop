@@ -20,4 +20,6 @@ public interface PfUserSkuMapper {
     List<PfUserSku> selectAll();
 
     int updateByPrimaryKey(PfUserSku record);
+
+    PfUserSku selectByUserIdAndSkuId(Long userId,Integer skuId);
 }

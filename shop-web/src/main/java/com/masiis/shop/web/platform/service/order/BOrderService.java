@@ -45,33 +45,31 @@ public class BOrderService {
      * @param pfBorder
      * @param pfBorderItems
      */
-    public void AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) {
-        try {
-            if (pfBorder == null) {
-                throw new BusinessException("pfBorder为空");
-            }
-            if (pfUserSku == null) {
-                throw new BusinessException("pfUserSku为空");
-            }
-            if (pfBorderItems == null || pfBorderItems.size() == 0) {
-                throw new BusinessException("pfBorderItems为空");
-            }
-            if (comUser == null) {
-                throw new BusinessException("comUser为空");
-            }
-            //添加订单
-            pfBorderMapper.insert(pfBorder);
-            //添加订单商品
-            for (PfBorderItem pfBorderItem : pfBorderItems) {
-                pfBorderItem.setPfBorderId(pfBorder.getId());
-                borderItemMapper.insert(pfBorderItem);
-            }
-            //添加用户代理商品关系
-            pfUserSkuMapper.insert(pfUserSku);
-            //完善用户信息
-            comUserMapper.updateByPrimaryKey(comUser);
-        } catch (Exception e) {
+    public void AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
+        if (pfBorder == null) {
+            throw new BusinessException("pfBorder为空");
         }
+        if (pfUserSku == null) {
+            throw new BusinessException("pfUserSku为空");
+        }
+        if (pfBorderItems == null || pfBorderItems.size() == 0) {
+            throw new BusinessException("pfBorderItems为空");
+        }
+        if (comUser == null) {
+            throw new BusinessException("comUser为空");
+        }
+        //添加订单
+        pfBorderMapper.insert(pfBorder);
+        //添加订单商品
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            pfBorderItem.setPfBorderId(pfBorder.getId());
+            borderItemMapper.insert(pfBorderItem);
+        }
+        pfUserSku.setPfCorderId(pfBorder.getId());
+        //添加用户代理商品关系
+        pfUserSkuMapper.insert(pfUserSku);
+        //完善用户信息
+        comUserMapper.updateByPrimaryKey(comUser);
     }
 
     /**

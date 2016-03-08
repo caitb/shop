@@ -70,7 +70,7 @@
     </insert>
 
     <!-- 根据id更新一条记录 -->
-    <update id="updateById">
+    <!--<update id="updateById">
         UPDATE pf_user_trial
         SET
                create_time = #{pfUserTrial.createTime},
@@ -83,6 +83,21 @@
                mobile = #{pfUserTrial.mobile},
                weixin_id = #{pfUserTrial.weixinId},
                remark = #{pfUserTrial.remark}
+        WHERE
+               id = #{pfUserTrial.id}
+    </update>-->
+    <update id="updateById">
+        UPDATE pf_user_trial
+        SET
+               status = 1
+        WHERE
+               id = #{pfUserTrial.id}
+    </update>
+    <update id="reason">
+        UPDATE pf_user_trial
+        SET
+              status = 2,
+              remark = #{pfUserTrial.remark}
         WHERE
                id = #{pfUserTrial.id}
     </update>

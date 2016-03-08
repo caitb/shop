@@ -86,19 +86,38 @@
         paraData.mobile = $("#mobile").val();
         paraData.weixinId = $("#weixinId").val();
         paraData.parentMobile = $("#parentMobile").val();
+        paraData.skuId = "${skuId}";
+        paraData.skuName = "${skuName}";
+        paraData.levelId = $(".sec2 .on label").attr("levelId");
         paraData.levelName = $(".sec2 .on label").html();
         paraData.amount = $(".sec2 .on [name='amount']").html();
         if (paraData.levelName == null || paraData.amount == null) {
-            alert("NNN");
+            alert("请选择合伙人等级");
             return;
         }
-        window.location.href = "<%=basePath%>border/registerConfirm?name='" + paraData.name
-        + "&mobile=" + paraData.mobile
-        + "&weixinId=" + paraData.weixinId
-        + "&parentMobile=" + paraData.parentMobile
-        + "&skuName=${skuName}"
-        + "&levelName=" + paraData.levelName
-        + "&amount=" + paraData.amount;
+        $.ajax({
+            url: "<%=basePath%>border/registerConfirm/check.do",
+            type: "POST",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data && data.isError == false) {
+                    var param = "?";
+                    param += "name=" + paraData.name;
+                    param += "&mobile=" + paraData.mobile;
+                    param += "&weixinId=" + paraData.weixinId;
+                    param += "&parentMobile=" + paraData.parentMobile;
+                    param += "&skuId=" + paraData.skuId;
+                    param += "&skuName=" + paraData.skuName;
+                    param += "&levelId=" + paraData.levelId;
+                    param += "&levelName=" + paraData.levelName;
+                    param += "&amount=" + paraData.amount;
+                    window.location.href = "<%=basePath%>border/registerConfirm.shtml" + param;
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
     }
 </script>
 

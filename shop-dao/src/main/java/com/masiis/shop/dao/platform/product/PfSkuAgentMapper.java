@@ -22,4 +22,6 @@ public interface PfSkuAgentMapper {
     int updateByPrimaryKey(PfSkuAgent record);
 
     List<PfSkuAgent> selectAllBySkuId(Integer skuId);
+
+    PfSkuAgent selectBySkuIdAndLevelId(Integer skuId,Integer levelId);
 }

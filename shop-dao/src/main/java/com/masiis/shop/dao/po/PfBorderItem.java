@@ -3,19 +3,13 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-08 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * 平台代理订单商品子表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class PfBorderItem {
 
     private Long id;
@@ -44,7 +38,11 @@ public class PfBorderItem {
      */
     private Integer quantity;
     /**
-     * 单价
+     * 销售价格
+     */
+    private BigDecimal originalPrice;
+    /**
+     * 购买价格
      */
     private BigDecimal unitPrice;
     /**
@@ -102,6 +100,12 @@ public class PfBorderItem {
     }
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+    public BigDecimal getOriginalPrice() {
+        return originalPrice;
+    }
+    public void setOriginalPrice(BigDecimal originalPrice) {
+        this.originalPrice = originalPrice;
     }
     public BigDecimal getUnitPrice() {
         return unitPrice;

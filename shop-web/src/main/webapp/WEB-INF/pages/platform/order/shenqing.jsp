@@ -78,7 +78,7 @@
         </div>
     </section>
     <section class="sec2">
-        <p><a href="<%=path%>/border/register?skuId=${skuId}">继续</a></p>
+        <p><a href="<%=path%>/border/register.shtml?skuId=${skuId}">继续</a></p>
     </section>
 </main>
 </body>

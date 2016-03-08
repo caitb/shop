@@ -51,4 +51,10 @@
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
+    <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
+        select id, sku_id, agent_level_id, discount, quantity, remark
+        from pf_sku_agent
+        where sku_id = #{sku_id,jdbcType=INTEGER}
+        and agent_level_id =#{agentLevelId,jdbcType=INTEGER}
+    </select>
 </mapper>

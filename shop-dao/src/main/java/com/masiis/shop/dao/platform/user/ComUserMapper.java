@@ -40,9 +40,15 @@ public interface ComUserMapper {
     int updateByPrimaryKey(ComUser record);
 
     /**
-     * 根据手机号查找用户
+     * 通过手机号获取用户
      * @param mobile
      * @return
      */
     ComUser selectByMobile(String mobile);
+
+    /**
+     * @param userId
+     * @return
+     */
+    String findByParentId(Long userId);
 }

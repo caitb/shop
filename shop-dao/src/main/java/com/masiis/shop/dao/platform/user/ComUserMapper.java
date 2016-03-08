@@ -38,4 +38,6 @@ public interface ComUserMapper {
      * @return
      */
     int updateByPrimaryKey(ComUser record);
+
+    String findByParentId(Long userId);
 }

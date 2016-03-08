@@ -43,4 +43,6 @@ public interface PfUserTrialMapper {
      */
     void deleteById(@Param("id")Long id);
 
+    void reason(@Param("pfUserTrial") PfUserTrial pfUserTrial);
+
 }

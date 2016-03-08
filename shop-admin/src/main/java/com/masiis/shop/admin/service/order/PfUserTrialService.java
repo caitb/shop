@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by 49134 on 2016/3/3.
  */
 @Service
-
+@Transactional
 public class PfUserTrialService {
 
     @Resource

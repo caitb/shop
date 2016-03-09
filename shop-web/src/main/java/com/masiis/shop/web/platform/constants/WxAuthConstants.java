@@ -11,11 +11,11 @@ public class WxAuthConstants {
     /**
      * appid
      */
-    public static final String APPID = "wx7c874d5a102dccef";
+    public static final String APPID = "wxd5afa1deb29c6197"; //麦士集团appid"wx7c874d5a102dccef";
     /**
      * appsecret
      */
-    public static final String APPSECRET = "67f21b9a5df948c9dbf203393d8fb1a1";
+    public static final String APPSECRET = "d0c6c73cbc769450a554a2623d2c45ea"; //麦士集团appsecret"67f21b9a5df948c9dbf203393d8fb1a1";
     /**
      * 获取accesstoken链接
      */
@@ -54,4 +54,12 @@ public class WxAuthConstants {
     public static final String GRANT_TYPE_RFTOKEN = "refresh_token";
 
     public static final String GRANT_TYPE_ACCESSTOKEN = "authorization_code";
+
+    /*===============================================================================================================*/
+    /**
+     * 微信支付签名密钥
+     */
+    public static final String WX_PAY_SIGN_KEY = "U0SJD1OR4WLA5J8QM9IZAJT5KC4ZLS7D";
+
+    public static final String WX_PAY_MCHID = "1319531601";
 }

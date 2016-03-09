@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.beans;
+package com.masiis.shop.web.platform.beans.wxauth;
 
 /**
  * Created by lzh on 2016/2/29.

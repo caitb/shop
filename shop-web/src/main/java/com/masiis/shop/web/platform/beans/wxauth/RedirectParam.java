@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.beans;
+package com.masiis.shop.web.platform.beans.wxauth;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

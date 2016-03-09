@@ -3,6 +3,8 @@ package com.masiis.shop.web.platform.controller.order;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
@@ -19,6 +21,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -78,7 +82,7 @@ public class COrderController extends BaseController {
      * @author  hanzengzhi
      * @date  2016/3/5 13:46
      */
-    @RequestMapping("/trialApply.json")
+    @RequestMapping("/trialApply.do")
     @ResponseBody
     public String trialApply(
             HttpServletRequest request,
@@ -145,6 +149,38 @@ public class COrderController extends BaseController {
         pfUserTrial.setCreateTime(new Date());
         cOrderService.trialApplyService(comUser,pfUserTrial);
         return "success";
+    }
+
+    /**
+     * 确认订单
+     * @author  hanzengzhi
+     * @date  2016/3/8 10:16
+     */
+    @RequestMapping("/confirmOrder.do")
+    public String confirmOrder(HttpServletRequest request,
+                                HttpServletResponse response,
+                                @RequestParam(value = "orderId", required = false) Long orderId,
+                                Model model){
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        Long userId = null;
+        if (comUser!=null){
+            userId = comUser.getId();
+        }else{
+            userId = 1L;
+        }
+        if (orderId==null){
+            orderId = 1L;
+        }
+        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId);
+        List<ComUserAddress> comuserAddressList = (List<ComUserAddress>)pfCorderMap.get("address");
+        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");
+        if (comuserAddressList!=null&&comuserAddressList.size()>0){
+            model.addAttribute("comUserAddress",comuserAddressList.get(0));
+        }
+        if (pfCorders!=null&&pfCorders.size()>0){
+            model.addAttribute("pfCorder",pfCorders.get(0));
+        }
+        return null;
     }
 
 }

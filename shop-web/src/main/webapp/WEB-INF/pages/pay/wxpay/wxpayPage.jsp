@@ -15,12 +15,12 @@
             WeixinJSBridge.invoke(
                     'getBrandWCPayRequest',
                     {
-                        "appId":"wx2421b1c4370ec43b",     //公众号名称，由商户传入
-                        "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数
-                        "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串
-                        "package":"prepay_id=u802345jgfjsdfgsdg888",
+                        "appId":"wxd5afa1deb29c6197",     //公众号名称，由商户传入
+                        "timeStamp":"1457513229909",         //时间戳，自1970年以来的秒数
+                        "nonceStr":"sddfs22dsdf5ssdfa53wq3", //随机串
+                        "package":"prepay_id=wx2016030916391321529474ea0694275688",
                         "signType":"MD5",         //微信签名方式：
-                        "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+                        "paySign":"71BAB9387931ADEB2859BE2D9B66C6A6" //微信签名
                     },
                     function(res){
                         alert(res);
@@ -34,16 +34,20 @@
                     }
             );
         }
-        if (typeof WeixinJSBridge == "undefined"){
-            if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-            }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        function pay() {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            } else {
+                onBridgeReady();
             }
-        }else{
-            onBridgeReady();
         }
+
+        pay();
     </script>
 </head>
 <body>

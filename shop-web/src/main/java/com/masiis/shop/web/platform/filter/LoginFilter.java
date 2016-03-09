@@ -26,7 +26,6 @@ public class LoginFilter implements Filter{
         HttpSession session = request.getSession();
 
         String uri = request.getRequestURI();
-        System.out.println("uri:" + uri);
 
         // 开发阶段可以先跳过
         chain.doFilter(request, response);

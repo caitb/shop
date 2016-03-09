@@ -24,7 +24,6 @@
 <div class="kang">
     <a href="../html/xiangqing.html">
         <p class="photo">
-
             <img src="${skuImg}">
         </p>
         <div>

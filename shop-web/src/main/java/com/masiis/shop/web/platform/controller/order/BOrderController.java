@@ -68,16 +68,20 @@ public class BOrderController extends BaseController {
     @RequestMapping("/apply.shtml")
     public ModelAndView partnersApply(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "skuId", required = false) Integer skuId) throws Exception {
-        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+                                      @RequestParam(value = "skuId", required = false) Integer skuId) {
         ModelAndView mv = new ModelAndView();
-        skuId = 1;
-        ProductSimple productSimple = productService.getSkuSimple(skuId);
-        mv.addObject("skuId", skuId);
-        mv.addObject("skuName", productSimple.getSkuName());
-        mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
-        mv.addObject("slogan", productSimple.getSlogan());
-        mv.setViewName("platform/order/shenqing");
+        try {
+            skuId = 22;
+            String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+            ProductSimple productSimple = productService.getSkuSimple(skuId);
+            mv.addObject("skuId", skuId);
+            mv.addObject("skuName", productSimple.getSkuName());
+            mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
+            mv.addObject("slogan", productSimple.getSlogan());
+            mv.setViewName("platform/order/shenqing");
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
         return mv;
     }
 
@@ -91,39 +95,42 @@ public class BOrderController extends BaseController {
     public ModelAndView partnersRegister(HttpServletRequest request,
                                          HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
-                                         @RequestParam(value = "parentUserId", required = false) Long parentUserId) throws Exception {
+                                         @RequestParam(value = "parentUserId", required = false) Long parentUserId) {
         ModelAndView mv = new ModelAndView();
-        skuId = 1;
-        //获取商品信息
-        ComSku comSku = skuService.getSkuById(skuId);
-        //获取商品代理信息
-        List<PfSkuAgent> pfSkuAgents = null;
-        if (parentUserId == null) {
-            pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
-        } else {
-            //do
-            pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
-        }
-        //获取代理信息
-        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
-        StringBuffer sb = new StringBuffer();
-        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-            sb.append("<p>");
-            sb.append("<label levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-            for (ComAgentLevel comAgentLevel : comAgentLevels) {
-                if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
-                    sb.append(comAgentLevel.getName());
-                }
+        try {
+            //获取商品信息
+            ComSku comSku = skuService.getSkuById(skuId);
+            //获取商品代理信息
+            List<PfSkuAgent> pfSkuAgents = null;
+            if (parentUserId == null) {
+                pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+            } else {
+                //do
+                pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
             }
-            sb.append("</label>");
-            sb.append("<b>商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
-            sb.append("<b>金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
-            sb.append("<p>");
+            //获取代理信息
+            List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
+            StringBuffer sb = new StringBuffer();
+            for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+                sb.append("<p>");
+                sb.append("<label levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
+                for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                    if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                        sb.append(comAgentLevel.getName());
+                    }
+                }
+                sb.append("</label>");
+                sb.append("<b>商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
+                sb.append("<b>  金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                sb.append("<p>");
+            }
+            mv.addObject("skuId", comSku.getId());
+            mv.addObject("skuName", comSku.getName());
+            mv.addObject("agentInfo", sb.toString());
+            mv.setViewName("platform/order/zhuce");
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
         }
-        mv.addObject("skuId", comSku.getId());
-        mv.addObject("skuName", comSku.getName());
-        mv.addObject("agentInfo", sb.toString());
-        mv.setViewName("platform/order/zhuce");
         return mv;
     }
 
@@ -212,22 +219,22 @@ public class BOrderController extends BaseController {
                                                 @RequestParam(value = "levelName", required = true) String levelName,
                                                 @RequestParam(value = "amount", required = true) BigDecimal amount) {
         ComUser comUser = userService.getUserByMobile(parentMobile);
-        if (comUser == null) {
-            throw new BusinessException("");
-        }
+//        if (comUser == null) {
+//            throw new BusinessException("");
+//        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/zhuce2");
         modelAndView.addObject("name", name);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("weixinId", weixinId);
-        modelAndView.addObject("parentUserId", comUser.getId());
+        modelAndView.addObject("parentUserId", 0);
         modelAndView.addObject("parentMobile", parentMobile);
         modelAndView.addObject("skuId", skuId);
         modelAndView.addObject("skuName", skuName);
         modelAndView.addObject("levelId", levelId);
         modelAndView.addObject("levelName", levelName);
         modelAndView.addObject("amount", amount);
-        modelAndView.addObject("pName", comUser.getRealName());
+        modelAndView.addObject("pName", "赵先生");
         return modelAndView;
     }
 
@@ -309,17 +316,16 @@ public class BOrderController extends BaseController {
             userSku.setAgentLevelId(levelId);
             userSku.setIsPay(0);
             userSku.setIsCertificate(0);
-            bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+            Long bOrderId = bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+            obj.put("isError", false);
+            obj.put("bOrderId", bOrderId);
+            return obj.toJSONString();
         } catch (Exception ex) {
             log.error(ex.getMessage());
             obj.put("isError", true);
             obj.put("message", "添加订单失败");
             return obj.toJSONString();
         }
-        obj.put("isError", false);
-        obj.put("url", "border/pay.shtml");
-        obj.put("message", "");
-        return obj.toJSONString();
     }
 
     /**
@@ -331,40 +337,34 @@ public class BOrderController extends BaseController {
     @RequestMapping("/pay.shtml")
     public ModelAndView paretnersPay(HttpServletRequest request,
                                      HttpServletResponse response,
-                                     @RequestParam(value = "userAddressId", required = true) Integer userAddressId,
-                                     @RequestParam(value = "userMessage", required = true) String userMessage,
-                                     @RequestParam(value = "bOrderId", required = true) Long bOrderId
+                                     @RequestParam(value = "userAddressId", required = false) Integer userAddressId,
+                                     @RequestParam(value = "userMessage", required = false) String userMessage,
+                                     @RequestParam(value = "bOrderId", required = false) Long bOrderId
     ) {
         ModelAndView mv = new ModelAndView();
+        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
         StringBuffer stringBuffer = new StringBuffer();
+        int sumQuantity = 0;
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(pfBorderItem.getSkuId());
             stringBuffer.append("<section class=\"sec2\" >");
             stringBuffer.append("<p class=\"photo\" >");
-            stringBuffer.append("<img src = \"<%=path%>/static/images/shenqing_1.png\" alt = \"\" >");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-            stringBuffer.append("");
-//            <section class="sec2" >
-//            <p class="photo" >
-//            <img src = "<%=path%>/static/images/shenqing_1.png" alt = "" >
-//            </p >
-//            <div >
-//            <h2 > 抗引力——快速瘦脸精华</h2 >
-//            <h3 ></h3 >
-//            <p ><span > ￥298 </span ><b style = "float:right; margin-right:10px;font-size:12px;" > x1 </b ></p >
-//            </div >
-//            </section >
+            stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
+            stringBuffer.append("</p>");
+            stringBuffer.append("<div>");
+            stringBuffer.append("<h2> " + pfBorderItem.getSkuName() + "'</h2>");
+            stringBuffer.append("<h3 ></h3>");
+            stringBuffer.append("<p ><span> ￥" + pfBorderItem.getUnitPrice() + " </span ><b style = \"float:right; margin-right:10px;font-size:12px;\" > x" + pfBorderItem.getQuantity() + " </b ></p >");
+            stringBuffer.append("</div>");
+            stringBuffer.append("</section>");
+            sumQuantity += pfBorderItem.getQuantity();
         }
         mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
-
+        mv.addObject("orderAmount", pfBorder.getOrderAmount());
+        mv.addObject("productInfo", stringBuffer.toString());
+        mv.addObject("quantity", sumQuantity);
         mv.setViewName("platform/order/zhifu");
         return mv;
     }

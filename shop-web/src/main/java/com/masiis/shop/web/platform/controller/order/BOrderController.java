@@ -120,8 +120,8 @@ public class BOrderController extends BaseController {
                     }
                 }
                 sb.append("</label>");
-                sb.append("<b>商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
-                sb.append("<b>  金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                sb.append("<b>&nbsp;&nbsp;商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
+                sb.append("<b>&nbsp;&nbsp;金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
                 sb.append("<p>");
             }
             mv.addObject("skuId", comSku.getId());

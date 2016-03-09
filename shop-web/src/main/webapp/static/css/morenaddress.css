@@ -18,11 +18,15 @@ body div p {
   text-indent: 10px;
   color: #A2A2A2;
 }
-body div h3,
-body div h4 {
-  color: #FF5200;
-  text-indent: 10px;
+body div input {
+  border: none;
 }
-body div h3 {
-  color: #A2A2A2;
+body .btn {
+  display: block;
+  margin: 2rem 20px 0 20px;
+  padding: 10px 0;
+  background: #F74A11;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
 }

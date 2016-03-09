@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComSpu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,14 +15,14 @@ public interface ComSpuMapper {
      * @param id
      * @return
      */
-    ComSpu selectById(Integer id);
+    ComSpu selectById(@Param("id")Integer id);
 
     /**
      * 根据条件查询记录
      * @param comSpu
      * @return
      */
-    List<ComSpu> selectByCondition(ComSpu comSpu);
+    List<ComSpu> selectByCondition(@Param("comSpu")ComSpu comSpu);
 
     /**
      * 添加一条记录
@@ -33,11 +34,11 @@ public interface ComSpuMapper {
      * 根据id更新一条记录
      * @param comSpu
      */
-    void updateById(ComSpu comSpu);
+    void updateById(@Param("comSpu") ComSpu comSpu);
 
     /**
      * 根据id删除一条记录
      * @param id
      */
-    void deleteById(Long id);
+    void deleteById(@Param("id")Integer id);
 }

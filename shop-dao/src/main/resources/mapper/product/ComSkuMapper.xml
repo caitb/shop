@@ -133,35 +133,36 @@
     </select>
 
     <!-- 添加一条记录 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO com_sku
-                    (
-                    name,
-                    spu_id,
-                    create_time,
-                    create_man,
-                    modify_time,
-                    modify_man,
-                    bar_code,
-                    price_cost,
-                    price_market,
-                    price_retail,
-                    remark
-                    )
-        VALUES
-                    (
-                    name = #{comSku.name},
-                    spu_id = #{comSku.spuId},
-                    create_time = #{comSku.createTime},
-                    create_man = #{comSku.createMan},
-                    modify_time = #{comSku.modifyTime},
-                    modify_man = #{comSku.modifyMan},
-                    bar_code = #{comSku.barCode},
-                    price_cost = #{comSku.priceCost},
-                    price_market = #{comSku.priceMarket},
-                    price_retail = #{comSku.priceRetail},
-                    remark = #{comSku.remark}
-                    )
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSku" useGeneratedKeys="true" keyProperty="id">
+    insert into com_sku
+                (
+                id,
+                name,
+                spu_id,
+                create_time,
+                create_man,
+                modify_time,
+                modify_man,
+                bar_code,
+                price_cost,
+                price_market,
+                price_retail, remark
+                )
+    values
+                (
+                #{id,jdbcType=INTEGER},
+                #{name,jdbcType=VARCHAR},
+                #{spuId,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP},
+                #{createMan,jdbcType=BIGINT},
+                #{modifyTime,jdbcType=TIMESTAMP},
+                #{modifyMan,jdbcType=BIGINT},
+                #{barCode,jdbcType=VARCHAR},
+                #{priceCost,jdbcType=DECIMAL},
+                #{priceMarket,jdbcType=DECIMAL},
+                #{priceRetail,jdbcType=DECIMAL},
+                #{remark,jdbcType=VARCHAR}
+                )
     </insert>
 
     <!-- 根据id更新一条记录 -->

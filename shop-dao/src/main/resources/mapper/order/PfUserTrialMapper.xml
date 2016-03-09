@@ -65,6 +65,19 @@
         </where>
     </select>
 
+    <select id="isApplyTrial" resultMap="BaseResultMap" >
+        SELECT
+        id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark
+        FROM
+        pf_user_trial
+        <where>
+            user_id =#{pfUserTrial.userId}
+            AND sku_id =#{pfUserTrial.skuId}
+            AND status =0 OR  status =1
+        </where>
+    </select>
+
+
     <!-- 添加一条记录 -->
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
         insert into pf_user_trial (id, create_time, user_id,

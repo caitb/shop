@@ -37,35 +37,38 @@
             clearTimeout(t);
         }
     }
-    $("#codeId").click(function(){
-        times();
-        $.ajax({
-            type:"POST",
-            url : "<%=path%>/binding/securityCode.do",
-            data:"phone="+$("#phoneId").val(),
-            dataType:"Json",
-            success:function(result){
-                $("#codeValueId").val("短信发送成功,请注意查收!");
-            }
+    $(function() {
+        $("#codeId").click(function () {
+            times();
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/binding/securityCode.do",
+                data: "phone=" + $("#phoneId").val(),
+                dataType: "Json",
+                success: function (result) {
+                    alert(result);
+                    $("#codeValueId").val("短信发送成功,请注意查收!");
+                }
+            });
         });
-    });
-    $("#codeValueId").blur(function(){
-        $value= $("#codeValueId").val();
-        if($value==null || $value==""){
-            $("#codeValueId").val("验证码不能为空");
-            return;
-        }
-        $.ajax({
-            type:"POST",
-            url : "<%=path%>/binding/verificationCode.do",
-            data:"verificationCode="+$("#codeValueId").val(),
-            dataType:"Json",
-            success:function(result){
-                alert(result.msg);
-                $("#codeValueId").val(result.msg);
+        $("#codeValueId").blur(function () {
+            $value = $("#codeValueId").val();
+            if ($value == null || $value == "") {
+                $("#codeValueId").val("验证码不能为空");
+                return;
             }
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/binding/verificationCode.do",
+                data: "verificationCode=" + $("#codeValueId").val(),
+                dataType: "Json",
+                success: function (result) {
+                    alert(result.msg);
+                    $("#codeValueId").val(result.msg);
+                }
+            });
         });
-    });
+    })
 
 
     function apply(){
@@ -90,25 +93,24 @@
             data:"verificationCode="+$("#codeValueId").val(),
             dataType:"Json",
             success:function(result){
-                location.href="<%=path%>/binding/bindingComUse.html";
+                $.post("/corder/trialApply.do",
+                        {
+                            "spuId":spuId,
+                            "skuId":skuId,
+                            "applyReason":applyReason,
+                            "name" : name,
+                            "phone" : phone,
+                            "wechat" : wechat
+                        },function(data) {
+                            if(data == "success"){
+                                window.location.href = "<%=path%>/corder/continueStroll"
+                            }
+                        });
             },
             error:function(result){
                 $("#codeValueId").val("验证码输入有误");
             }
         });
-        $.post("/corder/trialApply.do",
-                {
-                    "spuId":spuId,
-                    "skuId":skuId,
-                    "applyReason":applyReason,
-                    "name" : name,
-                    "phone" : phone,
-                    "wechat" : wechat
-                },function(data) {
-                    if(data == "success"){
-                        window.location.href = "<%=path%>/corder/continueStroll"
-                    }
-                });
     }
 
 </script>
@@ -138,7 +140,7 @@
         <input id="spuId" type="hidden" value="${product.spuId}"/>
         <p>姓名：<input id="nameId" type="text"></p>
         <p>手机号：<input id="phoneId" type="tel"></p>
-        <p>验证码：<input id="validateNumberId" type="text"><span id="codeId">获取验证码</span></p>
+        <p>验证码：<input id="codeValueId" type="text"><span id="codeId">获取验证码</span></p>
         <p>微信：<input id="wechatId" type="text"></p>
     </section>
     <a href="javascript:apply();"  class="sq">试用申请</a>

@@ -5,8 +5,9 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <title>麦链商城</title>
     <%@include file="/WEB-INF/pages/common.jsp"%>
@@ -90,12 +91,26 @@
 </div>
 <footer>
     <section class="sec3">
-        <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}">申请试用</a></p>
+     <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
+        <p><a href="" onclick="applyTrial(${productDetails.id})">申请试用</a></p>
         <p><a href="<%=path%>/lo/quote">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script>
+    function applyTrial(skuId){
+        $.post("/corder/isApplyTrial.do",
+                {
+                    "skuId":skuId
+                },function(data) {
+                   if (data == "false"){
+                        window.location.href = "<%=path%>/corder/applyTrialToPage.json?skuId="+skuId;
+                   }else{
+                        alert("此商品您已试用过，不能再次使用");
+                   }
+                });
+    }
+
     var mySwiper = new Swiper ('.swiper-container', {
         direction: 'horizontal',
         loop: true,

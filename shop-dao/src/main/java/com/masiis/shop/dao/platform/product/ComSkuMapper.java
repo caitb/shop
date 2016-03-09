@@ -56,7 +56,7 @@ public interface ComSkuMapper {
      * 添加一条记录
      * @param comSku
      */
-    Integer insert(@Param("comSku")ComSku comSku);
+    Integer insert(ComSku comSku);
 
     /**
      * 根据id更新一条记录

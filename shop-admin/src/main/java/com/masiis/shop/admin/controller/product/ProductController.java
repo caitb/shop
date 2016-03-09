@@ -96,6 +96,8 @@ public class ProductController {
                 SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
                 sfSkuDistribution.setDiscount(new BigDecimal(distributionDiscounts[i]));
                 sfSkuDistribution.setSort(i+1);
+
+                sfSkuDistributions.add(sfSkuDistribution);
             }
 
             List<ComSkuImage> comSkuImages = new ArrayList<>();

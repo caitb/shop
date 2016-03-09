@@ -51,6 +51,7 @@ public class UserService {
         comUserAddressMapper.insert(comUserAddress);
     }
 
+
     /**
      * 修改用户地址
      *
@@ -96,6 +97,16 @@ public class UserService {
      */
     public void updateUserTrial(PfUserTrial pfUserTrial){
         pfUserTrialMapper.updateById(pfUserTrial);
+    }
+
+    /**
+     * 根据userId和skuId
+     * 验证商品是否使用过
+     * @author  hanzengzhi
+     * @date  2016/3/9 11:16
+     */
+    public List<PfUserTrial> isApplyTrial(PfUserTrial pfUserTrial){
+       return pfUserTrialMapper.isApplyTrial(pfUserTrial);
     }
 
     /**

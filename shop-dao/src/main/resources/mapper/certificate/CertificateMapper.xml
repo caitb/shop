@@ -89,6 +89,6 @@
             LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
             LEFT JOIN com_user u ON pfku.user_id = u.id
             LEFT JOIN sf_user_relation sr ON sr.user_id = pfku.user_id
-         WHERE pfku = #{id}
+         WHERE pfku.id = #{id}
     </select>
 </mapper>

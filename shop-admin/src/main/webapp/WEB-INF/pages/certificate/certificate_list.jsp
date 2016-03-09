@@ -168,7 +168,7 @@
                                 });
                                 $table.on('expand-row.bs.table', function (e, index, row, $detail) {
                                     $detail.html('数据加载中...');
-                                    $.get('/user/load.shtml', {id: row.id}, function (res) {
+                                    $.get('/certificate/load.shtml', {id: row.id}, function (res) {
                                         //$detail.html(res.replace(/\n/g, '<br>'));
                                         $detail.html(res);
                                     });
@@ -215,7 +215,7 @@
 
                             function operateFormatter(value, row, index) {
                                 return [
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">查看申请',
+                                    '&nbsp;<a class="detail-icon" href="javascript:void(0)" title="Edit">查看申请',
                                     '</a>  '
                                 ].join('');
                             }
@@ -344,57 +344,31 @@
 
         </div><!-- /.col -->
     </div>
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="addModalLabel">
+                            模态框标题
+                        </h4>
+                    </div>
 
-    <!-- 审批模态框（Modal） -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        审核
-                    </h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="btnSubmit">
-                        确认
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-
-    <!-- 添加管理员模态框（Modal） -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="addModalLabel">
-                        模态框标题
-                    </h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="addSubmit">
-                        提交更改
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="addSubmit">
+                            提交更改
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
     </div>
 
     <script>
@@ -416,8 +390,19 @@
                     $('#myModal').modal('hide');
                 }
             });
-
         });
+
+        $('#save').on('click', function(){
+            $.ajax({
+                url: '<%=basePath%>user/add.do',
+                type: 'post',
+                data: {userId: userId,pbMenuIds: menuIds},
+                success: function(data){
+                    alert(data);
+                }
+            });
+        });
+
     </script>
 </div>
 </body>

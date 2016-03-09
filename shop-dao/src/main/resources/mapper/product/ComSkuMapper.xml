@@ -100,7 +100,7 @@
     </select>
 
     <!-- 根据条件查询记录 -->
-    <select id="selectByCondition" resultMap="BaseResultMap">
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComSku" resultMap="BaseResultMap">
         SELECT
                id,
                name,
@@ -117,17 +117,17 @@
         FROM
                com_sku
                 <where>
-                    <if test="comSku.id != null">
+                    <if test="id != null">
                         id = #{comSku.id}
                     </if>
-                    <if test="comSku.spuId != null">
-                        AND spu_id = #{comSku.spuId}
+                    <if test="spuId != null">
+                        AND spu_id = #{spuId}
                     </if>
-                    <if test="comSku.name != null">
-                        AND name = #{comSku.name}
+                    <if test="name != null">
+                        AND name = #{name}
                     </if>
-                    <if test="comSku.barCode != null">
-                        AND bar_code = #{comSku.barCode}
+                    <if test="barCode != null">
+                        AND bar_code = #{barCode}
                     </if>
                 </where>
     </select>

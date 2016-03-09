@@ -37,7 +37,10 @@ public class BOrderService {
     private ComUserMapper comUserMapper;
     @Resource
     private PfBorderOperationLogMapper pfBorderOperationLogMapper;
-
+    @Resource
+    private PfUserSkusMapper pfUserSkusMapper;
+    @Resource
+    private ComAgentLevelsMapper comAgentLevelsMapper;
     /**
      * 添加订单
      *
@@ -127,6 +130,24 @@ public class BOrderService {
             comUserMapper.updateByPrimaryKey(comUser);
         } catch (Exception e) {
         }
+    }
+    /**
+     * 查用户商品关系表
+     * @author muchaofeng
+     * @date 2016/3/9 18:12
+     */
+
+    public  PfUserSku findPfUserSkuById(Long id){
+        return pfUserSkusMapper.selectPfUserSkusById(id);
+    }
+    /**
+     * 获取合伙人等级
+     * @author muchaofeng
+     * @date 2016/3/9 18:52
+     */
+
+    public  ComAgentLevel findComAgentLevel(Integer id){
+        return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
 
 }

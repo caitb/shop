@@ -89,6 +89,15 @@ public class BOrderService {
         return pfBorderMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据订单号获取订单商品
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/9 11:45
+     */
+    public List<PfBorderItem> getPfBorderItemByOrderId(Long pfBorderId) {
+        return borderItemMapper.selectAllByOrderId(pfBorderId);
+    }
 
     /**
      * 合伙人订单支付

@@ -65,4 +65,11 @@
         from pf_border_item
     </select>
 
+    <select id="selectAllByOrderId" resultMap="BaseResultMap" >
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price,
+        unit_price, total_price, is_comment, is_return, remark
+        from pf_border_item
+        where pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

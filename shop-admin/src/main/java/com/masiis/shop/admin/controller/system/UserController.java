@@ -183,7 +183,7 @@ public class UserController {
 
         PbUser pbUser = null;
         if(id != null){
-            pbUser = pbUserService.findByid(id);
+            pbUser = pbUserService.findById(id);
         }
 
         mav.addObject("pbUser", pbUser);

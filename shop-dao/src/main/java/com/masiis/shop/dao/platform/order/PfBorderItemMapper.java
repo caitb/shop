@@ -20,4 +20,6 @@ public interface PfBorderItemMapper {
     List<PfBorderItem> selectAll();
 
     int updateByPrimaryKey(PfBorderItem record);
+
+    List<PfBorderItem> selectAllByOrderId(Long pfBorderId);
 }

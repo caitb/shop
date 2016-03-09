@@ -11,9 +11,12 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +39,8 @@ import java.util.List;
 @RequestMapping("/border")
 public class BOrderController extends BaseController {
 
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private ProductService productService;
     @Resource
@@ -48,6 +53,8 @@ public class BOrderController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private UserSkuService userSkuService;
+    @Resource
+    private UserAddressService userAddressService;
 
     /**
      * 合伙人申请
@@ -210,6 +217,7 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("name", name);
         modelAndView.addObject("mobile", mobile);
         modelAndView.addObject("weixinId", weixinId);
+        modelAndView.addObject("parentUserId", comUser.getId());
         modelAndView.addObject("parentMobile", parentMobile);
         modelAndView.addObject("skuId", skuId);
         modelAndView.addObject("skuName", skuName);
@@ -235,67 +243,78 @@ public class BOrderController extends BaseController {
                                             @RequestParam(value = "weixinId", required = true) String weixinId,
                                             @RequestParam(value = "skuId", required = true) Integer skuId,
                                             @RequestParam(value = "levelId", required = true) Integer levelId,
-                                            @RequestParam(value = "parentUserId", required = true) Long parentUserId,
-                                            @RequestParam(value = "userMassage", required = true) String userMassage) throws Exception {
-        //处理用户数据
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        comUser.setRealName(realName);
-        comUser.setMobile(mobile);
-        comUser.setWxId(weixinId);
-        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
-        ComSku comSku = skuService.getSkuById(skuId);
-        //折扣后单价
-        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
-        //折扣后总价
-        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
-        //处理订单数据
-        PfBorder order = new PfBorder();
-        order.setCreateTime(new Date());
-        order.setCreateMan(comUser.getId());
-        order.setOrderCode("");
-        order.setUserId(comUser.getId());
-        order.setUserPid(parentUserId);
-        order.setUserMassage(userMassage);
-        order.setSupplierId(0);
-        order.setReceivableAmount(totalPrice);
-        order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
-        order.setProductAmount(totalPrice);
-        order.setShipAmount(new BigDecimal(0));
-        order.setPayAmount(new BigDecimal(0));
-        order.setOrderStatus(0);
-        order.setShipStatus(0);
-        order.setPayStatus(0);
-        order.setIsShip(0);
-        order.setIsReplace(0);
-        order.setIsReceipt(0);
-        //处理订单商品数据
-        List<PfBorderItem> orderItems = new ArrayList<>();
-        PfBorderItem pfBorderItem = new PfBorderItem();
-        pfBorderItem.setCreateTime(new Date());
-        pfBorderItem.setSpuId(comSku.getSpuId());
-        pfBorderItem.setSkuId(comSku.getId());
-        pfBorderItem.setSkuName(comSku.getName());
-        pfBorderItem.setQuantity(pfSkuAgent.getQuantity());
-        pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setUnitPrice(unitPrice);
-        pfBorderItem.setTotalPrice(totalPrice);
-        pfBorderItem.setIsComment(0);
-        pfBorderItem.setIsReturn(0);
-        orderItems.add(pfBorderItem);
-        //处理用户sku关系数据
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(parentUserId, comSku.getId());//获取上级代理ID
-        PfUserSku userSku = new PfUserSku();
-        userSku.setCreateTime(new Date());
-        userSku.setPid(pfUserSku.getId());
-        userSku.setUserId(comUser.getId());
-        userSku.setSkuId(comSku.getId());
-        userSku.setAgentLevelId(levelId);
-        userSku.setIsPay(0);
-        userSku.setIsCertificate(0);
-        bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+                                            @RequestParam(value = "parentUserId", required = true) Long parentUserId) {
         JSONObject obj = new JSONObject();
+        try {
+            //处理用户数据
+            ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+            comUser.setRealName(realName);
+            comUser.setMobile(mobile);
+            comUser.setWxId(weixinId);
+            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
+            ComSku comSku = skuService.getSkuById(skuId);
+            //折扣后单价
+            BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
+            //折扣后总价
+            BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
+            //处理订单数据
+            PfBorder order = new PfBorder();
+            order.setCreateTime(new Date());
+            order.setCreateMan(comUser.getId());
+            order.setOrderCode("");
+            order.setUserMassage("");
+            order.setUserId(comUser.getId());
+            order.setUserPid(0l);
+            order.setSupplierId(0);
+            order.setReceivableAmount(totalPrice);
+            order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
+            order.setProductAmount(totalPrice);
+            order.setShipAmount(new BigDecimal(0));
+            order.setPayAmount(new BigDecimal(0));
+            order.setOrderStatus(0);
+            order.setShipStatus(0);
+            order.setPayStatus(0);
+            order.setIsShip(0);
+            order.setIsReplace(0);
+            order.setIsReceipt(0);
+            //处理订单商品数据
+            List<PfBorderItem> orderItems = new ArrayList<>();
+            PfBorderItem pfBorderItem = new PfBorderItem();
+            pfBorderItem.setCreateTime(new Date());
+            pfBorderItem.setSpuId(comSku.getSpuId());
+            pfBorderItem.setSkuId(comSku.getId());
+            pfBorderItem.setSkuName(comSku.getName());
+            pfBorderItem.setQuantity(pfSkuAgent.getQuantity());
+            pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
+            pfBorderItem.setUnitPrice(unitPrice);
+            pfBorderItem.setTotalPrice(totalPrice);
+            pfBorderItem.setIsComment(0);
+            pfBorderItem.setIsReturn(0);
+            orderItems.add(pfBorderItem);
+            //处理用户sku关系数据
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(parentUserId, comSku.getId());//获取上级代理ID
+            PfUserSku userSku = new PfUserSku();
+            userSku.setCreateTime(new Date());
+            if (pfUserSku == null) {
+                userSku.setPid(0);
+            } else {
+                userSku.setPid(pfUserSku.getId());
+            }
+            userSku.setCode("");
+            userSku.setUserId(comUser.getId());
+            userSku.setSkuId(comSku.getId());
+            userSku.setAgentLevelId(levelId);
+            userSku.setIsPay(0);
+            userSku.setIsCertificate(0);
+            bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            obj.put("isError", true);
+            obj.put("message", "添加订单失败");
+            return obj.toJSONString();
+        }
         obj.put("isError", false);
-        obj.put("url", "/border/pay");
+        obj.put("url", "border/pay.shtml");
         obj.put("message", "");
         return obj.toJSONString();
     }
@@ -308,8 +327,13 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/pay.shtml")
     public ModelAndView paretnersPay(HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response,
+                                     @RequestParam(value = "userAddressId", required = true) Integer userAddressId,
+                                     @RequestParam(value = "userMessage", required = true) String userMessage,
+                                     @RequestParam(value = "bOrderId", required = true) Long bOrderId
+    ) {
         ModelAndView mv = new ModelAndView();
+        bOrderService.getPfBorderById(bOrderId);
         mv.setViewName("platform/order/zhifu");
         return mv;
     }

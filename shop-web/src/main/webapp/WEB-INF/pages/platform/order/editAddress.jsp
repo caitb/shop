@@ -16,7 +16,8 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 </head>
 <script>
-    function saveAddress(){
+    function updateAddress(){
+        var addressId =  $("#addressId")[0].value;
         var name = $("#name")[0].value;
         var phone = $("#phone")[0].value;
         var postcode = $("#postcode")[0].value;
@@ -31,6 +32,7 @@
 
         $.post("/userAddress/addOrUpdateAddress.do",
                 {
+                    "id":addressId,
                     "name":name,
                     "phone":phone,
                     "postcode":postcode,
@@ -42,7 +44,7 @@
                     "countyName":countyName,
                     "street":street,
                     "detailAddress":detailAddress,
-                    "operateType":"save"
+                    "operateType":"update"
                 },function(data) {
                     if (data == "success"){
                         window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
@@ -60,15 +62,16 @@
                    </header>
                     <div class="sf">
                         收货人姓名
-                        <input type="text" id="name">
+                        <input type="text" id="addressId" type="hidden" value="${comUserAddress.id}">
+                        <input type="text" id="name" value="${comUserAddress.name}">
                     </div>
                     <div class="sf">
                         手机号码
-                        <input type="tel" id="phone">
+                        <input type="tel" id="phone" value="${comUserAddress.mobile}">
                     </div>
                     <div class="sf">
                         邮政编码
-                        <input type="tel" id="postcode">
+                        <input type="tel" id="postcode" value="${comUserAddress.zip}">
                     </div>
                     <div class="address">
                         联系地址
@@ -76,20 +79,17 @@
                             <select id="s_city" name="s_city" ></select>
                             <select id="s_county" name="s_county"></select>
                     </div>
-
-
-
                     <div class="sf">
                         街道
-                        <input type="text" id="street">
+                        <input type="text" id="street" value="${comUserAddress.zip}">
                     </div>
                     <div class="sf">
                         详细地址
-                        <input type="text" id="detailAddress">
+                        <input type="text" id="detailAddress" value="${comUserAddress.address}">
                     </div>
                   
            </div>
-           <a href="" onclick="saveAddress()" class="baocun">
+           <a href="" onclick="updateAddress()" class="baocun">
                 保存
             </a>
        </div>
@@ -126,7 +126,6 @@ var showArea = function(){
                        if(categories[ss].pid == c2['sub'+categories[i].id][sub].id) c3['sub'+c2['sub'+categories[i].id][sub].id].push(categories[ss]);
                    }
                }
-
            }
        }
        var $skuC1 = $('#s_province');
@@ -134,8 +133,29 @@ var showArea = function(){
        var $skuC3 = $('#s_county');
        $skuC1.html("<option value=\'-1\'>请选择</option>");
        for(var sub in c1['sub'+0]){
-           $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+           if (c1['sub'+0][sub].id == ${comUserAddress.provinceId}){
+               $skuC1.append('<option selected value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+           }else{
+               $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+           }
        }
+       //$skuC2.append("<option selected value='${comUserAddress.cityId}'>${comUserAddress.cityName}</option>")
+        var  id = ${comUserAddress.provinceId};
+       for(var sub in c2['sub'+id]){
+           if (c2['sub'+id][sub].id ==${comUserAddress.cityId}){
+               $skuC2.append('<option selected value="'+ c2['sub'+id][sub].id +'">'+ c2['sub'+id][sub].name+'</option>');
+           }else{
+               $skuC2.append('<option value="'+ c2['sub'+id][sub].id +'">'+c2['sub'+id][sub].name+'</option>');
+           }
+       }
+       for(var sub in c3['sub'+id]){
+           if ( c3['sub'+id][sub].id == ${comUserAddress.regionId}){
+               $skuC3.append('<option selected value="'+ c3['sub'+id][sub].id +'">'+ c3['sub'+id][sub].name+'</option>');
+           }else{
+               $skuC3.append('<option value="'+ c3['sub'+id][sub].id +'">'+ c3['sub'+id][sub].name+'</option>');
+           }
+       }
+
 
        $skuC1.change(function(){
            $skuC2.empty().html('<option value="-1">请选择</option>');

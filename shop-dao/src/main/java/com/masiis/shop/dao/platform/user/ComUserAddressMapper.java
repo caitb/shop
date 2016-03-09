@@ -16,6 +16,10 @@ import java.util.List;
 public interface ComUserAddressMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int settingDefaultAddress(Integer id);
+
+    int cancelDefaultAddress(Long userId);
+
     int insert(ComUserAddress record);
 
     ComUserAddress selectByPrimaryKey(Integer id);

@@ -18,5 +18,5 @@ public interface CertificateMapper {
 
     CertificateInfo get(Integer id);
 
-    CertificateInfo getApproveInfoById(Integer id);
+    CertificateInfo getApproveInfo(Integer id);
 }

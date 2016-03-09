@@ -75,4 +75,6 @@ public class PfCorderOperationLog {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+
 }

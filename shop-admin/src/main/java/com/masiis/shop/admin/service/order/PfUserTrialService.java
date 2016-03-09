@@ -2,9 +2,11 @@ package com.masiis.shop.admin.service.order;
 
 
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
+import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.order.SfUserRelationMapper;
 import com.masiis.shop.dao.po.PfCorder;
+import com.masiis.shop.dao.po.PfCorderOperationLog;
 import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,8 @@ public class PfUserTrialService {
     private SfUserRelationMapper sfUserRealtionMapper;
     @Resource
     private PfCorderMapper pfCorderMapper;
+    @Resource
+    private PfCorderOperationLogMapper pfCorderOperationLogMapper;
 
     /**
      * 根据条件查询试用申请记录
@@ -53,11 +57,20 @@ public class PfUserTrialService {
         return sfUserRealtionMapper.findByUserId(userId);
     }
 
-    public void insert(PfCorder pfCorder) {
+    /**
+     * 生成订单、日志、收货人信息
+     * @param pfCorder
+     * @param pcol
+     */
+    public void insert(PfCorder pfCorder,PfCorderOperationLog pcol) {
         pfCorderMapper.insert(pfCorder);
+        pcol.setPfCorderId(pfCorder.getId());
+        pfCorderOperationLogMapper.insert(pcol);
+
     }
 
     public String selectById(Long id) {
         return pfUserTrialMapper.selectReasonById(id);
     }
+
 }

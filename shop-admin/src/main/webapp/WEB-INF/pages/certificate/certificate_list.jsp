@@ -91,7 +91,7 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'ctName',
+                                                field: 'comUser.realName',
                                                 title: '姓名',
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'

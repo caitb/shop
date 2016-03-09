@@ -4,7 +4,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -25,7 +25,7 @@
                         <p>管理收货地址</p>            
                 </header>
                 <a href="<%=path%>/userAddress//toAddAddressPage.html" class="tianjia">
-                添加新地址
+                    添加新地址
                 </a>
                  <section class="pp">
                         <h1>您还没有收货地址</h1>
@@ -56,25 +56,23 @@
                             $(".pp").hide();
                             var jsonData=eval(data);
                             $.each(jsonData, function(i, item) {
-                                var  address = "<section class=\"sec1\" onclick='selectClick()'>";
+                                var  address = "<section class=\"sec1\" onclick='selectClick("+i+")'>";
                                 address +="<div><a href=\"#\"><h2><b>";
                                 address +=jsonData[i].name;
                                 address +="</b> <span>";
                                 address +=jsonData[i].mobile;
                                 address +="</span></h2></a> <a href=\"#\">";
                                 if (jsonData[i].isDefault==1){
-                                    address +="<p class=\"on\">";
+                                    address +="<p  id='"+i+"'  class=\"on\">";
                                 }else{
-                                    address +="<p>";
+                                    address +="<p id='"+i+"'>";
                                 }
                                 address +="<b>【默认】</b><span>";
                                 address +=jsonData[i].provinceName +"  ";
                                 address +=  jsonData[i].regionName +"  ";
                                 address +=  jsonData[i].address +"  ";;
                                 address +="</span></p></a></div></section>";
-
                                 $(".box").append(address);
-                                alert(jsonData[i].provinceId)
                             });
                         }else{
 
@@ -84,10 +82,11 @@
         })
     </script>
 <script>
-    function selectClick(){
-        alert("aaaa");
+    function selectClick(i){
         $(".sec1").find("p").removeClass("on");
-        $(this).find("p").addClass("on");
+        $(this).find("p").attr("class","on");
+        $("#"+i+"").attr("class","on");
+       // $(this).find("p").addClass("on");
     }
 /*    $(".sec1").on("click",function(){
         alert("11111");

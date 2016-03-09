@@ -6,7 +6,8 @@
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
@@ -23,12 +24,15 @@
         function times(){
             s--;
             $("#codeId").val("剩余" + s + "s");
+            $("#codeId").attr({"disabled":"disabled"});
             t = setTimeout(function (){times();}, 1000);
             if ( s <= 0 ){
                 s = 60;
-                $("#codeId").prop("disabled", false);
+                $("#codeId").removeAttr("disabled");
+//                $("#codeId").prop("disabled", false);
                 $("#codeId").val("获取验证码");
                 clearTimeout(t);
+
             }
         }
 
@@ -42,10 +46,12 @@
             $("#phoneId").blur(function(){
                 Iphone= $("#phoneId").val();
                 isPhone= checkPhone(Iphone);
-//                alert(isPhone);
                 if(!isPhone){
-                    alert("手机号格式不对");
+//                    alert("手机号格式不对");
+                    $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
                     return;
+                }else{
+                    $("#phoneTip").html("");
                 }
             });
             $("#codeId").click(function(){
@@ -57,7 +63,7 @@
                     data:"phone="+$("#phoneId").val(),
                     dataType:"Json",
                     success:function(result){
-                        alert("短信发送成功,请注意查收!");
+                        $("#codeValueId").val("短信发送成功,请注意查收!");
 //                        alert(result.code);
                     }
                 });
@@ -66,7 +72,7 @@
             $("#codeValueId").blur(function(){
                 $value= $("#codeValueId").val();
                 if($value==null || $value==""){
-                    alert("验证码不能为空");
+                    $("#codeValueId").val("验证码不能为空");
                     return;
                 }
                 $.ajax({
@@ -76,6 +82,7 @@
                     dataType:"Json",
                     success:function(result){
                         alert(result.msg);
+                        $("#codeValueId").val(result.msg);
                     }
                 });
             });
@@ -84,11 +91,13 @@
                 password = $("#passwordId").val();
                 isPassword= isWordAndNum(password);
                 if(isPassword){
-                   alert("密码只能包含数字字母");
+                    $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
-                    alert("密码不能为空");
+                    $("#passwordTip").html("密码不能为空");
                     return;
+                }else{
+                    $("#passwordTip").html("");
                 }
             });
             $(".bd").click(function(){
@@ -96,11 +105,14 @@
                 phone= $("#phoneId").val();
                 isPhone= checkPhone(phone);
                 isPassword= isWordAndNum(password);
-                if(isPhone == isPassword){
-                    alert("请重新输入");
+                if(!isPhone ){
+                    $("#phoneTip").html("只接受中国大陆号码");
+                    return;
+                }else if(isPassword){
+                    $("#passwordTip").html("密码只能包含数字字母");
                     return;
                 }else if(password==null || password==""){
-                    alert("密码不能为空");
+                    $("#passwordTip").html("密码不能为空");
                     return;
                 }else{
                     $.ajax({
@@ -112,7 +124,7 @@
                             location.href="<%=path%>/binding/bindingComUse.html";
                         },
                         error:function(result){
-                            alert("验证码输入有误");
+                            $("#codeValueId").val("验证码输入有误");
                         }
                     });
                 }
@@ -137,7 +149,7 @@
         </div>
         <section class="input_t phone">
             <p>手机号：</p>
-            <input type="text" id="phoneId" name="phone" value="">
+            <input type="text" id="phoneId" name="phone" ><span id="phoneTip" style="color-rendering:#a5142f "></span>
         </section>
         <section class="input_t">
             <p>验证码：</p>
@@ -146,7 +158,7 @@
         </section>
         <section class="input_t mima">
             <p>密码：</p>
-            <input type="password" id="passwordId" name="password" value="">
+            <input type="password" id="passwordId" name="password"><span id="passwordTip"></span>
         </section>
         <p class="rodia">
             <input type="checkbox" id="fu" checked>

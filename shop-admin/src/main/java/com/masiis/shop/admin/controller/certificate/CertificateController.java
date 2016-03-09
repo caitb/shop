@@ -42,7 +42,7 @@ public class CertificateController {
                        String order,
                        Integer offset,
                        Integer limit
-    ){
+    )throws Exception {
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 10 : limit;
         Integer pageNo = offset/limit + 1;

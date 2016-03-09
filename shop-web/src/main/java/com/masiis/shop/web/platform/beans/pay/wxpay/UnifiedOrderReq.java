@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.beans.pay.wxpay;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Created by lzh on 2016/3/8.

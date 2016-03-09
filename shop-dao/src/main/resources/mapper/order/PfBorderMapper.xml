@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.order.PfCorderMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfCorder" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorder" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
-        <result column="order_type" property="orderType" jdbcType="INTEGER" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="user_pid" property="userPid" jdbcType="BIGINT" />
         <result column="user_massage" property="userMassage" jdbcType="VARCHAR" />
@@ -36,84 +34,38 @@
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-        delete from pf_corder
+        delete from pf_border
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorder" >
-            insert into pf_corder
-               (
-                create_time,
-                create_man,
-                order_code,
-                order_type,
-                sku_id,
-                user_id,
-                user_pid,
-                user_massage,
-                supplier_id,
-                modify_time,
-                modify_man,
-                receivable_amount,
-                order_amount,
-                product_amount,
-                ship_amount,
-                pay_amount,
-                pay_time,
-                ship_man_id,
-                ship_man_name,
-                delivery_time,
-                ship_remark,
-                replace_order_id,
-                order_status,
-                ship_status,
-                pay_status,
-                is_ship,
-                is_replace,
-                is_receipt,
-                receipt_time,
-                remark
-                )
-        values (
-                #{pfCorder.createTime},
-                #{pfCorder.createMan},
-                #{pfCorder.orderCode,jdbcType=VARCHAR},
-                #{pfCorder.orderType,jdbcType=INTEGER},
-                #{pfCorder.skuId,jdbcType=INTEGER},
-                #{pfCorder.userId,jdbcType=BIGINT},
-                #{pfCorder.userPid,jdbcType=BIGINT},
-                #{pfCorder.userMassage,jdbcType=VARCHAR},
-                #{pfCorder.supplierId,jdbcType=INTEGER},
-                #{pfCorder.modifyTime,jdbcType=TIMESTAMP},
-                #{pfCorder.modifyMan,jdbcType=BIGINT},
-                #{pfCorder.receivableAmount,jdbcType=DECIMAL},
-                #{pfCorder.orderAmount,jdbcType=DECIMAL},
-                #{pfCorder.productAmount,jdbcType=DECIMAL},
-                #{pfCorder.shipAmount,jdbcType=DECIMAL},
-                #{pfCorder.payAmount,jdbcType=DECIMAL},
-                #{pfCorder.payTime,jdbcType=TIMESTAMP},
-                #{pfCorder.shipManId,jdbcType=INTEGER},
-                #{pfCorder.shipManName,jdbcType=VARCHAR},
-                #{pfCorder.deliveryTime,jdbcType=TIMESTAMP},
-                #{pfCorder.shipRemark,jdbcType=VARCHAR},
-                #{pfCorder.replaceOrderId,jdbcType=BIGINT},
-                #{pfCorder.orderStatus,jdbcType=INTEGER},
-                #{pfCorder.shipStatus,jdbcType=INTEGER},
-                #{pfCorder.payStatus,jdbcType=INTEGER},
-                #{pfCorder.isShip,jdbcType=INTEGER},
-                #{pfCorder.isReplace,jdbcType=INTEGER},
-                #{pfCorder.isReceipt,jdbcType=INTEGER},
-                #{pfCorder.receiptTime,jdbcType=TIMESTAMP},
-                #{pfCorder.remark,jdbcType=VARCHAR}
-                )
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_border (id, create_time, create_man, 
+            order_code, user_id, user_pid, 
+            user_massage, supplier_id, modify_time, 
+            modify_man, receivable_amount, order_amount, 
+            product_amount, ship_amount, pay_amount, 
+            pay_time, ship_man_id, ship_man_name, 
+            delivery_time, ship_remark, replace_order_id, 
+            order_status, ship_status, pay_status, 
+            is_ship, is_replace, is_receipt, 
+            receipt_time, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, 
+            #{userMassage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
+            #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 
+            #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, 
+            #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR}, 
+            #{deliveryTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR}, #{replaceOrderId,jdbcType=BIGINT}, 
+            #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
+            #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, 
+            #{receiptTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfCorder" >
-        update pf_corder
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorder" >
+        update pf_border
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             create_man = #{createMan,jdbcType=BIGINT},
             order_code = #{orderCode,jdbcType=VARCHAR},
-            order_type = #{orderType,jdbcType=INTEGER},
             user_id = #{userId,jdbcType=BIGINT},
             user_pid = #{userPid,jdbcType=BIGINT},
             user_massage = #{userMassage,jdbcType=VARCHAR},
@@ -143,34 +95,22 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, order_code, order_type, user_id, user_pid, user_massage, 
+        select id, create_time, create_man, order_code, user_id, user_pid, user_massage, 
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount, 
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark, 
         replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt, 
         receipt_time, remark
-        from pf_corder
+        from pf_border
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, order_code, order_type, user_id, user_pid, user_massage, 
+        select id, create_time, create_man, order_code, user_id, user_pid, user_massage, 
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount, 
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark, 
         replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt, 
         receipt_time, remark
-        from pf_corder
-    </select>
-    <select id="queryPfCorderByParam" resultMap="BaseResultMap">
-        select id, create_time, create_man, order_code, order_type, user_id, user_pid, user_massage,
-        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark,
-        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
-        receipt_time, remark
-        from pf_corder
-        WHERE 1=1
-        <if test="pfCorder.id != null">
-            AND id = #{pfCorder.id}
-        </if>
+        from pf_border
     </select>
 
 </mapper>

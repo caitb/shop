@@ -8,6 +8,9 @@
 package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.PfSkuAgent;
+import org.apache.ibatis.annotations.Param;
+
+
 import java.util.List;
 
 public interface PfSkuAgentMapper {
@@ -21,7 +24,7 @@ public interface PfSkuAgentMapper {
 
     int updateByPrimaryKey(PfSkuAgent record);
 
-    List<PfSkuAgent> selectAllBySkuId(Integer skuId);
+    List<PfSkuAgent> selectAllBySkuId(Integer sku_id);
 
-    PfSkuAgent selectBySkuIdAndLevelId(Integer skuId,Integer levelId);
+    PfSkuAgent selectBySkuIdAndLevelId(@Param("skuId") Integer skuId, @Param("levelId") Integer levelId);
 }

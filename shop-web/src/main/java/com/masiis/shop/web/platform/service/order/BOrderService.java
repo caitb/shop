@@ -1,10 +1,7 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
-import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
+import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -38,6 +35,8 @@ public class BOrderService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private ComUserMapper comUserMapper;
+    @Resource
+    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
 
     /**
      * 添加订单
@@ -65,12 +64,31 @@ public class BOrderService {
             pfBorderItem.setPfBorderId(pfBorder.getId());
             borderItemMapper.insert(pfBorderItem);
         }
-        pfUserSku.setPfCorderId(pfBorder.getId());
+        pfUserSku.setPfBorderId(pfBorder.getId());
         //添加用户代理商品关系
         pfUserSkuMapper.insert(pfUserSku);
         //完善用户信息
         comUserMapper.updateByPrimaryKey(comUser);
+        //添加订单日志
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+        pfBorderOperationLog.setCreateMan(comUser.getId());
+        pfBorderOperationLog.setPfBorderStatus(0);
+        pfBorderOperationLog.setRemark("新增订单");
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
     }
+
+    /**
+     * 获取订单
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/9 11:07
+     */
+    public PfBorder getPfBorderById(Long id) {
+        return pfBorderMapper.selectByPrimaryKey(id);
+    }
+
 
     /**
      * 合伙人订单支付
@@ -100,6 +118,6 @@ public class BOrderService {
             comUserMapper.updateByPrimaryKey(comUser);
         } catch (Exception e) {
         }
-
     }
+
 }

@@ -76,6 +76,9 @@
         <if test="comUserAddress.zip != null">
             AND zip = #{comUserAddress.zip}
         </if>
+        <if test="comUserAddress.isDefault != null">
+            AND is_default = #{comUserAddress.isDefault}
+        </if>
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

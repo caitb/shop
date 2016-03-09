@@ -51,7 +51,8 @@ public class UserAddressController {
      * @author  hanzengzhi
      * @date  2016/3/7 23:27
      */
-    @RequestMapping("/addAddress.json")
+    @RequestMapping("/addAddress.do")
+    @ResponseBody
     public String addAddress(HttpServletRequest request,
                              HttpServletResponse response,
                              @RequestParam(value = "name", required = true) String name,
@@ -84,12 +85,15 @@ public class UserAddressController {
         comUserAddress.setRegionName(countyName);
         comUserAddress.setAddress(detailAddress);
         comUserAddress.setCreateTime(new Date());
-        comUserAddress.setIsDefault(1);
+        comUserAddress.setIsDefault(0);//地址不设为默认的
         int i = userAddressService.addComUserAddress(comUserAddress);
         if (i==1){
             java.lang.System.out.println();
+            return "success";
+        }else{
+            return "false";
         }
-        return null;
+
     }
     /**
      * 跳转到管理地址界面

@@ -67,24 +67,29 @@
     var myScroll = new IScroll("body", {
         preventDefault: false
     })
-    $(function () {
-        var submit = function () {
-            var paraData;
-            $.ajax({
-                url: "<%=basePath%>border/registerConfirm/save.do",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    if (data.isError == false) {
-                        window.location.href = "<%=basePath%>" + data.url;
-                    }
-                    else {
-                        alert(data.message);
-                    }
+    var submit = function () {
+            var paraData = {};
+            paraData.realName = "${name}";
+            paraData.mobile = "${mobile}";
+            paraData.weixinId = "${weixinId}";
+            paraData.skuId = "${skuId}";
+            paraData.levelId = "${levelId}";
+            paraData.parentUserId = "${parentUserId}";
+            paraData.userMassage = "";
+        $.ajax({
+            url: "<%=basePath%>border/registerConfirm/save.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>" + data.url;
                 }
-            });
-        }
-
-    })
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
 </script>
 </html>

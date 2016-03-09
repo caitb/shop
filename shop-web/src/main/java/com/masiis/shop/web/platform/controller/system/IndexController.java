@@ -7,6 +7,7 @@ import com.masiis.shop.dao.po.PbBanner;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,12 +30,16 @@ public class IndexController extends BaseController {
     private IndexShowService indexShowService;
     @Resource
     private ProductService productService;
+    @Resource
+    private UserService userService;
 
     @RequestMapping("/index")
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
+        ComUser comUser = userService.getUserById(1l);
+        if (comUser != null) {
+            request.getSession().setAttribute("comUser", comUser);
+        }
         HttpSession session = request.getSession();
-        //获取用户信息
-        ComUser comUser =(ComUser)session.getAttribute("comUser");
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片

@@ -11,7 +11,7 @@
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
         <result column="is_pay" property="isPay" jdbcType="INTEGER" />
         <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
-        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -24,11 +24,11 @@
         insert into pf_user_sku (id, create_time, code,
         pid, user_id, sku_id,
         agent_level_id, is_pay, is_certificate,
-        pf_corder_id, remark)
+        pf_border_id, remark)
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR},
         #{pid,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
         #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER}, #{isCertificate,jdbcType=INTEGER},
-        #{pfCorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+        #{pfBorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku" >
@@ -41,30 +41,33 @@
         agent_level_id = #{agentLevelId,jdbcType=INTEGER},
         is_pay = #{isPay,jdbcType=INTEGER},
         is_certificate = #{isCertificate,jdbcType=INTEGER},
-        pf_corder_id = #{pfCorderId,jdbcType=BIGINT},
+        pf_border_id = #{pfBorderId,jdbcType=BIGINT},
         remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_corder_id, remark
+        pf_border_id, remark
         from pf_user_sku
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_corder_id, remark
+        pf_border_id, remark
         from pf_user_sku
     </select>
 
-    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfUserSku" >
+    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_corder_id, remark
+        pf_border_id, remark
         from pf_user_sku
-        where user_id = #{userId,jdbcType=BIGINT}
-        and sku_id = #{skuId,jdbcType=INTEGER}
+        where user_id = #{userId}
+        and sku_id = #{skuId}
     </select>
-
 </mapper>
+
+
+
+

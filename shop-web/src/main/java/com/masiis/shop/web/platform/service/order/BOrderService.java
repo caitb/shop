@@ -47,7 +47,7 @@ public class BOrderService {
      * @param pfBorder
      * @param pfBorderItems
      */
-    public void AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
@@ -80,6 +80,7 @@ public class BOrderService {
         pfBorderOperationLog.setPfBorderStatus(0);
         pfBorderOperationLog.setRemark("新增订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        return pfBorder.getId();
     }
 
     /**

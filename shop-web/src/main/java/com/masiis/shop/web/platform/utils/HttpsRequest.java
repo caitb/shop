@@ -1,8 +1,11 @@
 package com.masiis.shop.web.platform.utils;
 
+import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
+import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
+import com.masiis.shop.web.platform.constants.WxAuthConstants;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -16,6 +19,7 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -25,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.URLEncoder;
 import java.security.*;
 import java.security.cert.CertificateException;
 
@@ -98,14 +103,35 @@ public class HttpsRequest implements IServiceRequest {
 
     public static void main(String[] args) throws UnrecoverableKeyException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpsRequest h = new HttpsRequest();
-        BrandWCPayReq br = new BrandWCPayReq();
-        br.setAppId("asdfds");
-        br.setPackages("dsdf");
-        XStream xStreamForRequestPostData = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
-        //将要提交给API的数据对象转换成XML格式数据Post给API
-        xStreamForRequestPostData.processAnnotations(BrandWCPayReq.class);
-        String postDataXML = xStreamForRequestPostData.toXML(br);
-        System.out.println(postDataXML);
+        UnifiedOrderReq order = new UnifiedOrderReq();
+        order.setAppid(WxAuthConstants.APPID);
+        //order.setAttach();
+        order.setBody("麦士测试商品02");
+        //order.setDetail();
+        //order.setDevice_info();
+        //order.setFee_type(); //默认中文
+        //order.setGoods_tag();
+        //order.setLimit_pay();
+        order.setMch_id(WxAuthConstants.WX_PAY_MCHID);
+        order.setNonce_str("AAAAAAAAAABBBBBBBBBB223223211");
+        order.setNotify_url("http://www.rd.masiis.com");
+        order.setOut_trade_no("TESTORDER0000000000000002");
+        order.setOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+        //order.setProduct_id();
+        order.setSpbill_create_ip("127.0.0.1");
+        //order.setSign();
+        order.setTrade_type("JSAPI");
+        order.setTotal_fee("1");
+        //order.setTime_start();
+        //order.setTime_expire();
+        String sign = "";
+        try {
+            sign = WXBeanUtils.toSignString(order);
+            order.setSign(sign);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        System.out.println(h.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", order));
     }
 
     /**
@@ -131,8 +157,10 @@ public class HttpsRequest implements IServiceRequest {
             //解决XStream对出现双下划线的bug
             XStream xStreamForRequestPostData = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
             //将要提交给API的数据对象转换成XML格式数据Post给API
-            String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
             xStreamForRequestPostData.processAnnotations(xmlObj.getClass());
+            String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
+            //String postDataXML = "<xml><appid><![CDATA[wxd5afa1deb29c6197]]></appid><mch_id><![CDATA[1319531601]]></mch_id><nonce_str><![CDATA[AAAAAAAAAABBBBBBBBBB223223211]]></nonce_str><sign><![CDATA[CF6E9C1A47CBA796F5A42BA7C3829075]]></sign><body><![CDATA[麦士测试商品02]]></body><out_trade_no><![CDATA[TESTORDER0000000000000002]]></out_trade_no><total_fee><![CDATA[1]]></total_fee><spbill_create_ip><![CDATA[127.0.0.1]]></spbill_create_ip><notify_url><![CDATA[http://www.rd.masiis.com]]></notify_url><trade_type><![CDATA[JSAPI]]></trade_type><openid><![CDATA[o2-m4wZWlG4mdln4SQJRo29YnL2U]]></openid></xml>"; //xStreamForRequestPostData.toXML(xmlObj);
+            //postDataXML = URLEncoder.encode(postDataXML, "UTF-8");
             StringEntity postEntity = new StringEntity(postDataXML, "UTF-8");
             httpPost.setEntity(postEntity);
 
@@ -146,6 +174,9 @@ public class HttpsRequest implements IServiceRequest {
         log.info("executing request" + httpPost.getRequestLine());
 
         try {
+            if(httpClient == null){
+                httpClient = new DefaultHttpClient();
+            }
             HttpResponse response = httpClient.execute(httpPost);
 
             HttpEntity entity = response.getEntity();
@@ -162,7 +193,7 @@ public class HttpsRequest implements IServiceRequest {
             log.error("http get throw SocketTimeoutException");
 
         } catch (Exception e) {
-            log.error("http get throw Exception");
+            log.error("http get throw Exception:" + e.getMessage());
 
         } finally {
             httpPost.abort();

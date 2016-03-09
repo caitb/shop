@@ -2,9 +2,12 @@ package com.masiis.shop.admin.controller.product;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.product.BrandService;
 import com.masiis.shop.admin.service.product.CategoryService;
 import com.masiis.shop.admin.service.product.ProductService;
+import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
@@ -21,10 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -54,6 +54,11 @@ public class ProductController {
         mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
 
         return mav;
+    }
+
+    @RequestMapping("/list.shtml")
+    public String list(HttpServletRequest request, HttpServletResponse response){
+        return "product/list";
     }
 
     @RequestMapping("/add.do")
@@ -105,6 +110,7 @@ public class ProductController {
                    realPath = realPath.substring(0, realPath.lastIndexOf("/"));
             for(int i=0; i<mainImgUrls.length; i++){
                 String imgAbsoluteUrl = realPath + mainImgUrls[i];
+                //ImageUtils.scale(imgAbsoluteUrl, imgAbsoluteUrl, 2, false);
                 OSSObjectUtils.uploadFile("mmshop", new File(imgAbsoluteUrl), "product/100_100/");
 
                 ComSkuImage comSkuImage = new ComSkuImage();
@@ -120,5 +126,17 @@ public class ProductController {
             productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
         }
         return "保存成功!";
+    }
+
+    @RequestMapping("/list.do")
+    @ResponseBody
+    public Object list(HttpServletRequest request, HttpServletResponse response,
+                       ComSku comSku,
+                       Integer pageNumber,
+                       Integer pageSize){
+
+        Map<String, Object> pageMap = productService.list(pageNumber, pageSize, comSku);
+
+        return pageMap;
     }
 }

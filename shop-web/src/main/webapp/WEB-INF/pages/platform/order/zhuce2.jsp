@@ -68,14 +68,14 @@
         preventDefault: false
     })
     var submit = function () {
-            var paraData = {};
-            paraData.realName = "${name}";
-            paraData.mobile = "${mobile}";
-            paraData.weixinId = "${weixinId}";
-            paraData.skuId = "${skuId}";
-            paraData.levelId = "${levelId}";
-            paraData.parentUserId = "${parentUserId}";
-            paraData.userMassage = "";
+        var paraData = {};
+        paraData.realName = "${name}";
+        paraData.mobile = "${mobile}";
+        paraData.weixinId = "${weixinId}";
+        paraData.skuId = "${skuId}";
+        paraData.levelId = "${levelId}";
+        paraData.parentUserId = "${parentUserId}";
+        paraData.userMassage = "";
         $.ajax({
             url: "<%=basePath%>border/registerConfirm/save.do",
             type: "post",
@@ -83,7 +83,9 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>" + data.url;
+                    var param = "?";
+                    param += "bOrderId=${bOrderId}";
+                    window.location.href = "<%=basePath%>border/pay.shtml" + param;
                 }
                 else {
                     alert(data.message);

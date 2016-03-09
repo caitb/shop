@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.certificate.CertificateMapper">
-
     <resultMap id="CertificateResultMap" type="com.masiis.shop.dao.beans.certificate.CertificateInfo">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
@@ -12,17 +11,16 @@
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
         <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
         <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
-        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="wx_nk_name" property="ctName" jdbcType="VARCHAR"/>
         <result column="name" property="skuName" jdbcType="VARCHAR"/>
         <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT"/>
-        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
-
 
         <association column="pf_user_sku_id" property="pfUserCertificateInfo"
                      javaType="com.masiis.shop.dao.po.PfUserCertificate">
             <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+            <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER"/>
             <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
             <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
             <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
@@ -30,9 +28,17 @@
             <result column="status" property="status" jdbcType="INTEGER"/>
         </association>
 
+        <association column="user_id" property="comUser"
+                     javaType="com.masiis.shop.dao.po.ComUser">
+            <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+            <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+            <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+            <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+        </association>
+
     </resultMap>
     <select id="getCertificateInfo" parameterType="java.util.HashMap" resultMap="CertificateResultMap">
-         SELECT u.wx_nk_name,u.real_name,
+         SELECT u.wx_nk_name,u.real_name,u.id_card,u.id_card_front_url,u.id_card_back_url,
                  sr.parent_user_id,
                  sku.name,
                  ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
@@ -58,5 +64,31 @@
             <if test="agentLevel !=null">
                 AND ctf.agent_level_id = #{agentLevel}
             </if>
+    </select>
+    <!--> 表示生成授权书<-->
+    <update id="updateCertificateFlag" parameterType="int">
+        UPDATE pf_user_sku SET is_certificate = 1
+        WHERE id = #{id}
+    </update>
+    <!--> 表示审核授权书<-->
+    <update id="updateCertificateStatus" parameterType="java.util.HashMap">
+        UPDATE pf_user_certificate SET status = #{status}
+        WHERE pf_user_sku_id = #{pfUserSkuId}
+    </update>
+    <select id="get" parameterType="int" resultMap="CertificateResultMap">
+        SELECT * FROM pf_user_sku WHERE id = #{id}
+    </select>
+    <select id="getApproveInfo" parameterType="int" resultMap="CertificateResultMap">
+        SELECT  u.wx_nk_name,u.real_name,u.id_card,u.id_card_front_url,u.id_card_back_url,
+                 sr.parent_user_id,
+                 sku.name,
+                 ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
+                 pfku.id
+         FROM  pf_user_sku pfku
+            LEFT JOIN pf_user_certificate ctf ON ctf.pf_user_sku_id = pfku.id
+            LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
+            LEFT JOIN com_user u ON pfku.user_id = u.id
+            LEFT JOIN sf_user_relation sr ON sr.user_id = pfku.user_id
+         WHERE pfku.id = #{id}
     </select>
 </mapper>

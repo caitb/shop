@@ -1,5 +1,7 @@
 package com.masiis.shop.dao.beans.certificate;
 
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
 
@@ -16,9 +18,11 @@ public class CertificateInfo extends PfUserSku {
 
     private Long parentUserId; //父ID
 
-    private String realName;//代理人姓名
-
     private String approveType;//审核类型: 1 平台审核 ,2 合伙人审核
+
+    private PfBorder pfBorder;//代理订单属性
+
+    private ComUser comUser;//用户信息
 
     public String getCtName() {
         return ctName;
@@ -52,19 +56,27 @@ public class CertificateInfo extends PfUserSku {
         this.parentUserId = parentUserId;
     }
 
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
     public String getApproveType() {
         return approveType;
     }
 
     public void setApproveType(String approveType) {
         this.approveType = approveType;
+    }
+
+    public PfBorder getPfBorder() {
+        return pfBorder;
+    }
+
+    public void setPfBorder(PfBorder pfBorder) {
+        this.pfBorder = pfBorder;
+    }
+
+    public ComUser getComUser() {
+        return comUser;
+    }
+
+    public void setComUser(ComUser comUser) {
+        this.comUser = comUser;
     }
 }

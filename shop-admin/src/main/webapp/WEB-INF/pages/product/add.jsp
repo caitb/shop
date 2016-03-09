@@ -24,10 +24,13 @@
 
 
     <!-- Le styles -->
-    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.css" rel="stylesheet">
-    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="<%=basePath%>static/class/upload-plugin/control/css/zyUpload.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/upload-plugin/control/css/zyUpload.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-validator/css/bootstrapValidator.css">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/bootstrap-validator/js/bootstrapValidator.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -408,19 +411,117 @@
         <div class="form-group">
             <label class="col-sm-5"></label>
             <div class="col-sm-6">
-                <button type="button" class="btn btn-lg btn-default">重置</button>
-                <button type="button" class="btn btn-lg btn-info" id="skuSave">保存</button>
+                <button type="reset" class="btn btn-lg btn-default">重置</button>
+                <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
             </div>
             <script>
-                $('#skuSave').on('click', function(){
-                    $('#content').val(UE.getEditor('editor').getAllHtml());
-                    $.ajax({
-                        url: '<%=basePath%>product/add.do',
-                        type: 'post',
-                        data: $('#skuForm').serialize(),
-                        success: function(msg){
-                            alert(msg);
+                <%--$('#skuSave').on('click', function(){--%>
+                    <%--$('#content').val(UE.getEditor('editor').getAllHtml());--%>
+                    <%--$.ajax({--%>
+                        <%--url: '<%=basePath%>product/add.do',--%>
+                        <%--type: 'post',--%>
+                        <%--data: $('#skuForm').serialize(),--%>
+                        <%--success: function(msg){--%>
+                            <%--alert(msg);--%>
+                        <%--}--%>
+                    <%--});--%>
+                <%--});--%>
+
+                $(document).ready(function() {
+                    $('#skuForm').bootstrapValidator({
+                        message: '必须填写',
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            name: {
+                                message: '必须填写!',
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            artNo: {
+                                message: '必须填写!',
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            barCode: {
+                                message: '必须填写!',
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            categoryName: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            categoryId: {
+                                message: '请选择商品类别!',
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            brandId: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            priceCost: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            priceMarket: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            priceRetail: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            discounts: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            'quantitys[]': {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            'distributionDiscounts[]': {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            }
                         }
+                    })
+                    .on('success.form.bv', function(e) {
+                        // Prevent form submission
+                        e.preventDefault();
+
+                        // Get the form instance
+                        var $form = $(e.target);
+
+                        // Get the BootstrapValidator instance
+                        var bv = $form.data('bootstrapValidator');
+
+                        // Use Ajax to submit form data
+                        $('#content').val(UE.getEditor('editor').getAllHtml());
+                        $.ajax({
+                            url: '<%=basePath%>product/add.do',
+                            type: 'post',
+                            data: $('#skuForm').serialize(),
+                            success: function(msg){
+                                alert(msg);
+                            }
+                        });
                     });
                 });
             </script>

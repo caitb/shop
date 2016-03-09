@@ -10,6 +10,7 @@ import com.masiis.shop.web.platform.service.user.ComAreaService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by hzzh on 2016/3/7.
+ * Created by hanzengzhi on 2016/3/7.
  * 用户地址
  */
 @Controller
@@ -51,10 +52,11 @@ public class UserAddressController {
      * @author  hanzengzhi
      * @date  2016/3/7 23:27
      */
-    @RequestMapping("/addAddress.do")
+    @RequestMapping("/addOrUpdateAddress.do")
     @ResponseBody
-    public String addAddress(HttpServletRequest request,
+    public String addOrUpdateAddress(HttpServletRequest request,
                              HttpServletResponse response,
+                                     @RequestParam(value = "id", required = false) Integer id,
                              @RequestParam(value = "name", required = true) String name,
                              @RequestParam(value = "phone", required = true) String phone,
                              @RequestParam(value = "postcode", required = true) String postcode,
@@ -66,6 +68,7 @@ public class UserAddressController {
                              @RequestParam(value = "countyName", required = true) String countyName,
                              @RequestParam(value = "street", required = true) String street,
                              @RequestParam(value = "detailAddress", required = true) String detailAddress,
+                                     @RequestParam(value = "operateType", required = true) String operateType,
                              Model model)throws JsonProcessingException {
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         ComUserAddress comUserAddress = new ComUserAddress();
@@ -86,14 +89,54 @@ public class UserAddressController {
         comUserAddress.setAddress(detailAddress);
         comUserAddress.setCreateTime(new Date());
         comUserAddress.setIsDefault(0);//地址不设为默认的
-        int i = userAddressService.addComUserAddress(comUserAddress);
+        int i = 0;
+        if (operateType.equals("save")){
+            i = userAddressService.addComUserAddress(comUserAddress);
+        }else{
+            comUserAddress.setId(id);
+            i = userAddressService.updateComUserAddress(comUserAddress);
+        }
         if (i==1){
-            java.lang.System.out.println();
             return "success";
         }else{
             return "false";
         }
+    }
 
+    /**
+     * 跳转到编辑地址界面
+     * @author  hanzengzhi
+     * @date  2016/3/9 18:14
+     */
+    @RequestMapping("/toEditAddress.html")
+    public String toEditAddress(HttpServletRequest request,
+                                HttpServletResponse response,
+                                @RequestParam(value = "id", required = true)Integer id,
+                                Model model)throws Exception{
+        //获得用户地址
+        if (StringUtils.isEmpty(id)){
+            id = 1;
+        }
+        ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
+        if (comUserAddress == null){
+        }else{
+            model.addAttribute("comUserAddress", comUserAddress);
+        }
+        //获得省市区
+        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
+        ObjectMapper objectMapper = new ObjectMapper();
+        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));
+        return "platform/order/editAddress";
+    }
+    /**
+     * 跳转到选择地址界面
+     * @author  hanzengzhi
+     * @date  2016/3/9 15:14
+     */
+    @RequestMapping("/toChooseAddressPage.html")
+    public String toChooseAddressPage(HttpServletRequest request,
+                                      HttpServletResponse response){
+        return "platform/order/xuanze";
     }
     /**
      * 跳转到管理地址界面
@@ -125,5 +168,51 @@ public class UserAddressController {
         List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
         String returnJson = objectMapper.writeValueAsString(comUserAddressList);
         return returnJson;
+    }
+    /**
+     * 删除地址
+     * @author  hanzengzhi
+     * @date  2016/3/9 15:21 
+     */
+    @RequestMapping("/deleteUserAddressById.do")
+    @ResponseBody
+    public Boolean deleteUserAddressById(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "id", required = true)Integer id)throws Exception{
+        if (StringUtils.isEmpty(id)){
+            id = 1;
+        }else{
+
+        }
+       int i = userAddressService.deleteUserAddressById(id);
+        if (i==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /**
+     * 设置地址为默认地址
+     * @author  hanzengzhi
+     * @date  2016/3/9 16:26
+     */
+    @RequestMapping("/settingDefaultAddress.do")
+    @ResponseBody
+    public Boolean settingDefaultAddress(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "id", required = true)Integer id){
+        if (StringUtils.isEmpty(id)){
+            id = 1;
+        }else{
+        }
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        Long userId = null;
+        if (comUser!=null){
+            userId = comUser.getId();
+        }else{
+            userId = 1L;
+        }
+        Boolean bl = userAddressService.settingDefaultAddress(id,userId);
+        return bl;
     }
 }

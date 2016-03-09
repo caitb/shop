@@ -72,4 +72,20 @@ public class COrderService {
         pfCorder.setId(id);
         return  pfCorderMapper.queryPfCorderByParam(pfCorder);
     }
+    /**
+     * 判断用户是否使用过商品
+     * @author  hanzengzhi
+     * @date  2016/3/9 11:39
+     */
+    public Boolean isApplyTrial(Long userId,Integer skuId){
+        PfUserTrial pfUserTrial = new PfUserTrial();
+        pfUserTrial.setUserId(userId);
+        pfUserTrial.setSkuId(skuId);
+        List<PfUserTrial> pfUserTrials = userService.isApplyTrial(pfUserTrial);
+        if (pfUserTrials!=null&&pfUserTrials.size()>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

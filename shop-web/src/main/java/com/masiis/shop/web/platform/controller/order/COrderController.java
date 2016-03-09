@@ -55,6 +55,36 @@ public class COrderController extends BaseController {
         return "platform/order/jixuguangguang";
     }
     /**
+     * 验证商品是否使用过
+     * @author  hanzengzhi
+     * @date  2016/3/9 11:10
+     */
+    @RequestMapping("/isApplyTrial.do")
+    @ResponseBody
+    public String isApplyTrial(HttpServletRequest request,
+                               HttpServletResponse response,
+                               @RequestParam(value = "skuId", required = true) Integer skuId) {
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        Long userId = null;
+        if (comUser != null) {
+            userId = comUser.getId();
+        } else {
+            userId = 1L;
+        }
+        if (StringUtils.isEmpty(userId)) {
+            userId = 1L;
+        }
+        if (StringUtils.isEmpty(skuId)) {
+            skuId = 1;
+        }
+        Boolean bl = cOrderService.isApplyTrial(userId, skuId);
+        if (bl){
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+    /**
      * 跳转到试用申请界面
      * @author  hanzengzhi
      * @date  2016/3/5 13:45

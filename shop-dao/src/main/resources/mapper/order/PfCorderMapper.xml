@@ -40,9 +40,9 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorder" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorder" useGeneratedKeys="true" keyProperty="id">
             insert into pf_corder
-               (
+               (id,
                 create_time,
                 create_man,
                 order_code,
@@ -75,6 +75,7 @@
                 remark
                 )
         values (
+                #{id,jdbcType=BIGINT},
                 #{pfCorder.createTime},
                 #{pfCorder.createMan},
                 #{pfCorder.orderCode,jdbcType=VARCHAR},

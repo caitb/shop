@@ -2,6 +2,7 @@ package com.masiis.shop.dao.platform.order;
 
 
 import com.masiis.shop.dao.po.PfCorder;
+import com.masiis.shop.dao.po.PfCorderOperationLog;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface PfCorderMapper {
 
     *//**
      * 根据id删除一条记录
-     * @param id
+     * @param
      *//*
     void deleteById(@Param("id") Long id);
 
@@ -31,4 +32,5 @@ public interface PfCorderMapper {
 
     List<PfCorder> queryPfCorderByParam(@Param("pfCorder") PfCorder pfCorder);
 
+    void insertPfCorderOperationLog(@Param("pcol")PfCorderOperationLog pcol);
 }

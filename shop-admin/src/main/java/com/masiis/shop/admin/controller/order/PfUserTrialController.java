@@ -82,6 +82,7 @@ public class PfUserTrialController extends BaseController {
         pfUserTrial = trialService.findById(pfUserTrial.getId());
         SfUserRelation sfUserRelation =  trialService.findPidById(pfUserTrial.getUserId());
 
+        //生成试用订单
         PfCorder pfCorder = new PfCorder();
 
         pfCorder.setCreateTime(new Date());
@@ -93,7 +94,15 @@ public class PfUserTrialController extends BaseController {
         pfCorder.setUserPid(sfUserRelation.getParentUserId());
         pfCorder.setUserMassage("");
         pfCorder.setSupplierId(0);
-        trialService.insert(pfCorder);
+
+        //生成试用日志
+        PfCorderOperationLog pcol = new PfCorderOperationLog();
+        pcol.setCreateTime(new Date());
+        pcol.setCreateMan(pfUserTrial.getId());
+
+        pcol.setPfCorderStatus(0);
+
+        trialService.insert(pfCorder,pcol);
 
         return "redirect:list.shtml";
     }

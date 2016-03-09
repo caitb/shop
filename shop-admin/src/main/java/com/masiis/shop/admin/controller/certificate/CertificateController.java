@@ -63,7 +63,7 @@ public class CertificateController {
         return pageMap;
      }
 
-    @RequestMapping("/update")
+    @RequestMapping("/update.do")
     @ResponseBody
     public String update(HttpServletRequest request, HttpServletResponse response,@RequestParam(required = true) Integer id)throws Exception {
         certificateService.getApproveInfoById(id);

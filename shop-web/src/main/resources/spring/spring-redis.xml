@@ -11,7 +11,10 @@
 
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
         <property name="poolConfig" ref="poolConfig" />
-        <property name="hostName" value="${redis.host}" />
+        <property name="hostName" value="101.201.209.46" />
+        <property name="port" value="6378"/>
+        <property name="database" value="1"/>
+        <property name="password" value="104a7ea0618a44c1:Mas67890"/>
     </bean>
 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
@@ -23,8 +26,8 @@
     </bean>
 
     <!-- 将session放入redis -->
-    <!--<bean id="redisHttpSessionConfiguration"-->
-          <!--class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">-->
-        <!--<property name="maxInactiveIntervalInSeconds" value="${redis.session.maxInterval}" />-->
-    <!--</bean>-->
+    <bean id="redisHttpSessionConfiguration"
+          class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+        <property name="maxInactiveIntervalInSeconds" value="${redis.session.maxInterval}" />
+    </bean>
 </beans>

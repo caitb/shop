@@ -6,25 +6,57 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
-        <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
-        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
-        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
-        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
-        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
-        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
-        <result column="imgUrl" property="img_url" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
+        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="wx_nk_name" property="ctName" jdbcType="VARCHAR"/>
+        <result column="name" property="skuName" jdbcType="VARCHAR"/>
+        <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+
+
+        <association column="pf_user_sku_id" property="pfUserCertificateInfo"
+                     javaType="com.masiis.shop.dao.po.PfUserCertificate">
+            <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+            <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+            <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP"/>
+            <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+            <result column="imgUrl" property="img_url" jdbcType="VARCHAR"/>
+            <result column="status" property="status" jdbcType="INTEGER"/>
+        </association>
+
     </resultMap>
-    <select id="getCertificateInfo" resultMap="CertificateResultMap">
-         SELECT u.wx_nk_name,ctf.mobile,ctf.wx_id,
-                 ctf.agent_level_id,ctf.begin_time
-         FROM pf_user_certificate ctf
-         LEFT JOIN com_user u ON ctf.user_id = u.id
+    <select id="getCertificateInfo" parameterType="java.util.HashMap" resultMap="CertificateResultMap">
+         SELECT u.wx_nk_name,u.real_name,
+                 sr.parent_user_id,
+                 sku.name,
+                 ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
+                 pfku.id
+         FROM  pf_user_sku pfku
+            LEFT JOIN pf_user_certificate ctf ON ctf.pf_user_sku_id = pfku.id
+            LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
+            LEFT JOIN com_user u ON pfku.user_id = u.id
+            LEFT JOIN sf_user_relation sr ON sr.user_id = pfku.user_id
+         WHERE 1=1
+            <if test="beginTime !=null">
+                AND ctf.begin_time = #{beginTime}
+            </if>
+            <if test="endTime !=null">
+                AND ctf.end_time = #{endTime}
+            </if>
+            <if test="ctName !=null">
+                AND u.wx_nk_name = #{ctName}
+            </if>
+            <if test="mobile !=null">
+                AND ctf.mobile = #{mobile}
+            </if>
+            <if test="agentLevel !=null">
+                AND ctf.agent_level_id = #{agentLevel}
+            </if>
     </select>
 </mapper>

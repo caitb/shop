@@ -19,22 +19,34 @@ public class UserAddressService {
 
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
+
     /**
      * 根据条件查询用户地址
-     * @author  hanzengzhi
-     * @date  2016/3/7 11:43
+     *
+     * @author hanzengzhi
+     * @date 2016/3/7 11:43
      */
-    public List<ComUserAddress> queryComUserAddressesByParam(ComUserAddress comUserAddress){
+    public List<ComUserAddress> queryComUserAddressesByParam(ComUserAddress comUserAddress) {
         return comUserAddressMapper.queryComUserAddressesByParam(comUserAddress);
     }
 
     /**
      * 增加收货地址
-     * @author  hanzengzhi
-     * @date  2016/3/7 15:29
+     *
+     * @author hanzengzhi
+     * @date 2016/3/7 15:29
      */
-    public int addComUserAddress(ComUserAddress comUserAddress){
-        return  comUserAddressMapper.insert(comUserAddress);
+    public int addComUserAddress(ComUserAddress comUserAddress) {
+        return comUserAddressMapper.insert(comUserAddress);
     }
 
+    /**
+     * 根据ID获取用户地址
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/9 10:57
+     */
+    public ComUserAddress getUserAddressById(Integer userAddressId) {
+        return comUserAddressMapper.selectByPrimaryKey(userAddressId);
+    }
 }

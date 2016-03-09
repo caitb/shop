@@ -34,7 +34,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public ComUser getUserById(Long userId) {
+    public ComUser getUserById(Long userId) throws Exception{
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         return comUser;
     }
@@ -44,19 +44,20 @@ public class UserService {
      *
      * @param comUserAddress
      */
-    public void addComUserAddress(ComUserAddress comUserAddress) {
+    public void addComUserAddress(ComUserAddress comUserAddress) throws Exception{
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }
         comUserAddressMapper.insert(comUserAddress);
     }
 
+
     /**
      * 修改用户地址
      *
      * @param comUserAddress
      */
-    public void updateComUserAddress(ComUserAddress comUserAddress) {
+    public void updateComUserAddress(ComUserAddress comUserAddress) throws Exception{
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }
@@ -96,6 +97,16 @@ public class UserService {
      */
     public void updateUserTrial(PfUserTrial pfUserTrial){
         pfUserTrialMapper.updateById(pfUserTrial);
+    }
+
+    /**
+     * 根据userId和skuId
+     * 验证商品是否使用过
+     * @author  hanzengzhi
+     * @date  2016/3/9 11:16
+     */
+    public List<PfUserTrial> isApplyTrial(PfUserTrial pfUserTrial){
+       return pfUserTrialMapper.isApplyTrial(pfUserTrial);
     }
 
     /**

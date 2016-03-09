@@ -21,7 +21,7 @@ public class ComAgentLevel {
     /**
      * 代理等级
      */
-    private Long id;
+    private Integer id;
     /**
      * 创建时间
      */
@@ -44,10 +44,10 @@ public class ComAgentLevel {
     private BigDecimal discount;
     private String remark;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public Date getCreateTime() {

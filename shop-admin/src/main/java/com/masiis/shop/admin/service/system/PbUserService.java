@@ -21,7 +21,7 @@ public class PbUserService {
      * @param id
      * @return
      */
-    public PbUser findByid(Long id){
+    public PbUser findById(Long id){
         return pbUserMapper.selectById(id);
     }
 

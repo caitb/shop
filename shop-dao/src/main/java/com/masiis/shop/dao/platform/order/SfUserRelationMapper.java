@@ -13,4 +13,6 @@ public interface SfUserRelationMapper {
      * @return
      */
     SfUserRelation findByUserId(@Param("id") Long id);
+
+
 }

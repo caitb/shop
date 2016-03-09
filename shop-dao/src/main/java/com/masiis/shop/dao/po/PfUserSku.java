@@ -3,18 +3,12 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-09 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.util.Date;
 
-/**
- * 平台用户代理商品关系表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class PfUserSku {
 
     private Integer id;
@@ -30,6 +24,10 @@ public class PfUserSku {
      * 父级id(0的时候平台审核)
      */
     private Integer pid;
+    /**
+     * 用户id
+     */
+    private Long userId;
     /**
      * sku主键id
      */
@@ -49,11 +47,7 @@ public class PfUserSku {
     /**
      * 代理订单id
      */
-    private Long pfCorderId;
-    /**
-     * 是否授权0未授权1已授权
-     */
-    private Integer isAuthorized;
+    private Long pfBorderId;
     /**
      * 备注
      */
@@ -83,6 +77,12 @@ public class PfUserSku {
     public void setPid(Integer pid) {
         this.pid = pid;
     }
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
     public Integer getSkuId() {
         return skuId;
     }
@@ -107,17 +107,11 @@ public class PfUserSku {
     public void setIsCertificate(Integer isCertificate) {
         this.isCertificate = isCertificate;
     }
-    public Long getPfCorderId() {
-        return pfCorderId;
+    public Long getPfBorderId() {
+        return pfBorderId;
     }
-    public void setPfCorderId(Long pfCorderId) {
-        this.pfCorderId = pfCorderId;
-    }
-    public Integer getIsAuthorized() {
-        return isAuthorized;
-    }
-    public void setIsAuthorized(Integer isAuthorized) {
-        this.isAuthorized = isAuthorized;
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
     public String getRemark() {
         return remark;

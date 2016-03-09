@@ -17,11 +17,11 @@ import java.math.BigDecimal;
  */
 public class SfSkuDistribution {
 
-    private Long id;
+    private Integer id;
     /**
      * SKU主键ID
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 从小到大对应分润
      */
@@ -32,19 +32,19 @@ public class SfSkuDistribution {
     private BigDecimal discount;
     private String remark;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 

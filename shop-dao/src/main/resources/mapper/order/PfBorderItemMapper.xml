@@ -9,6 +9,7 @@
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
         <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
         <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
         <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
         <result column="is_comment" property="isComment" jdbcType="INTEGER" />
@@ -24,14 +25,14 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
         insert into pf_border_item (id, create_time, pf_border_id, 
             spu_id, sku_id, sku_name, 
-            quantity, unit_price, total_price, 
-            is_comment, is_return, remark
-            )
+            quantity, original_price, unit_price, 
+            total_price, is_comment, is_return, 
+            remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT}, 
             #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, 
-            #{quantity,jdbcType=INTEGER}, #{unitPrice,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, 
-            #{isComment,jdbcType=INTEGER}, #{isReturn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
-            )
+            #{quantity,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL}, 
+            #{totalPrice,jdbcType=DECIMAL}, #{isComment,jdbcType=INTEGER}, #{isReturn,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
@@ -42,6 +43,7 @@
             sku_id = #{skuId,jdbcType=INTEGER},
             sku_name = #{skuName,jdbcType=VARCHAR},
             quantity = #{quantity,jdbcType=INTEGER},
+            original_price = #{originalPrice,jdbcType=DECIMAL},
             unit_price = #{unitPrice,jdbcType=DECIMAL},
             total_price = #{totalPrice,jdbcType=DECIMAL},
             is_comment = #{isComment,jdbcType=INTEGER},
@@ -51,15 +53,15 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, unit_price, 
-        total_price, is_comment, is_return, remark
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price, 
+        unit_price, total_price, is_comment, is_return, remark
         from pf_border_item
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, unit_price, 
-        total_price, is_comment, is_return, remark
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price, 
+        unit_price, total_price, is_comment, is_return, remark
         from pf_border_item
     </select>
 

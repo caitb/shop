@@ -93,7 +93,7 @@ public class ProductService {
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);
                     List<ComSkuImage> comSkuImages = new ArrayList<ComSkuImage>();
                     comSkuImages.add(comSkuImage);
-                    product.setShipAmount(comSpu.getShipAmount());
+                    product.setShipAmount(comSpu.getShipAmount().longValue());
                 }
             }
         } catch (Exception e) {

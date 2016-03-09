@@ -26,6 +26,13 @@ public interface PfUserTrialMapper {
     List<PfUserTrial> selectByCondition(@Param("pfUserTrial")PfUserTrial pfUserTrial);
 
     /**
+     * 
+     * @author  hanzengzhi
+     * @date  2016/3/9 11:31 
+     */
+    List<PfUserTrial> isApplyTrial(@Param("pfUserTrial")PfUserTrial pfUserTrial);
+
+    /**
      * 添加一条记录
      * @param pfUserTrial
      */
@@ -43,4 +50,7 @@ public interface PfUserTrialMapper {
      */
     void deleteById(@Param("id")Long id);
 
+    void reason(@Param("pfUserTrial") PfUserTrial pfUserTrial);
+
+    String selectReasonById(Long id);
 }

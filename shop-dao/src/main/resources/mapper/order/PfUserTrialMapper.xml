@@ -25,6 +25,14 @@
         WHERE
                id = #{id}
     </select>
+    <select id="selectReasonById" resultType="String">
+        SELECT
+               reason
+        FROM
+               pf_user_trial
+        WHERE
+               id = #{id}
+    </select>
 
     <!-- 根据条件查询记录 -->
     <select id="selectByCondition" resultMap="BaseResultMap">
@@ -57,6 +65,19 @@
         </where>
     </select>
 
+    <select id="isApplyTrial" resultMap="BaseResultMap" >
+        SELECT
+        id, create_time, user_id, spu_id, sku_id, status, reason, name, mobile, weixin_id, remark
+        FROM
+        pf_user_trial
+        <where>
+            user_id =#{pfUserTrial.userId}
+            AND sku_id =#{pfUserTrial.skuId}
+            AND status =0 OR  status =1
+        </where>
+    </select>
+
+
     <!-- 添加一条记录 -->
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserTrial" >
         insert into pf_user_trial (id, create_time, user_id,
@@ -70,7 +91,7 @@
     </insert>
 
     <!-- 根据id更新一条记录 -->
-    <update id="updateById">
+    <!--<update id="updateById">
         UPDATE pf_user_trial
         SET
                create_time = #{pfUserTrial.createTime},
@@ -83,6 +104,21 @@
                mobile = #{pfUserTrial.mobile},
                weixin_id = #{pfUserTrial.weixinId},
                remark = #{pfUserTrial.remark}
+        WHERE
+               id = #{pfUserTrial.id}
+    </update>-->
+    <update id="updateById">
+        UPDATE pf_user_trial
+        SET
+               status = 1
+        WHERE
+               id = #{pfUserTrial.id}
+    </update>
+    <update id="reason">
+        UPDATE pf_user_trial
+        SET
+              status = 2,
+              remark = #{pfUserTrial.remark}
         WHERE
                id = #{pfUserTrial.id}
     </update>

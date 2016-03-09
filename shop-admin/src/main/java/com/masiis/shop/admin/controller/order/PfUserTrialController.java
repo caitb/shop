@@ -8,9 +8,7 @@ import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.PfUserTrialService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserService;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,10 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/trial")
@@ -47,7 +42,7 @@ public class PfUserTrialController extends BaseController {
                        String order,
                        Integer offset,
                        Integer limit
-                       ){
+    ){
 
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 10 : limit;
@@ -60,11 +55,13 @@ public class PfUserTrialController extends BaseController {
         if(pfUserTrials != null && pfUserTrials.size() > 0){
             for(PfUserTrial pfUserTrial : pfUserTrials){
                 ComUser comUser = comUserService.findById(pfUserTrial.getUserId());
-                ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
+                String referrer = comUserService.findByParentId(pfUserTrial.getUserId());
+                ComSku comSku = skuService.findById((long) pfUserTrial.getSkuId().intValue());
 
                 TrialInfo trialInfo = new TrialInfo();
                 trialInfo.setPfUserTrial(pfUserTrial);
                 trialInfo.setComUser(comUser);
+                trialInfo.setReferrer(referrer);
                 trialInfo.setComSku(comSku);
 
                 trialInfos.add(trialInfo);
@@ -78,4 +75,38 @@ public class PfUserTrialController extends BaseController {
         return pageMap;
     }
 
+
+    @RequestMapping("pass")
+    public String pass(PfUserTrial pfUserTrial){
+        trialService.pass(pfUserTrial);
+        pfUserTrial = trialService.findById(pfUserTrial.getId());
+        SfUserRelation sfUserRelation =  trialService.findPidById(pfUserTrial.getUserId());
+
+        PfCorder pfCorder = new PfCorder();
+
+        pfCorder.setCreateTime(new Date());
+        pfCorder.setCreateMan(pfUserTrial.getId());
+        pfCorder.setOrderCode("00000");
+        pfCorder.setOrderType(0);
+        pfCorder.setSkuId(pfUserTrial.getSkuId());
+        pfCorder.setUserId(pfUserTrial.getUserId());
+        pfCorder.setUserPid(sfUserRelation.getParentUserId());
+        pfCorder.setUserMassage("");
+        pfCorder.setSupplierId(0);
+        trialService.insert(pfCorder);
+
+        return "redirect:list.shtml";
+    }
+    @RequestMapping("reason")
+    public String reason(PfUserTrial pfUserTrial){
+        trialService.reason(pfUserTrial);
+        return "redirect:list.shtml";
+    }
+
+    @RequestMapping("cha.do")
+    @ResponseBody
+    public String cha(Long id){
+        String reason = trialService.selectById(id);
+        return reason;
+    }
 }

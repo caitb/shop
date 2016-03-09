@@ -30,7 +30,7 @@
                 <a href="#"><h2>收货人：<b>王平</b> <span>18611536163</span></h2></a>
                 <a href="#"><p>收货地址： <span>北京市 朝阳区 丰联广场A座809A</span><img src="<%=path%>/static/css/images/next.png" alt=""></p></a>
             </div>
-           
+
         </section>
         <section class="sec2">
             <p class="photo">

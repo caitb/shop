@@ -46,16 +46,18 @@
         </section>
         <section class="sec2">
             <h2>合伙人信息</h2>
-            <p>合伙人等级： <b>${levelName}</b></p>
+            <p>合伙人等级： <b>
+                <lable levelId="${levelId}">${levelName}</lable>
+            </b></p>
             <p>需要缴纳货款： <b>￥${amount}</b></p>
-            <p>上级合伙人手机号： <b>${parentMobile}</b><span>王平</span></p>
+            <p>上级合伙人手机号： <b>${parentMobile}</b><span>${pName}</span></p>
         </section>
 
     </main>
     <div class="footer">
         <section class="sec3">
             <p><a href="zhuce.html">返回修改</a></p>
-            <p><input id="submit" name="submit" type="button" text="确定"></p>
+            <p><a href="javascript:;" onclick="submit()">确定</a></p>
         </section>
     </div>
 </div>
@@ -65,24 +67,29 @@
     var myScroll = new IScroll("body", {
         preventDefault: false
     })
-    $(function () {
-        $("#submit").bind("click", function () {
-            var paraData;
-            $.ajax({
-                url: "<%=basePath%>border/registerConfirm/save",
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    if (data.isError == false) {
-                        window.location.href = "<%=basePath%>" + data.url;
-                    }
-                    else {
-                        alert(data.message);
-                    }
+    var submit = function () {
+            var paraData = {};
+            paraData.realName = "${name}";
+            paraData.mobile = "${mobile}";
+            paraData.weixinId = "${weixinId}";
+            paraData.skuId = "${skuId}";
+            paraData.levelId = "${levelId}";
+            paraData.parentUserId = "${parentUserId}";
+            paraData.userMassage = "";
+        $.ajax({
+            url: "<%=basePath%>border/registerConfirm/save.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>" + data.url;
                 }
-            });
+                else {
+                    alert(data.message);
+                }
+            }
         });
-
-    })
+    }
 </script>
 </html>

@@ -50,13 +50,12 @@
                     </p>
                     <div>
                         <h2>抗引力——快速瘦脸精华</h2>
-                        <h3>规格：<span>默认</span></h3>
+                        <h3></h3>
                         <p><span>￥298</span><b style="float:right; margin-right:10px;font-size:12px;">x1</b></p>
                     </div>
                 </section>
                 <section class="sec3">
-                    <p>运费<span>300.0</span></p>
-                    <p>库存<b>545454</b></p>
+                    <p>运费<span>到付</span></p>
                     <h1>共<b>800</b>件商品　运费：<span>￥300</span><b>　合计：</b><span style="padding-right: 10px;">￥15500.00</span></h1>
                     <p>留言：<input type="text"></p>
                 </section>

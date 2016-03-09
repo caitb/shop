@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JingHao on 2016/3/7 0007.
@@ -24,8 +25,17 @@ public class CertificateService {
       * @Date 2016/3/7 0007 下午 5:51
       * 授权书列表
       */
-    public List<CertificateInfo> getCertificates() {
-        return certificateMapper.getCertificateInfo();
+    public List<CertificateInfo> getCertificates(Map<String, Object> params) throws Exception{
+        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificateInfo(params);
+        if (certificateInfoList != null && certificateInfoList.size() > 0) {
+            for (CertificateInfo certificateInfo : certificateInfoList) {
+                if (certificateInfo != null && certificateInfo.getParentUserId() != null) {
+                    certificateInfo.setApproveType("合伙人审核");
+                } else {
+                    certificateInfo.setApproveType("平台审核");
+                }
+            }
+        }
+        return certificateInfoList;
     }
-
 }

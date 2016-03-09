@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.user.ComUserMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUser" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="openid" property="openid" jdbcType="VARCHAR" />
-        <result column="wx_nk_name" property="wxNkName" jdbcType="VARCHAR" />
-        <result column="wx_id" property="wxId" jdbcType="VARCHAR" />
-        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR" />
-        <result column="access_token" property="accessToken" jdbcType="VARCHAR" />
-        <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR" />
-        <result column="atoken_expire" property="atokenExpire" jdbcType="TIMESTAMP" />
-        <result column="rtoken_expire" property="rtokenExpire" jdbcType="TIMESTAMP" />
-        <result column="real_name" property="realName" jdbcType="VARCHAR" />
-        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-        <result column="id_card" property="idCard" jdbcType="VARCHAR" />
-        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR" />
-        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR" />
-        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
-        <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
-        <result column="city_id" property="cityId" jdbcType="INTEGER" />
-        <result column="city_name" property="cityName" jdbcType="VARCHAR" />
-        <result column="region_id" property="regionId" jdbcType="INTEGER" />
-        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
-        <result column="address" property="address" jdbcType="VARCHAR" />
-        <result column="is_agent" property="isAgent" jdbcType="INTEGER" />
-        <result column="sex" property="sex" jdbcType="INTEGER" />
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUser">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="wx_nk_name" property="wxNkName" jdbcType="VARCHAR"/>
+        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+        <result column="wx_head_img" property="wxHeadImg" jdbcType="VARCHAR"/>
+        <result column="access_token" property="accessToken" jdbcType="VARCHAR"/>
+        <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR"/>
+        <result column="atoken_expire" property="atokenExpire" jdbcType="TIMESTAMP"/>
+        <result column="rtoken_expire" property="rtokenExpire" jdbcType="TIMESTAMP"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+        <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="INTEGER"/>
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="region_id" property="regionId" jdbcType="INTEGER"/>
+        <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from com_user
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUser" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUser">
         insert into com_user (id, create_time, openid,
         wx_nk_name, wx_id, wx_head_img,
         access_token, refresh_token, atoken_expire,
@@ -54,7 +54,7 @@
         )
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUser" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUser">
         update com_user
         set create_time = #{createTime,jdbcType=TIMESTAMP},
         openid = #{openid,jdbcType=VARCHAR},
@@ -82,7 +82,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
@@ -90,10 +90,14 @@
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
+    <select id="findByParentId" resultType="String" parameterType="java.lang.Long" >
+        select cu.real_name from sf_user_relation sur
+        left join com_user cu on cu.id = sur.parent_user_id
+        and sur.user_id = #{userId,jdbcType=BIGINT}
+    </select>
 
 
-
-    <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
@@ -101,7 +105,7 @@
         from com_user
     </select>
 
-    <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,

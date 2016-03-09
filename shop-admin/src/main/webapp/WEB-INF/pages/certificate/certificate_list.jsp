@@ -37,19 +37,9 @@
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
-
             <div class="row">
                 <div class="col-xs-12">
-
                     <div class="table-responsive">
-                        <div id="toolbar">
-                            <button id="remove" class="btn btn-danger" disabled>
-                                <i class="glyphicon glyphicon-remove"></i> 删除
-                            </button>
-                            <button id="add" class="btn btn-primary" id="add">
-                                <i class="glyphicon glyphicon-add"></i> 添加
-                            </button>
-                        </div>
                         <table id="table"
                                data-toolbar="#toolbar"
                                data-search="true"
@@ -57,7 +47,7 @@
                                data-show-toggle="true"
                         <%--data-show-columns="true"--%>
                         <%--data-show-export="true"--%>
-                               data-detail-view="true"
+                               <%--data-detail-view="true"--%>
                                data-detail-formatter="detailFormatter"
                                data-minimum-count-columns="2"
                         <%--data-show-pagination-switch="true"--%>
@@ -66,7 +56,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/user/list.do"
+                               data-url="/certificate/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -79,12 +69,6 @@
                                     //height: getHeight(),
                                     locale: 'zh-CN',
                                     striped: true,
-                                    rowStyle: function rowStyle(value, row, index) {
-                                        return {
-                                            classes: 'text-nowrap another-class',
-                                            css: {}
-                                        };
-                                    },
                                     formatShowingRows: function (pageFrom, pageTo, totalRows) {
                                         return '当前显示 ' + pageFrom + " 到 " + pageTo + ', 总共 ' + totalRows;
                                     },
@@ -100,108 +84,66 @@
                                     columns: [
                                         [
                                             {
-                                                checkbox: true,
-                                                rowspan: 2,
-                                                align: 'center',
-                                                valign: 'middle'
-                                            }, {
-                                            title: 'ID',
-                                            field: 'id',
-                                            rowspan: 2,
-                                            align: 'center',
-                                            valign: 'middle',
-                                            sortable: true,
-                                            footerFormatter: totalTextFormatter
-                                        }, {
-                                            title: '详情',
-                                            colspan: 8,
-                                            align: 'center'
-                                        }
-                                        ],
-                                        [
-                                            {
-                                                field: 'userName',
-                                                title: '用户名',
+                                                field: 'id',
+                                                title: '序号',
                                                 sortable: true,
-                                                //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'trueName',
+                                                field: 'ctName',
                                                 title: '姓名',
-                                                sortable: true,
-                                                //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'password',
-                                                title: '密码',
-                                                //sortable: true,
-                                                //editable: true,
+                                                field: 'pfUserCertificateInfo.mobile',
+                                                title: '手机号码',
                                                 footerFormatter: totalNameFormatter,
-                                                formatter: function (value, row, index) {
-                                                    return '******';
-                                                },
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'pfUserCertificateInfo.wxId',
+                                                title: '微信号',
+                                                footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'email',
-                                                title: '邮箱',
+                                                title: '申请证书级别',
+                                                //sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'skuName',
+                                                title: '合伙商品',
+                                                //sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'realName',
+                                                title: '推荐人',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'sex',
-                                                title: '性别',
+                                                field: 'pfUserCertificateInfo.beginTime',
+                                                title: '加入时间',
                                                 sortable: true,
-                                                //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'age',
-                                                title: '年龄',
+                                                field: 'approveType',
+                                                title: '审核方',
                                                 sortable: true,
-                                                //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
-                                            {
-                                                field: 'phone',
-                                                title: '电话',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-//                                        {
-//                                        field: 'price',
-//                                        title: 'Item Price',
-//                                        sortable: true,
-//                                        align: 'center',
-//                                        editable: {
-//                                            type: 'text',
-//                                            title: 'Item Price',
-//                                            validate: function (value) {
-//                                                value = $.trim(value);
-//                                                if (!value) {
-//                                                    return 'This field is required';
-//                                                }
-//                                                if (!/^$/.test(value)) {
-//                                                    return 'This field needs to start width $.'
-//                                                }
-//                                                var data = $table.bootstrapTable('getData'),
-//                                                        index = $(this).parents('tr').data('index');
-//                                                console.log(data[index]);
-//                                                return '';
-//                                            }
-//                                        },
-//                                        footerFormatter: totalPriceFormatter
-//                                    },
                                             {
                                                 //field: 'operate',
                                                 title: '操作项',
@@ -273,14 +215,8 @@
 
                             function operateFormatter(value, row, index) {
                                 return [
-                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑',
-                                    '</a>',
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">授权',
-                                    //'<i class="glyphicon glyphicon-heart"></i>',
-                                    '</a>  ',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">冻结',
-                                    //'<i class="glyphicon glyphicon-remove"></i>',
-                                    '</a>'
+                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">查看申请',
+                                    '</a>  '
                                 ].join('');
                             }
 
@@ -409,7 +345,7 @@
         </div><!-- /.col -->
     </div>
 
-    <!-- 授权模态框（Modal） -->
+    <!-- 审批模态框（Modal） -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -420,18 +356,15 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        授权列表
+                        审核
                     </h4>
-                </div>
-                <div class="modal-body">
-                    在这里添加一些文本
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
                     <button type="button" class="btn btn-primary" id="btnSubmit">
-                        提交更改
+                        确认
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -451,52 +384,6 @@
                     <h4 class="modal-title" id="addModalLabel">
                         模态框标题
                     </h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" id="userForm" action="<%=basePath%>user/add.do" method="post">
-                        <div class="form-group">
-                            <label for="userName" class="col-sm-2 control-label">用户名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userName" name="userName" placeholder="用户名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="trueName" class="col-sm-2 control-label">姓名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="trueName" name="trueName" placeholder="姓名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">密码</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="密码">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">邮箱</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="sex" class="col-sm-2 control-label">性别</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="age" class="col-sm-2 control-label">年龄</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="col-sm-2 control-label">电话</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="电话">
-                            </div>
-                        </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
@@ -531,21 +418,7 @@
             });
 
         });
-
-        //保存用户信息
-        $('#addSubmit').on('click', function () {
-            $.ajax({
-                url: '<%=basePath%>user/add.do',
-                type: 'post',
-                data: $('#userForm').serialize(),
-                success: function (data) {
-                    alert(data);
-                    $('#addModal').modal('hide');
-                }
-            });
-        });
     </script>
-
 </div>
 </body>
 

@@ -3,177 +3,438 @@
 <mapper namespace="com.masiis.shop.dao.platform.product.ComSpuMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSpu" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <id column="name" property="name" jdbcType="VARCHAR" />
-        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <id column="create_man" property="createMan" jdbcType="BIGINT" />
-        <id column="category_id" property="categoryId" jdbcType="INTEGER" />
-        <id column="category_name" property="categoryName" jdbcType="VARCHAR" />
-        <id column="status" property="status" jdbcType="INTEGER" />
-        <id column="is_sale" property="isSale" jdbcType="INTEGER" />
-        <id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="up_time" property="upTime" jdbcType="TIMESTAMP" />
         <result column="down_time" property="downTime" jdbcType="TIMESTAMP" />
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
         <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+        <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
         <result column="slogan" property="slogan" jdbcType="VARCHAR" />
+        <result column="is_sale" property="isSale" jdbcType="INTEGER" />
+        <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
         <result column="is_trial" property="isTrial" jdbcType="INTEGER" />
-        <result column="content" property="content" jdbcType="LONGVARCHAR" />
         <result column="weight" property="weight" jdbcType="DECIMAL" />
         <result column="pack_length" property="packLength" jdbcType="DECIMAL" />
         <result column="pack_width" property="packWidth" jdbcType="DECIMAL" />
         <result column="pack_height" property="packHeight" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
-        <result column="art_no" property="artNo" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="art_no" property="artNo" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="ResultMapWithBLOBs" type="com.masiis.shop.dao.po.ComSpu" extends="BaseResultMap" >
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
+    </resultMap>
 
-    <!-- 根据id查找记录 -->
-    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+    <sql id="Base_Column_List" >
         id,
         name,
+        brand_id,
         create_time,
         create_man,
-        category_id,
-        category_name,
-        status,
-        is_sale,
-        is_delete,
-        brand_id,
         up_time,
         down_time,
         modify_time,
         modify_man,
+        category_id,
+        category_name,
+        status,
         slogan,
+        is_sale,
+        is_delete,
         is_trial,
-        content,
         weight,
         pack_length,
         pack_width,
         pack_height,
-        ship_amount, remark
-        from
-        com_spu
-        where
-        id = #{id}
+        ship_amount,
+        remark,
+        art_no
+    </sql>
+
+    <sql id="Blob_Column_List" >
+        content
+    </sql>
+
+    <select id="selectById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from com_spu
+        where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <!-- 根据条件查询记录 -->
-    <select id="selectByCondition" resultMap="BaseResultMap" >
-        SELECT
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.ComSpu" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from com_spu
+        <where>
+            <if test="comSpu.id != null">
+                AND id = #{comSpu.id}
+            </if>
+            <if test="comSpu.brandId != null">
+                AND brand_id = #{comSpu.brandId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSpu" useGeneratedKeys="true" keyProperty="id" >
+        insert into com_spu
+                (
                 id,
                 name,
+                brand_id,
                 create_time,
                 create_man,
-                category_id,
-                category_name,
-                status, is_sale,
-                is_delete,
-                brand_id,
                 up_time,
                 down_time,
                 modify_time,
                 modify_man,
+                category_id,
+                category_name,
+                status,
                 slogan,
+                is_sale,
+                is_delete,
                 is_trial,
-                content,
                 weight,
                 pack_length,
                 pack_width,
                 pack_height,
                 ship_amount,
-                remark
-        FROM
-                com_spu
-
-                <where>
-                    <if test="comSpu.id != null">
-                        id = #{comSpu.id}
-                    </if>
-                </where>
-    </select>
-
-    <!-- 保存记录 -->
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSpu" useGeneratedKeys="true" keyProperty="id" >
-        INSERT INTO com_spu
-                   (
-                   name,
-                   create_time,
-                   create_man,
-                   category_id,
-                   category_name,
-                   status,
-                   is_sale,
-                   is_delete,
-                   brand_id,
-                   up_time,
-                   down_time,
-                   modify_time,
-                   modify_man,
-                   slogan,
-                   is_trial,
-                   content,
-                   weight,
-                   pack_length,
-                   pack_width,
-                   pack_height,
-                   ship_amount,
-                   remark
-                   )
+                remark,
+                art_no, content
+                )
         values
-                   (
-                   #{comSpu.name},
-                   #{comSpu.createTime},
-                   #{comSpu.createMan},
-                   #{comSpu.categoryId},
-                   #{comSpu.categoryName},
-                   #{comSpu.status},
-                   #{comSpu.isSale},
-                   #{comSpu.isDelete},
-                   #{comSpu.brandId},
-                   #{comSpu.upTime},
-                   #{comSpu.downTime},
-                   #{comSpu.modifyTime},
-                   #{comSpu.modifyMan},
-                   #{comSpu.slogan},
-                   #{comSpu.isTrial},
-                   #{comSpu.content},
-                   #{comSpu.weight},
-                   #{comSpu.packLength},
-                   #{comSpu.packWidth},
-                   #{comSpu.packHeight},
-                   #{comSpu.shipAmount},
-                   #{comSpu.remark}
-                   )
+                (
+                #{id,jdbcType=INTEGER},
+                #{name,jdbcType=VARCHAR},
+                #{brandId,jdbcType=INTEGER},
+                #{createTime,jdbcType=TIMESTAMP},
+                #{createMan,jdbcType=BIGINT},
+                #{upTime,jdbcType=TIMESTAMP},
+                #{downTime,jdbcType=TIMESTAMP},
+                #{modifyTime,jdbcType=TIMESTAMP},
+                #{modifyMan,jdbcType=BIGINT},
+                #{categoryId,jdbcType=INTEGER},
+                #{categoryName,jdbcType=VARCHAR},
+                #{status,jdbcType=INTEGER},
+                #{slogan,jdbcType=VARCHAR},
+                #{isSale,jdbcType=INTEGER},
+                #{isDelete,jdbcType=INTEGER},
+                #{isTrial,jdbcType=INTEGER},
+                #{weight,jdbcType=DECIMAL},
+                #{packLength,jdbcType=DECIMAL},
+                #{packWidth,jdbcType=DECIMAL},
+                #{packHeight,jdbcType=DECIMAL},
+                #{shipAmount,jdbcType=DECIMAL},
+                #{remark,jdbcType=VARCHAR},
+                #{artNo,jdbcType=VARCHAR},
+                #{content,jdbcType=LONGVARCHAR}
+                )
     </insert>
 
-    <!-- 根据id更新记录 -->
+    <!--<insert id="insertSelective" parameterType="com.masiis.shop.dao.po.ComSpu" >-->
+        <!--&lt;!&ndash;-->
+          <!--WARNING - @mbggenerated-->
+          <!--This element is automatically generated by MyBatis Generator, do not modify.-->
+          <!--This element was generated on Wed Mar 09 10:23:03 CST 2016.-->
+        <!--&ndash;&gt;-->
+        <!--insert into com_spu-->
+        <!--<trim prefix="(" suffix=")" suffixOverrides="," >-->
+            <!--<if test="id != null" >-->
+                <!--id,-->
+            <!--</if>-->
+            <!--<if test="name != null" >-->
+                <!--name,-->
+            <!--</if>-->
+            <!--<if test="brandId != null" >-->
+                <!--brand_id,-->
+            <!--</if>-->
+            <!--<if test="createTime != null" >-->
+                <!--create_time,-->
+            <!--</if>-->
+            <!--<if test="createMan != null" >-->
+                <!--create_man,-->
+            <!--</if>-->
+            <!--<if test="upTime != null" >-->
+                <!--up_time,-->
+            <!--</if>-->
+            <!--<if test="downTime != null" >-->
+                <!--down_time,-->
+            <!--</if>-->
+            <!--<if test="modifyTime != null" >-->
+                <!--modify_time,-->
+            <!--</if>-->
+            <!--<if test="modifyMan != null" >-->
+                <!--modify_man,-->
+            <!--</if>-->
+            <!--<if test="categoryId != null" >-->
+                <!--category_id,-->
+            <!--</if>-->
+            <!--<if test="categoryName != null" >-->
+                <!--category_name,-->
+            <!--</if>-->
+            <!--<if test="status != null" >-->
+                <!--status,-->
+            <!--</if>-->
+            <!--<if test="slogan != null" >-->
+                <!--slogan,-->
+            <!--</if>-->
+            <!--<if test="isSale != null" >-->
+                <!--is_sale,-->
+            <!--</if>-->
+            <!--<if test="isDelete != null" >-->
+                <!--is_delete,-->
+            <!--</if>-->
+            <!--<if test="isTrial != null" >-->
+                <!--is_trial,-->
+            <!--</if>-->
+            <!--<if test="weight != null" >-->
+                <!--weight,-->
+            <!--</if>-->
+            <!--<if test="packLength != null" >-->
+                <!--pack_length,-->
+            <!--</if>-->
+            <!--<if test="packWidth != null" >-->
+                <!--pack_width,-->
+            <!--</if>-->
+            <!--<if test="packHeight != null" >-->
+                <!--pack_height,-->
+            <!--</if>-->
+            <!--<if test="shipAmount != null" >-->
+                <!--ship_amount,-->
+            <!--</if>-->
+            <!--<if test="remark != null" >-->
+                <!--remark,-->
+            <!--</if>-->
+            <!--<if test="artNo != null" >-->
+                <!--art_no,-->
+            <!--</if>-->
+            <!--<if test="content != null" >-->
+                <!--content,-->
+            <!--</if>-->
+        <!--</trim>-->
+        <!--<trim prefix="values (" suffix=")" suffixOverrides="," >-->
+            <!--<if test="id != null" >-->
+                <!--#{id,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="name != null" >-->
+                <!--#{name,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="brandId != null" >-->
+                <!--#{brandId,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="createTime != null" >-->
+                <!--#{createTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="createMan != null" >-->
+                <!--#{createMan,jdbcType=BIGINT},-->
+            <!--</if>-->
+            <!--<if test="upTime != null" >-->
+                <!--#{upTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="downTime != null" >-->
+                <!--#{downTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="modifyTime != null" >-->
+                <!--#{modifyTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="modifyMan != null" >-->
+                <!--#{modifyMan,jdbcType=BIGINT},-->
+            <!--</if>-->
+            <!--<if test="categoryId != null" >-->
+                <!--#{categoryId,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="categoryName != null" >-->
+                <!--#{categoryName,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="status != null" >-->
+                <!--#{status,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="slogan != null" >-->
+                <!--#{slogan,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="isSale != null" >-->
+                <!--#{isSale,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="isDelete != null" >-->
+                <!--#{isDelete,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="isTrial != null" >-->
+                <!--#{isTrial,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="weight != null" >-->
+                <!--#{weight,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packLength != null" >-->
+                <!--#{packLength,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packWidth != null" >-->
+                <!--#{packWidth,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packHeight != null" >-->
+                <!--#{packHeight,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="shipAmount != null" >-->
+                <!--#{shipAmount,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="remark != null" >-->
+                <!--#{remark,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="artNo != null" >-->
+                <!--#{artNo,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="content != null" >-->
+                <!--#{content,jdbcType=LONGVARCHAR},-->
+            <!--</if>-->
+        <!--</trim>-->
+    <!--</insert>-->
+
+    <!--<update id="updateByIdSelective" parameterType="com.masiis.shop.dao.po.ComSpu" >-->
+        <!--update com_spu-->
+        <!--<set >-->
+            <!--<if test="name != null" >-->
+                <!--name = #{name,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="brandId != null" >-->
+                <!--brand_id = #{brandId,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="createTime != null" >-->
+                <!--create_time = #{createTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="createMan != null" >-->
+                <!--create_man = #{createMan,jdbcType=BIGINT},-->
+            <!--</if>-->
+            <!--<if test="upTime != null" >-->
+                <!--up_time = #{upTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="downTime != null" >-->
+                <!--down_time = #{downTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="modifyTime != null" >-->
+                <!--modify_time = #{modifyTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="modifyMan != null" >-->
+                <!--modify_man = #{modifyMan,jdbcType=BIGINT},-->
+            <!--</if>-->
+            <!--<if test="categoryId != null" >-->
+                <!--category_id = #{categoryId,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="categoryName != null" >-->
+                <!--category_name = #{categoryName,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="status != null" >-->
+                <!--status = #{status,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="slogan != null" >-->
+                <!--slogan = #{slogan,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="isSale != null" >-->
+                <!--is_sale = #{isSale,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="isDelete != null" >-->
+                <!--is_delete = #{isDelete,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="isTrial != null" >-->
+                <!--is_trial = #{isTrial,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <!--<if test="weight != null" >-->
+                <!--weight = #{weight,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packLength != null" >-->
+                <!--pack_length = #{packLength,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packWidth != null" >-->
+                <!--pack_width = #{packWidth,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="packHeight != null" >-->
+                <!--pack_height = #{packHeight,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="shipAmount != null" >-->
+                <!--ship_amount = #{shipAmount,jdbcType=DECIMAL},-->
+            <!--</if>-->
+            <!--<if test="remark != null" >-->
+                <!--remark = #{remark,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="artNo != null" >-->
+                <!--art_no = #{artNo,jdbcType=VARCHAR},-->
+            <!--</if>-->
+            <!--<if test="content != null" >-->
+                <!--content = #{content,jdbcType=LONGVARCHAR},-->
+            <!--</if>-->
+        <!--</set>-->
+        <!--where -->
+                <!--id = #{id,jdbcType=INTEGER}-->
+    <!--</update>-->
+    <!--<update id="updateByIdWithBLOBs" parameterType="com.masiis.shop.dao.po.ComSpu" >-->
+        <!--update com_spu-->
+        <!--set-->
+                <!--name          = #{name,jdbcType=VARCHAR},-->
+                <!--brand_id      = #{brandId,jdbcType=INTEGER},-->
+                <!--create_time   = #{createTime,jdbcType=TIMESTAMP},-->
+                <!--create_man    = #{createMan,jdbcType=BIGINT},-->
+                <!--up_time       = #{upTime,jdbcType=TIMESTAMP},-->
+                <!--down_time     = #{downTime,jdbcType=TIMESTAMP},-->
+                <!--modify_time   = #{modifyTime,jdbcType=TIMESTAMP},-->
+                <!--modify_man    = #{modifyMan,jdbcType=BIGINT},-->
+                <!--category_id   = #{categoryId,jdbcType=INTEGER},-->
+                <!--category_name = #{categoryName,jdbcType=VARCHAR},-->
+                <!--status        = #{status,jdbcType=INTEGER},-->
+                <!--slogan        = #{slogan,jdbcType=VARCHAR},-->
+                <!--is_sale       = #{isSale,jdbcType=INTEGER},-->
+                <!--is_delete     = #{isDelete,jdbcType=INTEGER},-->
+                <!--is_trial      = #{isTrial,jdbcType=INTEGER},-->
+                <!--weight        = #{weight,jdbcType=DECIMAL},-->
+                <!--pack_length   = #{packLength,jdbcType=DECIMAL},-->
+                <!--pack_width    = #{packWidth,jdbcType=DECIMAL},-->
+                <!--pack_height   = #{packHeight,jdbcType=DECIMAL},-->
+                <!--ship_amount   = #{shipAmount,jdbcType=DECIMAL},-->
+                <!--remark        = #{remark,jdbcType=VARCHAR},-->
+                <!--art_no        = #{artNo,jdbcType=VARCHAR},-->
+                <!--content       = #{content,jdbcType=LONGVARCHAR}-->
+        <!--where-->
+                <!--id            = #{id,jdbcType=INTEGER}-->
+    <!--</update>-->
     <update id="updateById" parameterType="com.masiis.shop.dao.po.ComSpu" >
         update com_spu
         set
-               brand_id = #{comSpu.brandId},
-               up_time = #{comSpu.upTime},
-               down_time = #{comSpu.downTime},
-               modify_time = #{comSpu.modifyTime},
-               modify_man = #{comSpu.modifyMan},
-               slogan = #{comSpu.slogan},
-               is_trial = #{comSpu.isTrial},
-               content = #{comSpu.content},
-               weight = #{comSpu.weight},
-               pack_length = #{comSpu.packLength},
-               pack_width = #{comSpu.packWidth},
-               pack_height = #{comSpu.packHeight},
-               ship_amount = #{comSpu.shipAmount},
-               remark = #{comSpu.remark}
+                name          = #{comSpu.name,jdbcType=VARCHAR},
+                brand_id      = #{comSpu.brandId,jdbcType=INTEGER},
+                create_time   = #{comSpu.createTime,jdbcType=TIMESTAMP},
+                create_man    = #{comSpu.createMan,jdbcType=BIGINT},
+                up_time       = #{comSpu.upTime,jdbcType=TIMESTAMP},
+                down_time     = #{comSpu.downTime,jdbcType=TIMESTAMP},
+                modify_time   = #{comSpu.modifyTime,jdbcType=TIMESTAMP},
+                modify_man    = #{comSpu.modifyMan,jdbcType=BIGINT},
+                category_id   = #{comSpu.categoryId,jdbcType=INTEGER},
+                category_name = #{comSpu.categoryName,jdbcType=VARCHAR},
+                status        = #{comSpu.status,jdbcType=INTEGER},
+                slogan        = #{comSpu.slogan,jdbcType=VARCHAR},
+                is_sale       = #{comSpu.isSale,jdbcType=INTEGER},
+                is_delete     = #{comSpu.isDelete,jdbcType=INTEGER},
+                is_trial      = #{comSpu.isTrial,jdbcType=INTEGER},
+                weight        = #{comSpu.weight,jdbcType=DECIMAL},
+                pack_length   = #{comSpu.packLength,jdbcType=DECIMAL},
+                pack_width    = #{comSpu.packWidth,jdbcType=DECIMAL},
+                pack_height   = #{comSpu.packHeight,jdbcType=DECIMAL},
+                ship_amount   = #{comSpu.shipAmount,jdbcType=DECIMAL},
+                remark        = #{comSpu.remark,jdbcType=VARCHAR},
+                art_no        = #{comSpu.artNo,jdbcType=VARCHAR}
         where
-               id = #{id}
+                id            = #{comSpu.id,jdbcType=INTEGER}
     </update>
 
-    <!-- 根据id删除记录 -->
-    <delete id="deleteById">
-        DELETE FROM com_spu WHERE id = #{id}
+    <delete id="deleteById" parameterType="java.lang.Integer" >
+        delete from com_spu where id = #{id,jdbcType=INTEGER}
     </delete>
-
 </mapper>

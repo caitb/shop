@@ -64,6 +64,10 @@ public class ComUser implements Serializable {
      */
     private String mobile;
     /**
+     * 密码
+     */
+    private  String password;
+    /**
      * 身份证号
      */
     private String idCard;
@@ -111,6 +115,14 @@ public class ComUser implements Serializable {
      * 性别(0女1男)
      */
     private Integer sex;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public Long getId() {
         return id;

@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserSku;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface PfUserSkuMapper {
@@ -20,4 +22,6 @@ public interface PfUserSkuMapper {
     List<PfUserSku> selectAll();
 
     int updateByPrimaryKey(PfUserSku record);
+
+    PfUserSku selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 }

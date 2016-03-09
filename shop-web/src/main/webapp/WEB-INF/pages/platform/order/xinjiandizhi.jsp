@@ -4,8 +4,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
 </head>
 <script>
     function saveAddress(){
@@ -30,7 +29,7 @@
         var street = $("#street")[0].value;
         var detailAddress = $("#detailAddress")[0].value;
 
-        $.post("/userAddress/addAddress.json",
+        $.post("/userAddress/addAddress.do",
                 {
                     "name":name,
                     "phone":phone,
@@ -44,7 +43,9 @@
                     "street":street,
                     "detailAddress":detailAddress
                 },function(data) {
-
+                    if (data == "success"){
+                        window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
+                    }
                 });
     }
 </script>
@@ -53,7 +54,7 @@
        <div class="wrap">
            <div class="box">
                    <header class="xq_header">
-                      <a href="#" onClick="javascript :history.go(-1);"><img src="../images/xq_rt.png" alt=""></a>
+                      <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>新建收货地址</p>            
                    </header>
                     <div class="sf">
@@ -130,7 +131,7 @@ var showArea = function(){
        var $skuC1 = $('#s_province');
        var $skuC2 = $('#s_city');
        var $skuC3 = $('#s_county');
-       $skuC1.html("<option value=\"-1\">请选择</option>");
+       $skuC1.html("<option value=\'-1\'>请选择</option>");
        for(var sub in c1['sub'+0]){
            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
        }

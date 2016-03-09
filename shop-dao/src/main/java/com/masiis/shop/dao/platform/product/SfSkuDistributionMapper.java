@@ -28,7 +28,7 @@ public interface SfSkuDistributionMapper {
      * 添加一条记录
      * @param sfSkuDistribution
      */
-    Long insert(@Param("sfSkuDistribution")SfSkuDistribution sfSkuDistribution);
+    Long insert(SfSkuDistribution sfSkuDistribution);
 
     /**
      * 根据id更新一条记录

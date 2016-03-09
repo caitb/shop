@@ -4,7 +4,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -22,6 +23,54 @@
 <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/checkUtil.js"></script>
 <script>
+
+    var s = 60, t;
+    function times(){
+        s--;
+        $("#codeId").val("剩余" + s + "s");
+        $("#codeId").attr({"disabled":"disabled"});
+        t = setTimeout(function (){times();}, 1000);
+        if ( s <= 0 ){
+            s = 60;
+            $("#codeId").removeAttr("disabled");
+            $("#codeId").val("获取验证码");
+            clearTimeout(t);
+        }
+    }
+    $(function() {
+        $("#codeId").click(function () {
+            times();
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/binding/securityCode.do",
+                data: "phone=" + $("#phoneId").val(),
+                dataType: "Json",
+                success: function (result) {
+                    alert(result);
+                    $("#codeValueId").val("短信发送成功,请注意查收!");
+                }
+            });
+        });
+        $("#codeValueId").blur(function () {
+            $value = $("#codeValueId").val();
+            if ($value == null || $value == "") {
+                $("#codeValueId").val("验证码不能为空");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "<%=path%>/binding/verificationCode.do",
+                data: "verificationCode=" + $("#codeValueId").val(),
+                dataType: "Json",
+                success: function (result) {
+                    alert(result.msg);
+                    $("#codeValueId").val(result.msg);
+                }
+            });
+        });
+    })
+
+
     function apply(){
         var name  = $("#nameId")[0].value;
         var phone = $("#phoneId")[0].value;
@@ -38,19 +87,30 @@
             alert("手机号格式不对");
             return;
         }
-        $.post("/corder/trialApply.json",
-                {
-                    "spuId":spuId,
-                    "skuId":skuId,
-                    "applyReason":applyReason,
-                    "name" : name,
-                    "phone" : phone,
-                    "wechat" : wechat
-                },function(data) {
-                    if(data == "success"){
-                        window.location.href = "<%=path%>/corder/continueStroll"
-                    }
-                });
+        $.ajax({
+            type:"POST",
+            url : "<%=path%>/binding/verificationCode.do",
+            data:"verificationCode="+$("#codeValueId").val(),
+            dataType:"Json",
+            success:function(result){
+                $.post("/corder/trialApply.do",
+                        {
+                            "spuId":spuId,
+                            "skuId":skuId,
+                            "applyReason":applyReason,
+                            "name" : name,
+                            "phone" : phone,
+                            "wechat" : wechat
+                        },function(data) {
+                            if(data == "success"){
+                                window.location.href = "<%=path%>/corder/continueStroll"
+                            }
+                        });
+            },
+            error:function(result){
+                $("#codeValueId").val("验证码输入有误");
+            }
+        });
     }
 
 </script>
@@ -80,7 +140,7 @@
         <input id="spuId" type="hidden" value="${product.spuId}"/>
         <p>姓名：<input id="nameId" type="text"></p>
         <p>手机号：<input id="phoneId" type="tel"></p>
-        <p>验证码：<input id="validateNumberId" type="text"><span>获取验证码</span></p>
+        <p>验证码：<input id="codeValueId" type="text"><span id="codeId">获取验证码</span></p>
         <p>微信：<input id="wechatId" type="text"></p>
     </section>
     <a href="javascript:apply();"  class="sq">试用申请</a>

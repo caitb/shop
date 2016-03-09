@@ -13,7 +13,13 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifu.css">
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <script>
+        var myScroll = new IScroll(".wrap", {
+            preventDefault: false
+        })
+    </script>
 </head>
 <body>
 <div class="wrap">
@@ -45,16 +51,6 @@
 
             </section>
             ${productInfo}
-            <%--<section class="sec2">--%>
-            <%--<p class="photo">--%>
-            <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-            <%--</p>--%>
-            <%--<div>--%>
-            <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-            <%--<h3></h3>--%>
-            <%--<p><span>￥298</span><b style="float:right; margin-right:10px;font-size:12px;">x1</b></p>--%>
-            <%--</div>--%>
-            <%--</section>--%>
             <section class="sec3">
                 <p>运费<span>到付</span></p>
                 <h1>共<b>${quantity}</b>件商品　运费：<span>到付</span><b>　合计：</b><span
@@ -73,11 +69,5 @@
         </main>
     </div>
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script>
-    var myScroll = new IScroll(".wrap", {
-        preventDefault: false
-    })
-</script>
 </body>
 </html>

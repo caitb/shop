@@ -27,6 +27,11 @@
   margin-top: 10px;
   font-size: 12px;
 }
+.wrap .xinxi {
+  background: white url("../images/zhuce_2.png") no-repeat;
+  background-size: 80%;
+  background-position: center 85%;
+}
 .wrap .main {
   background: white;
   margin: 0 10px;

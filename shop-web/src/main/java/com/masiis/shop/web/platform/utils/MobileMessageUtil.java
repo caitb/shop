@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class MobileMessageUtil {
 
-    private String sign = "_SMS";
+    private static String  sign = "_SMS";
 
     /**
      * 发送短信验证码
@@ -23,7 +23,7 @@ public class MobileMessageUtil {
      * @author ZhaoLiang
      * @date 2016/3/9 13:26
      */
-    public boolean sendIdentifyingCode(String phone) {
+    public static boolean sendIdentifyingCode(String phone) {
         String code = "";
         Random random = new Random();
         for (int i = 0; i < 4; i++) {
@@ -46,7 +46,7 @@ public class MobileMessageUtil {
      * @author ZhaoLiang
      * @date 2016/3/9 13:33
      */
-    public String getIdentifyingCode(String phone) {
+    public static  String getIdentifyingCode(String phone) {
         String code = "";
         if (StringUtil.isNotEmpty(SpringRedisUtil.get(phone + sign, String.class))) {
             code = SpringRedisUtil.get(phone + sign, String.class);

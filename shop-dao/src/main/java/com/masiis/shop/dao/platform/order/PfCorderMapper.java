@@ -15,7 +15,7 @@ public interface PfCorderMapper {
      * 添加一条记录
      * @param pfCorder
      */
-    void insert(@Param("pfCorder") PfCorder pfCorder);
+    void insert(PfCorder pfCorder);
 
     /**
      * 根据id更新一条记录

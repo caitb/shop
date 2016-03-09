@@ -11,4 +11,12 @@ import java.util.Map;
 public interface CertificateMapper {
 
     List<CertificateInfo> getCertificateInfo(Map<String, Object> paramsMap);
+
+    void updateCertificateFlag(Integer id);
+
+    void updateCertificateStatus(Map<String, Object> paramsMap);
+
+    CertificateInfo get(Integer id);
+
+    CertificateInfo getApproveInfoById(Integer id);
 }

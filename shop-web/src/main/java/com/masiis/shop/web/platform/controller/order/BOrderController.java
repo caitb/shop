@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.ProductSimple;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -55,6 +56,8 @@ public class BOrderController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private UserAddressService userAddressService;
+    @Resource
+    private ComSkuImageMapper comSkuImageMapper;
 
     /**
      * 合伙人申请
@@ -333,7 +336,35 @@ public class BOrderController extends BaseController {
                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId
     ) {
         ModelAndView mv = new ModelAndView();
-        bOrderService.getPfBorderById(bOrderId);
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
+        StringBuffer stringBuffer = new StringBuffer();
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(pfBorderItem.getSkuId());
+            stringBuffer.append("<section class=\"sec2\" >");
+            stringBuffer.append("<p class=\"photo\" >");
+            stringBuffer.append("<img src = \"<%=path%>/static/images/shenqing_1.png\" alt = \"\" >");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+            stringBuffer.append("");
+//            <section class="sec2" >
+//            <p class="photo" >
+//            <img src = "<%=path%>/static/images/shenqing_1.png" alt = "" >
+//            </p >
+//            <div >
+//            <h2 > 抗引力——快速瘦脸精华</h2 >
+//            <h3 ></h3 >
+//            <p ><span > ￥298 </span ><b style = "float:right; margin-right:10px;font-size:12px;" > x1 </b ></p >
+//            </div >
+//            </section >
+        }
+        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
+
         mv.setViewName("platform/order/zhifu");
         return mv;
     }

@@ -1,16 +1,16 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <title>麦链商城</title>
-    <%@include file="/WEB-INF/pages/common.jsp"%>
+    <%@include file="/WEB-INF/pages/common.jsp" %>
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
@@ -39,7 +39,8 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>￥${productDetails.priceRetail}</b><span><c:choose><c:when test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
+            <p><b>￥${productDetails.priceRetail}</b><span><c:choose><c:when
+                    test="${productDetails.isPartner}">${productDetails.discountLevel}</c:when>
                 <c:otherwise>成为合伙人后可查看利润</c:otherwise></c:choose>
             </span></p>
         </div>
@@ -91,27 +92,27 @@
 </div>
 <footer>
     <section class="sec3">
-     <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
+        <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
         <p><a href="" onclick="applyTrial(${productDetails.id})">申请试用</a></p>
-        <p><a href="<%=path%>/lo/quote">申请合伙人</a></p>
+        <p><a href="<%=basePath%>border/apply.shtml?skuId="${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script>
-    function applyTrial(skuId){
+    function applyTrial(skuId) {
         $.post("/corder/isApplyTrial.do",
                 {
-                    "skuId":skuId
-                },function(data) {
-                   if (data == "false"){
-                        window.location.href = "<%=path%>/corder/applyTrialToPage.json?skuId="+skuId;
-                   }else{
+                    "skuId": skuId
+                }, function (data) {
+                    if (data == "false") {
+                        window.location.href = "<%=path%>/corder/applyTrialToPage.json?skuId=" + skuId;
+                    } else {
                         alert("此商品您已试用过，不能再次使用");
-                   }
+                    }
                 });
     }
 
-    var mySwiper = new Swiper ('.swiper-container', {
+    var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,
         autoplay: 3000,

@@ -5,6 +5,8 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
+import com.masiis.shop.web.platform.constants.WxAuthConstants;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -35,11 +37,15 @@ public class WXBeanUtils {
     }
 
     public static void main(String[] args) throws IllegalAccessException {
-        /*BrandWCPayReq br = new BrandWCPayReq();
-        br.setPackages("aaaaa");
-        br.setAppId("sdsdfds");
-        System.out.println(toSignString(br));*/
-        System.out.println(createGenerateStr());
+        BrandWCPayReq br = new BrandWCPayReq();
+        br.setAppid(WxAuthConstants.APPID);
+        String nonce = "sddfs22dsdf5ssdfa53wq3";
+        System.out.println("nonce:" + nonce);
+        br.setNonceStr(nonce);
+        br.setSignType("MD5");
+        br.setTimeStamp("1457513229909");
+        br.setPackages("prepay_id=wx2016030916391321529474ea0694275688");
+        System.out.println(toSignString(br));
     }
 
     /**
@@ -62,7 +68,7 @@ public class WXBeanUtils {
             if (aJF != null) {
                 key = aJF.name();
             }
-            if("sign".equals(key)){
+            if("sign".equals(key) || "paySign".equals(key)){
                 continue;
             }
             String value = (String) f.get(obj);
@@ -78,7 +84,7 @@ public class WXBeanUtils {
             sb.append(arrayToSort[i]);
         }
         String result = sb.toString();
-        result += "key=" + Configure.getKey();
+        result += "key=" + WxAuthConstants.WX_PAY_SIGN_KEY;
         log.info("Sign Before MD5:" + result);
         result = KeysUtil.md5Encrypt(result).toUpperCase();
         log.info("Sign Result:" + result);

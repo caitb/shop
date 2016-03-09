@@ -50,7 +50,7 @@ public interface ComSkuMapper {
      * @param comSku
      * @return
      */
-    List<ComSku> selectByCondition(@Param("comSku")ComSku comSku);
+    List<ComSku> selectByCondition(ComSku comSku);
 
     /**
      * 添加一条记录

@@ -46,7 +46,7 @@
     </plugins>
 
 <!--     <typeAliases>
-        <typeAlias alias="Product" type="org.mybatis.spring.model.Product"/>
+        <typeAlias alias="ProductInfo" type="org.mybatis.spring.model.ProductInfo"/>
         <typeAlias alias="Category" type="org.mybatis.spring.model.Category"/>
     </typeAliases> -->
 

@@ -65,9 +65,11 @@ public class CertificateController {
 
     @RequestMapping("/update.do")
     @ResponseBody
-    public String update(HttpServletRequest request, HttpServletResponse response,@RequestParam(required = true) Integer id)throws Exception {
-        certificateService.getApproveInfoById(id);
-        return "审核";
+    public String update(HttpServletRequest request, HttpServletResponse response,
+                         @RequestParam(required = true) Integer status,
+                         @RequestParam(required = true) Integer id)throws Exception {
+        certificateService.approveCertificate(status,id);
+        return "已审核";
      }
 
     @RequestMapping("/load.shtml")
@@ -77,4 +79,10 @@ public class CertificateController {
         mav.addObject("certificateInfo", certificateInfo);
         return mav;
       }
+
+    @RequestMapping("/listUpper.do")
+    public CertificateInfo loadUppers(HttpServletRequest request, HttpServletResponse response, Integer userId)throws Exception{
+        CertificateInfo certificateInfo = certificateService.getApproveInfoById(userId);
+        return certificateInfo;
+     }
     }

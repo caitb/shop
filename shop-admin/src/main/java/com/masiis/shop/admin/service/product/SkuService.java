@@ -21,7 +21,7 @@ public class SkuService {
      * @param id
      * @return
      */
-    public ComSku findById(Long id){
+    public ComSku findById(Integer id){
         return comSkuMapper.selectById(id);
     }
     /**

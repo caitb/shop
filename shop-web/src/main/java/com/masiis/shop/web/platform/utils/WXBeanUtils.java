@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.utils;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.KeysUtil;
+import com.masiis.shop.common.util.MD5Utils;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.constants.WxAuthConstants;
@@ -38,7 +39,7 @@ public class WXBeanUtils {
 
     public static void main(String[] args) throws IllegalAccessException {
         BrandWCPayReq br = new BrandWCPayReq();
-        br.setAppid(WxAuthConstants.APPID);
+        br.setAppId(WxAuthConstants.APPID);
         String nonce = "sddfs22dsdf5ssdfa53wq3";
         System.out.println("nonce:" + nonce);
         br.setNonceStr(nonce);
@@ -86,7 +87,7 @@ public class WXBeanUtils {
         String result = sb.toString();
         result += "key=" + WxAuthConstants.WX_PAY_SIGN_KEY;
         log.info("Sign Before MD5:" + result);
-        result = KeysUtil.md5Encrypt(result).toUpperCase();
+        result = MD5Utils.encrypt(result).toUpperCase();
         log.info("Sign Result:" + result);
         return result;
     }

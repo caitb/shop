@@ -22,7 +22,14 @@ public interface SfSkuDistributionMapper {
      * @param sfSkuDistribution
      * @return
      */
-    List<SfSkuDistribution> selectByCondition(@Param("comSku")SfSkuDistribution sfSkuDistribution);
+    List<SfSkuDistribution> selectByCondition(SfSkuDistribution sfSkuDistribution);
+
+    /**
+     * 根据skuId查找
+     * @param skuId
+     * @return
+     */
+    List<SfSkuDistribution> selectBySkuId(Integer skuId);
 
     /**
      * 添加一条记录

@@ -22,4 +22,6 @@ public interface ComSkuImageMapper {
     int updateByPrimaryKey(ComSkuImage record);
 
     ComSkuImage selectDefaultImgBySkuId(Integer skuId);
+
+    List<ComSkuImage> selectBySkuId(Integer skuId);
 }

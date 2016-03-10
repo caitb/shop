@@ -25,7 +25,7 @@
     </select>
 
     <!-- 根据条件查询记录 -->
-    <select id="selectByCondition" resultMap="BaseResultMap" >
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" resultMap="BaseResultMap" >
         select
                id,
                sku_id,
@@ -36,16 +36,29 @@
                sf_sku_distribution
 
                <where>
-                   <if test="sfSkuDistribution.id != null">
-                       AND id = #{sfSkuDistribution.id}
+                   <if test="id != null">
+                       AND id = #{id}
                    </if>
-                   <if test="sfSkuDistribution.skuId != null">
-                       AND sku_id = #{sfSkuDistribution.skuId}
+                   <if test="skuId != null">
+                       AND sku_id = #{skuId}
                    </if>
-                   <if test="sfSkuDistribution.sort != null">
-                       AND sort = #{sfSkuDistribution.sort}
+                   <if test="sort != null">
+                       AND sort = #{sort}
                    </if>
                </where>
+    </select>
+    
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+                select
+               id,
+               sku_id,
+               sort,
+               discount,
+               remark
+        from
+               sf_sku_distribution
+        WHERE
+               sku_id = #{skuId}
     </select>
 
     <!-- 保存记录 -->

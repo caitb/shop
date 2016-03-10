@@ -192,8 +192,10 @@ footer .sec3 p {
 }
 footer .sec3 p a {
   display: block;
+  -webkit-box-flex: 1;
   color: #FCFFFF;
   font-size: 15px;
+  text-align: center;
 }
 footer .sec3 p:nth-child(1) {
   -webkit-box-flex: 1;

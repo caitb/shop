@@ -43,7 +43,7 @@ public interface ComSkuMapper {
      * @param id
      * @return
      */
-    ComSku selectById(@Param("id")Long id);
+    ComSku selectById(Integer id);
 
     /**
      * 根据条件查询记录

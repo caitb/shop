@@ -71,4 +71,28 @@
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
     </select>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
+        update
+               pf_sku_agent
+        <set>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="agentLevelId != null">
+                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="discount != null">
+                discount = #{discount,jdbcType=DECIMAL},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+               id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

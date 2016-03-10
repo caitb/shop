@@ -10,6 +10,20 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+               id,
+               sku_id,
+               agent_level_id,
+               discount,
+               quantity,
+               remark
+        FROM
+               pf_sku_agent
+        WHERE
+               sku_id = #{skuId}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}

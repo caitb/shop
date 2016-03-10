@@ -27,4 +27,6 @@ public interface PfSkuAgentMapper {
     List<PfSkuAgent> selectAllBySkuId(Integer sku_id);
 
     PfSkuAgent selectBySkuIdAndLevelId(@Param("skuId") Integer skuId, @Param("levelId") Integer levelId);
+
+    List<PfSkuAgent> selectBySkuId(Integer skuId);
 }

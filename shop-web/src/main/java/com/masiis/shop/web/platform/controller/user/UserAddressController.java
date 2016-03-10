@@ -66,10 +66,9 @@ public class UserAddressController {
                              @RequestParam(value = "cityName", required = true) String cityName,
                              @RequestParam(value = "countyId", required = true) Integer countyId,
                              @RequestParam(value = "countyName", required = true) String countyName,
-                             @RequestParam(value = "street", required = true) String street,
                              @RequestParam(value = "detailAddress", required = true) String detailAddress,
-                                     @RequestParam(value = "operateType", required = true) String operateType,
-                             Model model)throws JsonProcessingException {
+                                     @RequestParam(value = "isDefault", required = false) Integer isDefault,
+                                     @RequestParam(value = "operateType", required = true) String operateType)throws JsonProcessingException {
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         ComUserAddress comUserAddress = new ComUserAddress();
         if (comUser!=null){
@@ -88,11 +87,12 @@ public class UserAddressController {
         comUserAddress.setRegionName(countyName);
         comUserAddress.setAddress(detailAddress);
         comUserAddress.setCreateTime(new Date());
-        comUserAddress.setIsDefault(0);//地址不设为默认的
         int i = 0;
         if (operateType.equals("save")){
+            comUserAddress.setIsDefault(0);//地址不设为默认的
             i = userAddressService.addComUserAddress(comUserAddress);
         }else{
+            comUserAddress.setIsDefault(isDefault);
             comUserAddress.setId(id);
             i = userAddressService.updateComUserAddress(comUserAddress);
         }

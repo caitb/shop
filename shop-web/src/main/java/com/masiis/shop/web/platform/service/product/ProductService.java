@@ -46,7 +46,8 @@ public class ProductService {
         if (product != null && product.getName().length() > 40) {
             product.setName(product.getName().substring(0, 41) + "......");
         }
-        if (product != null && product.getSlogan().length() > 50) {
+        if (product != null && product.getSlogan()!=null&& product.getSlogan().length() > 50) {
+
             product.setSlogan(product.getSlogan().substring(0, 51) + "......");
         }
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);

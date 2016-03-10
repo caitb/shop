@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
-import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,6 @@ public class PfUserSkuController extends BaseController {
                        String beginTime,
                        String endTime,
                        String mobile,
-                       String agentLevel,
                        String sort,
                        String order,
                        Integer offset,
@@ -52,7 +50,7 @@ public class PfUserSkuController extends BaseController {
         searchParam.put("beginTime",beginTime);
         searchParam.put("endTime",endTime);
         searchParam.put("mobile",mobile);
-        List<PfUserSkuCertificate> pfUserSkuList = pfUserSkuService.getCertificates(searchParam);
+        List<PfUserSkuCertificate> pfUserSkuList = pfUserSkuService.getUserSkuList(searchParam);
         PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
         Map<String, Object> pageMap = new HashMap<>();
         pageMap.put("total", pageInfo.getTotal());

@@ -7,10 +7,12 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PfUserSkuMapper {
     int deleteByPrimaryKey(Integer id);
@@ -24,4 +26,7 @@ public interface PfUserSkuMapper {
     int updateByPrimaryKey(PfUserSku record);
 
     PfUserSku selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+
+
+    List<PfUserSkuCertificate> getUserSkuList(Map<String, Object> searchParam);
 }

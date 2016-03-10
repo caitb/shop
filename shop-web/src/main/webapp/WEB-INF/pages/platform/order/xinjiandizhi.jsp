@@ -26,7 +26,6 @@
         var cityName = $("#s_city  option:selected").text();
         var countyId = $("#s_county").val();
         var countyName = $("#s_county  option:selected").text();
-        var street = $("#street")[0].value;
         var detailAddress = $("#detailAddress")[0].value;
 
         $.post("/userAddress/addOrUpdateAddress.do",
@@ -40,7 +39,6 @@
                     "cityName":cityName,
                     "countyId":countyId,
                     "countyName":countyName,
-                    "street":street,
                     "detailAddress":detailAddress,
                     "operateType":"save"
                 },function(data) {
@@ -75,13 +73,6 @@
                             <select id="s_province" name="s_province"></select>
                             <select id="s_city" name="s_city" ></select>
                             <select id="s_county" name="s_county"></select>
-                    </div>
-
-
-
-                    <div class="sf">
-                        街道
-                        <input type="text" id="street">
                     </div>
                     <div class="sf">
                         详细地址

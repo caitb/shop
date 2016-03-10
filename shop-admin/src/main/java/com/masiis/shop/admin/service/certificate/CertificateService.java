@@ -67,7 +67,7 @@ public class CertificateService {
       * Param Id
       */
     public CertificateInfo getApproveInfoById(Integer id)throws Exception{
-        CertificateInfo certificateInfo = certificateMapper.getApproveInfoById(id);
+        CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
         if(certificateInfo!=null){
             certificateInfo.setPfBorder(pfBorderMapper.selectByPrimaryKey(certificateInfo.getPfBorderId()));
         }

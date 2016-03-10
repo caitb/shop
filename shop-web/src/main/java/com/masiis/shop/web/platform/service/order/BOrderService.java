@@ -2,18 +2,13 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.*;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.jsp.tagext.TryCatchFinally;
-import javax.swing.plaf.nimbus.NimbusStyle;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +32,10 @@ public class BOrderService {
     private ComUserMapper comUserMapper;
     @Resource
     private PfBorderOperationLogMapper pfBorderOperationLogMapper;
-
+    @Resource
+    private PfUserSkussMapper pfUserSkussMapper;
+    @Resource
+    private ComAgentLevelsMapper comAgentLevelsMapper;
     /**
      * 添加订单
      *
@@ -128,6 +126,24 @@ public class BOrderService {
             comUserMapper.updateByPrimaryKey(comUser);
         } catch (Exception e) {
         }
+    }
+    /**
+     * 查用户商品关系表
+     * @author muchaofeng
+     * @date 2016/3/9 18:12
+     */
+
+    public  PfUserSku findPfUserSkuById(Long id){
+        return pfUserSkussMapper.selectPfUserSkusById(id);
+    }
+    /**
+     * 获取合伙人等级
+     * @author muchaofeng
+     * @date 2016/3/9 18:52
+     */
+
+    public  ComAgentLevel findComAgentLevel(Integer id){
+        return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
 
 }

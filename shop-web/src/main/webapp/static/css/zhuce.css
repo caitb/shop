@@ -25,30 +25,57 @@
   -moz-box-orient: vertical;
 }
 .wrap main .sec1 div p {
+  margin-right: 10px;
   text-indent: 10px;
   color: #333333;
   line-height: 40px;
+  font-size: 13px;
+}
+.wrap main .sec1 div p b {
+  font-size: 12px;
 }
 .wrap main .sec1 div p input {
   border: none;
   font-size: 12px;
+  display: inline-block;
+  line-height: 30px;
+  margin-top: -4px;
+  color: #333333;
 }
-.wrap main .sec1 div p input::-webkit-input-placeholder {
-  color: red;
-}
-.wrap main .sec1 div p span {
+.wrap main .sec1 div p .btn {
+  text-align: center;
   font-size: 12px;
   color: #B2B2B2;
-  display: block;
+  display: inline-block;
   float: right;
-  line-height: 40px;
-  margin-right: 10px;
+  height: 30px;
+  border-radius: 5px;
+  color: white;
+  width: 70px;
+  padding-right: 10px;
+  line-height: 30px;
+  margin-top: 5px;
+  background: #F74A11;
+}
+.wrap main .sec1 div .pon {
+  background: url("../images/no.png") no-repeat;
+  background-position: right;
+  background-size: 5%;
+}
+.wrap main .sec1 div .yon {
+  background: url("../images/ok.png") no-repeat 54%;
+  background-size: 6%;
+}
+.wrap main .sec1 div .yno {
+  background: url("../images/nok.png") no-repeat 54%;
+  background-size: 6%;
 }
 .wrap main .sec2 {
   width: 100%;
   background: white;
 }
 .wrap main .sec2 h2 {
+  font-size: 13px;
   color: #333333;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
@@ -59,11 +86,9 @@
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
   text-indent: 40px;
-  background: url("../images/zhucex.png") no-repeat 10px;
+  background: url("../images/icon_14.png") no-repeat 15px;
   background-size: 5%;
-}
-.wrap main .sec2 p input {
-  border: none;
+  font-size: 13px;
 }
 .wrap main .sec2 p span,
 .wrap main .sec2 p b {
@@ -71,8 +96,13 @@
   color: #B2B2B2;
 }
 .wrap main .sec2 .on {
-  background: url("../images/zhuce.png") no-repeat 10px;
+  background: url("../images/icon_11.png") no-repeat 15px;
   background-size: 5%;
+  color: #F74A11;
+}
+.wrap main .sec2 .on span,
+.wrap main .sec2 .on b {
+  font-size: 12px;
   color: #F74A11;
 }
 .wrap main .sec3 {
@@ -92,9 +122,13 @@
   background: url(../images/zhuced.png) no-repeat 1px;
   background-size: 6%;
   font-size: 12px;
-  color: #F74A11;
+  color: #333333;
   text-indent: 20px;
   line-height: 14px;
+}
+.wrap main .sec3 label a {
+  text-decoration: underline;
+  color: #F74A11;
 }
 .wrap main .sec3 input {
   display: none;
@@ -116,6 +150,8 @@
 }
 .wrap main .sec4 a {
   display: block;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
   line-height: 42px;
   color: white;
   text-align: center;

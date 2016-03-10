@@ -13,20 +13,21 @@ body{
             -webkit-box-flex:1;
             display: -webkit-box;
             -webkit-box-orient:vertical;
-            .tianjia{
-                    display: block;
-                    height: 40px;
-                    background: #ffffff;
-                    text-align: center;
-                    line-height: 40px;
-                    border-bottom: 1px solid #f6f6f6;
+            .xq_header{
+                h2{
+                    position: absolute;
+                    right: 10px;
+                    top:9px;
+                    color: #F74A11;
                 }
+            }
             .pp{
                 -webkit-box-flex:1;
                 display: -webkit-box;
                 -webkit-box-orient:vertical;
                 -webkit-box-align:center;
                 -webkit-box-pack:center;
+                display: none;
             h1{
                 font-size: 16px;
                 color: #333333;
@@ -35,27 +36,31 @@ body{
                 color: #999999;
             }
         }
-            .sec1{
+            .sec1,sec2{
+                        margin-top: 5px;
                         width: 100%;
-                        height: 55px;
                         background: white;
                         display: -webkit-box;
-                        -webkit-box-align:center;
-                        -webkit-box-pack:justify;
+                        -webkit-box-orient:vertical;
+
                         border-bottom: 1px solid #f6f6f6;
-                        display: none;
-                        div{
-                            width: 88%;
-                            margin-left: 12px;
+                        /*display: none;*/
+                        div:nth-child(1){
+                            margin: 0 10px;
                             display: -webkit-box;
                             -webkit-box-pack:center; 
                             -webkit-box-orient:vertical;
+                            
                             h2{
                                 span{
                                     float: right;
                                     margin-right: 10px;
                                     color: #999999;
                                 }
+                            }
+                            h3{
+                                font-size: 12px;
+                                color: #999999;
                             }
                             p{
                                 width:100%;
@@ -78,18 +83,63 @@ body{
                                     height: 15px;
                                 }
                              }
-                            .on{
-                                background: url("../images/guanli.png") no-repeat right;
-                                background-size: 5%;
-                                b{
-                                    display: inline-block;
+                            
+                        }
+                        .setting{
+                            margin: 5px 10px 0 10px;
+                            border-top: 1px solid #E9E9E9;
+                            display: -webkit-box;
+                            -webkit-box-pack:justify;
+                            p,h2,h3{
+                                height: 2rem;
+                                width: 1px;
+                                -webkit-box-flex:1;
+                                position: relative;
+                                line-height: 2rem;
+                                color: #999999;
+                                text-indent: 32px;
+                                font-size: 12px;
+                                span{
+                                    display: block;
+                                    height: 15px;
+                                    border-left: 1px solid #E9E9E9;
+                                    position: absolute;
+                                    right:0;
+                                    top:7px;
                                 }
                             }
+                            p{
+                                background: url("../images/icon_14.png") no-repeat 10px;
+                                background-size: 15%;
+                            }
+                            h2{
+                                background: url("../images/icon_12.png") no-repeat 15px;
+                                background-size: 15%;
+                                text-indent: 35px;
+                            }
+                            h3{
+                                background: url("../images/icon_13.png") no-repeat 15px;
+                                background-size: 15%;
+                                text-indent: 35px;
+                            }
+                            .pon{
+                                background: url("../images/icon_11.png") no-repeat 10px;
+                                background-size: 15%;
+                            }
                         }
+                
 }
-        }
+            .on{
+                 background:white url("../images/guanli.png") no-repeat right;
+                 background-size: 5%;
+                     b{
+                         display: inline-block;
+                         color: #F74A11;
+                         text-indent: -5px;
+                     }
+                }
+            }
             
+        }
     }
-}
-    
 }

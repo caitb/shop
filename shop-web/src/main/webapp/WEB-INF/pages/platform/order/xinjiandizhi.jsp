@@ -29,7 +29,7 @@
         var street = $("#street")[0].value;
         var detailAddress = $("#detailAddress")[0].value;
 
-        $.post("/userAddress/addAddress.do",
+        $.post("/userAddress/addOrUpdateAddress.do",
                 {
                     "name":name,
                     "phone":phone,
@@ -41,7 +41,8 @@
                     "countyId":countyId,
                     "countyName":countyName,
                     "street":street,
-                    "detailAddress":detailAddress
+                    "detailAddress":detailAddress,
+                    "operateType":"save"
                 },function(data) {
                     if (data == "success"){
                         window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";

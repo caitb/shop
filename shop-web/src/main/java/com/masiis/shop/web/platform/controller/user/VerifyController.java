@@ -9,7 +9,7 @@ import com.masiis.shop.web.platform.beans.wxauth.RedirectParam;
 import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.platform.beans.wxauth.RefreshTokenRes;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.constants.WxAuthConstants;
+import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.constants.WxResCodeCons;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
@@ -57,11 +57,11 @@ public class VerifyController extends BaseController {
         }
         // 获取access_token
         System.out.println("开始获取access_token...");
-        String url = WxAuthConstants.URL_GET_ACCESS_TOKEN
-                        + "?appid=" + WxAuthConstants.APPID
-                        + "&secret=" + WxAuthConstants.APPSECRET
+        String url = WxConstants.URL_GET_ACCESS_TOKEN
+                        + "?appid=" + WxConstants.APPID
+                        + "&secret=" + WxConstants.APPSECRET
                         + "&code=" + code
-                        + "&grant_type=" + WxAuthConstants.GRANT_TYPE_ACCESSTOKEN;
+                        + "&grant_type=" + WxConstants.GRANT_TYPE_ACCESSTOKEN;
         String result = HttpClientUtils.httpGet(url);
         System.out.println("result:" + result);
         ErrorRes resErr = JSONObject.parseObject(result, ErrorRes.class);
@@ -120,7 +120,7 @@ public class VerifyController extends BaseController {
                 throw new BusinessException("cookie中openid信息为空或者token无效!");
             }
             // 取得了openid和token,并进行验证有效期
-            String checkTokenUrl = WxAuthConstants.URL_CHECK_ACCESS_TOKEN
+            String checkTokenUrl = WxConstants.URL_CHECK_ACCESS_TOKEN
                     + "?access_token=" + token
                     + "&openid=" + openid;
             try {
@@ -137,9 +137,9 @@ public class VerifyController extends BaseController {
                     if(StringUtils.isBlank(rftoken)){
                         throw new BusinessException("token超时,且redis取不到refreshtoken!");
                     }
-                    String rftoken_url = WxAuthConstants.URL_REFRESH_TOKEN
-                                + "?appid=" + WxAuthConstants.APPID
-                                + "&grant_type=" + WxAuthConstants.GRANT_TYPE_RFTOKEN
+                    String rftoken_url = WxConstants.URL_REFRESH_TOKEN
+                                + "?appid=" + WxConstants.APPID
+                                + "&grant_type=" + WxConstants.GRANT_TYPE_RFTOKEN
                                 + "&refresh_token=REFRESH_TOKEN";
                     String rfResult = HttpClientUtils.httpGet(rftoken_url);
                     ErrorRes rfRes = JSONObject.parseObject(rfResult, ErrorRes.class);
@@ -159,13 +159,13 @@ public class VerifyController extends BaseController {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        String redirect_url = WxAuthConstants.URL_AUTH
-                + "?appid=" + WxAuthConstants.APPID
-                + "&redirect_uri=" + URLEncoder.encode(basepath + WxAuthConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
-                + "&response_type=" + WxAuthConstants.RESPONSE_TYPE_AUTH
-                + "&scope=" + WxAuthConstants.SCOPE_AUTH_USRINFO
+        String redirect_url = WxConstants.URL_AUTH
+                + "?appid=" + WxConstants.APPID
+                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
+                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
+                + "&scope=" + WxConstants.SCOPE_AUTH_USRINFO
                 + "&state=" + state
-                + WxAuthConstants.TAILSTR_AUTH;
+                + WxConstants.TAILSTR_AUTH;
 
         // 向微信获取授权code
         return "redirect:" + redirect_url;

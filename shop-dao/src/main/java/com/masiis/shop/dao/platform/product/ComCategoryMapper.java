@@ -15,7 +15,7 @@ public interface ComCategoryMapper {
      * @param id
      * @return
      */
-    ComCategory selectById(@Param("id")Long id);
+    ComCategory selectById(Integer id);
 
     /**
      * 根据条件查询记录

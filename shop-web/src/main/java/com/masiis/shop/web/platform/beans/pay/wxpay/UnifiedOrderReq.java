@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.beans.pay.wxpay;
 
+import com.masiis.shop.common.annotation.SignField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -12,6 +13,7 @@ public class UnifiedOrderReq {
     private String mch_id;
     private String device_info;
     private String nonce_str;
+    @SignField
     private String sign;
     private String body;
     private String detail;

@@ -65,6 +65,12 @@ public class ProductController {
         List<ComCategory> comCategories = categoryService.listByCondition(new ComCategory());
         ProductInfo productInfo = productService.findSku(skuId);
 
+        ComCategory comCategory = categoryService.find(productInfo.getComSpu().getCategoryId());
+        mav.addObject("c3id", comCategory.getId());
+        comCategory = categoryService.find(comCategory.getPid());
+        mav.addObject("c2id", comCategory.getId());
+        mav.addObject("c1id", comCategory.getPid());
+
         mav.addObject("brands", comBrands);
         mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
         mav.addObject("productInfo", productInfo);

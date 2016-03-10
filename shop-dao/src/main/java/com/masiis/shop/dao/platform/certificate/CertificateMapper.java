@@ -19,4 +19,6 @@ public interface CertificateMapper {
     CertificateInfo get(Integer id);
 
     CertificateInfo getApproveInfo(Integer id);
+
+    void updateCertificateImgUrl(Map<String, Object> paramsMap);
 }

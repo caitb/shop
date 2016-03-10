@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.certificate.CertificateMapper">
     <resultMap id="CertificateResultMap" type="com.masiis.shop.dao.beans.certificate.CertificateInfo">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="pfid" property="id" jdbcType="BIGINT"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="pid" property="pid" jdbcType="INTEGER"/>
@@ -19,6 +19,7 @@
 
         <association column="pf_user_sku_id" property="pfUserCertificateInfo"
                      javaType="com.masiis.shop.dao.po.PfUserCertificate">
+            <id column="id" property="id" jdbcType="BIGINT"/>
             <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
             <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER"/>
             <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
@@ -41,8 +42,8 @@
          SELECT u.wx_nk_name,u.real_name,u.id_card,u.id_card_front_url,u.id_card_back_url,
                  sr.parent_user_id,
                  sku.name,
-                 ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
-                 pfku.id
+                 ctf.id,ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
+                 pfku.id AS pfid
          FROM  pf_user_sku pfku
             LEFT JOIN pf_user_certificate ctf ON ctf.pf_user_sku_id = pfku.id
             LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
@@ -73,7 +74,7 @@
     <!--> 表示审核授权书<-->
     <update id="updateCertificateStatus" parameterType="java.util.HashMap">
         UPDATE pf_user_certificate SET status = #{status}
-        WHERE pf_user_sku_id = #{pfUserSkuId}
+        WHERE id = #{id}
     </update>
     <select id="get" parameterType="int" resultMap="CertificateResultMap">
         SELECT * FROM pf_user_sku WHERE id = #{id}
@@ -82,8 +83,8 @@
         SELECT  u.wx_nk_name,u.real_name,u.id_card,u.id_card_front_url,u.id_card_back_url,
                  sr.parent_user_id,
                  sku.name,
-                 ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
-                 pfku.id,pfku.user_id
+                 ctf.id,ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,
+                 pfku.id AS pfid, pfku.user_id
          FROM  pf_user_sku pfku
             LEFT JOIN pf_user_certificate ctf ON ctf.pf_user_sku_id = pfku.id
             LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
@@ -91,4 +92,9 @@
             LEFT JOIN sf_user_relation sr ON sr.user_id = pfku.user_id
          WHERE pfku.id = #{id}
     </select>
+    <update id="updateCertificateImgUrl" parameterType="java.util.HashMap">
+        UPDATE pf_user_certificate SET img_url = #{imgUrl}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

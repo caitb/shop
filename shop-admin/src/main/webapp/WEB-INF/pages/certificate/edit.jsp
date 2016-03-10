@@ -41,10 +41,10 @@
         <td>${certificateInfo.pfBorder.orderStatus}<span> <a href="javascript:void(0)" onclick="orderList('+certificateInfo.userId+')">查看订单</a></span></td>
 
     </tr>
-    <tr>
-        <td><label class="col-sm-3 control-label no-padding-right">联系地址</label></td>
-        <td>${certificateInfo.pfUserCertificateInfo.beginTime}</td>
-    </tr>
+    <%--<tr>--%>
+        <%--<td><label class="col-sm-3 control-label no-padding-right">联系地址</label></td>--%>
+        <%--<td>${certificateInfo.pfUserCertificateInfo.beginTime}</td>--%>
+    <%--</tr>--%>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">身份证号</label></td>
         <td>${certificateInfo.comUser.idCard}</td>

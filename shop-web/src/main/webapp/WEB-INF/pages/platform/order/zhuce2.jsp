@@ -56,7 +56,7 @@
     </main>
     <div class="footer">
         <section class="sec3">
-            <p><a href="zhuce.html">返回修改</a></p>
+            <p><a href="javascript:;" onclick="returnFun()">返回修改</a></p>
             <p><a href="javascript:;" onclick="submit()">确定</a></p>
         </section>
     </div>
@@ -67,6 +67,17 @@
     var myScroll = new IScroll("body", {
         preventDefault: false
     })
+    var returnFun = function () {
+        var paraData = "?";
+        paraData += "skuId=${skuId}";
+        paraData += "&name=${name}";
+        paraData += "&mobile=${mobile}";
+        paraData += "&yanzhengma=${yanzhengma}";
+        paraData += "&weixinId=${weixinId}";
+        paraData += "&parentMobile=${parentMobile}";
+        paraData += "&levelId=${levelId}";
+        window.location.href = "<%=basePath%>border/register.shtml" + paraData;
+    }
     var submit = function () {
         var paraData = {};
         paraData.realName = "${name}";
@@ -84,7 +95,7 @@
             success: function (data) {
                 if (data.isError == false) {
                     var param = "?";
-                    param += "bOrderId=${bOrderId}";
+                    param += "bOrderId=" + data.bOrderId;
                     window.location.href = "<%=basePath%>border/pay.shtml" + param;
                 }
                 else {

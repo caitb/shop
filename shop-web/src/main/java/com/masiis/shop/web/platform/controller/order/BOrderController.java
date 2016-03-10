@@ -73,7 +73,7 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         try {
             skuId = 22;
-            String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+            String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
             ProductSimple productSimple = productService.getSkuSimple(skuId);
             mv.addObject("skuId", skuId);
             mv.addObject("skuName", productSimple.getSkuName());
@@ -96,7 +96,14 @@ public class BOrderController extends BaseController {
     public ModelAndView partnersRegister(HttpServletRequest request,
                                          HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
-                                         @RequestParam(value = "parentUserId", required = false) Long parentUserId) {
+                                         @RequestParam(value = "parentUserId", required = false) Long parentUserId,
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @RequestParam(value = "mobile", required = false) String mobile,
+                                         @RequestParam(value = "yanzhengma", required = false) String yanzhengma,
+                                         @RequestParam(value = "weixinId", required = false) String weixinId,
+                                         @RequestParam(value = "parentMobile", required = false) String parentMobile,
+                                         @RequestParam(value = "levelId", required = false) Integer levelId
+    ) {
         ModelAndView mv = new ModelAndView();
         try {
             //获取商品信息
@@ -113,7 +120,11 @@ public class BOrderController extends BaseController {
             List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
             StringBuffer sb = new StringBuffer();
             for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-                sb.append("<p>");
+                if (pfSkuAgent.getAgentLevelId() == levelId) {
+                    sb.append("<p class='on'>");
+                } else {
+                    sb.append("<p>");
+                }
                 sb.append("<label levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
                 for (ComAgentLevel comAgentLevel : comAgentLevels) {
                     if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
@@ -128,6 +139,12 @@ public class BOrderController extends BaseController {
             mv.addObject("skuId", comSku.getId());
             mv.addObject("skuName", comSku.getName());
             mv.addObject("agentInfo", sb.toString());
+            //返回修改默认数据
+            mv.addObject("name", name);
+            mv.addObject("mobile", mobile);
+            mv.addObject("yanzhengma", yanzhengma);
+            mv.addObject("weixinId", weixinId);
+            mv.addObject("parentMobile", parentMobile);
             mv.setViewName("platform/order/zhuce");
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -218,7 +235,8 @@ public class BOrderController extends BaseController {
                                                 @RequestParam(value = "skuName", required = true) String skuName,
                                                 @RequestParam(value = "levelId", required = true) Long levelId,
                                                 @RequestParam(value = "levelName", required = true) String levelName,
-                                                @RequestParam(value = "amount", required = true) BigDecimal amount) {
+                                                @RequestParam(value = "amount", required = true) BigDecimal amount,
+                                                @RequestParam(value = "yanzhengma", required = false) String yanzhengma) {
         ComUser comUser = userService.getUserByMobile(parentMobile);
 //        if (comUser == null) {
 //            throw new BusinessException("");
@@ -236,6 +254,7 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("levelName", levelName);
         modelAndView.addObject("amount", amount);
         modelAndView.addObject("pName", "赵先生");
+        modelAndView.addObject("yanzhengma", yanzhengma);
         return modelAndView;
     }
 
@@ -343,7 +362,7 @@ public class BOrderController extends BaseController {
                                      @RequestParam(value = "bOrderId", required = false) Long bOrderId
     ) {
         ModelAndView mv = new ModelAndView();
-        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+        String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
         StringBuffer stringBuffer = new StringBuffer();
@@ -369,28 +388,30 @@ public class BOrderController extends BaseController {
         mv.setViewName("platform/order/zhifu");
         return mv;
     }
-    
+
     /**
      * 成功支付订单
+     *
      * @author muchaofeng
      * @date 2016/3/9 15:06
      */
     @RequestMapping("/borderPayComplete.shtml")
-    public ModelAndView BorderPayComplete(HttpServletRequest request)throws Exception{
+    public ModelAndView BorderPayComplete(HttpServletRequest request) throws Exception {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         OrderUserSku orderUserSku = new OrderUserSku();
-        Long bOrderid=12L;
+        Long bOrderid = 12L;
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderid);
         List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderid);
         List<String> skuNames = new ArrayList<>();
-        for(PfBorderItem pforderItem:pfBorderItem){
+        for (PfBorderItem pforderItem : pfBorderItem) {
             skuNames.add(pforderItem.getSkuName());
         }
-        ComUser userpId = userService.getUserById(pfBorder.getUserPid());;
-        if(userpId==null){
+        ComUser userpId = userService.getUserById(pfBorder.getUserPid());
+        ;
+        if (userpId == null) {
             //上级姓名
             orderUserSku.setSuperiorName("");
-        }else{
+        } else {
             //上级姓名
             orderUserSku.setSuperiorName(userpId.getRealName());
         }
@@ -403,7 +424,7 @@ public class BOrderController extends BaseController {
         ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
         orderUserSku.setAgentLevel(comAgentLevel.getName());
         ModelAndView mav = new ModelAndView();
-        mav.addObject("orderUserSku",orderUserSku);
+        mav.addObject("orderUserSku", orderUserSku);
         mav.setViewName("platform/order/lingquzhengshu");
         return mav;
     }

@@ -2,14 +2,16 @@
 main {
   width: 100%;
 }
+main #xz {
+  display: none;
+}
 main .xinz {
   width: 100%;
-  height: 55px;
+  height: 40px;
   display: -webkit-box;
   -webkit-box-align: center;
   background: white;
   -webkit-box-pack: center;
-  display: none;
 }
 main .xinz p {
   background: url("../images/xz.png") no-repeat 5px;

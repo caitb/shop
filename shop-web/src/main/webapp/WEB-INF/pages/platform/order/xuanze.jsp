@@ -59,7 +59,7 @@
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
                         <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
-                        <a href="<%=path%>/userAddress/toManageAddressPage.html"><h2 class="gl">管理</h2></a>
+                        <a href="<%=path%>/userAddress/toManageAddressPage.html?addressId=${addressId}&pfCorderId=${pfCorderId}"><h2 class="gl">管理</h2></a>
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>

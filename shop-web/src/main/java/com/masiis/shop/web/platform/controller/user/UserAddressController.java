@@ -90,7 +90,6 @@ public class UserAddressController {
         comUserAddress.setCreateTime(new Date());
         int i = 0;
         if (operateType.equals("save")){
-            comUserAddress.setIsDefault(0);//地址不设为默认的
             i = userAddressService.addComUserAddress(comUserAddress);
         }else{
             comUserAddress.setIsDefault(isDefault);
@@ -151,7 +150,12 @@ public class UserAddressController {
      */
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
-                                HttpServletResponse response){
+                                HttpServletResponse response,
+                                      @RequestParam(value = "addressId", required = false)Integer id,
+                                      @RequestParam(value = "pfCorderId", required = true)Integer pfCorderId,
+                                      Model model){
+        model.addAttribute("selectedAddressId",id);
+        model.addAttribute("pfCorderId",pfCorderId);
         return "platform/order/guanli";
     }
     /**
@@ -183,19 +187,27 @@ public class UserAddressController {
      */
     @RequestMapping("/deleteUserAddressById.do")
     @ResponseBody
-    public Boolean deleteUserAddressById(HttpServletRequest request,
+    public Integer deleteUserAddressById(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "id", required = true)Integer id)throws Exception{
+                                      @RequestParam(value = "id", required = true)Integer id,
+                                         @RequestParam(value = "defaultAddressId", required = false)Integer defaultAddressId)throws Exception{
         if (StringUtils.isEmpty(id)){
             id = 1;
         }else{
 
         }
-       int i = userAddressService.deleteUserAddressById(id);
-        if (i==1){
-            return true;
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        Long userId = null;
+        if (comUser!=null){
+            userId = comUser.getId();
         }else{
-            return false;
+            userId = 1L;
+        }
+       int i = userAddressService.deleteUserAddressById(id,userId,defaultAddressId);
+        if (i==0){
+            return 0;
+        }else{
+            return i;
         }
     }
     /**

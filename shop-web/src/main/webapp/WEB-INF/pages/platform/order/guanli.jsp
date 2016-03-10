@@ -37,6 +37,7 @@
                             address +="</span></p></div>";
                             address +=" <div class=\"setting\">";
                             if (jsonData[i].isDefault==1){
+                                $("#defaultAddressId").val(jsonData[i].id);
                                 address +="<p class=\"pon\" onclick='settingDefaultAddress("+jsonData[i].id+")'  id=\"p_"+jsonData[i].id+"\" >默认地址<span></span></p>";
                             }else{
                                 address +="<p id=\"p_"+jsonData[i].id+"\"  onclick='settingDefaultAddress("+jsonData[i].id+")'  >默认地址<span></span></p>";
@@ -56,15 +57,15 @@
 <body>
    <main>
        <div class="wrap">
-             
            <div class="box">
                 <header class="xq_header">
-                   <a href="guanli.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=path%>/userAddress/toChooseAddressPage.html?addressId=${selectedAddressId}&pfCorderId=${pfCorderId}" >"<img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
                         <h2 class="gl">完成</h2>          
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>
+                    <input id="defaultAddressId" style="display:none;" value=""/>
                 </div>
                  <section class="pp">
                         <h1>您还没有收货地址</h1>
@@ -120,18 +121,27 @@
                 if (data){
                     $('p[id^="p_"]').removeClass("pon");
                     $("#p_"+ids+"").addClass("pon");
+                    $("#defaultAddressId").val(ids);
                 }else{
                     alert("设置默认地址失败");
                 }
             })
         }
         function deleteAddress(id){
+            var defaultAddressId = $("#defaultAddressId").val();
             $.post("/userAddress/deleteUserAddressById.do",{
-                "id":id
+                "id":id,
+                "defaultAddressId":defaultAddressId
             },function(data){
-                if (data){
+                if(data==-1){
+                    //删除的不是默认地址
                     $("#selection_"+id+"").remove();
+                }else  if (data!=0&&data!=-1){
+                    //删除的是默认地址，将最新的地址设置为默认地址
+                    $("#selection_"+id+"").remove();
+                    $("#p_"+data+"").addClass("pon");
                 }else{
+                    //删除地址失败
                     alert("删除失败");
                 }
             })

@@ -10,6 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhuce2.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
@@ -53,11 +54,11 @@
             <p><span>需要缴纳货款：</span><b>￥${amount}</b></p>
         </section>
 
+        <h3 class="fanhui">注册信息是否正确？<a href="javascript:;" onclick="returnFun()">返回修改</a></h3>
+        <section class="sec3">
+            <a href="javascript:;" onclick="submit()">确认</a>
+        </section>
     </main>
-    <h3 class="fanhui">注册信息是否正确？<a href="javascript:;" onclick="returnFun()">返回修改</a></h3>
-    <section class="sec3">
-        <a href="javascript:;" onclick="submit()">确认</a>
-    </section>
 </div>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>

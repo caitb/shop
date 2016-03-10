@@ -64,7 +64,7 @@
                 <p><b>需付：</b><span>￥${receivableAmount}</span></p>
             </section>
 
-            <a href="<%=path%>/static/html/lingquzhengshu.html" class="weixin">微信支付</a>
+            <a href="<%=basePath%>border/borderPayComplete.shtml?bOrderId=${bOrderId}" class="weixin">微信支付</a>
             <a href="javascript:;" class="xianxia">线下支付</a>
         </main>
     </div>

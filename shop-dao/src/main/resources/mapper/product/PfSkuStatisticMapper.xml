@@ -18,7 +18,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
-  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfSkuStatisticExample" >
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfSkuStatistic" >
     select
     <if test="distinct" >
       distinct

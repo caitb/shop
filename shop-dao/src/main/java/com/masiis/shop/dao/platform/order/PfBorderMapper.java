@@ -20,4 +20,6 @@ public interface PfBorderMapper {
     List<PfBorder> selectAll();
 
     int updateByPrimaryKey(PfBorder record);
+
+    PfBorder selectByOrderCode(String orderId);
 }

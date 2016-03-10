@@ -53,7 +53,6 @@
                         "paySign":"5BCDFE5E0BA3905919DFACF04643F713" //微信签名
                     },
                     function(res){
-                        alert(res);
                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
                             //跳转成功页面
                             alert("ok:true");

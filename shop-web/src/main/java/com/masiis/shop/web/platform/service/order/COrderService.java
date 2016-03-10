@@ -100,4 +100,14 @@ public class COrderService {
             return false;
         }
     }
+
+    /**
+     * 根据订单编号查询试用订单
+     *
+     * @param orderCode
+     * @return
+     */
+    public PfCorder findByOrderCode(String orderCode) {
+        return pfCorderMapper.selectByOrderCode(orderCode);
+    }
 }

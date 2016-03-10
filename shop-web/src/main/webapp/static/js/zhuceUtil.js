@@ -132,20 +132,24 @@ $(function () {
         $(this).addClass("on");
     });
     $("#submit").click(function () {
+        var n = 0;
         if ($(".sec2 .on label").html() == null || $(".sec2 .on [name='amount']").html() == null) {
             alert("请选择合伙人等级");
-            return;
+            n++;
         }
         if (!nameCheckFun($("#name"))) {
-            return;
+            n++;
         }
         if (!telCheckFun($("#tel"))) {
-            return;
+            n++;
         }
         if (!weixinCheckFun($("#weixin"))) {
-            return;
+            n++;
         }
         if (!yanCheckFun($("#yan"))) {
+            n++;
+        }
+        if (n > 0) {
             return;
         }
         var paraData = {};
@@ -158,6 +162,7 @@ $(function () {
         paraData.levelId = $(".sec2 .on label").attr("levelId");
         paraData.levelName = $(".sec2 .on label").html();
         paraData.amount = $(".sec2 .on [name='amount']").html();
+        paraData.yanzhengma = $("#yan").val();
         $.ajax({
             url: path + "border/registerConfirm/check.do",
             type: "POST",
@@ -175,6 +180,7 @@ $(function () {
                     param += "&levelId=" + paraData.levelId;
                     param += "&levelName=" + paraData.levelName;
                     param += "&amount=" + paraData.amount;
+                    param += "&yanzhengma=" + paraData.yanzhengma;
                     window.location.href = path + "border/registerConfirm.shtml" + param;
                 } else {
                     alert(data.message);

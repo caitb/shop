@@ -22,7 +22,7 @@
     <p>合伙人申请</p>
 </header>
 <div class="kang">
-    <a href="../html/xiangqing.html">
+    <a href="<%=path%>/product/${skuId}">
         <p class="photo">
             <img src="${skuImg}">
         </p>

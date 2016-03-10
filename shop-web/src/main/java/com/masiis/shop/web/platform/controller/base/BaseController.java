@@ -1,6 +1,10 @@
 package com.masiis.shop.web.platform.controller.base;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 基础controller,用来编写一些基础方法
@@ -39,5 +43,26 @@ public class BaseController {
 
     protected String createForwardRes(String uri){
         return "forward:" + uri;
+    }
+
+    protected String getRequestBody(HttpServletRequest request) throws IOException {
+        InputStream is = null;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        String res = null;
+        is = request.getInputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while((len = is.read(buffer)) != -1){
+            os.write(buffer, 0, len);
+        }
+
+        res = new String(os.toByteArray(), "UTF-8");
+
+        if(is != null){
+            is.close();
+        }
+        os.close();
+
+        return res;
     }
 }

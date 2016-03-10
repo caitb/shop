@@ -8,7 +8,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("xml")
 public class BrandWCPayReq {
-    private String appid;
+    private String appId;
     private String timeStamp;
     private String nonceStr;
     @JSONField(name = "package")
@@ -17,12 +17,12 @@ public class BrandWCPayReq {
     private String signType;
     private String paySign;
 
-    public String getAppid() {
-        return appid;
+    public String getAppId() {
+        return appId;
     }
 
-    public void setAppid(String appid) {
-        this.appid = appid;
+    public void setAppId(String appid) {
+        this.appId = appid;
     }
 
     public String getTimeStamp() {

@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.platform.service.user.ComAreaService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -135,7 +136,12 @@ public class UserAddressController {
      */
     @RequestMapping("/toChooseAddressPage.html")
     public String toChooseAddressPage(HttpServletRequest request,
-                                      HttpServletResponse response){
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "addressId", required = false)Integer id,
+                                      @RequestParam(value = "pfCorderId", required = true)Integer pfCorderId,
+                                      Model model){
+        model.addAttribute("addressId",id);
+        model.addAttribute("pfCorderId",pfCorderId);
         return "platform/order/xuanze";
     }
     /**
@@ -156,7 +162,8 @@ public class UserAddressController {
     @RequestMapping("/getUserAddressByUserId.do")
     @ResponseBody
     public String getUserAddressByUserId(HttpServletRequest request,
-                                         HttpServletResponse response)throws JsonProcessingException{
+                                         HttpServletResponse response,
+                                         Model model)throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         ComUserAddress comUserAddress = new ComUserAddress();

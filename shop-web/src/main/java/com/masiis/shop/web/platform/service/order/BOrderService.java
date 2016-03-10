@@ -146,4 +146,7 @@ public class BOrderService {
         return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
 
+    public PfBorder findByOrderCode(String orderId) {
+        return pfBorderMapper.selectByOrderCode(orderId);
+    }
 }

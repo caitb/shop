@@ -3,7 +3,7 @@ package com.masiis.shop.web.platform.constants;
 /**
  * Created by lzh on 2016/2/24.
  */
-public class WxAuthConstants {
+public class WxConstants {
     /**
      * 授权页面链接
      */
@@ -60,6 +60,10 @@ public class WxAuthConstants {
      * 微信支付签名密钥
      */
     public static final String WX_PAY_SIGN_KEY = "U0SJD1OR4WLA5J8QM9IZAJT5KC4ZLS7D";
-
+    /**
+     * 商户号
+     */
     public static final String WX_PAY_MCHID = "1319531601";
+
+    public static final String WX_PAY_URL_UNIORDER_NOTIFY = "http://www.rd.masiis.com/wxntfy/orderNtfy";
 }

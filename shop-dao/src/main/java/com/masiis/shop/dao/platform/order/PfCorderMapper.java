@@ -33,4 +33,6 @@ public interface PfCorderMapper {
     List<PfCorder> queryPfCorderByParam(@Param("pfCorder") PfCorder pfCorder);
 
     void insertPfCorderOperationLog(@Param("pcol")PfCorderOperationLog pcol);
+
+    PfCorder selectByOrderCode(String orderCode);
 }

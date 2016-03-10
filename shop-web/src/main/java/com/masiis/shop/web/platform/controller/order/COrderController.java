@@ -186,6 +186,7 @@ public class COrderController extends BaseController {
     public String confirmOrder(HttpServletRequest request,
                                 HttpServletResponse response,
                                 @RequestParam(value = "orderId", required = false) Long orderId,
+                                @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId,
                                 Model model){
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         Long userId = null;
@@ -197,12 +198,13 @@ public class COrderController extends BaseController {
         if (orderId==null){
             orderId = 1L;
         }
-        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId);
+        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId,selectedAddressId);
         List<ComUserAddress> comuserAddressList = (List<ComUserAddress>)pfCorderMap.get("address");
         //地址
         if (comuserAddressList!=null&&comuserAddressList.size()>0){
             model.addAttribute("comUserAddress",comuserAddressList.get(0));
         }
+        model.addAttribute("pfCorderId",1L);
 /*        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");
         if (pfCorders!=null&&pfCorders.size()>0){
             model.addAttribute("pfCorder",pfCorders.get(0));

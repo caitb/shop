@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.beans.pay.wxpay;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.masiis.shop.common.annotation.SignField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
@@ -15,6 +16,7 @@ public class BrandWCPayReq {
     @XStreamAlias("package")
     private String packages;
     private String signType;
+    @SignField
     private String paySign;
 
     public String getAppId() {

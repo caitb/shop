@@ -257,7 +257,14 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.isCertificate==0){
+                                                        return "否";
+                                                    }else if(row.isCertificate==1){
+                                                        return "是";
+                                                    }
+                                                }
                                             },
                                             {
                                                 //field: 'operate',
@@ -339,9 +346,9 @@
                                 return sArr;
                             }
 
-                            /*function pass(id){
-                                location.href = '/trial/pass.do?id='+id;
-                            }*/
+                            function lower(pid){
+                                location.href = '/userSku/list.do?id='+pid;
+                            }
 
                             /*window.operateEvents = {
                                 'click .like': function (e, value, row, index) {

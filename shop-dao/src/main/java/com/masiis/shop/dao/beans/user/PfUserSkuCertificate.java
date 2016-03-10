@@ -14,7 +14,21 @@ public class PfUserSkuCertificate extends PfUserSku {
     private String pRealName;
     private Integer lowerCount;
 
+    public String getSkuName() {
+        return skuName;
+    }
 
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
+    }
+
+    public Integer getLowerCount() {
+        return lowerCount;
+    }
+
+    public void setLowerCount(Integer lowerCount) {
+        this.lowerCount = lowerCount;
+    }
 
     public ComUser getComUser() {
         return comUser;

@@ -24,7 +24,16 @@ public class PfUserSkuService {
      * @return
      */
     public List<PfUserSkuCertificate> getUserSkuList(Map<String, Object> searchParam) {
-        return pfUserSkuMapper.getUserSkuList(searchParam);
+        List<PfUserSkuCertificate> puscList = pfUserSkuMapper.getUserSkuList(searchParam);
+        return puscList;
+    }
 
+    /**
+     * 查询下级人数
+     * @param pid
+     * @return
+     */
+    public Integer findLowerCount(Integer pid) {
+        return pfUserSkuMapper.findLowerCount(pid);
     }
 }

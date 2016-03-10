@@ -33,6 +33,7 @@
 
         <association column="user_id" property="comUser"
                      javaType="com.masiis.shop.dao.po.ComUser">
+            <id column="userId" property="id" jdbcType="INTEGER" />
             <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
             <result column="real_name" property="realName" jdbcType="VARCHAR"/>
             <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
@@ -103,12 +104,21 @@
         and sku_id = #{skuId}
     </select>
 
-    <select id="getUserSkuList" resultMap="UserSkuResultMap" >
-        select pus.code,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
+    <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap" >
+        select pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
+        ,pus.pid
         from pf_user_sku pus
         LEFT JOIN com_user cu on pus.user_id = cu.id
         LEFT JOIN com_sku cs on pus.sku_id = cs.id
         LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
+        <where>
+            <if test="searchParam.pid != null">
+                AND pid = #{searchParam.pid}
+            </if>
+        </where>
+    </select>
+    <select id="findLowerCount" resultType="Integer" >
+        select count(*) from pf_user_sku where pid = #{pid,jdbcType=INTEGER}
     </select>
 </mapper>
 

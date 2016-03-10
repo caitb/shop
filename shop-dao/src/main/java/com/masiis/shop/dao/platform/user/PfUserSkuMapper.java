@@ -28,5 +28,7 @@ public interface PfUserSkuMapper {
     PfUserSku selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 
 
-    List<PfUserSkuCertificate> getUserSkuList(Map<String, Object> searchParam);
+    List<PfUserSkuCertificate> getUserSkuList(@Param("searchParam") Map<String, Object> searchParam);
+
+    Integer findLowerCount(Integer pid);
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -28,6 +29,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="<%=basePath%>static/js/date-util.js"></script>
 
 </head>
 
@@ -66,7 +68,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/trial/list.do"
+                               data-url="/userSku/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -99,113 +101,176 @@
                                     },
                                     columns: [
                                         [
-                                            {
+                                            /* {
                                                 checkbox: true,
                                                 rowspan: 2,
                                                 align: 'center',
                                                 valign: 'middle'
-                                            }, {
+                                            },
+                                            {
                                             title: '序号',
-                                            field: 'id',
                                             rowspan: 2,
                                             align: 'center',
                                             valign: 'middle',
-                                            sortable: true,
-                                            footerFormatter: totalTextFormatter
-                                        }, {
+                                            footerFormatter: totalTextFormatter,
+                                            formatter: function(value, row, index){
+                                                return index + 1;
+                                            }
+                                            },*/
+                                            {
+                                                title: '合伙证书编号',
+                                                field: 'code',
+                                                rowspan: 2,
+                                                align: 'center',
+                                                valign: 'middle',
+                                                //sortable: true,
+                                                footerFormatter: totalTextFormatter,
+                                                /*formatter: function(value, row, index){
+                                                    if(code){
+                                                        return row.code;
+                                                    }
+                                                    return '-';
+                                                }*/
+                                            },
+                                            {
                                             title: '详情',
-                                            colspan: 8,
+                                            colspan: 11,
                                             align: 'center'
-                                        }
+                                            }
                                         ],
                                         [
                                             {
-                                                field: 'name',
+                                                field: 'realName',
                                                 title: '姓名',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'mobile',
-                                                title: '手机号码',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'weixinId',
-                                                title: '微信号',
-                                                //sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'skuName',
-                                                title: '申请商品',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'referrer',
-                                                title: '推荐人',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                title: '申请理由',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return '<a href="http://www.baidu.com">查看</a>';
+                                                    if(row.comUser){
+                                                        return row.comUser.realName
+                                                    }
+                                                    return '-';
                                                 }
                                             },
                                             {
-                                                field: 'createTime',
-                                                title: '申请时间',
+                                                field: 'mobile',
+                                                title: '手机号',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.comUser){
+                                                        return row.comUser.mobile
+                                                    }
+                                                    return '-';
+                                                }
+                                            },
+                                            {
+                                                field: 'wxId',
+                                                title: '微信号',
+                                                //sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                formatter: function (value, row, index) {
+                                                    if(row.comUser){
+                                                        return row.comUser.wxId
+                                                    }
+                                                    return '-';
+                                                },
                                                 align: 'center'
                                             },
-//                                        {
-//                                        field: 'price',
-//                                        title: 'Item Price',
-//                                        sortable: true,
-//                                        align: 'center',
-//                                        editable: {
-//                                            type: 'text',
-//                                            title: 'Item Price',
-//                                            validate: function (value) {
-//                                                value = $.trim(value);
-//                                                if (!value) {
-//                                                    return 'This field is required';
-//                                                }
-//                                                if (!/^$/.test(value)) {
-//                                                    return 'This field needs to start width $.'
-//                                                }
-//                                                var data = $table.bootstrapTable('getData'),
-//                                                        index = $(this).parents('tr').data('index');
-//                                                console.log(data[index]);
-//                                                return '';
-//                                            }
-//                                        },
-//                                        footerFormatter: totalPriceFormatter
-//                                    },
+                                            {
+                                                field: 'sku_name',
+                                                title: '合伙商品',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                            },
+                                            {
+                                                field: 'name',
+                                                title: '合伙人级别',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.comAgentLevel){
+                                                        return row.comAgentLevel.name;
+                                                    }
+                                                    return "-";
+                                                }
+                                            },
+                                            {
+                                                field: 'pRealName',
+                                                title: '上级合伙人',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                /*formatter: function(value, row, index){
+                                                    return '<a href="javascript:void(0)" onclick="cha('+row.pfUserTrial.id+')">查看</a>';
+                                                }*/
+                                            },
+                                            {
+                                                field: 'createTime',
+                                                title: '加入时间',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                                                }
+                                            },
+                                            {
+                                                field: 'isPay',
+                                                title: '是否支付',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.isPay==0){
+                                                        return "否";
+                                                    }else if(row.isPay==1){
+                                                        return "是";
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                field: 'lowerCount',
+                                                title: '下级合伙人',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return '<a href="javascript:void(0)" onclick="lower('+row.userId+')">'+row.lowerCount+'人</a>';
+                                                 }
+                                            },
+                                            {
+                                                field: 'isCertificate',
+                                                title: '是否申请证书',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.isCertificate==0){
+                                                        return "否";
+                                                    }else if(row.isCertificate==1){
+                                                        return "是";
+                                                    }
+                                                }
+                                            },
                                             {
                                                 //field: 'operate',
                                                 title: '操作项',
                                                 align: 'center',
-                                                events: operateEvents,
+                                                //events: operateEvents,
                                                 formatter: operateFormatter
                                             }
                                         ]
@@ -271,31 +336,23 @@
                             }
 
                             function operateFormatter(value, row, index) {
-                                return [
-                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">通过',
-                                    '</a>',
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">拒绝',
-                                    //'<i class="glyphicon glyphicon-heart"></i>',
-                                    '</a>  ',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">已通过',
-                                    //'<i class="glyphicon glyphicon-remove"></i>',
-                                    '</a>',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove">已拒绝',
-                                    //'<i class="glyphicon glyphicon-remove"></i>',
-                                    '</a>'
-                                ].join('');
+                                var id = window.parseInt(row.id);
+                                var sArr = [];
+
+                                sArr.push( '&nbsp;<a href="javascript:void(0)" onclick="personal('+row.comUser.id+')" title="Edit">查看个人信息</a>');
+                                sArr.push( '&nbsp;|<a class="like detail-icon" href="javascript:void(0)" onclick="partner('+id+')" title="Edit">查看合伙人信息</a>');
+                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="pass('+id+')" title="Edit">更改上级</a>');
+
+                                return sArr;
                             }
 
-                            window.operateEvents = {
+                            function lower(pid){
+                                location.href = '/userSku/list.do?id='+pid;
+                            }
+
+                            /*window.operateEvents = {
                                 'click .like': function (e, value, row, index) {
-                                    $.ajax({
-                                        url: '<%=basePath%>menu/treeMenu.shtml',
-                                        data: {userId: row.id},
-                                        success: function (data) {
-                                            //alert(data);
-                                            $('#myModal .modal-body').html(data);
-                                        }
-                                    });
+                                    $('#trialId').val(row.pfUserTrial.id);
                                     $('#myModal').modal({
                                         show: true,
                                         backdrop: true
@@ -308,7 +365,7 @@
                                         values: [row.id]
                                     });
                                 }
-                            };
+                            };*/
 
                             function totalTextFormatter(data) {
                                 return 'Total';
@@ -369,6 +426,25 @@
                                 eachSeries(scripts, getScript, initTable);
                             });
 
+
+
+                            function cha(id){
+                                $.ajax({
+                                    url:'<%=basePath%>trial/cha.do',
+                                    data:{id:id},
+                                    success: function(result){
+                                        $('#liyou').html(result);
+                                        $('#myM').modal({
+                                            show: true,
+                                            backdrop: true
+                                        });
+                                    }
+                                })
+                            }
+
+
+
+
                             function getScript(url, callback) {
                                 var head = document.getElementsByTagName('head')[0];
                                 var script = document.createElement('script');
@@ -422,18 +498,25 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        授权列表
+                        请填写拒绝理由:
                     </h4>
                 </div>
                 <div class="modal-body">
-                    在这里添加一些文本
+                    <form class="form-horizontal" id="reasonForm" >
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <input type="hidden" id="trialId" name="id" />
+                                <textarea class="form-control" cols="5" rows="10" name="remark" placeholder="理由"></textarea>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
                     <button type="button" class="btn btn-primary" id="btnSubmit">
-                        提交更改
+                        提交
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -505,7 +588,37 @@
                             data-dismiss="modal">关闭
                     </button>
                     <button type="button" class="btn btn-primary" id="addSubmit">
-                        提交更改
+                        提交
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+
+
+    <div class="modal fade" id="myM" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="title" >
+                        申请理由
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <span id="liyou"></span>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -514,7 +627,7 @@
 
     <script>
         //保存授权信息
-        $('#btnSubmit').on('click', function(){
+       /* $('#btnSubmit').on('click', function(){
             var zTree = $.fn.zTree.getZTreeObj("treeMenu");
             var treeNodes = zTree.getCheckedNodes(true);
 
@@ -532,9 +645,10 @@
                 }
             });
 
-        });
+        });*/
 
         //保存用户信息
+
         $('#addSubmit').on('click', function () {
             $.ajax({
                 url: '<%=basePath%>user/add.do',
@@ -546,6 +660,22 @@
                 }
             });
         });
+
+
+
+        $('#btnSubmit').on('click', function () {
+            var data = $('#reasonForm').serialize();
+            $.ajax({
+                url: '<%=basePath%>trial/reason.do',
+                type: 'post',
+                data: data,
+                success: function (data) {
+                    //alert(data);
+                    $('#myModal').modal('hide');
+                }
+            });
+            location.reload();
+        })
     </script>
 
 </div>

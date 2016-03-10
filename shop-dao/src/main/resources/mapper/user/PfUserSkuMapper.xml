@@ -15,6 +15,43 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
+
+<!-- 合伙人关系映射 -->
+    <resultMap id="UserSkuResultMap" type="com.masiis.shop.dao.beans.user.PfUserSkuCertificate" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="is_pay" property="isPay" jdbcType="INTEGER" />
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="csname" property="skuName" jdbcType="VARCHAR" />
+
+        <association column="user_id" property="comUser"
+                     javaType="com.masiis.shop.dao.po.ComUser">
+            <id column="userId" property="id" jdbcType="INTEGER" />
+            <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+            <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+            <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        </association>
+        <association column="agent_level_id" property="comAgentLevel"
+                     javaType="com.masiis.shop.dao.po.ComAgentLevel">
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+            <result column="calname" property="name" jdbcType="VARCHAR" />
+            <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+            <result column="lower" property="lower" jdbcType="DECIMAL" />
+            <result column="discount" property="discount" jdbcType="DECIMAL" />
+            <result column="remark" property="remark" jdbcType="VARCHAR" />
+        </association>
+
+
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
         delete from pf_user_sku
         where id = #{id,jdbcType=INTEGER}
@@ -65,6 +102,23 @@
         from pf_user_sku
         where user_id = #{userId}
         and sku_id = #{skuId}
+    </select>
+
+    <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap" >
+        select pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
+        ,pus.pid
+        from pf_user_sku pus
+        LEFT JOIN com_user cu on pus.user_id = cu.id
+        LEFT JOIN com_sku cs on pus.sku_id = cs.id
+        LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
+        <where>
+            <if test="searchParam.pid != null">
+                AND pid = #{searchParam.pid}
+            </if>
+        </where>
+    </select>
+    <select id="findLowerCount" resultType="Integer" >
+        select count(*) from pf_user_sku where pid = #{pid,jdbcType=INTEGER}
     </select>
 </mapper>
 

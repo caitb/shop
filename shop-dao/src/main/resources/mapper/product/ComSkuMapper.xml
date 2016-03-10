@@ -79,7 +79,7 @@
 
 
     <!-- 根据id查询一条记录 -->
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
                id,
                name,

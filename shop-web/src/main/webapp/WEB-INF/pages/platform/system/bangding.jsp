@@ -83,7 +83,6 @@
                     data:"verificationCode="+$("#codeValueId").val(),
                     dataType:"Json",
                     success:function(result){
-//                        alert(result);
                         if(result.msg){
                             $("#codeValueId").val("验证成功!");
                         }else{

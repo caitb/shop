@@ -72,7 +72,6 @@ public class BOrderController extends BaseController {
                                       @RequestParam(value = "skuId", required = false) Integer skuId) {
         ModelAndView mv = new ModelAndView();
         try {
-            skuId = 22;
             String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
             ProductSimple productSimple = productService.getSkuSimple(skuId);
             mv.addObject("skuId", skuId);

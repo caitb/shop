@@ -11,23 +11,33 @@ body .wrap main {
   height: 80%;
 }
 body .wrap main .sec1 {
-  margin-bottom: 5px;
   width: 100%;
+}
+body .wrap main .sec1 div:nth-child(1) p {
+  font-size: 14px;
+  text-indent: 10px;
+  font-weight: 600;
+}
+body .wrap main .sec1 div:nth-child(1) p b {
+  font-size: 12px;
+  font-weight: 600;
+  color: #999999;
 }
 body .wrap main .sec1 div {
   width: 100%;
-  border-bottom: 1px solid #F6F6F6;
   background: white;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
 body .wrap main .sec1 div p {
   text-indent: 10px;
-  color: #444444;
+  color: #333333;
   line-height: 40px;
+  font-size: 12px;
+  text-indent: 25px;
 }
 body .wrap main .sec1 div p b {
-  color: #B2B2B2;
+  font-size: 12px;
 }
 body .wrap main .sec1 div p span {
   font-size: 12px;
@@ -44,50 +54,47 @@ body .wrap main .sec2 {
 body .wrap main .sec2 h2 {
   color: #444444;
   line-height: 40px;
-  border-bottom: 1px solid #F6F6F6;
   text-indent: 10px;
+  font-weight: 600;
 }
 body .wrap main .sec2 p {
-  text-indent: 10px;
-  color: #444444;
+  text-indent: 12px;
+  color: #333333;
   line-height: 40px;
-  border-bottom: 1px solid #F6F6F6;
+  font-size: 12px;
 }
 body .wrap main .sec2 p b {
-  color: #B2B2B2;
+  color: #333333;
+  font-size: 12px;
 }
 body .wrap main .sec2 p span {
+  display: inline-block;
+  width: 130px;
   font-size: 12px;
-  color: #B2B2B2;
-  display: block;
-  float: right;
-  line-height: 40px;
-  margin-right: 10px;
 }
-body .wrap .footer {
-  position: fixed;
-  bottom: 0;
+body .wrap main .fanhui {
   width: 100%;
+  background: url("../images/no.png") no-repeat 10px;
+  background-size: 4%;
+  text-indent: 30px;
+  font-size: 12px;
+  margin-top: 5px;
+  color: #999999;
+  font-weight: 600;
 }
-body .wrap .sec3 {
-  width: 100%;
+body .wrap main .fanhui a {
+  color: #F74A11;
+  text-decoration: underline;
+}
+body .wrap main .sec3 {
+  margin: 20px 10px 0 10px;
   display: -webkit-box;
   display: -moz-box;
   height: 42px;
-}
-body .wrap .sec3 p {
-  display: -webkit-box;
-  display: -moz-box;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
   background: #F74A11;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  width: 1px;
+  border-radius: 5px;
 }
-body .wrap .sec3 p a {
+body .wrap main .sec3 a {
   display: block;
   color: #FCFFFF;
   height: 42px;
@@ -95,7 +102,4 @@ body .wrap .sec3 p a {
   font-size: 15px;
   line-height: 42px;
   text-align: center;
-}
-body .wrap .sec3 p:nth-child(2) {
-  background: #DA3600;
 }

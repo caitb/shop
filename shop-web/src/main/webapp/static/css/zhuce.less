@@ -21,32 +21,32 @@ main{
           -moz-box-orient:vertical;        
           p{
               margin-right: 10px;
-              text-indent: 10px;
+              text-indent: 25px;
               color: #333333;
               line-height: 40px;
-              font-size: 13px;
+              font-size: 14px;
               b{
                   font-size: 12px;
               }
               input{
+                  color:#333333;
                   border: none;
                   font-size: 12px;
                   display: inline-block;
                   line-height: 30px;
                   margin-top:-4px;
-                  color:#333333;
+                  font-weight: 600;
               }
               .btn{
-                  text-align: center;
+                  text-indent: 0;
                   font-size: 12px;
-                  color: #B2B2B2;
                   display:inline-block;
                   float: right;
                   height: 30px;
                   border-radius: 5px;
                   color: white;
-                  width: 70px;
-                  padding-right: 10px;
+                  width: 80px;
+                  text-align: center;
                   line-height: 30px;
                   margin-top: 5px;
                   background: #F74A11;
@@ -70,20 +70,49 @@ main{
   .sec2{
       width: 100%;
       background: white;
+      
       h2{
           font-size: 13px;
           text-indent:10px;
+          font-weight: 600;
           color: #333333;
-          line-height: 40px;
-          border-bottom: 1px solid #F6F6F6;
+          line-height: 30px;
           text-indent: 10px;
       }
-      p{     
+      div{
+          width: 100%;
+          border-bottom: 1px solid #F6F6F6;
+          background: white;
+          display: -webkit-box; 
+          -webkit-box-orient:vertical;
+          display: -moz-box;
+          -moz-box-orient:vertical;        
+          h3{
+              margin-right: 10px;
+              text-indent: 25px;
+              color: #333333;
+              line-height: 40px;
+              font-size: 14px;
+              b{
+                  font-size: 12px;
+              }
+              input{
+                  color:#333333;
+                  border: none;
+                  font-size: 12px;
+                  display: inline-block;
+                  line-height: 30px;
+                  margin-top:-4px;
+                  font-weight: 600;
+              }
+          }
+      }
+      & > p{     
               color: #333333;
               line-height: 40px;
               border-bottom: 1px solid #F6F6F6;
-              text-indent:40px;
-              background: url("../images/icon_14.png") no-repeat 15px;
+              text-indent:50px;
+              background: url("../images/icon_14.png") no-repeat 27px;
               background-size: 5%;
               font-size: 13px;
               span,b{
@@ -93,7 +122,7 @@ main{
               }
           }
       .on{
-              background:url("../images/icon_11.png") no-repeat 15px;
+              background:url("../images/icon_11.png") no-repeat 27px;
               background-size: 5%;
               color:#F74A11;
               span,b{
@@ -110,13 +139,9 @@ main{
       display: -moz-box;
       -moz-box-pack:center;
       -moz-box-align:center;
-      background: white;
-      height: 40px;
-      margin-top: 5px;
+
       label{
-           display: block;
-           background: url(../images/zhuced.png) no-repeat 1px;
-           background-size: 6%;
+
            font-size: 12px;
            color:#333333;
            text-indent: 20px;
@@ -130,10 +155,7 @@ main{
            display: none;
 
        }
-       input:checked+label{
-           background: url(../images/zhucedb.png) no-repeat 1px;
-           background-size:7%;
-       }
+
   }
   .sec4{
       margin: 0 10px;

@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -54,12 +55,20 @@ public class COrderService {
      * @author  hanzengzhi
      * @date  2016/3/8 14:55
      */
-    public Map<String,Object> confirmOrder(Long orderId, Long userId){
+    public Map<String,Object> confirmOrder(Long orderId, Long userId,Integer selectedAddressId){
         //获得用户的默认地址
         ComUserAddress comUserAddress = new ComUserAddress();
-        comUserAddress.setIsDefault(1);
+        comUserAddress.setUserId(userId);
+        if (StringUtils.isEmpty(selectedAddressId)){
+            //如果没有选中地址选择默认地址
+            comUserAddress.setIsDefault(1);
+        }else{
+            //选中的地址
+            comUserAddress.setId(selectedAddressId);
+        }
         List<ComUserAddress> comuserAddressList =  userAddressService.queryComUserAddressesByParam(comUserAddress);
         Map<String,Object> pfCorderMap = new HashMap<String, Object>();
+        pfCorderMap.put("address", comuserAddressList);
 /*        //获得订单信息
         List<PfCorder> pfCorders = queryPfCorderById(orderId);
         //获得商品信息
@@ -69,7 +78,6 @@ public class COrderService {
         }else {
 
         }
-        pfCorderMap.put("address", comuserAddressList);
         pfCorderMap.put("pfCorder",pfCorders);
         pfCorderMap.put("product",product);*/
         return pfCorderMap;

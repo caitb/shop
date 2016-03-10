@@ -236,7 +236,7 @@ public class BOrderController extends BaseController {
                                                 @RequestParam(value = "levelName", required = true) String levelName,
                                                 @RequestParam(value = "amount", required = true) BigDecimal amount,
                                                 @RequestParam(value = "yanzhengma", required = false) String yanzhengma) {
-        ComUser comUser = userService.getUserByMobile(parentMobile);
+//        ComUser comUser = userService.getUserByMobile(parentMobile);
 //        if (comUser == null) {
 //            throw new BusinessException("");
 //        }
@@ -252,7 +252,7 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("levelId", levelId);
         modelAndView.addObject("levelName", levelName);
         modelAndView.addObject("amount", amount);
-        modelAndView.addObject("pName", "赵先生");
+//        modelAndView.addObject("pName", "赵先生");
         modelAndView.addObject("yanzhengma", yanzhengma);
         return modelAndView;
     }
@@ -380,6 +380,7 @@ public class BOrderController extends BaseController {
             stringBuffer.append("</section>");
             sumQuantity += pfBorderItem.getQuantity();
         }
+        mv.addObject("bOrderId", bOrderId);
         mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
         mv.addObject("productInfo", stringBuffer.toString());
@@ -395,15 +396,17 @@ public class BOrderController extends BaseController {
      * @date 2016/3/9 15:06
      */
     @RequestMapping("/borderPayComplete.shtml")
-    public ModelAndView BorderPayComplete(HttpServletRequest request) throws Exception {
+    public ModelAndView BorderPayComplete(HttpServletRequest request,
+                                          @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         OrderUserSku orderUserSku = new OrderUserSku();
-        Long bOrderid = 12L;
-        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderid);
-        List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderid);
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderId);
         List<String> skuNames = new ArrayList<>();
+        Integer skuId = 0;
         for (PfBorderItem pforderItem : pfBorderItem) {
             skuNames.add(pforderItem.getSkuName());
+            skuId = pforderItem.getSkuId();
         }
         ComUser userpId = userService.getUserById(pfBorder.getUserPid());
         ;
@@ -418,7 +421,7 @@ public class BOrderController extends BaseController {
         //商品名字集合
         orderUserSku.setSkuName(skuNames);
         //获取用户商品信息
-        PfUserSku pfUserSku = bOrderService.findPfUserSkuById(bOrderid);
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
         //获取用户权限名
         ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
         orderUserSku.setAgentLevel(comAgentLevel.getName());

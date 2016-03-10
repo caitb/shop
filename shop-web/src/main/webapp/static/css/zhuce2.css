@@ -52,7 +52,7 @@ body .wrap main .sec2 {
   background: white;
 }
 body .wrap main .sec2 h2 {
-  color: #444444;
+  color: #333333;
   line-height: 40px;
   text-indent: 10px;
   font-weight: 600;
@@ -60,7 +60,6 @@ body .wrap main .sec2 h2 {
 body .wrap main .sec2 p {
   text-indent: 12px;
   color: #333333;
-  line-height: 40px;
   font-size: 12px;
 }
 body .wrap main .sec2 p b {
@@ -69,6 +68,7 @@ body .wrap main .sec2 p b {
 }
 body .wrap main .sec2 p span {
   display: inline-block;
+  line-height: 40px;
   width: 130px;
   font-size: 12px;
 }

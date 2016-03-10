@@ -166,22 +166,45 @@
     </insert>
 
     <!-- 根据id更新一条记录 -->
-    <update id="updateById">
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.ComSku">
         UPDATE com_sku
-        SET
-               name = #{comSku.name},
-               spu_id = #{comSku.spuId},
-               create_time = #{comSku.createTime},
-               create_man = #{comSku.createMan},
-               modify_time = #{comSku.modifyTime},
-               modify_man = #{comSku.modifyMan},
-               bar_code = #{comSku.barCode},
-               price_cost = #{comSku.priceCost},
-               price_market = #{comSku.priceMarket},
-               price_retail = #{comSku.priceRetail},
-               remark = #{comSku.remark}
+        <set>
+            <if test="name != null">
+            name = #{name},
+            </if>
+            <if test="spuId != null">
+                spu_id = #{spuId},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="modifyMan != null">
+            modify_man = #{modifyMan},
+            </if>
+            <if test="barCode != null">
+            bar_code = #{barCode},
+            </if>
+            <if test="priceCost != null">
+            price_cost = #{priceCost},
+            </if>
+            <if test="priceMarket != null">
+            price_market = #{priceMarket},
+            </if>
+            <if test="priceRetail != null">
+            price_retail = #{priceRetail},
+            </if>
+            <if test="remark != null">
+            remark = #{remark}
+            </if>
+        </set>
         WHERE
-               id = #{com_sku.id}
+               id = #{id}
     </update>
 
     <!-- 根据id删除一条记录 -->

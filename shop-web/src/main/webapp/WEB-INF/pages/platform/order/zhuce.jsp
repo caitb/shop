@@ -53,8 +53,9 @@
                 <p>手机号： <input type="text" class="tel" id="tel" name="tel"></p>
             </div>
             <div>
-                <p>验证码： <input type="text" class="yan" style="width:60px">
-                    <botton class="btn" id="yanzhengma" name="yanzhengma">获取验证码</botton>
+                <p>验证码： <input type="text" class="yan" style="width:60px" id="yan" name="yan">
+                    <botton class="btn" id="yanzhengma" name="yanzhengma"/>
+                    获取验证码</botton>
                 </p>
             </div>
 

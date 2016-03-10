@@ -52,18 +52,16 @@ $(function () {
     var yanCheckFun = function (data) {
         if ($(data).val() == "") {
             $(data).parents("p").addClass("yno");
-            $(data).css({"color": "#F74A11"})
             return false;
         }
         if (!isNumber($(data).val())) {
             $(data).parents("p").addClass("yno");
-            $(data).css({"color": "#F74A11"})
             return false;
         }
         return true;
         //检验汉字
         function isNumber(s) {
-            var patrn = /^\d{6}$/;
+            var patrn = /^\d{4}$/;
             if (!patrn.exec(s)) {
                 return false;
             }
@@ -88,29 +86,29 @@ $(function () {
             $(this).css({"color": "black"})
         }
     })
+    $("#yan").on("blur", function () {
+        if (yanCheckFun(this)) {
+            $(this).parents("p").removeClass("yno");
+        }
+    });
     $("#yanzhengma").click(function () {
-        if (telCheckFun(this)) {
+        if (!telCheckFun($("#tel"))) {
             return;
         }
         times();
-        $.ajax({
-            type: "POST",
-            url: path + "/binding/securityCode.do",
-            data: "phone=" + $("#tel").val(),
-            dataType: "Json",
-            success: function (result) {
-                if (result.msg) {
-                    alert("短信发送成功,请注意查收!");
-                } else {
-                    alert("短信发送失败,请重试!");
-                }
-            }
-        });
-    });
-    $(".yan").on("blur", function () {
-        if (yanCheckFun(this)) {
-            $(this).parents("p").addClass("yon");
-        }
+        //$.ajax({
+        //    type: "POST",
+        //    url: path + "/binding/securityCode.do",
+        //    data: "phone=" + $("#tel").val(),
+        //    dataType: "Json",
+        //    success: function (result) {
+        //        if (result.msg) {
+        //            alert("短信发送成功,请注意查收!");
+        //        } else {
+        //            alert("短信发送失败,请重试!");
+        //        }
+        //    }
+        //});
     });
     var s = 60, t;
 
@@ -124,7 +122,7 @@ $(function () {
         if (s <= 0) {
             s = 60;
             $("#yanzhengma").removeAttr("disabled");
-            $("#yanzhengma").html("获取验证码");
+            $("#yanzhengma").html("重新获取验证码");
             clearTimeout(t);
         }
     }
@@ -134,8 +132,21 @@ $(function () {
         $(this).addClass("on");
     });
     $("#submit").click(function () {
-        if (nameCheckFun(this)) {
-            
+        if ($(".sec2 .on label").html() == null || $(".sec2 .on [name='amount']").html() == null) {
+            alert("请选择合伙人等级");
+            return;
+        }
+        if (!nameCheckFun($("#name"))) {
+            return;
+        }
+        if (!telCheckFun($("#tel"))) {
+            return;
+        }
+        if (!weixinCheckFun($("#weixin"))) {
+            return;
+        }
+        if (!yanCheckFun($("#yan"))) {
+            return;
         }
         var paraData = {};
         paraData.name = $("#name").val();
@@ -147,10 +158,6 @@ $(function () {
         paraData.levelId = $(".sec2 .on label").attr("levelId");
         paraData.levelName = $(".sec2 .on label").html();
         paraData.amount = $(".sec2 .on [name='amount']").html();
-        if (paraData.levelName == null || paraData.amount == null) {
-            alert("请选择合伙人等级");
-            return;
-        }
         $.ajax({
             url: path + "border/registerConfirm/check.do",
             type: "POST",

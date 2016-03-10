@@ -94,7 +94,7 @@ public class COrderController extends BaseController {
             skuId = 1;
         }
         Product productDetails = productService.applyTrialToPageService(skuId);
-        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+        String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
         model.addAttribute("skuName", productDetails.getName());
         if (productDetails.getComSkuImages()!=null&&productDetails.getComSkuImages().size()>0){
             model.addAttribute("skuDefaultImg",skuImg + productDetails.getComSkuImages().get(0).getImgUrl());

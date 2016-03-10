@@ -56,7 +56,7 @@ public class PfUserTrialController extends BaseController {
             for(PfUserTrial pfUserTrial : pfUserTrials){
                 ComUser comUser = comUserService.findById(pfUserTrial.getUserId());
                 String referrer = comUserService.findByParentId(pfUserTrial.getUserId());
-                ComSku comSku = skuService.findById((long) pfUserTrial.getSkuId().intValue());
+                ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
 
                 TrialInfo trialInfo = new TrialInfo();
                 trialInfo.setPfUserTrial(pfUserTrial);

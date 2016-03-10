@@ -42,19 +42,19 @@
         <div class="form-group">
             <label for="name" class="col-sm-4 control-label">商品名称</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
+                <input type="text" class="form-control" id="name" name="name" value="${productInfo.comSku.name}" placeholder="商品名称">
             </div>
         </div>
         <div class="form-group">
             <label for="artNo" class="col-sm-4 control-label">商品货号</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="artNo" name="artNo" placeholder="商品货号">
+                <input type="text" class="form-control" id="artNo" name="artNo" value="${productInfo.comSpu.artNo}" placeholder="商品货号">
             </div>
         </div>
         <div class="form-group">
             <label for="barCode" class="col-sm-4 control-label">商品条码</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="barCode" name="barCode" placeholder="商品条码">
+                <input type="text" class="form-control" id="barCode" name="barCode" value="${productInfo.comSku.barCode}" placeholder="商品条码">
             </div>
         </div>
         <div class="form-group">
@@ -136,7 +136,7 @@
             <div class="col-sm-4">
                 <select class="form-control" id="brandId" name="brandId">
                     <c:forEach items="${brands}" var="brand">
-                    <option value="${brand.id}">${brand.cname}</option>
+                    <option value="${brand.id}" <c:if test="${productInfo.comSpu.brandId == brand.id}">selected</c:if> >${brand.cname}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -154,19 +154,19 @@
         <div class="form-group">
             <label for="priceCost" class="col-sm-4 control-label">成本价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="priceCost" name="priceCost" placeholder="成本价">
+                <input type="text" class="form-control" id="priceCost" name="priceCost" value="${productInfo.comSku.priceCost}" placeholder="成本价">
             </div>
         </div>
         <div class="form-group">
             <label for="priceMarket" class="col-sm-4 control-label">市场价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场价">
+                <input type="text" class="form-control" id="priceMarket" name="priceMarket" value="${productInfo.comSku.priceMarket}" placeholder="市场价">
             </div>
         </div>
         <div class="form-group">
             <label for="priceRetail" class="col-sm-4 control-label">零售价</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="零售价">
+                <input type="text" class="form-control" id="priceRetail" name="priceRetail" value="${productInfo.comSku.priceRetail}" placeholder="零售价">
             </div>
         </div>
         <div class="form-group">
@@ -174,13 +174,13 @@
             <div class="col-sm-4">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="isTrial" id="isTrial1" value="1" checked>
+                        <input type="radio" name="isTrial" id="isTrial1" value="1" <c:if test="${productInfo.comSpu.isTrial == 1}">checked</c:if> >
                         是
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="isTrial" id="isTrial2" value="0">
+                        <input type="radio" name="isTrial" id="isTrial2" value="0" <c:if test="${productInfo.comSpu.isTrial == 0}">checked</c:if> >
                         否
                     </label>
                 </div>
@@ -189,7 +189,7 @@
         <div class="form-group">
             <label for="shipAmount" class="col-sm-4 control-label">运费设置</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="shipAmount" name="shipAmount" placeholder="运费设置">
+                <input type="text" class="form-control" id="shipAmount" name="shipAmount" value="${productInfo.comSpu.shipAmount}" placeholder="运费设置">
             </div>
         </div>
 
@@ -202,39 +202,23 @@
             </div>
         </div>
 
+        <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
         <div class="form-group">
-            <label for="advanced" class="col-sm-4 control-label">高级</label>
+            <label for="advanced" class="col-sm-4 control-label">
+                <c:if test="${pfSkuAgent.agentLevelId == 1}">高级</c:if>
+                <c:if test="${pfSkuAgent.agentLevelId == 2}">中级</c:if>
+                <c:if test="${pfSkuAgent.agentLevelId == 3}">初级</c:if>
+            </label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
+                <input type="text" class="form-control" id="advanced" name="discounts" value="${pfSkuAgent.discount}" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
             <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
+                <input type="text" class="form-control" id="advancedCount" name="quantitys" value="${pfSkuAgent.quantity}" placeholder="">
             </div>
         </div>
-        <div class="form-group">
-            <label for="intermediate" class="col-sm-4 control-label">中级</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-            <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="primary" class="col-sm-4 control-label">初级</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-            <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
-            </div>
-        </div>
+        </c:forEach>
 
         <div class="form-group">
             <div class="col-sm-3"></div>
@@ -245,27 +229,19 @@
             </div>
         </div>
 
+        <c:forEach items="${productInfo.sfSkuDistributions}" var="sfSkuDistribution">
         <div class="form-group">
-            <label for="reciprocal1" class="col-sm-4 control-label">倒数第一</label>
+            <label for="reciprocal1" class="col-sm-4 control-label">
+                <c:if test="${sfSkuDistribution.sort == 1}">倒数第一</c:if>
+                <c:if test="${sfSkuDistribution.sort == 2}">倒数第二</c:if>
+                <c:if test="${sfSkuDistribution.sort == 3}">倒数第三</c:if>
+            </label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
+                <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" value="${sfSkuDistribution.discount}" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
         </div>
-        <div class="form-group">
-            <label for="reciprocal2" class="col-sm-4 control-label">倒数第二</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-        </div>
-        <div class="form-group">
-            <label for="reciprocal3" class="col-sm-4 control-label">倒数第三</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-        </div>
+        </c:forEach>
 
         <hr/>
 
@@ -277,7 +253,7 @@
         <div class="form-group">
             <label for="inShort" class="col-sm-4 control-label">一句话介绍</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inShort" placeholder="一句话介绍">
+                <input type="text" class="form-control" id="inShort" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
             </div>
         </div>
 

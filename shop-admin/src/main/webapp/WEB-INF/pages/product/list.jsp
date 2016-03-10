@@ -118,7 +118,7 @@
                                             }
                                         }, {
                                             title: '详情',
-                                            colspan: 8,
+                                            colspan: 9,
                                             align: 'center'
                                         }
                                         ],
@@ -142,7 +142,7 @@
                                                 align: 'center',
                                                 formatter: function(value, row, index){
                                                     if(row.comSpu && row.comSpu.categoryName){
-                                                        row.comSpu.categoryName;
+                                                        return row.comSpu.categoryName;
                                                     }
                                                 }
                                             },
@@ -228,9 +228,7 @@
                                             {
                                                 title: '操作项',
                                                 align: 'center',
-                                                formatter: function(value, row, index){
-                                                    return '上架';
-                                                }
+                                                formatter: operateFormatter
                                             }
                                         ]
                                     ]
@@ -294,17 +292,11 @@
                                 return html.join('');
                             }
 
-                            function operateFormatter(value, row, index) {alert('oooo');
+                            function operateFormatter(value, row, index) {
                                 return [
-                                    '&nbsp;<a class="edit detail-icon" href="javascript:void(0)" title="Edit">编辑',
-                                    '</a>',
-                                    '&nbsp;<a class="like" href="javascript:void(0)" title="Like">下架',
-                                    //'<i class="glyphicon glyphicon-heart"></i>',
-                                    '</a>  ',
-                                    '&nbsp;<a class="remove" href="javascript:void(0)" title="Remove" style="display: none;">冻结',
-                                    //'<i class="glyphicon glyphicon-remove"></i>',
+                                    '&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑',
                                     '</a>'
-                                ];
+                                ].join(' ');
                             }
 
                             window.operateEvents = {

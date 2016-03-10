@@ -92,6 +92,7 @@
         <if test="comUserAddress.isDefault != null">
             AND is_default = #{comUserAddress.isDefault}
         </if>
+        ORDER BY create_time DESC
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

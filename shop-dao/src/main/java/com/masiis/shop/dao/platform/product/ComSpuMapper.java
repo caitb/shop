@@ -34,7 +34,7 @@ public interface ComSpuMapper {
      * 根据id更新一条记录
      * @param comSpu
      */
-    void updateById(@Param("comSpu") ComSpu comSpu);
+    void updateById(ComSpu comSpu);
 
     /**
      * 根据id删除一条记录

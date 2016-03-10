@@ -38,7 +38,18 @@ public class UserAddressService {
      * @date 2016/3/7 15:29
      */
     public int addComUserAddress(ComUserAddress comUserAddress) {
-        return comUserAddressMapper.insert(comUserAddress);
+        //是否有地址
+        ComUserAddress _comUserAddress = new ComUserAddress();
+        _comUserAddress.setUserId(comUserAddress.getUserId());
+        List<ComUserAddress> comUserAddressList = comUserAddressMapper.queryComUserAddressesByParam(_comUserAddress);
+        if (comUserAddressList!=null&&comUserAddressList.size()>0){
+            comUserAddress.setIsDefault(0);
+            return comUserAddressMapper.insert(comUserAddress);
+        }else{
+            //没有地址，将新地址设置为默认地址
+            comUserAddress.setIsDefault(1);
+            return comUserAddressMapper.insert(comUserAddress);
+        }
     }
     /**
      * 更新收货地址
@@ -50,7 +61,7 @@ public class UserAddressService {
     }
 
     /**
-     * 根据ID获取用户地址
+     * 根据地址ID获取用户地址
      *
      * @author ZhaoLiang
      * @date 2016/3/9 10:57
@@ -63,8 +74,30 @@ public class UserAddressService {
      * @author  hanzengzhi
      * @date  2016/3/9 15:23
      */
-    public int deleteUserAddressById(Integer id){
-        return comUserAddressMapper.deleteByPrimaryKey(id);
+    public int deleteUserAddressById(Integer id,Long userId,Integer defaultAddressId){
+       int i = comUserAddressMapper.deleteByPrimaryKey(id);
+        int ii = 0;
+        ComUserAddress comUserAddress = new ComUserAddress();
+        if (id.equals(defaultAddressId)){
+            //如果删除的是默认地址，把最新的地址设置为默认地址
+            comUserAddress.setUserId(userId);
+            List<ComUserAddress> comUserAddressList = comUserAddressMapper.queryComUserAddressesByParam(comUserAddress);
+            if (comUserAddressList!=null&&comUserAddressList.size()>0){
+                comUserAddress = comUserAddressList.get(0);
+                comUserAddress.setIsDefault(1);
+                ii = comUserAddressMapper.updateByPrimaryKey(comUserAddress);
+            }
+        }
+        if (i==1&&ii==1){
+            //设置默认地址的id值
+            return comUserAddress.getId();
+        }else if (i==1){
+            //删除的不是默认地址
+            return -1;
+        }else{
+             //删除失败
+            return 0;
+        }
     }
     /**
      * 地址设置为默认地址

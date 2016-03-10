@@ -24,6 +24,9 @@
                 $("#sec1").hide();
             }
     })
+    function toAddAddressPage(){
+        window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
+    }
     function toChooseAddressPage(){
         var addressId = $("#addressId").val();
         var pfCorderId = $("#pfCorderId").val();
@@ -36,9 +39,9 @@
             <p>确认订单</p>            
     </header>
     <main>
-        <div id="xz">
+        <div id="xz" onclick="toAddAddressPage()">
             <div class="xinz">
-                <p>新增收货地址</p>
+                <p >新增收货地址</p>
             </div>
         </div>
         <div id="sec1">

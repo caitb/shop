@@ -430,4 +430,6 @@ public class BOrderController extends BaseController {
         mav.setViewName("platform/order/lingquzhengshu");
         return mav;
     }
+
+    public ModelAndView border
 }

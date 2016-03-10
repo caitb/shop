@@ -6,7 +6,7 @@
 %>
 <html>
 <script>
-    window.location.href = "<%=path%>/corder/confirmOrder.do";
+    window.location.href = "<%=path%>/index";
 </script>
 <body>
 </body>

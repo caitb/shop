@@ -17,7 +17,7 @@
 </head>
 <script>
     function toChooseAddressPage(){
-        window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
     }
 </script>
 <body>

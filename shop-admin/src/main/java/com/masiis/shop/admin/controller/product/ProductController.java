@@ -56,6 +56,22 @@ public class ProductController {
         return mav;
     }
 
+    @RequestMapping("/edit.shtml")
+    public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, Integer skuId) throws JsonProcessingException {
+
+        ModelAndView mav = new ModelAndView("product/edit");
+
+        List<ComBrand> comBrands = brandService.list(new ComBrand());
+        List<ComCategory> comCategories = categoryService.listByCondition(new ComCategory());
+        ProductInfo productInfo = productService.findSku(skuId);
+
+        mav.addObject("brands", comBrands);
+        mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
+        mav.addObject("productInfo", productInfo);
+
+        return mav;
+    }
+
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response){
         return "product/list";

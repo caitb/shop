@@ -71,4 +71,24 @@
         and is_default=1
     </select>
 
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               create_man,
+               spu_id,
+               sku_id,
+               img_name,
+               img_url,
+               modify_time,
+               modify_man,
+               is_default,
+               sort,
+               remark
+        from
+               com_sku_image
+        where
+               sku_id = #{skuId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

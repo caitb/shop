@@ -112,4 +112,27 @@ public class ProductService {
 
         return pageMap;
     }
+
+    /**
+     * 获取sku
+     * @param skuId
+     * @return
+     */
+    public ProductInfo findSku(Integer skuId){
+        ProductInfo productInfo = new ProductInfo();
+
+        ComSku comSku = comSkuMapper.selectById(skuId);
+        ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+        List<ComSkuImage> comSkuImages = comSkuImageMapper.selectBySkuId(comSku.getId());
+        List<PfSkuAgent> pfSkuAgents = pfSkuAgentMapper.selectBySkuId(comSku.getId());
+        List<SfSkuDistribution> sfSkuDistributions = sfSkuDistributionMapper.selectBySkuId(comSku.getId());
+
+        productInfo.setComSku(comSku);
+        productInfo.setComSpu(comSpu);
+        productInfo.setComSkuImages(comSkuImages);
+        productInfo.setPfSkuAgents(pfSkuAgents);
+        productInfo.setSfSkuDistributions(sfSkuDistributions);
+
+        return productInfo;
+    }
 }

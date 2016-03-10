@@ -120,7 +120,7 @@ public class ProductController {
                 comSkuImage.setCreateMan(pbUser.getId());
                 comSkuImage.setImgUrl(mainImgNames[i]);
                 comSkuImage.setImgName(mainImgNames[i]);
-                comSkuImage.setIsDefault(i);
+                comSkuImage.setIsDefault(i==1?1:0);
 
                 String imgAbsoluteUrl = realPath + mainImgUrls[i];
                 String resultPath = folderPath + "/" + mainImgNames[i];

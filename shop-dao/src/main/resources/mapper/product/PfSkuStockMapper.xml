@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="businessmapper.PfSkuStockMapper">
+  <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSkuStock">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="spu_id" jdbcType="INTEGER" property="spuId" />
+    <result column="sku_id" jdbcType="INTEGER" property="skuId" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="frozen_stock" jdbcType="INTEGER" property="frozenStock" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, create_time, supplier_id, spu_id, sku_id, stock, frozen_stock, remark
+  </sql>
+
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    id,
+    create_time,
+    supplier_id,
+    spu_id,
+    sku_id,
+    stock,
+    frozen_stock,
+    remark
+    from
+    pf_sku_stock
+    where
+    id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfSkuStock" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pf_sku_stock
+    <where>
+      <if test="id != null">
+        id = #{id}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    id,
+    create_time,
+    supplier_id,
+    spu_id,
+    sku_id,
+    stock,
+    frozen_stock,
+    remark
+    from
+    pf_sku_stock
+  </select>
+
+  <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuStock">
+      insert into pf_sku_stock
+                 (
+                 id,
+                 create_time,
+                 supplier_id,
+                 spu_id,
+                 sku_id,
+                 stock,
+                 frozen_stock,
+                 remark
+                 )
+      values
+                 (
+                 #{id,jdbcType=INTEGER},
+                 #{createTime,jdbcType=TIMESTAMP},
+                 #{supplierId,jdbcType=INTEGER},
+                 #{spuId,jdbcType=INTEGER},
+                 #{skuId,jdbcType=INTEGER},
+                 #{stock,jdbcType=INTEGER},
+                 #{frozenStock,jdbcType=INTEGER},
+                 #{remark,jdbcType=VARCHAR}
+                 )
+  </insert>
+
+  <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuStock">
+      update
+             pf_sku_stock
+      set
+             create_time  = #{createTime,jdbcType=TIMESTAMP},
+             supplier_id  = #{supplierId,jdbcType=INTEGER},
+             spu_id       = #{spuId,jdbcType=INTEGER},
+             sku_id       = #{skuId,jdbcType=INTEGER},
+             stock        = #{stock,jdbcType=INTEGER},
+             frozen_stock = #{frozenStock,jdbcType=INTEGER},
+             remark       = #{remark,jdbcType=VARCHAR}
+      where
+             id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from pf_sku_stock where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+</mapper>

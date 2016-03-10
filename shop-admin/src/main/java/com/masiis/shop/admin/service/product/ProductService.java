@@ -8,10 +8,7 @@ import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by cai_tb on 16/3/7.
@@ -31,6 +28,8 @@ public class ProductService {
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
     private PfSkuStatisticMapper pfSkuStatisticMapper;
+    @Resource
+    private PfSkuStockMapper pfSkuStockMapper;
 
     /**
      * 添加商品
@@ -53,6 +52,14 @@ public class ProductService {
         pfSkuStatistic.setSkuId(comSku.getId());
         pfSkuStatistic.setAgentNum(0);
         pfSkuStatisticMapper.insert(pfSkuStatistic);
+
+        //库存量
+        PfSkuStock pfSkuStock = new PfSkuStock();
+        pfSkuStock.setCreateTime(new Date());
+        pfSkuStock.setSkuId(comSku.getId());
+        pfSkuStock.setSpuId(comSpu.getId());
+        pfSkuStock.setStock(10);
+        pfSkuStockMapper.insert(pfSkuStock);
 
         //保存sku图片
         int i = 0;

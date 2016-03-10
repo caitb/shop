@@ -103,11 +103,35 @@
                 var $skuC1 = $('#skuC1');
                 var $skuC2 = $('#skuC2');
                 var $skuC3 = $('#skuC3');
+                var c1id = '${c1id}';
+                var c2id = '${c2id}';
+                var c3id = '${c3id}';
 
                 $skuC1.html('<option value="-1">请选择</option>');
                 for(var sub in c1['sub'+0]){
-                    $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+                    if(c1['sub'+0][sub].id == c1id){
+                        $skuC1.append('<option value="' + c1['sub'+0][sub].id + '" selected>' + c1['sub'+0][sub].name + '</option>');
+                    }else{
+                        $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+                    }
                 }
+
+                for(var sub in c2['sub'+c1id]){
+                    if(c2['sub'+c1id][sub].id == c2id){
+                        $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'" selected>'+ c2['sub'+c1id][sub].name+'</option>');
+                    }else{
+                        $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'">'+ c2['sub'+c1id][sub].name+'</option>');
+                    }
+                }
+
+                for(var sub in c3['sub'+c2id]){
+                    if(c3['sub'+c2id][sub].id == c3id){
+                        $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'" selected>'+ c3['sub'+c2id][sub].name+'</option>');
+                    }else{
+                        $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'">'+ c3['sub'+c2id][sub].name+'</option>');
+                    }
+                }
+
 
                 $skuC1.change(function(){
                     $skuC2.empty().html('<option value="-1">请选择</option>');
@@ -135,6 +159,7 @@
             <label for="brandId" class="col-sm-4 control-label">商品品牌</label>
             <div class="col-sm-4">
                 <select class="form-control" id="brandId" name="brandId">
+                    <option>请选择</option>
                     <c:forEach items="${brands}" var="brand">
                     <option value="${brand.id}" <c:if test="${productInfo.comSpu.brandId == brand.id}">selected</c:if> >${brand.cname}</option>
                     </c:forEach>
@@ -491,7 +516,7 @@
                         // Use Ajax to submit form data
                         $('#content').val(UE.getEditor('editor').getAllHtml());
                         $.ajax({
-                            url: '<%=basePath%>product/add.do',
+                            url: '<%=basePath%>product/update.do',
                             type: 'post',
                             data: $('#skuForm').serialize(),
                             success: function(msg){

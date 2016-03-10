@@ -24,4 +24,13 @@ public class CategoryService {
     public List<ComCategory> listByCondition(ComCategory comCategory){
         return comCategoryMapper.selectByCondition(comCategory);
     }
+
+    /**
+     * 根据id获取类别
+     * @param id
+     * @return
+     */
+    public ComCategory find(Integer id){
+        return comCategoryMapper.selectById(id);
+    }
 }

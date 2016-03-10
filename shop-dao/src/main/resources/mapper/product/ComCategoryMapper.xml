@@ -17,7 +17,7 @@
 
 
     <!-- 根据id查询一条记录 -->
-    <select id="selectById" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
                id, create_time, create_man, modify_time, modify_man, name, level, pid, sort, is_validate, remark
         FROM

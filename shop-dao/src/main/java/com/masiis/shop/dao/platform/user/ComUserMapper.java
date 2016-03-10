@@ -51,4 +51,6 @@ public interface ComUserMapper {
      * @return
      */
     String findByParentId(Long userId);
+
+    String findByPid(Integer pid);
 }

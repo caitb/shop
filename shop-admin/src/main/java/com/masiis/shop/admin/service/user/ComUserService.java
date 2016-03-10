@@ -32,4 +32,9 @@ public class ComUserService {
     public String findByParentId(Long userId) {
         return comUserMapper.findByParentId(userId);
     }
+
+
+    public String findByPid(Integer pid) {
+        return comUserMapper.findByPid(pid);
+    }
 }

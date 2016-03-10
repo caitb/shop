@@ -104,6 +104,11 @@
         is_agent, sex
         from com_user
     </select>
+    <select id="findByPid" resultType="string">
+        select real_name
+        from com_user
+        where id = #{pid}
+    </select>
 
     <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,

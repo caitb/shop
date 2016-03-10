@@ -84,8 +84,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </nav>-->
                  <h1 class="tuij">推荐产品</h1>
                  <main>
+                    <%--<c:forEach begin="0" end="${ComSize}" step="2" var="i">--%>
+                        <%--<section class="sec1">--%>
+                            <%--<c:forEach items="${indexComS}" begin="${i}" end="${i+1}" var="Sku">--%>
+                                <%--<div>--%>
+                                    <%--<a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>--%>
+                                    <%--<h2>${Sku.comSku.name}</h2>--%>
+                                    <%--<h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>--%>
+                                    <%--<h3>--%>
+                                        <%--<p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner}"><a href="javascript:;" >您已合伙</a></c:when>--%>
+                                        <%--<c:otherwise><a href="<%=path%>/lo/quote">我要合伙</a></c:otherwise></c:choose>--%>
+                                    <%--</h3>--%>
+                                <%--</div>--%>
+                            <%--</c:forEach>--%>
+                        <%--</section>--%>
+                    <%--</c:forEach>--%>
                      <section class="sec1">
-                         <c:forEach items="${indexComS}" var="Sku">
+                         <c:forEach items="${indexComS}" begin="0" end="1" var="Sku">
                         <div>
                            <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
                             <h2>${Sku.comSku.name}</h2>

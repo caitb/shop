@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </header>
                 <main>
                      <section class="sec1">
-                         <c:forEach items="${indexComSkus}" var="indexComSkus">
+                         <c:forEach items="${indexComSkus}" begin="0" end="1" var="indexComSkus">
                         <div>
                            <a href="/product/${indexComSkus.id}"><img src="${indexComSkus.imgUrl}" alt=""></a>
                             <h2>${indexComSkus.comSku.name}</h2>

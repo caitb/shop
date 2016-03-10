@@ -25,9 +25,12 @@ public class IndexComSku {
     private String fullImgUrl;//完整的图片URL地址
     private  String discountLevel;//优惠区间
     private ComSku comSku;//商品属性
+    private Integer isSalt;//是否下架
     private Integer agentNum;//代理人数
     private Boolean isPartner = false;//是否为合伙人
 
+    public void setIsSalt(Integer isSalt) {this.isSalt = isSalt;}
+    public Integer getIsSalt() {return isSalt;}
     public Boolean getIsPartner() {
         return isPartner;
     }

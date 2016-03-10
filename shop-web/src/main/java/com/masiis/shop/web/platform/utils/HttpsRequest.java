@@ -1,11 +1,9 @@
 package com.masiis.shop.web.platform.utils;
 
-import com.masiis.shop.common.util.KeysUtil;
-import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
-import com.masiis.shop.web.platform.constants.WxAuthConstants;
+import com.masiis.shop.web.platform.constants.WxConstants;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -29,7 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.net.URLEncoder;
 import java.security.*;
 import java.security.cert.CertificateException;
 
@@ -104,7 +101,7 @@ public class HttpsRequest implements IServiceRequest {
     public static void main(String[] args) throws UnrecoverableKeyException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpsRequest h = new HttpsRequest();
         UnifiedOrderReq order = new UnifiedOrderReq();
-        order.setAppid(WxAuthConstants.APPID);
+        order.setAppid(WxConstants.APPID);
         //order.setAttach();
         order.setBody("麦士测试商品04");
         //order.setDetail();
@@ -112,7 +109,7 @@ public class HttpsRequest implements IServiceRequest {
         //order.setFee_type(); //默认中文
         //order.setGoods_tag();
         //order.setLimit_pay();
-        order.setMch_id(WxAuthConstants.WX_PAY_MCHID);
+        order.setMch_id(WxConstants.WX_PAY_MCHID);
         order.setNonce_str("AAAAAAAAAABBBBBBBBBB223223213");
         order.setNotify_url("http://www.rd.masiis.com");
         order.setOut_trade_no("TESTORDER0000000000000004");

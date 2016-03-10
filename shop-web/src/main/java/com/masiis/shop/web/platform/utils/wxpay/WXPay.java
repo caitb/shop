@@ -6,7 +6,7 @@ package com.masiis.shop.web.platform.utils.wxpay;
 
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
-import com.masiis.shop.web.platform.constants.WxAuthConstants;
+import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.service.pay.wxpay.UniOrderService;
 
 /**
@@ -14,7 +14,7 @@ import com.masiis.shop.web.platform.service.pay.wxpay.UniOrderService;
  */
 public class WXPay {
     static {
-        initSDKConfiguration(WxAuthConstants.WX_PAY_SIGN_KEY, WxAuthConstants.APPID, WxAuthConstants.WX_PAY_MCHID, null, null, null);
+        initSDKConfiguration(WxConstants.WX_PAY_SIGN_KEY, WxConstants.APPID, WxConstants.WX_PAY_MCHID, null, null, null);
     }
 
     /**

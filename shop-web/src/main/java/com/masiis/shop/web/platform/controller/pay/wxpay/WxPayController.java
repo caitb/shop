@@ -32,7 +32,8 @@ public class WxPayController extends BaseController{
 
     @RequestMapping("/wtpay")
     public String wxpayPage(HttpServletRequest request, String param) {
-        System.out.println("ip:" + getIpAddr(request));
+        String ip = getIpAddr(request);
+        System.out.println("ip:" + ip);
         if(StringUtils.isBlank(param)){
             // 跳转错误页面,暂跳首页
             return "redirect:/index";
@@ -56,7 +57,8 @@ public class WxPayController extends BaseController{
         }
 
         // 处理业务
-        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req);
+        String url = request.getRequestURL().toString();
+        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, ip);
 
         // 查询订单
 

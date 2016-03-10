@@ -18,6 +18,7 @@
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
     $(document).ready(function () {
+        var  selectedAddressId = $("#addressId").val();
         $.post("/userAddress/getUserAddressByUserId.do",
                 {
                 },function(data) {
@@ -26,7 +27,7 @@
                         var jsonData=eval(data);
                         $.each(jsonData, function(i, item) {
                             var  address = "<section class=\"sec1\" onclick='selectClick("+jsonData[i].id+")'>";
-                            if (jsonData[i].isDefault==1){
+                            if (jsonData[i].id==selectedAddressId){
                                 address +="<div class=\"on\" id=\"div_"+jsonData[i].id+"\"><h2>";
                             }else{
                                 address +="<div id=\"div_"+jsonData[i].id+"\"><h2>";
@@ -42,9 +43,9 @@
                             $(".box").append(address);
                         });
                     }else{
-
+                        $(".box").hide();
+                        $(".pp").show();
                     }
-
                 });
     })
 </script>
@@ -56,6 +57,8 @@
                 <header class="xq_header">
                    <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
+                        <input id="addressId" style="display:none;" value="${addressId}"/>
+                        <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
                         <a href="<%=path%>/userAddress/toManageAddressPage.html"><h2 class="gl">管理</h2></a>
                 </header>
                 <div class="xinz">
@@ -91,8 +94,11 @@
             $(this).find("div").eq(0).addClass("on")
         })*/
 
-        function selectClick(i){
-            $.post("/userAddress/settingDefaultAddress.do",{
+        function selectClick(id){
+            var  pfCorderId = $("#pfCorderId").val();
+            window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+id;
+
+/*            $.post("/userAddress/settingDefaultAddress.do",{
                 "id":i
             },function(data){
                 if (data){
@@ -101,7 +107,7 @@
                 }else{
                     alert("设置默认地址失败");
                 }
-            })
+            })*/
         }
     </script>
 </body>

@@ -82,13 +82,22 @@
     <!-- 根据id更新记录 -->
     <update id="updateById" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >
         update sf_sku_distribution
-        set
-               sku_id   = #{sfSkuDistribution.skuId},
-               sort     = #{sfSkuDistribution.sort},
-               discount = #{sfSkuDistribution.discount},
-               remark   = #{sfSkuDistribution.remark}
+        <set>
+            <if test="skuId != null">
+            sku_id   = #{skuId},
+            </if>
+            <if test="sort != null">
+            sort     = #{sort},
+            </if>
+            <if test="discount != null">
+            discount = #{discount},
+            </if>
+            <if test="remark != null">
+            remark   = #{remark}
+            </if>
+        </set>
         where
-               id = #{sfSkuDistribution.id}
+               id = #{id}
     </update>
 
     <!-- 根据id删除记录 -->

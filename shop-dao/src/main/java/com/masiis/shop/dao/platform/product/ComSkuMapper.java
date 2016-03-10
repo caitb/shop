@@ -62,7 +62,7 @@ public interface ComSkuMapper {
      * 根据id更新一条记录
      * @param comSku
      */
-    void updateById(@Param("comSku")ComSku comSku);
+    void updateById(ComSku comSku);
 
     /**
      * 根据id删除一条记录

@@ -41,7 +41,7 @@ public interface SfSkuDistributionMapper {
      * 根据id更新一条记录
      * @param sfSkuDistribution
      */
-    void updateById(@Param("sfSkuDistribution")SfSkuDistribution sfSkuDistribution);
+    void updateById(SfSkuDistribution sfSkuDistribution);
 
     /**
      * 根据id删除一条记录

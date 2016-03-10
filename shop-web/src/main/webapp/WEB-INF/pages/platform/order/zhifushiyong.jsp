@@ -15,9 +15,19 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifushiyong.css">
 </head>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
+    $(document).ready(function () {
+            var addressId = $("#addressId").val();
+            if (addressId==""){
+                $("#xz").show();
+                $("#sec1").hide();
+            }
+    })
     function toChooseAddressPage(){
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+        var addressId = $("#addressId").val();
+        var pfCorderId = $("#pfCorderId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?addressId="+addressId+"&pfCorderId="+pfCorderId;
     }
 </script>
 <body>
@@ -26,19 +36,24 @@
             <p>确认订单</p>            
     </header>
     <main>
-        <div class="xinz">
-            <p>新增收货地址</p>
-        </div>
-        <section class="sec1">
-           <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-           <div>
-                <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>18611536163</span></h2></a>
-                <a href="#"><p>收货地址：
-                    <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                    </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
+        <div id="xz">
+            <div class="xinz">
+                <p>新增收货地址</p>
             </div>
-
-        </section>
+        </div>
+        <div id="sec1">
+            <section class="sec1">
+               <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+               <div>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                    <a href="#"><p>收货地址：
+                        <input id="addressId" style="display:none;" value="${comUserAddress.id}"/>
+                        <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
+                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
+                        </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
+                </div>
+            </section>
+        </div>
         <section class="sec2">
             <p class="photo">
                     <img src="${skuDefaultImg}" alt="${skuImgAlt}">

@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.beans.pay.wxpay;
 
+import com.masiis.shop.common.annotation.SignField;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -42,6 +43,7 @@ public class CallBackNotifyReq {
     /**
      * 签名
      */
+    @SignField
     private String sign;
     /**
      * 业务结果

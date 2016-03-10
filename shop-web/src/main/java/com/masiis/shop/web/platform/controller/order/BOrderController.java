@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -120,8 +121,8 @@ public class BOrderController extends BaseController {
                     }
                 }
                 sb.append("</label>");
-                sb.append("<b>商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
-                sb.append("<b>  金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                sb.append("<b>&nbsp;&nbsp;商品数量：</b> <span name=\"quantity\">" + pfSkuAgent.getQuantity() + "</span>");
+                sb.append("<b>&nbsp;&nbsp;金额：</b> <span name=\"amount\">" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
                 sb.append("<p>");
             }
             mv.addObject("skuId", comSku.getId());
@@ -367,5 +368,43 @@ public class BOrderController extends BaseController {
         mv.addObject("quantity", sumQuantity);
         mv.setViewName("platform/order/zhifu");
         return mv;
+    }
+    
+    /**
+     * 成功支付订单
+     * @author muchaofeng
+     * @date 2016/3/9 15:06
+     */
+    @RequestMapping("/borderPayComplete.shtml")
+    public ModelAndView BorderPayComplete(HttpServletRequest request)throws Exception{
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        OrderUserSku orderUserSku = new OrderUserSku();
+        Long bOrderid=12L;
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderid);
+        List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderid);
+        List<String> skuNames = new ArrayList<>();
+        for(PfBorderItem pforderItem:pfBorderItem){
+            skuNames.add(pforderItem.getSkuName());
+        }
+        ComUser userpId = userService.getUserById(pfBorder.getUserPid());;
+        if(userpId==null){
+            //上级姓名
+            orderUserSku.setSuperiorName("");
+        }else{
+            //上级姓名
+            orderUserSku.setSuperiorName(userpId.getRealName());
+        }
+        orderUserSku.setUserName(comUser.getRealName());
+        //商品名字集合
+        orderUserSku.setSkuName(skuNames);
+        //获取用户商品信息
+        PfUserSku pfUserSku = bOrderService.findPfUserSkuById(bOrderid);
+        //获取用户权限名
+        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
+        orderUserSku.setAgentLevel(comAgentLevel.getName());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("orderUserSku",orderUserSku);
+        mav.setViewName("platform/order/lingquzhengshu");
+        return mav;
     }
 }

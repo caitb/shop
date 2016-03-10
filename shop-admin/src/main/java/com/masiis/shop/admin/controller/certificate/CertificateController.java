@@ -6,7 +6,9 @@ import com.masiis.shop.admin.service.certificate.CertificateService;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -59,5 +61,28 @@ public class CertificateController {
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", certificateInfoList);
         return pageMap;
-    }
+     }
+
+    @RequestMapping("/update.do")
+    @ResponseBody
+    public String update(HttpServletRequest request, HttpServletResponse response,
+                         @RequestParam(required = true) Integer status,
+                         @RequestParam(required = true) Integer id)throws Exception {
+        certificateService.approveCertificate(status,id);
+        return "已审核";
+     }
+
+    @RequestMapping("/load.shtml")
+    public ModelAndView load(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
+        ModelAndView mav = new ModelAndView("certificate/edit");
+        CertificateInfo certificateInfo = certificateService.getApproveInfoById(id);
+        mav.addObject("certificateInfo", certificateInfo);
+        return mav;
+      }
+
+    @RequestMapping("/listUpper.do")
+    public CertificateInfo loadUppers(HttpServletRequest request, HttpServletResponse response, Integer userId)throws Exception{
+        CertificateInfo certificateInfo = certificateService.getApproveInfoById(userId);
+        return certificateInfo;
+     }
     }

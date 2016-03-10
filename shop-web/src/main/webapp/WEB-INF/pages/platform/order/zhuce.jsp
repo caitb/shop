@@ -10,10 +10,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhuce.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <script>
+        var path = "<%=basePath%>";
+        var skuId = "${skuId}";
+        var skuName = "${skuName}";
+    </script>
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
+    <script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </head>
 <body>
 
@@ -24,12 +33,12 @@
         <p>申请合伙人</p>
     </header>
     <div class="xinxi">
-        <p>1.注册信息</p>
-        <p>2.支付订单</p>
-        <p>3.支付订单</p>
+        <p>注册信息</p>
+        <p>支付订单</p>
+        <p>申请成功</p>
     </div>
     <p class="xuanze">
-        选择商品：<span>${skuName}</span>
+        选择商品：<span>抗引力—快速瘦脸精华</span>
     </p>
     <main>
         <section class="sec1">
@@ -37,89 +46,39 @@
                 <p>申请人信息　<b style="color:#999999">您可以凭手机号登录麦链商城</b></p>
             </div>
             <div>
-                <p>姓名： <input id="name" name="name" type="text" placeholder=""></p>
+                <p>姓名： <input type="text" class="name" id="name" name="name"></p>
             </div>
 
             <div>
-                <p>手机号： <input id="mobile" name="mobile" type="text"></p>
+                <p>手机号： <input type="text" class="tel" id="tel" name="tel"></p>
             </div>
             <div>
-                <p>验证码： <input type="text"><span>获取验证码</span></p>
+                <p>验证码： <input type="text" class="yan" style="width:60px">
+                    <botton class="btn" id="yanzhengma" name="yanzhengma">获取验证码</botton>
+                </p>
             </div>
 
             <div>
-                <p>微信号：<input id="weixinId" name="weixinId" type="text"></p>
+                <p>微信号：<input type="text" id="weixin" name="weixin"></p>
             </div>
             <div>
-                <p>上级合伙人电话： <input id="parentMobile" name="parentMobile" type="text"></p>
+                <p>上级合伙人电话： <input type="text" class="tel" id="parentMobile" name="parentMobile"></p>
             </div>
         </section>
         <section class="sec2">
-            <h2>选择合伙人等级</h2>
+            <h2>合伙人信息</h2>
             ${agentInfo}
         </section>
         <section class="sec3">
             <p>
                 <input type="checkbox" id="fu" checked disabled>
-                <label for="fu">我已同意《代理商注册协议》</label>
+                <label for="fu">我已同意<a href="#">《代理商注册协议》</a></label>
             </p>
         </section>
         <section class="sec4">
-            <a href="javascript:;" onclick="submit()"> 下一步</a>
+            <a href="javascript:;" id="submit">下一步</a>
         </section>
     </main>
-
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script>
-    $(".sec2 p").on("click", function () {
-        $(".sec2 p").removeClass("on")
-        $(this).addClass("on");
-    })
-    var myScroll = new IScroll("body", {
-        preventDefault: false
-    })
-
-    var submit = function () {
-        var paraData = {};
-        paraData.name = $("#name").val();
-        paraData.mobile = $("#mobile").val();
-        paraData.weixinId = $("#weixinId").val();
-        paraData.parentMobile = $("#parentMobile").val();
-        paraData.skuId = "${skuId}";
-        paraData.skuName = "${skuName}";
-        paraData.levelId = $(".sec2 .on label").attr("levelId");
-        paraData.levelName = $(".sec2 .on label").html();
-        paraData.amount = $(".sec2 .on [name='amount']").html();
-        if (paraData.levelName == null || paraData.amount == null) {
-            alert("请选择合伙人等级");
-            return;
-        }
-        $.ajax({
-            url: "<%=basePath%>border/registerConfirm/check.do",
-            type: "POST",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                if (data && data.isError == false) {
-                    var param = "?";
-                    param += "name=" + paraData.name;
-                    param += "&mobile=" + paraData.mobile;
-                    param += "&weixinId=" + paraData.weixinId;
-                    param += "&parentMobile=" + paraData.parentMobile;
-                    param += "&skuId=" + paraData.skuId;
-                    param += "&skuName=" + paraData.skuName;
-                    param += "&levelId=" + paraData.levelId;
-                    param += "&levelName=" + paraData.levelName;
-                    param += "&amount=" + paraData.amount;
-                    window.location.href = "<%=basePath%>border/registerConfirm.shtml" + param;
-                } else {
-                    alert(data.message);
-                }
-            }
-        });
-    }
-</script>
-
 </body>
 </html>

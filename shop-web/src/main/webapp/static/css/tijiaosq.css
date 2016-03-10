@@ -14,6 +14,11 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
+.wrap .box .xinxi {
+  background: white url("../images/zhuce_3.png") no-repeat;
+  background-size: 80%;
+  background-position: center 85%;
+}
 .wrap .box .cp {
   width: 100%;
   color: #999999;
@@ -36,17 +41,25 @@
   line-height: 34px;
   background: white;
   border-bottom: 1px solid #F6F6F6;
-  color: #999999;
+  color: #333333;
 }
 .wrap .box .sf input {
   border: none;
   color: #9A9A9A;
 }
+.wrap .box .sf .sfi {
+  color: #333;
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-indent: 10px;
+  font-family: "微软雅黑";
+}
 .wrap .box .address {
   width: 100%;
   height: 40px;
   background: white;
-  color: #9A9A9A;
+  color: #333333;
   display: -webkit-box;
   display: -moz-box;
   border-bottom: 1px solid #F6F6F6;

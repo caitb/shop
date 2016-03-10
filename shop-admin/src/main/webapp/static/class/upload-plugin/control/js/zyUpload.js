@@ -288,6 +288,7 @@
 								// 删除方法
 								$(".file_del").click(function() {
 									ZYFILE.funDeleteFile(parseInt($(this).attr("data-index")), true);
+									$('.m-index'+$(this).attr("data-index")).remove();
 									return false;	
 								});
 							}
@@ -335,9 +336,9 @@
 
 						$("#uploadProgress_" + file.index).hide();
 						$("#uploadSuccess_" + file.index).show();
-						$("#skuForm").append('<input type="hidden" name="mainImgUrls" value="'+ response.url +'" />');
-						$("#skuForm").append('<input type="hidden" name="mainImgNames" value="'+ response.title +'" />');
-						$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+						$("#skuForm").append('<input type="hidden" name="mainImgUrls" class="m-index' + file.index + '" value="'+ response.url +'" />');
+						$("#skuForm").append('<input type="hidden" name="mainImgNames" class="m-index' + file.index + '"  value="'+ response.title +'" />');
+						//$("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
 						// 根据配置参数确定隐不隐藏上传成功的文件
 						if(para.finishDel){
 							// 移除效果

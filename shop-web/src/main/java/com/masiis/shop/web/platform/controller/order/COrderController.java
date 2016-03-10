@@ -61,7 +61,7 @@ public class COrderController extends BaseController {
      */
     @RequestMapping("/isApplyTrial.do")
     @ResponseBody
-    public String isApplyTrial(HttpServletRequest request,
+    public Boolean isApplyTrial(HttpServletRequest request,
                                HttpServletResponse response,
                                @RequestParam(value = "skuId", required = true) Integer skuId) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
@@ -78,11 +78,7 @@ public class COrderController extends BaseController {
             skuId = 1;
         }
         Boolean bl = cOrderService.isApplyTrial(userId, skuId);
-        if (bl){
-            return "true";
-        }else{
-            return "false";
-        }
+        return bl;
     }
     /**
      * 跳转到试用申请界面

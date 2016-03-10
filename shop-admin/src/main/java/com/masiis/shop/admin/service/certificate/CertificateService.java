@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.certificate;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
+import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class CertificateService {
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificateInfo(params);
         if (certificateInfoList != null && certificateInfoList.size() > 0) {
             for (CertificateInfo certificateInfo : certificateInfoList) {
-                if (certificateInfo != null && certificateInfo.getParentUserId() ==1) {
+                if (certificateInfo != null && certificateInfo.getParentUserId()!=null) {
                     certificateInfo.setApproveType("合伙人审核");
                 } else {
                     certificateInfo.setApproveType("平台审核");
@@ -67,11 +68,29 @@ public class CertificateService {
       * Param Id
       */
     public CertificateInfo getApproveInfoById(Integer id)throws Exception{
-        CertificateInfo certificateInfo = certificateMapper.getApproveInfoById(id);
+        CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
         if(certificateInfo!=null){
             certificateInfo.setPfBorder(pfBorderMapper.selectByPrimaryKey(certificateInfo.getPfBorderId()));
         }
         return certificateInfo;
+    }
+
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/10  下午 12:01
+      * 上级合伙人列表
+      */
+    public List<ComUser> getUpperPartner(Integer userId){
+          return null;
+    }
+
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/10  下午 12:04
+      * 更改上级
+      */
+    public void updateUpperPartner(Integer userId,Integer PuserId){
+
     }
 
 }

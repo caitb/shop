@@ -94,7 +94,7 @@ public class COrderController extends BaseController {
             skuId = 1;
         }
         Product productDetails = productService.applyTrialToPageService(skuId);
-        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+        String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
         model.addAttribute("skuName", productDetails.getName());
         if (productDetails.getComSkuImages()!=null&&productDetails.getComSkuImages().size()>0){
             model.addAttribute("skuDefaultImg",skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
@@ -199,14 +199,24 @@ public class COrderController extends BaseController {
         }
         Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId);
         List<ComUserAddress> comuserAddressList = (List<ComUserAddress>)pfCorderMap.get("address");
-        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");
+        //地址
         if (comuserAddressList!=null&&comuserAddressList.size()>0){
             model.addAttribute("comUserAddress",comuserAddressList.get(0));
         }
+/*        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");
         if (pfCorders!=null&&pfCorders.size()>0){
             model.addAttribute("pfCorder",pfCorders.get(0));
         }
-        return null;
+        //图片
+        Product product = (Product)pfCorderMap.get("product");
+        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+        model.addAttribute("skuName", product.getName());
+        if (product.getComSkuImages()!=null&&product.getComSkuImages().size()>0){
+            model.addAttribute("skuDefaultImg",skuImg + product.getComSkuImages().get(0).getImgUrl());
+            model.addAttribute("skuImgAlt", product.getComSkuImages().get(0).getImgName());
+        }
+        model.addAttribute("product",product);*/
+        return "platform/order/zhifushiyong";
     }
 
 }

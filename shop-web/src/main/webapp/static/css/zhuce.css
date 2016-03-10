@@ -26,33 +26,33 @@
 }
 .wrap main .sec1 div p {
   margin-right: 10px;
-  text-indent: 10px;
+  text-indent: 25px;
   color: #333333;
   line-height: 40px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .wrap main .sec1 div p b {
   font-size: 12px;
 }
 .wrap main .sec1 div p input {
+  color: #333333;
   border: none;
   font-size: 12px;
   display: inline-block;
   line-height: 30px;
   margin-top: -4px;
-  color: #333333;
+  font-weight: 600;
 }
 .wrap main .sec1 div p .btn {
-  text-align: center;
+  text-indent: 0;
   font-size: 12px;
-  color: #B2B2B2;
   display: inline-block;
   float: right;
   height: 30px;
   border-radius: 5px;
   color: white;
-  width: 70px;
-  padding-right: 10px;
+  width: 80px;
+  text-align: center;
   line-height: 30px;
   margin-top: 5px;
   background: #F74A11;
@@ -76,27 +76,55 @@
 }
 .wrap main .sec2 h2 {
   font-size: 13px;
+  font-weight: 600;
   color: #333333;
-  line-height: 40px;
-  border-bottom: 1px solid #F6F6F6;
+  line-height: 30px;
   text-indent: 10px;
 }
-.wrap main .sec2 p {
+.wrap main .sec2 div {
+  width: 100%;
+  border-bottom: 1px solid #F6F6F6;
+  background: white;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+}
+.wrap main .sec2 div h3 {
+  margin-right: 10px;
+  text-indent: 25px;
+  color: #333333;
+  line-height: 40px;
+  font-size: 14px;
+}
+.wrap main .sec2 div h3 b {
+  font-size: 12px;
+}
+.wrap main .sec2 div h3 input {
+  color: #333333;
+  border: none;
+  font-size: 12px;
+  display: inline-block;
+  line-height: 30px;
+  margin-top: -4px;
+  font-weight: 600;
+}
+.wrap main .sec2 > p {
   color: #333333;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
-  text-indent: 40px;
-  background: url("../images/icon_14.png") no-repeat 15px;
+  text-indent: 50px;
+  background: url("../images/icon_14.png") no-repeat 27px;
   background-size: 5%;
   font-size: 13px;
 }
-.wrap main .sec2 p span,
-.wrap main .sec2 p b {
+.wrap main .sec2 > p span,
+.wrap main .sec2 > p b {
   font-size: 12px;
   color: #B2B2B2;
 }
 .wrap main .sec2 .on {
-  background: url("../images/icon_11.png") no-repeat 15px;
+  background: url("../images/icon_11.png") no-repeat 27px;
   background-size: 5%;
   color: #F74A11;
 }
@@ -113,14 +141,8 @@
   display: -moz-box;
   -moz-box-pack: center;
   -moz-box-align: center;
-  background: white;
-  height: 40px;
-  margin-top: 5px;
 }
 .wrap main .sec3 label {
-  display: block;
-  background: url(../images/zhuced.png) no-repeat 1px;
-  background-size: 6%;
   font-size: 12px;
   color: #333333;
   text-indent: 20px;
@@ -132,10 +154,6 @@
 }
 .wrap main .sec3 input {
   display: none;
-}
-.wrap main .sec3 input:checked + label {
-  background: url(../images/zhucedb.png) no-repeat 1px;
-  background-size: 7%;
 }
 .wrap main .sec4 {
   margin: 0 10px;

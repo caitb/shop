@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.order;
 
 
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserTrial;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,6 +18,7 @@ public interface PfUserTrialMapper {
      * @return
      */
     PfUserTrial selectById(@Param("id")Long id);
+
 
     /**
      * 根据条件查询记录

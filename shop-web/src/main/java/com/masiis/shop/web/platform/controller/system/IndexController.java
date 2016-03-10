@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.system;
 
+import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
 import com.masiis.shop.dao.po.ComUser;
@@ -55,7 +56,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("urls",urls);
 
         //获取商品图片地址常量
-        String skuValue = PropertiesUtils.getStringValue("index_product_200_200_url");
+        String skuValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         //获取主页展示商品信息
         List<IndexComSku> indexComS = indexShowService.findIndexComSku();
         for (IndexComSku indexCom:indexComS) {

@@ -2,18 +2,13 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.*;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicBean1;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.jsp.tagext.TryCatchFinally;
-import javax.swing.plaf.nimbus.NimbusStyle;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +33,7 @@ public class BOrderService {
     @Resource
     private PfBorderOperationLogMapper pfBorderOperationLogMapper;
     @Resource
-    private PfUserSkusMapper pfUserSkusMapper;
+    private PfUserSkussMapper pfUserSkussMapper;
     @Resource
     private ComAgentLevelsMapper comAgentLevelsMapper;
     /**
@@ -139,7 +134,7 @@ public class BOrderService {
      */
 
     public  PfUserSku findPfUserSkuById(Long id){
-        return pfUserSkusMapper.selectPfUserSkusById(id);
+        return pfUserSkussMapper.selectPfUserSkusById(id);
     }
     /**
      * 获取合伙人等级

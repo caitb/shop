@@ -29,6 +29,8 @@ public class ProductService {
     private SfSkuDistributionMapper sfSkuDistributionMapper;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
+    @Resource
+    private PfSkuStatisticMapper pfSkuStatisticMapper;
 
     /**
      * 添加商品
@@ -45,6 +47,12 @@ public class ProductService {
         //保存sku
         comSku.setSpuId(comSpu.getId());
         comSkuMapper.insert(comSku);
+
+        //sku统计表
+        PfSkuStatistic pfSkuStatistic = new PfSkuStatistic();
+        pfSkuStatistic.setSkuId(comSku.getId());
+        pfSkuStatistic.setAgentNum(0);
+        pfSkuStatisticMapper.insert(pfSkuStatistic);
 
         //保存sku图片
         int i = 0;

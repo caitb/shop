@@ -34,7 +34,7 @@ public class ProductListController {
         //获取用户信息
         ComUser comUser =(ComUser)session.getAttribute("comUser");
         //获取图片地址常量
-        String value = PropertiesUtils.getStringValue("index_product_100_100_url");
+        String value = PropertiesUtils.getStringValue("index_product_800_800_url");
         List<IndexComSku> indexComSk = indexShowService.findIndexComSku();
         for (IndexComSku indexComSku:indexComSk) {
             //获取商品图片地址

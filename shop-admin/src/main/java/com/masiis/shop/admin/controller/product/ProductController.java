@@ -108,17 +108,35 @@ public class ProductController {
             List<ComSkuImage> comSkuImages = new ArrayList<>();
             String realPath = request.getServletContext().getRealPath("/");
                    realPath = realPath.substring(0, realPath.lastIndexOf("/"));
+            String folderPath = realPath + "/current";
+            int[] imgPxs = {220, 308, 800};
+            File folder = new File(folderPath);
+            if(!folder.exists()){
+                folder.mkdir();
+            }
             for(int i=0; i<mainImgUrls.length; i++){
-                String imgAbsoluteUrl = realPath + mainImgUrls[i];
-                //ImageUtils.scale(imgAbsoluteUrl, imgAbsoluteUrl, 2, false);
-                OSSObjectUtils.uploadFile("mmshop", new File(imgAbsoluteUrl), "product/100_100/");
-
                 ComSkuImage comSkuImage = new ComSkuImage();
                 comSkuImage.setCreateTime(new Date());
                 comSkuImage.setCreateMan(pbUser.getId());
-                comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_100_100_url") + mainImgNames[i]);
                 comSkuImage.setImgUrl(mainImgNames[i]);
                 comSkuImage.setImgName(mainImgNames[i]);
+                comSkuImage.setIsDefault(i);
+
+                String imgAbsoluteUrl = realPath + mainImgUrls[i];
+                String resultPath = folderPath + "/" + mainImgNames[i];
+                for(int px=0; px<imgPxs.length; px++){
+                    ImageUtils.scale2(imgAbsoluteUrl, resultPath, imgPxs[px], imgPxs[px], true);
+                    File curFile = new File(resultPath);
+                    OSSObjectUtils.uploadFile("mmshop", curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
+
+                    //删除缩放的图片
+                    curFile.delete();
+
+                    comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
+                }
+
+                //删除原图
+                new File(imgAbsoluteUrl).delete();
 
                 comSkuImages.add(comSkuImage);
             }

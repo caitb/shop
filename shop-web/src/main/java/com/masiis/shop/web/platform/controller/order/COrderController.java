@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
@@ -62,9 +64,10 @@ public class COrderController extends BaseController {
      */
     @RequestMapping("/isApplyTrial.do")
     @ResponseBody
-    public Boolean isApplyTrial(HttpServletRequest request,
+    public String isApplyTrial(HttpServletRequest request,
                                HttpServletResponse response,
-                               @RequestParam(value = "skuId", required = true) Integer skuId) {
+                               @RequestParam(value = "skuId", required = true) Integer skuId) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId = null;
         if (comUser != null) {
@@ -78,15 +81,16 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(skuId)) {
             skuId = 1;
         }
-        Boolean bl = cOrderService.isApplyTrial(userId, skuId);
-        return bl;
+        List<PfUserTrial> pfUserTrials= cOrderService.isApplyTrial(userId, skuId);
+        String returnJson = objectMapper.writeValueAsString(pfUserTrials);
+        return returnJson;
     }
     /**
      * 跳转到试用申请界面
      * @author  hanzengzhi
      * @date  2016/3/5 13:45
      */
-    @RequestMapping("/applyTrialToPage.json")
+    @RequestMapping("/applyTrialToPage.do")
     public String applyTrialToPage(HttpServletRequest request,
                                    HttpServletResponse response,
                                    @RequestParam(value = "skuId", required = true) Integer skuId,
@@ -144,7 +148,6 @@ public class COrderController extends BaseController {
         comUser.setWxId(wechat);
         comUser.setRealName(name);
         comUser.setMobile(phone);
-
         if (comUser.getCreateTime()==null){
             comUser.setCreateTime(new Date());
         }
@@ -163,7 +166,6 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(comUser.getRtokenExpire())){
             comUser.setRtokenExpire(new Date());
         }
-
         PfUserTrial pfUserTrial = new PfUserTrial();
         pfUserTrial.setUserId(comUser.getId());
         pfUserTrial.setSkuId(skuId);
@@ -190,7 +192,6 @@ public class COrderController extends BaseController {
                                 @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId,
                                 Model model){
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
-
         Long userId = null;
         if (comUser!=null){
             userId = comUser.getId();
@@ -215,20 +216,17 @@ public class COrderController extends BaseController {
             request.getSession().setAttribute("confirmPfCorder_SelectedAddressId",selectedAddressId);
             model.addAttribute("comUserAddress",comuserAddressList.get(0));
         }
-        model.addAttribute("pfCorderId",1L);
-/*        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");
-        if (pfCorders!=null&&pfCorders.size()>0){
-            model.addAttribute("pfCorder",pfCorders.get(0));
-        }
         //图片
         Product product = (Product)pfCorderMap.get("product");
-        String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
-        model.addAttribute("skuName", product.getName());
-        if (product.getComSkuImages()!=null&&product.getComSkuImages().size()>0){
-            model.addAttribute("skuDefaultImg",skuImg + product.getComSkuImages().get(0).getImgUrl());
-            model.addAttribute("skuImgAlt", product.getComSkuImages().get(0).getImgName());
+        if (product!=null){
+            String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+            model.addAttribute("skuName", product.getName());
+            if (product.getComSkuImages()!=null&&product.getComSkuImages().size()>0){
+                model.addAttribute("skuDefaultImg",skuImg + product.getComSkuImages().get(0).getImgUrl());
+                model.addAttribute("skuImgAlt", product.getComSkuImages().get(0).getImgName());
+            }
         }
-        model.addAttribute("product",product);*/
+        model.addAttribute("product",product);
         return "platform/order/zhifushiyong";
     }
 

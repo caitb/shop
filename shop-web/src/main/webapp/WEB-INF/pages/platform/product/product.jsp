@@ -22,7 +22,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="index.html"><img src="../images/xq_rt.png" alt=""></a>
+            <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>我要成为合伙人</p>
         </header>
         <div class="banner">
@@ -91,25 +91,35 @@
 <footer>
     <section class="sec3">
         <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
-        <p><a href="" onclick="applyTrial(${productDetails.id})">申请试用</a></p>
+        <p><a  onclick="applyTrial(${productDetails.id})">申请试用</a></p>
         <p><a href="<%=basePath%>border/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script>
     function applyTrial(skuId) {
-        $.post("/corder/isApplyTrial.do",
-                {
-                    "skuId": skuId
-                }, function (data) {
-                    if (data == "false") {
-                        window.location.href = "<%=path%>/corder/applyTrialToPage.json?skuId=" + skuId;
-                    } else {
-                        alert("此商品您已试用过，不能再次使用");
-                    }
-                });
+        $.ajax({
+            url: '<%=path%>/corder/isApplyTrial.do',
+            type: 'post',
+            data: {"skuId": skuId},
+            success: function(data){
+                var dataObj=eval("("+data+")");//转换为json对象
+                if (dataObj==null||dataObj==""){
+                    window.location.href = "<%=path%>/corder/applyTrialToPage.do?skuId=" + skuId;
+                }else{
+                    $.each(dataObj, function(i, item) {
+                        if (dataObj[0].status==0){
+                            alert("商品您已申请使用，正在审核，请耐心等待");
+                        }else if(dataObj[0].status==1){
+                            alert("商品您已试用过，不能再次使用");
+                        }else{
+                            alert("逻辑出错");
+                        }
+                    })
+                }
+            }
+        });
     }
-
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

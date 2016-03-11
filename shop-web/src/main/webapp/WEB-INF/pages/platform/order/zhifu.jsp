@@ -41,6 +41,21 @@
             <div class="xinz">
                 <p><a href="<%=path%>/static/html/guanli.html">新增收货地址</a></p>
             </div>
+
+            <div id="sec1">
+                <section class="sec1">
+                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                    <div>
+                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址：
+                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
+                        </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
+                    </div>
+                </section>
+            </div>
+
+
+
             <section class="sec1">
 
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">

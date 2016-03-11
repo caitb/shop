@@ -69,17 +69,16 @@ public class COrderService {
         List<ComUserAddress> comuserAddressList =  userAddressService.queryComUserAddressesByParam(comUserAddress);
         Map<String,Object> pfCorderMap = new HashMap<String, Object>();
         pfCorderMap.put("address", comuserAddressList);
-/*        //获得订单信息
+        //获得订单信息
         List<PfCorder> pfCorders = queryPfCorderById(orderId);
         //获得商品信息
         Product product = null;
         if (pfCorders!=null&&pfCorders.size()>0){
             product = productService.applyTrialToPageService(pfCorders.get(0).getSkuId());
+            pfCorderMap.put("product",product);
         }else {
-
         }
-        pfCorderMap.put("pfCorder",pfCorders);
-        pfCorderMap.put("product",product);*/
+        pfCorderMap.put("product",product);
         return pfCorderMap;
     }
     /**
@@ -92,21 +91,17 @@ public class COrderService {
         pfCorder.setId(id);
         return  pfCorderMapper.queryPfCorderByParam(pfCorder);
     }
+
     /**
      * 判断用户是否使用过商品
      * @author  hanzengzhi
      * @date  2016/3/9 11:39
      */
-    public Boolean isApplyTrial(Long userId,Integer skuId){
+    public List<PfUserTrial> isApplyTrial(Long userId,Integer skuId){
         PfUserTrial pfUserTrial = new PfUserTrial();
         pfUserTrial.setUserId(userId);
         pfUserTrial.setSkuId(skuId);
-        List<PfUserTrial> pfUserTrials = userService.isApplyTrial(pfUserTrial);
-        if (pfUserTrials!=null&&pfUserTrials.size()>0){
-            return true;
-        }else {
-            return false;
-        }
+        return userService.isApplyTrial(pfUserTrial);
     }
 
     /**

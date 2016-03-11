@@ -28,9 +28,7 @@
         window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
     }
     function toChooseAddressPage(){
-        var addressId = $("#addressId").val();
-        var pfCorderId = $("#pfCorderId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?addressId="+addressId+"&pfCorderId="+pfCorderId;
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
     }
 </script>
 <body>
@@ -50,8 +48,6 @@
                <div>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
-                        <input id="addressId" style="display:none;" value="${comUserAddress.id}"/>
-                        <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
                         </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
@@ -62,24 +58,21 @@
                     <img src="${skuDefaultImg}" alt="${skuImgAlt}">
             </p>
             <div>
-                <h2>${product.name}<span>x1000</span></h2>
+                <h2>${product.name}<span>x1</span></h2>
                 <h3>规格：<span>默认</span></h3>
                 <p>￥0</p>
             </div>
         </section>
         <section class="sec3">
-            <p>运费<span>${product.priceRetail}</span></p>
-            <p>库存<b>545454</b></p>
+            <p>运费<span>${product.shipAmount}</span></p>
             <p>留言：<input type="text"></p>
-            <h1>共<b style="font-size:12px">800</b>件商品　运费：<span>￥300</span></h1>
+            <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
         </section>
-        
         <section class="sec4">
-            <p>合计：<span>￥3200</span></p>
-            <p>运费：<b>${product.priceRetail}</b></p>
-            <p>需付：<span>￥2508.00</span></p>
+            <p>合计：<span>${product.shipAmount}</span></p>
+            <p>运费：<b>到付</b></p>
+            <p>需付：<span>￥${product.shipAmount}</span></p>
         </section>
-        
         <a href="javascript:;" class="weixin">微信支付</a>
         <a href="javascript:;" class="xianxia">线下支付</a>
     </main>

@@ -280,9 +280,9 @@
         </div>
 
         <div class="form-group">
-            <label for="inShort" class="col-sm-4 control-label">一句话介绍</label>
+            <label for="slogan" class="col-sm-4 control-label">一句话介绍</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inShort" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
+                <input type="text" class="form-control" id="slogan" name="slogan" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
             </div>
         </div>
 

@@ -55,7 +55,7 @@
              
            <div class="box">
                 <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
                         <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
@@ -93,6 +93,16 @@
             $(".sec1").find("div").removeClass("on")
             $(this).find("div").eq(0).addClass("on")
         })*/
+
+
+        function returnPage(){
+            alert("aaaa");
+            var  selectedAddressId = $("#addressId").val();
+            var  pfCorderId = $("#pfCorderId").val();
+            alert(selectedAddressId);
+            alert(pfCorderId);
+            window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+selectedAddressId;
+        }
 
         function selectClick(id){
             var  pfCorderId = $("#pfCorderId").val();

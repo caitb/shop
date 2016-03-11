@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -189,6 +190,7 @@ public class COrderController extends BaseController {
                                 @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId,
                                 Model model){
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+
         Long userId = null;
         if (comUser!=null){
             userId = comUser.getId();
@@ -203,6 +205,13 @@ public class COrderController extends BaseController {
         //地址
         if (comuserAddressList!=null&&comuserAddressList.size()>0){
             model.addAttribute("comUserAddress",comuserAddressList.get(0));
+
+
+            //将订单的id和当前选择的地址id放session中
+            Map<String,Object> _pfCorderMap = new HashMap<String,Object>();
+            _pfCorderMap.put("selectedAddressId",comuserAddressList.get(0).getId());
+            _pfCorderMap.put("pfCorderId",orderId);
+            request.getSession().setAttribute("pfCorderId_"+orderId,_pfCorderMap);
         }
         model.addAttribute("pfCorderId",1L);
 /*        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");

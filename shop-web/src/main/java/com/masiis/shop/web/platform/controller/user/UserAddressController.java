@@ -69,7 +69,10 @@ public class UserAddressController {
                              @RequestParam(value = "countyName", required = true) String countyName,
                              @RequestParam(value = "detailAddress", required = true) String detailAddress,
                                      @RequestParam(value = "isDefault", required = false) Integer isDefault,
-                                     @RequestParam(value = "operateType", required = true) String operateType)throws JsonProcessingException {
+                                     @RequestParam(value = "operateType", required = true) String operateType,
+                                     @RequestParam(value = "addressId", required = false)Integer selectedAddressId,
+                                     @RequestParam(value = "pfCorderId", required = false)Integer pfCorderId,
+                                     Model model)throws JsonProcessingException {
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         ComUserAddress comUserAddress = new ComUserAddress();
         if (comUser!=null){
@@ -96,6 +99,8 @@ public class UserAddressController {
             comUserAddress.setId(id);
             i = userAddressService.updateComUserAddress(comUserAddress);
         }
+        model.addAttribute("addressId",selectedAddressId);
+        model.addAttribute("pfCorderId",pfCorderId);
         if (i==1){
             return "success";
         }else{

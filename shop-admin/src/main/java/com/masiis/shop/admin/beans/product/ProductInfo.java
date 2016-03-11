@@ -11,6 +11,8 @@ public class ProductInfo {
 
     private ComSku comSku;
     private ComSpu comSpu;
+    private PfSkuStock pfSkuStock;
+    private PfSkuStatistic pfSkuStatistic;
     private List<ComSkuImage> comSkuImages;
     private List<PfSkuAgent> pfSkuAgents;
     private List<SfSkuDistribution> sfSkuDistributions;
@@ -29,6 +31,22 @@ public class ProductInfo {
 
     public void setComSpu(ComSpu comSpu) {
         this.comSpu = comSpu;
+    }
+
+    public PfSkuStock getPfSkuStock() {
+        return pfSkuStock;
+    }
+
+    public void setPfSkuStock(PfSkuStock pfSkuStock) {
+        this.pfSkuStock = pfSkuStock;
+    }
+
+    public PfSkuStatistic getPfSkuStatistic() {
+        return pfSkuStatistic;
+    }
+
+    public void setPfSkuStatistic(PfSkuStatistic pfSkuStatistic) {
+        this.pfSkuStatistic = pfSkuStatistic;
     }
 
     public List<ComSkuImage> getComSkuImages() {

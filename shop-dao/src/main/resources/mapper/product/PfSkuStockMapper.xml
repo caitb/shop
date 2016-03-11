@@ -104,5 +104,20 @@
     delete from pf_sku_stock where id = #{id,jdbcType=INTEGER}
   </delete>
 
+  <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+    select
+            id,
+            create_time,
+            supplier_id,
+            spu_id,
+            sku_id,
+            stock,
+            frozen_stock,
+            remark
+    from
+            pf_sku_stock
+    where
+            sku_id = #{skuId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

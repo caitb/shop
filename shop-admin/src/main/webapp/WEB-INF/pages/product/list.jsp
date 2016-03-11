@@ -160,7 +160,12 @@
                                                 title: '库存',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfSkuStock){
+                                                        return row.pfSkuStock.stock;
+                                                    }
+                                                }
                                             },
                                             {
                                                 field: 'pv',

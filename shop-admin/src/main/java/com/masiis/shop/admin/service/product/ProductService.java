@@ -146,6 +146,7 @@ public class ProductService {
             ProductInfo productInfo = new ProductInfo();
             productInfo.setComSku(cs);
             productInfo.setComSpu(comSpuMapper.selectById(cs.getSpuId()));
+            productInfo.setPfSkuStock(pfSkuStockMapper.selectBySkuId(cs.getId()));
 
 
             productInfos.add(productInfo);

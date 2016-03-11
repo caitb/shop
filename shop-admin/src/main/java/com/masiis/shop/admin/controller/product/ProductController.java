@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * Created by ZhaoLiang on 2016/3/2.
+ * Created by caitingbiao on 2016/3/2.
  */
 @Controller
 @RequestMapping("/product")
@@ -92,7 +92,8 @@ public class ProductController {
                       @RequestParam("quantitys")Integer[] quantitys,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
-                      @RequestParam("mainImgNames")String[] mainImgNames) throws FileNotFoundException {
+                      @RequestParam("mainImgNames")String[] mainImgNames,
+                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames) throws FileNotFoundException {
 
         PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
         if(pbUser != null){
@@ -140,7 +141,7 @@ public class ProductController {
                 comSkuImage.setCreateTime(new Date());
                 comSkuImage.setCreateMan(pbUser.getId());
                 comSkuImage.setImgUrl(mainImgNames[i]);
-                comSkuImage.setImgName(mainImgNames[i]);
+                comSkuImage.setImgName(mainImgOriginalNames[i]);
                 comSkuImage.setIsDefault(i==1?1:0);
 
                 String imgAbsoluteUrl = realPath + mainImgUrls[i];
@@ -160,6 +161,16 @@ public class ProductController {
                 new File(imgAbsoluteUrl).delete();
 
                 comSkuImages.add(comSkuImage);
+            }
+
+            /* 上传商品详情图 */
+            File detailDir = new File(realPath + "/static/product/detail_img");
+            if(detailDir.exists() && detailDir.listFiles().length > 0){
+                File[] files = detailDir.listFiles();
+                for(File f : files){
+                    OSSObjectUtils.uploadFile("mmshop", f, "static/product/detail_img/");
+                    f.delete();
+                }
             }
 
             productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);

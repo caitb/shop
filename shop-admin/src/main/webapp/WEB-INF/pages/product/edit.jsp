@@ -515,9 +515,9 @@
 
                         // Get the BootstrapValidator instance
                         var bv = $form.data('bootstrapValidator');
-
+window.console.log('编辑器内容: ' + UE.getEditor('editor').getContent());
                         // Use Ajax to submit form data
-                        $('#content').val(UE.getEditor('editor').getAllHtml());
+                        $('#content').val(UE.getEditor('editor').getContent());
                         $.ajax({
                             url: '<%=basePath%>product/update.do',
                             type: 'post',

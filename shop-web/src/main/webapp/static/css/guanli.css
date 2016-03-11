@@ -74,7 +74,6 @@ body main .wrap .box sec2 div:nth-child(1) p {
 body main .wrap .box .sec1 div:nth-child(1) p b,
 body main .wrap .box sec2 div:nth-child(1) p b {
   font-size: 12px;
-  display: none;
 }
 body main .wrap .box .sec1 div:nth-child(1) p span,
 body main .wrap .box sec2 div:nth-child(1) p span {

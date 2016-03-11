@@ -22,29 +22,37 @@
         $.post("/userAddress/getUserAddressByUserId.do",
                 {
                 },function(data) {
-                    if(data!=null){
+                    if(data!=null&&data!=""){
                         $(".pp").hide();
                         var jsonData=eval(data);
-                        $.each(jsonData, function(i, item) {
-                            var  address = "<section class=\"sec1\" onclick='selectClick("+jsonData[i].id+")'>";
-                            if (jsonData[i].id==selectedAddressId){
-                                address +="<div class=\"on\" id=\"div_"+jsonData[i].id+"\"><h2>";
-                            }else{
-                                address +="<div id=\"div_"+jsonData[i].id+"\"><h2>";
-                            }
-                            address +=jsonData[i].name;
-                            address +="</h2><h3>";
-                            address +=jsonData[i].mobile;
-                            address +="</h3><p><b>【默认】</b><span>";
-                            address +=jsonData[i].provinceName +"  ";
-                            address +=  jsonData[i].regionName +"  ";
-                            address +=  jsonData[i].address +"  ";;
-                            address +="</span></p></div></section>";
-                            $(".box").append(address);
-                        });
+                        if (jsonData!=null&&jsonData!=""){
+                            $.each(jsonData, function(i, item) {
+                                var  address = "<section class=\"sec1\" onclick='selectClick("+jsonData[i].id+")'>";
+                                if (jsonData[i].id==selectedAddressId){
+                                    address +="<div class=\"on\" id=\"div_"+jsonData[i].id+"\"><h2>";
+                                }else{
+                                    address +="<div id=\"div_"+jsonData[i].id+"\"><h2>";
+                                }
+                                address +=jsonData[i].name;
+                                address +="</h2><h3>";
+                                address +=jsonData[i].mobile;
+                                address +="</h3><p>";
+                                if(jsonData[i].isDefault==1){
+                                    address += "<b style='display:inline-block;color: #F74A11;' >【默认】</b><span>";
+                                }else{
+                                    address += "<b></b><span>";
+                                }
+                                address +=jsonData[i].provinceName +"  ";
+                                address +=  jsonData[i].regionName +"  ";
+                                address +=  jsonData[i].address +"  ";;
+                                address +="</span></p></div></section>";
+                                $(".box").append(address);
+                            });
+                        }else{
+                            $(".pp").css("display","-webkit-box");
+                        }
                     }else{
-                        $(".box").hide();
-                        $(".pp").show();
+                        $(".pp").css("display","-webkit-box");
                     }
                 });
     })
@@ -52,14 +60,13 @@
 <body>
    <main>
        <div class="wrap">
-             
            <div class="box">
                 <header class="xq_header">
                    <a onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
                         <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
-                        <a href="<%=path%>/userAddress/toManageAddressPage.html?addressId=${addressId}&pfCorderId=${pfCorderId}"><h2 class="gl">管理</h2></a>
+                        <a href="<%=path%>/userAddress/toManageAddressPage.html"><h2 class="gl">管理</h2></a>
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>
@@ -68,56 +75,18 @@
                         <h1>您还没有收货地址</h1>
                         <p>请添加新地址</p>
                 </section>
-<%--                <section class="sec1">
-                   <div class="on">
-                        <h2>王平</h2>
-                        <h3>18611536163</h3>
-                        <p><b>【默认】</b><span>北京市 朝阳区 丰联广场A座809A</span></p>
-                   </div>
-                </section>
-                <section class="sec1">
-                   <div>
-                        <h2>王平</h2>
-                        <h3>18611536163</h3>
-                        <p><b>【默认】</b><span>北京市 朝阳区 丰联广场A座809A</span></p>
-                   </div>
-                </section>--%>
-                
             </div>
-            
         </div>
     </main>
     <script>
-/*        $(".sec1").on("click",function(){
-            alert("aaaaaa");
-            $(".sec1").find("div").removeClass("on")
-            $(this).find("div").eq(0).addClass("on")
-        })*/
-
-
         function returnPage(){
-            alert("aaaa");
             var  selectedAddressId = $("#addressId").val();
             var  pfCorderId = $("#pfCorderId").val();
-            alert(selectedAddressId);
-            alert(pfCorderId);
             window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+selectedAddressId;
         }
-
         function selectClick(id){
             var  pfCorderId = $("#pfCorderId").val();
             window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+id;
-
-/*            $.post("/userAddress/settingDefaultAddress.do",{
-                "id":i
-            },function(data){
-                if (data){
-                    $('div[id^="div_"]').removeClass("on");
-                    $("#div_"+i+"").addClass("on");
-                }else{
-                    alert("设置默认地址失败");
-                }
-            })*/
         }
     </script>
 </body>

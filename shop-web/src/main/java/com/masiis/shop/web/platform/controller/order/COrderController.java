@@ -200,18 +200,20 @@ public class COrderController extends BaseController {
         if (orderId==null){
             orderId = 1L;
         }
+        if (StringUtils.isEmpty(selectedAddressId)){
+            selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
+        }
         Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId,selectedAddressId);
         List<ComUserAddress> comuserAddressList = (List<ComUserAddress>)pfCorderMap.get("address");
         //地址
         if (comuserAddressList!=null&&comuserAddressList.size()>0){
-            model.addAttribute("comUserAddress",comuserAddressList.get(0));
-
-
             //将订单的id和当前选择的地址id放session中
-            Map<String,Object> _pfCorderMap = new HashMap<String,Object>();
-            _pfCorderMap.put("selectedAddressId",comuserAddressList.get(0).getId());
-            _pfCorderMap.put("pfCorderId",orderId);
-            request.getSession().setAttribute("pfCorderId_"+orderId,_pfCorderMap);
+            selectedAddressId = comuserAddressList.get(0).getId();
+            request.getSession().removeAttribute("confirmPfCorder_Id");
+            request.getSession().removeAttribute("confirmPfCorder_SelectedAddressId");
+            request.getSession().setAttribute("confirmPfCorder_Id",orderId);
+            request.getSession().setAttribute("confirmPfCorder_SelectedAddressId",selectedAddressId);
+            model.addAttribute("comUserAddress",comuserAddressList.get(0));
         }
         model.addAttribute("pfCorderId",1L);
 /*        List<PfCorder> pfCorders = (List<PfCorder>)pfCorderMap.get("pfCorder");

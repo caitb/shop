@@ -124,6 +124,14 @@ public class ProductService {
     }
 
     /**
+     * 商品上下架
+     * @param comSpu
+     */
+    public void putaway(ComSpu comSpu){
+        comSpuMapper.updateById(comSpu);
+    }
+
+    /**
      * 商品列表
      * @param comSku
      * @return

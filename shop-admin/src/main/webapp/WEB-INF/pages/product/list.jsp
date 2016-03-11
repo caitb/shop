@@ -228,7 +228,18 @@
                                             {
                                                 title: '操作项',
                                                 align: 'center',
-                                                formatter: operateFormatter
+                                                formatter: operateFormatter,
+                                                events: {
+                                                    'click .putaway': function (e, value, row, index) {
+                                                        $.ajax({
+                                                            url: '<%=basePath%>product/putaway.do',
+                                                            data: {id: row.comSpu.id, isSale: row.comSpu.isSale==0?1:0},
+                                                            success: function (data) {
+                                                                $table.bootstrapTable('refresh');
+                                                            }
+                                                        });
+                                                    }
+                                                }
                                             }
                                         ]
                                     ]
@@ -293,35 +304,16 @@
                             }
 
                             function operateFormatter(value, row, index) {
-                                return [
-                                    '&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑',
-                                    '</a>'
-                                ].join(' ');
-                            }
-
-                            window.operateEvents = {
-                                'click .like': function (e, value, row, index) {
-                                    $.ajax({
-                                        url: '<%=basePath%>menu/treeMenu.shtml',
-                                        data: {userId: row.id},
-                                        success: function (data) {
-                                            //alert(data);
-                                            $('#myModal .modal-body').html(data);
-                                        }
-                                    });
-                                    $('#myModal').modal({
-                                        show: true,
-                                        backdrop: true
-                                    });
-                                },
-                                'click .remove': function (e, value, row, index) {
-                                    console.log('删除: ' + row.id);
-                                    $table.bootstrapTable('remove', {
-                                        field: 'id',
-                                        values: [row.id]
-                                    });
+                                var arr = [];
+                                arr.push('&nbsp;<a class="edit" href="<%=basePath%>product/edit.shtml?skuId='+ row.comSku.id +'" title="Edit">编辑</a>');
+                                if(row.comSpu && row.comSpu.isSale == 0){
+                                    arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">上架</a>');
+                                }else if(row.comSpu && row.comSpu.isSale == 1){
+                                    arr.push('&nbsp;<a class="putaway" href="javascript:void(0)" title="Putaway">下架</a>');
                                 }
-                            };
+
+                                return arr.join(' ');
+                            }
 
                             function totalTextFormatter(data) {
                                 return 'Total';

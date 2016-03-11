@@ -415,6 +415,7 @@
         <div class="form-group">
             <label class="col-sm-5"></label>
             <div class="col-sm-6">
+                <button type="button" class="btn btn-info" onclick="setContent()">获取内容</button>
                 <button type="reset" class="btn btn-lg btn-default">重置</button>
                 <button type="submit" class="btn btn-lg btn-info" id="skuSave">更新</button>
             </div>

@@ -253,6 +253,14 @@ public class ProductController {
         return "保存成功!";
     }
 
+    @RequestMapping("/putaway.do")
+    @ResponseBody
+    public Object putaway(HttpServletRequest request, HttpServletResponse response, ComSpu comSpu){
+        productService.putaway(comSpu);
+
+        return "success";
+    }
+
     @RequestMapping("/list.do")
     @ResponseBody
     public Object list(HttpServletRequest request, HttpServletResponse response,

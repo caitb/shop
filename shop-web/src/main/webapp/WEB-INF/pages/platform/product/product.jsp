@@ -76,9 +76,7 @@
             <h1>图文详情</h1>
         </div>
         <main>
-            <section class="sec1">
-                ${productDetails.content}
-            </section>
+            ${productDetails.content}
             <section class="sec2">
                 <h2 style="color:#F74A11;">麦链合伙人提供技术支持</h2>
                 <p>Copyright2005-2016 iimai.com 版权所有</p>

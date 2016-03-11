@@ -85,6 +85,45 @@ public class ProductService {
     }
 
     /**
+     * 修改商品
+     * @param comSpu
+     * @param comSku
+     * @param pfSkuAgents
+     * @param sfSkuDistributions
+     */
+    public void update(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions){
+
+        if(comSpu.getId() != null && comSku.getId() != null ){
+            //保存spu
+            comSpuMapper.updateById(comSpu);
+
+            //保存sku
+            comSkuMapper.updateById(comSku);
+
+            //保存sku图片
+//            int i = 0;
+//            for(ComSkuImage comSkuImage : comSkuImages){
+//                comSkuImage.setSpuId(comSpu.getId());
+//                comSkuImage.setSkuId(comSku.getId());
+//                comSkuImage.setSort(i++);
+//
+//                comSkuImageMapper.insert(comSkuImage);
+//            }
+
+            //保存代理分润
+            for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+                pfSkuAgentMapper.updateById(pfSkuAgent);
+            }
+
+            //保存分销分润
+            for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
+                sfSkuDistributionMapper.updateById(sfSkuDistribution);
+            }
+        }
+
+    }
+
+    /**
      * 商品列表
      * @param comSku
      * @return

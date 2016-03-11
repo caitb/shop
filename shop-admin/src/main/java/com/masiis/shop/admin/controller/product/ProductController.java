@@ -94,7 +94,6 @@ public class ProductController {
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
                       @RequestParam("mainImgNames")String[] mainImgNames) throws FileNotFoundException {
 
-        String realPath1 = request.getServletContext().getRealPath("/");
         PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
         if(pbUser != null){
             comSpu.setCreateTime(new Date());
@@ -164,6 +163,92 @@ public class ProductController {
             }
 
             productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
+        }
+        return "保存成功!";
+    }
+
+    @RequestMapping("/update.do")
+    public String update(HttpServletRequest request, HttpServletResponse response,
+                         Integer spuId,
+                         Integer skuId,
+                         @RequestParam("skuAgentIds")Integer[] skuAgentIds,
+                         @RequestParam("skuDistributionIds")Integer[] skuDistributionIds,
+                         ComSpu comSpu,
+                         ComSku comSku,
+                         @RequestParam("discounts")String[] discounts,
+                         @RequestParam("quantitys")Integer[] quantitys,
+                         @RequestParam("distributionDiscounts")String[] distributionDiscounts,
+                         @RequestParam(value = "mainImgUrls", required = false)String[] mainImgUrls,
+                         @RequestParam(value = "mainImgNames", required = false)String[] mainImgNames) throws FileNotFoundException {
+
+        PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
+        if(pbUser != null){
+            comSpu.setId(spuId);
+            comSpu.setModifyTime(new Date());
+            comSpu.setModifyMan(pbUser.getId());
+
+            comSku.setId(skuId);
+            comSku.setModifyTime(new Date());
+            comSku.setModifyMan(pbUser.getId());
+
+            //代理分润
+            List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
+            for(int i=0; i<discounts.length; i++){
+                PfSkuAgent pfSkuAgent = new PfSkuAgent();
+                pfSkuAgent.setId(skuAgentIds[i]);
+                pfSkuAgent.setDiscount(new BigDecimal(discounts[i]));
+                pfSkuAgent.setQuantity(quantitys[i]);
+
+                pfSkuAgents.add(pfSkuAgent);
+            }
+
+            //分销分润
+            List<SfSkuDistribution> sfSkuDistributions = new ArrayList<>();
+            for(int i=0; i<distributionDiscounts.length; i++){
+                SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
+                sfSkuDistribution.setId(skuDistributionIds[i]);
+                sfSkuDistribution.setDiscount(new BigDecimal(distributionDiscounts[i]));
+
+                sfSkuDistributions.add(sfSkuDistribution);
+            }
+
+//            List<ComSkuImage> comSkuImages = new ArrayList<>();
+//            String realPath = request.getServletContext().getRealPath("/");
+//            realPath = realPath.substring(0, realPath.lastIndexOf("/"));
+//            String folderPath = realPath + "/current";
+//            int[] imgPxs = {220, 308, 800};
+//            File folder = new File(folderPath);
+//            if(!folder.exists()){
+//                folder.mkdir();
+//            }
+//            for(int i=0; i<mainImgUrls.length; i++){
+//                ComSkuImage comSkuImage = new ComSkuImage();
+//                comSkuImage.setCreateTime(new Date());
+//                comSkuImage.setCreateMan(pbUser.getId());
+//                comSkuImage.setImgUrl(mainImgNames[i]);
+//                comSkuImage.setImgName(mainImgNames[i]);
+//                comSkuImage.setIsDefault(i==1?1:0);
+//
+//                String imgAbsoluteUrl = realPath + mainImgUrls[i];
+//                String resultPath = folderPath + "/" + mainImgNames[i];
+//                for(int px=0; px<imgPxs.length; px++){
+//                    ImageUtils.scale2(imgAbsoluteUrl, resultPath, imgPxs[px], imgPxs[px], true);
+//                    File curFile = new File(resultPath);
+//                    OSSObjectUtils.uploadFile("mmshop", curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
+//
+//                    //删除缩放的图片
+//                    curFile.delete();
+//
+//                    comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
+//                }
+//
+//                //删除原图
+//                new File(imgAbsoluteUrl).delete();
+//
+//                comSkuImages.add(comSkuImage);
+//            }
+
+            productService.update(comSpu, comSku, null, pfSkuAgents, sfSkuDistributions);
         }
         return "保存成功!";
     }

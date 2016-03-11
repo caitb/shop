@@ -44,12 +44,23 @@
 
                     <div class="table-responsive">
                         <div id="toolbar">
-                            <button id="remove" class="btn btn-danger" disabled>
-                                <i class="glyphicon glyphicon-remove"></i> 删除
-                            </button>
-                            <button id="add" class="btn btn-primary" id="add">
-                                <i class="glyphicon glyphicon-add"></i> 添加
-                            </button>
+                            <form class="form-inline">
+                                <button id="remove" class="btn btn-danger" disabled>
+                                    <i class="glyphicon glyphicon-remove"></i> 删除
+                                </button>
+                                <a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">
+                                    <i class="glyphicon glyphicon-add"></i> 添加
+                                </a>
+                                <div class="form-group">
+                                    <label for="skuName">商品名称</label>
+                                    <input type="text" class="form-control" id="skuName" name="skuName" placeholder="Jane Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail2">商品分类</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+                                </div>
+                                <button type="button" class="btn btn-default">查询</button>
+                            </form>
                         </div>
                         <table id="table"
                                data-toolbar="#toolbar"
@@ -58,7 +69,7 @@
                                data-show-toggle="true"
                         <%--data-show-columns="true"--%>
                         <%--data-show-export="true"--%>
-                               data-detail-view="true"
+                               data-detail-view="false"
                                data-detail-formatter="detailFormatter"
                                data-minimum-count-columns="2"
                         <%--data-show-pagination-switch="true"--%>
@@ -407,13 +418,6 @@
                                 return undefined;
                             }
 
-                            $('#add').on('click', function () {
-                                $('#addModalLabel').html('添加管理员');
-                                $('#addModal').modal({
-                                    show: true,
-                                    backdrop: true
-                                });
-                            });
                         </script>
 
 

@@ -128,6 +128,11 @@ public class ProductService {
      * @param comSpu
      */
     public void putaway(ComSpu comSpu){
+        if(comSpu.getIsSale() == 1){
+            comSpu.setUpTime(new Date());
+        }else if(comSpu.getIsSale() == 0){
+            comSpu.setDownTime(new Date());
+        }
         comSpuMapper.updateById(comSpu);
     }
 

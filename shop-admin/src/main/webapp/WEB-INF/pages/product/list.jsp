@@ -28,6 +28,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="<%=basePath%>static/js/date-util.js"></script>
 
 </head>
 
@@ -188,7 +189,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.comSpu.upTime;
+                                                    if(row.comSpu && row.comSpu.upTime){
+                                                        return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
+                                                    }
                                                 }
                                             },
                                             {

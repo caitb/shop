@@ -21,37 +21,42 @@
         $.post("/userAddress/getUserAddressByUserId.do",
                 {
                 },function(data) {
-                    if(data!=null){
+                    if(data!=null&&data!=""){
                         var jsonData=eval(data);
-                        $.each(jsonData, function(i, item) {
-                            var  address = "<selection class=\"sec1\" id=\"selection_"+jsonData[i].id+"\" >";
-                            address +="<div><h2>";
-                            address +=jsonData[i].name;
-                            address +="</h2><h3>";
-                            address +=jsonData[i].mobile;
-                            address +="</h3><p><b>【默认】</b><span>";
-                            address +=jsonData[i].provinceName +"  ";
-                            address +=jsonData[i].cityName +"  ";
-                            address +=  jsonData[i].regionName +"  ";
-                            address +=  jsonData[i].address +"  ";;
-                            address +="</span></p></div>";
-                            address +=" <div class=\"setting\">";
-                            if (jsonData[i].isDefault==1){
-                                $("#defaultAddressId").val(jsonData[i].id);
-                                address +="<p class=\"pon\" onclick='settingDefaultAddress("+jsonData[i].id+")'  id=\"p_"+jsonData[i].id+"\" >默认地址<span></span></p>";
-                            }else{
-                                address +="<p id=\"p_"+jsonData[i].id+"\"  onclick='settingDefaultAddress("+jsonData[i].id+")'  >默认地址<span></span></p>";
-                            }
-                            address +="<h2 onclick='editAddress("+jsonData[i].id+")'>编辑地址<span></span></h2>";
-                            address +="<h3 class=\"end\" onclick='deleteAddress("+jsonData[i].id+")' >删除地址</h3>";
-                            address +="</div></section>";
-                            $(".box").append(address);
-                        })
+                        if (jsonData!=null&&jsonData!=""){
+                            $.each(jsonData, function(i, item) {
+                                var  address = "<selection class=\"sec1\" id=\"selection_"+jsonData[i].id+"\" >";
+                                address +="<div><h2>";
+                                address +=jsonData[i].name;
+                                address +="</h2><h3>";
+                                address +=jsonData[i].mobile;
+                                address +="</h3><p><b>【默认】</b><span>";
+                                address +=jsonData[i].provinceName +"  ";
+                                address +=jsonData[i].cityName +"  ";
+                                address +=  jsonData[i].regionName +"  ";
+                                address +=  jsonData[i].address +"  ";;
+                                address +="</span></p></div>";
+                                address +=" <div class=\"setting\">";
+                                if (jsonData[i].isDefault==1){
+                                    $("#defaultAddressId").val(jsonData[i].id);
+                                    address +="<p class=\"pon\" onclick='settingDefaultAddress("+jsonData[i].id+")'  id=\"p_"+jsonData[i].id+"\" >默认地址<span></span></p>";
+                                }else{
+                                    address +="<p id=\"p_"+jsonData[i].id+"\"  onclick='settingDefaultAddress("+jsonData[i].id+")'  >默认地址<span></span></p>";
+                                }
+                                address +="<h2 onclick='editAddress("+jsonData[i].id+")'>编辑地址<span></span></h2>";
+                                address +="<h3 class=\"end\" onclick='deleteAddress("+jsonData[i].id+")' >删除地址</h3>";
+                                address +="</div></section>";
+                                $(".box").append(address);
+                            })
+                        }else{
+                            //显示没有收获地址的提示信息
+                            $(".pp").css("display","-webkit-box");
+                        }
                     }else{
-
+                        //显示没有收获地址的提示信息
+                        $(".pp").css("display","-webkit-box");
                     }
                 })
-
     })
 </script>
 <body>
@@ -59,7 +64,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="<%=path%>/userAddress/toChooseAddressPage.html?addressId=${selectedAddressId}&pfCorderId=${pfCorderId}" >"<img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=path%>/userAddress/toChooseAddressPage.html" >"<img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
                         <h2 class="gl">完成</h2>          
                 </header>
@@ -71,49 +76,10 @@
                         <h1>您还没有收货地址</h1>
                         <p>请添加新地址</p>
                 </section>
-               <%-- <section class="sec1">
-                   <div>
-                        <h2>王平</h2>
-                        <h3>18611536163</h3>
-                        <p><b>【默认】</b><span>北京市 朝阳区 丰联广场A座809A</span></p>
-                   </div>
-                   <div class="setting">
-                       <p class="pon">默认地址<span></span></p>
-                       <h2>编辑地址<span></span></h2>
-                       <h3 class="end">删除地址</h3>
-                   </div>
-                </section>
-                <section class="sec1">
-                   <div>
-                        <h2>王平</h2>
-                        <h3>18611536163</h3>
-                        <p><b>【默认】</b><span>北京市 朝阳区 丰联广场A座809A</span></p>
-                   </div>
-                   <div class="setting">
-                       <p>默认地址<span></span></p>
-                       <h2>编辑地址<span></span></h2>
-                       <h3 class="end">删除地址</h3>
-                   </div>
-                </section>--%>
             </div>
         </div>
     </main>
     <script>
-/*        $(".setting").on("click","p",function(){
-            $(".setting").find("p").removeClass("pon");
-            $(this).addClass("pon")
-        })*/
-/*        $(".end").on("click",function(){
-            $.post("/userAddress/getUserAddressByUserId.do",{
-
-        },function(data){
-             if (data == true){
-            $(this).parents(".sec1").remove();
-         }else{
-            alert("删除失败");
-             }
-             })
-        })*/
         function settingDefaultAddress(ids){
             $.post("/userAddress/settingDefaultAddress.do",{
                 "id":ids
@@ -143,6 +109,10 @@
                 }else{
                     //删除地址失败
                     alert("删除失败");
+                }
+                if ($(".sec1").length==0){
+                    //显示没有收获地址的提示信息
+                    $(".pp").css("display","-webkit-box");
                 }
             })
         }

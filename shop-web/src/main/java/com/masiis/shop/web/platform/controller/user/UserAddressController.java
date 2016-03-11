@@ -141,11 +141,11 @@ public class UserAddressController {
     @RequestMapping("/toChooseAddressPage.html")
     public String toChooseAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "addressId", required = false)Integer id,
-                                      @RequestParam(value = "pfCorderId", required = true)Integer pfCorderId,
                                       Model model){
-        model.addAttribute("addressId",id);
-        model.addAttribute("pfCorderId",pfCorderId);
+        Long orderId = (Long) request.getSession().getAttribute("confirmPfCorder_Id");
+        Integer selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
+        model.addAttribute("addressId",selectedAddressId);
+        model.addAttribute("pfCorderId",orderId);
         return "platform/order/xuanze";
     }
     /**
@@ -155,12 +155,7 @@ public class UserAddressController {
      */
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
-                                HttpServletResponse response,
-                                      @RequestParam(value = "addressId", required = false)Integer id,
-                                      @RequestParam(value = "pfCorderId", required = true)Integer pfCorderId,
-                                      Model model){
-        model.addAttribute("selectedAddressId",id);
-        model.addAttribute("pfCorderId",pfCorderId);
+                                HttpServletResponse response){
         return "platform/order/guanli";
     }
     /**
@@ -185,6 +180,7 @@ public class UserAddressController {
         String returnJson = objectMapper.writeValueAsString(comUserAddressList);
         return returnJson;
     }
+
     /**
      * 删除地址
      * @author  hanzengzhi
@@ -212,6 +208,10 @@ public class UserAddressController {
         if (i==0){
             return 0;
         }else{
+            Integer selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
+            if (id.equals(selectedAddressId)){
+                request.getSession().removeAttribute("confirmPfCorder_SelectedAddressId");
+            }
             return i;
         }
     }

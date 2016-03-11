@@ -18,7 +18,7 @@ public  class OrderMakeUtils {
      */
 
     public static String makeOrder(String code) {
-        String[] str = new String[]{"A", "B", "C"};
+        String[] str = new String[]{"B", "C", "S"};
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String date=df.format(new Date());
         String s = "";

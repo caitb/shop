@@ -25,7 +25,17 @@ public class UserSkuService {
      * @author ZhaoLiang
      * @date 2016/3/8 16:16
      */
-    public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) throws Exception{
+    public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) throws Exception {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, SkuId);
+    }
+
+    /**
+     * 根据主键获取数据
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/10 18:42
+     */
+    public PfUserSku getUserSkuById(Integer id) {
+        return pfUserSkuMapper.selectByPrimaryKey(id);
     }
 }

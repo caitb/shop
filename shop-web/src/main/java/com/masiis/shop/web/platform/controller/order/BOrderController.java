@@ -1,12 +1,11 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -16,14 +15,11 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
-import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -290,7 +286,8 @@ public class BOrderController extends BaseController {
             PfBorder order = new PfBorder();
             order.setCreateTime(new Date());
             order.setCreateMan(comUser.getId());
-            order.setOrderCode("");
+            String orderCode = OrderMakeUtils.makeOrder("B");
+            order.setOrderCode(orderCode);
             order.setUserMassage("");
             order.setUserId(comUser.getId());
             order.setUserPid(0l);
@@ -427,6 +424,7 @@ public class BOrderController extends BaseController {
         orderUserSku.setAgentLevel(comAgentLevel.getName());
         ModelAndView mav = new ModelAndView();
         mav.addObject("orderUserSku", orderUserSku);
+        mav.addObject("userSkuId", pfUserSku.getId());
         mav.setViewName("platform/order/lingquzhengshu");
         return mav;
     }

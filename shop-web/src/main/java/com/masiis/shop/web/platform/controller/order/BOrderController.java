@@ -286,7 +286,7 @@ public class BOrderController extends BaseController {
             PfBorder order = new PfBorder();
             order.setCreateTime(new Date());
             order.setCreateMan(comUser.getId());
-            String orderCode = OrderMakeUtils.makeOrder("B");
+            String orderCode= OrderMakeUtils.makeOrder("B");
             order.setOrderCode(orderCode);
             order.setUserMassage("");
             order.setUserId(comUser.getId());

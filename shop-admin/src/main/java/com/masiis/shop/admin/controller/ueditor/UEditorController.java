@@ -13,7 +13,7 @@ import java.io.File;
 
 /**
  * 百度富文本编辑器接口类
- *
+ * <p/>
  * Created by cai_tb on 16/3/3.
  */
 @Controller
@@ -22,11 +22,11 @@ public class UEditorController {
 
     @RequestMapping("/ueditor.do")
     @ResponseBody
-    public String ueditor(HttpServletRequest request, HttpServletResponse response){
+    public String ueditor(HttpServletRequest request, HttpServletResponse response) {
 
-        response.setHeader("Content-Type" , "text/html");
-        String rootPath = request.getSession().getServletContext().getRealPath( "/" );
-        String configJson = new ActionEnter( request, rootPath ).exec();
+        response.setHeader("Content-Type", "text/html");
+        String rootPath = request.getSession().getServletContext().getRealPath("/");
+        String configJson = new ActionEnter(request, rootPath).exec();
 
         return configJson;
     }

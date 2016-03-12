@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请时间</label></td>
-        <td colspan="2">${certificateInfo.pfUserCertificateInfo.beginTime}</td>
+        <td colspan="2">${certificateInfo.beginTime}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">订单状态</label></td>
@@ -51,8 +51,8 @@
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">身份证号照片</label></td>
-        <td>${certificateInfo.comUser.idCardFrontUrl}</td>
-        <td>${certificateInfo.comUser.idCardBackUrl}</td>
+        <td><img src="${certificateInfo.comUser.idCardFrontUrl}" alt=""></td>
+        <td><img src="${certificateInfo.comUser.idCardBackUrl}" alt=""></td>
     </tr>
     <tr>
         <td><c:choose>
@@ -188,10 +188,12 @@
     function changeLeader(){
         var approveId = $("#approveId").val();
         $.ajax({
+            type: "GET",
             url: '<%=basePath%>certificate/listUpper.do',
             data: {id: approveId},
+            dataType: "json",
             success: function (data) {
-                alert(data);
+                alert(data["certificateInfo"]);
                 $('#myModal').modal({
                     show: true,
                     backdrop: true

@@ -42,10 +42,12 @@
                 <p >新增收货地址</p>
             </div>
         </div>
+
         <div id="sec1">
             <section class="sec1">
                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                <div>
+                   <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}

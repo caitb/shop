@@ -16,4 +16,18 @@ public class SysConstants {
      * 登录信息保存cookie加密的盐
      */
     public static final String COOKIE_KEY_SALT = "b+1!7|Zw%79797+[";
+
+    /**
+     * 订单类型session
+     */
+    public static final String SESSION_ORDER_TYPE = "orderType";
+    public static final String SESSION_TRIAL_ORDER_TYPE_VALUE = "zhifushiyong";//试用支付
+    public static final String SESSION_PAY_ORDER_TYPE_VALUE = "zhifu";//支付
+
+    /**
+     * session
+     * 当前订单的id和当前的订单的地址
+     */
+    public static final String SESSION_ORDER_Id="orderId";
+    public static final String SESSION_ORDER_SELECTED_ADDRESS="orderSelectedAddress";
 }

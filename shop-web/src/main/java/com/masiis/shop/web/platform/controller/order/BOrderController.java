@@ -7,6 +7,7 @@ import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -377,12 +378,28 @@ public class BOrderController extends BaseController {
             stringBuffer.append("</section>");
             sumQuantity += pfBorderItem.getQuantity();
         }
+
+        //获得地址
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        Long userId = null;
+        if (comUser!=null){
+            userId = comUser.getId();
+        }else{
+            userId = 1L;
+        }
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request,userAddressId,userId);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,comUserAddress.getId());
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,bOrderId);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,SysConstants.SESSION_PAY_ORDER_TYPE_VALUE);
+        mv.addObject("comUserAddress", comUserAddress);
+
         mv.addObject("bOrderId", bOrderId);
-        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
+/*        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
-        mv.addObject("productInfo", stringBuffer.toString());
+        mv.addObject("productInfo", stringBuffer.toString());*/
         mv.addObject("quantity", sumQuantity);
         mv.setViewName("platform/order/zhifu");
+
         return mv;
     }
 

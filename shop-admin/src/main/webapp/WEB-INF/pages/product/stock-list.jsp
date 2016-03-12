@@ -16,6 +16,7 @@
     <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-table-1.10.12-dist/bootstrap-table.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-editable.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-validator/css/bootstrapValidator.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/examples.css">
 
@@ -26,6 +27,7 @@
     <script src="<%=basePath%>static/class/bootstrap-table-1.10.12-dist/bootstrap-table.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-table-1.10.12-dist/extensions/multiple-search/bootstrap-table-multiple-search.js"></script>
 
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/bootstrap-validator/js/bootstrapValidator.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="<%=basePath%>static/class/bootstrap-table-1.10.12-dist/locale/bootstrap-table-zh-CN.min.js"></script>
@@ -79,7 +81,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/product/list.do"
+                               data-url="/stock/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -128,11 +130,11 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return row.comSku.id;
+                                                return row.pfSkuStock.id;
                                             }
                                         }, {
                                             title: '详情',
-                                            colspan: 9,
+                                            colspan: 5,
                                             align: 'center'
                                         }
                                         ],
@@ -149,29 +151,29 @@
                                                 }
                                             },
                                             {
-                                                field: 'categoryName',
-                                                title: '商品分类',
+                                                field: 'artNo',
+                                                title: '货号',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.categoryName){
-                                                        return row.comSpu.categoryName;
+                                                    if(row.comSpu && row.comSpu.artNo){
+                                                        return row.comSpu.artNo;
                                                     }
                                                 }
                                             },
                                             {
-                                                field: 'priceRetail',
-                                                title: '零售价',
+                                                field: 'uom',
+                                                title: '计量单位',
                                                 footerFormatter: totalNameFormatter,
                                                 formatter: function (value, row, index) {
-                                                    return row.comSku.priceRetail;
+                                                    return row.comSku.uom;
                                                 },
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'store',
-                                                title: '库存',
+                                                title: '当前库存',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
@@ -182,82 +184,19 @@
                                                 }
                                             },
                                             {
-                                                field: 'pv',
-                                                title: '浏览量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'age',
-                                                title: '销售量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'upTime',
-                                                title: '上架时间',
+                                                title: '增加库存',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.upTime){
-                                                        return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                field: 'status',
-                                                title: '状态',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.status == 0){
-                                                        return '未审核';
-                                                    }
-                                                    if(row.comSpu && row.comSpu.status == 1){
-                                                        return '已审核';
-                                                    }
-                                                }
-                                            },
-//                                        {
-//                                        field: 'price',
-//                                        title: 'Item Price',
-//                                        sortable: true,
-//                                        align: 'center',
-//                                        editable: {
-//                                            type: 'text',
-//                                            title: 'Item Price',
-//                                            validate: function (value) {
-//                                                value = $.trim(value);
-//                                                if (!value) {
-//                                                    return 'This field is required';
-//                                                }
-//                                                if (!/^$/.test(value)) {
-//                                                    return 'This field needs to start width $.'
-//                                                }
-//                                                var data = $table.bootstrapTable('getData'),
-//                                                        index = $(this).parents('tr').data('index');
-//                                                console.log(data[index]);
-//                                                return '';
-//                                            }
-//                                        },
-//                                        footerFormatter: totalPriceFormatter
-//                                    },
-                                            {
-                                                title: '操作项',
-                                                align: 'center',
-                                                formatter: operateFormatter,
+                                                    return '<a class="add" href="javascript:void(0)">增加库存</a>'
+                                                },
                                                 events: {
-                                                    'click .putaway': function (e, value, row, index) {
-                                                        $.ajax({
-                                                            url: '<%=basePath%>product/putaway.do',
-                                                            data: {id: row.comSpu.id, isSale: row.comSpu.isSale==0?1:0},
-                                                            success: function (data) {
-                                                                $table.bootstrapTable('refresh');
-                                                            }
+                                                    'click .add': function(e, value, row, index){
+                                                        $('#stockId').val(row.pfSkuStock.id);
+                                                        $('#addModal').modal({
+                                                            show: true,
+                                                            backdrop: true
                                                         });
                                                     }
                                                 }
@@ -474,100 +413,71 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="addModalLabel">
-                        模态框标题
+                        增加库存
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" id="userForm" action="<%=basePath%>user/add.do" method="post">
+                    <form class="form-horizontal" id="stockForm" action="<%=basePath%>stock/update.do" method="post">
                         <div class="form-group">
-                            <label for="userName" class="col-sm-2 control-label">用户名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userName" name="userName" placeholder="用户名">
+                            <label for="stock" class="col-sm-3 control-label">追加库存量</label>
+                            <div class="col-sm-8">
+                                <input type="hidden" id="stockId" name="id" value="" />
+                                <input type="text" class="form-control" id="stock" name="stock" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="trueName" class="col-sm-2 control-label">姓名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="trueName" name="trueName" placeholder="姓名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">密码</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="密码">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">邮箱</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="sex" class="col-sm-2 control-label">性别</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="age" class="col-sm-2 control-label">年龄</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="col-sm-2 control-label">电话</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="电话">
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button type="submit" class="btn btn-info" id="addSubmit">
+                                提交更改
+                            </button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="addSubmit">
-                        提交更改
-                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
 
     <script>
-        //保存授权信息
-        $('#btnSubmit').on('click', function(){
-            var zTree = $.fn.zTree.getZTreeObj("treeMenu");
-            var treeNodes = zTree.getCheckedNodes(true);
+        $(document).ready(function() {
+            $('#stockForm').bootstrapValidator({
+                        message: '必须填写',
+                        feedbackIcons: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            stock: {
+                                message: '请输入一个数字',
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            }
+                        }
+                    })
+                    .on('success.form.bv', function(e) {
+                        // Prevent form submission
+                        e.preventDefault();
 
-            var menuIds = [];
-            for(var i in treeNodes){
-                menuIds.push(treeNodes[i].id);
-            }
+                        // Get the form instance
+                        var $form = $(e.target);
 
-            $.ajax({
-                url: '<%=basePath%>user/updateUserMenu.do',
-                data: {userId: userId,pbMenuIds: menuIds},
-                success: function(data){
-                    alert(data);
-                    $('#myModal').modal('hide');
-                }
-            });
+                        // Get the BootstrapValidator instance
+                        var bv = $form.data('bootstrapValidator');
 
-        });
-
-        //保存用户信息
-        $('#addSubmit').on('click', function () {
-            $.ajax({
-                url: '<%=basePath%>user/add.do',
-                type: 'post',
-                data: $('#userForm').serialize(),
-                success: function (data) {
-                    alert(data);
-                    $('#addModal').modal('hide');
-                }
-            });
+                        // Use Ajax to submit form data
+                        $.ajax({
+                            url: '<%=basePath%>stock/update.do',
+                            type: 'post',
+                            data: $('#stockForm').serialize(),
+                            success: function(msg){
+                                $('#addModal').modal("hide");
+                                $table.bootstrapTable('refresh');
+                            }
+                        });
+                    });
         });
     </script>
 

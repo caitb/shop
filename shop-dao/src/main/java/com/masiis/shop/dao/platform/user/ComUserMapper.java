@@ -46,11 +46,5 @@ public interface ComUserMapper {
      */
     ComUser selectByMobile(String mobile);
 
-    /**
-     * @param userId
-     * @return
-     */
-    String findByParentId(Long userId);
-
     String findByPid(Integer pid);
 }

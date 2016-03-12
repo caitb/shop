@@ -8,6 +8,7 @@ import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.PfUserTrialService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserService;
+import com.masiis.shop.admin.service.user.SfUserRelationService;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ public class PfUserTrialController extends BaseController {
     private ComUserService comUserService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
     @RequestMapping("list.shtml")
     public String list(){
@@ -55,7 +58,8 @@ public class PfUserTrialController extends BaseController {
         if(pfUserTrials != null && pfUserTrials.size() > 0){
             for(PfUserTrial pfUserTrial : pfUserTrials){
                 ComUser comUser = comUserService.findById(pfUserTrial.getUserId());
-                String referrer = comUserService.findByParentId(pfUserTrial.getUserId());
+                SfUserRelation sfUserRelation = sfUserRelationService.findByUserId(comUser.getId());
+                ComUser referrer = comUserService.findById(sfUserRelation.getParentUserId());
                 ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
 
                 TrialInfo trialInfo = new TrialInfo();
@@ -106,6 +110,12 @@ public class PfUserTrialController extends BaseController {
 
         return "redirect:list.shtml";
     }
+
+    @RequestMapping("/detail.shtml")
+    public String detail(){
+        return "order/detail";
+    }
+
     @RequestMapping("reason")
     public String reason(PfUserTrial pfUserTrial){
         trialService.reason(pfUserTrial);

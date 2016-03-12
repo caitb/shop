@@ -224,19 +224,7 @@
 //                                    },
                                             {
                                                 title: '操作项',
-                                                align: 'center',
-                                                formatter: operateFormatter,
-                                                events: {
-                                                    'click .putaway': function (e, value, row, index) {
-                                                        $.ajax({
-                                                            url: '<%=basePath%>product/putaway.do',
-                                                            data: {id: row.comSpu.id, isSale: row.comSpu.isSale==0?1:0},
-                                                            success: function (data) {
-                                                                $table.bootstrapTable('refresh');
-                                                            }
-                                                        });
-                                                    }
-                                                }
+                                                align: 'center'
                                             }
                                         ]
                                     ]

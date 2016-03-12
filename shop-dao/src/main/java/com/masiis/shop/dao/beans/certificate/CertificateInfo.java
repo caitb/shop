@@ -30,6 +30,8 @@ public class CertificateInfo extends PfUserSku {
 
     private List<ComUser> comUserList;//合伙人列表
 
+    private String beginTime;//加入时间
+
     public String getCtName() {
         return ctName;
     }
@@ -100,5 +102,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setComUserList(List<ComUser> comUserList) {
         this.comUserList = comUserList;
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
     }
 }

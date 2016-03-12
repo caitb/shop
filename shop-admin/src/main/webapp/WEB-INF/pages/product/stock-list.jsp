@@ -189,7 +189,13 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return '<a class="add" href="javascript:void(0)">增加库存</a>'
+                                                    if(row.pfSkuStock.frozenStock == 0){
+                                                        return ['&nbsp;&nbsp;<a class="add" href="javascript:void(0)">增加库存</a>',
+                                                                '&nbsp;&nbsp;<a class="frozen-stock" href="javascript:void(0)" >冻结库存</a>'
+                                                        ].join(' ');
+                                                    }else if(row.pfSkuStock.frozenStock == 1){
+                                                        return '<a class="frozen-stock" href="javascript:void(0)" >激活库存</a>';
+                                                    }
                                                 },
                                                 events: {
                                                     'click .add': function(e, value, row, index){
@@ -197,6 +203,15 @@
                                                         $('#addModal').modal({
                                                             show: true,
                                                             backdrop: true
+                                                        });
+                                                    },
+                                                    'click .frozen-stock': function(e, value, row, index){
+                                                        $.ajax({
+                                                            url: '<%=basePath%>stock/update.do',
+                                                            data: {id: row.pfSkuStock.id, frozenStock: row.pfSkuStock.frozenStock==0?1:0},
+                                                            success: function(msg){
+                                                                if(msg == 'success') $table.bootstrapTable('refresh');
+                                                            }
                                                         });
                                                     }
                                                 }

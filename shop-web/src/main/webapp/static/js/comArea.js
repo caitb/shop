@@ -1,5 +1,5 @@
 ﻿/**
- * 新建视频页面
+ *
  */
 (function() {
 	window.comAreaJS = window.comAreaJS || {

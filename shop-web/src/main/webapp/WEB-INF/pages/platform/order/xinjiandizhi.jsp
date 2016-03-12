@@ -14,38 +14,21 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=path%>/static/js/checkUtil.js"></script>
+    <script src="<%=path%>/static/js/address.js"></script>
 </head>
 <script>
     function saveAddress(){
-        var name = $("#name")[0].value;
-        var phone = $("#phone")[0].value;
-        var postcode = $("#postcode")[0].value;
-        var provinceId = $("#s_province").val();
-        var provinceName = $("#s_province  option:selected").text();
-        var cityId = $("#s_city").val();
-        var cityName = $("#s_city  option:selected").text();
-        var countyId = $("#s_county").val();
-        var countyName = $("#s_county  option:selected").text();
-        var detailAddress = $("#detailAddress")[0].value;
-
-        $.post("/userAddress/addOrUpdateAddress.do",
-                {
-                    "name":name,
-                    "phone":phone,
-                    "postcode":postcode,
-                    "provinceId":provinceId,
-                    "provinceName":provinceName,
-                    "cityId":cityId,
-                    "cityName":cityName,
-                    "countyId":countyId,
-                    "countyName":countyName,
-                    "detailAddress":detailAddress,
-                    "operateType":"save"
-                },function(data) {
-                    if (data == "success"){
-                        window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
-                    }
-                });
+        var paramJson = addressJS.getJsonParam();
+        if(addressJS.validateAddressInfo(paramJson)){
+            $.post("/userAddress/addOrUpdateAddress.do",
+                    paramJson,
+                    function(data) {
+                        if (data == "success"){
+                            window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
+                        }
+                    });
+        }
     }
 </script>
 <body>
@@ -79,7 +62,7 @@
                         <input type="text" id="detailAddress">
                     </div>
            </div>
-           <a href="" onclick="saveAddress()" class="baocun">
+           <a onclick="saveAddress()" class="baocun">
                 保存
             </a>
        </div>

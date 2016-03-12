@@ -16,7 +16,6 @@ import java.util.List;
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Service
-@Transactional
 public class BOrderService {
     @Resource
     private PfBorderMapper pfBorderMapper;
@@ -36,12 +35,14 @@ public class BOrderService {
     private PfUserSkussMapper pfUserSkussMapper;
     @Resource
     private ComAgentLevelsMapper comAgentLevelsMapper;
+
     /**
      * 添加订单
      *
      * @param pfBorder
      * @param pfBorderItems
      */
+    @Transactional
     public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
@@ -103,6 +104,7 @@ public class BOrderService {
      *
      * @param pfBorderPayment
      */
+    @Transactional
     public void payBOrder(PfBorderPayment pfBorderPayment) {
         try {
             PfBorder pfBorder = new PfBorder();
@@ -127,22 +129,24 @@ public class BOrderService {
         } catch (Exception e) {
         }
     }
+
     /**
      * 查用户商品关系表
+     *
      * @author muchaofeng
      * @date 2016/3/9 18:12
      */
-
-    public  PfUserSku findPfUserSkuById(Long id){
+    public PfUserSku findPfUserSkuById(Long id) {
         return pfUserSkussMapper.selectPfUserSkusById(id);
     }
+
     /**
      * 获取合伙人等级
+     *
      * @author muchaofeng
      * @date 2016/3/9 18:52
      */
-
-    public  ComAgentLevel findComAgentLevel(Integer id){
+    public ComAgentLevel findComAgentLevel(Integer id) {
         return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
 

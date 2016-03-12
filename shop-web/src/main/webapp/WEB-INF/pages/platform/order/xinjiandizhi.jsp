@@ -111,6 +111,8 @@
        var $skuC2 = $('#s_city');
        var $skuC3 = $('#s_county');
        $skuC1.html("<option value=\'-1\'>省份</option>");
+       $skuC2.html('<option value="-1">地级市</option>');
+       $skuC3.html('<option value="-1">县/区</option>');
        for(var sub in c1['sub'+0]){
            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
        }

@@ -388,7 +388,9 @@ public class BOrderController extends BaseController {
             userId = 1L;
         }
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(request,userAddressId,userId);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,comUserAddress.getId());
+        if (comUserAddress!=null){
+            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,comUserAddress.getId());
+        }
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,bOrderId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,SysConstants.SESSION_PAY_ORDER_TYPE_VALUE);
         mv.addObject("comUserAddress", comUserAddress);

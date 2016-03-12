@@ -95,26 +95,28 @@
         }
         function deleteAddress(id){
             var defaultAddressId = $("#defaultAddressId").val();
-            $.post("/userAddress/deleteUserAddressById.do",{
-                "id":id,
-                "defaultAddressId":defaultAddressId
-            },function(data){
-                if(data==-1){
-                    //删除的不是默认地址
-                    $("#selection_"+id+"").remove();
-                }else  if (data!=0&&data!=-1){
-                    //删除的是默认地址，将最新的地址设置为默认地址
-                    $("#selection_"+id+"").remove();
-                    $("#p_"+data+"").addClass("pon");
-                }else{
-                    //删除地址失败
-                    alert("删除失败");
-                }
-                if ($(".sec1").length==0){
-                    //显示没有收获地址的提示信息
-                    $(".pp").css("display","-webkit-box");
-                }
-            })
+            if(confirm("确定要删除地址?")){
+                $.post("/userAddress/deleteUserAddressById.do",{
+                    "id":id,
+                    "defaultAddressId":defaultAddressId
+                },function(data){
+                    if(data==-1){
+                        //删除的不是默认地址
+                        $("#selection_"+id+"").remove();
+                    }else  if (data!=0&&data!=-1){
+                        //删除的是默认地址，将最新的地址设置为默认地址
+                        $("#selection_"+id+"").remove();
+                        $("#p_"+data+"").addClass("pon");
+                    }else{
+                        //删除地址失败
+                        alert("删除失败");
+                    }
+                    if ($(".sec1").length==0){
+                        //显示没有收获地址的提示信息
+                        $(".pp").css("display","-webkit-box");
+                    }
+                })
+            }
         }
         function editAddress(id){
             window.location.href = "<%=path%>/userAddress/toEditAddress.html?id="+id;

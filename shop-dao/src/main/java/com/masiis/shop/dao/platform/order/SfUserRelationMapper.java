@@ -14,5 +14,5 @@ public interface SfUserRelationMapper {
      */
     SfUserRelation findByUserId(@Param("id") Long id);
 
-
+    SfUserRelation getUpperPartnerById(Integer pid);
 }

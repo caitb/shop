@@ -35,6 +35,8 @@ public class SfUserRelation {
      */
     private String remark;
 
+    private String upperName;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +66,13 @@ public class SfUserRelation {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getUpperName() {
+        return upperName;
+    }
+
+    public void setUpperName(String upperName) {
+        this.upperName = upperName;
     }
 }

@@ -81,8 +81,10 @@ public class CertificateController {
       }
 
     @RequestMapping("/listUpper.do")
-    public CertificateInfo loadUppers(HttpServletRequest request, HttpServletResponse response, Integer userId)throws Exception{
-        CertificateInfo certificateInfo = certificateService.getApproveInfoById(userId);
-        return certificateInfo;
+    public ModelAndView loadUppers(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
+        CertificateInfo certificateInfo = certificateService.getUpperPartner(id);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("certificateInfo",certificateInfo);
+        return mav;
      }
     }

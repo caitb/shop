@@ -109,7 +109,7 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'email',
+                                                field: 'pfUserCertificateInfo.agentLevelId',
                                                 title: '申请证书级别',
                                                 //sortable: true,
                                                 footerFormatter: totalNameFormatter,
@@ -123,7 +123,7 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'realName',
+                                                field: 'upperName',
                                                 title: '推荐人',
                                                 sortable: true,
                                                 //editable: true,

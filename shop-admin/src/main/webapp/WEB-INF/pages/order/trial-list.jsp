@@ -108,27 +108,15 @@
                                                 valign: 'middle'
                                             },
                                             {
-                                            title: '序号',
+                                            title: 'ID',
                                             rowspan: 2,
                                             align: 'center',
                                             valign: 'middle',
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return index + 1;
+                                                return row.id;
                                             }
                                             },
-                                            /*{
-                                                title: 'ID',
-                                                field: 'id',
-                                                rowspan: 2,
-                                                align: 'center',
-                                                valign: 'middle',
-                                                sortable: true,
-                                                footerFormatter: totalTextFormatter,
-                                                formatter: function(value, row, index){
-                                                    return row.pfUserTrial.id;
-                                                }
-                                            },*/
                                             {
                                             title: '详情',
                                             colspan: 8,

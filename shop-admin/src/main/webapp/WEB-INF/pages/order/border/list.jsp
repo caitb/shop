@@ -79,7 +79,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/product/list.do"
+                               data-url="/order/border/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -128,7 +128,7 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return row.comSku.id;
+                                                return row.id;
                                             }
                                         }, {
                                             title: '详情',
@@ -138,14 +138,14 @@
                                         ],
                                         [
                                             {
-                                                field: 'skuName',
-                                                title: '商品名称',
+                                                field: 'orderCode',
+                                                title: '订单号',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.comSku.name;
+                                                    return row.orderCode;
                                                 }
                                             },
                                             {
@@ -155,18 +155,12 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.categoryName){
-                                                        return row.comSpu.categoryName;
-                                                    }
                                                 }
                                             },
                                             {
                                                 field: 'priceRetail',
                                                 title: '零售价',
                                                 footerFormatter: totalNameFormatter,
-                                                formatter: function (value, row, index) {
-                                                    return row.comSku.priceRetail;
-                                                },
                                                 align: 'center'
                                             },
                                             {
@@ -174,12 +168,7 @@
                                                 title: '库存',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    if(row.pfSkuStock){
-                                                        return row.pfSkuStock.stock;
-                                                    }
-                                                }
+                                                align: 'center'
                                             },
                                             {
                                                 field: 'pv',
@@ -200,27 +189,14 @@
                                                 title: '上架时间',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.upTime){
-                                                        return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
-                                                    }
-                                                }
+                                                align: 'center'
                                             },
                                             {
                                                 field: 'status',
                                                 title: '状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.status == 0){
-                                                        return '未审核';
-                                                    }
-                                                    if(row.comSpu && row.comSpu.status == 1){
-                                                        return '已审核';
-                                                    }
-                                                }
+                                                align: 'center'
                                             },
 //                                        {
 //                                        field: 'price',

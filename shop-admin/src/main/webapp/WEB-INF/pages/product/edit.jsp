@@ -42,6 +42,8 @@
         <div class="form-group">
             <label for="name" class="col-sm-4 control-label">商品名称</label>
             <div class="col-sm-4">
+                <input type="hidden" name="spuId" value="${productInfo.comSpu.id}" />
+                <input type="hidden" name="skuId" value="${productInfo.comSku.id}" />
                 <input type="text" class="form-control" id="name" name="name" value="${productInfo.comSku.name}" placeholder="商品名称">
             </div>
         </div>
@@ -68,7 +70,7 @@
                 </select>
             </div>
             <div class="col-sm-1">
-                <input type="hidden" id="categoryName" name="categoryName" value="">
+                <input type="hidden" id="categoryName" name="categoryName" value="${productInfo.comSpu.categoryName}">
                 <select class="form-control" id="skuC3" name="categoryId">
                 </select>
             </div>
@@ -235,6 +237,7 @@
                 <c:if test="${pfSkuAgent.agentLevelId == 3}">初级</c:if>
             </label>
             <div class="col-sm-2">
+                <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
                 <input type="text" class="form-control" id="advanced" name="discounts" value="${pfSkuAgent.discount}" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
@@ -262,6 +265,7 @@
                 <c:if test="${sfSkuDistribution.sort == 3}">倒数第三</c:if>
             </label>
             <div class="col-sm-2">
+                <input type="hidden" name="skuDistributionIds" value="${sfSkuDistribution.id}" />
                 <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" value="${sfSkuDistribution.discount}" placeholder="">
             </div>
             <label class="col-sm-2">每件商品100元</label>
@@ -276,9 +280,9 @@
         </div>
 
         <div class="form-group">
-            <label for="inShort" class="col-sm-4 control-label">一句话介绍</label>
+            <label for="slogan" class="col-sm-4 control-label">一句话介绍</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inShort" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
+                <input type="text" class="form-control" id="slogan" name="slogan" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
             </div>
         </div>
 
@@ -298,7 +302,6 @@
                     //实例化编辑器
                     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
                     var ue = UE.getEditor('editor');
-
 
                     function isFocus(e){
                         alert(UE.getEditor('editor').isFocus());
@@ -412,8 +415,9 @@
         <div class="form-group">
             <label class="col-sm-5"></label>
             <div class="col-sm-6">
+                <button type="button" class="btn btn-info" onclick="setContent()">获取内容</button>
                 <button type="reset" class="btn btn-lg btn-default">重置</button>
-                <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
+                <button type="submit" class="btn btn-lg btn-info" id="skuSave">更新</button>
             </div>
             <script>
                 <%--$('#skuSave').on('click', function(){--%>
@@ -512,9 +516,9 @@
 
                         // Get the BootstrapValidator instance
                         var bv = $form.data('bootstrapValidator');
-
+window.console.log('编辑器内容: ' + UE.getEditor('editor').getContent());
                         // Use Ajax to submit form data
-                        $('#content').val(UE.getEditor('editor').getAllHtml());
+                        $('#content').val(UE.getEditor('editor').getContent());
                         $.ajax({
                             url: '<%=basePath%>product/update.do',
                             type: 'post',

@@ -3,11 +3,14 @@ package com.masiis.shop.web.platform.service.user;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -30,6 +33,41 @@ public class UserAddressService {
     public List<ComUserAddress> queryComUserAddressesByParam(ComUserAddress comUserAddress) {
         return comUserAddressMapper.queryComUserAddressesByParam(comUserAddress);
     }
+
+    /**
+     * 获得订单的选择的地址
+     * @param selectedAddressId
+     * @param userId
+     * @param request
+     * @return
+     */
+    public ComUserAddress getOrderAddress(HttpServletRequest request,Integer selectedAddressId,Long userId){
+        if (StringUtils.isEmpty(selectedAddressId)){
+            selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        }
+        //获得用户的默认地址
+        ComUserAddress comUserAddress = new ComUserAddress();
+        comUserAddress.setUserId(userId);
+        if (StringUtils.isEmpty(selectedAddressId)){
+            //如果没有选中地址选择默认地址
+            comUserAddress.setIsDefault(1);
+        }else{
+            //选中的地址
+            comUserAddress.setId(selectedAddressId);
+        }
+        List<ComUserAddress> comuserAddressList = queryComUserAddressesByParam(comUserAddress);
+        //地址
+        if (comuserAddressList!=null&&comuserAddressList.size()>0){
+            //将订单的id和当前选择的地址id放session中
+            selectedAddressId = comuserAddressList.get(0).getId();
+            request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,selectedAddressId);
+            return comuserAddressList.get(0);
+        }else{
+            return null;
+        }
+    }
+
 
     /**
      * 增加收货地址

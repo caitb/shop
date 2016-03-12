@@ -78,24 +78,12 @@
                         详细地址
                         <input type="text" id="detailAddress">
                     </div>
-                  
            </div>
            <a href="" onclick="saveAddress()" class="baocun">
                 保存
             </a>
        </div>
     </main>
- <%--   <script class="resources library" src="<%=path%>/static/js/area.js" type="text/javascript"></script>
-        <script type="text/javascript">_init_area();</script>
-        <script type="text/javascript">
-
-var showArea = function(){
-    $('show').innerHTML = "<h3>省" + Gid('s_province').value + " - 市" +
-    $('s_city').value + " - 县/区" +
-    $('s_county').value + "</h3>";
-    $('s_county').setAttribute('onchange','showArea()');
-}
-</script>--%>
    <script>
        var categories = window.eval('(' + '${comAreas}' + ')');
        var c1 = {};//一级类别
@@ -117,27 +105,27 @@ var showArea = function(){
                        if(categories[ss].pid == c2['sub'+categories[i].id][sub].id) c3['sub'+c2['sub'+categories[i].id][sub].id].push(categories[ss]);
                    }
                }
-
            }
        }
        var $skuC1 = $('#s_province');
        var $skuC2 = $('#s_city');
        var $skuC3 = $('#s_county');
-       $skuC1.html("<option value=\'-1\'>请选择</option>");
+       $skuC1.html("<option value=\'-1\'>省份</option>");
+       $skuC2.html('<option value="-1">地级市</option>');
+       $skuC3.html('<option value="-1">县/区</option>');
        for(var sub in c1['sub'+0]){
            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
        }
-
        $skuC1.change(function(){
-           $skuC2.empty().html('<option value="-1">请选择</option>');
-           $skuC3.empty().html('<option value="-1">请选择</option>');
+           $skuC2.empty().html('<option value="-1">地级市</option>');
+           $skuC3.empty().html('<option value="-1">县/区</option>');
 
            for(var sub in c2['sub'+$(this).val()]){
                $skuC2.append('<option value="'+ c2['sub'+$(this).val()][sub].id +'">'+ c2['sub'+$(this).val()][sub].name+'</option>');
            }
        });
        $skuC2.change(function(){
-           $skuC3.empty().html('<option value="-1">请选择</option>');
+           $skuC3.empty().html('<option value="-1">县/区</option>');
            for(var sub in c3['sub'+$(this).val()]){
                $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
            }

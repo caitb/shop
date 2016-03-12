@@ -5,6 +5,8 @@ import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
 
+import java.util.List;
+
 /**
  * Created by JingHao on 2016/3/7 0007.
  */
@@ -16,13 +18,17 @@ public class CertificateInfo extends PfUserSku {
 
     private PfUserCertificate pfUserCertificateInfo; //授权书相关属性
 
-    private Long parentUserId; //父ID
+    private Integer parentUserId; //父ID
+
+    private String upperName;//上级合伙人
 
     private String approveType;//审核类型: 1 平台审核 ,2 合伙人审核
 
     private PfBorder pfBorder;//代理订单属性
 
     private ComUser comUser;//用户信息
+
+    private List<ComUser> comUserList;//合伙人列表
 
     public String getCtName() {
         return ctName;
@@ -48,11 +54,11 @@ public class CertificateInfo extends PfUserSku {
         this.pfUserCertificateInfo = pfUserCertificateInfo;
     }
 
-    public Long getParentUserId() {
+    public Integer getParentUserId() {
         return parentUserId;
     }
 
-    public void setParentUserId(Long parentUserId) {
+    public void setParentUserId(Integer parentUserId) {
         this.parentUserId = parentUserId;
     }
 
@@ -78,5 +84,21 @@ public class CertificateInfo extends PfUserSku {
 
     public void setComUser(ComUser comUser) {
         this.comUser = comUser;
+    }
+
+    public String getUpperName() {
+        return upperName;
+    }
+
+    public void setUpperName(String upperName) {
+        this.upperName = upperName;
+    }
+
+    public List<ComUser> getComUserList() {
+        return comUserList;
+    }
+
+    public void setComUserList(List<ComUser> comUserList) {
+        this.comUserList = comUserList;
     }
 }

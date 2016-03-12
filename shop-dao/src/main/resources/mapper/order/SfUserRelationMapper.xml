@@ -7,6 +7,7 @@
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="real_name" property="upperName" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -47,4 +48,11 @@
         from sf_user_relation
     </select>
 
+    <select id="getUpperPartnerById" parameterType="int" resultMap="BaseResultMap">
+        SELECT sfu.id,sfu.user_id,sfu.parent_user_id,
+        u.real_name
+        FROM sf_user_relation sfu
+        LEFT JOIN com_user u ON u.id = sfu.parent_user_id
+        WHERE sfu.parent_user_id = #{pid}
+    </select>
 </mapper>

@@ -34,9 +34,6 @@
 
   <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfSkuStock" resultMap="BaseResultMap">
     select
-    <if test="distinct">
-      distinct
-    </if>
     <include refid="Base_Column_List" />
     from pf_sku_stock
     <where>
@@ -88,14 +85,29 @@
   <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuStock">
       update
              pf_sku_stock
-      set
-             create_time  = #{createTime,jdbcType=TIMESTAMP},
-             supplier_id  = #{supplierId,jdbcType=INTEGER},
-             spu_id       = #{spuId,jdbcType=INTEGER},
-             sku_id       = #{skuId,jdbcType=INTEGER},
-             stock        = #{stock,jdbcType=INTEGER},
-             frozen_stock = #{frozenStock,jdbcType=INTEGER},
-             remark       = #{remark,jdbcType=VARCHAR}
+      <set>
+          <if test="createTime != null">
+              create_time  = #{createTime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="supplierId != null">
+              supplier_id  = #{supplierId,jdbcType=INTEGER},
+          </if>
+          <if test="spuId != null">
+              spu_id       = #{spuId,jdbcType=INTEGER},
+          </if>
+          <if test="skuId != null">
+              sku_id       = #{skuId,jdbcType=INTEGER},
+          </if>
+          <if test="stock != null">
+              stock        = #{stock,jdbcType=INTEGER},
+          </if>
+          <if test="frozenStock != null">
+              frozen_stock = #{frozenStock,jdbcType=INTEGER},
+          </if>
+          <if test="remark != null">
+              remark       = #{remark,jdbcType=VARCHAR}
+          </if>
+      </set>
       where
              id = #{id,jdbcType=INTEGER}
   </update>
@@ -104,5 +116,20 @@
     delete from pf_sku_stock where id = #{id,jdbcType=INTEGER}
   </delete>
 
+  <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+    select
+            id,
+            create_time,
+            supplier_id,
+            spu_id,
+            sku_id,
+            stock,
+            frozen_stock,
+            remark
+    from
+            pf_sku_stock
+    where
+            sku_id = #{skuId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

@@ -191,6 +191,9 @@
             <if test="isTrial != null">
                 is_trial      = #{isTrial,jdbcType=INTEGER},
             </if>
+            <if test="content != null">
+                content       = #{content, jdbcType=LONGVARCHAR},
+            </if>
             <if test="weight != null">
                 weight        = #{weight,jdbcType=DECIMAL},
             </if>

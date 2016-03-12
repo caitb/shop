@@ -513,7 +513,7 @@
                         var bv = $form.data('bootstrapValidator');
 
                         // Use Ajax to submit form data
-                        $('#content').val(UE.getEditor('editor').getAllHtml());
+                        $('#content').val(UE.getEditor('editor').getContent());
                         $.ajax({
                             url: '<%=basePath%>product/add.do',
                             type: 'post',

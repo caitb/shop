@@ -182,7 +182,7 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'sku_name',
+                                                field: 'skuName',
                                                 title: '合伙商品',
                                                 sortable: true,
                                                 //editable: true,

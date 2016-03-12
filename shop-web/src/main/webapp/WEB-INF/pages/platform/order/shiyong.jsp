@@ -23,7 +23,6 @@
 <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/checkUtil.js"></script>
 <script>
-
     var s = 60, t;
     function times(){
         s--;
@@ -37,40 +36,38 @@
             clearTimeout(t);
         }
     }
+    var isPhone;
     $(function() {
+        $("#phoneId").blur(function(){
+            isPhone= checkPhone($("#phoneId").val());
+            if(!isPhone){
+                   alert("手机号格式不对");
+              //  $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
+                return;
+            }
+        });
         $("#codeId").click(function () {
+            isPhone= checkPhone($("#phoneId").val());
+            if(!isPhone){
+                alert("手机号格式不对");
+                return;
+            }
             times();
             $.ajax({
                 type: "POST",
+                async:false,
                 url: "<%=path%>/binding/securityCode.do",
                 data: "phone=" + $("#phoneId").val(),
                 dataType: "Json",
                 success: function (result) {
-                    alert(result);
                     $("#codeValueId").val("短信发送成功,请注意查收!");
-                }
-            });
-        });
-        $("#codeValueId").blur(function () {
-            $value = $("#codeValueId").val();
-            if ($value == null || $value == "") {
-                $("#codeValueId").val("验证码不能为空");
-                return;
-            }
-            $.ajax({
-                type: "POST",
-                url: "<%=path%>/binding/verificationCode.do",
-                data: "verificationCode=" + $("#codeValueId").val(),
-                dataType: "Json",
-                success: function (result) {
-                    alert(result.msg);
-                    $("#codeValueId").val(result.msg);
+                },
+                error:function(){
+                    alert("发送验证码失败");
                 }
             });
         });
     })
-
-
     function apply(){
         var name  = $("#nameId")[0].value;
         var phone = $("#phoneId")[0].value;
@@ -87,6 +84,13 @@
             alert("手机号格式不对");
             return;
         }
+
+        var $value = $("#codeValueId").val();
+        if ($value == null || $value == "") {
+            $("#codeValueId").val("验证码不能为空");
+            return;
+        }
+
         $.ajax({
             type:"POST",
             url : "<%=path%>/binding/verificationCode.do",
@@ -104,6 +108,8 @@
                         },function(data) {
                             if(data == "success"){
                                 window.location.href = "<%=path%>/corder/continueStroll"
+                            }else{
+                                alert("逻辑出错");
                             }
                         });
             },
@@ -112,7 +118,6 @@
             }
         });
     }
-
 </script>
 <main>
     <section class="sec2">
@@ -122,14 +127,14 @@
             </a>
         </p>
         <div>
-            <h2>${product.name}<span>x1</span></h2>
-            <h3>规格：<span>默认</span></h3>
-            <p>零售价：<span>￥${product.priceRetail}</span></p>
+            <h2>${product.name}</h2>
+            <h3>规格：<span>默认</span><b>x1</b></h3>
+            <p>零售价： 非卖品</p>
+            <p style="color:#333;">运费<span>${product.shipAmount}</span></p>
         </div>
     </section>
     <section class="sec3">
-        <p>运费<span>${product.priceRetail}</span></p>
-        <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>${product.shipAmount}</span>　<b style="font-size:12px">合计：</b><span>￥${product.priceRetail}</span></h1>
+        <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
         <p>申请理由：<input type="text" id="applyReasonId"></p>
     </section>
     <h1 class="pople">

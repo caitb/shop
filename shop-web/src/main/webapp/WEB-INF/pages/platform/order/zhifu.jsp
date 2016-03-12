@@ -4,21 +4,40 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifu.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
     <script>
+        $(document).ready(function () {
+            var addressId = $("#addressId").val();
+            if (addressId==""){
+                $(".xinz").show();
+                $(".sec1").hide();
+            }else{
+                $(".xinz").hide();
+                $(".sec1").attr("style","display:-webkit-box;");
+            }
+        })
+        function toAddAddressPage(){
+            window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
+        }
         var myScroll = new IScroll(".wrap", {
             preventDefault: false
         })
+
+        function toChooseAddressPage(){
+            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+        }
     </script>
 </head>
 <body>
@@ -34,23 +53,33 @@
                 <p>您已经成功注册麦链合伙人，需要您完成订单支付</p>
             </div>
             <div class="xinxi">
-                <p style="color:#999999">1.注册信息</p>
-                <p>2.支付订单</p>
-                <p>3.提交资料</p>
+                <p>注册信息</p>
+                <p>支付订单</p>
+                <p>提交资料</p>
             </div>
-            <div class="xinz">
-                <p><a href="<%=path%>/static/html/guanli.html">新增收货地址</a></p>
+            <div class="xinz" onclick="toAddAddressPage()">
+                <p><a>新增收货地址</a></p>
             </div>
             <section class="sec1">
-
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                 <div>
-                    <a href="#"><h2>收货人：<b>王平</b> <span>18611536163</span></h2></a>
-                    <a href="#"><p>收货地址： <span>北京市 朝阳区 丰联广场A座809A</span><img src="../images/next.png" alt=""></p></a>
+                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.id}</span></h2></a>
+                    <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span><img   onclick="toChooseAddressPage()"   src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
-
             </section>
-            ${productInfo}
+
+            <section class="sec2">
+                <p class="photo">
+                    <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                </p>
+                <div>
+                    <h2>抗引力——快速瘦脸精华</h2>
+                    <h3>规格：<span>默认</span></h3>
+                    <p><span>￥298</span><b style="float:right; margin-right:10px;font-size:12px;">x1</b></p>
+                </div>
+            </section>
+
             <section class="sec3">
                 <p>运费<span>到付</span></p>
                 <h1>共<b>${quantity}</b>件商品　运费：<span>到付</span><b>　合计：</b><span

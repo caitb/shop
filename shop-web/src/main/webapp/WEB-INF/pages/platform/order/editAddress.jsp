@@ -48,42 +48,8 @@
                 },function(data) {
                     if (data == "success"){
                         window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
-                        //window.location.href = "guanli.jsp";
                     }
                 });
-
-
-/*        $.ajax({
-            url: "<%=path%>/userAddress/addOrUpdateAddress.do",
-            async: false,
-            type: "GET",
-            data: {
-                "id": addressId,
-                "name": name,
-                "phone": phone,
-                "postcode": postcode,
-                "provinceId": provinceId,
-                "provinceName": provinceName,
-                "cityId": cityId,
-                "cityName": cityName,
-                "countyId": countyId,
-                "countyName": countyName,
-                "detailAddress": detailAddress,
-                "isDefault":isDefault,
-                "operateType": "update"
-            },
-            success: function (result) {
-                if (result == "success") {
-                  //  window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
-                    window.location.href = "guanli.jsp";
-                } else {
-                    alert("更新失败");
-                }
-            },
-            error: function () {
-                alert("更新失败");
-            }
-        })*/
     }
 </script>
 <body>
@@ -125,17 +91,6 @@
         </a>
     </div>
 </main>
-<%--   <script class="resources library" src="<%=path%>/static/js/area.js" type="text/javascript"></script>
-       <script type="text/javascript">_init_area();</script>
-       <script type="text/javascript">
-
-var showArea = function(){
-   $('show').innerHTML = "<h3>省" + Gid('s_province').value + " - 市" +
-   $('s_city').value + " - 县/区" +
-   $('s_county').value + "</h3>";
-   $('s_county').setAttribute('onchange','showArea()');
-}
-</script>--%>
 <script>
     var categories = window.eval('(' + '${comAreas}' + ')');
     var c1 = {};//一级类别
@@ -162,7 +117,7 @@ var showArea = function(){
     var $skuC1 = $('#s_province');
     var $skuC2 = $('#s_city');
     var $skuC3 = $('#s_county');
-    $skuC1.html("<option value=\'-1\'>请选择</option>");
+    $skuC1.html("<option value=\'-1\'>省份</option>");
     for(var sub in c1['sub'+0]){
         if (c1['sub'+0][sub].id == ${comUserAddress.provinceId}){
             $skuC1.append('<option selected value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
@@ -170,7 +125,6 @@ var showArea = function(){
             $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
         }
     }
-    //$skuC2.append("<option selected value='${comUserAddress.cityId}'>${comUserAddress.cityName}</option>")
     var  id = ${comUserAddress.provinceId};
     for(var sub in c2['sub'+id]){
         if (c2['sub'+id][sub].id ==${comUserAddress.cityId}){
@@ -187,18 +141,15 @@ var showArea = function(){
             $skuC3.append('<option value="'+ c3['sub'+cityId][sub].id +'">'+ c3['sub'+cityId][sub].name+'</option>');
         }
     }
-
-
     $skuC1.change(function(){
-        $skuC2.empty().html('<option value="-1">请选择</option>');
-        $skuC3.empty().html('<option value="-1">请选择</option>');
-
+        $skuC2.empty().html('<option value="-1">地级市</option>');
+        $skuC3.empty().html('<option value="-1">县/区</option>');
         for(var sub in c2['sub'+$(this).val()]){
             $skuC2.append('<option value="'+ c2['sub'+$(this).val()][sub].id +'">'+ c2['sub'+$(this).val()][sub].name+'</option>');
         }
     });
     $skuC2.change(function(){
-        $skuC3.empty().html('<option value="-1">请选择</option>');
+        $skuC3.empty().html('<option value="-1">县/区</option>');
         for(var sub in c3['sub'+$(this).val()]){
             $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
         }

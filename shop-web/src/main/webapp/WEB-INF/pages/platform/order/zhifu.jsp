@@ -68,18 +68,7 @@
                     <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span><img   onclick="toChooseAddressPage()"   src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
             </section>
-
-            <section class="sec2">
-                <p class="photo">
-                    <img src="<%=path%>/static/images/shenqing_1.png" alt="">
-                </p>
-                <div>
-                    <h2>抗引力——快速瘦脸精华</h2>
-                    <h3>规格：<span>默认</span></h3>
-                    <p><span>￥298</span><b style="float:right; margin-right:10px;font-size:12px;">x1</b></p>
-                </div>
-            </section>
-
+            ${productInfo}
             <section class="sec3">
                 <p>运费<span>到付</span></p>
                 <h1>共<b>${quantity}</b>件商品　运费：<span>到付</span><b>　合计：</b><span

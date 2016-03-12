@@ -287,7 +287,7 @@ public class BOrderController extends BaseController {
             PfBorder order = new PfBorder();
             order.setCreateTime(new Date());
             order.setCreateMan(comUser.getId());
-            String orderCode = OrderMakeUtils.makeOrder("B");
+            String orderCode= OrderMakeUtils.makeOrder("B");
             order.setOrderCode(orderCode);
             order.setUserMassage("");
             order.setUserId(comUser.getId());
@@ -396,9 +396,9 @@ public class BOrderController extends BaseController {
         mv.addObject("comUserAddress", comUserAddress);
 
         mv.addObject("bOrderId", bOrderId);
-/*        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
+        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
-        mv.addObject("productInfo", stringBuffer.toString());*/
+        mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
         mv.setViewName("platform/order/zhifu");
 

@@ -128,11 +128,11 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return row.id;
+                                                return row.pfBorder.id;
                                             }
                                         }, {
                                             title: '详情',
-                                            colspan: 9,
+                                            colspan: 13,
                                             align: 'center'
                                         }
                                         ],
@@ -145,83 +145,100 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.orderCode;
+                                                    return row.pfBorder.orderCode;
                                                 }
                                             },
                                             {
                                                 field: 'categoryName',
-                                                title: '商品分类',
+                                                title: '订单日期',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
+                                                    return new Date(row.pfBorder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                                                 }
                                             },
                                             {
                                                 field: 'priceRetail',
-                                                title: '零售价',
+                                                title: '收货人',
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.pfBorderConsignee.consignee;
+                                                }
                                             },
                                             {
                                                 field: 'store',
-                                                title: '库存',
+                                                title: '购买人',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comUser.realName;
+                                                }
                                             },
                                             {
                                                 field: 'pv',
-                                                title: '浏览量',
+                                                title: '订单商品',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'age',
-                                                title: '销售量',
+                                                title: '商品数量',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'upTime',
-                                                title: '上架时间',
+                                                title: '订单金额',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.pfBorder.productAmount;
+                                                }
+                                            },
+                                            {
+                                                field: 'status',
+                                                title: '实付金额',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.pfBorder.payAmount;
+                                                }
+                                            },
+                                            {
+                                                field: 'status',
+                                                title: '订单状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'status',
-                                                title: '状态',
+                                                title: '支付方式',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
-//                                        {
-//                                        field: 'price',
-//                                        title: 'Item Price',
-//                                        sortable: true,
-//                                        align: 'center',
-//                                        editable: {
-//                                            type: 'text',
-//                                            title: 'Item Price',
-//                                            validate: function (value) {
-//                                                value = $.trim(value);
-//                                                if (!value) {
-//                                                    return 'This field is required';
-//                                                }
-//                                                if (!/^$/.test(value)) {
-//                                                    return 'This field needs to start width $.'
-//                                                }
-//                                                var data = $table.bootstrapTable('getData'),
-//                                                        index = $(this).parents('tr').data('index');
-//                                                console.log(data[index]);
-//                                                return '';
-//                                            }
-//                                        },
-//                                        footerFormatter: totalPriceFormatter
-//                                    },
+                                            {
+                                                field: 'status',
+                                                title: '支付状态',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'status',
+                                                title: '物流状态',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
                                             {
                                                 title: '操作项',
                                                 align: 'center'

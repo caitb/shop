@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -202,14 +203,14 @@ public class COrderController extends BaseController {
             userId = 1L;
         }
         if (orderId==null){
-            orderId = 1L;
+            orderId = 12L;
         }
         Map<String,Object> pfCorderMap = cOrderService.confirmOrder(request,orderId,userId,selectedAddressId);
         ComUserAddress comUserAddress = (ComUserAddress)pfCorderMap.get("comUserAddress");
         //图片
         Product product = (Product)pfCorderMap.get("product");
         if (product!=null){
-            String skuImg = PropertiesUtils.getStringValue("index_product_100_100_url");
+            String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             model.addAttribute("skuName", product.getName());
             if (product.getComSkuImages()!=null&&product.getComSkuImages().size()>0){
                 model.addAttribute("skuDefaultImg",skuImg + product.getComSkuImages().get(0).getImgUrl());

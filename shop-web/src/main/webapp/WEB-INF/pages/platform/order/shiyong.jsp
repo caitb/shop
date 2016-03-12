@@ -22,7 +22,9 @@
 </header>
 <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/checkUtil.js"></script>
-<script>
+<script type="text/javascript" src="<%=path%>/static/js/zhuceUtil.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/shiyong.js"></script>
+<%--<script>
     var s = 60, t;
     function times(){
         s--;
@@ -118,7 +120,7 @@
             }
         });
     }
-</script>
+</script>--%>
 <main>
     <section class="sec2">
         <p class="photo">

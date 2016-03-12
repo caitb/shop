@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.PfUserTrial;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -38,6 +39,8 @@ public class COrderController extends BaseController {
     private COrderService cOrderService;
     @Resource
     private ProductService productService;
+    @Resource
+    private UserAddressService userAddressService;
 
     /**
      *
@@ -201,21 +204,8 @@ public class COrderController extends BaseController {
         if (orderId==null){
             orderId = 1L;
         }
-        if (StringUtils.isEmpty(selectedAddressId)){
-            selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
-        }
-        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(orderId,userId,selectedAddressId);
-        List<ComUserAddress> comuserAddressList = (List<ComUserAddress>)pfCorderMap.get("address");
-        //地址
-        if (comuserAddressList!=null&&comuserAddressList.size()>0){
-            //将订单的id和当前选择的地址id放session中
-            selectedAddressId = comuserAddressList.get(0).getId();
-            request.getSession().removeAttribute("confirmPfCorder_Id");
-            request.getSession().removeAttribute("confirmPfCorder_SelectedAddressId");
-            request.getSession().setAttribute("confirmPfCorder_Id",orderId);
-            request.getSession().setAttribute("confirmPfCorder_SelectedAddressId",selectedAddressId);
-            model.addAttribute("comUserAddress",comuserAddressList.get(0));
-        }
+        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(request,orderId,userId,selectedAddressId);
+        ComUserAddress comUserAddress = (ComUserAddress)pfCorderMap.get("comUserAddress");
         //图片
         Product product = (Product)pfCorderMap.get("product");
         if (product!=null){
@@ -227,7 +217,7 @@ public class COrderController extends BaseController {
             }
         }
         model.addAttribute("product",product);
+        model.addAttribute("comUserAddress",comUserAddress);
         return "platform/order/zhifushiyong";
     }
-
 }

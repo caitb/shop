@@ -6,6 +6,7 @@ import com.masiis.shop.dao.beans.system.System;
 import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.user.ComAreaService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
@@ -142,12 +143,46 @@ public class UserAddressController {
     public String toChooseAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Model model){
-        Long orderId = (Long) request.getSession().getAttribute("confirmPfCorder_Id");
-        Integer selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
+        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
+        Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         model.addAttribute("addressId",selectedAddressId);
-        model.addAttribute("pfCorderId",orderId);
         return "platform/order/xuanze";
     }
+    /**
+     * 选择地址点击某个地址或者返回，跳转到某个界面
+     * @author hanzengzhi
+     * @date 2016/3/12 11:56
+     */
+    @RequestMapping("/clickAddressOrReturnToPage.do")
+    public String clickAddressOrReturnToPage(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId){
+
+        String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
+        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
+        StringBuffer sb = new StringBuffer();
+        if (orderType.equals(SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE)){
+            //跳转到支付使用界面
+            sb.append("redirect:/corder/confirmOrder.do?");
+            if (!StringUtils.isEmpty(orderId)){
+                sb.append("orderId=").append(orderId).append("&");
+            }
+            if (!StringUtils.isEmpty(selectedAddressId)){
+                sb.append("&selectedAddressId=").append(selectedAddressId);
+            }
+        }else if (orderType.equals(SysConstants.SESSION_PAY_ORDER_TYPE_VALUE)){
+            //跳转到支付界面
+            sb.append("redirect:/border/pay.shtml?");
+            if (!StringUtils.isEmpty(orderId)){
+                sb.append("bOrderId=").append(orderId).append("&");
+            }
+            if (!StringUtils.isEmpty(selectedAddressId)) {
+                sb.append("userAddressId=").append(selectedAddressId);
+            }
+        }
+        return  sb.toString();
+    }
+
     /**
      * 跳转到管理地址界面
      * @author  hanzengzhi
@@ -208,9 +243,9 @@ public class UserAddressController {
         if (i==0){
             return 0;
         }else{
-            Integer selectedAddressId = (Integer) request.getSession().getAttribute("confirmPfCorder_SelectedAddressId");
+            Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
             if (id.equals(selectedAddressId)){
-                request.getSession().removeAttribute("confirmPfCorder_SelectedAddressId");
+                request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
             }
             return i;
         }

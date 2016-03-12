@@ -65,7 +65,6 @@
                    <a onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
-                        <input id="pfCorderId" style="display:none;" value="${pfCorderId}"/>
                         <a href="<%=path%>/userAddress/toManageAddressPage.html"><h2 class="gl">管理</h2></a>
                 </header>
                 <div class="xinz">
@@ -81,12 +80,10 @@
     <script>
         function returnPage(){
             var  selectedAddressId = $("#addressId").val();
-            var  pfCorderId = $("#pfCorderId").val();
-            window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+selectedAddressId;
+            window.location.href = "<%=path%>/userAddress/clickAddressOrReturnToPage.do?selectedAddressId="+selectedAddressId;
         }
         function selectClick(id){
-            var  pfCorderId = $("#pfCorderId").val();
-            window.location.href = "<%=path%>/corder/confirmOrder.do?orderId?"+pfCorderId+"&selectedAddressId="+id;
+            window.location.href = "<%=path%>/userAddress/clickAddressOrReturnToPage.do?selectedAddressId="+id;
         }
     </script>
 </body>

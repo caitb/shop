@@ -64,7 +64,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="<%=path%>/userAddress/toChooseAddressPage.html" >"<img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=path%>/userAddress/toChooseAddressPage.html" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
                         <h2 class="gl">完成</h2>          
                 </header>

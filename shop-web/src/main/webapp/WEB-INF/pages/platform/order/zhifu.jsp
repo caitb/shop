@@ -4,7 +4,8 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -16,9 +17,24 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
     <script>
+        $(document).ready(function () {
+            var addressId = $("#addressId").val();
+            if (addressId==""){
+                $(".xinz").show();
+                $(".sec1").hide();
+            }else{
+                $(".xinz").hide();
+                $(".sec1").show();
+            }
+        })
+
         var myScroll = new IScroll(".wrap", {
             preventDefault: false
         })
+
+        function toChooseAddressPage(){
+            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+        }
     </script>
 </head>
 <body>
@@ -38,6 +54,8 @@
                 <p>2.支付订单</p>
                 <p>3.提交资料</p>
             </div>
+
+
             <div class="xinz">
                 <p><a href="<%=path%>/static/html/guanli.html">新增收货地址</a></p>
             </div>
@@ -46,6 +64,7 @@
                 <section class="sec1">
                     <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                     <div>
+                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                         <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                         <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
@@ -56,15 +75,14 @@
 
 
 
-            <section class="sec1">
+<%--            <section class="sec1">
 
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                 <div>
                     <a href="#"><h2>收货人：<b>王平</b> <span>18611536163</span></h2></a>
                     <a href="#"><p>收货地址： <span>北京市 朝阳区 丰联广场A座809A</span><img src="../images/next.png" alt=""></p></a>
                 </div>
-
-            </section>
+            </section>--%>
             ${productInfo}
             <section class="sec3">
                 <p>运费<span>到付</span></p>

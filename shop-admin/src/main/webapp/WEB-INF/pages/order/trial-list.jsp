@@ -186,7 +186,12 @@
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.referrer){
+                                                        return row.referrer.realName;
+                                                    }
+                                                }
                                             },
                                             {
                                                 //field: 'shen',

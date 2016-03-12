@@ -4,7 +4,7 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
-import com.masiis.shop.dao.platform.order.SfUserRelationMapper;
+import com.masiis.shop.dao.platform.user.SfUserRelationMapper;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderOperationLog;
 import com.masiis.shop.dao.po.PfUserTrial;

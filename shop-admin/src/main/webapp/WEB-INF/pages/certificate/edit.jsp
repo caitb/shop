@@ -8,37 +8,37 @@
 <table class="table">
     <input type="hidden" id="approveId" name ="id" value="${certificateInfo.id}"/>
    <tr>
-       <td><label class="col-sm-3 control-label no-padding-right">合伙商品</label></td>
-       <td>${certificateInfo.skuName}</td>
+       <td width="50%"><label class="col-sm-3 control-label no-padding-right">合伙商品</label></td>
+       <td colspan="2">${certificateInfo.skuName}</td>
    </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请证书级别</label></td>
-        <td>${certificateInfo.pfUserCertificateInfo.agentLevelId}</td>
+        <td colspan="2">${certificateInfo.pfUserCertificateInfo.agentLevelId}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请人</label></td>
-        <td>${certificateInfo.comUser.realName}</td>
+        <td colspan="2">${certificateInfo.comUser.realName}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">手机号码</label></td>
-        <td>${certificateInfo.pfUserCertificateInfo.mobile}</td>
+        <td colspan="2">${certificateInfo.pfUserCertificateInfo.mobile}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">微信号</label></td>
-        <td>${certificateInfo.pfUserCertificateInfo.mobile}</td>
+        <td colspan="2">${certificateInfo.pfUserCertificateInfo.mobile}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">推荐人</label></td>
-        <td>${certificateInfo.skuName} <span><a href="javascript:void(0)" onclick="changeLeader('+certificateInfo.userId+')">更改上级</a></span></td>
+        <td colspan="2">${certificateInfo.upperName} <span><a href="javascript:void(0)" onclick="changeLeader()">更改上级</a></span></td>
 
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请时间</label></td>
-        <td>${certificateInfo.pfUserCertificateInfo.beginTime}</td>
+        <td colspan="2">${certificateInfo.pfUserCertificateInfo.beginTime}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">订单状态</label></td>
-        <td>${certificateInfo.pfBorder.orderStatus}<span> <a href="javascript:void(0)" onclick="orderList('+certificateInfo.userId+')">查看订单</a></span></td>
+        <td colspan="2">${certificateInfo.pfBorder.orderStatus}<span> <a href="javascript:void(0)" onclick="orderList('+certificateInfo.userId+')">查看订单</a></span></td>
 
     </tr>
     <%--<tr>--%>
@@ -47,7 +47,7 @@
     <%--</tr>--%>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">身份证号</label></td>
-        <td>${certificateInfo.comUser.idCard}</td>
+        <td colspan="2">${certificateInfo.comUser.idCard}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">身份证号照片</label></td>
@@ -55,8 +55,24 @@
         <td>${certificateInfo.comUser.idCardBackUrl}</td>
     </tr>
     <tr>
-        <td> <a href="javascript:void(0)" class="button button-glow button-rounded button-raised button-primary" id="update">确认生成证书</a></td>
-        <td> <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon" id="reject">拒绝</a></td>
+        <td><c:choose>
+            <c:when test="${certificateInfo.pfUserCertificateInfo.status==0}">
+                <a href="javascript:void(0)" class="button button-glow button-rounded button-raised button-primary" id="update">确认生成证书</a>
+            </c:when>
+            <c:otherwise>
+                <a href="javascript:void(0)"class="button button-glow button-rounded button-raised button-primary" aria-disabled="true">已经审核</a>
+            </c:otherwise>
+        </c:choose>
+        </td>
+        <td>
+            <c:choose>
+                <c:when test="${certificateInfo.pfUserCertificateInfo.status==0}">
+                   <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon" id="reject">拒绝</a></td>
+                </c:when>
+                <%--<c:otherwise>--%>
+                    <%--<a href="javascript:void(0)" class="btn btn-primary" aria-disabled="true">拒绝</a></td>--%>
+                <%--</c:otherwise>--%>
+            </c:choose>
     </tr>
 </table>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -76,20 +92,19 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">用户</label>
                     <div class="col-sm-10">
-                        王平
+                        <%--${upperList.comUser.realName}--%>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label no-padding-right">当前上级</label>
                     <div class="col-sm-10">
-                        王平
+                        <%--${upperList.upperName}--%>
                     </div>
                 </div>
                 <form class="form-horizontal" id="reasonForm" >
                     <div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right">更换上级</label>
                         <div class="col-sm-10">
-                            <input type="hidden" id="trialId" name="id" />
                             <select class="form-control">
                                 <option>1</option>
                             </select>
@@ -109,33 +124,33 @@
     </div><!-- /.modal -->
 </div>
 
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog"
-     aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="orderModalLabel">
-                    订单详情
-                </h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary" id="Submit">
-                    提交
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
+<%--<div class="modal fade" id="orderModal" tabindex="-1" role="dialog"--%>
+     <%--aria-labelledby="orderModalLabel" aria-hidden="true">--%>
+    <%--<div class="modal-dialog">--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close"--%>
+                        <%--data-dismiss="modal" aria-hidden="true">--%>
+                    <%--&times;--%>
+                <%--</button>--%>
+                <%--<h4 class="modal-title" id="orderModalLabel">--%>
+                    <%--订单详情--%>
+                <%--</h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--<button type="button" class="btn btn-default"--%>
+                        <%--data-dismiss="modal">关闭--%>
+                <%--</button>--%>
+                <%--<button type="button" class="btn btn-primary" id="Submit">--%>
+                    <%--提交--%>
+                <%--</button>--%>
+            <%--</div>--%>
+        <%--</div><!-- /.modal-content -->--%>
+    <%--</div><!-- /.modal -->--%>
 
-</div>
+<%--</div>--%>
 <div>
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
@@ -176,10 +191,10 @@
             url: '<%=basePath%>certificate/listUpper.do',
             data: {id: approveId},
             success: function (data) {
+                alert(data);
                 $('#myModal').modal({
                     show: true,
-                    backdrop: true,
-                    upperList:data
+                    backdrop: true
                 });
             }
         });
@@ -194,17 +209,17 @@
         });
     }
 
-    $('#btnSubmit').on('click', function () {
-        var data = $('#reasonForm').serialize();
-        $.ajax({
-            url: '<%=basePath%>trial/reason.do',
-            type: 'post',
-            data: data,
-            success: function (data) {
-                //alert(data);
-                $('#myModal').modal('hide');
-            }
-        });
-        location.reload();
-    })
+    <%--$('#btnSubmit').on('click', function () {--%>
+        <%--var data = $('#reasonForm').serialize();--%>
+        <%--$.ajax({--%>
+            <%--url: '<%=basePath%>trial/reason.do',--%>
+            <%--type: 'post',--%>
+            <%--data: data,--%>
+            <%--success: function (data) {--%>
+                <%--//alert(data);--%>
+                <%--$('#myModal').modal('hide');--%>
+            <%--}--%>
+        <%--});--%>
+        <%--location.reload();--%>
+    <%--})--%>
 </script>

@@ -2,7 +2,7 @@ package com.masiis.shop.admin.service.order;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.masiis.shop.admin.beans.order.order;
+import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -42,12 +42,12 @@ public class BOrderService {
         List<PfBorder> pfBorders = pfBorderMapper.selectByCondition(pfBorder);
         PageInfo<PfBorder> pageInfo = new PageInfo<>(pfBorders);
 
-        List<order> orders = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         for(PfBorder pbo : pfBorders){
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
 
-            order order = new order();
+            Order order = new Order();
             order.setPfBorder(pbo);
             order.setComUser(comUser);
             order.setPfBorderConsignee(pfBorderConsignee);

@@ -110,6 +110,12 @@ public class PfUserTrialController extends BaseController {
 
         return "redirect:list.shtml";
     }
+
+    @RequestMapping("/detail.shtml")
+    public String detail(){
+        return "order/detail";
+    }
+
     @RequestMapping("reason")
     public String reason(PfUserTrial pfUserTrial){
         trialService.reason(pfUserTrial);

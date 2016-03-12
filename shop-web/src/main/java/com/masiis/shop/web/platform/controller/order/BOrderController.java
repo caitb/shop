@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
@@ -16,6 +17,8 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.utils.MobileMessageUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.nimbus.NimbusStyle;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -162,12 +166,47 @@ public class BOrderController extends BaseController {
                                                @RequestParam(value = "mobile", required = true) String mobile,
                                                @RequestParam(value = "weixinId", required = true) String weixinId,
                                                @RequestParam(value = "parentMobile", required = true) String parentMobile,
+                                               @RequestParam(value = "skuId", required = true) Integer skuId,
                                                @RequestParam(value = "skuName", required = true) String skuName,
                                                @RequestParam(value = "levelId", required = true) Long levelId,
                                                @RequestParam(value = "levelName", required = true) String levelName,
-                                               @RequestParam(value = "amount", required = true) BigDecimal amount) {
+                                               @RequestParam(value = "amount", required = true) BigDecimal amount,
+                                               @RequestParam(value = "yanzhengma", required = true) String yanzhengma) {
+
         JSONObject object = new JSONObject();
-        object.put("isError", false);
+        try {
+            if (StringUtils.isBlank(name)) {
+                throw new BusinessException("名称不能为空");
+            }
+            if (StringUtils.isBlank(mobile)) {
+                throw new BusinessException("手机号不能为空");
+            }
+            if (StringUtils.isBlank(weixinId)) {
+                throw new BusinessException("微信号不能为空");
+            }
+            if (StringUtils.isBlank(parentMobile)) {
+                throw new BusinessException("上级手机号不能为空");
+            }
+            if (StringUtils.isBlank(skuName)) {
+                throw new BusinessException("商品名称不能为空");
+            }
+            if (levelId <= 0) {
+                throw new BusinessException("代理等级有误");
+            }
+            if (StringUtils.isBlank(levelName)) {
+                throw new BusinessException("代理等级名称不能为空");
+            }
+            if (amount.compareTo(BigDecimal.ZERO) < 0) {
+                throw new BusinessException("代理金额有误");
+            }
+            if (!MobileMessageUtil.getIdentifyingCode(mobile).equals(yanzhengma)) {
+                throw new BusinessException("验证码错误");
+            }
+            object.put("isError", false);
+        } catch (Exception ex) {
+            object.put("isError", true);
+            object.put("message", ex.getMessage());
+        }
         //ComUser comUser = userService.getUserByMobile(mobile);
 //        if (StringUtils.isNotBlank(mobile)) {
 //            if (comUser != null) {
@@ -287,7 +326,7 @@ public class BOrderController extends BaseController {
             PfBorder order = new PfBorder();
             order.setCreateTime(new Date());
             order.setCreateMan(comUser.getId());
-            String orderCode= OrderMakeUtils.makeOrder("B");
+            String orderCode = OrderMakeUtils.makeOrder("B");
             order.setOrderCode(orderCode);
             order.setUserMassage("");
             order.setUserId(comUser.getId());
@@ -336,13 +375,12 @@ public class BOrderController extends BaseController {
             Long bOrderId = bOrderService.AddBOrder(order, orderItems, userSku, comUser);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
-            return obj.toJSONString();
         } catch (Exception ex) {
             log.error(ex.getMessage());
             obj.put("isError", true);
             obj.put("message", "添加订单失败");
-            return obj.toJSONString();
         }
+        return obj.toJSONString();
     }
 
     /**
@@ -380,19 +418,19 @@ public class BOrderController extends BaseController {
         }
 
         //获得地址
-        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId = null;
-        if (comUser!=null){
+        if (comUser != null) {
             userId = comUser.getId();
-        }else{
+        } else {
             userId = 1L;
         }
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request,userAddressId,userId);
-        if (comUserAddress!=null){
-            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,comUserAddress.getId());
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, userAddressId, userId);
+        if (comUserAddress != null) {
+            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,bOrderId);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,SysConstants.SESSION_PAY_ORDER_TYPE_VALUE);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, bOrderId);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, SysConstants.SESSION_PAY_ORDER_TYPE_VALUE);
         mv.addObject("comUserAddress", comUserAddress);
 
         mv.addObject("bOrderId", bOrderId);
@@ -438,7 +476,7 @@ public class BOrderController extends BaseController {
         orderUserSku.setSkuName(skuNames);
         //获取用户商品信息
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-        //获取用户权限名
+        //获取用户代理等级
         ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
         orderUserSku.setAgentLevel(comAgentLevel.getName());
         ModelAndView mav = new ModelAndView();

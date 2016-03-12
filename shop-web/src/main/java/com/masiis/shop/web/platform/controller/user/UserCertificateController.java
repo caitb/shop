@@ -128,7 +128,7 @@ public class UserCertificateController {
                                      @RequestParam(value = "idCard", required = true) String idCard,
                                      @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
                                      @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
-    ) throws Exception {
+    ) {
         JSONObject object = new JSONObject();
         try {
             if (StringUtils.isBlank(name)) {

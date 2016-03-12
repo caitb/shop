@@ -29,7 +29,7 @@
 <div class="wrap">
 
     <header class="xq_header">
-        <a href="shenqing.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript :;"onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>申请合伙人</p>
     </header>
     <div class="xinxi">

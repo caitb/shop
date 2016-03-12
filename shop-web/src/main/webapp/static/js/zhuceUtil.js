@@ -96,32 +96,32 @@ $(function () {
             return;
         }
         times();
-        //$.ajax({
-        //    type: "POST",
-        //    url: path + "/binding/securityCode.do",
-        //    data: "phone=" + $("#tel").val(),
-        //    dataType: "Json",
-        //    success: function (result) {
-        //        if (result.msg) {
-        //            alert("短信发送成功,请注意查收!");
-        //        } else {
-        //            alert("短信发送失败,请重试!");
-        //        }
-        //    }
-        //});
+        $.ajax({
+            type: "POST",
+            url: path + "/binding/securityCode.do",
+            data: "phone=" + $("#tel").val(),
+            dataType: "Json",
+            success: function (result) {
+                if (result.msg) {
+                    alert("短信发送成功,请注意查收!");
+                } else {
+                    alert("短信发送失败,请重试!");
+                }
+            }
+        });
     });
     var s = 60, t;
 
     function times() {
         s--;
         $("#yanzhengma").html("剩余" + s + "s");
-        $("#yanzhengma").attr("disabled", "disabled");
+        $("#yanzhengma").attr("disabled", true);
         t = setTimeout(function () {
             times();
         }, 1000);
         if (s <= 0) {
             s = 60;
-            $("#yanzhengma").removeAttr("disabled");
+            $("#yanzhengma").attr("disabled", false);
             $("#yanzhengma").html("重新获取验证码");
             clearTimeout(t);
         }

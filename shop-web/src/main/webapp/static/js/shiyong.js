@@ -3,12 +3,12 @@ $(function () {
     var nameCheckFun = function (data) {
         if ($(data).val() == "") {
             $(data).parents("p").addClass("pon");
-            $(data).css({"color": "#F74A11"})
+            $(data).css({"color": "#F74A11"});
             return false;
         }
         if (!isCardName($(data).val())) {
             $(data).parents("p").addClass("pon");
-            $(data).css({"color": "#F74A11"})
+            $(data).css({"color": "#F74A11"});
             return false;
         }
         return true;
@@ -28,7 +28,6 @@ $(function () {
             $(data).css({"color": "#F74A11"})
             return false;
         }
-
         if (!isMobile($(data).val())) {
             $(data).parents("p").addClass("pon");
             $(data).css({"color": "#F74A11"})
@@ -43,23 +42,113 @@ $(function () {
             return true;
         }
     }
+    var weixinCheckFun = function (data) {
+        if ($(data).val() == "") {
+            $(data).parents("p").addClass("pon");
+            $(data).css({"color": "#F74A11"})
+            return false;
+        }
+        return true;
+    }
+
+
+
 
     $("#nameId").on("blur", function () {
         if (nameCheckFun(this)) {
             $(this).parents("p").removeClass("pon");
-            $(this).css({"color": "black"})
+            $(this).css({"color": "black"});
         }
     });
     $("#phoneId").on("blur", function () {
         if (telCheckFun(this)) {
             $(this).parents("p").removeClass("pon");
-            $(this).css({"color": "black"})
+            $(this).css({"color": "black"});
         }
     })
-    $("#weixin").on("blur", function () {
+
+
+    var yanCheckFun = function (data) {
+        if ($(data).val() == "") {
+            $(data).parents("p").addClass("yno");
+            return false;
+        }
+        if (!isNumber($(data).val())) {
+            $(data).parents("p").addClass("yno");
+            return false;
+        }
+        return true;
+        //检验汉字
+        function isNumber(s) {
+            var patrn = /^\d{4}$/;
+            if (!patrn.exec(s)) {
+                return false;
+            }
+            return true;
+        }
+    }
+    $("#yanzhengma").click(function () {
+        if (!telCheckFun($("#phoneId"))) {
+            return;
+        }
+        times();
+        $.ajax({
+            type: "POST",
+            url: "/binding/securityCode.do",
+            data: "phone=" + $("#phoneId").val(),
+            dataType: "Json",
+            success: function (result) {
+                if (result.msg) {
+                    alert("短信发送成功,请注意查收!");
+                } else {
+                    alert("短信发送失败,请重试!");
+                }
+            }
+        });
+    });
+    var s = 60, t;
+
+    function times() {
+        s--;
+        $("#yanzhengma").html("剩余" + s + "s");
+        $("#yanzhengma").attr("disabled", true);
+        t = setTimeout(function () {
+            times();
+        }, 1000);
+        if (s <= 0) {
+            s = 60;
+            $("#yanzhengma").attr("disabled", false);
+            $("#yanzhengma").html("重新获取验证码");
+            clearTimeout(t);
+        }
+    }
+    $("#wechatId").on("blur", function () {
         if (weixinCheckFun(this)) {
             $(this).parents("p").removeClass("pon");
-            $(this).css({"color": "black"})
+            $(this).css({"color": "black"});
+        }
+    })
+
+    $("#apply").click(function () {
+        alert($(".pon").length);
+        alert(yanCheckFun($("#yanzhengma")));
+        if ($(".pon").length==0&&yanCheckFun($("#yanzhengma"))){
+            alert("1111");
+            $.post("/corder/trialApply.do",
+                {
+                    "spuId":spuId,
+                    "skuId":skuId,
+                    "applyReason":applyReason,
+                    "name" : name,
+                    "phone" : phone,
+                    "wechat" : wechat
+                },function(data) {
+                    if(data == "success"){
+                        window.location.href = "/corder/continueStroll"
+                    }else{
+                        alert("逻辑出错");
+                    }
+                });
         }
     })
 })

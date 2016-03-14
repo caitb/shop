@@ -5,10 +5,9 @@ import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderConsignee;
 
 /**
- * Created by cai_tb on 16/3/12.
+ * Created by 49134 on 2016/3/14.
  */
 public class Order {
-
     private PfBorder pfBorder;
     private ComUser comUser;
     private PfBorderConsignee pfBorderConsignee;

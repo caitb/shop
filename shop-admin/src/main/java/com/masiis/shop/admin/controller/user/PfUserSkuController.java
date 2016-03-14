@@ -5,14 +5,18 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
+import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +32,6 @@ public class PfUserSkuController extends BaseController {
     private PfUserSkuService pfUserSkuService;
     @Resource
     private ComUserService comUserService;
-
 
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response) {
@@ -73,6 +76,43 @@ public class PfUserSkuController extends BaseController {
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", pfUserSkuList);
         return pageMap;
+    }
+
+
+    @RequestMapping("/person.shtml")
+    public ModelAndView person(HttpServletRequest request, HttpServletResponse response, Long id){
+        ModelAndView mav = new ModelAndView("user/person");
+
+        ComUser comUser = null;
+        if(id != null){
+            comUser = comUserService.findById(id);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format = sdf.format(comUser.getCreateTime());
+            mav.addObject("date",format);
+        }
+        mav.addObject("comUser", comUser);
+        return mav;
+    }
+
+    @RequestMapping("/partner.shtml")
+    public ModelAndView partner(HttpServletRequest request, HttpServletResponse response, Integer id){
+        ModelAndView mav = new ModelAndView("user/partner");
+
+        if(id != null){
+            PfUserSkuCertificate pfUserSkuCertificate = pfUserSkuService.getUserSkuById(id);
+            ComUser comUser = pfUserSkuCertificate.getComUser();
+            if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
+                String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
+                comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
+                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardFrontUrl());
+            }
+            if (pfUserSkuCertificate!=null){
+                String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
+                pfUserSkuCertificate.setpRealName(pRealName);
+            }
+            mav.addObject("pfUserSku", pfUserSkuCertificate);
+        }
+        return mav;
     }
 
 }

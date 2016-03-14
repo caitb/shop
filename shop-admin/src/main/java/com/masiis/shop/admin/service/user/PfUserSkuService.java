@@ -36,4 +36,13 @@ public class PfUserSkuService {
     public Integer findLowerCount(Integer pid) {
         return pfUserSkuMapper.findLowerCount(pid);
     }
+
+    /**
+     * 合伙信息
+     * @param id
+     * @return
+     */
+    public PfUserSkuCertificate getUserSkuById(Integer id) {
+        return pfUserSkuMapper.getUserSkuById(id);
+    }
 }

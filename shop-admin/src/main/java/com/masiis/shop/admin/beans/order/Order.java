@@ -1,24 +1,17 @@
 package com.masiis.shop.admin.beans.order;
 
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
+import com.masiis.shop.dao.po.*;
 
 /**
- * Created by 49134 on 2016/3/14.
+ * Created by caitingbiao on 2016/3/14.
  */
 public class Order {
-    private PfBorder pfBorder;
+
     private ComUser comUser;
+    private PfBorder pfBorder;
+    private PfCorder pfCorder;
     private PfBorderConsignee pfBorderConsignee;
-
-    public PfBorder getPfBorder() {
-        return pfBorder;
-    }
-
-    public void setPfBorder(PfBorder pfBorder) {
-        this.pfBorder = pfBorder;
-    }
+    private PfCorderConsignee pfCorderConsignee;
 
     public ComUser getComUser() {
         return comUser;
@@ -28,11 +21,35 @@ public class Order {
         this.comUser = comUser;
     }
 
+    public PfBorder getPfBorder() {
+        return pfBorder;
+    }
+
+    public void setPfBorder(PfBorder pfBorder) {
+        this.pfBorder = pfBorder;
+    }
+
+    public PfCorder getPfCorder() {
+        return pfCorder;
+    }
+
+    public void setPfCorder(PfCorder pfCorder) {
+        this.pfCorder = pfCorder;
+    }
+
     public PfBorderConsignee getPfBorderConsignee() {
         return pfBorderConsignee;
     }
 
     public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {
         this.pfBorderConsignee = pfBorderConsignee;
+    }
+
+    public PfCorderConsignee getPfCorderConsignee() {
+        return pfCorderConsignee;
+    }
+
+    public void setPfCorderConsignee(PfCorderConsignee pfCorderConsignee) {
+        this.pfCorderConsignee = pfCorderConsignee;
     }
 }

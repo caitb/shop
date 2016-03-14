@@ -121,13 +121,14 @@ public class CertificateService {
     public CertificateInfo getApproveInfoById(Integer id) throws Exception {
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
         if (certificateInfo != null) {
-            String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd", null);
+            String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd hh:mm:ss", null);
             certificateInfo.setBeginTime(beginTime);
             certificateInfo.setPfBorder(pfBorderMapper.selectByPrimaryKey(certificateInfo.getPfBorderId()));
             certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
             String idCardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
             certificateInfo.getComUser().setIdCardFrontUrl(idCardImg + certificateInfo.getComUser().getIdCardFrontUrl());
             certificateInfo.getComUser().setIdCardBackUrl(idCardImg + certificateInfo.getComUser().getIdCardBackUrl());
+
         }
         return certificateInfo;
     }
@@ -227,7 +228,7 @@ public class CertificateService {
      * 证书编号
      */
 
-    private String getCertificateCode(CertificateInfo certificateInfo) {
+    private String getCertificateCode(CertificateInfo certificateInfo) throws Exception{
         String certificateCode = null;
         int num = 10000;
         StringBuffer Code = new StringBuffer("MASIIS");

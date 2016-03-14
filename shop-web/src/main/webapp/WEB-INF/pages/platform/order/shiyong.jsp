@@ -18,16 +18,21 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a onclick="returnPage(${product.id})" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>申请试用</p>
 </header>
 <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/checkUtil.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/shiyong.js"></script>
+<script>
+    function returnPage(skuId){
+        window.location.href="/product/"+skuId;
+    }
+</script>
 <main>
     <section class="sec2">
         <p class="photo">
-            <a href="../html/xiangqing.html">
+            <a onclick="returnPage(${product.id})">
                 <img src="${skuDefaultImg}" alt="${skuImgAlt}">
             </a>
         </p>

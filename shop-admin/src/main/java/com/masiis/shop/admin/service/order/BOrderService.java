@@ -61,4 +61,15 @@ public class BOrderService {
 
         return pageMap;
     }
+
+    public Order find(Long id){
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(id);
+        PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(id);
+
+        Order order = new Order();
+        order.setPfBorder(pfBorder);
+        order.setPfBorderConsignee(pfBorderConsignee);
+
+        return order;
+    }
 }

@@ -31,4 +31,6 @@ public interface PfUserSkuMapper {
     List<PfUserSkuCertificate> getUserSkuList(@Param("searchParam") Map<String, Object> searchParam);
 
     Integer findLowerCount(Integer pid);
+
+    PfUserSkuCertificate getUserSkuById(Integer id);
 }

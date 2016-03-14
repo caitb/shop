@@ -37,6 +37,9 @@
             <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
             <result column="real_name" property="realName" jdbcType="VARCHAR"/>
             <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+            <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+            <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+            <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
         </association>
         <association column="agent_level_id" property="comAgentLevel"
                      javaType="com.masiis.shop.dao.po.ComAgentLevel">
@@ -105,7 +108,7 @@
     </select>
 
     <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap" >
-        select pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
+        select pus.id,pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
         ,pus.pid
         from pf_user_sku pus
         LEFT JOIN com_user cu on pus.user_id = cu.id
@@ -119,6 +122,20 @@
     </select>
     <select id="findLowerCount" resultType="Integer" >
         select count(*) from pf_user_sku where pid = #{pid,jdbcType=INTEGER}
+    </select>
+   <!-- 合伙信息 -->
+    <select id="getUserSkuById" parameterType="Integer" resultMap="UserSkuResultMap" >
+        select
+        pus.code,
+        cu.real_name,cu.mobile,cu.id_card,cu.id_card_front_url,cu.id_card_back_url,
+        cs.name csname,
+        cal.name calname,
+        pus.id,pus.pid,pus.is_pay,pus.is_certificate
+        from pf_user_sku pus
+        LEFT JOIN com_user cu on pus.user_id = cu.id
+        LEFT JOIN com_sku cs on pus.sku_id = cs.id
+        LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
+        where pus.id = #{id,jdbcType=INTEGER};
     </select>
 </mapper>
 

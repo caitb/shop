@@ -69,23 +69,24 @@ $(function () {
 
 
     var yanCheckFun = function (data) {
-        if ($(data).val() == "") {
-            $(data).parents("p").addClass("yno");
-            return false;
-        }
-        if (!isNumber($(data).val())) {
-            $(data).parents("p").addClass("yno");
-            return false;
-        }
-        return true;
-        //检验汉字
-        function isNumber(s) {
-            var patrn = /^\d{4}$/;
-            if (!patrn.exec(s)) {
-                return false;
+        var verificationCode = $(data).val();
+        var phone = $("#phoneId").val();
+        var bl = false;
+        $.ajax({
+            type:"POST",
+            async:false,
+            url : "/binding/verificationCode.do",
+            data:"verificationCode="+verificationCode+"&phone="+phone,
+            dataType:"Json",
+            success:function(result){
+                if(result){
+                    bl = true;
+                }else{
+                    bl = false;
+                }
             }
-            return true;
-        }
+        });
+        return bl;
     }
     $("#yanzhengma").click(function () {
         if (!telCheckFun($("#phoneId"))) {
@@ -130,10 +131,13 @@ $(function () {
     })
 
     $("#apply").click(function () {
-        alert($(".pon").length);
-        alert(yanCheckFun($("#yanzhengma")));
-        if ($(".pon").length==0&&yanCheckFun($("#yanzhengma"))){
-            alert("1111");
+        if ($(".pon").length==0&&yanCheckFun($("#codeValueId"))){
+            var spuId = $("#spuId").val();
+            var skuId = $("#skuId").val();
+            var applyReason = $("#applyReasonId").val();
+            var name = $("#nameId").val();
+            var phone = $("#phoneId").val();
+            var wechat = $("#wechatId").val();
             $.post("/corder/trialApply.do",
                 {
                     "spuId":spuId,

@@ -114,4 +114,13 @@
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
+        atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
+        province_id, province_name, city_id, city_name, region_id, region_name, address,
+        is_agent, sex
+        from com_user
+        where openid = #{openid,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

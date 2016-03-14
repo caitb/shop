@@ -6,6 +6,8 @@ import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.base.BaseService;
 import com.masiis.shop.dao.platform.order.PfCorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderConsignee;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.util.Map;
 public class COrderService extends BaseService {
 
     @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
     private PfCorderMapper pfCorderMapper;
     @Resource
     private PfCorderConsigneeMapper pfCorderConsigneeMapper;
@@ -34,9 +38,11 @@ public class COrderService extends BaseService {
 
         List<Order> orders = new ArrayList<>();
         for(PfCorder pc : pfCorders){
+            ComUser comUser = comUserMapper.selectByPrimaryKey(pc.getUserId());
             PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(pc.getId());
 
             Order order = new Order();
+            order.setComUser(comUser);
             order.setPfCorder(pc);
             order.setPfCorderConsignee(pfCorderConsignee);
 

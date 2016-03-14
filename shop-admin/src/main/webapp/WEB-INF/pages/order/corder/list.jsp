@@ -79,7 +79,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/product/list.do"
+                               data-url="/order/corder/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -128,139 +128,161 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return row.comSku.id;
+                                                return row.pfCorder.id;
                                             }
                                         }, {
                                             title: '详情',
-                                            colspan: 9,
+                                            colspan: 13,
                                             align: 'center'
                                         }
                                         ],
                                         [
                                             {
-                                                field: 'skuName',
-                                                title: '商品名称',
+                                                field: 'orderCode',
+                                                title: '订单号',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.comSku.name;
+                                                    return row.pfCorder.orderCode;
                                                 }
                                             },
                                             {
                                                 field: 'categoryName',
-                                                title: '商品分类',
+                                                title: '订单日期',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.categoryName){
-                                                        return row.comSpu.categoryName;
-                                                    }
+                                                    return new Date(row.pfCorder.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                                                 }
                                             },
                                             {
                                                 field: 'priceRetail',
-                                                title: '零售价',
-                                                footerFormatter: totalNameFormatter,
-                                                formatter: function (value, row, index) {
-                                                    return row.comSku.priceRetail;
-                                                },
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'store',
-                                                title: '库存',
-                                                sortable: true,
+                                                title: '收货人',
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.pfSkuStock){
-                                                        return row.pfSkuStock.stock;
+                                                    if(row.pfBorderConsignee && row.pfBorderConsignee.consignee){
+                                                        return row.pfCorderConsignee.consignee;
                                                     }
                                                 }
                                             },
                                             {
+                                                field: 'store',
+                                                title: '购买人',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comUser.realName;
+                                                }
+                                            },
+                                            {
                                                 field: 'pv',
-                                                title: '浏览量',
+                                                title: '订单商品',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'age',
-                                                title: '销售量',
+                                                title: '商品数量',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'upTime',
-                                                title: '上架时间',
+                                                title: '订单金额',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.upTime){
-                                                        return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
-                                                    }
+                                                    return row.pfCorder.productAmount;
                                                 }
                                             },
                                             {
                                                 field: 'status',
-                                                title: '状态',
+                                                title: '实付金额',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.status == 0){
-                                                        return '未审核';
+                                                    return row.pfCorder.payAmount;
+                                                }
+                                            },
+                                            {
+                                                field: 'orderStatus',
+                                                title: '订单状态',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 0){
+                                                        return '未处理';
                                                     }
-                                                    if(row.comSpu && row.comSpu.status == 1){
-                                                        return '已审核';
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 1){
+                                                        return '已付款';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 2){
+                                                        return '已取消';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 3){
+                                                        return '已完成';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 4){
+                                                        return '退款中';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 5){
+                                                        return '已退款';
                                                     }
                                                 }
                                             },
-//                                        {
-//                                        field: 'price',
-//                                        title: 'Item Price',
-//                                        sortable: true,
-//                                        align: 'center',
-//                                        editable: {
-//                                            type: 'text',
-//                                            title: 'Item Price',
-//                                            validate: function (value) {
-//                                                value = $.trim(value);
-//                                                if (!value) {
-//                                                    return 'This field is required';
-//                                                }
-//                                                if (!/^$/.test(value)) {
-//                                                    return 'This field needs to start width $.'
-//                                                }
-//                                                var data = $table.bootstrapTable('getData'),
-//                                                        index = $(this).parents('tr').data('index');
-//                                                console.log(data[index]);
-//                                                return '';
-//                                            }
-//                                        },
-//                                        footerFormatter: totalPriceFormatter
-//                                    },
                                             {
-                                                title: '操作项',
+                                                field: 'payType',
+                                                title: '支付方式',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center'
+                                            },
+                                            {
+                                                field: 'payStatus',
+                                                title: '支付状态',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
                                                 align: 'center',
-                                                formatter: operateFormatter,
-                                                events: {
-                                                    'click .putaway': function (e, value, row, index) {
-                                                        $.ajax({
-                                                            url: '<%=basePath%>product/putaway.do',
-                                                            data: {id: row.comSpu.id, isSale: row.comSpu.isSale==0?1:0},
-                                                            success: function (data) {
-                                                                $table.bootstrapTable('refresh');
-                                                            }
-                                                        });
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 0){
+                                                        return '待付款';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.orderStatus == 1){
+                                                        return '已付款';
                                                     }
                                                 }
+                                            },
+                                            {
+                                                field: 'shipStatus',
+                                                title: '物流状态',
+                                                sortable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfCorder.shipStatus == 0){
+                                                        return '未发货';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.shipStatus == 1){
+                                                        return '已发货';
+                                                    }
+                                                    if(row.pfBorder && row.pfCorder.shipStatus == 2){
+                                                        return '已收货';
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                title: '操作项',
+                                                align: 'center'
                                             }
                                         ]
                                     ]

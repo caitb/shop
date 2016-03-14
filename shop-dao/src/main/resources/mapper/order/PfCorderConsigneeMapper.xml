@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfCorderConsigneeMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfCorderConsignee" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+        <result column="city_id" property="cityId" jdbcType="INTEGER" />
+        <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+        <result column="region_id" property="regionId" jdbcType="INTEGER" />
+        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+               id,
+               create_time,
+               pf_corder_id,
+               user_id,
+               consignee,
+               mobile,
+               province_id,
+               province_name,
+               city_id,
+               city_name,
+               region_id,
+               region_name,
+               address,
+               remark
+        from
+               pf_corder_consignee
+        where
+               id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        id,
+        create_time,
+        pf_corder_id,
+        user_id,
+        consignee,
+        mobile,
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        region_id,
+        region_name,
+        address,
+        remark
+        from
+        pf_corder_consignee
+        where
+        pf_corder_id = #{corderId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfCorderConsignee" resultMap="BaseResultMap" >
+        select
+               id,
+               create_time,
+               pf_corder_id,
+               user_id,
+               consignee,
+               mobile,
+               province_id,
+               province_name,
+               city_id,
+               city_name,
+               region_id,
+               region_name,
+               address,
+               remark
+        from
+               pf_corder_consignee
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorderConsignee" useGeneratedKeys="true" keyProperty="id" >
+        insert into pf_corder_consignee
+                    (
+                    id,
+                    create_time,
+                    pf_corder_id,
+                    user_id,
+                    consignee,
+                    mobile,
+                    province_id,
+                    province_name,
+                    city_id,
+                    city_name,
+                    region_id,
+                    region_name,
+                    address,
+                    remark
+                    )
+        values
+                    (
+                    #{id,jdbcType=BIGINT},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{pfCorderId,jdbcType=BIGINT},
+                    #{userId,jdbcType=BIGINT},
+                    #{consignee,jdbcType=VARCHAR},
+                    #{mobile,jdbcType=VARCHAR},
+                    #{provinceId,jdbcType=INTEGER},
+                    #{provinceName,jdbcType=VARCHAR},
+                    #{cityId,jdbcType=INTEGER},
+                    #{cityName,jdbcType=VARCHAR},
+                    #{regionId,jdbcType=INTEGER},
+                    #{regionName,jdbcType=VARCHAR},
+                    #{address,jdbcType=VARCHAR},
+                    #{remark,jdbcType=VARCHAR}
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfCorderConsignee" >
+        update
+               pf_corder_consignee
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pfCorderId != null">
+                pf_corder_id = #{pfCorderId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="consignee != null">
+                consignee = #{consignee,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="provinceName != null">
+                province_name = #{provinceName,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="regionId != null">
+                region_id = #{regionId,jdbcType=INTEGER},
+            </if>
+            <if test="regionName != null">
+                region_name = #{regionName,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long" >
+        delete from pf_corder_consignee where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

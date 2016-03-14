@@ -24,14 +24,6 @@
                 $("#sec1").hide();
             }
     })
-    function toAddAddressPage(){
-
-        var selectedAddressId = $("#addressId").val();
-        var orderId = $("#orderId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId="+selectedAddressId+"&orderId="+orderId;
-
-        //window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
-    }
     function toChooseAddressPage(){
         var selectedAddressId = $("#addressId").val();
         var orderId = $("#orderId").val();
@@ -43,7 +35,7 @@
             <p>确认订单</p>            
     </header>
     <main>
-        <div id="xz" onclick="toAddAddressPage()">
+        <div id="xz" onclick="toChooseAddressPage()">
             <div class="xinz">
                 <p >选择收货地址</p>
             </div>

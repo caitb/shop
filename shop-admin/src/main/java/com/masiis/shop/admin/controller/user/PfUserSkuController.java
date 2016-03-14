@@ -10,6 +10,7 @@ import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,8 +35,13 @@ public class PfUserSkuController extends BaseController {
     private ComUserService comUserService;
 
     @RequestMapping("/list.shtml")
-    public String list(HttpServletRequest request, HttpServletResponse response) {
-        return "user/pfUserSku_list";
+    public ModelAndView list(HttpServletRequest request, HttpServletResponse response,
+                       @RequestParam(value="pid", required = false)Long pid) {
+
+        ModelAndView mav = new ModelAndView("user/pfUserSku_list");
+        mav.addObject("pid", pid);
+
+        return mav;
     }
     @RequestMapping("list.do")
     @ResponseBody
@@ -43,7 +49,7 @@ public class PfUserSkuController extends BaseController {
                        String beginTime,
                        String endTime,
                        String mobile,
-                       Long id,
+                       @RequestParam(value="pid", required = false) Long pid,
                        String sort,
                        String order,
                        Integer offset,
@@ -54,16 +60,16 @@ public class PfUserSkuController extends BaseController {
         Integer pageNo = offset/limit + 1;
         PageHelper.startPage(pageNo, limit);
         Map<String, Object> searchParam = new HashMap<>();//组合搜索
-        searchParam.put("pid",id==id?id:"");
+        searchParam.put("pid", pid);
         searchParam.put("beginTime",beginTime);
         searchParam.put("endTime",endTime);
         searchParam.put("mobile",mobile);
         List<PfUserSkuCertificate> pfUserSkuList = pfUserSkuService.getUserSkuList(searchParam);
         if (pfUserSkuList!=null&&pfUserSkuList.size()!=0){
             for (PfUserSkuCertificate pfUserSkuCertificate:pfUserSkuList) {
-                if(pfUserSkuCertificate != null && pfUserSkuCertificate.getComUser().getId() != null){
-                    Integer pid = pfUserSkuCertificate.getComUser().getId().intValue();
-                    Integer lowerCount = pfUserSkuService.findLowerCount(pid);
+                if(pfUserSkuCertificate != null && pfUserSkuCertificate.getComUser()!=null&& pfUserSkuCertificate.getComUser().getId() != null){
+                    Integer parentId = pfUserSkuCertificate.getComUser().getId().intValue();
+                    Integer lowerCount = pfUserSkuService.findLowerCount(parentId);
                     String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
 
                     pfUserSkuCertificate.setLowerCount(lowerCount);

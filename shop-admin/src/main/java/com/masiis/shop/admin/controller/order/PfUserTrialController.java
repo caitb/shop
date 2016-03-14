@@ -55,18 +55,21 @@ public class PfUserTrialController extends BaseController {
         PageInfo<PfUserTrial> pageInfo = new PageInfo<>(pfUserTrials);
 
         List<TrialInfo> trialInfos = new ArrayList<>();
+        ComUser referrer = null;
         if(pfUserTrials != null && pfUserTrials.size() > 0){
             for(PfUserTrial pfUserTrial : pfUserTrials){
                 ComUser comUser = comUserService.findById(pfUserTrial.getUserId());
                 SfUserRelation sfUserRelation = sfUserRelationService.findByUserId(comUser.getId());
-                ComUser referrer = comUserService.findById(sfUserRelation.getParentUserId());
+                if (sfUserRelation!=null){
+                    referrer = comUserService.findById(sfUserRelation.getParentUserId());
+                }
                 ComSku comSku = skuService.findById(pfUserTrial.getSkuId());
 
                 TrialInfo trialInfo = new TrialInfo();
                 trialInfo.setPfUserTrial(pfUserTrial);
                 trialInfo.setComUser(comUser);
-                trialInfo.setReferrer(referrer);
                 trialInfo.setComSku(comSku);
+                trialInfo.setReferrer(referrer);
 
                 trialInfos.add(trialInfo);
             }
@@ -95,7 +98,9 @@ public class PfUserTrialController extends BaseController {
         pfCorder.setOrderType(0);
         pfCorder.setSkuId(pfUserTrial.getSkuId());
         pfCorder.setUserId(pfUserTrial.getUserId());
-        pfCorder.setUserPid(sfUserRelation.getParentUserId());
+        if (sfUserRelation!=null){
+            pfCorder.setUserPid(sfUserRelation.getParentUserId());
+        }
         pfCorder.setUserMassage("");
         pfCorder.setSupplierId(0);
 

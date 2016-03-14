@@ -25,7 +25,7 @@
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">微信号</label></td>
-        <td colspan="2">${certificateInfo.pfUserCertificateInfo.mobile}</td>
+        <td colspan="2">${certificateInfo.pfUserCertificateInfo.wxId}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">推荐人</label></td>
@@ -38,7 +38,14 @@
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">订单状态</label></td>
-        <td colspan="2">${certificateInfo.pfBorder.orderStatus}<span> <a href="javascript:void(0)" onclick="orderList('+certificateInfo.userId+')">查看订单</a></span></td>
+        <td colspan="2"><c:choose>
+            <c:when test="${certificateInfo.pfBorder.payStatus==0}">
+                未付款
+            </c:when>
+            <c:otherwise>
+                已付款
+            </c:otherwise>
+        </c:choose></td>
 
     </tr>
     <%--<tr>--%>
@@ -90,19 +97,24 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <div class="col-sm-10">
+                    <div class="col-sm-11">
                         <label class="col-sm-3 control-label no-padding-right" id="userInfo"></label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-10">
-                        <label class="col-sm-3 control-label no-padding-right" id="upperName"></label>
+                    <div class="col-sm-11">
+                        <label class="col-sm-4 control-label no-padding-right" id="upperName"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 control-label no-padding-right" id="skuName"></label>
                     </div>
                 </div>
                 <form class="form-horizontal" id="reasonForm" >
                     <div class="form-group">
-                        <label class="col-sm-4 control-label no-padding-right">更换上级</label>
-                        <div class="col-sm-10">
+                        <label class="col-sm-2 control-label">更换上级:</label>
+                        <div class="controls col-sm-3">
                             <select class="form-control" id="userList">
                                 <option>请选择</option>
                             </select>
@@ -192,8 +204,9 @@
             data: {id: approveId},
             dataType: "json",
             success: function (data) {
-                $("#userInfo").html("用户: " +data["certificateInfo"].comUser.realName);
-                $("#upperName").html("当前上级:  "+data["certificateInfo"].upperName);
+                $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
+                $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
+                $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
                 $("#userSkuId").val(data["certificateInfo"].id);
                 var comUserList = {upperList:data["certificateInfo"].comUserList};
                 $("#userList").val(comUserList);

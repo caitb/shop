@@ -110,7 +110,7 @@
                  sr.parent_user_id,
                  sku.name,
                  ctf.id,ctf.mobile,ctf.wx_id,ctf.agent_level_id,ctf.begin_time,ctf.end_time,ctf.status,
-                 pfku.id AS pfid, pfku.user_id,pfku.pid,pfku.sku_id,pfku.agent_level_id
+                 pfku.id AS pfid, pfku.user_id,pfku.pid,pfku.sku_id,pfku.agent_level_id,pfku.pf_border_id
          FROM  pf_user_sku pfku
             LEFT JOIN pf_user_certificate ctf ON ctf.pf_user_sku_id = pfku.id
             LEFT JOIN com_sku sku ON sku.id = pfku.sku_id

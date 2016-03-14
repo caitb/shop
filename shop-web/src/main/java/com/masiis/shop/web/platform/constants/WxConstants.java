@@ -69,5 +69,5 @@ public class WxConstants {
     /**
      * 订单异步回调通知地址
      */
-    public static final String WX_PAY_URL_UNIORDER_NOTIFY = "http://http://weixin.masiis.com//wxntfy/orderNtfy";
+    public static final String WX_PAY_URL_UNIORDER_NOTIFY = "http://weixin.masiis.com/wxntfy/orderNtfy";
 }

@@ -130,10 +130,7 @@ $(function () {
     })
 
     $("#apply").click(function () {
-        alert($(".pon").length);
-        alert(yanCheckFun($("#yanzhengma")));
         if ($(".pon").length==0&&yanCheckFun($("#yanzhengma"))){
-            alert("1111");
             $.post("/corder/trialApply.do",
                 {
                     "spuId":spuId,

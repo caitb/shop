@@ -139,13 +139,13 @@ public class VerifyController extends BaseController {
                 + ("80".equals(request.getServerPort() + "") ? "" : ":"+request.getServerPort())
                 + request.getContextPath()+"/";
         HttpSession session = request.getSession();
+        RedirectParam rp = null;
         try{
             if(StringUtils.isBlank(state)) {
                 throw new BusinessException("state为空,调用异常!");
             }
 
             // 解析state,并验证有效性
-            RedirectParam rp = null;
             try{
                 rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
             } catch (Exception e) {
@@ -159,6 +159,12 @@ public class VerifyController extends BaseController {
                 throw new BusinessException("state参数不正确,调用异常!");
             }
 
+        } catch (Exception e) {
+            log.error("访问参数错误,跳转错误页面!");
+            return "redirect:/";
+        }
+
+        try{
             // 验证cookie
             Cookie cookie = CookieUtils.getCookie(request, SysConstants.COOKIE_WX_ID_NAME);
             if (cookie == null) {

@@ -146,4 +146,23 @@ public class UserService {
         comUserMapper.updateByPrimaryKey(comUser);
         pfUserCertificateMapper.insert(pfUserCertificate);
     }
+
+    /**
+     * 根据openid查询用户
+     *
+     * @param openid
+     * @return
+     */
+    public ComUser getUserByOpenid(String openid) {
+        return comUserMapper.selectByOpenid(openid);
+    }
+
+    /**
+     * 创建用户
+     *
+     * @param user
+     */
+    public void insertComUser(ComUser user){
+        comUserMapper.insert(user);
+    }
 }

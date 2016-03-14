@@ -47,4 +47,12 @@ public interface ComUserMapper {
     ComUser selectByMobile(String mobile);
 
     String findByPid(Integer pid);
+
+    /**
+     * 根据openid查询用户
+     *
+     * @param openid
+     * @return
+     */
+    ComUser selectByOpenid(String openid);
 }

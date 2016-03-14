@@ -83,6 +83,7 @@ $(function () {
                     bl = true;
                 }else{
                     bl = false;
+                    $(data).parents("p").addClass("yno");
                 }
             }
         });

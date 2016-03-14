@@ -13,6 +13,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -42,6 +43,8 @@ public class COrderController extends BaseController {
     private ProductService productService;
     @Resource
     private UserAddressService userAddressService;
+    @Resource
+    private UserService userService;
 
     /**
      *
@@ -128,7 +131,7 @@ public class COrderController extends BaseController {
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "phone", required = true) String phone,
             @RequestParam(value = "wechat", required = true) String wechat
-    ) {
+    ) throws Exception{
         if (StringUtils.isEmpty(skuId)){
             skuId = 111;
         }
@@ -149,6 +152,7 @@ public class COrderController extends BaseController {
             comUser = new ComUser();
             comUser.setId(1L);
         }
+        comUser =userService.getUserById(comUser.getId());
         comUser.setWxId(wechat);
         comUser.setRealName(name);
         comUser.setMobile(phone);

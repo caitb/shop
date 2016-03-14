@@ -168,8 +168,8 @@ public class VerifyController extends BaseController {
             String openid = null;
             String token = null;
             if (StringUtils.isBlank(val)
-                    || StringUtils.isBlank(openid = (String) SpringRedisUtil.get(val, String.class))
-                    || StringUtils.isBlank(token = (String) SpringRedisUtil.get(openid + "_token", String.class))) {
+                    || StringUtils.isBlank(openid = SpringRedisUtil.get(val, String.class))
+                    || StringUtils.isBlank(token = SpringRedisUtil.get(openid + "_token", String.class))) {
                 System.out.println("err_val:" + val);
                 System.out.println("err_openid:" + openid);
                 throw new BusinessException("cookie中openid信息为空或者token无效!");

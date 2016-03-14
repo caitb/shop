@@ -30,7 +30,7 @@
                                 address +=jsonData[i].name;
                                 address +="</h2><h3>";
                                 address +=jsonData[i].mobile;
-                                address +="</h3><p><b>【默认】</b><span>";
+                                address +="</h3><p><span>";
                                 address +=jsonData[i].provinceName +"  ";
                                 address +=jsonData[i].cityName +"  ";
                                 address +=  jsonData[i].regionName +"  ";
@@ -58,15 +58,19 @@
                     }
                 })
     })
+
+    function complete(){
+        window.location.href="/userAddress/manageAddressPageToChooseAddressPage.html";
+    }
 </script>
 <body>
    <main>
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="<%=path%>/userAddress/toChooseAddressPage.html" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=path%>/userAddress/manageAddressPageToChooseAddressPage.html" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
-                        <h2 class="gl">完成</h2>          
+                        <h2 class="gl" onclick="complete()">完成</h2>
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>
@@ -95,26 +99,28 @@
         }
         function deleteAddress(id){
             var defaultAddressId = $("#defaultAddressId").val();
-            $.post("/userAddress/deleteUserAddressById.do",{
-                "id":id,
-                "defaultAddressId":defaultAddressId
-            },function(data){
-                if(data==-1){
-                    //删除的不是默认地址
-                    $("#selection_"+id+"").remove();
-                }else  if (data!=0&&data!=-1){
-                    //删除的是默认地址，将最新的地址设置为默认地址
-                    $("#selection_"+id+"").remove();
-                    $("#p_"+data+"").addClass("pon");
-                }else{
-                    //删除地址失败
-                    alert("删除失败");
-                }
-                if ($(".sec1").length==0){
-                    //显示没有收获地址的提示信息
-                    $(".pp").css("display","-webkit-box");
-                }
-            })
+            if(confirm("确定要删除地址?")){
+                $.post("/userAddress/deleteUserAddressById.do",{
+                    "id":id,
+                    "defaultAddressId":defaultAddressId
+                },function(data){
+                    if(data==-1){
+                        //删除的不是默认地址
+                        $("#selection_"+id+"").remove();
+                    }else  if (data!=0&&data!=-1){
+                        //删除的是默认地址，将最新的地址设置为默认地址
+                        $("#selection_"+id+"").remove();
+                        $("#p_"+data+"").addClass("pon");
+                    }else{
+                        //删除地址失败
+                        alert("删除失败");
+                    }
+                    if ($(".sec1").length==0){
+                        //显示没有收获地址的提示信息
+                        $(".pp").css("display","-webkit-box");
+                    }
+                })
+            }
         }
         function editAddress(id){
             window.location.href = "<%=path%>/userAddress/toEditAddress.html?id="+id;

@@ -11,118 +11,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shiyong.css">
 </head>
 <body>
 <header class="xq_header">
-    <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a onclick="returnPage(${product.id})" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>申请试用</p>
 </header>
 <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/checkUtil.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/shiyong.js"></script>
 <script>
-    var s = 60, t;
-    function times(){
-        s--;
-        $("#codeId").val("剩余" + s + "s");
-        $("#codeId").attr({"disabled":"disabled"});
-        t = setTimeout(function (){times();}, 1000);
-        if ( s <= 0 ){
-            s = 60;
-            $("#codeId").removeAttr("disabled");
-            $("#codeId").val("获取验证码");
-            clearTimeout(t);
-        }
-    }
-    var isPhone;
-    $(function() {
-        $("#phoneId").blur(function(){
-            isPhone= checkPhone($("#phoneId").val());
-            if(!isPhone){
-                   alert("手机号格式不对");
-              //  $("#phoneTip").html("本系统暂时只接受中国大陆手机号码格式");
-                return;
-            }
-        });
-        $("#codeId").click(function () {
-            isPhone= checkPhone($("#phoneId").val());
-            if(!isPhone){
-                alert("手机号格式不对");
-                return;
-            }
-            times();
-            $.ajax({
-                type: "POST",
-                async:false,
-                url: "<%=path%>/binding/securityCode.do",
-                data: "phone=" + $("#phoneId").val(),
-                dataType: "Json",
-                success: function (result) {
-                    $("#codeValueId").val("短信发送成功,请注意查收!");
-                },
-                error:function(){
-                    alert("发送验证码失败");
-                }
-            });
-        });
-    })
-    function apply(){
-        var name  = $("#nameId")[0].value;
-        var phone = $("#phoneId")[0].value;
-        var wechat = $("#wechatId")[0].value;
-        var applyReason = $("#applyReasonId")[0].value;
-        var spuId =$("#spuId")[0].value;
-        var skuId = $("#skuId")[0].value;
-        var isPhone = checkPhone(phone);
-        if (!checkNumber(wechat)){
-            alert("微信号格式不对");
-            return;
-        }
-        if(!checkNumber(phone)||!isPhone){
-            alert("手机号格式不对");
-            return;
-        }
-
-        var $value = $("#codeValueId").val();
-        if ($value == null || $value == "") {
-            $("#codeValueId").val("验证码不能为空");
-            return;
-        }
-
-        $.ajax({
-            type:"POST",
-            url : "<%=path%>/binding/verificationCode.do",
-            data:"verificationCode="+$("#codeValueId").val(),
-            dataType:"Json",
-            success:function(result){
-                $.post("/corder/trialApply.do",
-                        {
-                            "spuId":spuId,
-                            "skuId":skuId,
-                            "applyReason":applyReason,
-                            "name" : name,
-                            "phone" : phone,
-                            "wechat" : wechat
-                        },function(data) {
-                            if(data == "success"){
-                                window.location.href = "<%=path%>/corder/continueStroll"
-                            }else{
-                                alert("逻辑出错");
-                            }
-                        });
-            },
-            error:function(result){
-                $("#codeValueId").val("验证码输入有误");
-            }
-        });
+    function returnPage(skuId){
+        window.location.href="/product/"+skuId;
     }
 </script>
 <main>
     <section class="sec2">
         <p class="photo">
-            <a href="../html/xiangqing.html">
+            <a onclick="returnPage(${product.id})">
                 <img src="${skuDefaultImg}" alt="${skuImgAlt}">
             </a>
         </p>
@@ -140,15 +50,15 @@
     <h1 class="pople">
         申请人信息
     </h1>
+    <input id="skuId" type="hidden" value="${product.id}"/>
+    <input id="spuId" type="hidden" value="${product.spuId}"/>
     <section class="sec4">
-        <input id="skuId" type="hidden" value="${product.id}"/>
-        <input id="spuId" type="hidden" value="${product.spuId}"/>
-        <p>姓名：<input id="nameId" type="text"></p>
-        <p>手机号：<input id="phoneId" type="tel"></p>
-        <p>验证码：<input id="codeValueId" type="text"><span id="codeId">获取验证码</span></p>
+        <p>姓名：<input id="nameId" class="name" type="text"></p>
+        <p>手机号：<input id="phoneId" class="tel" type="tel"></p>
+        <p>验证码：<input id="codeValueId" class="yan" type="text"><botton id="yanzhengma" class="btn">获取验证码</botton></p>
         <p>微信：<input id="wechatId" type="text"></p>
     </section>
-    <a href="javascript:apply();"  class="sq">试用申请</a>
+    <a id="apply"  class="sq">试用申请</a>
 </main>
 </body>
 </html>

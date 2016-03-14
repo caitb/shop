@@ -4,9 +4,8 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,8 @@ public class UserService {
     private ComUserAddressMapper comUserAddressMapper;
     @Resource
     private PfUserTrialMapper pfUserTrialMapper;
-
+    @Resource
+    private PfUserCertificateMapper pfUserCertificateMapper;
 
     /**
      * 根据用户id获取用户
@@ -34,7 +34,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public ComUser getUserById(Long userId) throws Exception{
+    public ComUser getUserById(Long userId) throws Exception {
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         return comUser;
     }
@@ -44,7 +44,7 @@ public class UserService {
      *
      * @param comUserAddress
      */
-    public void addComUserAddress(ComUserAddress comUserAddress) throws Exception{
+    public void addComUserAddress(ComUserAddress comUserAddress) throws Exception {
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }
@@ -57,18 +57,20 @@ public class UserService {
      *
      * @param comUserAddress
      */
-    public void updateComUserAddress(ComUserAddress comUserAddress) throws Exception{
+    public void updateComUserAddress(ComUserAddress comUserAddress) throws Exception {
         if (comUserAddress == null) {
             throw new BusinessException("comUserAddress为空");
         }
         comUserAddressMapper.updateByPrimaryKey(comUserAddress);
     }
+
     /**
      * 更新用户信息
-     * @author  hanzengzhi
-     * @date  2016/3/5 15:22
+     *
+     * @author hanzengzhi
+     * @date 2016/3/5 15:22
      */
-    public int updateComUser(ComUser comUser){
+    public int updateComUser(ComUser comUser) {
         return comUserMapper.updateByPrimaryKey(comUser);
     }
 
@@ -91,43 +93,76 @@ public class UserService {
     public List<ComUserAddress> getComUserAddress(Long userId) {
         return comUserAddressMapper.selectAllByComUserId(userId);
     }
+
     /**
-     *
      * @param pfUserTrial
      */
-    public void updateUserTrial(PfUserTrial pfUserTrial){
+    public void updateUserTrial(PfUserTrial pfUserTrial) {
         pfUserTrialMapper.updateById(pfUserTrial);
     }
 
     /**
      * 根据userId和skuId
      * 验证商品是否使用过
-     * @author  hanzengzhi
-     * @date  2016/3/9 11:16
+     *
+     * @author hanzengzhi
+     * @date 2016/3/9 11:16
      */
-    public List<PfUserTrial> isApplyTrial(PfUserTrial pfUserTrial){
-       return pfUserTrialMapper.isApplyTrial(pfUserTrial);
+    public List<PfUserTrial> isApplyTrial(PfUserTrial pfUserTrial) {
+        return pfUserTrialMapper.isApplyTrial(pfUserTrial);
     }
 
     /**
      * 试用表插入
-     * @author  hanzengzhi
-     * @date  2016/3/5 15:19
+     *
+     * @author hanzengzhi
+     * @date 2016/3/5 15:19
      */
-    public void insertUserTrial(PfUserTrial pfUserTrial){
+    public void insertUserTrial(PfUserTrial pfUserTrial) {
         try {
             pfUserTrialMapper.insert(pfUserTrial);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
     /**
      * 通过手机号获取用户
+     *
      * @param mobile
      * @return
      */
-    public ComUser getUserByMobile(String mobile){
+    public ComUser getUserByMobile(String mobile) {
         return comUserMapper.selectByMobile(mobile);
+    }
+
+    /**
+     * 添加用户
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/11 17:33
+     */
+    public void insertUserCertificate(ComUser comUser, PfUserCertificate pfUserCertificate) throws Exception {
+        comUserMapper.updateByPrimaryKey(comUser);
+        pfUserCertificateMapper.insert(pfUserCertificate);
+    }
+
+    /**
+     * 根据openid查询用户
+     *
+     * @param openid
+     * @return
+     */
+    public ComUser getUserByOpenid(String openid) {
+        return comUserMapper.selectByOpenid(openid);
+    }
+
+    /**
+     * 创建用户
+     *
+     * @param user
+     */
+    public void insertComUser(ComUser user){
+        comUserMapper.insert(user);
     }
 }

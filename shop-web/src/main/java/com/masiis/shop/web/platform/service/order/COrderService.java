@@ -60,7 +60,6 @@ public class COrderService {
     public Map<String,Object> confirmOrder(HttpServletRequest request, Long orderId, Long userId, Integer selectedAddressId){
         Map<String,Object> pfCorderMap = new HashMap<String, Object>();
         ComUserAddress comUserAddress =  userAddressService.getOrderAddress(request,selectedAddressId,userId);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE);
         Product product = getProductDetail(request,orderId);
         pfCorderMap.put("comUserAddress",comUserAddress);
         pfCorderMap.put("product",product);
@@ -81,8 +80,6 @@ public class COrderService {
         if (pfCorders!=null&&pfCorders.size()>0){
             product = productService.applyTrialToPageService(pfCorders.get(0).getSkuId());
         }
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,orderId);
         return product;
     }
 

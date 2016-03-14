@@ -11,6 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifu.css">
@@ -24,16 +25,16 @@
                 $(".sec1").hide();
             }else{
                 $(".xinz").hide();
-                $(".sec1").show();
+                $(".sec1").attr("style","display:-webkit-box;");
             }
         })
-
         var myScroll = new IScroll(".wrap", {
             preventDefault: false
         })
 
         function toChooseAddressPage(){
-            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+            var selectedAddressId = $("#addressId").val();
+            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId="+selectedAddressId+"&orderId=${bOrderId}";
         }
     </script>
 </head>
@@ -41,7 +42,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="zhuce2.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript :;"onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>支付订单</p>
         </header>
         <main>
@@ -50,39 +51,21 @@
                 <p>您已经成功注册麦链合伙人，需要您完成订单支付</p>
             </div>
             <div class="xinxi">
-                <p style="color:#999999">1.注册信息</p>
-                <p>2.支付订单</p>
-                <p>3.提交资料</p>
+                <p>注册信息</p>
+                <p>支付订单</p>
+                <p>提交资料</p>
             </div>
-
-
-            <div class="xinz">
-                <p><a href="<%=path%>/static/html/guanli.html">新增收货地址</a></p>
+            <div class="xinz" onclick="toChooseAddressPage()">
+                <p><a>选择收货地址</a></p>
             </div>
-
-            <div id="sec1">
-                <section class="sec1">
-                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-                    <div>
-                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                        <a href="#"><p>收货地址：
-                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                        </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
-                    </div>
-                </section>
-            </div>
-
-
-
-<%--            <section class="sec1">
-
+            <section class="sec1">
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                 <div>
-                    <a href="#"><h2>收货人：<b>王平</b> <span>18611536163</span></h2></a>
-                    <a href="#"><p>收货地址： <span>北京市 朝阳区 丰联广场A座809A</span><img src="../images/next.png" alt=""></p></a>
+                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.id}</span></h2></a>
+                    <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span><img   onclick="toChooseAddressPage()"   src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
-            </section>--%>
+            </section>
             ${productInfo}
             <section class="sec3">
                 <p>运费<span>到付</span></p>

@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.certificate;
 
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -88,7 +89,7 @@ public class CertificateService {
                 String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd", null);
                 String endTime  = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getEndTime(),"yyyy-MM-dd",null);
                 String value1 = "授权书编号：" + getCertificateCode(certificateInfo) + "，手机：" + certificateInfo.getPfUserCertificateInfo().getMobile() + "，微信：" + certificateInfo.getPfUserCertificateInfo().getWxId();
-                String value2 = "授权期限：" + beginTime + "至" + endTime + "，证书编号" + value1;
+                String value2 = "授权期限：" + beginTime + "至" + endTime;
                 String rootPath = request.getServletContext().getRealPath("/");
                 String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
                 String picName = uploadFile(webappPath + "/static/images/certificate/" + bgPic, new String[]{name, value1, value2});
@@ -114,8 +115,13 @@ public class CertificateService {
     public CertificateInfo getApproveInfoById(Integer id)throws Exception{
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
         if(certificateInfo!=null){
+            String beginTime  = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(),"yyyy-MM-dd",null);
+            certificateInfo.setBeginTime(beginTime);
             certificateInfo.setPfBorder(pfBorderMapper.selectByPrimaryKey(certificateInfo.getPfBorderId()));
             certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
+            String idCardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
+            certificateInfo.getComUser().setIdCardFrontUrl(idCardImg + certificateInfo.getComUser().getIdCardFrontUrl());
+            certificateInfo.getComUser().setIdCardBackUrl(idCardImg + certificateInfo.getComUser().getIdCardBackUrl());
         }
         return certificateInfo;
     }

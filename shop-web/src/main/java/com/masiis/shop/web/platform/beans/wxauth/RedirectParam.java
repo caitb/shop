@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.beans.wxauth;
 
+import com.masiis.shop.common.util.SHAUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -9,6 +10,7 @@ public class RedirectParam {
     private String code;
     private String msg;
     private String surl;
+    private String nonceStr;
     private Object data;
     private String signCk;
 
@@ -50,17 +52,26 @@ public class RedirectParam {
         this.signCk = signCk;
     }
 
+    public String getNonceStr() {
+        return nonceStr;
+    }
+
+    public void setNonceStr(String nonceStr) {
+        this.nonceStr = nonceStr;
+    }
+
     @Override
     public String toString() {
         return "RedirectParam{" +
                 "code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
                 ", surl='" + surl + '\'' +
+                ", nonceStr='" + nonceStr + '\'' +
                 ", data=" + data +
                 '}';
     }
 
-//    public void creatSign(){
-//        this.signCk = DigestUtils.sha1Hex(this.toString());
-//    }
+    public void creatSign(){
+        this.signCk = SHAUtils.encodeSHA1(this.toString().getBytes());
+    }
 }

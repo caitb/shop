@@ -30,4 +30,10 @@ public class SysConstants {
      */
     public static final String SESSION_ORDER_Id="orderId";
     public static final String SESSION_ORDER_SELECTED_ADDRESS="orderSelectedAddress";
+    /**
+     * 商品最小图片
+     */
+    public static final String INDEX_PRODUCT_IMAGE_MIN = "index_product_220_220_url";
+
+    public static final String SESSION_LOGIN_USER_NAME = "login_user";
 }

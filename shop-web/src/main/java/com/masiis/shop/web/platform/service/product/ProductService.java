@@ -10,7 +10,6 @@ import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,7 @@ import java.util.List;
 @Transactional
 public class ProductService {
 
-    @Autowired
+    @Resource
     private ProductMapper productMapper;
     @Resource
     private ComSpuMapper comSpuMapper;

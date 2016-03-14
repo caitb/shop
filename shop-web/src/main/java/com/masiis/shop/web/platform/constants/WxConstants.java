@@ -48,6 +48,8 @@ public class WxConstants {
      * 刷新token
      */
     public static final String URL_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
+
+    public static final String URL_GET_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
     /**
      * 刷新token的grant_type类型
      */
@@ -64,6 +66,8 @@ public class WxConstants {
      * 商户号
      */
     public static final String WX_PAY_MCHID = "1319531601";
-
+    /**
+     * 订单异步回调通知地址
+     */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = "http://www.rd.masiis.com/wxntfy/orderNtfy";
 }

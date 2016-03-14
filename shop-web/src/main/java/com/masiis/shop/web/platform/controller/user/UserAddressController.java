@@ -135,6 +135,20 @@ public class UserAddressController {
         return "platform/order/editAddress";
     }
     /**
+     * 管理地址界面返回到选择地址界面
+     * @author hanzengzhi
+     * @date 2016/3/14 14:25
+     */
+    @RequestMapping("/manageAddressPageToChooseAddressPage.html")
+    public String manageAddressPageToChooseAddressPage(HttpServletRequest request,
+                                                       HttpServletResponse response,
+                                                       Model model){
+
+        Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        model.addAttribute("addressId",selectedAddressId);
+        return "platform/order/xuanze";
+    }
+    /**
      * 跳转到选择地址界面
      * @author  hanzengzhi
      * @date  2016/3/9 15:14
@@ -142,14 +156,18 @@ public class UserAddressController {
     @RequestMapping("/toChooseAddressPage.html")
     public String toChooseAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
+                                      @RequestParam(value = "pageType", required = true) String pageType,
+                                      @RequestParam(value = "orderId", required = true) Long orderId,
+                                      @RequestParam(value = "selectedAddressId", required = true) Integer selectedAddressId,
                                       Model model){
-        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
-        Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,selectedAddressId);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,pageType);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,orderId);
         model.addAttribute("addressId",selectedAddressId);
         return "platform/order/xuanze";
     }
     /**
-     * 选择地址点击某个地址或者返回，跳转到某个界面
+     * 选择地址点击某个地址或者返回
      * @author hanzengzhi
      * @date 2016/3/12 11:56
      */
@@ -180,6 +198,9 @@ public class UserAddressController {
                 sb.append("userAddressId=").append(selectedAddressId);
             }
         }
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
         return  sb.toString();
     }
 

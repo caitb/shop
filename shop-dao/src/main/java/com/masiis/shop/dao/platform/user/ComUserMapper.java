@@ -46,11 +46,13 @@ public interface ComUserMapper {
      */
     ComUser selectByMobile(String mobile);
 
+    String findByPid(Integer pid);
+
     /**
-     * @param userId
+     * 根据openid查询用户
+     *
+     * @param openid
      * @return
      */
-    String findByParentId(Long userId);
-
-    String findByPid(Integer pid);
+    ComUser selectByOpenid(String openid);
 }

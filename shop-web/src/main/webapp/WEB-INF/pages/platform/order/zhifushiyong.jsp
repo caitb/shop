@@ -24,22 +24,20 @@
                 $("#sec1").hide();
             }
     })
-    function toAddAddressPage(){
-        window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
-    }
     function toChooseAddressPage(){
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+        var selectedAddressId = $("#addressId").val();
+        var orderId = $("#orderId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId="+selectedAddressId+"&orderId="+orderId;
     }
 </script>
 <body>
     <header class="xq_header">
-          <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>确认订单</p>            
     </header>
     <main>
-        <div id="xz" onclick="toAddAddressPage()">
+        <div id="xz" onclick="toChooseAddressPage()">
             <div class="xinz">
-                <p >新增收货地址</p>
+                <p >选择收货地址</p>
             </div>
         </div>
 
@@ -55,6 +53,7 @@
                 </div>
             </section>
         </div>
+        <input id="orderId" style="display: none" type="text" value="${product.id}"/>
         <section class="sec2">
             <p class="photo">
                     <img src="${skuDefaultImg}" alt="${skuImgAlt}">

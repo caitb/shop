@@ -90,11 +90,6 @@
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
-    <select id="findByParentId" resultType="String" parameterType="java.lang.Long" >
-        select cu.real_name from sf_user_relation sur
-        left join com_user cu on cu.id = sur.parent_user_id
-        and sur.user_id = #{userId,jdbcType=BIGINT}
-    </select>
 
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -117,6 +112,15 @@
         is_agent, sex
         from com_user
         where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByOpenid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
+        atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
+        province_id, province_name, city_id, city_name, region_id, region_name, address,
+        is_agent, sex
+        from com_user
+        where openid = #{openid,jdbcType=VARCHAR}
     </select>
 
 </mapper>

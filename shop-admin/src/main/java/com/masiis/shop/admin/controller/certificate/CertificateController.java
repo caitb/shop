@@ -81,10 +81,11 @@ public class CertificateController {
       }
 
     @RequestMapping("/listUpper.do")
-    public ModelAndView loadUppers(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
+    @ResponseBody
+    public Map<String, Object> loadUppers(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
+        Map<String, Object> Param = new HashMap<>();
         CertificateInfo certificateInfo = certificateService.getUpperPartner(id);
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("certificateInfo",certificateInfo);
-        return mav;
+        Param.put("certificateInfo",certificateInfo);
+        return Param;
      }
     }

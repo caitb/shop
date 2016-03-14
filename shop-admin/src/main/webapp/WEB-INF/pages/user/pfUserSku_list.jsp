@@ -81,6 +81,13 @@
                                     //height: getHeight(),
                                     locale: 'zh-CN',
                                     striped: true,
+                                    queryParams: function(params){
+                                        var pid = '${pid}';
+                                        if(pid){
+                                            params.pid = pid;
+                                        }
+                                        return params;
+                                    },
                                     rowStyle: function rowStyle(value, row, index) {
                                         return {
                                             classes: 'text-nowrap another-class',
@@ -290,11 +297,12 @@
                                 });
                                 $table.on('expand-row.bs.table', function (e, index, row, $detail) {
                                     $detail.html('数据加载中...');
-                                    $.get('/user/load.shtml', {id: row.id}, function (res) {
+                                    $.get('/userSku/person.shtml', {id: row.comUser.id}, function (res) {
                                         //$detail.html(res.replace(/\n/g, '<br>'));
                                         $detail.html(res);
                                     });
                                 });
+
                                 $table.on('all.bs.table', function (e, name, args) {
                                     console.log(name, args);
                                 });
@@ -336,36 +344,19 @@
                             }
 
                             function operateFormatter(value, row, index) {
-                                var id = window.parseInt(row.id);
                                 var sArr = [];
+                                //alert(row.id);
 
-                                sArr.push( '&nbsp;<a href="javascript:void(0)" onclick="personal('+row.comUser.id+')" title="Edit">查看个人信息</a>');
-                                sArr.push( '&nbsp;|<a class="like detail-icon" href="javascript:void(0)" onclick="partner('+id+')" title="Edit">查看合伙人信息</a>');
-                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="pass('+id+')" title="Edit">更改上级</a>');
+                                sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
+                                sArr.push( '&nbsp;|<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
+                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
 
                                 return sArr;
                             }
 
                             function lower(pid){
-                                location.href = '/userSku/list.do?id='+pid;
+                                location.href = '/userSku/list.shtml?pid='+pid;
                             }
-
-                            /*window.operateEvents = {
-                                'click .like': function (e, value, row, index) {
-                                    $('#trialId').val(row.pfUserTrial.id);
-                                    $('#myModal').modal({
-                                        show: true,
-                                        backdrop: true
-                                    });
-                                },
-                                'click .remove': function (e, value, row, index) {
-                                    console.log('删除: ' + row.id);
-                                    $table.bootstrapTable('remove', {
-                                        field: 'id',
-                                        values: [row.id]
-                                    });
-                                }
-                            };*/
 
                             function totalTextFormatter(data) {
                                 return 'Total';
@@ -428,19 +419,7 @@
 
 
 
-                            function cha(id){
-                                $.ajax({
-                                    url:'<%=basePath%>trial/cha.do',
-                                    data:{id:id},
-                                    success: function(result){
-                                        $('#liyou').html(result);
-                                        $('#myM').modal({
-                                            show: true,
-                                            backdrop: true
-                                        });
-                                    }
-                                })
-                            }
+
 
 
 
@@ -486,8 +465,7 @@
 
         </div><!-- /.col -->
     </div>
-
-    <!-- 授权模态框（Modal） -->
+<%--更改上级--%>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -498,15 +476,29 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        请填写拒绝理由:
+                        更改上级合伙人
                     </h4>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right">用户</label>
+                        <div class="col-sm-10">
+                            <%--${upperList.comUser.realName}--%>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right">当前上级</label>
+                        <div class="col-sm-10">
+                            <%--${upperList.upperName}--%>
+                        </div>
+                    </div>
                     <form class="form-horizontal" id="reasonForm" >
                         <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right">更换上级</label>
                             <div class="col-sm-10">
-                                <input type="hidden" id="trialId" name="id" />
-                                <textarea class="form-control" cols="5" rows="10" name="remark" placeholder="理由"></textarea>
+                                <select class="form-control">
+                                    <option>1</option>
+                                </select>
                             </div>
                         </div>
                     </form>
@@ -523,133 +515,13 @@
         </div><!-- /.modal -->
     </div>
 
-    <!-- 添加管理员模态框（Modal） -->
-    <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="addModalLabel">
-                        模态框标题
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" id="userForm" action="<%=basePath%>user/add.do" method="post">
-                        <div class="form-group">
-                            <label for="userName" class="col-sm-2 control-label">用户名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userName" name="userName" placeholder="用户名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="trueName" class="col-sm-2 control-label">姓名</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="trueName" name="trueName" placeholder="姓名">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">密码</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="password" name="password" placeholder="密码">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">邮箱</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="邮箱">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="sex" class="col-sm-2 control-label">性别</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="sex" name="sex" placeholder="性别">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="age" class="col-sm-2 control-label">年龄</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="age" name="age" placeholder="年龄">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone" class="col-sm-2 control-label">电话</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="电话">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="addSubmit">
-                        提交
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
 
 
-
-    <div class="modal fade" id="myM" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="title" >
-                        申请理由
-                    </h4>
-                </div>
-
-                <div class="modal-body">
-                    <span id="liyou"></span>
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
 
     <script>
-        //保存授权信息
-       /* $('#btnSubmit').on('click', function(){
-            var zTree = $.fn.zTree.getZTreeObj("treeMenu");
-            var treeNodes = zTree.getCheckedNodes(true);
-
-            var menuIds = [];
-            for(var i in treeNodes){
-                menuIds.push(treeNodes[i].id);
-            }
-
-            $.ajax({
-                url: '<%=basePath%>user/updateUserMenu.do',
-                data: {userId: userId,pbMenuIds: menuIds},
-                success: function(data){
-                    alert(data);
-                    $('#myModal').modal('hide');
-                }
-            });
-
-        });*/
-
         //保存用户信息
 
-        $('#addSubmit').on('click', function () {
+        /*$('#addSubmit').on('click', function () {
             $.ajax({
                 url: '<%=basePath%>user/add.do',
                 type: 'post',
@@ -660,6 +532,7 @@
                 }
             });
         });
+
 
 
 
@@ -675,7 +548,25 @@
                 }
             });
             location.reload();
-        })
+        })*/
+
+        //更改上级
+        function changeLeader(id){
+            $.ajax({
+                type: "GET",
+                url: '<%=basePath%>certificate/listUpper.do',
+                data: {id: id},
+                dataType: "json",
+                success: function (data) {
+                    //alert(data["certificateInfo"]);
+                    $('#myModal').modal({
+                        show: true,
+                        backdrop: true
+                    });
+                }
+            });
+
+        }
     </script>
 
 </div>

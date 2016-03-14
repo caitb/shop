@@ -11,13 +11,16 @@ import com.masiis.shop.dao.po.PfBorderConsignee;
 import java.util.List;
 
 public interface PfBorderConsigneeMapper {
-    int deleteByPrimaryKey(Long id);
 
-    int insert(PfBorderConsignee record);
+    PfBorderConsignee selectById(Long id);
 
-    PfBorderConsignee selectByPrimaryKey(Long id);
+    List<PfBorderConsignee> selectByCondition(PfBorderConsignee pfBorderConsignee);
 
-    List<PfBorderConsignee> selectAll();
+    int insert(PfBorderConsignee pfBorderConsignee);
 
-    int updateByPrimaryKey(PfBorderConsignee record);
+    void updateById(PfBorderConsignee pfBorderConsignee);
+
+    void deleteById(Long id);
+
+    PfBorderConsignee selectByBorderId(Long borderId);
 }

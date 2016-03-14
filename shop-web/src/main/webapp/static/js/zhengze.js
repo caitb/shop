@@ -1,13 +1,15 @@
 $(".name").on("blur",function(){
                     if ($(this).val()=="")
                     {                        
-                        $(this).parents("p").addClass("pon");
+                        $(this).next().show();
                         $(this).css({"color":"#F74A11"})
                         return false;
+                    }else{
+                        $(this).next().hide();
                     }
                     if (!isCardName($(this).val()))
                     {                        
-                        $(this).parents("p").addClass("pon");
+                        $(this).next().show();
                         $(this).css({"color":"#F74A11"})
                         return false;
                     }
@@ -87,16 +89,18 @@ $(".yan").on("blur",function(){
 //手机验证
 $(".tel").on("blur",function(){
 
-    if ($(this).val()=="")
-                    {
-                        $(this).parents("p").addClass("pon");
-                        $(this).css({"color":"#F74A11"})
+    if ($(this).val()==""){
+                        $(this).next().show();
+                        $(".no").show();
+                        $(this).css({"color":"#F74A11"});
                         return false;
+                    }else{
+                        $(this).next().hide();
                     }
 
                     if (!isMobile($(this).val()))
                     {
-                        $(this).parents("p").addClass("pon");
+                        $(this).next().show();
                         $(this).css({"color":"#F74A11"})
                         return false;
                     }
@@ -111,6 +115,7 @@ $(".tel").on("blur",function(){
 
 })
 $("input").on("focus",function(){
-     $(this).parents("p").removeClass();
+     $(this).parents("p").removeClass("pon");
     $(this).val("").css("color","#333")
+    $(".no").hide();
 })

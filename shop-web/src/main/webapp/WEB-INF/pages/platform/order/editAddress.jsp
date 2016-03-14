@@ -64,6 +64,7 @@
             </div>
 
         </div>
+        <input type="text" id="operateTypeId" style="display: none" value="update" />
         <a onclick="updateAddress()" class="baocun">
             保存
         </a>

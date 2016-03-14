@@ -39,29 +39,35 @@
                       <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>新建收货地址</p>            
                    </header>
-                    <div class="sf">
+               <div id="d_box">
+                   <p class="sf">
                         收货人姓名
-                        <input type="text" id="name">
-                    </div>
-                    <div class="sf">
+                        <input type="text"  class="name" id="name">
+                        <span class="onc"></span>
+                        <b class="gao">姓名输入有误</b>
+                   </p>
+                   <p class="sf">
                         手机号码
-                        <input type="tel" id="phone">
-                    </div>
-                    <div class="sf">
+                        <input type="tel" class="tel" id="phone">
+                        <span class="onc"></span>
+                   </p>
+                   <p class="sf">
                         邮政编码
                         <input type="tel" id="postcode">
-                    </div>
+                   </p>
                     <div class="address">
                         联系地址
                             <select id="s_province" name="s_province"></select>
                             <select id="s_city" name="s_city" ></select>
                             <select id="s_county" name="s_county"></select>
                     </div>
-                    <div class="sf">
+                   <p class="sf">
                         详细地址
-                        <input type="text" id="detailAddress">
-                    </div>
+                        <input type="text" class="dizhi" id="detailAddress">
+                   </p>
+               </div>
            </div>
+           <input type="text" id="operateTypeId" style="display: none" value="save" />
            <a onclick="saveAddress()" class="baocun">
                 保存
             </a>
@@ -114,5 +120,21 @@
            }
        });
    </script>
+   <script>
+       $("body").on("click",function(){
+           $(".gao").hide();
+       })
+       $(".onc").eq(0).on("click",function(event){
+           var event=event||event.window;
+           event.stopPropagation();
+           $(".onc").next().show().html("姓名格式不正确");
+       })
+       $(".onc").eq(1).on("click",function(event){
+           var event=event||event.window;
+           event.stopPropagation();
+           $(".onc").next().show().html("手机号输入错误");
+       })
+   </script>
+   <script src="<%=path%>/static/js/zhengze.js"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
    </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请证书级别</label></td>
-        <td colspan="2">${certificateInfo.pfUserCertificateInfo.agentLevelId}</td>
+        <td colspan="2">${certificateInfo.agentLevelId}</td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请人</label></td>
@@ -90,35 +90,34 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right">用户</label>
                     <div class="col-sm-10">
-                        <%--${upperList.comUser.realName}--%>
+                        <label class="col-sm-3 control-label no-padding-right" id="userInfo"></label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right">当前上级</label>
                     <div class="col-sm-10">
-                        <%--${upperList.upperName}--%>
+                        <label class="col-sm-3 control-label no-padding-right" id="upperName"></label>
                     </div>
                 </div>
                 <form class="form-horizontal" id="reasonForm" >
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right">更换上级</label>
+                        <label class="col-sm-4 control-label no-padding-right">更换上级</label>
                         <div class="col-sm-10">
-                            <select class="form-control">
-                                <option>1</option>
+                            <select class="form-control" id="userList">
+                                <option>请选择</option>
                             </select>
                         </div>
                     </div>
+                    <input name="id" type="hidden" id="userSkuId"/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="userSubmit">
+                            提交
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary" id="btnSubmit">
-                    提交
-                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -193,35 +192,57 @@
             data: {id: approveId},
             dataType: "json",
             success: function (data) {
-                alert(data["certificateInfo"]);
+                $("#userInfo").html("用户: " +data["certificateInfo"].comUser.realName);
+                $("#upperName").html("当前上级:  "+data["certificateInfo"].upperName);
+                $("#userSkuId").val(data["certificateInfo"].id);
+                var comUserList = {upperList:data["certificateInfo"].comUserList};
+                $("#userList").val(comUserList);
+                //option属性
+                $.each(data["certificateInfo"].comUserList,function(index,value){
+                    $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                });
                 $('#myModal').modal({
                     show: true,
                     backdrop: true
                 });
             }
         });
-
     }
     //订单列表
-    function orderList(id){
-        $('#trialId').val(id);
-        $('#orderModal').modal({
-            show: true,
-            backdrop: true
-        });
-    }
+//    function orderList(id){
+//        $('#trialId').val(id);
+//        $('#orderModal').modal({
+//            show: true,
+//            backdrop: true
+//        });
+//    }
 
-    <%--$('#btnSubmit').on('click', function () {--%>
-        <%--var data = $('#reasonForm').serialize();--%>
-        <%--$.ajax({--%>
-            <%--url: '<%=basePath%>trial/reason.do',--%>
-            <%--type: 'post',--%>
-            <%--data: data,--%>
-            <%--success: function (data) {--%>
-                <%--//alert(data);--%>
-                <%--$('#myModal').modal('hide');--%>
-            <%--}--%>
-        <%--});--%>
-        <%--location.reload();--%>
-    <%--})--%>
+        <%--$('#btnSubmit').on('click', function () {--%>
+            <%--var id = $("#userSkuId").val;--%>
+    <%--//        var pid = $("#userList option:selected").attr("id");--%>
+            <%--alert(id);--%>
+            <%--$.ajax({--%>
+                <%--url: '<%=basePath%>certificate/updateUpper.do',--%>
+                <%--data: {id:id,pid:2},--%>
+                <%--success: function (data) {--%>
+                    <%--alert(data);--%>
+                    <%--$('#myModal').modal('hide');--%>
+                <%--}--%>
+            <%--});--%>
+            <%--location.reload();--%>
+        <%--})--%>
+
+    $('#userSubmit').on('click', function () {
+        var id = $('#userSkuId').val();
+        var pid = $("#userList").val();
+        $.ajax({
+            url: '<%=basePath%>certificate/updateUpper.do',
+            type: 'post',
+            data: {id:id,pid:pid},
+            success: function (data) {
+                $('#myModal').modal('hide');
+                alert(data);
+            }
+        });
+    });
 </script>

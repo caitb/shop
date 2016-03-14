@@ -81,6 +81,13 @@
                                     //height: getHeight(),
                                     locale: 'zh-CN',
                                     striped: true,
+                                    queryParams: function(params){
+                                        var pid = '${pid}';
+                                        if(pid){
+                                            params.pid = pid;
+                                        }
+                                        return params;
+                                    },
                                     rowStyle: function rowStyle(value, row, index) {
                                         return {
                                             classes: 'text-nowrap another-class',
@@ -348,7 +355,7 @@
                             }
 
                             function lower(pid){
-                                location.href = '/userSku/list.do?id='+pid;
+                                location.href = '/userSku/list.shtml?pid='+pid;
                             }
 
                             function totalTextFormatter(data) {

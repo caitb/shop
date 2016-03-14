@@ -6,14 +6,11 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfUserTrial;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +57,6 @@ public class COrderService {
     public Map<String,Object> confirmOrder(HttpServletRequest request, Long orderId, Long userId, Integer selectedAddressId){
         Map<String,Object> pfCorderMap = new HashMap<String, Object>();
         ComUserAddress comUserAddress =  userAddressService.getOrderAddress(request,selectedAddressId,userId);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE);
         Product product = getProductDetail(request,orderId);
         pfCorderMap.put("comUserAddress",comUserAddress);
         pfCorderMap.put("product",product);
@@ -81,8 +77,6 @@ public class COrderService {
         if (pfCorders!=null&&pfCorders.size()>0){
             product = productService.applyTrialToPageService(pfCorders.get(0).getSkuId());
         }
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
-        request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,orderId);
         return product;
     }
 
@@ -94,7 +88,7 @@ public class COrderService {
     public List<PfCorder> queryPfCorderById(Long id){
         PfCorder pfCorder = new PfCorder();
         pfCorder.setId(id);
-        return  pfCorderMapper.queryPfCorderByParam(pfCorder);
+        return  pfCorderMapper.selectByCondition(pfCorder);
     }
 
     /**

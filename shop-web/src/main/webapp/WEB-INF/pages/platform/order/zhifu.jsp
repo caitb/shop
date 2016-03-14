@@ -28,15 +28,13 @@
                 $(".sec1").attr("style","display:-webkit-box;");
             }
         })
-        function toAddAddressPage(){
-            window.location.href = "<%=path%>/userAddress/toAddAddressPage.html";
-        }
         var myScroll = new IScroll(".wrap", {
             preventDefault: false
         })
 
         function toChooseAddressPage(){
-            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html";
+            var selectedAddressId = $("#addressId").val();
+            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId="+selectedAddressId+"&orderId=${bOrderId}";
         }
     </script>
 </head>
@@ -57,8 +55,8 @@
                 <p>支付订单</p>
                 <p>提交资料</p>
             </div>
-            <div class="xinz" onclick="toAddAddressPage()">
-                <p><a>新增收货地址</a></p>
+            <div class="xinz" onclick="toChooseAddressPage()">
+                <p><a>选择收货地址</a></p>
             </div>
             <section class="sec1">
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">

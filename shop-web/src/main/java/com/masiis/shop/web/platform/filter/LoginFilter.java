@@ -35,6 +35,8 @@ public class LoginFilter implements Filter{
 
         String uri = request.getRequestURI();
 
+        System.out.println("uri:" + uri);
+
         // 开发阶段可以先跳过
         chain.doFilter(request, response);
         return;
@@ -48,7 +50,6 @@ public class LoginFilter implements Filter{
             return;
         }
         ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
-        System.out.println("code:" + request.getParameter("code"));
         if(login != null
                 && StringUtils.isNotBlank(login.getId() + "")
                 && StringUtils.isNotBlank(login.getOpenid())){

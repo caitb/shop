@@ -46,7 +46,8 @@ public class SpringRedisUtil {
                 byte[] keybytes = redisTemplate.getStringSerializer().serialize(key);
                 if (connection.exists(keybytes)) {
                     byte[] valuebytes = connection.get(keybytes);
-                    T value = (T) SerializeUtil.unserialize(valuebytes);
+                    Object res = SerializeUtil.unserialize(valuebytes);
+                    T value = (T) res;
                     return value;
                 }
                 return null;

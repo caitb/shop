@@ -42,9 +42,6 @@ public class UserAddressService {
      * @return
      */
     public ComUserAddress getOrderAddress(HttpServletRequest request,Integer selectedAddressId,Long userId){
-        if (StringUtils.isEmpty(selectedAddressId)){
-            selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
-        }
         //获得用户的默认地址
         ComUserAddress comUserAddress = new ComUserAddress();
         comUserAddress.setUserId(userId);
@@ -58,10 +55,6 @@ public class UserAddressService {
         List<ComUserAddress> comuserAddressList = queryComUserAddressesByParam(comUserAddress);
         //地址
         if (comuserAddressList!=null&&comuserAddressList.size()>0){
-            //将订单的id和当前选择的地址id放session中
-            selectedAddressId = comuserAddressList.get(0).getId();
-            request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
-            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,selectedAddressId);
             return comuserAddressList.get(0);
         }else{
             return null;

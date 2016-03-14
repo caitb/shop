@@ -62,6 +62,7 @@
                         <input type="text" id="detailAddress">
                     </div>
            </div>
+           <input type="text" id="operateTypeId" style="display: none" value="save" />
            <a onclick="saveAddress()" class="baocun">
                 保存
             </a>

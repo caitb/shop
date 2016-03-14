@@ -131,60 +131,64 @@ public class COrderController extends BaseController {
             @RequestParam(value = "name", required = true) String name,
             @RequestParam(value = "phone", required = true) String phone,
             @RequestParam(value = "wechat", required = true) String wechat
-    ) throws Exception{
-        if (StringUtils.isEmpty(skuId)){
-            skuId = 111;
-        }
-        if (StringUtils.isEmpty(spuId)){
-            spuId = 222;
-        }
-        if (StringUtils.isEmpty(name)){
+    ) {
+        try{
+            if (StringUtils.isEmpty(skuId)){
+                skuId = 111;
+            }
+            if (StringUtils.isEmpty(spuId)){
+                spuId = 222;
+            }
+            if (StringUtils.isEmpty(name)){
 
-        }
-        if (StringUtils.isEmpty(phone)){
+            }
+            if (StringUtils.isEmpty(phone)){
 
-        }
-        if (StringUtils.isEmpty(wechat)){
+            }
+            if (StringUtils.isEmpty(wechat)){
 
+            }
+            ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+            if (comUser==null){
+                comUser = new ComUser();
+                comUser.setId(1L);
+            }
+            comUser =userService.getUserById(comUser.getId());
+            comUser.setWxId(wechat);
+            comUser.setRealName(name);
+            comUser.setMobile(phone);
+            if (comUser.getCreateTime()==null){
+                comUser.setCreateTime(new Date());
+            }
+            if (StringUtils.isEmpty(comUser.getOpenid())){
+                comUser.setOpenid("openid");
+            }
+            if (StringUtils.isEmpty(comUser.getAccessToken())){
+                comUser.setAccessToken("accessToken");
+            }
+            if (StringUtils.isEmpty(comUser.getRefreshToken())){
+                comUser.setRefreshToken("refreshToken");
+            }
+            if (StringUtils.isEmpty(comUser.getAtokenExpire())){
+                comUser.setAtokenExpire(new Date());
+            }
+            if (StringUtils.isEmpty(comUser.getRtokenExpire())){
+                comUser.setRtokenExpire(new Date());
+            }
+            PfUserTrial pfUserTrial = new PfUserTrial();
+            pfUserTrial.setUserId(comUser.getId());
+            pfUserTrial.setSkuId(skuId);
+            pfUserTrial.setSpuId(spuId);
+            pfUserTrial.setStatus(0);
+            pfUserTrial.setReason(applyReason);
+            pfUserTrial.setName(name);
+            pfUserTrial.setMobile(phone);
+            pfUserTrial.setWeixinId(wechat);
+            pfUserTrial.setCreateTime(new Date());
+            cOrderService.trialApplyService(comUser,pfUserTrial);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
-        if (comUser==null){
-            comUser = new ComUser();
-            comUser.setId(1L);
-        }
-        comUser =userService.getUserById(comUser.getId());
-        comUser.setWxId(wechat);
-        comUser.setRealName(name);
-        comUser.setMobile(phone);
-        if (comUser.getCreateTime()==null){
-            comUser.setCreateTime(new Date());
-        }
-        if (StringUtils.isEmpty(comUser.getOpenid())){
-            comUser.setOpenid("openid");
-        }
-        if (StringUtils.isEmpty(comUser.getAccessToken())){
-            comUser.setAccessToken("accessToken");
-        }
-        if (StringUtils.isEmpty(comUser.getRefreshToken())){
-            comUser.setRefreshToken("refreshToken");
-        }
-        if (StringUtils.isEmpty(comUser.getAtokenExpire())){
-            comUser.setAtokenExpire(new Date());
-        }
-        if (StringUtils.isEmpty(comUser.getRtokenExpire())){
-            comUser.setRtokenExpire(new Date());
-        }
-        PfUserTrial pfUserTrial = new PfUserTrial();
-        pfUserTrial.setUserId(comUser.getId());
-        pfUserTrial.setSkuId(skuId);
-        pfUserTrial.setSpuId(spuId);
-        pfUserTrial.setStatus(0);
-        pfUserTrial.setReason(applyReason);
-        pfUserTrial.setName(name);
-        pfUserTrial.setMobile(phone);
-        pfUserTrial.setWeixinId(wechat);
-        pfUserTrial.setCreateTime(new Date());
-        cOrderService.trialApplyService(comUser,pfUserTrial);
         return "success";
     }
 

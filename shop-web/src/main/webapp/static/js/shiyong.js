@@ -1,5 +1,4 @@
 $(function () {
-
     var nameCheckFun = function (data) {
         if ($(data).val() == "") {
             $(data).parents("p").addClass("pon");
@@ -21,7 +20,6 @@ $(function () {
             return true;
         }
     }
-
     var telCheckFun = function (data) {
         if ($(data).val() == "") {
             $(data).parents("p").addClass("pon");
@@ -50,10 +48,6 @@ $(function () {
         }
         return true;
     }
-
-
-
-
     $("#nameId").on("blur", function () {
         if (nameCheckFun(this)) {
             $(this).parents("p").removeClass("pon");

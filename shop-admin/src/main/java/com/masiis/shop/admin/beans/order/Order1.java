@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.PfBorderConsignee;
 /**
  * Created by cai_tb on 16/3/12.
  */
-public class Order1 {
+public class Order {
 
     private PfBorder pfBorder;
     private ComUser comUser;

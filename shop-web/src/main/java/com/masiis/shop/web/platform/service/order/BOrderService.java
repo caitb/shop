@@ -145,8 +145,24 @@ public class BOrderService {
     public  ComAgentLevel findComAgentLevel(Integer id){
         return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
+    /**
+     * 根据订单号获取订单
+     * @author muchaofeng
+     * @date 2016/3/14 13:23
+     */
 
     public PfBorder findByOrderCode(String orderId) {
         return pfBorderMapper.selectByOrderCode(orderId);
     }
+
+    /**
+     * 根据用户id获取订单
+     * @author muchaofeng
+     * @date 2016/3/14 13:22
+     */
+
+    public List<PfBorder> findByUserId(Long UserId) {
+        return pfBorderMapper.selectByUserId(UserId);
+    }
+
 }

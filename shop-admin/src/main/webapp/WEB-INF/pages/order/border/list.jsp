@@ -164,7 +164,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.pfBorderConsignee.consignee;
+                                                    if(row.pfBorderConsignee && row.pfBorderConsignee.consignee){
+                                                        return row.pfBorderConsignee.consignee;
+                                                    }
                                                 }
                                             },
                                             {
@@ -212,32 +214,71 @@
                                                 }
                                             },
                                             {
-                                                field: 'status',
+                                                field: 'orderStatus',
                                                 title: '订单状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 0){
+                                                        return '未处理';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 1){
+                                                        return '已付款';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 2){
+                                                        return '已取消';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 3){
+                                                        return '已完成';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 4){
+                                                        return '退款中';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 5){
+                                                        return '已退款';
+                                                    }
+                                                }
                                             },
                                             {
-                                                field: 'status',
+                                                field: 'payType',
                                                 title: '支付方式',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'status',
+                                                field: 'payStatus',
                                                 title: '支付状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 0){
+                                                        return '待付款';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.orderStatus == 1){
+                                                        return '已付款';
+                                                    }
+                                                }
                                             },
                                             {
-                                                field: 'status',
+                                                field: 'shipStatus',
                                                 title: '物流状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfBorder && row.pfBorder.shipStatus == 0){
+                                                        return '未发货';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.shipStatus == 1){
+                                                        return '已发货';
+                                                    }
+                                                    if(row.pfBorder && row.pfBorder.shipStatus == 2){
+                                                        return '已收货';
+                                                    }
+                                                }
                                             },
                                             {
                                                 title: '操作项',

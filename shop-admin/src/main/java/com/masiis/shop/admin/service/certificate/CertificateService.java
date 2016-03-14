@@ -9,6 +9,7 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComAgentLevel;
+import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,15 +49,19 @@ public class CertificateService {
     private ComUserMapper comUserMapper;
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/7  下午 5:51
-      * 授权书列表
-      */
-    public List<CertificateInfo> getCertificates(Map<String, Object> params) throws Exception{
+     * @Author 贾晶豪
+     * @Date 2016/3/7  下午 5:51
+     * 授权书列表
+     */
+    public List<CertificateInfo> getCertificates(Map<String, Object> params) throws Exception {
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificateInfo(params);
         if (certificateInfoList != null && certificateInfoList.size() > 0) {
             for (CertificateInfo certificateInfo : certificateInfoList) {
-                if (certificateInfo != null && certificateInfo.getPid()!=0) {
+                if (certificateInfo != null && certificateInfo.getPfUserCertificateInfo() != null) {
+                    String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd", null);
+                    certificateInfo.setBeginTime(beginTime);
+                }
+                if (certificateInfo != null && certificateInfo.getPid() != 0) {
                     certificateInfo.setApproveType("合伙人审核");
                     certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
                 } else {
@@ -66,56 +71,57 @@ public class CertificateService {
         }
         return certificateInfoList;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/9  上午 10:22
-      * 审核授权书
-      */
-    public void approveCertificate(HttpServletRequest request,Integer status,Integer id) throws Exception{
+     * @Author 贾晶豪
+     * @Date 2016/3/9  上午 10:22
+     * 审核授权书
+     */
+    public void approveCertificate(HttpServletRequest request, Integer status, Integer id) throws Exception {
         String bgPic = null;
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
-        if(certificateInfo!=null){
+        if (certificateInfo != null) {
             Map<String, Object> param = new HashMap<>();
-            param.put("status",status);
-            param.put("id",certificateInfo.getPfUserCertificateInfo().getId());
+            param.put("status", status);
+            param.put("id", certificateInfo.getPfUserCertificateInfo().getId());
             certificateMapper.updateCertificateStatus(param);//审核
-            if(status==1){ //审核成功
+            if (status == 1) { //审核成功
                 //生成授权书,并上传至OSS服务器
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(certificateInfo.getAgentLevelId());
-                if(comAgentLevel!=null){
+                if (comAgentLevel != null) {
                     bgPic = comAgentLevel.getImgUrl();//代理商等级的模板
                 }
                 String name = certificateInfo.getComUser().getRealName();//申请人
                 String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd", null);
-                String endTime  = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getEndTime(),"yyyy-MM-dd",null);
+                String endTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getEndTime(), "yyyy-MM-dd", null);
                 String value1 = "授权书编号：" + getCertificateCode(certificateInfo) + "，手机：" + certificateInfo.getPfUserCertificateInfo().getMobile() + "，微信：" + certificateInfo.getPfUserCertificateInfo().getWxId();
                 String value2 = "授权期限：" + beginTime + "至" + endTime;
                 String rootPath = request.getServletContext().getRealPath("/");
                 String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
                 String picName = uploadFile(webappPath + "/static/images/certificate/" + bgPic, new String[]{name, value1, value2});
                 Map<String, Object> UrlParam = new HashMap<>();
-                UrlParam.put("imgUrl",picName + ".jpg");
-                UrlParam.put("id",certificateInfo.getPfUserCertificateInfo().getId());
-                UrlParam.put("code",getCertificateCode(certificateInfo));
+                UrlParam.put("imgUrl", picName + ".jpg");
+                UrlParam.put("id", certificateInfo.getPfUserCertificateInfo().getId());
+                UrlParam.put("code", getCertificateCode(certificateInfo));
                 certificateMapper.updateCertificateImgUrl(UrlParam);//更新证书的URL
                 Map<String, Object> Param = new HashMap<>();
-                Param.put("id",id);
-                Param.put("code",getCertificateCode(certificateInfo));
+                Param.put("id", id);
+                Param.put("code", getCertificateCode(certificateInfo));
                 certificateMapper.updateCertificateFlag(Param);//授权书生成的flag
             }
         }
     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/9  上午 11:11
-      * 申请详情信息
-      * Param Id
-      */
-    public CertificateInfo getApproveInfoById(Integer id)throws Exception{
+     * @Author 贾晶豪
+     * @Date 2016/3/9  上午 11:11
+     * 申请详情信息
+     * Param Id
+     */
+    public CertificateInfo getApproveInfoById(Integer id) throws Exception {
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
-        if(certificateInfo!=null){
-            String beginTime  = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(),"yyyy-MM-dd",null);
+        if (certificateInfo != null) {
+            String beginTime = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy-MM-dd", null);
             certificateInfo.setBeginTime(beginTime);
             certificateInfo.setPfBorder(pfBorderMapper.selectByPrimaryKey(certificateInfo.getPfBorderId()));
             certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
@@ -127,28 +133,32 @@ public class CertificateService {
     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/10  下午 12:01
-      * 上级合伙人列表
-      */
-    public CertificateInfo getUpperPartner(Integer id){
+     * @Author 贾晶豪
+     * @Date 2016/3/10  下午 12:01
+     * 上级合伙人列表
+     */
+    public CertificateInfo getUpperPartner(Integer id) {
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
-        if(certificateInfo != null){
-            certificateInfo.setComUserList(certificateMapper.getUpperPartnerByUserId(certificateInfo.getUserId()));
+        //上级合伙人列表
+        if (certificateInfo != null) {
             certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
+            if (certificateInfo.getPid() != 0) {
+                List<ComUser> comUsers = certificateMapper.getUpperPartnerByUserId(certificateInfo.getPid());
+                certificateInfo.setComUserList(comUsers);
+            }
         }
         return certificateInfo;
     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/10  下午 12:04
-      * 更改上级
-      */
-    public void updateUpperPartner(Integer id,Integer pId) throws Exception{
+     * @Author 贾晶豪
+     * @Date 2016/3/10  下午 12:04
+     * 更改上级
+     */
+    public void updateUpperPartner(String id, String pId) throws Exception {
         Map<String, Object> param = new HashMap<>();
-        param.put("id",id);
-        param.put("pId",pId);
+        param.put("id", id);
+        param.put("pId", pId);
         certificateMapper.updateUpperPartnerById(param);
     }
 
@@ -212,21 +222,20 @@ public class CertificateService {
     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/12 0012 上午 11:34
-      *  证书编号
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/12 0012 上午 11:34
+     * 证书编号
+     */
 
-     private String getCertificateCode(CertificateInfo certificateInfo){
-         String certificateCode = null;
-         int num = 10000;
-         StringBuffer Code = new StringBuffer("MASIIS");
-         String value =  DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy", null).substring(2);//时间
-         String value1 = certificateInfo.getAgentLevelId().toString();
-         String value2 = String.format("%04d", certificateInfo.getSkuId());
-         int value3 = num + certificateInfo.getId();
-         certificateCode = Code.append(value1).append(value2).append(value).append(String.valueOf(value3)).toString();
-         return certificateCode;
-     }
-
+    private String getCertificateCode(CertificateInfo certificateInfo) {
+        String certificateCode = null;
+        int num = 10000;
+        StringBuffer Code = new StringBuffer("MASIIS");
+        String value = DateUtil.Date2String(certificateInfo.getPfUserCertificateInfo().getBeginTime(), "yyyy", null).substring(2);//时间
+        String value1 = certificateInfo.getAgentLevelId().toString();
+        String value2 = String.format("%04d", certificateInfo.getSkuId());
+        int value3 = num + certificateInfo.getId();
+        certificateCode = Code.append(value1).append(value2).append(value).append(String.valueOf(value3)).toString();
+        return certificateCode;
+    }
 }

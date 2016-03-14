@@ -88,4 +88,16 @@ public class CertificateController {
         Param.put("certificateInfo",certificateInfo);
         return Param;
      }
+
+    @RequestMapping("/updateUpper.do")
+    @ResponseBody
+    public String updateUpperById(HttpServletRequest request, HttpServletResponse response, String id, String pid){
+        try {
+            certificateService.updateUpperPartner(id, pid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "更改失败";
+        }
+        return "更改成功";
+    }
     }

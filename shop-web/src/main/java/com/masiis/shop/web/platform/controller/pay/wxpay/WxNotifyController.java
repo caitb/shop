@@ -28,8 +28,7 @@ public class WxNotifyController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
 
     @RequestMapping("/orderNtfy")
-    @ResponseBody
-    public String uniOrderNotify(HttpServletRequest request, HttpServletResponse response){
+    public void uniOrderNotify(HttpServletRequest request, HttpServletResponse response){
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         CallBackNotifyRes resObj = new CallBackNotifyRes();
         try {
@@ -74,7 +73,7 @@ public class WxNotifyController extends BaseController {
             }
 
             resObj.setReturn_code("SUCCESS");
-            resObj.setReturn_code("OK");
+            resObj.setReturn_msg("OK");
         } catch (Exception e) {
             String err = "公众号支付订单异步回调通知错误:" + e.getMessage();
             log.error(err);
@@ -89,6 +88,8 @@ public class WxNotifyController extends BaseController {
             resObj.setReturn_msg(resObj.getReturn_msg().substring(0, 128));
         }
         String res = xStream.toXML(resObj);
-        return res;
+        System.out.println("response:" + res);
+        sendResponseBody(response, res);
     }
+
 }

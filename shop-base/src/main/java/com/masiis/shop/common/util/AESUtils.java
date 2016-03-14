@@ -18,8 +18,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AESUtils {
     public static void main(String[] args) {
-        String content = "test";
-        String password = "masiis";
+        String content = "http://weixin.masiis.com/sssssssss";
+        String password = "p^5iMmJz!5q=awMT";
         //加密
         System.out.println("加密前：" + content);
         String encryptResult = encrypt(content, password);

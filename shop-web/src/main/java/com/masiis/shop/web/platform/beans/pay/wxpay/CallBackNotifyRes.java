@@ -1,10 +1,13 @@
 package com.masiis.shop.web.platform.beans.pay.wxpay;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
 /**
  * 统一下单异步回调通知返回参数对象
  *
  * Created by lzh on 2016/3/10.
  */
+@XStreamAlias("xml")
 public class CallBackNotifyRes {
     private String return_code;
     private String return_msg;

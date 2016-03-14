@@ -12,7 +12,7 @@
     <title>微信支付</title>
     <script type="application/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" />
     <script type="application/javascript">
-        wx.config({
+        /*wx.config({
             debug:true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId:'wxd5afa1deb29c6197', // 必填，公众号的唯一标识
             timestamp: '1457513229909', // 必填，生成签名的时间戳
@@ -21,7 +21,7 @@
             jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
         wx.ready(function () {
-            /*wx.chooseWXPay({
+            /!*wx.chooseWXPay({
                 //"appId":"wxd5afa1deb29c6197",     //公众号名称，由商户传入
                 "timeStamp":"1457513229909",         //时间戳，自1970年以来的秒数
                 "nonceStr":"sddfs22dsdf5ssdfa53wq3", //随机串
@@ -38,9 +38,9 @@
                     alert("error:" + res.errCode + res.errDesc + res.errMsg);
                     console.log(res);
                 }
-            });*/
+            });*!/
             pay();
-        });
+        });*/
         function onBridgeReady(){
             WeixinJSBridge.invoke(
                     'getBrandWCPayRequest',
@@ -48,9 +48,9 @@
                         "appId":"wxd5afa1deb29c6197",     //公众号名称，由商户传入
                         "timeStamp":"1457513229909",         //时间戳，自1970年以来的秒数
                         "nonceStr":"sddfs22dsdf5ssdfa53wq3", //随机串
-                        "package":"prepay_id=wx2016031011275897066fa1400234936977",
+                        "package":"prepay_id=wx20160314203609fd0438420d0457812360",
                         "signType":"MD5",         //微信签名方式：
-                        "paySign":"5BCDFE5E0BA3905919DFACF04643F713" //微信签名
+                        "paySign":"CBBE76083B48FB80DBF339F3D7F609E4" //微信签名
                     },
                     function(res){
                         if(res.err_msg == "get_brand_wcpay_request:ok" ) {
@@ -75,7 +75,7 @@
                 onBridgeReady();
             }
         }
-        //pay();
+        pay();
     </script>
 </head>
 <body>

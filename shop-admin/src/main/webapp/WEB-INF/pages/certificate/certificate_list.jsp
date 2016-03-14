@@ -86,7 +86,7 @@
                                             {
                                                 field: 'id',
                                                 title: '序号',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
@@ -125,7 +125,7 @@
                                             {
                                                 field: 'upperName',
                                                 title: '推荐人',
-                                                sortable: true,
+//                                                sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
@@ -133,14 +133,14 @@
                                             {
                                                 field: 'beginTime',
                                                 title: '加入时间',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'approveType',
                                                 title: '审核方',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },

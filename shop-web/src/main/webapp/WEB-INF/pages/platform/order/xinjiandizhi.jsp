@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
-    <script src="<%=path%>/static/js/address.js"></script>
 </head>
 <script>
     function saveAddress(){
@@ -39,17 +38,15 @@
                       <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>新建收货地址</p>            
                    </header>
+               <h4 class="tishi">姓名格式有误</h4>
                <div id="d_box">
                    <p class="sf">
                         收货人姓名
                         <input type="text"  class="name" id="name">
-                        <span class="onc"></span>
-                        <b class="gao">姓名输入有误</b>
                    </p>
                    <p class="sf">
                         手机号码
                         <input type="tel" class="tel" id="phone">
-                        <span class="onc"></span>
                    </p>
                    <p class="sf">
                         邮政编码
@@ -119,22 +116,16 @@
                $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
            }
        });
+       $skuC3.change(function(){
+           $(".tishi").hide();
+       })
    </script>
+   <script src="<%=path%>/static/js/xinjiandizhi.js"></script>
    <script>
        $("body").on("click",function(){
            $(".gao").hide();
        })
-       $(".onc").eq(0).on("click",function(event){
-           var event=event||event.window;
-           event.stopPropagation();
-           $(".onc").next().show().html("姓名格式不正确");
-       })
-       $(".onc").eq(1).on("click",function(event){
-           var event=event||event.window;
-           event.stopPropagation();
-           $(".onc").next().show().html("手机号输入错误");
-       })
+       addressJS.initBlur();
    </script>
-   <script src="<%=path%>/static/js/zhengze.js"></script>
 </body>
 </html>

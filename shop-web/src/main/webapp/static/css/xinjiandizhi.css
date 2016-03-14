@@ -12,6 +12,12 @@ main .wrap {
 main .wrap .box {
   width: 100%;
 }
+main .wrap .box > h4 {
+  text-indent: 10px;
+  color: red;
+  overflow: hidden;
+  display: none;
+}
 main .wrap .box #d_box {
   background: white;
 }
@@ -25,36 +31,14 @@ main .wrap .box #d_box .sf {
   position: relative;
 }
 main .wrap .box #d_box .sf input {
+  color: #333333;
   border: none;
-  color: #999999;
+  font-size: 12px;
+  display: inline-block;
+  line-height: 30px;
+  margin-top: -4px;
+  font-weight: 600;
   margin-left: 10px;
-}
-main .wrap .box #d_box .sf span {
-  float: right;
-  display: block;
-  width: 21px;
-  height: 21px;
-  margin-top: 10px;
-  margin-right: 34px;
-  background: white url("../images/no.png") no-repeat;
-  text-indent: 10px;
-  line-height: 40px;
-  color: #999999;
-  display: none;
-}
-main .wrap .box #d_box .sf b {
-  display: block;
-  position: absolute;
-  right: 11px;
-  padding: 10px 15px;
-  top: 36px;
-  background: url("../images/icon_33.png") no-repeat;
-  background-size: contain;
-  text-indent: 0;
-  color: white;
-  line-height: 20px;
-  z-index: 10;
-  display: none;
 }
 main .wrap .box #d_box .address {
   width: 100%;

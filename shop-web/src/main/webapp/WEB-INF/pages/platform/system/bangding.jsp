@@ -62,7 +62,7 @@
                     data:"phone="+$("#phoneId").val(),
                     dataType:"Json",
                     success:function(result){
-                        if(result.msg){
+                        if(result){
                             $("#codeValueId").val("短信发送成功,请注意查收!");
                         }else{
                             $("#codeValueId").val("短信发送失败,请重试!");
@@ -83,7 +83,7 @@
                     data:"verificationCode="+$("#codeValueId").val(),
                     dataType:"Json",
                     success:function(result){
-                        if(result.msg){
+                        if(result){
                             $("#codeValueId").val("验证成功!");
                         }else{
                             $("#codeValueId").val("验证失败,请重试!");

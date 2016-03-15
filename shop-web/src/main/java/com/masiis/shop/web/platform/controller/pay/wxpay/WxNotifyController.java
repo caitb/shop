@@ -36,7 +36,7 @@ public class WxNotifyController extends BaseController {
             try{
                 // 获取请求参数
                 requestBody = getRequestBody(request);
-                log.info("请求参数:" + requestBody);
+                log.info("uniOrderNotify:请求参数:" + requestBody);
             } catch (Exception e) {
                 String err = "获取请求参数错误:" + e.getMessage();
                 log.error(err);
@@ -47,6 +47,7 @@ public class WxNotifyController extends BaseController {
             try{
                 xStream.processAnnotations(CallBackNotifyReq.class);
                 param = (CallBackNotifyReq) xStream.fromXML(requestBody);
+                log.info("uniOrderNotify:xml解析通过!");
             } catch (Exception e) {
                 String err = "参数xml解析错误:" + e.getMessage();
                 log.error(err);
@@ -60,6 +61,7 @@ public class WxNotifyController extends BaseController {
                         || !sign.equals(param.getSign())){
                     throw new BusinessException("签名错误");
                 }
+                log.info("uniOrderNotify:签名检测通过!");
             } catch (Exception e) {
                 String err = "签名验证错误:" + e.getMessage();
                 log.error(err);

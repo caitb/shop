@@ -59,7 +59,7 @@ public class HttpsRequest implements IServiceRequest {
     //HTTP请求器
     private CloseableHttpClient httpClient;
 
-    public HttpsRequest() throws UnrecoverableKeyException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    public HttpsRequest() {
         //init();
     }
 
@@ -143,7 +143,7 @@ public class HttpsRequest implements IServiceRequest {
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    public String sendPost(String url, Object xmlObj) throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyManagementException {
+    public String sendPost(String url, Object xmlObj) {
         String result = null;
 
         HttpPost httpPost = new HttpPost(url);

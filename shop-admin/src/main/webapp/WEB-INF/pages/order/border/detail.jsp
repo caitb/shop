@@ -128,14 +128,14 @@
             <tr>
                 <td class="meta-attributes__attr-name">配送方式</td>
                 <td class="meta-attributes__attr-detail">
-                    货到付款
+                    <c:if test="${order.pfBorder.shipType == 0}">物流配送</c:if>
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>
@@ -153,20 +153,20 @@
             <tr>
                 <td class="meta-attributes__attr-name">收货人</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorder.orderCode}
+                    ${order.pfBorderConsignee.consignee}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">收获地址</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfBorderConsignee.provinceName}+${order.pfBorderConsignee.cityName}+${order.pfBorderConsignee.regionName}+${order.pfBorderConsignee.address}
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">联系电话</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfBorderConsignee.mobile}
                 </td>
             </tr>
             <tr>

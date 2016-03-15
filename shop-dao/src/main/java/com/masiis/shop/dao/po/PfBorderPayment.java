@@ -3,19 +3,13 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-15 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * 平台代理订单支付表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class PfBorderPayment {
 
     private Long id;
@@ -47,6 +41,10 @@ public class PfBorderPayment {
      * 备注
      */
     private String remark;
+    /**
+     * 外部订单号
+     */
+    private String outOrderId;
 
     public Long getId() {
         return id;
@@ -95,5 +93,11 @@ public class PfBorderPayment {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+    public String getOutOrderId() {
+        return outOrderId;
+    }
+    public void setOutOrderId(String outOrderId) {
+        this.outOrderId = outOrderId == null ? null : outOrderId.trim();
     }
 }

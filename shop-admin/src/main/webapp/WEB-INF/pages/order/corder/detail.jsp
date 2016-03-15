@@ -67,6 +67,11 @@
             padding-right: 10px;
             width: 140px;
         }
+
+        .my-table th, .my-table td {
+            text-align: center;
+            height:38px;
+        }
     </style>
 
 </head>
@@ -172,43 +177,44 @@
             <tr>
                 <td class="meta-attributes__attr-name">邮编</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorderConsignee.zip}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">购买人</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.comUser.realName}
                 </td>
             </tr>
             </tbody>
         </table>
-        <hr/>
 
-        <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
+
+        <table class="table table-bordered my-table">
+            <thead>
+            <tr>
+                <th>商品名称</th>
+                <th>货号</th>
+                <th>商品属性</th>
+                <th>市场价</th>
+                <th>购买价格</th>
+                <th>购买数量</th>
+                <th>小计</th>
+            </tr>
+            </thead>
             <tbody>
             <tr>
-                <td class="meta-attributes__attr-name">订单商品</td>
-                <td class="meta-attributes__attr-detail">
-                    ${order.pfCorder.orderCode}
-                </td>
-            </tr>
-            <tr>
-                <td class="meta-attributes__attr-name">购买数量</td>
-                <td class="meta-attributes__attr-detail">
-
-                </td>
-            </tr>
-
-            <tr>
-                <td class="meta-attributes__attr-name">商品单价</td>
-                <td class="meta-attributes__attr-detail">
-
-                </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
             </tr>
             </tbody>
         </table>
-        <hr/>
+
 
         <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
             <tbody>
@@ -245,41 +251,23 @@
             </tr>
             </tbody>
         </table>
-        <hr/>
 
-        <div style="align-content: center; width: 200px; margin: 0 auto;">
-            <button class="btn btn-info">确认收货</button>
-            <button class="btn btn-detault">取消订单</button>
-        </div>
-        <hr/>
 
-        <table class="table table-striped">
+        <table class="table table-bordered my-table">
             <thead>
             <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>操作者</th>
+                <th>操作时间</th>
+                <th>操作类型</th>
+                <th>操作备注</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>1</td>
                 <td>Mark</td>
                 <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
             </tr>
             </tbody>
         </table>

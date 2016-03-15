@@ -3,14 +3,12 @@ package com.masiis.shop.admin.service.order;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfCordersPayment;
-import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderConsignee;
 import com.masiis.shop.dao.po.PfCorderPayment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author muchaofeng
@@ -27,9 +25,9 @@ public class TrialOrderService {
     @Resource
     private PfCordersPayment pfCordersPayment;
 
-    public List<PfCorder> queryAll() {
-        return pfCorderMapper.selectAll();
-    }
+//    public List<PfCorder> queryAll() {
+//        return pfCorderMapper.selectAll();
+//    }
 
     public PfCorderConsignee findPfCorderConsignee(Long pfCorderId){
         return  pfCorderOperationLogMapper.selectByKey(pfCorderId);

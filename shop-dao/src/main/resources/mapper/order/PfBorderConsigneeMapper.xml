@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderConsignee" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="user_id" property="userId" jdbcType="BIGINT" />
-        <result column="consignee" property="consignee" jdbcType="VARCHAR" />
-        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
-        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
-        <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
-        <result column="city_id" property="cityId" jdbcType="INTEGER" />
-        <result column="city_name" property="cityName" jdbcType="VARCHAR" />
-        <result column="region_id" property="regionId" jdbcType="INTEGER" />
-        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
-        <result column="address" property="address" jdbcType="VARCHAR" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderConsignee">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="consignee" property="consignee" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="INTEGER"/>
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="region_id" property="regionId" jdbcType="INTEGER"/>
+        <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="zip" property="zip" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
                 id,
                 create_time,
@@ -32,6 +33,7 @@
                 region_id,
                 region_name,
                 address,
+                zip,
                 remark
         from
                 pf_border_consignee
@@ -39,7 +41,7 @@
                 id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByBorderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectByBorderId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
                 id,
                 create_time,
@@ -53,6 +55,7 @@
                 region_id,
                 region_name,
                 address,
+                zip,
                 remark
         from
                 pf_border_consignee
@@ -60,24 +63,25 @@
                 pf_border_id = #{borderId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderConsignee" resultMap="BaseResultMap" >
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderConsignee" resultMap="BaseResultMap">
         select
-                id,
-                create_time,
-                pf_border_id,
-                user_id,
-                consignee,
-                mobile,
-                province_id,
-                province_name,
-                city_id,
-                city_name,
-                region_id,
-                region_name,
-                address,
-                remark
+        id,
+        create_time,
+        pf_border_id,
+        user_id,
+        consignee,
+        mobile,
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        region_id,
+        region_name,
+        address,
+        zip,
+        remark
         from
-                pf_border_consignee
+        pf_border_consignee
         <where>
             <if test="id != null">
                 id = #{id}
@@ -85,43 +89,24 @@
         </where>
     </select>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderConsignee" >
-        insert into pf_border_consignee
-                    (
-                    id,
-                    create_time,
-                    pf_border_id,
-                    user_id,
-                    consignee,
-                    mobile,
-                    province_id,
-                    province_name,
-                    city_id,
-                    city_name,
-                    region_id,
-                    region_name,
-                    address,
-                    remark
-                    )
-        values
-                    (
-                    #{id,jdbcType=BIGINT},
-                    #{createTime,jdbcType=TIMESTAMP},
-                    #{pfBorderId,jdbcType=BIGINT},
-                    #{userId,jdbcType=BIGINT},
-                    #{consignee,jdbcType=VARCHAR},
-                    #{mobile,jdbcType=VARCHAR},
-                    #{provinceId,jdbcType=INTEGER},
-                    #{provinceName,jdbcType=VARCHAR},
-                    #{cityId,jdbcType=INTEGER},
-                    #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
-                    #{address,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-                    )
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderConsignee">
+        insert into pf_border_consignee (id, create_time, pf_border_id,
+            user_id, consignee, mobile,
+            province_id, province_name, city_id,
+            city_name, region_id, region_name,
+            address, zip, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT},
+            #{userId,jdbcType=BIGINT}, #{consignee,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+            #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
+            #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR}, #{zip,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+            )
     </insert>
 
-    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderConsignee" >
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderConsignee">
         update
-               pf_border_consignee
+        pf_border_consignee
         <set>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -159,15 +144,18 @@
             <if test="address != null">
                 address = #{address,jdbcType=VARCHAR},
             </if>
+            <if test="zip != null">
+                zip = #{zip,jdbcType=VARCHAR},
+            </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR}
             </if>
         </set>
         where
-              id = #{id,jdbcType=BIGINT}
+        id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteById" parameterType="java.lang.Long" >
+    <delete id="deleteById" parameterType="java.lang.Long">
         delete from pf_border_consignee where id = #{id,jdbcType=BIGINT}
     </delete>
 

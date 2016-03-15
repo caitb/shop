@@ -2,7 +2,7 @@ package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
-import com.masiis.shop.dao.platform.order.PfCordersPayment;
+import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderConsignee;
 import com.masiis.shop.dao.po.PfCorderPayment;
@@ -25,10 +25,10 @@ public class TrialOrderService {
     @Resource
     private PfCorderOperationLogMapper pfCorderOperationLogMapper;
     @Resource
-    private PfCordersPayment pfCordersPayment;
+    private PfCorderPaymentMapper pfCorderPaymentMapper;
 
     public List<PfCorder> queryAll() {
-        return pfCorderMapper.selectAll();
+        return pfCorderMapper.selectByCondition(new PfCorder());
     }
 
     public PfCorderConsignee findPfCorderConsignee(Long pfCorderId){
@@ -36,7 +36,7 @@ public class TrialOrderService {
     }
 
     public PfCorderPayment findPfCorderPayment(Long pfCorderId){
-        return pfCordersPayment.selectByPrimaryKey(pfCorderId);
+        return pfCorderPaymentMapper.selectById(pfCorderId);
     }
 
 }

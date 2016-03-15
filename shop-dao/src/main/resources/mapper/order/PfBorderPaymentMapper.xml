@@ -10,6 +10,7 @@
         <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
         <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR" />
     </resultMap>
 
 
@@ -22,14 +23,15 @@
                pay_type_id,
                pay_type_name,
                is_enabled,
-               remark
+               remark,
+               out_order_id
         from
                pf_border_payment
         where
                id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByBorderId" parameterType="Long">
+    <select id="selectByBorderId" parameterType="Long" resultMap="BaseResultMap">
         select
                id,
                create_time,
@@ -38,7 +40,8 @@
                pay_type_id,
                pay_type_name,
                is_enabled,
-               remark
+               remark,
+               out_order_id
         from
                pf_border_payment
         where
@@ -54,7 +57,8 @@
                pay_type_id,
                pay_type_name,
                is_enabled,
-               remark
+               remark,
+               out_order_id
         from
                pf_border_payment
         <where>
@@ -74,7 +78,8 @@
                     pay_type_id,
                     pay_type_name,
                     is_enabled,
-                    remark
+                    remark,
+                    out_order_id
                     )
         values      (
                     #{id,jdbcType=BIGINT},
@@ -84,7 +89,8 @@
                     #{payTypeId,jdbcType=INTEGER},
                     #{payTypeName,jdbcType=VARCHAR},
                     #{isEnabled,jdbcType=INTEGER},
-                    #{remark,jdbcType=VARCHAR}
+                    #{remark,jdbcType=VARCHAR},
+                    #{outOrderId,jdbcType=VARCHAR}
                     )
     </insert>
 
@@ -112,6 +118,9 @@
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR}
+            </if>out_order_id
+            <if test="outOrderId != null">
+                out_order_id = #{outOrderId,jdbcType=VARCHAR}
             </if>
         </set>
         where

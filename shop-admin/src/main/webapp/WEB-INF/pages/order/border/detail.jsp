@@ -75,12 +75,14 @@
     <div class="meta-attributes">
         <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
             <tbody>
+            
             <tr>
                 <td class="meta-attributes__attr-name">订单号</td>
                 <td class="meta-attributes__attr-detail">
                     ${order.pfBorder.orderCode}
                 </td>
             </tr>
+            
             <tr>
                 <td class="meta-attributes__attr-name">订单状态</td>
                 <td class="meta-attributes__attr-detail">
@@ -99,34 +101,41 @@
                     <fmt:formatDate value="${order.pfBorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
+            
             <tr>
                 <td class="meta-attributes__attr-name">支付日期</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
+            
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <c:if test="${order.pfBorderPayment.payTypeId == 1}">微信</c:if>
                 </td>
             </tr>
+            
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <c:if test="${order.pfBorder.shipStatus == 0}">未发货</c:if>
+                    <c:if test="${order.pfBorder.shipStatus == 5}">已发货</c:if>
+                    <c:if test="${order.pfBorder.shipStatus == 9}">已收货</c:if>
                 </td>
             </tr>
+
             <tr>
                 <td class="meta-attributes__attr-name">配送方式</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <c:if test="${order.pfBorder.shipType == 0}">物流配送</c:if>
                 </td>
             </tr>
+
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>
@@ -144,20 +153,20 @@
             <tr>
                 <td class="meta-attributes__attr-name">收货人</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorder.orderCode}
+                    ${order.pfBorderConsignee.consignee}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">收获地址</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfBorderConsignee.provinceName}+${order.pfBorderConsignee.cityName}+${order.pfBorderConsignee.regionName}+${order.pfBorderConsignee.address}
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">联系电话</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfBorderConsignee.mobile}
                 </td>
             </tr>
             <tr>

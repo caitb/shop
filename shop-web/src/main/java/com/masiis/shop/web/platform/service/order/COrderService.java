@@ -42,9 +42,9 @@ public class COrderService {
     public void trialApplyService(ComUser comUser,PfUserTrial pfUserTrial){
         try {
             //插入试用表
-            userService.insertUserTrial(pfUserTrial);
+            //userService.insertUserTrial(pfUserTrial);
             //更新试用用户信息
-            userService.updateComUser(comUser);
+           // userService.updateComUser(comUser);
         }catch (Exception e){
             e.printStackTrace();
         }

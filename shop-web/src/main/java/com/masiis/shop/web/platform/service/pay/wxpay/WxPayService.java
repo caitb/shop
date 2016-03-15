@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
+import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -38,6 +39,7 @@ public class WxPayService {
             res.setMch_id(WxConstants.WX_PAY_MCHID);
             res.setNonce_str(WXBeanUtils.createGenerateStr());
             res.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
+            res.setOpenid(user.getOpenid());
             res.setSpbill_create_ip(ip);
             res.setTrade_type("JSAPI");
 
@@ -54,17 +56,9 @@ public class WxPayService {
                 }
                 res.setBody(body.substring(0, body.length() - 1));
                 res.setOut_trade_no(order.getOrderCode());
-                res.setOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
                 res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
-            } /*else if ("C".equalsIgnoreCase(orderType)) {
-                // 试用订单
-                PfCorder order = cOrderService.findByOrderCode(req.getOrderId());
-                if(order == null){
-                    throw new BusinessException("订单号错误,不存在该订单号!");
-                }
-                log.info("orderType:C");
-            } */else {
+            } else {
                 throw new BusinessException("订单号错误,不存在该订单号!");
             }
         } catch (Exception e) {
@@ -73,5 +67,9 @@ public class WxPayService {
         }
 
         return null;
+    }
+
+    public void createPaymentRecord(UnifiedOrderRes res){
+
     }
 }

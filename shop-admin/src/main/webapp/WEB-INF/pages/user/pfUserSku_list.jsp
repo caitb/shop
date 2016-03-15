@@ -255,7 +255,7 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return '<a href="<%=basePath%>userSku/list.shtml?pid='+row.comUser.id+'">'+row.lowerCount+'人</a>';
+                                                    return '<a href="#" onclick=lower('+row.comUser.id+')>'+row.lowerCount+'人</a>';
                                                  }
                                             },
                                             {
@@ -320,6 +320,10 @@
                                         height: getHeight()
                                     });
                                 });
+                            }
+
+                            function lower(pid){
+                                location.href = "<%=basePath%>userSku/list.shtml?pid="+pid;
                             }
 
                             function getIdSelections() {
@@ -544,22 +548,28 @@
             location.reload();
         })*/
         //更改上级
-        function changeLeader(id){
+        function changeLeader(){
+            var approveId = $("#approveId").val();
             $.ajax({
                 type: "GET",
                 url: '<%=basePath%>certificate/listUpper.do',
-                data: {id: id},
+                data: {id: approveId},
                 dataType: "json",
                 success: function (data) {
-                    $("#userInfo").html("用户: " +data["certificateInfo"].comUser.realName);
-                    $("#upperName").html("当前上级:  "+data["certificateInfo"].upperName);
+                    $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
+                    $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
+                    $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
                     $("#userSkuId").val(data["certificateInfo"].id);
-                    var comUserList = {upperList:data["certificateInfo"].comUserList};
-                    $("#userList").val(comUserList);
                     //option属性
-                    $.each(data["certificateInfo"].comUserList,function(index,value){
-                        $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
-                    });
+                    if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
+                        var comUserList = {upperList:data["certificateInfo"].comUserList};
+                        $("#userList").val(comUserList);
+                        $.each(data["certificateInfo"].comUserList,function(index,value){
+                            $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                        });
+                    }else{
+                        $("#userSubmit").attr("disabled", true);
+                    }
                     $('#myModal').modal({
                         show: true,
                         backdrop: true

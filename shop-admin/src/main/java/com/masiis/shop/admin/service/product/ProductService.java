@@ -59,6 +59,7 @@ public class ProductService {
         pfSkuStock.setSkuId(comSku.getId());
         pfSkuStock.setSpuId(comSpu.getId());
         pfSkuStock.setStock(10);
+        pfSkuStock.setFrozenStock(0);
         pfSkuStockMapper.insert(pfSkuStock);
 
         //保存sku图片

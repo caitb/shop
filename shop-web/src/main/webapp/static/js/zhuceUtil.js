@@ -131,6 +131,7 @@ $(function () {
         $(".sec2 p").removeClass("on")
         $(this).addClass("on");
     });
+
     $("#submit").click(function () {
         var n = 0;
         if ($(".sec2 .on label").html() == null || $(".sec2 .on [name='amount']").html() == null) {
@@ -187,5 +188,13 @@ $(function () {
                 }
             }
         });
+    });
+
+    $("[name='danx']").on("click", function () {
+        if ($(this).attr("class") == "shi") {
+            alert("shi");
+        } else {
+            alert("fou");
+        }
     });
 })

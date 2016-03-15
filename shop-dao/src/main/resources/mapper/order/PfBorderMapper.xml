@@ -20,9 +20,9 @@
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
         <result column="ship_man_id" property="shipManId" jdbcType="INTEGER" />
         <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR" />
-        <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
+        <result column="ship_type" property="shipType" jdbcType="INTEGER" />
+        <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
         <result column="ship_remark" property="shipRemark" jdbcType="VARCHAR" />
-        <result column="replace_order_id" property="replaceOrderId" jdbcType="BIGINT" />
         <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
         <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
         <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
@@ -30,6 +30,7 @@
         <result column="is_replace" property="isReplace" jdbcType="INTEGER" />
         <result column="is_receipt" property="isReceipt" jdbcType="INTEGER" />
         <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+        <result column="replace_order_id" property="replaceOrderId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -38,88 +39,81 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" useGeneratedKeys="true" keyProperty="id">
-        insert into pf_border (id, create_time, create_man, 
-            order_code, user_id, user_pid, 
-            user_massage, supplier_id, modify_time, 
-            modify_man, receivable_amount, order_amount, 
-            product_amount, ship_amount, pay_amount, 
-            pay_time, ship_man_id, ship_man_name, 
-            delivery_time, ship_remark, replace_order_id, 
-            order_status, ship_status, pay_status, 
-            is_ship, is_replace, is_receipt, 
-            receipt_time, remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
-            #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, 
-            #{userMassage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP}, 
-            #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, 
-            #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, 
-            #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR}, 
-            #{deliveryTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR}, #{replaceOrderId,jdbcType=BIGINT}, 
-            #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
-            #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, 
-            #{receiptTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" >
+        insert into pf_border (id, create_time, create_man,
+        order_code, user_id, user_pid,
+        user_massage, supplier_id, modify_time,
+        modify_man, receivable_amount, order_amount,
+        product_amount, ship_amount, pay_amount,
+        pay_time, ship_man_id, ship_man_name,
+        ship_type, ship_time, ship_remark,
+        order_status, ship_status, pay_status,
+        is_ship, is_replace, is_receipt,
+        receipt_time, replace_order_id, remark
+        )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
+        #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
+        #{userMassage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP},
+        #{modifyMan,jdbcType=BIGINT}, #{receivableAmount,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL},
+        #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
+        #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR},
+        #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR},
+        #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER},
+        #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER},
+        #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+        )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfBorder" >
         update pf_border
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            create_man = #{createMan,jdbcType=BIGINT},
-            order_code = #{orderCode,jdbcType=VARCHAR},
-            user_id = #{userId,jdbcType=BIGINT},
-            user_pid = #{userPid,jdbcType=BIGINT},
-            user_massage = #{userMassage,jdbcType=VARCHAR},
-            supplier_id = #{supplierId,jdbcType=INTEGER},
-            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-            modify_man = #{modifyMan,jdbcType=BIGINT},
-            receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
-            order_amount = #{orderAmount,jdbcType=DECIMAL},
-            product_amount = #{productAmount,jdbcType=DECIMAL},
-            ship_amount = #{shipAmount,jdbcType=DECIMAL},
-            pay_amount = #{payAmount,jdbcType=DECIMAL},
-            pay_time = #{payTime,jdbcType=TIMESTAMP},
-            ship_man_id = #{shipManId,jdbcType=INTEGER},
-            ship_man_name = #{shipManName,jdbcType=VARCHAR},
-            delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
-            ship_remark = #{shipRemark,jdbcType=VARCHAR},
-            replace_order_id = #{replaceOrderId,jdbcType=BIGINT},
-            order_status = #{orderStatus,jdbcType=INTEGER},
-            ship_status = #{shipStatus,jdbcType=INTEGER},
-            pay_status = #{payStatus,jdbcType=INTEGER},
-            is_ship = #{isShip,jdbcType=INTEGER},
-            is_replace = #{isReplace,jdbcType=INTEGER},
-            is_receipt = #{isReceipt,jdbcType=INTEGER},
-            receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
-            remark = #{remark,jdbcType=VARCHAR}
+        create_man = #{createMan,jdbcType=BIGINT},
+        order_code = #{orderCode,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=BIGINT},
+        user_pid = #{userPid,jdbcType=BIGINT},
+        user_massage = #{userMassage,jdbcType=VARCHAR},
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+        modify_man = #{modifyMan,jdbcType=BIGINT},
+        receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
+        order_amount = #{orderAmount,jdbcType=DECIMAL},
+        product_amount = #{productAmount,jdbcType=DECIMAL},
+        ship_amount = #{shipAmount,jdbcType=DECIMAL},
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+        ship_man_id = #{shipManId,jdbcType=INTEGER},
+        ship_man_name = #{shipManName,jdbcType=VARCHAR},
+        ship_type = #{shipType,jdbcType=INTEGER},
+        ship_time = #{shipTime,jdbcType=TIMESTAMP},
+        ship_remark = #{shipRemark,jdbcType=VARCHAR},
+        order_status = #{orderStatus,jdbcType=INTEGER},
+        ship_status = #{shipStatus,jdbcType=INTEGER},
+        pay_status = #{payStatus,jdbcType=INTEGER},
+        is_ship = #{isShip,jdbcType=INTEGER},
+        is_replace = #{isReplace,jdbcType=INTEGER},
+        is_receipt = #{isReceipt,jdbcType=INTEGER},
+        receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+        replace_order_id = #{replaceOrderId,jdbcType=BIGINT},
+        remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, order_code, user_id, user_pid, user_massage, 
-        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount, 
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark, 
-        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt, 
-        receipt_time, remark
+        select id, create_time, create_man, order_code, user_id, user_pid, user_massage,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        receipt_time, replace_order_id, remark
         from pf_border
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, order_code, user_id, user_pid, user_massage,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark,
-        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
-        receipt_time, remark
-        from pf_border
-        where id = #{order_code,jdbcType=VARCHAR}
-    </select>
-
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, create_man, order_code, user_id, user_pid, user_massage, 
-        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount, 
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark, 
-        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt, 
-        receipt_time, remark
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        receipt_time, replace_order_id, remark
         from pf_border
     </select>
 
@@ -143,7 +137,8 @@
                pay_time,
                ship_man_id,
                ship_man_name,
-               delivery_time,
+               ship_type,
+               ship_time,
                ship_remark,
                replace_order_id,
                order_status,

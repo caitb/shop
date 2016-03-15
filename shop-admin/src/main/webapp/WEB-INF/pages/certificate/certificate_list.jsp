@@ -86,7 +86,7 @@
                                             {
                                                 field: 'id',
                                                 title: '序号',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
@@ -109,7 +109,7 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'pfUserCertificateInfo.agentLevelId',
+                                                field: 'agentLevelId',
                                                 title: '申请证书级别',
                                                 //sortable: true,
                                                 footerFormatter: totalNameFormatter,
@@ -125,22 +125,22 @@
                                             {
                                                 field: 'upperName',
                                                 title: '推荐人',
-                                                sortable: true,
+//                                                sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'pfUserCertificateInfo.beginTime',
+                                                field: 'beginTime',
                                                 title: '加入时间',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },
                                             {
                                                 field: 'approveType',
                                                 title: '审核方',
-                                                sortable: true,
+//                                                sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center'
                                             },

@@ -25,6 +25,7 @@ public interface CertificateMapper {
 
     void updateUpperPartnerById(Map<String, Object> paramsMap);
 
-    List<ComUser> getUpperPartnerByUserId(Long userId);
+    List<ComUser> getUpperPartnerByUserId(Integer pid);
 
+    String findById(Integer id);
 }

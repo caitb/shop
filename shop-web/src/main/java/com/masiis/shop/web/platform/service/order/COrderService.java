@@ -6,14 +6,11 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfUserTrial;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -91,7 +88,7 @@ public class COrderService {
     public List<PfCorder> queryPfCorderById(Long id){
         PfCorder pfCorder = new PfCorder();
         pfCorder.setId(id);
-        return  pfCorderMapper.queryPfCorderByParam(pfCorder);
+        return  pfCorderMapper.selectByCondition(pfCorder);
     }
 
     /**

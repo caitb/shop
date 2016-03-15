@@ -76,7 +76,7 @@ public class HttpClientUtils {
 
             /**请求发送成功，并得到响应**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                strResult = EntityUtils.toString(response.getEntity());
+                strResult = EntityUtils.toString(response.getEntity(), "UTF-8");
             } else {
                 logger.error("get请求提交失败:" + url);
             }

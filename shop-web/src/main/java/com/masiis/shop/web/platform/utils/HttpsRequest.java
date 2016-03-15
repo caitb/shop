@@ -103,16 +103,16 @@ public class HttpsRequest implements IServiceRequest {
         UnifiedOrderReq order = new UnifiedOrderReq();
         order.setAppid(WxConstants.APPID);
         //order.setAttach();
-        order.setBody("麦士测试商品04");
+        order.setBody("麦士测试商品10");
         //order.setDetail();
         //order.setDevice_info();
         //order.setFee_type(); //默认中文
         //order.setGoods_tag();
         //order.setLimit_pay();
         order.setMch_id(WxConstants.WX_PAY_MCHID);
-        order.setNonce_str("AAAAAAAAAABBBBBBBBBB223223213");
-        order.setNotify_url("http://www.rd.masiis.com");
-        order.setOut_trade_no("TESTORDER0000000000000004");
+        order.setNonce_str("AAAAAAAAAABBBBBBBBBB223225220");
+        order.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
+        order.setOut_trade_no("TESTORDER0000000000000010");
         order.setOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
         //order.setProduct_id();
         order.setSpbill_create_ip("127.0.0.1");

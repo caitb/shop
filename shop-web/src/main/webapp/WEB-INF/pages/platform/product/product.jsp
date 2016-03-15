@@ -107,15 +107,13 @@
                 if (dataObj==null||dataObj==""){
                     window.location.href = "<%=path%>/corder/applyTrialToPage.do?skuId=" + skuId;
                 }else{
-                    $.each(dataObj, function(i, item) {
-                        if (dataObj[0].status==0){
-                            alert("商品您已申请使用，正在审核，请耐心等待");
-                        }else if(dataObj[0].status==1){
-                            alert("商品您已试用过，不能再次使用");
-                        }else{
-                            alert("逻辑出错");
-                        }
-                    })
+                    if (dataObj[0].status==0){
+                        alert("商品您已申请使用，正在审核，请耐心等待");
+                    }else if(dataObj[0].status==1){
+                        alert("商品您已试用过，不能再次使用");
+                    }else{
+                        alert("逻辑出错");
+                    }
                 }
             }
         });

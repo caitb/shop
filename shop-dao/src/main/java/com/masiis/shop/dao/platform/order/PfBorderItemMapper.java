@@ -11,15 +11,15 @@ import com.masiis.shop.dao.po.PfBorderItem;
 import java.util.List;
 
 public interface PfBorderItemMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
-    int insert(PfBorderItem record);
+    int insert(PfBorderItem pfBorderItem);
 
-    PfBorderItem selectByPrimaryKey(Long id);
+    PfBorderItem selectById(Long id);
 
-    List<PfBorderItem> selectAll();
+    List<PfBorderItem> selectByCondition(PfBorderItem pfBorderItem);
 
-    int updateByPrimaryKey(PfBorderItem record);
+    int updateById(PfBorderItem pfBorderItem);
 
     List<PfBorderItem> selectAllByOrderId(Long pfBorderId);
 }

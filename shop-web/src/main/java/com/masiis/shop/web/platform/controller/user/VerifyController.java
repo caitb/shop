@@ -2,10 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.AESUtils;
-import com.masiis.shop.common.util.CookieUtils;
-import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.common.util.SHAUtils;
+import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.beans.wxauth.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -26,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -54,10 +50,13 @@ public class VerifyController extends BaseController {
             return "";
         }
 
+        HttpSession session = request.getSession();
+
         // 解析state,并验证有效性
+        String stateStr = (String) session.getAttribute(state);
         RedirectParam rp = null;
         try{
-            rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
+            rp = JSONObject.parseObject(URLDecoder.decode(stateStr, "UTF-8"), RedirectParam.class);
             log.info("微信访问授权通信成功,参数:" + rp.toString());
         } catch (Exception e) {
             log.error("json解析错误:" + e.getMessage());
@@ -76,23 +75,24 @@ public class VerifyController extends BaseController {
         if(StringUtils.isNotBlank(res.getOpenid())){
             try{
                 log.info("微信访问授权成功{openid:" + res.getOpenid() + "}");
-                HttpSession session = request.getSession();
-
                 log.info("开始获取微信用户的信息...");
 
                 String infoUrl = WxConstants.URL_GET_USERINFO
-                        + "?appid=" + WxConstants.APPID
+                        + "?access_token=" + res.getAccess_token()
                         + "&openid=" + res.getOpenid()
                         + "&lang=zh_CN";
                 String infoRes = HttpClientUtils.httpGet(infoUrl);
+                System.out.println("info:" + infoRes);
                 WxUserInfo userRes = JSONObject.parseObject(infoRes, WxUserInfo.class);
                 if(userRes == null || StringUtils.isBlank(userRes.getOpenid())){
                     // 没获取到信息
+                    System.out.println("userRes:空!");
                 }
 
                 // 检查openid是否已经存在数据库
                 ComUser user = userService.getUserByOpenid(res.getOpenid());
                 if(user == null){
+                    user = new ComUser();
                     user.setOpenid(res.getOpenid());
                     user.setCreateTime(new Date());
                     user.setIsAgent(0);
@@ -108,7 +108,11 @@ public class VerifyController extends BaseController {
                 user.setWxHeadImg(userRes.getHeadimgurl());
                 user.setWxNkName(userRes.getNickname());
                 user.setSex(new Integer(userRes.getSex()));
-                userService.insertComUser(user);
+                if(user.getId() == null){
+                    userService.insertComUser(user);
+                } else {
+                    userService.updateComUser(user);
+                }
                 // 登录
                 session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 // 保存Cookie
@@ -116,9 +120,9 @@ public class VerifyController extends BaseController {
                 CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
                         openidkey, 3600 * 24 * 7);
                 // 保存redis
-                SpringRedisUtil.save(openidkey, String.class);
-                SpringRedisUtil.save(res.getOpenid() + "_token", String.class);
-                SpringRedisUtil.save(res.getOpenid() + "_rftoken", String.class);
+                SpringRedisUtil.save(openidkey, res.getOpenid());
+                SpringRedisUtil.save(res.getOpenid() + "_token", res.getAccess_token());
+                SpringRedisUtil.save(res.getOpenid() + "_rftoken", res.getRefresh_token());
 
                 return createRedirectRes(rp.getSurl());
             } catch (Exception e) {
@@ -131,14 +135,17 @@ public class VerifyController extends BaseController {
 
     @RequestMapping("/wxcheck")
     public String wxCheck(HttpServletRequest request, HttpServletResponse response, String state, RedirectAttributes attr) throws IOException {
-        String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+        String basepath = request.getScheme()+"://"+request.getServerName()
+                + ("80".equals(request.getServerPort() + "") ? "" : ":"+request.getServerPort())
+                + request.getContextPath()+"/";
+        HttpSession session = request.getSession();
+        RedirectParam rp = null;
         try{
             if(StringUtils.isBlank(state)) {
                 throw new BusinessException("state为空,调用异常!");
             }
 
             // 解析state,并验证有效性
-            RedirectParam rp = null;
             try{
                 rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
             } catch (Exception e) {
@@ -152,6 +159,12 @@ public class VerifyController extends BaseController {
                 throw new BusinessException("state参数不正确,调用异常!");
             }
 
+        } catch (Exception e) {
+            log.error("访问参数错误,跳转错误页面!");
+            return "redirect:/";
+        }
+
+        try{
             // 验证cookie
             Cookie cookie = CookieUtils.getCookie(request, SysConstants.COOKIE_WX_ID_NAME);
             if (cookie == null) {
@@ -161,14 +174,16 @@ public class VerifyController extends BaseController {
             String openid = null;
             String token = null;
             if (StringUtils.isBlank(val)
-                    && StringUtils.isBlank(openid = SpringRedisUtil.get(val, String.class))
-                    && StringUtils.isBlank(token = SpringRedisUtil.get(openid + "_token", String.class))) {
+                    || StringUtils.isBlank(openid = SpringRedisUtil.get(val, String.class))
+                    || StringUtils.isBlank(token = SpringRedisUtil.get(openid + "_token", String.class))) {
+                System.out.println("err_val:" + val);
+                System.out.println("err_openid:" + openid);
                 throw new BusinessException("cookie中openid信息为空或者token无效!");
             }
-
+            System.out.println("val:" + val);
+            System.out.println("openid:" + openid);
             // 根据openid获取用户对象
             ComUser user = userService.getUserByOpenid(openid);
-            HttpSession session = request.getSession();
             if(user == null){
                 throw new BusinessException("该openid无效,需要重新对该用户授权!");
             }
@@ -182,24 +197,30 @@ public class VerifyController extends BaseController {
                 ErrorRes resBean = JSONObject.parseObject(result, ErrorRes.class);
                 if (resBean != null && "0".equals(resBean.getErrcode())) {
                     // token仍有效,进行登录操作,并跳转目标链接
+                    log.info("token仍有效,跳转目标链接!");
                     session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 } else if (resBean != null
                         && (WxResCodeCons.ACCESS_TOKEN_INVALID.equals(resBean.getErrcode())
                             || WxResCodeCons.ACCESS_TOKEN_TIMEOUT.equals(resBean.getErrcode()))) {
                     // token失效,刷新token,成功或失败.成功,重定向目标页面;失败,重新授权
+                    log.info("token失效,刷新token...");
                     String rftoken = SpringRedisUtil.get(openid + "_rftoken", String.class);
                     if(StringUtils.isBlank(rftoken)){
                         throw new BusinessException("token超时,且redis取不到refreshtoken!");
                     }
+
                     String rftoken_url = WxConstants.URL_REFRESH_TOKEN
                                 + "?appid=" + WxConstants.APPID
                                 + "&grant_type=" + WxConstants.GRANT_TYPE_RFTOKEN
                                 + "&refresh_token=REFRESH_TOKEN";
                     String rfResult = HttpClientUtils.httpGet(rftoken_url);
+
                     ErrorRes rfRes = JSONObject.parseObject(rfResult, ErrorRes.class);
-                    if (resBean != null && StringUtils.isBlank(resBean.getErrcode())) {
+                    if (resBean != null && StringUtils.isNotBlank(resBean.getErrcode())) {
+                        log.error("刷新token失败...");
                         throw new BusinessException(rfRes.getErrmsg());
                     }
+                    log.info("刷新token成功,进行登录操作...");
                     RefreshTokenRes rfResBean = JSONObject.parseObject(rfResult, RefreshTokenRes.class);
                     // 刷新token成功,授权继续,此处保存access_token,refreshtoken和openid;
                     String infoUrl = WxConstants.URL_GET_USERINFO
@@ -231,11 +252,11 @@ public class VerifyController extends BaseController {
                     CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
                             openidkey, 3600 * 24 * 7);
                     // 保存redis
-                    SpringRedisUtil.save(openidkey, String.class);
-                    SpringRedisUtil.save(rfResBean.getOpenid() + "_token", String.class);
-                    SpringRedisUtil.save(rfResBean.getOpenid() + "_rftoken", String.class);
+                    SpringRedisUtil.save(openidkey, rfResBean.getOpenid());
+                    SpringRedisUtil.save(rfResBean.getOpenid() + "_token", rfResBean.getAccess_token());
+                    SpringRedisUtil.save(rfResBean.getOpenid() + "_rftoken", rfResBean.getRefresh_token());
                 }
-
+                log.info("跳转目标页面,targetUrl:" + rp.getSurl());
                 // 跳转目标页面;
                 return createRedirectRes(rp.getSurl());
             } catch (Exception e) {
@@ -245,12 +266,14 @@ public class VerifyController extends BaseController {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
+        String stateStr = MD5Utils.encrypt(state);
+        session.setAttribute(stateStr, state);
         String redirect_url = WxConstants.URL_AUTH
                 + "?appid=" + WxConstants.APPID
                 + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
                 + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
                 + "&scope=" + WxConstants.SCOPE_AUTH_USRINFO
-                + "&state=" + state
+                + "&state=" + stateStr
                 + WxConstants.TAILSTR_AUTH;
 
         // 向微信获取授权code

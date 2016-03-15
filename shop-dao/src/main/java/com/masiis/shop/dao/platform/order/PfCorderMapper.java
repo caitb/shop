@@ -11,29 +11,22 @@ import java.util.List;
  * Created by 49134 on 2016/3/3.
  */
 public interface PfCorderMapper {
+
+
+    PfCorder selectById(Long id);
+
+    List<PfCorder> selectByCondition(PfCorder pfCorder);
+
+    PfCorder selectByOrderCode(String orderCode);
+
     /**
      * 添加一条记录
      * @param pfCorder
      */
     void insert(PfCorder pfCorder);
 
-    /**
-     * 根据id更新一条记录
-     * @param pfUserTrial
-    void updateById(@Param("pfUserTrial") PfUserTrial pfUserTrial);
+    void updateById(PfCorder pfCorder);
 
-    *//**
-     * 根据id删除一条记录
-     * @param
-     *//*
-    void deleteById(@Param("id") Long id);
+    void deleteById(Long id);
 
-    void reason(@Param("pfUserTrial") PfUserTrial pfUserTrial);*/
-
-    List<PfCorder> selectAll();
-    List<PfCorder> queryPfCorderByParam(@Param("pfCorder") PfCorder pfCorder);
-
-    void insertPfCorderOperationLog(@Param("pcol")PfCorderOperationLog pcol);
-
-    PfCorder selectByOrderCode(String orderCode);
 }

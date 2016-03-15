@@ -9,6 +9,7 @@ import com.masiis.shop.admin.service.order.PfUserTrialService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.SfUserRelationService;
+import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,7 +95,7 @@ public class PfUserTrialController extends BaseController {
 
         pfCorder.setCreateTime(new Date());
         pfCorder.setCreateMan(pfUserTrial.getId());
-        pfCorder.setOrderCode("00000");
+        pfCorder.setOrderCode(OrderMakeUtils.makeOrder("C"));
         pfCorder.setOrderType(0);
         pfCorder.setSkuId(pfUserTrial.getSkuId());
         pfCorder.setUserId(pfUserTrial.getUserId());
@@ -118,7 +119,7 @@ public class PfUserTrialController extends BaseController {
 
     @RequestMapping("/detail.shtml")
     public String detail(){
-        return "order/detail";
+        return "user/partner";
     }
 
     @RequestMapping("reason")

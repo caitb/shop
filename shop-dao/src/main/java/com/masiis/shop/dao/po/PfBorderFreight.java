@@ -25,7 +25,7 @@ public class PfBorderFreight {
     /**
      * 订单id
      */
-    private Long pfCorderId;
+    private Long pfBorderId;
     /**
      * 配送商id
      */
@@ -42,37 +42,48 @@ public class PfBorderFreight {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public Long getPfCorderId() {
-        return pfCorderId;
+
+    public Long getPfBorderId() {
+        return pfBorderId;
     }
-    public void setPfCorderId(Long pfCorderId) {
-        this.pfCorderId = pfCorderId;
+
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
+
     public Integer getShipManId() {
         return shipManId;
     }
+
     public void setShipManId(Integer shipManId) {
         this.shipManId = shipManId;
     }
+
     public String getShipManName() {
         return shipManName;
     }
+
     public void setShipManName(String shipManName) {
-        this.shipManName = shipManName == null ? null : shipManName.trim();
+        this.shipManName = shipManName;
     }
+
     public String getFreight() {
         return freight;
     }
+
     public void setFreight(String freight) {
-        this.freight = freight == null ? null : freight.trim();
+        this.freight = freight;
     }
 }

@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
-    <script src="<%=path%>/static/js/address.js"></script>
 </head>
 <script>
     function saveAddress(){
@@ -39,28 +38,31 @@
                       <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>新建收货地址</p>            
                    </header>
-                    <div class="sf">
+               <h4 class="tishi">姓名格式有误</h4>
+               <div id="d_box">
+                   <p class="sf">
                         收货人姓名
-                        <input type="text" id="name">
-                    </div>
-                    <div class="sf">
+                        <input type="text"  class="name" id="name">
+                   </p>
+                   <p class="sf">
                         手机号码
-                        <input type="tel" id="phone">
-                    </div>
-                    <div class="sf">
+                        <input type="tel" class="tel" id="phone">
+                   </p>
+                   <p class="sf">
                         邮政编码
                         <input type="tel" id="postcode">
-                    </div>
+                   </p>
                     <div class="address">
                         联系地址
                             <select id="s_province" name="s_province"></select>
                             <select id="s_city" name="s_city" ></select>
                             <select id="s_county" name="s_county"></select>
                     </div>
-                    <div class="sf">
+                   <p class="sf">
                         详细地址
-                        <input type="text" id="detailAddress">
-                    </div>
+                        <input type="text" class="dizhi" id="detailAddress">
+                   </p>
+               </div>
            </div>
            <input type="text" id="operateTypeId" style="display: none" value="save" />
            <a onclick="saveAddress()" class="baocun">
@@ -114,6 +116,16 @@
                $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
            }
        });
+       $skuC3.change(function(){
+           $(".tishi").hide();
+       })
+   </script>
+   <script src="<%=path%>/static/js/xinjiandizhi.js"></script>
+   <script>
+       $("body").on("click",function(){
+           $(".gao").hide();
+       })
+       addressJS.initBlur();
    </script>
 </body>
 </html>

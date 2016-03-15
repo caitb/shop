@@ -44,12 +44,12 @@
         <div id="sec1">
             <section class="sec1">
                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-               <div>
+               <div onclick="toChooseAddressPage()" >
                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                        </span><img onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
+                        </span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
             </section>
         </div>
@@ -71,7 +71,7 @@
         </section>
         <section class="sec4">
             <p>合计：<span>${product.shipAmount}</span></p>
-            <p>运费：<b>到付</b></p>
+            <p>运费：<b>${product.shipAmount}</b></p>
             <p>需付：<span>￥${product.shipAmount}</span></p>
         </section>
         <a href="javascript:;" class="weixin">微信支付</a>

@@ -3,19 +3,13 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-15 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * 平台代理订单表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class PfBorder {
 
     private Long id;
@@ -88,17 +82,17 @@ public class PfBorder {
      */
     private String shipManName;
     /**
+     * 配送类型
+     */
+    private Integer shipType;
+    /**
      * 发货时间
      */
-    private Date deliveryTime;
+    private Date shipTime;
     /**
      * 配送备注，只工作日送货、都可送货
      */
     private String shipRemark;
-    /**
-     * 换货订单号
-     */
-    private Long replaceOrderId;
     /**
      * 订单状态
      */
@@ -127,6 +121,10 @@ public class PfBorder {
      * 确认收货时间
      */
     private Date receiptTime;
+    /**
+     * 换货订单号
+     */
+    private Long replaceOrderId;
     /**
      * 备注
      */
@@ -240,23 +238,23 @@ public class PfBorder {
     public void setShipManName(String shipManName) {
         this.shipManName = shipManName == null ? null : shipManName.trim();
     }
-    public Date getDeliveryTime() {
-        return deliveryTime;
+    public Integer getShipType() {
+        return shipType;
     }
-    public void setDeliveryTime(Date deliveryTime) {
-        this.deliveryTime = deliveryTime;
+    public void setShipType(Integer shipType) {
+        this.shipType = shipType;
+    }
+    public Date getShipTime() {
+        return shipTime;
+    }
+    public void setShipTime(Date shipTime) {
+        this.shipTime = shipTime;
     }
     public String getShipRemark() {
         return shipRemark;
     }
     public void setShipRemark(String shipRemark) {
         this.shipRemark = shipRemark == null ? null : shipRemark.trim();
-    }
-    public Long getReplaceOrderId() {
-        return replaceOrderId;
-    }
-    public void setReplaceOrderId(Long replaceOrderId) {
-        this.replaceOrderId = replaceOrderId;
     }
     public Integer getOrderStatus() {
         return orderStatus;
@@ -299,6 +297,12 @@ public class PfBorder {
     }
     public void setReceiptTime(Date receiptTime) {
         this.receiptTime = receiptTime;
+    }
+    public Long getReplaceOrderId() {
+        return replaceOrderId;
+    }
+    public void setReplaceOrderId(Long replaceOrderId) {
+        this.replaceOrderId = replaceOrderId;
     }
     public String getRemark() {
         return remark;

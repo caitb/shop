@@ -183,9 +183,6 @@ public class BOrderController extends BaseController {
             if (StringUtils.isBlank(weixinId)) {
                 throw new BusinessException("微信号不能为空");
             }
-            if (StringUtils.isBlank(parentMobile)) {
-                throw new BusinessException("上级手机号不能为空");
-            }
             if (StringUtils.isBlank(skuName)) {
                 throw new BusinessException("商品名称不能为空");
             }
@@ -201,54 +198,26 @@ public class BOrderController extends BaseController {
             if (!MobileMessageUtil.getIdentifyingCode(mobile).equals(yanzhengma)) {
                 throw new BusinessException("验证码错误");
             }
+            if (StringUtils.isNotBlank(parentMobile)) {
+                ComUser pUser = userService.getUserByMobile(parentMobile);
+                if (pUser == null) {
+                    throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册");
+                } else {
+                    PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+                    if (pfUserSku == null) {
+                        throw new BusinessException("您的推荐人还未代理此款商品");
+                    } else {
+                        if (pfUserSku.getAgentLevelId() >= levelId) {
+                            throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
+                        }
+                    }
+                }
+            }
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
             object.put("message", ex.getMessage());
         }
-        //ComUser comUser = userService.getUserByMobile(mobile);
-//        if (StringUtils.isNotBlank(mobile)) {
-//            if (comUser != null) {
-//                MemberProduct memberProduct = memberProductService.findByProIdAndMemId(pro.getId(), tjMember.getId());
-//                if (memberProduct != null) {
-//                    if (agenLevel.getLevel() == 1 && memberProduct.getLevel() != 0 && memberProduct.getLevel() != 1) {
-//                        object.put("code", "0");
-//                        object.put("msg", "您选择的是AAA合伙人，请填写正确的推荐人手机号，若不知道推荐人电话，请联系4009669889");
-//                        return object.toString();
-//                    }
-//                    if (agenLevel.getLevel() < memberProduct.getLevel()) {
-//                        object.put("code", "0");
-//                        object.put("msg", "您的代理等级只能小于或等于您的推荐人代理等级");
-//                        return object.toString();
-//                    }
-//                } else {
-//                    object.put("code", "0");
-//                    object.put("msg", "您的推荐人商品信息有误");
-//                    return object.toString();
-//                }
-//                mp.setParentMemberId(tjMember.getId());
-//            } else {
-//                object.put("code", "0");
-//                object.put("msg", "您的推荐人还未注册，请联系您的推荐人先注册");
-//            }
-//        } else {
-//            object.put("code", "0");
-//            object.put("msg", "请您填写推荐人电话");
-//        }
-
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("platform/order/zhuce2");
-//        modelAndView.addObject("name", name);
-//        modelAndView.addObject("mobile", mobile);
-//        modelAndView.addObject("weixinId", weixinId);
-//        modelAndView.addObject("parentMobile", parentMobile);
-//        modelAndView.addObject("skuName", skuName);
-//        modelAndView.addObject("levelId", levelId);
-//        modelAndView.addObject("levelName", levelName);
-//        modelAndView.addObject("amount", amount);
-//        if(comUser!=null){
-//            modelAndView.addObject("pName", comUser.getRealName());
-//        }
         return object.toJSONString();
     }
 
@@ -310,6 +279,31 @@ public class BOrderController extends BaseController {
                                             @RequestParam(value = "parentUserId", required = true) Long parentUserId) {
         JSONObject obj = new JSONObject();
         try {
+            if (StringUtils.isBlank(realName)) {
+                throw new BusinessException("名称不能为空");
+            }
+            if (StringUtils.isBlank(mobile)) {
+                throw new BusinessException("手机号不能为空");
+            }
+            if (StringUtils.isBlank(weixinId)) {
+                throw new BusinessException("微信号不能为空");
+            }
+            if (levelId <= 0) {
+                throw new BusinessException("代理等级有误");
+            }
+            ComUser pUser = userService.getUserById(parentUserId);
+            if (pUser == null) {
+                throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册");
+            } else {
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+                if (pfUserSku == null) {
+                    throw new BusinessException("您的推荐人还未代理此款商品");
+                } else {
+                    if (pfUserSku.getAgentLevelId() >= levelId) {
+                        throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
+                    }
+                }
+            }
             //处理用户数据
             ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
             comUser.setRealName(realName);
@@ -334,8 +328,9 @@ public class BOrderController extends BaseController {
             order.setReceivableAmount(totalPrice);
             order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
             order.setProductAmount(totalPrice);
-            order.setShipAmount(new BigDecimal(0));
-            order.setPayAmount(new BigDecimal(0));
+            order.setShipAmount(BigDecimal.ZERO);
+            order.setPayAmount(BigDecimal.ZERO);
+            order.setShipType(0);
             order.setOrderStatus(0);
             order.setShipStatus(0);
             order.setPayStatus(0);
@@ -377,7 +372,7 @@ public class BOrderController extends BaseController {
         } catch (Exception ex) {
             log.error(ex.getMessage());
             obj.put("isError", true);
-            obj.put("message", "添加订单失败");
+            obj.put("message", ex.getMessage());
         }
         return obj.toJSONString();
     }

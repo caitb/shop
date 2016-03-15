@@ -164,7 +164,7 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.pfBorderConsignee && row.pfBorderConsignee.consignee){
+                                                    if(row.pfCorderConsignee && row.pfCorderConsignee.consignee){
                                                         return row.pfCorderConsignee.consignee;
                                                     }
                                                 }
@@ -180,27 +180,13 @@
                                                 }
                                             },
                                             {
-                                                field: 'pv',
-                                                title: '订单商品',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'age',
-                                                title: '商品数量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
                                                 field: 'upTime',
                                                 title: '订单金额',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.pfCorder.productAmount;
+                                                    return row.pfCorder.orderAmount;
                                                 }
                                             },
                                             {
@@ -220,22 +206,22 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 0){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 0){
                                                         return '未处理';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 1){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 1){
                                                         return '已付款';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 2){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 2){
                                                         return '已取消';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 3){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 3){
                                                         return '已完成';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 4){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 4){
                                                         return '退款中';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 5){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 5){
                                                         return '已退款';
                                                     }
                                                 }
@@ -245,7 +231,12 @@
                                                 title: '支付方式',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.pfCorderPayment && row.pfCorderPayment.payTypeName){
+                                                        return row.pfCorderPayment.payTypeName;
+                                                    }
+                                                }
                                             },
                                             {
                                                 field: 'payStatus',
@@ -254,10 +245,10 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 0){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 0){
                                                         return '待付款';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.orderStatus == 1){
+                                                    if(row.pfCorder && row.pfCorder.orderStatus == 1){
                                                         return '已付款';
                                                     }
                                                 }
@@ -269,20 +260,23 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.pfBorder && row.pfCorder.shipStatus == 0){
+                                                    if(row.pfCorder && row.pfCorder.shipStatus == 0){
                                                         return '未发货';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.shipStatus == 1){
+                                                    if(row.pfCorder && row.pfCorder.shipStatus == 1){
                                                         return '已发货';
                                                     }
-                                                    if(row.pfBorder && row.pfCorder.shipStatus == 2){
+                                                    if(row.pfCorder && row.pfCorder.shipStatus == 2){
                                                         return '已收货';
                                                     }
                                                 }
                                             },
                                             {
                                                 title: '操作项',
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return '<a href="<%=basePath%>order/corder/detail.shtml?corderId='+ row.pfCorder.id +'">查看</a>';
+                                                }
                                             }
                                         ]
                                     ]

@@ -1,10 +1,12 @@
 package com.masiis.shop.admin.controller.order;
 
+import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.COrderService;
 import com.masiis.shop.dao.po.PfCorder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -36,5 +38,17 @@ public class PfCorderController {
         Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
 
         return pageMap;
+    }
+
+    @RequestMapping("detail.shtml")
+    public ModelAndView detail(HttpServletRequest request, HttpServletResponse response, Long corderId){
+
+        ModelAndView mav = new ModelAndView("order/corder/detail");
+
+        Order order = cOrderService.find(corderId);
+
+        mav.addObject("order", order);
+
+        return mav;
     }
 }

@@ -22,12 +22,5 @@ public interface PfBorderMapper {
     int updateByPrimaryKey(PfBorder record);
 
     PfBorder selectByOrderCode(String orderId);
-
-
-    /**
-     * 根据条件查询记录
-     * @param pfBorder
-     * @return
-     */
-    List<PfBorder> selectByCondition(PfBorder pfBorder);
+    List<PfBorder> selectByUserId(Long userId);
 }

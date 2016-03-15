@@ -208,12 +208,16 @@
                 $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
                 $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
                 $("#userSkuId").val(data["certificateInfo"].id);
-                var comUserList = {upperList:data["certificateInfo"].comUserList};
-                $("#userList").val(comUserList);
                 //option属性
-                $.each(data["certificateInfo"].comUserList,function(index,value){
-                    $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
-                });
+                if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
+                    var comUserList = {upperList:data["certificateInfo"].comUserList};
+                    $("#userList").val(comUserList);
+                    $.each(data["certificateInfo"].comUserList,function(index,value){
+                        $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                    });
+                }else{
+                    $("#userSubmit").attr("disabled", true);
+                }
                 $('#myModal').modal({
                     show: true,
                     backdrop: true

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
@@ -20,10 +21,13 @@ import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +36,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
+import java.util.Date;
 
 /**
  * Created by lzh on 2016/3/9.
@@ -46,7 +51,7 @@ public class WxPayController extends BaseController{
     @Resource
     private UserService userService;
 
-    @RequestMapping("/wtpay")
+    @RequestMapping(value = "/wtpay", method = RequestMethod.POST)
     public String wxpayPage(HttpServletRequest request, String param) {
         String ip = getIpAddr(request);
         WxPaySysParamReq req = null;
@@ -57,6 +62,7 @@ public class WxPayController extends BaseController{
                 throw new BusinessException("参数错误,param为空!");
             }
             req = JSONObject.parseObject(param, WxPaySysParamReq.class);
+
             if(req == null
                     || StringUtils.isBlank(req.getOrderId())
                     || StringUtils.isBlank(req.getSign())
@@ -84,6 +90,7 @@ public class WxPayController extends BaseController{
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         // 生成预付订单参数签名
         String res = null;
+        UnifiedOrderRes resObj = null;
         try {
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
@@ -91,7 +98,7 @@ public class WxPayController extends BaseController{
             log.info("wxpayPage:下预付单响应成功,response:" + res);
 
             xStream.processAnnotations(UnifiedOrderRes.class);
-            UnifiedOrderRes resObj = (UnifiedOrderRes) xStream.fromXML(res);
+            resObj = (UnifiedOrderRes) xStream.fromXML(res);
             if(resObj == null || StringUtils.isBlank(resObj.getReturn_code())){
                 throw new BusinessException("网络错误");
             }
@@ -106,20 +113,26 @@ public class WxPayController extends BaseController{
             // 预付单下单成功
             log.info("wxpayPage:预付单下单成功");
             // 创建支付记录
-            if("B".equals(String.valueOf(uniOrder.getOut_trade_no().charAt(0)))){
-
-            }
+            wxPayService.createPaymentRecord(uniOrder, resObj);
         } catch (Exception e) {
             log.error("wxpayPage:下预付单失败," + e.getMessage());
+            // 预付单下单失败处理
         }
 
+        BrandWCPayReq payReq = new BrandWCPayReq();
         // 组织微信支付请求参数,并形成签名
-
+        payReq.setAppId(WxConstants.APPID);
+        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
+        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
+        payReq.setSignType("MD5");
+        payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
+        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
         // 获取成功支付后的跳转页面url
-
-
+        request.setAttribute("req", payReq);
+        request.setAttribute("successUrl", req.getSuccessUrl());
+        request.setAttribute("cancelUrl", "");
+        request.setAttribute("errUrl", "");
         /*////// 检查jsapi_ticket和access_token有效性,次access_token不是微信网页授权access_token
-
         ////// 组织页面wx.config参数,并形成签名
         发现可以不用这种方式实现*/
         return "pay/wxpay/wxpayPage";

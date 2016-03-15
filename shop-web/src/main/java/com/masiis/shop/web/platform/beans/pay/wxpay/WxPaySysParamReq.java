@@ -13,6 +13,7 @@ public class WxPaySysParamReq {
     private String sign;
     private String nonceStr;
     private String signType;
+    private String successUrl;
 
     public String getOrderId() {
         return orderId;
@@ -44,5 +45,13 @@ public class WxPaySysParamReq {
 
     public void setSignType(String signType) {
         this.signType = signType;
+    }
+
+    public String getSuccessUrl() {
+        return successUrl;
+    }
+
+    public void setSuccessUrl(String successUrl) {
+        this.successUrl = successUrl;
     }
 }

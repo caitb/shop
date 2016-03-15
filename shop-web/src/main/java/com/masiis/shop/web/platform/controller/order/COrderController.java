@@ -4,15 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.dao.po.PfCorder;
-import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
+import com.masiis.shop.web.platform.service.order.PfUserTrialService;
 import com.masiis.shop.web.platform.service.product.ProductService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +17,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +37,10 @@ public class COrderController extends BaseController {
     @Resource
     private ProductService productService;
     @Resource
-    private UserAddressService userAddressService;
-    @Resource
     private UserService userService;
+    @Resource
+    private PfUserTrialService trialService;
+
 
     /**
      *
@@ -148,50 +144,88 @@ public class COrderController extends BaseController {
             if (StringUtils.isEmpty(wechat)){
 
             }
-            ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
-            if (comUser==null){
-                comUser = new ComUser();
-                comUser.setId(1L);
-            }
-            comUser =userService.getUserById(comUser.getId());
-            comUser.setWxId(wechat);
-            comUser.setRealName(name);
-            comUser.setMobile(phone);
-            if (comUser.getCreateTime()==null){
-                comUser.setCreateTime(new Date());
-            }
-            if (StringUtils.isEmpty(comUser.getOpenid())){
-                comUser.setOpenid("openid");
-            }
-            if (StringUtils.isEmpty(comUser.getAccessToken())){
-                comUser.setAccessToken("accessToken");
-            }
-            if (StringUtils.isEmpty(comUser.getRefreshToken())){
-                comUser.setRefreshToken("refreshToken");
-            }
-            if (StringUtils.isEmpty(comUser.getAtokenExpire())){
-                comUser.setAtokenExpire(new Date());
-            }
-            if (StringUtils.isEmpty(comUser.getRtokenExpire())){
-                comUser.setRtokenExpire(new Date());
-            }
-            PfUserTrial pfUserTrial = new PfUserTrial();
-            pfUserTrial.setUserId(comUser.getId());
-            pfUserTrial.setSkuId(skuId);
-            pfUserTrial.setSpuId(spuId);
-            pfUserTrial.setStatus(0);
-            pfUserTrial.setReason(applyReason);
-            pfUserTrial.setName(name);
-            pfUserTrial.setMobile(phone);
-            pfUserTrial.setWeixinId(wechat);
-            pfUserTrial.setCreateTime(new Date());
-            cOrderService.trialApplyService(comUser,pfUserTrial);
+            ComUser comUser = initComUserParamData(request, wechat, name, phone);
+            PfCorder pfCorder =  initPfCorderParamData(comUser.getId(),skuId);
+            PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
+            trialService.insert(pfCorder,pfCorderOperationLog,comUser);
         }catch (Exception e){
             e.printStackTrace();
         }
         return "success";
     }
 
+    /**
+     * 生成用户初始化数据
+     * @author hanzengzhi
+     * @date 2016/3/15 10:54
+     */
+    private ComUser initComUserParamData( HttpServletRequest request,
+                                          String wechat,String name,String phone)throws Exception{
+        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+        if (comUser==null){
+            comUser = new ComUser();
+            comUser.setId(1L);
+        }
+        comUser =userService.getUserById(comUser.getId());
+        comUser.setWxId(wechat);
+        comUser.setRealName(name);
+        comUser.setMobile(phone);
+        if (comUser.getCreateTime()==null){
+            comUser.setCreateTime(new Date());
+        }
+        if (StringUtils.isEmpty(comUser.getOpenid())){
+            comUser.setOpenid("openid");
+        }
+        if (StringUtils.isEmpty(comUser.getAccessToken())){
+            comUser.setAccessToken("accessToken");
+        }
+        if (StringUtils.isEmpty(comUser.getRefreshToken())){
+            comUser.setRefreshToken("refreshToken");
+        }
+        if (StringUtils.isEmpty(comUser.getAtokenExpire())){
+            comUser.setAtokenExpire(new Date());
+        }
+        if (StringUtils.isEmpty(comUser.getRtokenExpire())){
+            comUser.setRtokenExpire(new Date());
+        }
+        return comUser;
+    }
+
+    /**
+     * 初始化订单参数数据
+     * @author hanzengzhi
+     * @date 2016/3/15 10:47
+     */
+    private PfCorder initPfCorderParamData(Long userId,Integer skuId){
+        SfUserRelation sfUserRelation =  trialService.findPidById(userId);
+        //生成试用订单
+        PfCorder pfCorder = new PfCorder();
+        pfCorder.setCreateTime(new Date());
+        pfCorder.setOrderCode("00000");
+        pfCorder.setOrderType(0);
+        pfCorder.setSkuId(skuId);
+        pfCorder.setUserId(userId);
+        if (sfUserRelation!=null){
+            pfCorder.setUserPid(sfUserRelation.getParentUserId());
+        }
+        pfCorder.setUserMassage("");
+        pfCorder.setSupplierId(0);
+        pfCorder.setCreateMan(userId);
+        return pfCorder;
+    }
+    /**
+     * 初始化pfcorderOperation日志表
+     * @author hanzengzhi
+     * @date 2016/3/15 10:38
+     */
+    private PfCorderOperationLog initPfCorderOperationLog(ComUser comUser){
+        //生成试用日志
+        PfCorderOperationLog pcol = new PfCorderOperationLog();
+        pcol.setCreateTime(new Date());
+        pcol.setCreateMan(comUser.getId());
+        pcol.setPfCorderStatus(0);
+        return pcol;
+    }
     /**
      * 确认订单
      * @author  hanzengzhi

@@ -3,12 +3,9 @@ package com.masiis.shop.admin.service.order;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
-import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
+import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,7 +25,13 @@ public class BOrderService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
+    private PfBorderPaymentMapper pfBorderPaymentMapper;
+    @Resource
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
+    @Resource
+    private PfBorderFreightMapper pfBorderFreightMapper;
+    @Resource
+    private PfBorderItemMapper pfBorderItemMapper;
 
     /**
      * 根据条件查询记录
@@ -60,5 +63,27 @@ public class BOrderService {
         pageMap.put("rows", orders);
 
         return pageMap;
+    }
+
+    /**
+     * 获取订单明细
+     * @param id
+     * @return
+     */
+    public Order find(Long id){
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(id);
+        PfBorderPayment pfBorderPayment = pfBorderPaymentMapper.selectByBorderId(id);
+        PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(id);
+        List<PfBorderFreight> pfBorderFreights = pfBorderFreightMapper.selectByBorderId(id);
+        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(id);
+
+        Order order = new Order();
+        order.setPfBorder(pfBorder);
+        order.setPfBorderPayment(pfBorderPayment);
+        order.setPfBorderConsignee(pfBorderConsignee);
+        order.setPfBorderFreights(pfBorderFreights);
+        order.setPfBorderItems(pfBorderItems);
+
+        return order;
     }
 }

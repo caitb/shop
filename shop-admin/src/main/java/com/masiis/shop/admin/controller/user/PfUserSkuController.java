@@ -110,7 +110,7 @@ public class PfUserSkuController extends BaseController {
             if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
                 String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
                 comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
-                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardFrontUrl());
+                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardBackUrl());
             }
             if (pfUserSkuCertificate!=null){
                 String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());

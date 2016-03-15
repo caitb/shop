@@ -40,6 +40,11 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, pf_corder_id, pf_corder_status, remark
+        from pf_corder_operation_log
+        where pf_corder_id = #{pfCorderId}
+    </select>
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, pf_corder_id, pf_corder_status, remark
         from pf_corder_operation_log

@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSpu;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
@@ -44,7 +45,8 @@ public class IndexController extends BaseController {
         if (comUser != null) {
             request.getSession().setAttribute("comUser", comUser);
         }
-        HttpSession session = request.getSession();
+//        HttpSession session = request.getSession();
+//        ComUser comUser =(ComUser)session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片

@@ -29,7 +29,8 @@
 <div class="wrap">
 
     <header class="xq_header">
-        <a href="javascript :;"onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript :;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                           alt=""></a>
         <p>申请合伙人</p>
     </header>
     <div class="xinxi">
@@ -62,14 +63,23 @@
             <div>
                 <p>微信号：<input type="text" id="weixin" name="weixin" value="${weixinId}"></p>
             </div>
-            <div>
-                <p>上级合伙人电话： <input type="text" class="tel" id="parentMobile" name="parentMobile"
-                                   value="${parentMobile}"></p>
-            </div>
         </section>
         <section class="sec2">
             <h2>合伙人信息</h2>
-            ${agentInfo}
+            <h3>
+                <span>是否有上级合伙人：</span>
+                <input type="radio" id="q" name="danx"/>
+                <label for="q" style="margin-left:5px;" class="shi">是</label>
+                <input type="radio" id="b" name="danx"/>
+                <label for="b" style="margin-left:30px;" class="fou">否</label>
+            </h3>
+            <div id="hehuo">
+                <h3>上级合伙人电话： <input type="text" class="tel" value="${parentMobile}"></h3>
+            </div>
+            <h2 style="text-indent:25px;font-weight:500">合伙人等级：</h2>
+            <div class="dengji">
+                ${agentInfo}
+            </div>
         </section>
         <section class="sec3">
             <p>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfCordersPayment" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfCorderPayment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
+        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
+        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time,  amount, pay_type_id, pay_type_name, is_enabled
+        from pf_corder_payment
+        where pf_corder_id = #{pfCorderId}
+    </select>
+
+</mapper>

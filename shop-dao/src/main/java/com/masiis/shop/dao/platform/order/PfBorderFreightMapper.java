@@ -11,7 +11,17 @@ import com.masiis.shop.dao.po.PfBorderFreight;
 import java.util.List;
 
 public interface PfBorderFreightMapper {
-    int insert(PfBorderFreight record);
 
-    List<PfBorderFreight> selectAll();
+    PfBorderFreight selectById(Long id);
+
+    List<PfBorderFreight> selectByBorderId(Long borderId);
+
+    List<PfBorderFreight> selectByCondition(PfBorderFreight pfBorderFreight);
+
+    int insert(PfBorderFreight pfBorderFreight);
+
+    void updateById(PfBorderFreight pfBorderFreight);
+
+    void deleteById(Long id);
+
 }

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderFreightMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderFreight" >
+        <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="ship_man_id" property="shipManId" jdbcType="INTEGER" />
+        <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR" />
+        <result column="freight" property="freight" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectById" parameterType="Long" resultMap="BaseResultMap" >
+        select
+               id,
+               create_time,
+               pf_border_id,
+               ship_man_id,
+               ship_man_name,
+               freight
+        from
+               pf_border_freight
+        WHERE
+               id = #{id}
+    </select>
+
+    <select id="selectByBorderId" parameterType="Long" resultMap="BaseResultMap" >
+        select
+                id,
+                create_time,
+                pf_border_id,
+                ship_man_id,
+                ship_man_name,
+                freight
+                from
+                pf_border_freight
+        WHERE
+                pf_border_id = #{borderId}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderFreight" resultMap="BaseResultMap" >
+        select
+               id,
+               create_time,
+               pf_border_id,
+               ship_man_id,
+               ship_man_name,
+               freight
+        from
+               pf_border_freight
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderFreight" useGeneratedKeys="true" keyProperty="id" >
+        insert into pf_border_freight
+                    (
+                    id,
+                    create_time,
+                    pf_border_id,
+                    ship_man_id,
+                    ship_man_name,
+                    freight
+                    )
+        values      (
+                    #{id,jdbcType=BIGINT},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{pfBorderId,jdbcType=BIGINT},
+                    #{shipManId,jdbcType=INTEGER},
+                    #{shipManName,jdbcType=VARCHAR},
+                    #{freight,jdbcType=VARCHAR}
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderFreight">
+        UPDATE pf_border_freight
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="pfBorderId != null">
+                pf_border_id = #{pfBorderId},
+            </if>
+            <if test="shipManId != null">
+                ship_man_id = #{shipManId},
+            </if>
+            <if test="shipManName != null">
+                ship_man_name = #{shipManName},
+            </if>
+            <if test="freight != null">
+                freight = #{freight}
+            </if>
+        </set>
+        WHERE
+              id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM pf_border_freight WHERE id = #{id}
+    </delete>
+
+</mapper>

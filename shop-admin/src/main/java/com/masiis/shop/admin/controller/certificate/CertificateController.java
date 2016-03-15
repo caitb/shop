@@ -100,4 +100,12 @@ public class CertificateController {
         }
         return "更改成功";
     }
+
+    @RequestMapping("findById.do")
+    @ResponseBody
+    public String findById(HttpServletRequest request, HttpServletResponse response,Integer id){
+        return  certificateService.findById(id);
+    }
+
+
     }

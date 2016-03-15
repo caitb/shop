@@ -83,9 +83,7 @@ public class WXBeanUtils {
         }
         String result = sb.toString();
         result += "key=" + WxConstants.WX_PAY_SIGN_KEY;
-        log.info("Sign Before MD5:" + result);
         result = MD5Utils.encrypt(result).toUpperCase();
-        log.info("Sign Result:" + result);
         return result;
     }
 

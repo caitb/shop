@@ -87,18 +87,6 @@
                     ${order.pfCorder.orderCode}
                 </td>
             </tr>
-            
-            <tr>
-                <td class="meta-attributes__attr-name">订单状态</td>
-                <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfCorder.orderStatus == 0}">未处理</c:if>
-                    <c:if test="${order.pfCorder.orderStatus == 1}">已付款</c:if>
-                    <c:if test="${order.pfCorder.orderStatus == 2}">已取消</c:if>
-                    <c:if test="${order.pfCorder.orderStatus == 3}">已完成</c:if>
-                    <c:if test="${order.pfCorder.orderStatus == 4}">退款中</c:if>
-                    <c:if test="${order.pfCorder.orderStatus == 5}">已退款</c:if>
-                </td>
-            </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">下单日期</td>
@@ -117,14 +105,14 @@
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfCorderPayment.payTypeId == 1}">微信</c:if>
+                    ${order.pfCorderPayment.payTypeName}
                 </td>
             </tr>
             
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfCorder.shipStatus == 0}">未发货</c:if>
+                    <c:if test="${order.pfCorder.shipStatus == 0}">未发货&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-info" href="">发货</button></c:if>
                     <c:if test="${order.pfCorder.shipStatus == 5}">已发货</c:if>
                     <c:if test="${order.pfCorder.shipStatus == 9}">已收货</c:if>
                 </td>
@@ -146,7 +134,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">发货单号</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorderFreights[0].freight}
                 </td>
             </tr>
             </tbody>
@@ -221,13 +209,13 @@
             <tr>
                 <td class="meta-attributes__attr-name">运费</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorder.orderCode}
+                    ${order.pfCorder.shipAmount}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">商品总金额</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorder.productAmount}
                 </td>
             </tr>
 
@@ -240,13 +228,18 @@
             <tr>
                 <td class="meta-attributes__attr-name">实付金额</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorder.payAmount}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">订单状态</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <c:if test="${order.pfCorder.orderStatus == 0}">未处理</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 1}">已付款</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 2}">已取消</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 3}">已完成</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 4}">退款中</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 5}">已退款</c:if>
                 </td>
             </tr>
             </tbody>

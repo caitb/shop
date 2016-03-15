@@ -45,6 +45,10 @@ public class PfBorderPayment {
      * 外部订单号
      */
     private String outOrderId;
+    /**
+     * 外部预付单订单号
+     */
+    private String outPrepayId;
 
     public Long getId() {
         return id;
@@ -99,5 +103,13 @@ public class PfBorderPayment {
     }
     public void setOutOrderId(String outOrderId) {
         this.outOrderId = outOrderId == null ? null : outOrderId.trim();
+    }
+
+    public String getOutPrepayId() {
+        return outPrepayId;
+    }
+
+    public void setOutPrepayId(String outPrepayId) {
+        this.outPrepayId = outPrepayId;
     }
 }

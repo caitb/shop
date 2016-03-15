@@ -23,6 +23,7 @@ public interface PfBorderMapper {
     int updateByPrimaryKey(PfBorder record);
 
     PfBorder selectByOrderCode(String orderId);
+
     List<PfBorder> selectByUserId(Long userId);
 
     List<PfBorder> selectByCondition(PfBorder record);

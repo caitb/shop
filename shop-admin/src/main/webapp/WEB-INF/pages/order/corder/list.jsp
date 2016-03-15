@@ -273,7 +273,10 @@
                                             },
                                             {
                                                 title: '操作项',
-                                                align: 'center'
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return '<a href="<%=basePath%>order/corder/detail.shtml?corderId='+ row.pfCorder.id +'">查看</a>';
+                                                }
                                             }
                                         ]
                                     ]

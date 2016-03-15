@@ -180,20 +180,6 @@
                                                 }
                                             },
                                             {
-                                                field: 'pv',
-                                                title: '订单商品',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'age',
-                                                title: '商品数量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
                                                 field: 'upTime',
                                                 title: '订单金额',
                                                 sortable: true,
@@ -282,8 +268,11 @@
                                             },
                                             {
                                                 title: '操作项',
-                                                align: 'center'
-                                            }
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return '<a href="<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id +'">查看</a>';
+                                                }
+                                            },
                                         ]
                                     ]
                                 });

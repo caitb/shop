@@ -63,4 +63,28 @@ public class COrderService extends BaseService {
 
         return pageMap;
     }
+
+    /**
+     * 获取订单明细
+     * @param id
+     * @return
+     */
+    public Order find(Long id){
+        PfCorder pfCorder = pfCorderMapper.selectById(id);
+        PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(id);
+        PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(id);
+        List<PfCorderFreight> pfCorderFreights = pfCorderFreightMapper.selectByCorderId(id);
+
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfCorder.getUserId());
+
+        Order order = new Order();
+        order.setPfCorder(pfCorder);
+        order.setPfCorderPayment(pfCorderPayment);
+        order.setPfCorderConsignee(pfCorderConsignee);
+        order.setPfCorderFreights(pfCorderFreights);
+
+        order.setComUser(comUser);
+
+        return order;
+    }
 }

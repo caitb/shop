@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfCorder;
+
 import java.util.List;
 
 public interface PfBorderMapper {
@@ -23,4 +25,7 @@ public interface PfBorderMapper {
 
     PfBorder selectByOrderCode(String orderId);
     List<PfBorder> selectByUserId(Long userId);
+
+    List<PfBorder> selectByCondition(PfBorder pfBorder);
+
 }

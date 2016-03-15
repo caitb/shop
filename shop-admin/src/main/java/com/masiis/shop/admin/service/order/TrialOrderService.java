@@ -28,7 +28,7 @@ public class TrialOrderService {
     private PfCordersPayment pfCordersPayment;
 
     public List<PfCorder> queryAll() {
-        return pfCorderMapper.selectAll();
+        return pfCorderMapper.selectByCondition(new PfCorder());
     }
 
     public PfCorderConsignee findPfCorderConsignee(Long pfCorderId){

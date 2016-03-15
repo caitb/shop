@@ -138,8 +138,8 @@
                                         ],
                                         [
                                             {
-                                                field: 'skuName',
-                                                title: '商品名称',
+                                                field: 'pfCorder.orderCode',
+                                                title: '订单号',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
@@ -149,8 +149,52 @@
                                                 }
                                             },
                                             {
-                                                field: 'categoryName',
-                                                title: '商品分类',
+                                                field: 'pfCorder.createTime',
+                                                title: '订单日期',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comSku.name;
+                                                }
+                                            },
+                                            {
+                                                field: 'consigneeName',
+                                                title: '收货人',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comSku.name;
+                                                }
+                                            },
+                                            {
+                                                field: 'UserName',
+                                                title: '购买人',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comSku.name;
+                                            }
+                                        },
+                                            {
+                                                field: 'pfCorder.trialOrder',
+                                                title: '订单金额',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    return row.comSku.name;
+                                                }
+                                            },
+                                            {
+                                                field: 'pfCorder.payAmount',
+                                                title: '实付金额',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
@@ -161,8 +205,8 @@
                                                 }
                                             },
                                             {
-                                                field: 'priceRetail',
-                                                title: '零售价',
+                                                field: 'pfCorder.orderStatus',
+                                                title: '订单状态',
                                                 footerFormatter: totalNameFormatter,
                                                 formatter: function (value, row, index) {
                                                     return row.comSku.priceRetail;
@@ -170,8 +214,8 @@
                                                 align: 'center'
                                             },
                                             {
-                                                field: 'store',
-                                                title: '库存',
+                                                field: 'pfCorder.payStatus',
+                                                title: '支付方式',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
@@ -182,28 +226,14 @@
                                                 }
                                             },
                                             {
-                                                field: 'pv',
-                                                title: '浏览量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'age',
-                                                title: '销售量',
-                                                sortable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center'
-                                            },
-                                            {
-                                                field: 'upTime',
-                                                title: '上架时间',
+                                                field: 'pfCorderPayment.payTypeName',
+                                                title: '支付状态',
                                                 sortable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    if(row.comSpu && row.comSpu.upTime){
-                                                        return new Date(row.comSpu.upTime).pattern('yyyy-MM-dd HH:mm:ss');
+                                                    if(row.pfSkuStock){
+                                                        return row.pfSkuStock.stock;
                                                     }
                                                 }
                                             },

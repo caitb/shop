@@ -1,5 +1,6 @@
 package com.masiis.shop.dao.platform.order;
 
+import com.masiis.shop.dao.po.PfCorderConsignee;
 import com.masiis.shop.dao.po.PfCorderOperationLog;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,4 +10,5 @@ import org.apache.ibatis.annotations.Param;
 public interface PfCorderOperationLogMapper {
 
     void insert(@Param("pcol") PfCorderOperationLog pcol);
+    PfCorderConsignee selectByKey(Long pfCorderId);
 }

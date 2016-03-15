@@ -22,7 +22,7 @@
     <div class="wrap">
 
        <header class="xq_header">
-                  <a href="bangding.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                  <a href="bangding.jsp"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>申请合伙人</p>            
             </header>
             <div class="drap">

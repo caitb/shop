@@ -1,19 +1,39 @@
-$(".name").on("blur",function(){
-                    if ($(this).val()=="")
-                    {                        
-                        $(this).parents("p").addClass("pon");
-                        $(this).css({"color":"#F74A11"})
+/*$(".tel").on("blur",function(){
+
+    if ($(".tel").val()==""){
+                        $(".tishi").show().html("手机号输入有误")
                         return false;
                     }
-                    if (!isCardName($(this).val()))
-                    {                        
-                        $(this).parents("p").addClass("pon");
-                        $(this).css({"color":"#F74A11"})
+                    if (!isMobile($(this).val()))
+                    {
+                        $(".tishi").show().html("手机号输入有误")
                         return false;
+                    }
+                    function isMobile(s){
+                        var patrn=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                        if(!patrn.exec(s))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+})*/
+
+$("#ce").on("click",function(){
+                    if ($(".name").val()==""){                        
+                        $(".tishi").show().html("姓名不能为空");
+                        $(".name").focus();
+                        return false;
+                    }
+                    if (!isCardName($(".name").val())){                        
+                         $(".tishi").show().html("姓名格式错误")
+                         $(".name").focus().css("color","red");
+                        return false;
+                    }else{
+                       $(".tishi").hide();
                     }
                 //检验汉字
-                        function isChinese(s) 
-                    {
+                    function isChinese(s){
                         var patrn = /^\s*[\u4e00-\u9fa5]{1,15}\s*$/;
                         if(!patrn.exec(s))
                         {
@@ -23,8 +43,7 @@ $(".name").on("blur",function(){
                     }
 
                     //检验姓名：姓名是2-15字的汉字
-                    function isCardName(s) 
-                    {
+                    function isCardName(s){
                         var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/; 
                         if(!patrn.exec(s))
                         {
@@ -32,7 +51,33 @@ $(".name").on("blur",function(){
                         }
                         return true;
                     }
+    
+    
+         if ($(".tel").val()==""){
+                            $(".tishi").show().html("手机号不能为空")
+                            $(".tel").focus();
+                            return false;
+                        }
+                        if (!isMobile($(this).val()))
+                        {
+                            $(".tishi").show().html("手机号输入有误")
+                            $(".tel").focus();
+                            $(".name").focus().css("color","red");
+                            return false;
+                        }else{
+                            $(".tishi").hide()
+                        }
+                        function isMobile(s){
+                            var patrn=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                            if(!patrn.exec(s))
+                            {
+                                return false;
+                            }
+                            return true;
+                        }
 })
+
+
 $(".yan").on("blur",function(){
         if ($(this).val()=="")
                     {                        
@@ -85,32 +130,9 @@ $(".yan").on("blur",function(){
     }
 }*/
 //手机验证
-$(".tel").on("blur",function(){
 
-    if ($(this).val()=="")
-                    {
-                        $(this).parents("p").addClass("pon");
-                        $(this).css({"color":"#F74A11"})
-                        return false;
-                    }
-
-                    if (!isMobile($(this).val()))
-                    {
-                        $(this).parents("p").addClass("pon");
-                        $(this).css({"color":"#F74A11"})
-                        return false;
-                    }
-                    function isMobile(s){
-                        var patrn=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
-                        if(!patrn.exec(s))
-                        {
-                            return false;
-                        }
-                        return true;
-                    }
-
-})
 $("input").on("focus",function(){
-     $(this).parents("p").removeClass();
-    $(this).val("").css("color","#333")
+     $(this).parents("p").removeClass("pon");
+    $(".no").hide();
+    $(this).css("color","#333333")
 })

@@ -30,6 +30,7 @@ public interface PfCorderMapper {
 
     void reason(@Param("pfUserTrial") PfUserTrial pfUserTrial);*/
 
+    List<PfCorder> selectAll();
     List<PfCorder> queryPfCorderByParam(@Param("pfCorder") PfCorder pfCorder);
 
     void insertPfCorderOperationLog(@Param("pcol")PfCorderOperationLog pcol);

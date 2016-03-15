@@ -35,13 +35,14 @@ public class PfUserTrialService {
      * @param pfCorder
      * @param pcol
      */
-    public void insert(PfCorder pfCorder,PfCorderOperationLog pcol,ComUser comUser )throws Exception {
+    public Long insert(PfCorder pfCorder,PfCorderOperationLog pcol,ComUser comUser )throws Exception {
         try {
             pfCorderMapper.insert(pfCorder);
             pcol.setPfCorderId(pfCorder.getId());
             pfCorderOperationLogMapper.insert(pcol);
             //更新试用用户信息
             userService.updateComUser(comUser);
+            return pfCorder.getId();
         }catch (Exception e){
          throw new Exception("生成用户订单失败");
         }

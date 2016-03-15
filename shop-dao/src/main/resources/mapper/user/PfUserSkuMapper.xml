@@ -116,7 +116,7 @@
         LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
         <where>
             <if test="searchParam.pid != null">
-                AND pid = #{searchParam.pid}
+                pus.pid = #{searchParam.pid}
             </if>
         </where>
     </select>

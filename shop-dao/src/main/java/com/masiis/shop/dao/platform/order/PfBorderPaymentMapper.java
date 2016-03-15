@@ -8,16 +8,22 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderPayment;
+import com.masiis.shop.dao.po.PfCorderPayment;
+
 import java.util.List;
 
 public interface PfBorderPaymentMapper {
-    int deleteByPrimaryKey(Long id);
 
-    int insert(PfBorderPayment record);
+    PfBorderPayment selectById(Long id);
 
-    PfBorderPayment selectByPrimaryKey(Long id);
+    PfBorderPayment selectByBorderId(Long borderId);
 
-    List<PfBorderPayment> selectAll();
+    List<PfBorderPayment> selectByCondition(PfBorderPayment pfBorderPayment);
 
-    int updateByPrimaryKey(PfBorderPayment record);
+    int insert(PfBorderPayment pfBorderPayment);
+
+    int updateById(PfBorderPayment pfBorderPayment);
+
+    int deleteById(Long id);
+
 }

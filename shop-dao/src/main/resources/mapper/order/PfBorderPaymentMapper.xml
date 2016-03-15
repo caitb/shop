@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderPaymentMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderPayment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
+        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
+        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               pf_border_id,
+               amount,
+               pay_type_id,
+               pay_type_name,
+               is_enabled,
+               remark
+        from
+               pf_border_payment
+        where
+               id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByBorderId" parameterType="Long" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               pf_border_id,
+               amount,
+               pay_type_id,
+               pay_type_name,
+               is_enabled,
+               remark
+        from
+               pf_border_payment
+        where
+               pf_border_id = #{borderId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderPayment" resultMap="BaseResultMap" >
+        select
+               id,
+               create_time,
+               pf_border_id,
+               amount,
+               pay_type_id,
+               pay_type_name,
+               is_enabled,
+               remark
+        from
+               pf_border_payment
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderPayment" useGeneratedKeys="true" keyProperty="id" >
+        insert into pf_border_payment
+                    (
+                    id,
+                    create_time,
+                    pf_border_id,
+                    amount,
+                    pay_type_id,
+                    pay_type_name,
+                    is_enabled,
+                    remark
+                    )
+        values      (
+                    #{id,jdbcType=BIGINT},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{pfBorderId,jdbcType=BIGINT},
+                    #{amount,jdbcType=DECIMAL},
+                    #{payTypeId,jdbcType=INTEGER},
+                    #{payTypeName,jdbcType=VARCHAR},
+                    #{isEnabled,jdbcType=INTEGER},
+                    #{remark,jdbcType=VARCHAR}
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderPayment" >
+        update
+               pf_border_payment
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pfBorderId != null">
+                pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="payTypeId != null">
+                pay_type_id = #{payTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="payTypeName != null">
+                pay_type_name = #{payTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="isEnabled != null">
+                is_enabled = #{isEnabled,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long" >
+        delete from pf_border_payment where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

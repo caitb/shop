@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorder;
+
 import java.util.List;
 
 public interface PfBorderMapper {
@@ -22,12 +23,7 @@ public interface PfBorderMapper {
     int updateByPrimaryKey(PfBorder record);
 
     PfBorder selectByOrderCode(String orderId);
+    List<PfBorder> selectByUserId(Long userId);
 
-
-    /**
-     * 根据条件查询记录
-     * @param pfBorder
-     * @return
-     */
-    List<PfBorder> selectByCondition(PfBorder pfBorder);
+    List<PfBorder> selectByCondition(PfBorder record);
 }

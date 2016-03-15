@@ -130,7 +130,10 @@
     <select id="getUpperPartnerByUserId" parameterType="int" resultMap="ComUserResultMap">
         SELECT u.id,u.real_name
         FROM pf_user_sku pfku
-        LEFT JOIN com_user u ON pfku.user_id = u.id
+        LEFT JOIN com_user u ON pfku.pid = u.id
         WHERE pfku.user_id = #{pid}
+    </select>
+    <select id="findById" parameterType="int" resultType="String">
+       select img_url from pf_user_certificate where pf_user_sku_id = #{id}
     </select>
 </mapper>

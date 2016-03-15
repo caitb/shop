@@ -435,7 +435,7 @@
                 <%--</div><!-- /.page-header -->--%>
 
                 <div class="row" id="main_content">
-                    <iframe id="innerContent" name="innerContent" width="100%" height="620px" marginheight="0" marginwidth="0" style="border: none;"></iframe>
+                    <iframe id="innerContent" name="innerContent" width="1200px" height="620px" marginheight="0" marginwidth="0" style="border: none;"></iframe>
                     <!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content -->

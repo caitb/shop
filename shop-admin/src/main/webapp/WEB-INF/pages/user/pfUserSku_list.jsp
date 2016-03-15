@@ -68,7 +68,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="/userSku/list.do"
+                               data-url="<%=basePath%>userSku/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>
@@ -255,7 +255,7 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return '<a href="javascript:void(0)" onclick="lower('+row.userId+')">'+row.lowerCount+'人</a>';
+                                                    return '<a href="<%=basePath%>userSku/list.shtml?pid='+row.comUser.id+'">'+row.lowerCount+'人</a>';
                                                  }
                                             },
                                             {
@@ -352,10 +352,6 @@
                                 sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
 
                                 return sArr;
-                            }
-
-                            function lower(pid){
-                                location.href = '/userSku/list.shtml?pid='+pid;
                             }
 
                             function totalTextFormatter(data) {
@@ -481,40 +477,38 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right">用户</label>
                         <div class="col-sm-10">
-                            <%--${upperList.comUser.realName}--%>
+                            <label class="col-sm-3 control-label no-padding-right" id="userInfo"></label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right">当前上级</label>
                         <div class="col-sm-10">
-                            <%--${upperList.upperName}--%>
+                            <label class="col-sm-3 control-label no-padding-right" id="upperName"></label>
                         </div>
                     </div>
                     <form class="form-horizontal" id="reasonForm" >
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">更换上级</label>
+                            <label class="col-sm-4 control-label no-padding-right">更换上级</label>
                             <div class="col-sm-10">
-                                <select class="form-control">
-                                    <option>1</option>
+                                <select class="form-control" id="userList">
+                                    <option>请选择</option>
                                 </select>
                             </div>
                         </div>
+                        <input name="id" type="hidden" id="userSkuId"/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" class="btn btn-primary" id="userSubmit">
+                                提交
+                            </button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary" id="btnSubmit">
-                        提交
-                    </button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-
 
 
 
@@ -549,7 +543,6 @@
             });
             location.reload();
         })*/
-
         //更改上级
         function changeLeader(id){
             $.ajax({
@@ -558,15 +551,37 @@
                 data: {id: id},
                 dataType: "json",
                 success: function (data) {
-                    //alert(data["certificateInfo"]);
+                    $("#userInfo").html("用户: " +data["certificateInfo"].comUser.realName);
+                    $("#upperName").html("当前上级:  "+data["certificateInfo"].upperName);
+                    $("#userSkuId").val(data["certificateInfo"].id);
+                    var comUserList = {upperList:data["certificateInfo"].comUserList};
+                    $("#userList").val(comUserList);
+                    //option属性
+                    $.each(data["certificateInfo"].comUserList,function(index,value){
+                        $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                    });
                     $('#myModal').modal({
                         show: true,
                         backdrop: true
                     });
                 }
             });
-
         }
+
+
+        $('#userSubmit').on('click', function () {
+            var id = $('#userSkuId').val();
+            var pid = $("#userList").val();
+            $.ajax({
+                url: '<%=basePath%>certificate/updateUpper.do',
+                type: 'post',
+                data: {id:id,pid:pid},
+                success: function (data) {
+                    $('#myModal').modal('hide');
+                    alert(data);
+                }
+            });
+        });
     </script>
 
 </div>

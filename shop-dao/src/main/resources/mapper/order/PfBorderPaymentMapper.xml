@@ -29,7 +29,7 @@
                id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByBorderId" parameterType="Long">
+    <select id="selectByBorderId" parameterType="Long" resultMap="BaseResultMap">
         select
                id,
                create_time,

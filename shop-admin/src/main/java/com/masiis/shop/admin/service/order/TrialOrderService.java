@@ -25,9 +25,11 @@ public class TrialOrderService {
     @Resource
     private PfCordersPayment pfCordersPayment;
 
+
 //    public List<PfCorder> queryAll() {
 //        return pfCorderMapper.selectAll();
 //    }
+
 
     public PfCorderConsignee findPfCorderConsignee(Long pfCorderId){
         return  pfCorderOperationLogMapper.selectByKey(pfCorderId);

@@ -174,8 +174,8 @@
 
     </div> <!-- /container -->
     <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true"  style="width: auto;">
-        <div class="modal-dialog">
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:auto;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
@@ -196,9 +196,9 @@
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" id="btnSubmit">
+                   <%-- <button type="button" class="btn btn-primary" id="btnSubmit">
                         提交
-                    </button>
+                    </button>--%>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -225,9 +225,9 @@
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" id="Submit">
+                   <%-- <button type="button" class="btn btn-primary" id="Submit">
                         提交
-                    </button>
+                    </button>--%>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

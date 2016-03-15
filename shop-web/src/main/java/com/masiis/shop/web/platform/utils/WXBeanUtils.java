@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
+import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -52,27 +53,31 @@ public class WXBeanUtils {
      * @param obj
      * @return
      */
-    public static String toSignString(Object obj) throws IllegalAccessException {
+    public static String toSignString(Object obj) {
         if(obj == null){
             throw new BusinessException("parameter obj is null");
         }
         Class clazz = obj.getClass();
         Map<String, Object> map = new HashMap<String, Object>();
         List<String> list = new ArrayList<String>();
-        for(Field f:clazz.getDeclaredFields()) {
-            String key = f.getName();
-            f.setAccessible(true);
-            JSONField aJF = f.getAnnotation(JSONField.class);
-            if (aJF != null) {
-                key = aJF.name();
+        try {
+            for(Field f:clazz.getDeclaredFields()) {
+                String key = f.getName();
+                f.setAccessible(true);
+                JSONField aJF = f.getAnnotation(JSONField.class);
+                if (aJF != null) {
+                    key = aJF.name();
+                }
+                if("sign".equals(key) || "paySign".equals(key)){
+                    continue;
+                }
+                String value = (String) f.get(obj);
+                if (StringUtils.isNotBlank(value)) {
+                    list.add(key + "=" + f.get(obj) + "&");
+                }
             }
-            if("sign".equals(key) || "paySign".equals(key)){
-                continue;
-            }
-            String value = (String) f.get(obj);
-            if (StringUtils.isNotBlank(value)) {
-                list.add(key + "=" + f.get(obj) + "&");
-            }
+        } catch (IllegalAccessException e) {
+            log.info(e.getMessage());
         }
         int size = list.size();
         String [] arrayToSort = list.toArray(new String[size]);
@@ -85,6 +90,15 @@ public class WXBeanUtils {
         result += "key=" + WxConstants.WX_PAY_SIGN_KEY;
         result = MD5Utils.encrypt(result).toUpperCase();
         return result;
+    }
+
+    public static String createWxPayParam(WxPaySysParamReq param){
+        if(param == null){
+            throw new BusinessException("param is null");
+        }
+
+        String res = toSignString(param);
+        return res;
     }
 
 }

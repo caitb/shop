@@ -1,10 +1,8 @@
 package com.masiis.shop.web.platform.service.pay.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderItem;
-import com.masiis.shop.dao.po.PfCorder;
+import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
@@ -14,8 +12,11 @@ import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public class WxPayService {
     private BOrderService bOrderService;
     @Resource
     private COrderService cOrderService;
+    @Resource
+    private PfBorderPaymentMapper bPaymentMapper;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
         try{
@@ -69,7 +72,30 @@ public class WxPayService {
         return null;
     }
 
-    public void createPaymentRecord(UnifiedOrderRes res){
+    @Transactional
+    public void createPaymentRecord(UnifiedOrderReq req, UnifiedOrderRes res){
+        String orderid = req.getOut_trade_no();
+        String orderType = String.valueOf(orderid.charAt(0));
+        if("B".equals(orderType)){
+            // B类型订单
+            PfBorderPayment payment = createBorderPayment(req, res);
+            bPaymentMapper.insert(payment);
+        } else {
+            throw new BusinessException("订单类型不正确!");
+        }
+    }
 
+    private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r){
+        PfBorderPayment payment = new PfBorderPayment();
+
+        payment.setAmount(new BigDecimal(p.getTotal_fee()));
+        payment.setCreateTime(new Date());
+        payment.setIsEnabled(0);
+        payment.setOutOrderId(r.getPrepay_id());
+        payment.setPayTypeId(0);
+        payment.setPayTypeName("微信支付");
+        payment.setPfBorderId(Long.valueOf(p.getOut_trade_no()));
+
+        return payment;
     }
 }

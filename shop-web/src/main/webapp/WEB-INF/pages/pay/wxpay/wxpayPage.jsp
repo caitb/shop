@@ -45,17 +45,19 @@
             WeixinJSBridge.invoke(
                     'getBrandWCPayRequest',
                     {
-                        "appId":"wxd5afa1deb29c6197",     //公众号名称，由商户传入
-                        "timeStamp":"1457513229909",         //时间戳，自1970年以来的秒数
-                        "nonceStr":"sddfs22dsdf5ssdfa53wq3", //随机串
-                        "package":"prepay_id=wx20160314203609fd0438420d0457812360",
-                        "signType":"MD5",         //微信签名方式：
-                        "paySign":"CBBE76083B48FB80DBF339F3D7F609E4" //微信签名
+                        "appId":"${req.appId}",     //公众号名称，由商户传入
+                        "timeStamp":"${req.timeStamp}",         //时间戳，自1970年以来的秒数
+                        "nonceStr":"${req.nonceStr}", //随机串
+                        "package":"${req.packages}",
+                        "signType":"${req.signType}",         //微信签名方式：
+                        "paySign":"${req.paySign}" //微信签名
                     },
                     function(res){
-                        if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                        if (res.err_msg == "get_brand_wcpay_request:ok" ) {
                             //跳转成功页面
-                            alert("ok:true");
+                            window.location.href = "${successUrl}";
+                        } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                            window.history.go(-1);
                         } else {
                             // 跳转失败或者取消页面
                             alert("fail:" + res.err_code + "||" + res.err_desc + "||" + res.err_msg);

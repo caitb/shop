@@ -239,4 +239,10 @@ public class CertificateService {
         certificateCode = Code.append(value1).append(value2).append(value).append(String.valueOf(value3)).toString();
         return certificateCode;
     }
+
+    public String findById(Integer id) {
+        String imgUrl = certificateMapper.findById(id);
+        String idCardImg = PropertiesUtils.getStringValue("index_user_certificate_url");
+        return idCardImg+imgUrl;
+    }
 }

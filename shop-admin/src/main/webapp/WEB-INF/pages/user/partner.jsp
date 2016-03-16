@@ -234,7 +234,7 @@
                                             },*/
                                             {
                                                 field: 'isPay',
-                                                title: '是否支付',
+                                                title: '是否交代理款',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
@@ -246,8 +246,8 @@
                                                         return "是";
                                                     }
                                                 }
-                                            }/*,
-                                            {
+                                            },
+                                            /*{
                                                 field: 'lowerCount',
                                                 title: '下级合伙人',
                                                 sortable: true,
@@ -257,7 +257,7 @@
                                                 formatter: function(value, row, index){
                                                     return '<a href="#" onclick=lower('+row.comUser.id+')>'+row.lowerCount+'人</a>';
                                                  }
-                                            },
+                                            },*/
                                             {
                                                 field: 'isCertificate',
                                                 title: '是否申请证书',
@@ -267,12 +267,12 @@
                                                 align: 'center',
                                                 formatter: function(value, row, index){
                                                     if(row.isCertificate==0){
-                                                        return "否";
+                                                        return "未完成";
                                                     }else if(row.isCertificate==1){
-                                                        return "是";
+                                                        return '<a href="#" onclick="certificate('${pfUserSku.id}')">点击查看</a>';
                                                     }
                                                 }
-                                            },
+                                            }/*,
                                             {
                                                 //field: 'operate',
                                                 title: '操作项',
@@ -461,10 +461,11 @@
 
         </div><!-- /.col -->
     </div>
-<%--更改上级--%>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+
+
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width:auto;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
@@ -472,39 +473,22 @@
                         &times;
                     </button>
                     <h4 class="modal-title" id="myModalLabel">
-                        更改上级合伙人
+                        授权证书
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <label class="col-sm-3 control-label no-padding-right" id="userInfo"></label>
-                        </div>
+                    <div class="form-group" id="certificate">
+
+
                     </div>
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            <label class="col-sm-3 control-label no-padding-right" id="upperName"></label>
-                        </div>
-                    </div>
-                    <form class="form-horizontal" id="reasonForm" >
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label no-padding-right">更换上级</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" id="userList">
-                                    <option>请选择</option>
-                                </select>
-                            </div>
-                        </div>
-                        <input name="id" type="hidden" id="userSkuId"/>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">关闭
-                            </button>
-                            <button type="button" class="btn btn-primary" id="userSubmit">
-                                提交
-                            </button>
-                        </div>
-                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <%-- <button type="button" class="btn btn-primary" id="btnSubmit">
+                         提交
+                     </button>--%>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
@@ -543,32 +527,18 @@
             });
             location.reload();
         })*/
-        //更改上级
-        function changeLeader(){
-            var approveId = $("#approveId").val();
+        //授权证书
+        function certificate(id){
             $.ajax({
-                type: "GET",
-                url: '<%=basePath%>certificate/listUpper.do',
-                data: {id: approveId},
-                dataType: "json",
+                url: '<%=basePath%>/certificate/findById.do',
+                data: {id: id},
                 success: function (data) {
-                    $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
-                    $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
-                    $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
-                    $("#userSkuId").val(data["certificateInfo"].id);
-                    //option属性
-                    if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
-                        var comUserList = {upperList:data["certificateInfo"].comUserList};
-                        $("#userList").val(comUserList);
-                        $.each(data["certificateInfo"].comUserList,function(index,value){
-                            $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
-                        });
-                    }else{
-                        $("#userSubmit").attr("disabled", true);
-                    }
+                    $("#certificate").html('<img src="' + data + '" />');
+
                     $('#myModal').modal({
+                        width: 'auto',
                         show: true,
-                        backdrop: true
+                        backdrop: true,
                     });
                 }
             });

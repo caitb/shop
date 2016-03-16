@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.*;
@@ -61,7 +62,7 @@ public class COrderController extends BaseController {
         return "platform/order/jixuguangguang";
     }
     /**
-     * 验证商品是否使用过
+     * 验证商品是否试用过
      * @author  hanzengzhi
      * @date  2016/3/9 11:10
      */
@@ -84,8 +85,8 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(skuId)) {
             skuId = 1;
         }
-        List<PfUserTrial> pfUserTrials= cOrderService.isApplyTrial(userId, skuId);
-        String returnJson = objectMapper.writeValueAsString(pfUserTrials);
+        PfCorder pfCorder = cOrderService.isApplyTrial(userId,skuId);
+        String returnJson = objectMapper.writeValueAsString(pfCorder);
         return returnJson;
     }
     /**
@@ -202,7 +203,7 @@ public class COrderController extends BaseController {
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
         pfCorder.setCreateTime(new Date());
-        pfCorder.setOrderCode("00000");
+        pfCorder.setOrderCode(OrderMakeUtils.makeOrder("C"));
         pfCorder.setOrderType(0);
         pfCorder.setSkuId(skuId);
         pfCorder.setUserId(userId);

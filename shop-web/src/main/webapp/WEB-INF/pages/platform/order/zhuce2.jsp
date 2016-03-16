@@ -75,7 +75,7 @@
         paraData += "&weixinId=${weixinId}";
         paraData += "&parentMobile=${parentMobile}";
         paraData += "&levelId=${levelId}";
-        window.location.href = "<%=basePath%>border/register.shtml" + paraData;
+        window.location.href = "<%=basePath%>userApply/register.shtml" + paraData;
     }
     var submit = function () {
         var paraData = {};
@@ -87,7 +87,7 @@
         paraData.parentUserId = "${parentUserId}";
         paraData.userMassage = "";
         $.ajax({
-            url: "<%=basePath%>border/registerConfirm/save.do",
+            url: "<%=basePath%>border/addBOrder.do",
             type: "post",
             data: paraData,
             dataType: "json",
@@ -95,7 +95,7 @@
                 if (data.isError == false) {
                     var param = "?";
                     param += "bOrderId=" + data.bOrderId;
-                    window.location.href = "<%=basePath%>border/pay.shtml" + param;
+                    window.location.href = "<%=basePath%>border/payBOrder.shtml" + param;
                 }
                 else {
                     alert(data.message);

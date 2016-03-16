@@ -122,12 +122,8 @@ public class HttpsRequest implements IServiceRequest {
         //order.setTime_start();
         //order.setTime_expire();
         String sign = "";
-        try {
-            sign = WXBeanUtils.toSignString(order);
-            order.setSign(sign);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        sign = WXBeanUtils.toSignString(order);
+        order.setSign(sign);
         System.out.println(h.sendPost("https://api.mch.weixin.qq.com/pay/unifiedorder", order));
     }
 

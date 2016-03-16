@@ -9,7 +9,9 @@ package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderPayment;
 import com.masiis.shop.dao.po.PfCorderPayment;
+import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface PfBorderPaymentMapper {
@@ -26,4 +28,6 @@ public interface PfBorderPaymentMapper {
 
     int deleteById(Long id);
 
+    PfBorderPayment selectBySerialNum(String paySerialNum);
+	PfBorderPayment selectByPaySerialNumAndAmount(@Param("paySerialNum") String paySerialNum, @Param("amount") BigDecimal amount);
 }

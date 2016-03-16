@@ -109,7 +109,7 @@
                             <p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner}"><a
                                 href="javascript:;">您已合伙</a></c:when>
                             <c:otherwise><a
-                                    href="<%=basePath%>border/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
+                                    href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
                         </h3>
                     </div>
                 </c:forEach>

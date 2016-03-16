@@ -83,7 +83,6 @@ public class WxPayController extends BaseController{
         }
 
         // 处理业务
-        String url = request.getRequestURL().toString();
         // 组织微信预付订单参数对象,并生成签名
         HttpsRequest h = new HttpsRequest();
         UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
@@ -113,7 +112,7 @@ public class WxPayController extends BaseController{
             // 预付单下单成功
             log.info("wxpayPage:预付单下单成功");
             // 创建支付记录
-            wxPayService.createPaymentRecord(uniOrder, resObj);
+            wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
         } catch (Exception e) {
             log.error("wxpayPage:下预付单失败," + e.getMessage());
             // 预付单下单失败处理

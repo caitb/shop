@@ -33,4 +33,7 @@ public interface PfUserSkuMapper {
     Integer findLowerCount(Integer pid);
 
     PfUserSkuCertificate getUserSkuById(Integer id);
+
+    PfUserSku selectByOrderId(Long bOrderId);
+
 }

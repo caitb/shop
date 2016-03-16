@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.*;
+import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
+import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.swing.plaf.nimbus.NimbusStyle;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +24,7 @@ public class BOrderService {
     @Resource
     private PfBorderMapper pfBorderMapper;
     @Resource
-    private PfBorderItemMapper borderItemMapper;
+    private PfBorderItemMapper pfBorderItemMapper;
     @Resource
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
     @Resource
@@ -35,6 +39,10 @@ public class BOrderService {
     private PfUserSkussMapper pfUserSkussMapper;
     @Resource
     private ComAgentLevelsMapper comAgentLevelsMapper;
+    @Resource
+    private PfSkuStatisticMapper pfSkuStatisticMapper;
+    @Resource
+    private PfSkuStockMapper pfSkuStockMapper;
 
     /**
      * 添加订单
@@ -61,7 +69,7 @@ public class BOrderService {
         //添加订单商品
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             pfBorderItem.setPfBorderId(pfBorder.getId());
-            borderItemMapper.insert(pfBorderItem);
+            pfBorderItemMapper.insert(pfBorderItem);
         }
         pfUserSku.setPfBorderId(pfBorder.getId());
         //添加用户代理商品关系
@@ -96,37 +104,65 @@ public class BOrderService {
      * @date 2016/3/9 11:45
      */
     public List<PfBorderItem> getPfBorderItemByOrderId(Long pfBorderId) {
-        return borderItemMapper.selectAllByOrderId(pfBorderId);
+        return pfBorderItemMapper.selectAllByOrderId(pfBorderId);
     }
 
     /**
      * 合伙人订单支付
      *
-     * @param pfBorderPayment
+     * @author ZhaoLiang
+     * @date 2016/3/16 10:04
+     * 操作详情 <1>修改订单支付信息<2>修改订单数据<3>添加订单日志<4>修改合伙人商品关系状态<5>修改用户sku代理关系支付状态<6>修改sku代理量<7>冻结sku库存
      */
     @Transactional
-    public void payBOrder(PfBorderPayment pfBorderPayment) {
-        try {
-            PfBorder pfBorder = new PfBorder();
-            if (pfBorderPayment.getAmount() != pfBorder.getReceivableAmount()) {
-                throw new BusinessException("支付金额异常");
-            }
-            pfBorder.setPayStatus(1);
-            pfBorder.setPayAmount(pfBorder.getReceivableAmount());
-            pfBorder.setPayTime(new Date());
-            //修改订单状态
-            pfBorderMapper.updateByPrimaryKey(pfBorder);
-            //添加订单支付信息
-            pfBorderPaymentMapper.insert(pfBorderPayment);
-            PfUserSku pfUserSku = new PfUserSku();
-            pfUserSku.setIsPay(1);
-            //修改合伙人商品关系状态
-            pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
-            ComUser comUser = new ComUser();
+    public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
+        //<1>修改订单支付信息
+        pfBorderPayment.setOutOrderId(outOrderId);
+        pfBorderPayment.setIsEnabled(1);//设置为有效
+        pfBorderPaymentMapper.updateById(pfBorderPayment);
+        BigDecimal payAmount = pfBorderPayment.getAmount();
+        Long bOrderId = pfBorderPayment.getPfBorderId();
+        //<2>修改订单数据
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
+        pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
+        pfBorder.setPayTime(new Date());
+        pfBorder.setPayStatus(1);//已付款
+        pfBorder.setOrderStatus(1);//已付款
+        pfBorderMapper.updateByPrimaryKey(pfBorder);
+        //<3>添加订单日志
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderStatus(1);
+        pfBorderOperationLog.setPfBorderId(bOrderId);
+        pfBorderOperationLog.setRemark("订单已支付");
+        pfBorderOperationLogMapper.updateByPrimaryKey(pfBorderOperationLog);
+        //<4>修改合伙人商品关系状态
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
+        if (comUser.getIsAgent() == 0) {
             comUser.setIsAgent(1);
-            //修改用户为合伙人
             comUserMapper.updateByPrimaryKey(comUser);
-        } catch (Exception e) {
+        }
+        //<5>修改用户sku代理关系支付状态
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderId(bOrderId);
+        pfUserSku.setIsPay(1);
+        pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
+        //**************维护商品信息******************
+        PfSkuStatistic pfSkuStatistic = null;
+        PfSkuStock pfSkuStock = null;
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
+            //<6>修改sku代理量
+            pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfBorderItem.getSkuId());
+            pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
+            pfSkuStatisticMapper.updateById(pfSkuStatistic);
+            //<7>冻结sku库存
+            pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() >= pfBorderItem.getQuantity()) {
+                throw new BusinessException("lowStocks");
+            }
+            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            pfSkuStockMapper.updateById(pfSkuStock);
         }
     }
 
@@ -149,8 +185,10 @@ public class BOrderService {
     public ComAgentLevel findComAgentLevel(Integer id) {
         return comAgentLevelsMapper.selectByPrimaryKey(id);
     }
+
     /**
      * 根据订单号获取订单
+     *
      * @author muchaofeng
      * @date 2016/3/14 13:23
      */
@@ -161,12 +199,18 @@ public class BOrderService {
 
     /**
      * 根据用户id获取订单
+     *
      * @author muchaofeng
      * @date 2016/3/14 13:22
      */
 
     public List<PfBorder> findByUserId(Long UserId) {
         return pfBorderMapper.selectByUserId(UserId);
+    }
+
+    @Transactional
+    public void addBOrderPayment(PfBorderPayment pfBorderPayment) {
+        pfBorderPaymentMapper.insert(pfBorderPayment);
     }
 
 }

@@ -26,4 +26,5 @@ public interface PfBorderPaymentMapper {
 
     int deleteById(Long id);
 
+    PfBorderPayment selectBySerialNum(String paySerialNum);
 }

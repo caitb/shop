@@ -140,4 +140,22 @@
         delete from pf_border_payment where id = #{id,jdbcType=BIGINT}
     </delete>
 
+    <select id="selectBySerialNum" parameterType="java.lang.String" >
+        elect
+               id,
+               create_time,
+               pf_border_id,
+               amount,
+               pay_type_id,
+               pay_type_name,
+               is_enabled,
+               remark,
+               out_order_id,
+               pay_serial_num
+        from
+               pf_border_payment
+        WHERE
+               pay_serial_num = #{paySerialNum,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

@@ -126,7 +126,8 @@ $(function () {
     })
 
     $("#apply").click(function () {
-        if ($(".pon").length==0&&yanCheckFun($("#codeValueId"))){
+        //if ($(".pon").length==0&&yanCheckFun($("#codeValueId"))){
+        if ($(".pon").length==0){
             var spuId = $("#spuId").val();
             var skuId = $("#skuId").val();
             var applyReason = $("#applyReasonId").val();
@@ -142,8 +143,8 @@ $(function () {
                     "phone" : phone,
                     "wechat" : wechat
                 },function(data) {
-                    if(data == "success"){
-                        window.location.href = "/corder/continueStroll"
+                    if(data!=null&&data!=""){
+                        window.location.href = "/corder/confirmOrder.do?orderId="+data;
                     }else{
                         alert("逻辑出错");
                     }

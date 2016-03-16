@@ -71,11 +71,11 @@ public class COrderService {
      */
     public Product getProductDetail(HttpServletRequest request,Long orderId){
         //获得订单信息
-        List<PfCorder> pfCorders = queryPfCorderById(orderId);
+        PfCorder pfCorder = queryPfCorderById(orderId);
         //获得商品信息
         Product product = null;
-        if (pfCorders!=null&&pfCorders.size()>0){
-            product = productService.applyTrialToPageService(pfCorders.get(0).getSkuId());
+        if (pfCorder!=null){
+            product = productService.applyTrialToPageService(pfCorder.getSkuId());
         }
         return product;
     }
@@ -85,10 +85,8 @@ public class COrderService {
      * @author  hanzengzhi
      * @date  2016/3/8 15:45 
      */
-    public List<PfCorder> queryPfCorderById(Long id){
-        PfCorder pfCorder = new PfCorder();
-        pfCorder.setId(id);
-        return  pfCorderMapper.selectByCondition(pfCorder);
+    public PfCorder queryPfCorderById(Long id){
+        return  pfCorderMapper.selectById(id);
     }
 
     /**

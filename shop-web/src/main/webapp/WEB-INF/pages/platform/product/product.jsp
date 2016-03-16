@@ -92,7 +92,7 @@
     <section class="sec3">
         <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
         <p><a  onclick="applyTrial(${productDetails.id})">申请试用</a></p>
-        <p><a href="<%=basePath%>border/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
+        <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>

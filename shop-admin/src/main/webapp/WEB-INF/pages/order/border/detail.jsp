@@ -67,6 +67,11 @@
             padding-right: 10px;
             width: 140px;
         }
+
+        .my-table th, .my-table td {
+            text-align: center;
+            height:38px;
+        }
     </style>
 
 </head>
@@ -75,14 +80,14 @@
     <div class="meta-attributes">
         <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
             <tbody>
-            
+
             <tr>
                 <td class="meta-attributes__attr-name">订单号</td>
                 <td class="meta-attributes__attr-detail">
                     ${order.pfBorder.orderCode}
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="meta-attributes__attr-name">订单状态</td>
                 <td class="meta-attributes__attr-detail">
@@ -101,21 +106,21 @@
                     <fmt:formatDate value="${order.pfBorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="meta-attributes__attr-name">支付日期</td>
                 <td class="meta-attributes__attr-detail">
                     <fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
                     <c:if test="${order.pfBorderPayment.payTypeId == 1}">微信</c:if>
                 </td>
             </tr>
-            
+
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
@@ -128,14 +133,14 @@
             <tr>
                 <td class="meta-attributes__attr-name">配送方式</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorder.shipType == 0}">物流配送</c:if>
+                    <%--<c:if test="${order.pfCorder.shipType == 0}">物流配送</c:if>--%>
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfBorder.deliveryTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>
@@ -172,39 +177,40 @@
             <tr>
                 <td class="meta-attributes__attr-name">邮编</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfBorderConsignee.zip}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">购买人</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.comUser.realName}
                 </td>
             </tr>
             </tbody>
         </table>
         <hr/>
 
-        <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
+        <table class="table table-bordered my-table">
+            <thead>
+            <tr>
+                <th>商品名称</th>
+                <th>货号</th>
+                <th>商品属性</th>
+                <th>市场价</th>
+                <th>购买价格</th>
+                <th>购买数量</th>
+                <th>小计</th>
+            </tr>
+            </thead>
             <tbody>
             <tr>
-                <td class="meta-attributes__attr-name">订单商品</td>
-                <td class="meta-attributes__attr-detail">
-                    ${order.pfBorder.orderCode}
-                </td>
-            </tr>
-            <tr>
-                <td class="meta-attributes__attr-name">购买数量</td>
-                <td class="meta-attributes__attr-detail">
-
-                </td>
-            </tr>
-
-            <tr>
-                <td class="meta-attributes__attr-name">商品单价</td>
-                <td class="meta-attributes__attr-detail">
-
-                </td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
             </tr>
             </tbody>
         </table>
@@ -215,7 +221,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">运费</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorder.orderCode}
+                    ${order.pfCorder.orderCode}
                 </td>
             </tr>
             <tr>
@@ -253,33 +259,21 @@
         </div>
         <hr/>
 
-        <table class="table table-striped">
+        <table class="table table-bordered my-table">
             <thead>
             <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>操作者</th>
+                <th>操作时间</th>
+                <th>操作类型</th>
+                <th>操作备注</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>1</td>
                 <td>Mark</td>
                 <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+                <td>@TwBootstrap</td>
+                <td>@TwBootstrap</td>
             </tr>
             </tbody>
         </table>

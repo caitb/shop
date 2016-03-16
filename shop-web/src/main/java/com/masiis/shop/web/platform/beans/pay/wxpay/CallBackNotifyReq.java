@@ -110,7 +110,7 @@ public class CallBackNotifyReq {
      */
     private String transaction_id;
     /**
-     * 商户订单号,商户系统的订单号，与请求一致
+     * 商户订单号,与请求一致(我们的是支付流水号)
      */
     private String out_trade_no;
     /**

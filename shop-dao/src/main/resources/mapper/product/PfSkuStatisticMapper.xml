@@ -5,10 +5,11 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="agent_num" property="agentNum" jdbcType="INTEGER"/>
+        <result column="trial_num" property="trialNum" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, sku_id, agent_num
+    id, sku_id, agent_num ,trial_num
   </sql>
 
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -36,27 +37,18 @@
     </select>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuStatistic" useGeneratedKeys="true" keyProperty="id">
-    insert into pf_sku_statistic
-    (
-    id,
-    sku_id,
-    agent_num
-    )
-    values
-    (
-    #{id,jdbcType=INTEGER},
-    #{skuId,jdbcType=INTEGER},
-    #{agentNum,jdbcType=INTEGER}
-    )
+         insert into pf_sku_statistic (id, sku_id, agent_num,
+            trial_num)
+        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentNum,jdbcType=INTEGER},
+            #{trialNum,jdbcType=INTEGER})
   </insert>
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuStatistic">
-    update pf_sku_statistic
-    set
-    sku_id = #{skuId,jdbcType=INTEGER},
-    agent_num = #{agentNum,jdbcType=INTEGER}
-    where
-    id = #{id,jdbcType=INTEGER}
+        update pf_sku_statistic
+        set sku_id = #{skuId,jdbcType=INTEGER},
+            agent_num = #{agentNum,jdbcType=INTEGER},
+            trial_num = #{trialNum,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
   </update>
 
     <delete id="deleteById" parameterType="java.lang.Integer">

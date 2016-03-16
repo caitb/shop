@@ -137,7 +137,7 @@ public class BOrderService {
         pfBorderOperationLog.setPfBorderStatus(1);
         pfBorderOperationLog.setPfBorderId(bOrderId);
         pfBorderOperationLog.setRemark("订单已支付");
-        pfBorderOperationLogMapper.updateByPrimaryKey(pfBorderOperationLog);
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         //<4>修改合伙人商品关系状态
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {
@@ -208,6 +208,11 @@ public class BOrderService {
         return pfBorderMapper.selectByUserId(UserId);
     }
 
+    /**
+     * 添加订单支付记录
+     * @author ZhaoLiang
+     * @date 2016/3/16 12:42
+     */
     @Transactional
     public void addBOrderPayment(PfBorderPayment pfBorderPayment) {
         pfBorderPaymentMapper.insert(pfBorderPayment);

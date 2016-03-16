@@ -3,19 +3,13 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-16 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * 平台分销订单支付表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class PfCorderPayment {
 
     private Long id;
@@ -43,6 +37,14 @@ public class PfCorderPayment {
      * 是否有效(0否1是)
      */
     private Integer isEnabled;
+    /**
+     * 外部订单号
+     */
+    private String outOrderId;
+    /**
+     * 支付流水号
+     */
+    private String paySerialNum;
     /**
      * 备注
      */
@@ -89,6 +91,18 @@ public class PfCorderPayment {
     }
     public void setIsEnabled(Integer isEnabled) {
         this.isEnabled = isEnabled;
+    }
+    public String getOutOrderId() {
+        return outOrderId;
+    }
+    public void setOutOrderId(String outOrderId) {
+        this.outOrderId = outOrderId == null ? null : outOrderId.trim();
+    }
+    public String getPaySerialNum() {
+        return paySerialNum;
+    }
+    public void setPaySerialNum(String paySerialNum) {
+        this.paySerialNum = paySerialNum == null ? null : paySerialNum.trim();
     }
     public String getRemark() {
         return remark;

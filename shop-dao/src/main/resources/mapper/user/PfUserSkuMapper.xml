@@ -87,10 +87,22 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark
-        from pf_user_sku
-        where id = #{id,jdbcType=INTEGER}
+        select
+               id,
+               create_time,
+               code,
+               pid,
+               user_id,
+               sku_id,
+               agent_level_id,
+               is_pay,
+               is_certificate,
+               pf_border_id,
+               remark
+        from
+               pf_user_sku
+        where
+               id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -144,6 +156,55 @@
         pf_border_id, remark
         from pf_user_sku
         where pf_border_id = #{bOrderId}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">
+        SELECT
+                id,
+                create_time,
+                code,
+                pid,
+                user_id,
+                sku_id,
+                agent_level_id,
+                is_pay,
+                is_certificate,
+                pf_border_id,
+                remark
+        FROM
+              pf_user_sku
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <if test="pid != null">
+                AND pid = #{pid}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="agentLevelId != null">
+                AND agent_level_id = #{agentLevelId}
+            </if>
+            <if test="isPay != null">
+                AND is_pay = #{isPay}
+            </if>
+            <if test="isCertificate != null">
+                AND is_certificate = #{isCertificate}
+            </if>
+            <if test="pfBorderId != null">
+                AND pf_border_id = #{pfBorderId}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark}
+            </if>
+        </where>
     </select>
 
 </mapper>

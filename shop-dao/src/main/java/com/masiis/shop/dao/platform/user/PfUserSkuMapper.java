@@ -36,4 +36,11 @@ public interface PfUserSkuMapper {
 
     PfUserSku selectByOrderId(Long bOrderId);
 
+    /**
+     * 根据条件查询记录
+     * @param pfUserSku
+     * @return
+     */
+    List<PfUserSku> selectByCondition(PfUserSku pfUserSku);
+
 }

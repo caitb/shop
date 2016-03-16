@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.beans.order;
 
+import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.dao.po.*;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class Order {
 
     private PfBorderPayment pfBorderPayment;
     private PfCorderPayment pfCorderPayment;
+
+    private List<ProductInfo> productInfos;
 
     public ComUser getComUser() {
         return comUser;
@@ -103,5 +106,13 @@ public class Order {
 
     public void setPfCorderPayment(PfCorderPayment pfCorderPayment) {
         this.pfCorderPayment = pfCorderPayment;
+    }
+
+    public List<ProductInfo> getProductInfos() {
+        return productInfos;
+    }
+
+    public void setProductInfos(List<ProductInfo> productInfos) {
+        this.productInfos = productInfos;
     }
 }

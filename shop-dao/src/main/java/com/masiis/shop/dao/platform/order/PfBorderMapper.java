@@ -21,7 +21,7 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectAll();
 
-    int updateByPrimaryKey(PfBorder record);
+    int updateById(PfBorder pfBorder);
 
     PfBorder selectByOrderCode(String orderId);
 

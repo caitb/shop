@@ -13,10 +13,7 @@ import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by caitingbiao on 2016/3/2.
@@ -86,5 +83,20 @@ public class COrderService extends BaseService {
         order.setComUser(comUser);
 
         return order;
+    }
+
+    /**
+     * 发货
+     * @param pfCorderFreight
+     */
+    public void delivery(PfCorderFreight pfCorderFreight){
+        PfCorder pfCorder = new PfCorder();
+        pfCorder.setId(pfCorderFreight.getPfCorderId());
+        pfCorder.setShipStatus(5);
+
+        pfCorderFreight.setCreateTime(new Date());
+
+        pfCorderMapper.updateById(pfCorder);
+        pfCorderFreightMapper.insert(pfCorderFreight);
     }
 }

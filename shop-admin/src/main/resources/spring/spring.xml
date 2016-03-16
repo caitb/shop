@@ -24,8 +24,10 @@
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"  type="annotation" /> 
 	</context:component-scan>
 
-	<task:annotation-driven scheduler="qbScheduler" mode="proxy"/>
+	<!-- 计划任务 -->
 	<task:scheduler id="qbScheduler" pool-size="10"/>
+	<task:executor id="executor" pool-size="5" />
+	<task:annotation-driven executor="executor" scheduler="qbScheduler" />
 
 <!-- 	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
 		<property name="config">

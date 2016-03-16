@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @autor JingHao
@@ -36,6 +37,14 @@ public class ProductController extends BaseController {
             productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
         }
         mav.addObject("productDetails",productDetails);
+        return mav;
+    }
+
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
+    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Integer userId) throws Exception{
+        ModelAndView mav = new ModelAndView("/platform/user/userSkulist");
+        List<Product> userProducts = productService.productListByUser(userId);
+        mav.addObject("userProducts",userProducts);
         return mav;
     }
 

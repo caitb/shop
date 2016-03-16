@@ -34,15 +34,35 @@ public class PfUserSkuController extends BaseController {
     @Resource
     private ComUserService comUserService;
 
+    /**
+     * 合伙人列表
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/list.shtml")
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response,
+    public String list(HttpServletRequest request, HttpServletResponse response
+                       ) {
+        return "user/pfUserSku_list";
+    }
+
+    /**
+     * 下级合伙人
+     * @param request
+     * @param response
+     * @param pid
+     * @return
+     */
+    @RequestMapping("/lowerList.shtml")
+    public ModelAndView lowerList(HttpServletRequest request, HttpServletResponse response,
                        @RequestParam(value="pid", required = false)Long pid) {
 
-        ModelAndView mav = new ModelAndView("user/pfUserSku_list");
+        ModelAndView mav = new ModelAndView("user/pfUserSku_lower");
         mav.addObject("pid", pid);
 
         return mav;
     }
+
     @RequestMapping("list.do")
     @ResponseBody
     public Object list(HttpServletRequest request, HttpServletResponse response,

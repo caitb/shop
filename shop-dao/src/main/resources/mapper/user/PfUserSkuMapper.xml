@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.user.PfUserSkuMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSku" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="pid" property="pid" jdbcType="INTEGER" />
-        <result column="user_id" property="userId" jdbcType="BIGINT" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
-        <result column="is_pay" property="isPay" jdbcType="INTEGER" />
-        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserSkuMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSku">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
+        <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
 
-<!-- 合伙人关系映射 -->
-    <resultMap id="UserSkuResultMap" type="com.masiis.shop.dao.beans.user.PfUserSkuCertificate" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="pid" property="pid" jdbcType="INTEGER" />
-        <result column="user_id" property="userId" jdbcType="BIGINT" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
-        <result column="is_pay" property="isPay" jdbcType="INTEGER" />
-        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="csname" property="skuName" jdbcType="VARCHAR" />
+    <!-- 合伙人关系映射 -->
+    <resultMap id="UserSkuResultMap" type="com.masiis.shop.dao.beans.user.PfUserSkuCertificate">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
+        <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="csname" property="skuName" jdbcType="VARCHAR"/>
 
         <association column="user_id" property="comUser"
                      javaType="com.masiis.shop.dao.po.ComUser">
-            <id column="userId" property="id" jdbcType="INTEGER" />
+            <id column="userId" property="id" jdbcType="INTEGER"/>
             <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
             <result column="real_name" property="realName" jdbcType="VARCHAR"/>
             <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
@@ -43,24 +43,24 @@
         </association>
         <association column="agent_level_id" property="comAgentLevel"
                      javaType="com.masiis.shop.dao.po.ComAgentLevel">
-            <id column="id" property="id" jdbcType="INTEGER" />
-            <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-            <result column="calname" property="name" jdbcType="VARCHAR" />
-            <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-            <result column="lower" property="lower" jdbcType="DECIMAL" />
-            <result column="discount" property="discount" jdbcType="DECIMAL" />
-            <result column="remark" property="remark" jdbcType="VARCHAR" />
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="calname" property="name" jdbcType="VARCHAR"/>
+            <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+            <result column="lower" property="lower" jdbcType="DECIMAL"/>
+            <result column="discount" property="discount" jdbcType="DECIMAL"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
         </association>
 
 
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from pf_user_sku
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSku" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSku">
         insert into pf_user_sku (id, create_time, code,
         pid, user_id, sku_id,
         agent_level_id, is_pay, is_certificate,
@@ -71,7 +71,7 @@
         #{pfBorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku">
         update pf_user_sku
         set create_time = #{createTime,jdbcType=TIMESTAMP},
         code = #{code,jdbcType=VARCHAR},
@@ -86,14 +86,14 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
         pf_border_id, remark
         from pf_user_sku
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
         pf_border_id, remark
         from pf_user_sku
@@ -107,8 +107,9 @@
         and sku_id = #{skuId}
     </select>
 
-    <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap" >
-        select pus.id,pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name calname,pus.create_time,pus.is_pay,pus.is_certificate
+    <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap">
+        select pus.id,pus.code,cu.id userId,cu.real_name,cu.mobile,cu.wx_id,cs.name csname,cal.id,cal.name
+        calname,pus.create_time,pus.is_pay,pus.is_certificate
         ,pus.pid
         from pf_user_sku pus
         LEFT JOIN com_user cu on pus.user_id = cu.id
@@ -120,11 +121,11 @@
             </if>
         </where>
     </select>
-    <select id="findLowerCount" resultType="Integer" >
+    <select id="findLowerCount" resultType="Integer">
         select count(*) from pf_user_sku where pid = #{pid,jdbcType=INTEGER}
     </select>
-   <!-- 合伙信息 -->
-    <select id="getUserSkuById" parameterType="Integer" resultMap="UserSkuResultMap" >
+    <!-- 合伙信息 -->
+    <select id="getUserSkuById" parameterType="Integer" resultMap="UserSkuResultMap">
         select
         pus.code,
         cu.real_name,cu.mobile,cu.id_card,cu.id_card_front_url,cu.id_card_back_url,
@@ -137,6 +138,14 @@
         LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
         where pus.id = #{id,jdbcType=INTEGER};
     </select>
+
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
+        pf_border_id, remark
+        from pf_user_sku
+        where pf_border_id = #{bOrderId}
+    </select>
+
 </mapper>
 
 

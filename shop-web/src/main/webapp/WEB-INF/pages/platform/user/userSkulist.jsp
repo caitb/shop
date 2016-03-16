@@ -47,49 +47,49 @@
                 </section>
             </div>
         </div>
-        <div class="back">
-            <div class="back_j">
-                <p>减少库存</p>
-                <h4>商　　品:　　<span>抗引力-手链</span></h4>
-                <h4>当前库存:　　<span>抗引力-手链</span></h4>
-                <h4>数　　量:　　<div>
-                    <span class="jian">-</span>
-                    <span class="number">1</span>
-                    <span class="jia">+</span>
-                </div>
-                </h4>
-                <div>
-                    <h1 class="j_qu">取消</h1>
-                    <h1 class="j_que">确定</h1>
-                </div>
+    </main>
+    <div class="back">
+        <div class="back_j">
+            <p>减少库存</p>
+            <h4>商　　品:　　<span>抗引力-手链</span></h4>
+            <h4>当前库存:　　<span>抗引力-手链</span></h4>
+            <h4>数　　量:　　<div>
+                <span class="jian">-</span>
+                <span class="number">1</span>
+                <span class="jia">+</span>
             </div>
-            <div class="back_que">
-                <p>确认减库存?</p>
-                <h4>商品:<span>抗引力-手链</span></h4>
-                <h4>商品:<span>抗引力-手链</span></h4>
-                <h4>商品:<span>抗引力-手链</span></h4>
-                <h4>商品:<span>抗引力-手链</span></h4>
-                <h3>
-                    <span class="que_qu">取消</span>
-                    <span class="que_que">确认</span>
-                </h3>
-            </div>
-            <div class="back_b">
-                <p>减少库存</p>
-                <h4>商品:　　<span>抗引力-手链</span></h4>
-                <h4>数量:　　<div>
-                    <span class="jian">-</span>
-                    <span class="number">1</span>
-                    <span class="jia">+</span>
-                </div>
-                </h4>
-                <div>
-                    <h1 class="b_qu">取消</h1>
-                    <h1 class="b_que"><a href="buhuodingdan.html">确定</a></h1>
-                </div>
+            </h4>
+            <div>
+                <h1 class="j_qu">取消</h1>
+                <h1 class="j_que">确定</h1>
             </div>
         </div>
-    </main>
+        <div class="back_que">
+            <p>确认减库存?</p>
+            <h4>商品:<span>抗引力-手链</span></h4>
+            <h4>商品:<span>抗引力-手链</span></h4>
+            <h4>商品:<span>抗引力-手链</span></h4>
+            <h4>商品:<span>抗引力-手链</span></h4>
+            <h3>
+                <span class="que_qu">取消</span>
+                <span class="que_que">确认</span>
+            </h3>
+        </div>
+        <div class="back_b">
+            <p>减少库存</p>
+            <h4>商品:　　<span>抗引力-手链</span></h4>
+            <h4>数量:　　<div>
+                <span class="jian">-</span>
+                <span class="number">1</span>
+                <span class="jia">+</span>
+            </div>
+            </h4>
+            <div>
+                <h1 class="b_qu">取消</h1>
+                <h1 class="b_que"><a href="buhuodingdan.html">确定</a></h1>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>

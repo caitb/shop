@@ -47,19 +47,11 @@
                 <p>申请人信息　<b style="color:#999999">您可以凭手机号登录麦链商城</b></p>
             </div>
             <div>
-                <p>姓名： <input type="text" class="name" id="name" name="name" value="${name}"></p>
-            </div>
-
-            <div>
                 <p>手机号： <input type="text" class="tel" id="tel" name="tel" value="${mobile}"></p>
             </div>
             <div>
-                <p>验证码： <input type="text" class="yan" style="width:60px" id="yan" name="yan" value="${yanzhengma}">
-                    <botton class="btn" id="yanzhengma" name="yanzhengma"/>
-                    获取验证码</botton>
-                </p>
+                <p>姓名： <input type="text" class="name" id="name" name="name" value="${name}"></p>
             </div>
-
             <div>
                 <p>微信号：<input type="text" id="weixin" name="weixin" value="${weixinId}"></p>
             </div>

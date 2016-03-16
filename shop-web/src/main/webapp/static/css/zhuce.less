@@ -1,6 +1,7 @@
 .wrap{
     width: 100%;
     height: 100%;
+    
 main{
   width: 100%;
   padding-bottom: 20px;
@@ -20,11 +21,31 @@ main{
           display: -moz-box;
           -moz-box-orient:vertical;        
           p{
-              margin-right: 10px;
               text-indent: 25px;
               color: #333333;
               line-height: 40px;
               font-size: 14px;
+              position: relative;
+              .onc{
+                  float: right;
+                margin: 10px 28px 0 0;
+                width: 24px;
+                height: 24px;
+                display: none;
+                background: url("../images/no.png") no-repeat;
+              }
+              .gao{
+                position: absolute;
+                right:13px;
+                top: 28px;
+                background: url("../images/icon_33.png") no-repeat;
+                background-size: contain;
+                color: white;
+                padding: 10px 20px;
+                text-indent: 0;
+                z-index: 100;
+                display: none;
+                padding-left: 14px;}
               b{
                   font-size: 12px;
               }
@@ -50,13 +71,23 @@ main{
                   line-height: 30px;
                   margin-top: 5px;
                   background: #F74A11;
+                  margin-right: 10px;
               }
           }
-          .pon{
-              background: url("../images/no.png") no-repeat;
-              background-position: right;
-              background-size: 5%;
-          }
+          span{
+                  float: right;
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  margin-top: 10px;
+                  margin-right: 27px;
+                   background:white url("../images/no.png") no-repeat;
+                  text-indent: 10px;
+                  line-height: 40px;
+                  color: #999999;
+                  display: none;
+            }
+       
           .yon{
             background: url("../images/ok.png") no-repeat 54%;
             background-size: 6%;
@@ -78,6 +109,27 @@ main{
           color: #333333;
           line-height: 30px;
           text-indent: 10px;
+          
+      }
+      &>h3{
+          margin: 0 25px;
+          border-bottom: 1px solid #f6f6f6;
+          line-height: 40px;
+          span{
+          }
+          input{
+              display: none;
+          }
+          label{
+              background: url("../images/icon_14.png") no-repeat;
+              padding-left: 25px;
+              background-size: contain;
+          }
+          input:checked+label{
+              background: url("../images/icon_11.png") no-repeat;
+              padding-left: 25px;
+              background-size: contain;
+          }
       }
       div{
           width: 100%;
@@ -86,13 +138,26 @@ main{
           display: -webkit-box; 
           -webkit-box-orient:vertical;
           display: -moz-box;
-          -moz-box-orient:vertical;        
+          -moz-box-orient:vertical;     
           h3{
+              position: relative;
               margin-right: 10px;
               text-indent: 25px;
               color: #333333;
               line-height: 40px;
               font-size: 14px;
+              .gao{
+                position: absolute;
+                right:21px;
+                top:4px;
+                background: url("../images/icon_33.png") no-repeat;
+                background-size: contain;
+                color: white;
+                padding: 10px 20px;
+                text-indent: 0;
+                z-index: 100;
+                display: none;
+                padding-left: 14px;}
               b{
                   font-size: 12px;
               }
@@ -105,30 +170,55 @@ main{
                   margin-top:-4px;
                   font-weight: 600;
               }
+              span{
+                  position: absolute;
+                  display: block;
+                  width: 21px;
+                  height: 21px;
+                  top: 10px;
+                  right: 18px;
+                   background:white url("../images/no.png") no-repeat;
+                  text-indent: 10px;
+                  line-height: 40px;
+                  color: #999999;
+                  display: none;
+            }
+          }
+          
+      }
+      .dengji{
+          input{
+              display: none;
+          }
+          label{     
+                  display: block;
+                  color: #999999;
+                  line-height: 40px;
+                  border-bottom: 1px solid #F6F6F6;
+                  text-indent:50px;
+                  background: url("../images/icon_14.png") no-repeat 27px;
+                  background-size: 5%;
+                  font-size: 13px;
+                  span,b{
+                      font-size: 12px;
+                      color: #999999;
+
+                  }
+              }
+          input:checked+label{
+              background: url("../images/icon_11.png") no-repeat 27px;
+
+              background-size:5%;
           }
       }
-      & > p{     
-              color: #333333;
-              line-height: 40px;
-              border-bottom: 1px solid #F6F6F6;
-              text-indent:50px;
-              background: url("../images/icon_14.png") no-repeat 27px;
-              background-size: 5%;
-              font-size: 13px;
-              span,b{
-                  font-size: 12px;
-                  color: #B2B2B2;
-                  
-              }
+      .jin{
+          color: #c5c5c5;
+          background: url("../images/jin.png") no-repeat 27px;
+          background-size: 5%;
+          
+          span,b{
+              color: #c5c5c5;
           }
-      .on{
-              background:url("../images/icon_11.png") no-repeat 27px;
-              background-size: 5%;
-              color:#F74A11;
-              span,b{
-                    font-size: 12px;
-                    color: #F74A11;
-              }
       }
   } 
   .sec3{

@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderOperationLog;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface PfBorderOperationLogMapper {
     int deleteByPrimaryKey(Long id);
 

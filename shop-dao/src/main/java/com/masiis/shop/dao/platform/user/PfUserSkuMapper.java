@@ -10,10 +10,12 @@ package com.masiis.shop.dao.platform.user;
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface PfUserSkuMapper {
     int deleteByPrimaryKey(Integer id);
 

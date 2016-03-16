@@ -12,6 +12,12 @@ body .wrap {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
 }
+body .wrap .tishi {
+  text-indent: 10px;
+  color: red;
+  overflow: hidden;
+  line-height: 30px;
+}
 body .wrap .banner {
   width: 100%;
   height: 148px;

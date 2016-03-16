@@ -141,7 +141,7 @@
                                             },
                                             {
                                             title: '详情',
-                                            colspan: 11,
+                                            colspan: 10,
                                             align: 'center'
                                             }
                                         ],
@@ -188,14 +188,14 @@
                                                 },
                                                 align: 'center'
                                             },
-                                            {
+                                           /* {
                                                 field: 'skuName',
                                                 title: '合伙商品',
                                                 sortable: true,
                                                 //editable: true,
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
-                                            },
+                                            },*/
                                             {
                                                 field: 'name',
                                                 title: '合伙人级别',

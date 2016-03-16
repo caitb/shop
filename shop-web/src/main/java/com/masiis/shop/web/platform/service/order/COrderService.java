@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.nio.channels.Pipe;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +35,8 @@ public class COrderService {
     private PfCorderMapper pfCorderMapper;
     @Resource
     private ProductService productService;
+    @Resource
+    private PfCorderService pfCorderService;
     @Resource
     private PfCorderPaymentMapper pfCorderPaymentMapper;
     @Resource
@@ -108,11 +108,18 @@ public class COrderService {
      * @author hanzengzhi
      * @date 2016/3/9 11:39
      */
-    public List<PfUserTrial> isApplyTrial(Long userId, Integer skuId) {
-        PfUserTrial pfUserTrial = new PfUserTrial();
-        pfUserTrial.setUserId(userId);
-        pfUserTrial.setSkuId(skuId);
-        return userService.isApplyTrial(pfUserTrial);
+    public PfCorder isApplyTrial(Long userId, Integer skuId) {
+        try {
+            PfCorder pfCorder = new PfCorder();
+            pfCorder.setUserId(userId);
+            pfCorder.setSkuId(skuId);
+            pfCorder.setOrderType(0);
+            pfCorder = pfCorderService.trialCorder(pfCorder);
+            return pfCorder;
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return null;
     }
 
     /**
@@ -161,4 +168,5 @@ public class COrderService {
         pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
         pfSkuStatisticMapper.updateById(pfSkuStatistic);
     }
+
 }

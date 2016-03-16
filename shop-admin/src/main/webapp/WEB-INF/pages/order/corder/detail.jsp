@@ -255,20 +255,20 @@
             <tr>
                 <td class="meta-attributes__attr-name">收货人</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorderConsignee.consignee}
+                    ${order.pfCorderConsignee.consignee}<a href="javascript:void(0);">编辑</a>
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">收获地址</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorderConsignee.provinceName}+${order.pfCorderConsignee.cityName}+${order.pfCorderConsignee.regionName}+${order.pfCorderConsignee.address}
+                    ${order.pfCorderConsignee.provinceName}${order.pfCorderConsignee.cityName}${order.pfCorderConsignee.regionName}${order.pfCorderConsignee.address}
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">联系电话</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorderConsignee.mobile}
+                    ${order.pfCorderConsignee.mobile}<a href="javascript:void(0);">编辑</a>
                 </td>
             </tr>
             <tr>
@@ -300,15 +300,17 @@
             </tr>
             </thead>
             <tbody>
+            <c:forEach items="${order.productInfos}" var="product">
             <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
+                <td>${product.comSku.name}</td>
+                <td>${product.comSpu.artNo}</td>
+                <td>-</td>
+                <td>${product.comSku.priceMarket}</td>
+                <td>${product.comSku.priceRetail}</td>
+                <td>1</td>
+                <td>${order.pfCorder.productAmount}</td>
             </tr>
+            </c:forEach>
             </tbody>
         </table>
 

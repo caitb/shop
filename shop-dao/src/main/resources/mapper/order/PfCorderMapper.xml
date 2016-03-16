@@ -75,13 +75,13 @@
                id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="isTrial" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfCorder"  >
+    <select id="trialCorder" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfCorder"  >
         select id from
         pf_corder
         where
         user_id = #{userId,jdbcType=BIGINT}
-        AND  sku_id = #{skuId,jdbcType=BIGINT}
-        AND order_type=0
+        AND  sku_id = #{skuId,jdbcType=INTEGER}
+        AND order_type=#{orderType,jdbcType=INTEGER}
     </select>
 
     <select id="selectByCondition" resultType="com.masiis.shop.dao.po.PfCorder" resultMap="BaseResultMap" >

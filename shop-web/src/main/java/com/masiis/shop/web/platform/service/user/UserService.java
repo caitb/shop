@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -162,7 +163,38 @@ public class UserService {
      *
      * @param user
      */
-    public void insertComUser(ComUser user){
+    public void insertComUser(ComUser user) {
         comUserMapper.insert(user);
+    }
+
+    /**
+     * 绑定手机号
+     *
+     * @author hanzengzhi
+     * @date 2016/3/16 13:57
+     */
+    public ComUser bindPhone(HttpServletRequest request, String phone) throws Exception {
+        ComUser comUser = null;
+        try {
+            comUser = (ComUser) request.getSession().getAttribute("comUser");
+            if (comUser != null) {
+                comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+                comUser.setMobile(phone);
+                //更新表中的信息
+                int i = comUserMapper.updateByPrimaryKey(comUser);
+                if (i == 1) {
+                    //更新session缓存中的中user
+                    request.getSession().removeAttribute("comUser");
+                    request.getSession().setAttribute("comUser", comUser);
+                } else {
+                    throw new Exception("更新用户信息失败");
+                }
+            } else {
+                throw new Exception("查询用户信息失败");
+            }
+        } catch (Exception e) {
+            throw new Exception("绑定手机号失败");
+        }
+        return comUser;
     }
 }

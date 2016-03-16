@@ -9,6 +9,7 @@ package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class PfBorder {
 
@@ -129,7 +130,19 @@ public class PfBorder {
      * 备注
      */
     private String remark;
+    /**
+     * 订单商品状态名称
+     */
+    private String orderSkuStatus;
+    /**
+     * 订单商品
+     */
+    private List<PfBorderItem> pfBorderItems;
 
+    public void setOrderSkuStatus(String orderSkuStatus) {this.orderSkuStatus = orderSkuStatus;}
+    public String getOrderSkuStatus() {return orderSkuStatus;}
+    public List<PfBorderItem> getPfBorderItems() {return pfBorderItems;}
+    public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {this.pfBorderItems = pfBorderItems;}
     public Long getId() {
         return id;
     }

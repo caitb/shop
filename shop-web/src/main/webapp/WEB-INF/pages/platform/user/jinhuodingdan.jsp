@@ -1,0 +1,372 @@
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+    <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/jinhuodingdan.css">
+    <script src="<%=path%>/static/js/iscroll.js"></script>
+</head>
+<body>
+       <div class="wrap">
+           <div class="box">
+                <header class="xq_header">
+                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                        <p>我的订单</p>  
+                </header>
+                <nav>
+                    <ul>
+                        <li><a href="javascript:;" class="on">全部</a></li>
+                        <li><a href="javascript:;">待付款</a></li>
+                        <li><a href="javascript:;">待发货</a></li>
+                        <li><a href="javascript:;">待收货</a></li>
+                        <li><a href="javascript:;">退款中</a></li>
+                    </ul>
+                </nav>
+                <main>
+                    <div class="all">
+                        <c:forEach items="pfBorders" var="pb">
+                        <section class="sec1">
+                           <p>时间：<span>${pb.createTime}</span></p>
+                            <h2>
+                                订单号：<span>${pb.orderCode}</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="jinhuoxiangqing.html">查看订单详情</a></p>
+                                <span class="jixu">
+                                    <a href="buhuodingdan.html">继续支付</a>
+                                </span>
+                                <span class="fa">
+                                    确认收货
+                                </span>
+                            </div>
+                        </section>
+                        </c:forEach>
+                        <%--<section class="sec1">--%>
+                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
+                            <%--<h2>--%>
+                                <%--订单号：<span>e12093891283091283</span>--%>
+                                <%--<b>待发货</b>--%>
+                            <%--</h2>--%>
+                            <%--<div class="shangpin">--%>
+                                <%--<p class="photo">--%>
+                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
+                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</p>--%>
+                                <%--<div>--%>
+                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
+                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
+                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
+                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="ding">--%>
+                                <%--<p><a href="jinhuoxiangqing.html">查看订单详情</a></p>--%>
+                                <%--<span class="jixu">--%>
+                                    <%--<a href="buhuodingdan.html">继续支付</a>--%>
+                                <%--</span>--%>
+                                <%--<span class="quxiao">--%>
+                                    <%--取消订单--%>
+                                <%--</span>--%>
+                            <%--</div>--%>
+                        <%--</section>--%>
+                    </div>
+                    <div class="all">           
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="fa">
+                                    确认收货
+                                </span>
+                            </div>
+                        </section>
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="jixu">
+                                    继续支付
+                                </span>
+                                <span class="quxiao">
+                                    取消订单
+                                </span>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="all">           
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="fa">
+                                    确认收货
+                                </span>
+                            </div>
+                        </section>
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="jixu">
+                                    继续支付
+                                </span>
+                                <span class="quxiao">
+                                    取消订单
+                                </span>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="all">           
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="fa">
+                                    确认收货
+                                </span>
+                            </div>
+                        </section>
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="jixu">
+                                    继续支付
+                                </span>
+                                <span class="quxiao">
+                                    取消订单
+                                </span>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="all">           
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="fa">
+                                    确认收货
+                                </span>
+                            </div>
+                        </section>
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华</h2>
+                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                </div>
+                            </div>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <span class="jixu">
+                                    继续支付
+                                </span>
+                                <span class="quxiao">
+                                    取消订单
+                                </span>
+                            </div>
+                        </section>
+                    </div>
+                </main>
+           </div>
+            <div class="back">
+                <div class="back_shouhuo">
+                    <p>确认收到货品?</p>
+                    <h4>亲，请您核对却是厚道商品后在操作确认收货</h4>
+
+                    <h3>
+                        <span class="que_qu">取消</span>
+                        <span class="que_que">确认</span>
+                    </h3>
+                </div>
+                
+                <div class="back_que">
+                    <p>确认取消订单？</p>
+                    <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
+
+                    <h3>
+                        <span class="que_qu">取消</span>
+                        <span class="que_que">确认</span>
+                    </h3>
+                </div>
+            </div>
+       </div>
+       <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+       <script>
+            var myScroll = new IScroll("main",{
+                 preventDefault: false
+            })
+            $("li").on("click",function(){
+                var index=$(this).index();
+                $("li").children("a").removeClass("on")
+                $(this).children("a").addClass("on");
+                $(".all").eq(index).show().siblings().hide();
+            })
+            $(".sh").on("click",function(){
+                $(".back").css("display","-webkit-box");
+                $(".shouhuo").css("display","-webkit-box");
+            })
+            $(".close").on("click",function(){
+                $(".shouhuo").hide();
+                $(".back").hide();
+            })
+       </script>
+</body>
+</html>

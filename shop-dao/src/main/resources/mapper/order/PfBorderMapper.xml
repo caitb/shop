@@ -108,10 +108,10 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, create_man, order_code, user_pid, user_massage,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, delivery_time, ship_remark,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_time, ship_remark,
         replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
         receipt_time, remark
         from pf_border

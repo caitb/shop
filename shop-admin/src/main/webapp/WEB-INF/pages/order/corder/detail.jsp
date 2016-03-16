@@ -115,7 +115,7 @@
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
                     <c:if test="${order.pfCorder.shipStatus == 0}">
-                        未发货&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span id="shiSta">未发货</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="button" class="btn btn-info" id="fahuo" data-toggle="collapse" >
                             发货
                         </button>
@@ -156,14 +156,14 @@
                                     url: '<%=basePath%>comshipman/list.do',
                                     success: function(data){
                                         data = window.eval('(' + data + ')');
-                                        var sOptions = '<option value="-1">请选择</option>';
+                                        var sOptions = '<option>请选择</option>';
                                         for(var i in data){
                                             sOptions += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
                                         }
                                         $('#shipName').html(sOptions);
+                                        $('#delivery').collapse('show');
                                     }
                                 });
-                                $('#delivery').collapse(true);
                             });
 
                             $('#shipName').change(function(){
@@ -209,6 +209,12 @@
                                                 type: 'post',
                                                 data: $('#deliForm').serialize(),
                                                 success: function(msg){
+                                                    if(msg == 'success'){
+                                                        $('#delivery').collapse('hide');
+                                                        $('#fahuo').hide();
+                                                        $('#shiSta').html('已发货');
+                                                        return;
+                                                    }
                                                     alert(msg);
                                                 }
                                             });

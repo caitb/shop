@@ -219,6 +219,12 @@
                                                 type: 'post',
                                                 data: $('#deliForm').serialize(),
                                                 success: function(msg){
+                                                    if(msg == 'success'){
+                                                        $('#delivery').collapse('hide');
+                                                        $('#fahuo').hide();
+                                                        $('#shiSta').html('已发货');
+                                                        return;
+                                                    }
                                                     alert(msg);
                                                 }
                                             });

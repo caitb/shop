@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfCorderPaymentMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfCorderPayment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_corder_id" property="pfCorderId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
+        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
+        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectById" parameterType="Long" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               amount,
+               pay_type_id,
+               pay_type_name,
+               is_enabled
+        from
+               pf_corder_payment
+        where
+               id = #{id}
+    </select>
+
+    <select id="selectByCorderId" parameterType="Long" resultMap="BaseResultMap">
+        select
+                id,
+                create_time,
+                amount,
+                pay_type_id,
+                pay_type_name,
+                is_enabled
+        from
+                pf_corder_payment
+        where
+                pf_corder_id = #{pfCorderId}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfCorderPayment" resultMap="BaseResultMap">
+        select
+                id,
+                create_time,
+                amount,
+                pay_type_id,
+                pay_type_name,
+                is_enabled
+        from
+                pf_corder_payment
+        <where>
+            <if test="pf_corder_id != null">
+                pf_corder_id = #{pfCorderId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorderPayment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pf_corder_payment
+                    (
+                    id,
+                    create_time,
+                    amount,
+                    pay_type_id,
+                    pay_type_name,
+                    is_enabled
+                    )
+        VALUES
+                    (
+                    #{id},
+                    #{createTime},
+                    #{amount},
+                    #{payTypeId},
+                    #{payTypeName},
+                    #{isEnabled}
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfCorderPayment">
+        UPDATE
+               pf_corder_payment
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="payTypeId != null">
+                pay_type_id = #{payTypeId},
+            </if>
+            <if test="payTypeName != null">
+                pay_type_name = #{payTypeName},
+            </if>
+            <if test="isEnabled != null">
+                is_enabled = #{isEnabled},
+            </if>
+        </set>
+        WHERE
+              id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM pf_corder_payment WHERE id = #{id}
+    </delete>
+
+</mapper>

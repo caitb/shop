@@ -80,53 +80,41 @@
     <div class="meta-attributes">
         <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
             <tbody>
-
+            
             <tr>
                 <td class="meta-attributes__attr-name">订单号</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorder.orderCode}
-                </td>
-            </tr>
-
-            <tr>
-                <td class="meta-attributes__attr-name">订单状态</td>
-                <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorder.orderStatus == 0}">未处理</c:if>
-                    <c:if test="${order.pfBorder.orderStatus == 1}">已付款</c:if>
-                    <c:if test="${order.pfBorder.orderStatus == 2}">已取消</c:if>
-                    <c:if test="${order.pfBorder.orderStatus == 3}">已完成</c:if>
-                    <c:if test="${order.pfBorder.orderStatus == 4}">退款中</c:if>
-                    <c:if test="${order.pfBorder.orderStatus == 5}">已退款</c:if>
+                    ${order.pfCorder.orderCode}
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">下单日期</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfCorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
-
+            
             <tr>
                 <td class="meta-attributes__attr-name">支付日期</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfCorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
-
+            
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorderPayment.payTypeId == 1}">微信</c:if>
+                    ${order.pfCorderPayment.payTypeName}
                 </td>
             </tr>
-
+            
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorder.shipStatus == 0}">未发货</c:if>
-                    <c:if test="${order.pfBorder.shipStatus == 5}">已发货</c:if>
-                    <c:if test="${order.pfBorder.shipStatus == 9}">已收货</c:if>
+                    <c:if test="${order.pfCorder.shipStatus == 0}">未发货&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-info" href="">发货</button></c:if>
+                    <c:if test="${order.pfCorder.shipStatus == 5}">已发货</c:if>
+                    <c:if test="${order.pfCorder.shipStatus == 9}">已收货</c:if>
                 </td>
             </tr>
 
@@ -140,13 +128,13 @@
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.deliveryTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfCorder.deliveryTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">发货单号</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorderFreights[0].freight}
                 </td>
             </tr>
             </tbody>
@@ -158,26 +146,26 @@
             <tr>
                 <td class="meta-attributes__attr-name">收货人</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorderConsignee.consignee}
+                    ${order.pfCorderConsignee.consignee}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">收获地址</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorderConsignee.provinceName}+${order.pfBorderConsignee.cityName}+${order.pfBorderConsignee.regionName}+${order.pfBorderConsignee.address}
+                    ${order.pfCorderConsignee.provinceName}+${order.pfCorderConsignee.cityName}+${order.pfCorderConsignee.regionName}+${order.pfCorderConsignee.address}
                 </td>
             </tr>
 
             <tr>
                 <td class="meta-attributes__attr-name">联系电话</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorderConsignee.mobile}
+                    ${order.pfCorderConsignee.mobile}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">邮编</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorderConsignee.zip}
+                    ${order.pfCorderConsignee.zip}
                 </td>
             </tr>
             <tr>
@@ -188,7 +176,7 @@
             </tr>
             </tbody>
         </table>
-        <hr/>
+
 
         <table class="table table-bordered my-table">
             <thead>
@@ -214,20 +202,20 @@
             </tr>
             </tbody>
         </table>
-        <hr/>
+
 
         <table class="meta-attributes__table" cellspacing="0" cellpadding="0" border="0">
             <tbody>
             <tr>
                 <td class="meta-attributes__attr-name">运费</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorder.orderCode}
+                    ${order.pfCorder.shipAmount}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">商品总金额</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorder.productAmount}
                 </td>
             </tr>
 
@@ -240,24 +228,23 @@
             <tr>
                 <td class="meta-attributes__attr-name">实付金额</td>
                 <td class="meta-attributes__attr-detail">
-
+                    ${order.pfCorder.payAmount}
                 </td>
             </tr>
             <tr>
                 <td class="meta-attributes__attr-name">订单状态</td>
                 <td class="meta-attributes__attr-detail">
-
+                    <c:if test="${order.pfCorder.orderStatus == 0}">未处理</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 1}">已付款</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 2}">已取消</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 3}">已完成</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 4}">退款中</c:if>
+                    <c:if test="${order.pfCorder.orderStatus == 5}">已退款</c:if>
                 </td>
             </tr>
             </tbody>
         </table>
-        <hr/>
 
-        <div style="align-content: center; width: 200px; margin: 0 auto;">
-            <button class="btn btn-info">确认收货</button>
-            <button class="btn btn-detault">取消订单</button>
-        </div>
-        <hr/>
 
         <table class="table table-bordered my-table">
             <thead>

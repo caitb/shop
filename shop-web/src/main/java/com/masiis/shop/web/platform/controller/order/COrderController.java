@@ -118,7 +118,7 @@ public class COrderController extends BaseController {
      */
     @RequestMapping("/trialApply.do")
     @ResponseBody
-    public String trialApply(
+    public Long trialApply(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
@@ -147,11 +147,12 @@ public class COrderController extends BaseController {
             ComUser comUser = initComUserParamData(request, wechat, name, phone);
             PfCorder pfCorder =  initPfCorderParamData(comUser.getId(),skuId);
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
-            trialService.insert(pfCorder,pfCorderOperationLog,comUser);
+            Long orderId = trialService.insert(pfCorder,pfCorderOperationLog,comUser);
+            return orderId;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "success";
+        return null;
     }
 
     /**

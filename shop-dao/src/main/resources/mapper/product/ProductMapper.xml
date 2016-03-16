@@ -62,4 +62,12 @@
     <select id="agentLevelDiscount" resultMap="DiscountLevelResultMap">
         SELECT * FROM com_agent_level ORDER BY id ASC
     </select>
+    <!-->用户商品列表<-->
+    <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="int">
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock
+        FROM pf_user_sku_stock pfu
+        LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
+        WHERE pfu.user_id = #{userId}
+    </select>
+
 </mapper>

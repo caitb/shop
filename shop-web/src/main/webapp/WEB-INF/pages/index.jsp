@@ -163,7 +163,7 @@
             <span><img src="<%=path%>/static/images/shouye_footer2.png" alt=""></span>
             <span>我的店铺</span>
         </div>
-        <div class="btm">
+        <div class="btm" onclick="javascript:window.location.replace('<%=basePath%>profile/profile');">
             <span><img src="<%=path%>/static/images/shouye_footer3.png" alt=""></span>
             <span>个人中心</span>
         </div>

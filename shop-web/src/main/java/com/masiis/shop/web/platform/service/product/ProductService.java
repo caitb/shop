@@ -3,10 +3,7 @@ package com.masiis.shop.web.platform.service.product;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
-import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
-import com.masiis.shop.dao.platform.product.ComSpuMapper;
-import com.masiis.shop.dao.platform.product.ProductMapper;
-import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
+import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
@@ -34,6 +31,8 @@ public class ProductService {
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
     private ProductSimpleMapper productSimpleMapper;
+    @Resource
+    private ComSkuStockMapper comSkuStockMapper;
 
     /**
      * @Author 贾晶豪
@@ -112,4 +111,22 @@ public class ProductService {
     public ProductSimple getSkuSimple(Integer skuId) throws Exception {
         return productSimpleMapper.selectBySkuId(skuId);
     }
+    
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/16 0016 上午 10:31
+      * 个人中心商品列表
+      */
+     public List<Product> productListByUser(Integer userId) throws Exception{
+         List<Product> userProducts = productMapper.getProductsByUser(userId);
+         String productImgValue = PropertiesUtils.getStringValue("index_product_220_220_url");
+         if (userProducts != null) {
+             for (Product product : userProducts) {
+                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
+                 product.setComSkuImage(comSkuImage);
+                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
+             }
+         }
+         return userProducts;
+     }
 }

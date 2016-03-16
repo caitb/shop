@@ -42,7 +42,7 @@ public class PfUserSkuService {
      * @param id
      * @return
      */
-    public PfUserSkuCertificate getUserSkuById(Integer id) {
-        return pfUserSkuMapper.getUserSkuById(id);
+    public List<PfUserSkuCertificate> getUserSkuById(Integer id) {
+        return pfUserSkuMapper.getUserSkuListById(id);
     }
 }

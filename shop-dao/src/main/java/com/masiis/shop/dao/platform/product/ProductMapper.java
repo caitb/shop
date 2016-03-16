@@ -18,4 +18,6 @@ public interface ProductMapper {
 
     List<ComAgentLevel> agentLevelDiscount();
 
+    List<Product> getProductsByUser(Integer userId);
+
 }

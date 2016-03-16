@@ -25,7 +25,7 @@
                 if (options == -1 || option2 == -1 || option3 == -1) {
                     $(".sel").css("border", "1px solid red")
                     return false;
-                } else if (options != -1  || option2 != -1 || option3 != -1) {
+                } else if (options != -1 || option2 != -1 || option3 != -1) {
                     $(".sel").css("border", "none")
                     return true;
                 }
@@ -61,7 +61,12 @@
                 $(".onc").eq(2).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(2).next().show().html("详细地址不能为空");
+                    $(".onc").eq(2).next().show().html("邮政编码格式不正确");
+                })
+                $(".onc").eq(3).on("click", function (event) {
+                    var event = event || event.window;
+                    event.stopPropagation();
+                    $(".onc").eq(3).next().show().html("详细地址不能为空");
                 })
             },
             getJsonParam: function () {
@@ -158,8 +163,23 @@
                     return true;
                 }
             },
+            checkPostCode: function (paramJson) {
+                if (paramJson.postcode == "") {
+                    $(".postcode").next().show();
+                    $(".postcode").focus();
+                    return false;
+                } else {
+                    if (!/^[0-9][0-9]{5}$/.test(paramJson.postcode)) {
+                        $(".postcode").next().show()
+                        $(".postcode").focus();
+                        return false;
+                    }
+                    $(".onc").hide();
+                    return true;
+                }
+            },
             validateAddressInfo: function (paramJson) {
-                return addressJS.checkName(paramJson) ? (addressJS.checkPhone(paramJson) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson) : false) : false) : false;
+                return addressJS.checkName(paramJson) ? ( addressJS.checkPhone(paramJson) ? (addressJS.checkPostCode(paramJson) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson) : false) : false) : false ) : false;
             }
         }
 })();

@@ -56,67 +56,88 @@ public class PfUserSku {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getCode() {
         return code;
     }
+
     public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+        this.code = code;
     }
+
     public Integer getPid() {
         return pid;
     }
+
     public void setPid(Integer pid) {
         this.pid = pid;
     }
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     public Integer getSkuId() {
         return skuId;
     }
+
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
     public Integer getAgentLevelId() {
         return agentLevelId;
     }
+
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
+
     public Integer getIsPay() {
         return isPay;
     }
+
     public void setIsPay(Integer isPay) {
         this.isPay = isPay;
     }
+
     public Integer getIsCertificate() {
         return isCertificate;
     }
+
     public void setIsCertificate(Integer isCertificate) {
         this.isCertificate = isCertificate;
     }
+
     public Long getPfBorderId() {
         return pfBorderId;
     }
+
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
 }

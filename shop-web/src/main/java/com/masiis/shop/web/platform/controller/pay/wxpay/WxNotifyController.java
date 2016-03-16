@@ -4,6 +4,8 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyRes;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.pay.wxpay.WxNotifyService;
+import com.masiis.shop.web.platform.service.pay.wxpay.WxPayService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
@@ -26,6 +29,11 @@ import java.io.InputStream;
 @RequestMapping("/wxntfy")
 public class WxNotifyController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
+
+    @Resource
+    private WxPayService wxPayService;
+    @Resource
+    private WxNotifyService notifyService;
 
     @RequestMapping("/orderNtfy")
     public void uniOrderNotify(HttpServletRequest request, HttpServletResponse response){
@@ -71,7 +79,7 @@ public class WxNotifyController extends BaseController {
             // 开始进行订单异步回调通知业务,要进行参数有效性校验
             synchronized (this) {
                 // 放到service中处理
-
+                notifyService.handleWxPayNotify(param);
             }
 
             resObj.setReturn_code("SUCCESS");

@@ -3,7 +3,6 @@ package com.masiis.shop.dao.beans.product;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -30,6 +29,8 @@ public class Product extends ComSku {
     private Long shipAmount;//快递费用
 
     private Integer agentNum;//代理人数
+
+    private ComSkuImage comSkuImage;
 
     public String getSpuName() {
         return spuName;
@@ -109,5 +110,13 @@ public class Product extends ComSku {
 
     public void setAgentNum(Integer agentNum) {
         this.agentNum = agentNum;
+    }
+
+    public ComSkuImage getComSkuImage() {
+        return comSkuImage;
+    }
+
+    public void setComSkuImage(ComSkuImage comSkuImage) {
+        this.comSkuImage = comSkuImage;
     }
 }

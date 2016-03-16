@@ -3,6 +3,8 @@ package com.masiis.shop.admin.controller.order;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderFreight;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,5 +53,22 @@ public class PfBorderController {
         mav.addObject("order", order);
 
         return mav;
+    }
+
+    @RequestMapping("/delivery.do")
+    @ResponseBody
+    public Object delivery(HttpServletRequest request, HttpServletResponse response,
+                           PfBorderFreight pfBorderFreight){
+
+        if (pfBorderFreight.getShipManId() == null){
+            return "请选择一个快递";
+        }
+        if(StringUtils.isBlank(pfBorderFreight.getFreight())){
+            return "请填写运单号";
+        }
+
+        bOrderService.delivery(pfBorderFreight);
+
+        return "success";
     }
 }

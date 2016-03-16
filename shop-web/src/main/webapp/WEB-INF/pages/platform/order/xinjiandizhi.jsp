@@ -54,7 +54,9 @@
                 </p>
                 <p class="sf">
                     邮政编码
-                    <input type="tel" id="postcode">
+                    <input type="tel" class="postcode" id="postcode">
+                    <span class="onc"></span>
+                    <b class="gao"></b>
                 </p>
                 <div class="address">
                     联系地址

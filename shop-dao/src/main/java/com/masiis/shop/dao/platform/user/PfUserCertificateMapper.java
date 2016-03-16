@@ -21,4 +21,6 @@ public interface PfUserCertificateMapper {
     List<PfUserCertificate> selectAll();
 
     int updateByPrimaryKey(PfUserCertificate record);
+
+    PfUserCertificate selectByUserId(Long userId);
 }

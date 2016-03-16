@@ -40,4 +40,6 @@ public interface PfSkuStatisticMapper {
      * @param id
      */
     void deleteById(Integer id);
+
+    PfSkuStatistic selectBySkuId(Integer skuId);
 }

@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.service.pay.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
@@ -43,10 +45,12 @@ public class WxPayService {
             res.setNonce_str(WXBeanUtils.createGenerateStr());
             res.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
             res.setOpenid(user.getOpenid());
+            // PC网页或公众号内支付传"WEB"
+            res.setDevice_info("WEB");
             res.setSpbill_create_ip(ip);
             res.setTrade_type("JSAPI");
 
-            if("B".equalsIgnoreCase(orderType)){
+            if("B".equals(orderType)){
                 // 代理订单
                 PfBorder order = bOrderService.findByOrderCode(req.getOrderId());
                 if(order == null){
@@ -58,7 +62,8 @@ public class WxPayService {
                     body.append(item.getSkuName()).append(",");
                 }
                 res.setBody(body.substring(0, body.length() - 1));
-                res.setOut_trade_no(order.getOrderCode());
+                // 给外部支付的是系统的支付流水号,自己生成
+                res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
                 res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
             } else {
@@ -73,13 +78,14 @@ public class WxPayService {
     }
 
     @Transactional
-    public void createPaymentRecord(UnifiedOrderReq req, UnifiedOrderRes res){
-        String orderid = req.getOut_trade_no();
+    public void createPaymentRecord(UnifiedOrderReq req, UnifiedOrderRes res, String orderid){
         String orderType = String.valueOf(orderid.charAt(0));
         if("B".equals(orderType)){
             // B类型订单
+            PfBorder order = bOrderService.findByOrderCode(orderid);
             PfBorderPayment payment = createBorderPayment(req, res);
-            bPaymentMapper.insert(payment);
+            payment.setPfBorderId(order.getId());
+            bOrderService.addBOrderPayment(payment);
         } else {
             throw new BusinessException("订单类型不正确!");
         }
@@ -91,11 +97,12 @@ public class WxPayService {
         payment.setAmount(new BigDecimal(p.getTotal_fee()));
         payment.setCreateTime(new Date());
         payment.setIsEnabled(0);
-        payment.setOutOrderId(r.getPrepay_id());
+        // 给外部支付使用支付流水号
+        payment.setPaySerialNum(p.getOut_trade_no());
         payment.setPayTypeId(0);
         payment.setPayTypeName("微信支付");
-        payment.setPfBorderId(Long.valueOf(p.getOut_trade_no()));
 
         return payment;
     }
+
 }

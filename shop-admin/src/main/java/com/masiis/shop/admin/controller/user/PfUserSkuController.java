@@ -34,6 +34,12 @@ public class PfUserSkuController extends BaseController {
     @Resource
     private ComUserService comUserService;
 
+    /**
+     * 合伙人列表
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/list.shtml")
     public ModelAndView list(HttpServletRequest request, HttpServletResponse response,
                        @RequestParam(value="pid", required = false)Long pid) {
@@ -43,6 +49,7 @@ public class PfUserSkuController extends BaseController {
 
         return mav;
     }
+
     @RequestMapping("list.do")
     @ResponseBody
     public Object list(HttpServletRequest request, HttpServletResponse response,
@@ -92,6 +99,11 @@ public class PfUserSkuController extends BaseController {
         ComUser comUser = null;
         if(id != null){
             comUser = comUserService.findById(id);
+            if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
+                String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
+                comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
+                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardBackUrl());
+            }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String format = sdf.format(comUser.getCreateTime());
             mav.addObject("date",format);
@@ -100,25 +112,50 @@ public class PfUserSkuController extends BaseController {
         return mav;
     }
 
+    /**
+     * 合伙信息页面
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/partner.shtml")
-    public ModelAndView partner(HttpServletRequest request, HttpServletResponse response, Integer id){
+    public ModelAndView partner(HttpServletRequest request, HttpServletResponse response, Integer id) {
         ModelAndView mav = new ModelAndView("user/partner");
+        mav.addObject("id", id);
 
-        if(id != null){
-            PfUserSkuCertificate pfUserSkuCertificate = pfUserSkuService.getUserSkuById(id);
-            ComUser comUser = pfUserSkuCertificate.getComUser();
-            if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
-                String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
-                comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
-                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardBackUrl());
-            }
-            if (pfUserSkuCertificate!=null){
-                String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
-                pfUserSkuCertificate.setpRealName(pRealName);
-            }
-            mav.addObject("pfUserSku", pfUserSkuCertificate);
-        }
         return mav;
+    }
+
+    @RequestMapping("/partner.do")
+    public Object partner(HttpServletRequest request, HttpServletResponse response,
+                                String sort,
+                                String order,
+                                Integer offset,
+                                Integer limit,
+                                Integer id){
+
+        offset = offset==null ? 0 : offset;
+        limit  = limit ==null ? 10 : limit;
+        Integer pageNo = offset/limit + 1;
+        PageHelper.startPage(pageNo, limit);
+        List<PfUserSkuCertificate> pfUserSkuList = null;
+        if(id != null){
+            pfUserSkuList = pfUserSkuService.getUserSkuById(id);
+            if (pfUserSkuList.size()!=0){
+                for (PfUserSkuCertificate pfUserSkuCertificate:pfUserSkuList) {
+                    if (pfUserSkuCertificate!=null){
+                        ComUser comUser = pfUserSkuCertificate.getComUser();
+                        String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
+                        pfUserSkuCertificate.setpRealName(pRealName);
+                    }
+                }
+            }
+        }
+        PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", pfUserSkuList);
+        return pageMap;
     }
 
 }

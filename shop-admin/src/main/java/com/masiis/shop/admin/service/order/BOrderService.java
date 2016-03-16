@@ -3,16 +3,16 @@ package com.masiis.shop.admin.service.order;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
+import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.dao.platform.order.*;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -32,6 +32,10 @@ public class BOrderService {
     private PfBorderFreightMapper pfBorderFreightMapper;
     @Resource
     private PfBorderItemMapper pfBorderItemMapper;
+    @Resource
+    private ComSkuMapper comSkuMapper;
+    @Resource
+    private ComSpuMapper comSpuMapper;
 
     /**
      * 根据条件查询记录
@@ -72,18 +76,49 @@ public class BOrderService {
      */
     public Order find(Long id){
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(id);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         PfBorderPayment pfBorderPayment = pfBorderPaymentMapper.selectByBorderId(id);
         PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(id);
         List<PfBorderFreight> pfBorderFreights = pfBorderFreightMapper.selectByBorderId(id);
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(id);
 
+        List<ProductInfo> productInfos = new ArrayList<>();
+        for(PfBorderItem pfBorderItem : pfBorderItems){
+            ComSku comSku = comSkuMapper.selectById(pfBorderItem.getSkuId());
+            ComSpu comSpu = comSpuMapper.selectById(pfBorderItem.getSpuId());
+
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.setComSku(comSku);
+            productInfo.setComSpu(comSpu);
+
+            productInfos.add(productInfo);
+        }
+
         Order order = new Order();
         order.setPfBorder(pfBorder);
+        order.setComUser(comUser);
         order.setPfBorderPayment(pfBorderPayment);
         order.setPfBorderConsignee(pfBorderConsignee);
         order.setPfBorderFreights(pfBorderFreights);
         order.setPfBorderItems(pfBorderItems);
 
+        order.setProductInfos(productInfos);
+
         return order;
+    }
+
+    /**
+     * 发货
+     * @param pfBorderFreight
+     */
+    public void delivery(PfBorderFreight pfBorderFreight){
+        PfBorder pfBorder = new PfBorder();
+        pfBorder.setId(pfBorderFreight.getPfBorderId());
+        pfBorder.setShipStatus(5);
+
+        pfBorderFreight.setCreateTime(new Date());
+
+        pfBorderMapper.updateById(pfBorder);
+        pfBorderFreightMapper.insert(pfBorderFreight);
     }
 }

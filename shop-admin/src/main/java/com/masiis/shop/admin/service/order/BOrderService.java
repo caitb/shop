@@ -9,10 +9,7 @@ import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -85,5 +82,20 @@ public class BOrderService {
         order.setPfBorderItems(pfBorderItems);
 
         return order;
+    }
+
+    /**
+     * 发货
+     * @param pfBorderFreight
+     */
+    public void delivery(PfBorderFreight pfBorderFreight){
+        PfBorder pfBorder = new PfBorder();
+        pfBorder.setId(pfBorderFreight.getPfBorderId());
+        pfBorder.setShipStatus(5);
+
+        pfBorderFreight.setCreateTime(new Date());
+
+        pfBorderMapper.updateById(pfBorder);
+        pfBorderFreightMapper.insert(pfBorderFreight);
     }
 }

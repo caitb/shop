@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.swing.plaf.nimbus.NimbusStyle;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -129,7 +128,7 @@ public class BOrderService {
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);//已付款
         pfBorder.setOrderStatus(1);//已付款
-        pfBorderMapper.updateByPrimaryKey(pfBorder);
+        pfBorderMapper.updateById(pfBorder);
         //<3>添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
         pfBorderOperationLog.setCreateMan(pfBorder.getUserId());

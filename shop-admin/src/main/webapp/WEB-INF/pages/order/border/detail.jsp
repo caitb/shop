@@ -124,7 +124,108 @@
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorder.shipStatus == 0}">未发货</c:if>
+                    <c:if test="${order.pfCorder.shipStatus == 0}">
+                        未发货&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-info" id="fahuo" data-toggle="collapse" >
+                            发货
+                        </button>
+                        <div id="delivery" class="collapse" aria-expanded="false" style="height: 0px;">
+                            <form class="form-horizontal" id="deliForm" action="<%=basePath%>order/border/delivery.do">
+                                <div class="form-group" style="margin-top: 10px; margin-left: -81px;">
+                                    <label for="shipName" class="col-sm-4 control-label">快递名称</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control" id="shipName" name="shipManId">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-left: -81px;">
+                                    <label for="freight" class="col-sm-4 control-label">快递单号</label>
+                                    <div class="col-sm-4">
+                                        <input type="hidden" name="pfCorderId" value="${order.pfBorder.id}" />
+                                        <input type="hidden" id="shipManName" name="shipManName" value="" />
+                                        <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2"></label>
+                                    <div class="col-sm-6">
+                                        <button type="submit" class="btn btn-info" id="skuSave">确定</button>
+                                        <button type="button" class="btn">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <script>
+                            $('#fahuo').on('click', function(){
+                                $.ajax({
+                                    url: '<%=basePath%>comshipman/list.do',
+                                    success: function(data){
+                                        data = window.eval('(' + data + ')');
+                                        var sOptions = '<option value="-1">请选择</option>';
+                                        for(var i in data){
+                                            sOptions += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
+                                        }
+                                        $('#shipName').html(sOptions);
+                                    }
+                                });
+                                $('#delivery').collapse(true);
+                            });
+
+                            $('#shipName').change(function(){
+                                $('#shipManName').val($(this).find('option[value="'+$(this).val()+'"]').html());
+                            });
+
+                            $(document).ready(function() {
+                                $('#deliForm').bootstrapValidator({
+                                            message: '必须填写',
+                                            feedbackIcons: {
+                                                valid: 'glyphicon glyphicon-ok',
+                                                invalid: 'glyphicon glyphicon-remove',
+                                                validating: 'glyphicon glyphicon-refresh'
+                                            },
+                                            fields: {
+                                                shipManId: {
+                                                    message: '请选择一个快递!',
+                                                    validators: {
+                                                        notEmpty: {}
+                                                    }
+                                                },
+                                                freight: {
+                                                    message: '请填写快递单号!',
+                                                    validators: {
+                                                        notEmpty: {}
+                                                    }
+                                                }
+                                            }
+                                        })
+                                        .on('success.form.bv', function(e) {
+                                            // Prevent form submission
+                                            e.preventDefault();
+
+                                            // Get the form instance
+                                            var $form = $(e.target);
+
+                                            // Get the BootstrapValidator instance
+                                            var bv = $form.data('bootstrapValidator');
+
+                                            // Use Ajax to submit form data
+                                            $.ajax({
+                                                url: '<%=basePath%>order/border/delivery.do',
+                                                type: 'post',
+                                                data: $('#deliForm').serialize(),
+                                                success: function(msg){
+                                                    alert(msg);
+                                                }
+                                            });
+                                        });
+                            });
+                        </script>
+                    </c:if>
                     <c:if test="${order.pfBorder.shipStatus == 5}">已发货</c:if>
                     <c:if test="${order.pfBorder.shipStatus == 9}">已收货</c:if>
                 </td>

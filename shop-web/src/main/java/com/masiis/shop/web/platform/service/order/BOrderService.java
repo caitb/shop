@@ -6,6 +6,7 @@ import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,8 @@ public class BOrderService {
     private PfSkuStatisticMapper pfSkuStatisticMapper;
     @Resource
     private PfSkuStockMapper pfSkuStockMapper;
+    @Resource
+    private PfUserSkuStockMapper pfUserSkuStockMapper;
 
     /**
      * 添加订单
@@ -136,7 +139,7 @@ public class BOrderService {
         pfBorderOperationLog.setPfBorderStatus(1);
         pfBorderOperationLog.setPfBorderId(bOrderId);
         pfBorderOperationLog.setRemark("订单已支付");
-        pfBorderOperationLogMapper.updateByPrimaryKey(pfBorderOperationLog);
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         //<4>修改合伙人商品关系状态
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {
@@ -148,21 +151,34 @@ public class BOrderService {
         pfUserSku.setIsPay(1);
         pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
         //**************维护商品信息******************
+
         PfSkuStatistic pfSkuStatistic = null;
         PfSkuStock pfSkuStock = null;
+        PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             //<6>修改sku代理量
             pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfBorderItem.getSkuId());
             pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
             pfSkuStatisticMapper.updateById(pfSkuStatistic);
-            //<7>冻结sku库存
-            pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() >= pfBorderItem.getQuantity()) {
-                throw new BusinessException("lowStocks");
+            //<7>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
+            if (pfBorder.getUserId() == 0) {
+
+                pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+                if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                    throw new BusinessException("lowStocks");
+                }
+                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                pfSkuStockMapper.updateById(pfSkuStock);
+            } else {
+                pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                    throw new BusinessException("lowStocks");
+                }
+                pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                pfUserSkuStockMapper.updateByPrimaryKey(pfUserSkuStock);
             }
-            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-            pfSkuStockMapper.updateById(pfSkuStock);
         }
+
     }
 
     /**
@@ -207,6 +223,12 @@ public class BOrderService {
         return pfBorderMapper.selectByUserId(UserId);
     }
 
+    /**
+     * 添加订单支付记录
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/16 12:42
+     */
     @Transactional
     public void addBOrderPayment(PfBorderPayment pfBorderPayment) {
         pfBorderPaymentMapper.insert(pfBorderPayment);

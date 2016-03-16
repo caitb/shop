@@ -9,48 +9,31 @@
         <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
         <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
         <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR" />
+        <result column="pay_serial_num" property="paySerialNum" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
 
     <select id="selectById" parameterType="Long" resultMap="BaseResultMap">
-        select
-               id,
-               create_time,
-               amount,
-               pay_type_id,
-               pay_type_name,
-               is_enabled
-        from
-               pf_corder_payment
-        where
-               id = #{id}
+        select id, create_time, pf_corder_id, amount, pay_type_id, pay_type_name, is_enabled,
+        out_order_id, pay_serial_num, remark
+        from pf_corder_payment
+        where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectByCorderId" parameterType="Long" resultMap="BaseResultMap">
-        select
-                id,
-                create_time,
-                amount,
-                pay_type_id,
-                pay_type_name,
-                is_enabled
-        from
-                pf_corder_payment
+        select id, create_time, pf_corder_id, amount, pay_type_id, pay_type_name, is_enabled,
+        out_order_id, pay_serial_num, remark
+        from pf_corder_payment
         where
                 pf_corder_id = #{pfCorderId}
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfCorderPayment" resultMap="BaseResultMap">
-        select
-                id,
-                create_time,
-                amount,
-                pay_type_id,
-                pay_type_name,
-                is_enabled
-        from
-                pf_corder_payment
+        select id, create_time, pf_corder_id, amount, pay_type_id, pay_type_name, is_enabled,
+        out_order_id, pay_serial_num, remark
+        from pf_corder_payment
         <where>
             <if test="pf_corder_id != null">
                 pf_corder_id = #{pfCorderId}
@@ -59,51 +42,28 @@
     </select>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfCorderPayment" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pf_corder_payment
-                    (
-                    id,
-                    create_time,
-                    amount,
-                    pay_type_id,
-                    pay_type_name,
-                    is_enabled
-                    )
-        VALUES
-                    (
-                    #{id},
-                    #{createTime},
-                    #{amount},
-                    #{payTypeId},
-                    #{payTypeName},
-                    #{isEnabled}
-                    )
+       insert into pf_corder_payment (id, create_time, pf_corder_id,
+            amount, pay_type_id, pay_type_name,
+            is_enabled, out_order_id, pay_serial_num,
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfCorderId,jdbcType=BIGINT},
+            #{amount,jdbcType=DECIMAL}, #{payTypeId,jdbcType=INTEGER}, #{payTypeName,jdbcType=VARCHAR},
+            #{isEnabled,jdbcType=INTEGER}, #{outOrderId,jdbcType=VARCHAR}, #{paySerialNum,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfCorderPayment">
-        UPDATE
-               pf_corder_payment
-        <set>
-            <if test="id != null">
-                id = #{id},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
-            </if>
-            <if test="amount != null">
-                amount = #{amount},
-            </if>
-            <if test="payTypeId != null">
-                pay_type_id = #{payTypeId},
-            </if>
-            <if test="payTypeName != null">
-                pay_type_name = #{payTypeName},
-            </if>
-            <if test="isEnabled != null">
-                is_enabled = #{isEnabled},
-            </if>
-        </set>
-        WHERE
-              id = #{id}
+        update pf_corder_payment
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        pf_corder_id = #{pfCorderId,jdbcType=BIGINT},
+        amount = #{amount,jdbcType=DECIMAL},
+        pay_type_id = #{payTypeId,jdbcType=INTEGER},
+        pay_type_name = #{payTypeName,jdbcType=VARCHAR},
+        is_enabled = #{isEnabled,jdbcType=INTEGER},
+        out_order_id = #{outOrderId,jdbcType=VARCHAR},
+        pay_serial_num = #{paySerialNum,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 
     <delete id="deleteById" parameterType="Long">

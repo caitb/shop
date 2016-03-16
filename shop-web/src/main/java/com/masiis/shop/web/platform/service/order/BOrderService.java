@@ -114,8 +114,7 @@ public class BOrderService {
      * 操作详情 <1>修改订单支付信息<2>修改订单数据<3>添加订单日志<4>修改合伙人商品关系状态<5>修改用户sku代理关系支付状态<6>修改sku代理量<7>冻结sku库存
      */
     @Transactional
-    public void payBOrder(String paySerialNum, BigDecimal amount, String outOrderId) throws Exception {
-        PfBorderPayment pfBorderPayment = pfBorderPaymentMapper.selectByPaySerialNumAndAmount(paySerialNum, amount);
+    public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
         //<1>修改订单支付信息

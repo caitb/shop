@@ -182,7 +182,7 @@ $(function () {
                     param += "&levelName=" + paraData.levelName;
                     param += "&amount=" + paraData.amount;
                     param += "&yanzhengma=" + paraData.yanzhengma;
-                    window.location.href = path + "border/registerConfirm.shtml" + param;
+                    window.location.href = path + "userApply/registerConfirm.shtml" + param;
                 } else {
                     alert(data.message);
                 }

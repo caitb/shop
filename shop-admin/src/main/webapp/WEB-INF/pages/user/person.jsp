@@ -16,12 +16,25 @@
         <td>${comUser.mobile}</td>
     </tr>
     <tr>
+        <td><label class="col-sm-3 control-label no-padding-right">微信号</label></td>
+        <td>${comUser.wxId}</td>
+    </tr>
+    <tr>
+        <td><label class="col-sm-3 control-label no-padding-right">联系人身份证</label></td>
+        <td>${comUser.idCard}</td>
+    </tr>
+    <tr>
+        <td><label class="col-sm-3 control-label no-padding-right">身份证扫描</label></td>
+        <td><a href="#" data-toggle="modal" data-target="#cardModal" onclick="card('${comUser.idCardFrontUrl}')">正面</a>&nbsp;
+            <a href="#" data-toggle="modal" data-target="#cardModal" onclick="card('${comUser.idCardBackUrl}')">反面</a></td>
+    </tr>
+    <tr>
         <td><label class="col-sm-3 control-label no-padding-right">账户余额</label></td>
-        <td></td>
+        <td><!--？？？--></td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">结算中资金</label></td>
-        <td></td>
+        <td><!--？？？--></td>
     </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">注册日期</label></td>
@@ -92,7 +105,9 @@
     </div><!-- /.modal -->
 </div>
 
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog"
+
+<!-- 身份证复印件 -->
+<div class="modal fade" id="cardModal" tabindex="-1" role="dialog"
      aria-labelledby="orderModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -102,23 +117,28 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="orderModalLabel">
-                    订单详情
+                    身份证复印件
                 </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" >
+                <div id="bodyimg"></div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
                         data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary" id="Submit">
-                    提交
-                </button>
+                <%-- <button type="button" class="btn btn-primary" id="Submit">
+                     提交
+                 </button>--%>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 
 </div>
+
+
+
 <div>
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
@@ -130,6 +150,14 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
 </div>
 <script>
+    //身份证
+    function card(url){
+        //alert(url)
+        $("#bodyimg").html('<img src="' + url + '" />');
+        $("#cardModal").show;
+    }
+
+
     //批准
     $('#update').on('click', function(){
         var approveId = $("#approveId").val();

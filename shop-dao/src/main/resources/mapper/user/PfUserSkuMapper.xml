@@ -137,7 +137,7 @@
         select count(*) from pf_user_sku where pid = #{pid,jdbcType=INTEGER}
     </select>
     <!-- 合伙信息 -->
-    <select id="getUserSkuById" parameterType="Integer" resultMap="UserSkuResultMap">
+    <select id="getUserSkuListById" parameterType="Integer" resultMap="UserSkuResultMap">
         select
         pus.code,
         cu.real_name,cu.mobile,cu.id_card,cu.id_card_front_url,cu.id_card_back_url,

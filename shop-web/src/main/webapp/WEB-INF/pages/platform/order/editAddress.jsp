@@ -56,7 +56,9 @@
                 </p>
                 <p class="sf">
                     邮政编码
-                    <input type="tel" id="postcode" value="${comUserAddress.zip}">
+                    <input type="tel" class="postcode" id="postcode" value="${comUserAddress.zip}">
+                    <span class="onc"></span>
+                    <b class="gao"></b>
                 </p>
                 <div class="address">
                     联系地址

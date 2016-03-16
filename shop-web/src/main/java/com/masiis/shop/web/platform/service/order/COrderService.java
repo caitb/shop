@@ -33,6 +33,8 @@ public class COrderService {
     private PfCorderMapper pfCorderMapper;
     @Resource
     private ProductService productService;
+    @Resource
+    private PfCorderService pfCorderService;
 
     /**
      * 试用申请
@@ -94,13 +96,19 @@ public class COrderService {
      * @author  hanzengzhi
      * @date  2016/3/9 11:39
      */
-    public List<PfUserTrial> isApplyTrial(Long userId,Integer skuId){
-        PfUserTrial pfUserTrial = new PfUserTrial();
-        pfUserTrial.setUserId(userId);
-        pfUserTrial.setSkuId(skuId);
-        return userService.isApplyTrial(pfUserTrial);
+    public PfCorder isApplyTrial(Long userId,Integer skuId){
+        try{
+            PfCorder pfCorder = new PfCorder();
+            pfCorder.setUserId(userId);
+            pfCorder.setSkuId(skuId);
+            pfCorder.setOrderType(0);
+            pfCorder = pfCorderService.trialCorder(pfCorder);
+            return pfCorder;
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return null;
     }
-
     /**
      * 根据订单编号查询试用订单
      *
@@ -110,4 +118,5 @@ public class COrderService {
     public PfCorder findByOrderCode(String orderCode) {
         return pfCorderMapper.selectByOrderCode(orderCode);
     }
+
 }

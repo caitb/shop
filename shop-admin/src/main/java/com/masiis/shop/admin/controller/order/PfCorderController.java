@@ -3,6 +3,8 @@ package com.masiis.shop.admin.controller.order;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.COrderService;
 import com.masiis.shop.dao.po.PfCorder;
+import com.masiis.shop.dao.po.PfCorderFreight;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +42,7 @@ public class PfCorderController {
         return pageMap;
     }
 
-    @RequestMapping("detail.shtml")
+    @RequestMapping("/detail.shtml")
     public ModelAndView detail(HttpServletRequest request, HttpServletResponse response, Long corderId){
 
         ModelAndView mav = new ModelAndView("order/corder/detail");
@@ -50,5 +52,22 @@ public class PfCorderController {
         mav.addObject("order", order);
 
         return mav;
+    }
+
+    @RequestMapping("/delivery.do")
+    @ResponseBody
+    public Object delivery(HttpServletRequest request, HttpServletResponse response,
+                           PfCorderFreight pfCorderFreight){
+
+        if (pfCorderFreight.getShipManId() == null){
+            return "请选择一个快递";
+        }
+        if(StringUtils.isBlank(pfCorderFreight.getFreight())){
+            return "请填写运单号";
+        }
+
+        cOrderService.delivery(pfCorderFreight);
+
+        return "success";
     }
 }

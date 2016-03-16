@@ -89,7 +89,7 @@
 .wrap main .d_box:nth-child(1) {
     margin: 0;
 }
-.wrap main .back {
+.wrap .back {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
@@ -101,46 +101,46 @@
     -webkit-box-pack: center;
     display: none;
 }
-.wrap main .back .back_j,
-.wrap main .back .back_b {
+.wrap .back .back_j,
+.wrap .back .back_b {
     width: 100%;
     background: white;
     position: absolute;
     bottom: 0;
     display: none;
 }
-.wrap main .back .back_j p,
-.wrap main .back .back_b p {
+.wrap .back .back_j p,
+.wrap .back .back_b p {
     border-bottom: 1px solid #999;
     text-indent: 10px;
     line-height: 28px;
     margin-bottom: 5px;
 }
-.wrap main .back .back_j h4,
-.wrap main .back .back_b h4 {
+.wrap .back .back_j h4,
+.wrap .back .back_b h4 {
     margin: 0 10px;
     text-indent: 10px;
     display: -webkit-box;
     line-height: 30px;
 }
-.wrap main .back .back_j h4 div,
-.wrap main .back .back_b h4 div {
+.wrap .back .back_j h4 div,
+.wrap .back .back_b h4 div {
     margin-top: 5px;
 }
-.wrap main .back .back_j h4 div .jian,
-.wrap main .back .back_b h4 div .jian {
+.wrap .back .back_j h4 div .jian,
+.wrap .back .back_b h4 div .jian {
     border-right: none;
 }
-.wrap main .back .back_j h4 div .jia,
-.wrap main .back .back_b h4 div .jia {
+.wrap .back .back_j h4 div .jia,
+.wrap .back .back_b h4 div .jia {
     border-left: none;
 }
-.wrap main .back .back_j h4 div .number,
-.wrap main .back .back_b h4 div .number {
+.wrap .back .back_j h4 div .number,
+.wrap .back .back_b h4 div .number {
     color: #F74A11;
 }
-.wrap main .back .back_j h4 div span,
-.wrap main .back .back_b h4 div span {
+.wrap .back .back_j h4 div span,
+.wrap .back .back_b h4 div span {
     display: block;
     float: left;
     width: 20px;
@@ -150,17 +150,17 @@
     line-height: 20px;
     text-indent: 0;
 }
-.wrap main .back .back_j h4 div span:nth-child(2),
-.wrap main .back .back_b h4 div span:nth-child(2) {
+.wrap .back .back_j h4 div span:nth-child(2),
+.wrap .back .back_b h4 div span:nth-child(2) {
     width: 30px;
 }
-.wrap main .back .back_j > div,
-.wrap main .back .back_b > div {
+.wrap .back .back_j > div,
+.wrap .back .back_b > div {
     display: -webkit-box;
     margin: 10px 30px;
 }
-.wrap main .back .back_j > div h1,
-.wrap main .back .back_b > div h1 {
+.wrap .back .back_j > div h1,
+.wrap .back .back_b > div h1 {
     -webkit-box-flex: 1;
     background: #ccc;
     border-radius: 5px;
@@ -168,23 +168,23 @@
     line-height: 35px;
     text-align: center;
 }
-.wrap main .back .back_j > div h1 a,
-.wrap main .back .back_b > div h1 a {
+.wrap .back .back_j > div h1 a,
+.wrap .back .back_b > div h1 a {
     color: white;
     display: block;
     width: 100%;
     height: 100%;
 }
-.wrap main .back .back_j > div h1:nth-child(1),
-.wrap main .back .back_b > div h1:nth-child(1) {
+.wrap .back .back_j > div h1:nth-child(1),
+.wrap .back .back_b > div h1:nth-child(1) {
     margin-right: 30px;
 }
-.wrap main .back .back_j > div h1:nth-child(2),
-.wrap main .back .back_b > div h1:nth-child(2) {
+.wrap .back .back_j > div h1:nth-child(2),
+.wrap .back .back_b > div h1:nth-child(2) {
     background: #0FC420;
     color: white;
 }
-.wrap main .back .back_que {
+.wrap .back .back_que {
     width: 80%;
     background: white;
     border-radius: 5px;
@@ -193,31 +193,31 @@
     -webkit-box-orient: vertical;
     display: none;
 }
-.wrap main .back .back_que p {
+.wrap .back .back_que p {
     margin: 0 10px;
     color: #F74A11;
     border-bottom: 1px solid #F74A11;
     line-height: 30px;
     margin-bottom: 10px;
 }
-.wrap main .back .back_que h4 {
+.wrap .back .back_que h4 {
     margin: 0 10px;
     text-indent: 10px;
     letter-spacing: 1px;
 }
-.wrap main .back .back_que h3 {
+.wrap .back .back_que h3 {
     margin-top: 10px;
     -webkit-box-flex: 1;
     display: -webkit-box;
     -webkit-box-align: center;
     border-top: 1px solid #999999;
 }
-.wrap main .back .back_que h3 span {
+.wrap .back .back_que h3 span {
     display: block;
     -webkit-box-flex: 1;
     text-align: center;
     line-height: 33px;
 }
-.wrap main .back .back_que h3 span:nth-child(1) {
+.wrap .back .back_que h3 span:nth-child(1) {
     border-right: 1px solid #999;
 }

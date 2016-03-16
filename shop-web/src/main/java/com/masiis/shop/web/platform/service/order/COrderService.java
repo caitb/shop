@@ -140,7 +140,7 @@ public class COrderService {
      * 操作详情 <1>修改订单支付信息<2>修改订单数据<3>添加订单日志<4>修改sku试用人数
      */
     @Transactional
-    public void payBOrder(PfCorderPayment pfCorderPayment, String outOrderId) throws Exception {
+    public void payCOrder(PfCorderPayment pfCorderPayment, String outOrderId) throws Exception {
         //<1>修改订单支付信息
         pfCorderPayment.setOutOrderId(outOrderId);
         pfCorderPayment.setIsEnabled(1);//设置为有效

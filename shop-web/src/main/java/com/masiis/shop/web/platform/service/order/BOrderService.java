@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.swing.plaf.nimbus.NimbusStyle;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -115,19 +116,19 @@ public class BOrderService {
      */
     @Transactional
     public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
+        //<1>修改订单支付信息
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
-        //<1>修改订单支付信息
         pfBorderPaymentMapper.updateById(pfBorderPayment);
         BigDecimal payAmount = pfBorderPayment.getAmount();
         Long bOrderId = pfBorderPayment.getPfBorderId();
+        //<2>修改订单数据
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);//已付款
         pfBorder.setOrderStatus(1);//已付款
-        //<2>修改订单数据
         pfBorderMapper.updateByPrimaryKey(pfBorder);
         //<3>添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
@@ -157,7 +158,11 @@ public class BOrderService {
             pfSkuStatisticMapper.updateById(pfSkuStatistic);
             //<7>冻结sku库存
             pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() >= pfBorderItem.getQuantity()) {
+                throw new BusinessException("lowStocks");
+            }
             pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+            pfSkuStockMapper.updateById(pfSkuStock);
         }
     }
 
@@ -201,6 +206,11 @@ public class BOrderService {
 
     public List<PfBorder> findByUserId(Long UserId) {
         return pfBorderMapper.selectByUserId(UserId);
+    }
+
+    @Transactional
+    public void addBOrderPayment(PfBorderPayment pfBorderPayment) {
+        pfBorderPaymentMapper.insert(pfBorderPayment);
     }
 
 }

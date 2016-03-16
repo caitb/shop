@@ -46,9 +46,9 @@ public class PfBorderPayment {
      */
     private String outOrderId;
     /**
-     * 外部预付单订单号
+     * 系统支付流水号
      */
-    private String outPrepayId;
+    private String paySerialNum;
 
     public Long getId() {
         return id;
@@ -105,11 +105,11 @@ public class PfBorderPayment {
         this.outOrderId = outOrderId == null ? null : outOrderId.trim();
     }
 
-    public String getOutPrepayId() {
-        return outPrepayId;
+    public String getPaySerialNum() {
+        return paySerialNum;
     }
 
-    public void setOutPrepayId(String outPrepayId) {
-        this.outPrepayId = outPrepayId;
+    public void setPaySerialNum(String paySerialNum) {
+        this.paySerialNum = paySerialNum;
     }
 }

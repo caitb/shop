@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by cai_tb on 16/3/16.
@@ -25,8 +26,17 @@ public class MyTeamController {
     public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/user/teamlist");
 
-        List<ComSku> agentSkus = myTeamService.listAgentSku(2L);
-        mav.addObject("agentSkus", agentSkus);
+        List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(2L);
+        mav.addObject("agentSkuMaps", agentSkuMaps);
+
+        return mav;
+    }
+
+    @RequestMapping("/team")
+    public ModelAndView team(HttpServletRequest request, HttpServletResponse response,
+                             Integer userSkuId,
+                             Integer skuId){
+        ModelAndView mav = new ModelAndView("platform/user/team");
 
         return mav;
     }

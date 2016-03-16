@@ -19,8 +19,8 @@
     <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 <body>
 <ul>
-    <c:forEach items="${agentSkus}" var="agentSku">
-    <li>${agentSku.name}</li>
+    <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
+    <li>${agentSkuMaps.skuName}</li>
     </c:forEach>
 </ul>
 </body>

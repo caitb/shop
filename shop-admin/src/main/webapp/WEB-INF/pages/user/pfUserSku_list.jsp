@@ -255,8 +255,15 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return '<a href="#" onclick=lower('+row.comUser.id+')>'+row.lowerCount+'人</a>';
-                                                 }
+                                                    //return '<a class="xiaji" href="javascript:void(0);">'+row.lowerCount+'人</a>';
+                                                    return '<a href="<%=basePath%>userSku/list.shtml?pid='+row.comUser.id+'">'+row.lowerCount+'人</a>';
+                                                },
+                                                events: {
+                                                    'click .xiaji': function(e, value, row, index){
+                                                        $('#table').bootstrapTable('destroy');
+                                                        window.location.open('<%=basePath%>userSku/list.shtml?pid=' + row.comUser.id);
+                                                    }
+                                                }
                                             },
                                             {
                                                 field: 'isCertificate',
@@ -322,9 +329,6 @@
                                 });
                             }
 
-                            function lower(pid){
-                                location.href = "<%=basePath%>userSku/lowerList.shtml?pid="+pid;
-                            }
 
                             function getIdSelections() {
                                 return $.map($table.bootstrapTable('getSelections'), function (row) {
@@ -379,42 +383,44 @@
                             }
 
                             $(function () {
-                                var scripts = [
-                                            location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'
-                                        ],
-                                        eachSeries = function (arr, iterator, callback) {
-                                            callback = callback || function () {
-                                                    };
-                                            if (!arr.length) {
-                                                return callback();
-                                            }
-                                            var completed = 0;
-                                            var iterate = function () {
-                                                iterator(arr[completed], function (err) {
-                                                    if (err) {
-                                                        callback(err);
-                                                        callback = function () {
-                                                        };
-                                                    }
-                                                    else {
-                                                        completed += 1;
-                                                        if (completed >= arr.length) {
-                                                            callback(null);
-                                                        }
-                                                        else {
-                                                            iterate();
-                                                        }
-                                                    }
-                                                });
-                                            };
-                                            iterate();
-                                        };
+                                <%--var scripts = [--%>
+                                            <%--location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'--%>
+                                        <%--],--%>
+                                        <%--eachSeries = function (arr, iterator, callback) {--%>
+                                            <%--callback = callback || function () {--%>
+                                                    <%--};--%>
+                                            <%--if (!arr.length) {--%>
+                                                <%--return callback();--%>
+                                            <%--}--%>
+                                            <%--var completed = 0;--%>
+                                            <%--var iterate = function () {--%>
+                                                <%--iterator(arr[completed], function (err) {--%>
+                                                    <%--if (err) {--%>
+                                                        <%--callback(err);--%>
+                                                        <%--callback = function () {--%>
+                                                        <%--};--%>
+                                                    <%--}--%>
+                                                    <%--else {--%>
+                                                        <%--completed += 1;--%>
+                                                        <%--if (completed >= arr.length) {--%>
+                                                            <%--callback(null);--%>
+                                                        <%--}--%>
+                                                        <%--else {--%>
+                                                            <%--iterate();--%>
+                                                        <%--}--%>
+                                                    <%--}--%>
+                                                <%--});--%>
+                                            <%--};--%>
+                                            <%--iterate();--%>
+                                        <%--};--%>
 
-                                eachSeries(scripts, getScript, initTable);
+                                <%--eachSeries(scripts, getScript, initTable);--%>
+
+                                initTable();
                             });
 
 

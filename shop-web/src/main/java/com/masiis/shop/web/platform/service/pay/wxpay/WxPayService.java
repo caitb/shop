@@ -85,7 +85,7 @@ public class WxPayService {
             PfBorder order = bOrderService.findByOrderCode(orderid);
             PfBorderPayment payment = createBorderPayment(req, res);
             payment.setPfBorderId(order.getId());
-            bPaymentMapper.insert(payment);
+            bOrderService.addBOrderPayment(payment);
         } else {
             throw new BusinessException("订单类型不正确!");
         }
@@ -105,29 +105,4 @@ public class WxPayService {
         return payment;
     }
 
-    /**
-     * 处理微信支付订单异步回调业务
-     *
-     * @param param
-     */
-    public void handleWxPayNotify(CallBackNotifyReq param) {
-        // 支付流水号
-        String paySerialNum = param.getOut_trade_no();
-        String orderType = String.valueOf(paySerialNum.charAt(0));
-        if("B".equals(orderType)){
-            PfBorderPayment payment = bPaymentMapper.selectBySerialNum(paySerialNum);
-            if(payment == null){
-                throw new BusinessException("该支付流水号不存在,pay_serial_num:" + paySerialNum);
-            }
-            if(payment.getIsEnabled() == 1){
-                // 已经支付
-                log.info("该订单已经支付,支付流水号:" + paySerialNum);
-                return;
-            }
-            // 调用borderService的方法处理
-
-        } else {
-            throw new BusinessException("支付流水号类型错误!");
-        }
-    }
 }

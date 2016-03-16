@@ -212,4 +212,13 @@ public class BOrderService {
         pfBorderPaymentMapper.insert(pfBorderPayment);
     }
 
+    /**
+     * 根据支付流水号查询支付记录
+     *
+     * @param paySerialNum
+     * @return
+     */
+    public PfBorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
+        return pfBorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
 }

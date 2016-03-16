@@ -164,14 +164,14 @@ public class ProductController {
             }
 
             /* 上传商品详情图 */
-            File detailDir = new File(realPath + "/static/product/detail_img");
-            if(detailDir.exists() && detailDir.listFiles().length > 0){
-                File[] files = detailDir.listFiles();
-                for(File f : files){
-                    OSSObjectUtils.uploadFile("mmshop", f, "static/product/detail_img/");
-                    f.delete();
-                }
-            }
+//            File detailDir = new File(realPath + "/static/product/detail_img");
+//            if(detailDir.exists() && detailDir.listFiles().length > 0){
+//                File[] files = detailDir.listFiles();
+//                for(File f : files){
+//                    OSSObjectUtils.uploadFile("mmshop", f, "static/product/detail_img/");
+//                    f.delete();
+//                }
+//            }
 
             productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
         }

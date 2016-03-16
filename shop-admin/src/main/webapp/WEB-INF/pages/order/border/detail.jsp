@@ -310,15 +310,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-                <td>@TwBootstrap</td>
-            </tr>
+            <c:forEach items="${order.productInfos}" var="product">
+                <tr>
+                    <td>${product.comSku.name}</td>
+                    <td>${product.comSpu.artNo}</td>
+                    <td>-</td>
+                    <td>${product.comSku.priceMarket}</td>
+                    <td>${product.comSku.priceRetail}</td>
+                    <td>1</td>
+                    <td>${order.pfCorder.productAmount}</td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
         <hr/>

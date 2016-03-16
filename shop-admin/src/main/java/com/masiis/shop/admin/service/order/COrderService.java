@@ -3,11 +3,14 @@ package com.masiis.shop.admin.service.order;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
+import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.base.BaseService;
 import com.masiis.shop.dao.platform.order.PfCorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfCorderFreightMapper;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,10 @@ public class COrderService extends BaseService {
     private PfCorderConsigneeMapper pfCorderConsigneeMapper;
     @Resource
     private PfCorderFreightMapper pfCorderFreightMapper;
+    @Resource
+    private ComSkuMapper comSkuMapper;
+    @Resource
+    private ComSpuMapper comSpuMapper;
 
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, PfCorder pfCorder){
         PageHelper.startPage(pageNumber, pageSize);
@@ -74,6 +81,12 @@ public class COrderService extends BaseService {
 
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfCorder.getUserId());
 
+        ProductInfo productInfo = new ProductInfo();
+        ComSku comSku = comSkuMapper.selectById(pfCorder.getSkuId());
+        ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+        productInfo.setComSku(comSku);
+        productInfo.setComSpu(comSpu);
+
         Order order = new Order();
         order.setPfCorder(pfCorder);
         order.setPfCorderPayment(pfCorderPayment);
@@ -81,6 +94,10 @@ public class COrderService extends BaseService {
         order.setPfCorderFreights(pfCorderFreights);
 
         order.setComUser(comUser);
+
+        List<ProductInfo> productInfos = new ArrayList<>();
+        productInfos.add(productInfo);
+        order.setProductInfos(productInfos);
 
         return order;
     }

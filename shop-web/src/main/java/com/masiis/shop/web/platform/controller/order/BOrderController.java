@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
@@ -271,14 +272,17 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
             pfBorderConsigneeMapper.insert(pfBorderConsignee);
+            //************************************************
+            PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum("18612111522");
+            bOrderService.payBOrder(pfBorderPayment, "OKOKOOKK");
             jsonObject.put("isError", false);
-            req = new WxPaySysParamReq();
-            req.setOrderId(pfBorder.getOrderCode());
-            req.setSignType("MD5");
-            req.setNonceStr(WXBeanUtils.createGenerateStr());
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
-            req.setSign(WXBeanUtils.toSignString(req));
+//            req = new WxPaySysParamReq();
+//            req.setOrderId(pfBorder.getOrderCode());
+//            req.setSignType("MD5");
+//            req.setNonceStr(WXBeanUtils.createGenerateStr());
+//            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+//            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+//            req.setSign(WXBeanUtils.toSignString(req));
         } catch (Exception ex) {
             jsonObject.put("isError", true);
             jsonObject.put("message", ex.getMessage());

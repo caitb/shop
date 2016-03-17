@@ -26,8 +26,8 @@
     })
     function toChooseAddressPage(){
         var selectedAddressId = $("#addressId").val();
-        var orderId = $("#orderId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId="+selectedAddressId+"&orderId="+orderId;
+        var skuId = $("#skuId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId="+selectedAddressId+"&skuId="+skuId;
     }
 </script>
 <body>
@@ -53,7 +53,7 @@
                 </div>
             </section>
         </div>
-        <input id="orderId" style="display: none" type="text" value="${product.id}"/>
+        <input id="skuId" style="display: none" type="text" value="${product.id}"/>
         <section class="sec2">
             <p class="photo">
                     <img src="${skuDefaultImg}" alt="${skuImgAlt}">

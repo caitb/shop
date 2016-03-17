@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.system.ComDictionarysMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComDictionary" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="key" property="key" jdbcType="INTEGER" />
+        <result column="value" property="value" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from com_dictionary
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComDictionary" >
+        insert into com_dictionary (id, code, key, 
+            value, remark)
+        values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{key,jdbcType=INTEGER}, 
+            #{value,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComDictionary" >
+        update com_dictionary
+        set code = #{code,jdbcType=VARCHAR},
+            key = #{key,jdbcType=INTEGER},
+            value = #{value,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCodeKey" resultMap="BaseResultMap" >
+        select  cd.code, cd.key, cd.value
+        from com_dictionary cd
+        where cd.code = 'PF_BORDER_STATUS' AND  cd.key =#{key}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, code, key, value, remark
+        from com_dictionary
+    </select>
+
+</mapper>

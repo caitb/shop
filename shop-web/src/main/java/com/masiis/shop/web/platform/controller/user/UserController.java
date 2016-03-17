@@ -29,11 +29,29 @@ public class UserController {
         return "";
     }
 
+
+    /**
+     * 判断是否绑定了手机号
+     * @author hanzengzhi
+     * @date 2016/3/16 15:51
+     */
+    @RequestMapping(value = "/isBindPhone.do")
+    @ResponseBody
+    public Boolean isBindPhone(HttpServletRequest request,HttpServletResponse response){
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        if (comUser != null&&!comUser.getMobile().equals("")){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     /**
      * 用户绑定手机号
      * @author hanzengzhi
      * @date 2016/3/16 13:54
      */
+    @RequestMapping(value = "/bindPhone.do")
     public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
         try {

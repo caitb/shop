@@ -34,12 +34,12 @@ public class UserCenterController {
     public String toUserCenter(HttpServletRequest request) {
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         try {
-            List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId());
-            if (pfBorders !=null && pfBorders.size()!=0){
-
-            }else{
-
-            }
+//            List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId());
+//            if (pfBorders !=null && pfBorders.size()!=0){
+//
+//            }else{
+//
+//            }
         }catch (Exception e){
 
         }
@@ -51,9 +51,22 @@ public class UserCenterController {
      * @date 2016/3/16 11:37
      */
     @RequestMapping("/stockBorder")
-    public ModelAndView stockBorder(HttpServletRequest request) {
+    public ModelAndView stockBorder(HttpServletRequest request,Integer orderStatus,Integer shipStatus) {
         ComUser comUser =(ComUser)request.getSession().getAttribute("comUser");
-        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId());
+//        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId());
+        List<PfBorder> pfBorders =bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);
+//        if(orderStatus==0){
+//            pfBorders = bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);//待付款
+//        }
+//        if(orderStatus==1 && shipStatus==0){
+//            pfBorders = bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);//代发货
+//        }
+//        if(orderStatus==1 && shipStatus==5){
+//            pfBorders = bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);//待收货
+//        }
+//        if(orderStatus==3){
+//            pfBorders = bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);//已完成
+//        }
         String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
         if(pfBorders!= null && pfBorders.size()!=0){
             for (PfBorder pfBorder: pfBorders) {

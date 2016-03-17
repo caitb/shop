@@ -67,7 +67,7 @@ public class COrderService {
      * @author hanzengzhi
      * @date 2016/3/8 14:55
      */
-    public Map<String, Object> confirmOrder(HttpServletRequest request, Integer skuId, Long userId, Integer selectedAddressId) {
+    public Map<String, Object> confirmOrder(HttpServletRequest request, Integer skuId, Long userId, Long selectedAddressId) {
         Map<String, Object> pfCorderMap = new HashMap<String, Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, userId);
         Product product = getProductDetail(skuId);

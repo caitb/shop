@@ -67,6 +67,10 @@ public class WxConstants {
      */
     public static final String WX_PAY_MCHID = "1319531601";
     /**
+     * 统一下单url
+     */
+    public static final String WX_PAY_URL_UNIORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    /**
      * 订单异步回调通知地址
      */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = "http://weixin.masiis.com/wxntfy/orderNtfy";

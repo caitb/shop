@@ -53,7 +53,7 @@ public class WxPayController extends BaseController{
 
     @RequestMapping(value = "/wtpay")
     public String wxpayPage(HttpServletRequest request, String param) {
-        String ip = getIpAddr(request);
+        String ip = request.getRemoteAddr();
         WxPaySysParamReq req = null;
         ComUser user = null;
         try{
@@ -93,7 +93,7 @@ public class WxPayController extends BaseController{
         try {
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
-            res = h.sendPost(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY, uniOrder);
+            res = h.sendPost(WxConstants.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayPage:下预付单响应成功,response:" + res);
 
             xStream.processAnnotations(UnifiedOrderRes.class);

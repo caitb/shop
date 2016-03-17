@@ -127,6 +127,7 @@ public class UserApplyController {
             //返回修改默认数据
             mv.addObject("name", name);
             mv.addObject("weixinId", weixinId);
+            mv.addObject("pUserId", pUserId);
             mv.addObject("pMobile", pMobile);
             mv.setViewName("platform/order/zhuce");
         } catch (Exception ex) {
@@ -150,7 +151,7 @@ public class UserApplyController {
                                                @RequestParam(value = "skuId", required = true) Integer skuId,
                                                @RequestParam(value = "levelId", required = true) Long levelId,
                                                @RequestParam(value = "amount", required = true) BigDecimal amount,
-                                               @RequestParam(value = "parentMobile", required = true) String parentMobile) {
+                                               @RequestParam(value = "pMobile", required = true) String pMobile) {
 
         JSONObject object = new JSONObject();
         try {
@@ -166,8 +167,8 @@ public class UserApplyController {
             if (amount.compareTo(BigDecimal.ZERO) < 0) {
                 throw new BusinessException("代理金额有误");
             }
-            if (StringUtils.isNotBlank(parentMobile)) {
-                ComUser pUser = userService.getUserByMobile(parentMobile);
+            if (StringUtils.isNotBlank(pMobile)) {
+                ComUser pUser = userService.getUserByMobile(pMobile);
                 if (pUser == null) {
                     throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册!");
                 } else {
@@ -205,8 +206,8 @@ public class UserApplyController {
                                                 @RequestParam(value = "levelId", required = true) Long levelId,
                                                 @RequestParam(value = "levelName", required = true) String levelName,
                                                 @RequestParam(value = "amount", required = true) BigDecimal amount,
-                                                @RequestParam(value = "parentUserId", required = true) Long parentUserId,
-                                                @RequestParam(value = "parentMobile", required = true) String parentMobile) {
+                                                @RequestParam(value = "pUserId", required = true) Long pUserId,
+                                                @RequestParam(value = "pMobile", required = true) String pMobile) {
 //        ComUser comUser = userService.getUserByMobile(parentMobile);
 //        if (comUser == null) {
 //            throw new BusinessException("");
@@ -215,8 +216,8 @@ public class UserApplyController {
         modelAndView.setViewName("platform/order/zhuce2");
         modelAndView.addObject("name", name);
         modelAndView.addObject("weixinId", weixinId);
-        modelAndView.addObject("parentUserId", parentUserId);
-        modelAndView.addObject("parentMobile", parentMobile);
+        modelAndView.addObject("pUserId", pUserId);
+        modelAndView.addObject("pMobile", pMobile);
         modelAndView.addObject("skuId", skuId);
         modelAndView.addObject("skuName", skuName);
         modelAndView.addObject("levelId", levelId);

@@ -48,7 +48,7 @@
         </section>
         <section class="sec2">
             <h2>合伙人信息</h2>
-            <p><span>上级合伙人手机号：</span><b>${parentMobile}</b></p>
+            <p><span>上级合伙人手机号：</span><b>${pMobile}</b></p>
             <p><span>合伙人等级：</span><b>
                 <lable levelId="${levelId}">${levelName}</lable>
             </b></p>
@@ -72,8 +72,8 @@
         paraData += "skuId=${skuId}";
         paraData += "&name=${name}";
         paraData += "&weixinId=${weixinId}";
-        paraData += "&parentUserId=${parentUserId}";
-        paraData += "&parentMobile=${parentMobile}";
+        paraData += "&parentUserId=${pUserId}";
+        paraData += "&parentMobile=${pMobile}";
         paraData += "&levelId=${levelId}";
         window.location.href = "<%=basePath%>userApply/register.shtml" + paraData;
     }
@@ -83,7 +83,7 @@
         paraData.weixinId = "${weixinId}";
         paraData.skuId = "${skuId}";
         paraData.levelId = "${levelId}";
-        paraData.parentUserId = "${parentUserId}";
+        paraData.pUserId = "${pUserId}";
         paraData.userMassage = "";
         $.ajax({
             url: "<%=basePath%>border/addBOrder.do",

@@ -29,30 +29,31 @@
     <main>
         <div id="box">
             <div class="d_box">
-                <section class="sec2">
-                    <c:forEach items="${userProducts}" var="sku">
+                <c:forEach items="${userProducts}" var="sku">
+                    <section class="sec2">
                         <p class="photo">
                             <img src="${sku.comSkuImage.fullImgUrl}" alt="">
                         </p>
                         <div>
-                            <h2>${sku.name}</h2>
+                            <h2 id="sku1">${sku.name}</h2>
                             <h3>零售价：<span>${sku.priceRetail}</span></h3>
-                            <p>已售：<span>0</span>　　库存：<span>${sku.stock}</span></p>
+                            <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.stock}</span></p>
+                            <input type="hidden" id="pfuId" value="${sku.pfuId}">
                         </div>
-                    </c:forEach>
-                </section>
-                <section class="sec3">
-                    <p class="jianku">减库存</p>
-                    <p class="buhuo">补货</p>
-                </section>
+                    </section>
+                    <section class="sec3">
+                        <p class="jianku" onclick="jiankucun('${sku.name}','${sku.stock}')">减库存</p>
+                        <p class="buhuo">补货</p>
+                    </section>
+                </c:forEach>
             </div>
         </div>
     </main>
     <div class="back">
         <div class="back_j">
             <p>减少库存</p>
-            <h4>商　　品:　　<span>抗引力-手链</span></h4>
-            <h4>当前库存:　　<span>抗引力-手链</span></h4>
+            <h4>商　　品:　　<span id="skuName"></span></h4>
+            <h4>当前库存:　　<span id="skuStock"></span></h4>
             <h4>数　　量:　　<div>
                 <span class="jian">-</span>
                 <span class="number">1</span>
@@ -66,10 +67,10 @@
         </div>
         <div class="back_que">
             <p>确认减库存?</p>
-            <h4>商品:<span>抗引力-手链</span></h4>
-            <h4>商品:<span>抗引力-手链</span></h4>
-            <h4>商品:<span>抗引力-手链</span></h4>
-            <h4>商品:<span>抗引力-手链</span></h4>
+            <h4>商品:<span id="sku3"></span></h4>
+            <h4>当前库存:<span id="stock1"></span></h4>
+            <h4>减库存:<span id="stock2"></span></h4>
+            <h4>剩余库存:<span id="stock3"></span></h4>
             <h3>
                 <span class="que_qu">取消</span>
                 <span class="que_que">确认</span>
@@ -77,7 +78,7 @@
         </div>
         <div class="back_b">
             <p>减少库存</p>
-            <h4>商品:　　<span>抗引力-手链</span></h4>
+            <h4>商品:　　<span>抗引力-</span></h4>
             <h4>数量:　　<div>
                 <span class="jian">-</span>
                 <span class="number">1</span>
@@ -108,15 +109,23 @@
         i--;
         $(".number").html(i)
     })
-    $(".jianku").on("click",function(){
+    function jiankucun(a,b){
+        $("#skuName").html(a);
+        $("#skuStock").html(b);
         $(".back").css("display","-webkit-box");
         $(".back_j").show();
-    })
+    }
     $(".j_qu").on("click",function(){
         $(".back").css("display","none");
         $(".back_j").hide();
     })
     $(".j_que").on("click",function(){
+        var skuName = $("#skuName").text();
+        $("#sku3").html(skuName);
+        var skuStock = $("#skuStock").text();
+        $("#stock1").html(skuStock);
+        $("#stock2").html(i);
+        $("#stock3").html(skuStock-i);
         $(".back_j").hide();
         $(".back_que").css("display","-webkit-box");
     })
@@ -124,10 +133,24 @@
         $(".back").css("display","none");
         $(".back_que").css("display","none");
     })
-    $(".que_que").on("click",function(){
-        $(".back").css("display","none");
-        $(".back_que").css("display","none");
-    })
+//    $(".que_que").on("click",function(){
+//        $(".back").css("display","none");
+//        $(".back_que").css("display","none");
+//    })
+    //ajax
+    $('.que_que').on('click', function () {
+        var pfuId = $("#pfuId").val();
+        $.ajax({
+            url: '<%=basePath%>product/user/stock',
+            type: 'post',
+            data: {stock:i,id:pfuId},
+            success: function (data) {
+                $(".back").css("display","none");
+                $(".back_que").css("display","none");
+            }
+        });
+        location.reload();
+    });
     $(".buhuo").on("click",function(){
         $(".back").css("display","-webkit-box");
         $(".back_b").show();

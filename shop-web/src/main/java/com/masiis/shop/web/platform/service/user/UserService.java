@@ -91,7 +91,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public List<ComUserAddress> getComUserAddress(Long userId) {
+    public List<ComUserAddress> getComUserAddressByUserId(Long userId) {
         return comUserAddressMapper.selectAllByComUserId(userId);
     }
 

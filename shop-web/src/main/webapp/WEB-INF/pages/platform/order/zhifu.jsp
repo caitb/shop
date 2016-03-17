@@ -56,6 +56,20 @@
                     }
                 }
             });
+            <%--$.ajax({--%>
+                <%--url: "<%=basePath%>border/payBOrderSubmit.do",--%>
+                <%--type: "post",--%>
+                <%--data: paraData,--%>
+                <%--dataType: "json",--%>
+                <%--success: function (data) {--%>
+                    <%--if (data.isError == false) {--%>
+                        <%--alert("OK");--%>
+                    <%--}--%>
+                    <%--else {--%>
+                        <%--alert(data.message);--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
         }
     </script>
 </head>

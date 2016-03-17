@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,8 @@ public class UserCenterController {
     private BOrderService bOrderService;
     @Resource
     private ComDictionaryService comDictionaryService;
+    @Resource
+    private SkuService skuService;
 
     @RequestMapping("/userCenter.html")
     public String toUserCenter(HttpServletRequest request) {
@@ -50,9 +54,15 @@ public class UserCenterController {
     public ModelAndView stockBorder(HttpServletRequest request) {
         ComUser comUser =(ComUser)request.getSession().getAttribute("comUser");
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId());
+        String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
         if(pfBorders!= null && pfBorders.size()!=0){
             for (PfBorder pfBorder: pfBorders) {
                 List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                for (PfBorderItem pfBorderItem: pfBorderItems) {
+                    ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+                    pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
+                    pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+                }
                 ComDictionary comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
                 pfBorder.setOrderSkuStatus(comDictionary.getValue());
                 pfBorder.setPfBorderItems(pfBorderItems);

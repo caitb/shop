@@ -134,11 +134,24 @@ public class PfBorder {
      * 订单商品状态名称
      */
     private String orderSkuStatus;
+    private String imgUrl;//图片地址
+    /**
+     * 数量
+     */
+    private Integer totalQuantity;
     /**
      * 订单商品
      */
     private List<PfBorderItem> pfBorderItems;
 
+    public void setTotalQuantity(Integer totalQuantity) {this.totalQuantity = totalQuantity;}
+    public Integer getTotalQuantity() {return totalQuantity;}
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+    public String getImgUrl() {
+        return imgUrl;
+    }
     public void setOrderSkuStatus(String orderSkuStatus) {this.orderSkuStatus = orderSkuStatus;}
     public String getOrderSkuStatus() {return orderSkuStatus;}
     public List<PfBorderItem> getPfBorderItems() {return pfBorderItems;}

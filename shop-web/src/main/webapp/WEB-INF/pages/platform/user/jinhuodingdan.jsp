@@ -40,29 +40,31 @@
                            <p>时间：<span>${pb.createTime}</span></p>
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
-                                <b>待发货</b>
+                                <c:if test="${pb.orderStatus ==0}"><b>待付款</b></c:if><c:if test="${pb.orderStatus ==1}"><b>等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b>交易成功</b></c:if>
                             </h2>
+                            <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
                                    <a href="<%=path%>/static/html/xiangqing.html">
-                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                        <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>抗引力——快速瘦脸精华</h2>
-                                    <h3>规格：<span>默认</span><b>x1000</b></h3>
-                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>
-                                    <p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <h3>规格：<span>默认</span><b>x${pbi.quantity}</b></h3>
+                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div>
+                            </c:forEach>
+                            <p><b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)</p>
                             <div class="ding">
-                                <p><a href="jinhuoxiangqing.html">查看订单详情</a></p>
+                                <p><a href="jinhuoxiangqing.html">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
                                 <span class="jixu">
                                     <a href="buhuodingdan.html">继续支付</a>
-                                </span>
+                                </span></c:if><c:if test="${pb.orderStatus ==1}">
                                 <span class="fa">
                                     确认收货
-                                </span>
+                                </span></c:if>
                             </div>
                         </section>
                         </c:forEach>

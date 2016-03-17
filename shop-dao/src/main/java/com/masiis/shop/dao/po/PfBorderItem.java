@@ -58,7 +58,10 @@ public class PfBorderItem {
      */
     private Integer isReturn;
     private String remark;
+    private String skuUrl;//商品首页地址
 
+    public void setSkuUrl(String skuUrl) {this.skuUrl = skuUrl;}
+    public String getSkuUrl() {return skuUrl;}
     public Long getId() {
         return id;
     }

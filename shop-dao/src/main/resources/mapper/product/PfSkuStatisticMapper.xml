@@ -59,7 +59,7 @@
         select
         <include refid="Base_Column_List"/>
         from pf_sku_statistic
-        where skuId = #{skuId}
+        where sku_id = #{skuId,jdbcType=INTEGER}
     </select>
 
 </mapper>

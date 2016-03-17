@@ -43,6 +43,10 @@ public class COrderService {
     private PfCorderOperationLogMapper pfCorderOperationLogMapper;
     @Resource
     private PfSkuStatisticMapper pfSkuStatisticMapper;
+    @Resource
+    private PfUserTrialService trialService;
+    @Resource
+    private PfCorderConsigneeService pfCorderConsigneeService;
 
     /**
      * 试用申请
@@ -84,6 +88,24 @@ public class COrderService {
         //获得商品信息
          Product  product = productService.applyTrialToPageService(skuId);
         return product;
+    }
+    /**
+     * 试用支付下订单
+     * @author hanzengzhi
+     * @date 2016/3/17 16:10
+     */
+    @Transactional
+    public Long trialApplyGenerateOrderService(PfCorder pc ,PfCorderOperationLog pcol ,ComUserAddress cua ,PfCorderConsignee pcc )throws Exception{
+        try{
+            //插入订单和订单日志
+            Long orderId = trialService.insert(pc,pcol);
+            pcc.setPfCorderId(orderId);
+            //收获地址
+            pfCorderConsigneeService.insertPfCC(pcc);
+            return orderId;
+        }catch (Exception e){
+            throw  new Exception(e.getMessage());
+        }
     }
 
     /**
@@ -141,8 +163,10 @@ public class COrderService {
         Long cOrderId = pfCorderPayment.getPfCorderId();
         //<2>修改订单数据
         PfCorder pfCorder = pfCorderMapper.selectById(cOrderId);
-        pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
-        pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
+        if (payAmount!=null&&!payAmount.equals(new BigDecimal(0))){
+            pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
+            pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
+        }
         pfCorder.setPayTime(new Date());
         pfCorder.setPayStatus(1);//已付款
         pfCorder.setOrderStatus(1);//已付款

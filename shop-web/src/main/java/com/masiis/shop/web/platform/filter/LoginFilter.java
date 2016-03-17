@@ -37,11 +37,11 @@ public class LoginFilter implements Filter{
 
         System.out.println("uri:" + uri);
 
-        /*// 开发阶段可以先跳过
+        // 开发阶段可以先跳过
         chain.doFilter(request, response);
-        return;*/
+        return;
 
-        // 过滤静态资源,以及一些放行的路径
+        /*// 过滤静态资源,以及一些放行的路径
         if(uri.startsWith(request.getContextPath() + "/static/")
                 ||(request.getContextPath() + "/verify/actk").equals(uri)
                 || (request.getContextPath() + "/verify/wxcheck").equals(uri)){
@@ -70,7 +70,7 @@ public class LoginFilter implements Filter{
         String reUrl = request.getContextPath() + "verify/wxcheck?"
                 + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
 
-        request.getRequestDispatcher(reUrl).forward(request, response);
+        request.getRequestDispatcher(reUrl).forward(request, response);*/
     }
 
     @Override

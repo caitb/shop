@@ -206,4 +206,9 @@ public class BOrderService {
     public void updateBOrder(PfBorder pfBorder) throws Exception {
         pfBorderMapper.updateById(pfBorder);
     }
+
+    public PfBorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
+        return pfBorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
+
 }

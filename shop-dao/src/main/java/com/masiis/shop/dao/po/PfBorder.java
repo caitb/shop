@@ -138,7 +138,7 @@ public class PfBorder {
     /**
      * 数量
      */
-    private Integer totalQuantity;
+    private Integer totalQuantity =0;
     /**
      * 订单商品
      */

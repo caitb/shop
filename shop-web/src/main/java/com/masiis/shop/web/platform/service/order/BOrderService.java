@@ -45,6 +45,8 @@ public class BOrderService {
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfBorderFreightMapper pfBorderFreightMapper;
 
     /**
      * 添加订单
@@ -257,4 +259,22 @@ public class BOrderService {
     public PfBorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
         return pfBorderPaymentMapper.selectBySerialNum(paySerialNum);
     }
+
+    /**
+     * 根据订单号获取快递信息
+     * @author muchaofeng
+     * @date 2016/3/16 15:21
+     */
+    public List<PfBorderFreight> findByPfBorderFreightOrderId(Long id){
+        return pfBorderFreightMapper.selectByBorderId(id);
+    }
+    /**
+     * 根据订单号获取收货人信息
+     * @author muchaofeng
+     * @date 2016/3/16 15:36
+     */
+    public PfBorderConsignee findpfBorderConsignee(Long id){
+        return pfBorderConsigneeMapper.selectByBorderId(id);
+    }
+
 }

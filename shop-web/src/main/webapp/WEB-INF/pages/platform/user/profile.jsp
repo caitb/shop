@@ -16,29 +16,34 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/gerenzhongxin.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/xinjiandizhi.css">
+    <script src="<%=basePath%>static/js/iscroll.js"></script>
     <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+</head>
 <body>
 <div id="wrap">
-    <header>
-        <div>
-            <p><img src="<%=basePath%>static/images/icon_01.png" alt=""></p>
-            <h1>
-                <b>用户名</b>
-                <span>您的推荐人是王平</span>
-            </h1>
+    <div class="main">
+        <header>
+            <div>
+                <p><img src="<%=basePath%>static/images/icon_01.png" alt=""></p>
+                <h1>
+                    <b>用户名</b>
+                    <span>您的推荐人是王平</span>
+                </h1>
+            </div>
+            <p>退出</p>
+        </header>
+        <div id="box">
+
+            <p><span><img src="<%=basePath%>static/images/icon_28.png" alt="">商品管理</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><img src="<%=basePath%>static/images/icon_29.png" alt="">出货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><b></b><img src="<%=basePath%>static/images/icon_49.png" alt="">进货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><img src="<%=basePath%>static/images/icon_31.png" alt="">我的授权书</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><span><img src="<%=basePath%>static/images/icon_48.png" alt="">发展合伙人</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><span><img src="<%=basePath%>static/images/icon_50.png" alt="">我的团队</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><img src="<%=basePath%>static/images/icon_51.png" alt="">我的产品</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><img src="<%=basePath%>static/images/icon_52.png" alt="">个人信息</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
         </div>
-        <p>退出</p>
-    </header>
-    <div id="box">
-        <h1><p><span>我的订单</span><span style="padding-right: 20px;">全部订单</span></p></h1>
-        <p onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><span><img src="<%=basePath%>static/images/icon_28.png" alt="">我的团队</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-        <p><span><img src="<%=basePath%>static/images/icon_29.png" alt="">待发货</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-        <p><span><b>1</b><img src="<%=basePath%>static/images/icon_30.png" alt="">待收货</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-        <p><span><img src="<%=basePath%>static/images/icon_31.png" alt="">待评价</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-        <p><span><img src="<%=basePath%>static/images/icon_32.png" alt="">退款/售后</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-
     </div>
-
 </div>
 <div class="bottom">
     <footer>
@@ -55,12 +60,17 @@
             </a>
         </div>
         <div class="btm" style="background: #DA3600;">
-            <a href="../html/xiaodianguanli.html">
+            <a href="<%=basePath%>static/html/xiaodianguanli.html">
                 <span><img src="<%=basePath%>static/images/shouye_footer3.png" alt=""></span>
                 <span>个人中心</span>
             </a>
         </div>
     </footer>
 </div>
+<script>
+    var myScroll = new IScroll("#wrap",{
+        preventDefault: false
+    })
+</script>
 </body>
 </html>

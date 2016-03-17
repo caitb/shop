@@ -197,4 +197,13 @@ public class BOrderService {
     public void addBOrderPayment(PfBorderPayment pfBorderPayment) throws Exception {
         pfBorderPaymentMapper.insert(pfBorderPayment);
     }
+    /**
+     * 修改订单
+     * @author ZhaoLiang
+     * @date 2016/3/17 14:59
+     */
+    @Transactional
+    public void updateBOrder(PfBorder pfBorder) throws Exception {
+        pfBorderMapper.updateById(pfBorder);
+    }
 }

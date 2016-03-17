@@ -178,7 +178,7 @@ public class BOrderController extends BaseController {
     @RequestMapping("/payBOrder.shtml")
     public ModelAndView payBOrder(HttpServletRequest request,
                                      HttpServletResponse response,
-                                     @RequestParam(value = "userAddressId", required = false) Integer userAddressId,
+                                     @RequestParam(value = "userAddressId", required = false) Long userAddressId,
                                      @RequestParam(value = "userMessage", required = false) String userMessage,
                                      @RequestParam(value = "bOrderId", required = false) Long bOrderId
     ) {

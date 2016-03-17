@@ -225,7 +225,7 @@ public class COrderController extends BaseController {
     public String confirmOrder(HttpServletRequest request,
                                 HttpServletResponse response,
                                 @RequestParam(value = "skuId", required = false) Integer skuId,
-                                @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId,
+                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                 Model model){
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         Long userId = null;

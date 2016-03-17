@@ -24,6 +24,7 @@
                     if(data!=null&&data!=""){
                         var jsonData=eval(data);
                         if (jsonData!=null&&jsonData!=""){
+                            $(".pp").attr("style","display:none");
                             $.each(jsonData, function(i, item) {
                                 var  address = "<selection class=\"sec1\" id=\"selection_"+jsonData[i].id+"\" >";
                                 address +="<div><h2>";

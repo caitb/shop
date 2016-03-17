@@ -58,7 +58,7 @@ public class UserAddressController {
     @ResponseBody
     public String addOrUpdateAddress(HttpServletRequest request,
                              HttpServletResponse response,
-                                     @RequestParam(value = "id", required = false) Integer id,
+                                     @RequestParam(value = "id", required = false) Long id,
                              @RequestParam(value = "name", required = true) String name,
                              @RequestParam(value = "phone", required = true) String phone,
                              @RequestParam(value = "postcode", required = true) String postcode,
@@ -244,10 +244,10 @@ public class UserAddressController {
      */
     @RequestMapping("/deleteUserAddressById.do")
     @ResponseBody
-    public Integer deleteUserAddressById(HttpServletRequest request,
+    public Long deleteUserAddressById(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "id", required = true)Integer id,
-                                         @RequestParam(value = "defaultAddressId", required = false)Integer defaultAddressId)throws Exception{
+                                         @RequestParam(value = "defaultAddressId", required = false)Long defaultAddressId)throws Exception{
         if (StringUtils.isEmpty(id)){
             id = 1;
         }else{
@@ -260,9 +260,9 @@ public class UserAddressController {
         }else{
             userId = 1L;
         }
-       int i = userAddressService.deleteUserAddressById(id,userId,defaultAddressId);
+       Long i = userAddressService.deleteUserAddressById(id,userId,defaultAddressId);
         if (i==0){
-            return 0;
+            return 0L;
         }else{
             Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
             if (id.equals(selectedAddressId)){

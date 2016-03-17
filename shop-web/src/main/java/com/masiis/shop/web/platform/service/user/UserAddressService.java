@@ -97,7 +97,7 @@ public class UserAddressService {
      * @author ZhaoLiang
      * @date 2016/3/9 10:57
      */
-    public ComUserAddress getUserAddressById(Integer userAddressId) {
+    public ComUserAddress getUserAddressById(Long userAddressId) {
         return comUserAddressMapper.selectByPrimaryKey(userAddressId);
     }
     /**

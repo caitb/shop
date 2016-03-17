@@ -81,7 +81,7 @@ public class UserService {
      * @param id
      * @return
      */
-    public ComUserAddress getComUserAddress(Integer id) {
+    public ComUserAddress getComUserAddress(Long id) {
         return comUserAddressMapper.selectByPrimaryKey(id);
     }
 

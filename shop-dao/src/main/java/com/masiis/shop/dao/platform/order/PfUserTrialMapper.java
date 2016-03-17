@@ -4,12 +4,14 @@ package com.masiis.shop.dao.platform.order;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserTrial;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by 49134 on 2016/3/3.
  */
+@Repository
 public interface PfUserTrialMapper {
 
     /**

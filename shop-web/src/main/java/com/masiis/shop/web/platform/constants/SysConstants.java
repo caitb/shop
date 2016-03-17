@@ -30,6 +30,7 @@ public class SysConstants {
      */
     public static final String SESSION_ORDER_Id="orderId";
     public static final String SESSION_ORDER_SELECTED_ADDRESS="orderSelectedAddress";
+    public static final String SESSION_ORDER_SKU_ID="skuId";
     /**
      * 商品最小图片
      */

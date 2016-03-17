@@ -35,20 +35,24 @@ public class LoginFilter implements Filter{
 
         String uri = request.getRequestURI();
 
-        System.out.println("uri:" + uri);
 
         // 开发阶段可以先跳过
+        log.info("uri:" + uri);
         chain.doFilter(request, response);
         return;
 
         /*// 过滤静态资源,以及一些放行的路径
         if(uri.startsWith(request.getContextPath() + "/static/")
                 ||(request.getContextPath() + "/verify/actk").equals(uri)
-                || (request.getContextPath() + "/verify/wxcheck").equals(uri)){
+                || (request.getContextPath() + "/verify/wxcheck").equals(uri)
+                || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)){
             // 放行
             chain.doFilter(request, response);
             return;
         }
+
+        log.info("uri:" + uri);
+
         ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         if(login != null
                 && StringUtils.isNotBlank(login.getId() + "")

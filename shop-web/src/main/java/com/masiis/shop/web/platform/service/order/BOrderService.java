@@ -236,8 +236,8 @@ public class BOrderService {
      * @date 2016/3/14 13:22
      */
 
-    public List<PfBorder> findByUserId(Long UserId) {
-        return pfBorderMapper.selectByUserId(UserId);
+    public List<PfBorder> findByUserId(Long UserId,Integer orderStatus,Integer shipStatus) {
+        return pfBorderMapper.selectByUserId(UserId,orderStatus,shipStatus);
     }
 
     /**

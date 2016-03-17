@@ -67,6 +67,8 @@ public class WxPayService {
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
                 res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
+            } else if ("C".equals(orderType)) {
+                // 使用订单
             } else {
                 throw new BusinessException("订单号错误,不存在该订单号!");
             }
@@ -84,7 +86,7 @@ public class WxPayService {
         if ("B".equals(orderType)) {
             // B类型订单
             PfBorder order = bOrderService.findByOrderCode(orderid);
-            PfBorderPayment payment = createBorderPayment(req, res);
+            PfBorderPayment payment = createBorderPayment(req, res, order);
             payment.setPfBorderId(order.getId());
             bOrderService.addBOrderPayment(payment);
         } else {
@@ -92,10 +94,10 @@ public class WxPayService {
         }
     }
 
-    private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r) {
+    private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r, PfBorder order) {
         PfBorderPayment payment = new PfBorderPayment();
 
-        payment.setAmount(new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+        payment.setAmount(order.getOrderAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
         payment.setCreateTime(new Date());
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号

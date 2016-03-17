@@ -94,8 +94,8 @@
 }
 .wrap .box main .all .sec1 .shangpin .photo img {
   display: block;
-  width: 62px;
-  height: 62px;
+  width: 54px;
+  height: 54px;
   border: 1px solid #999999;
 }
 .wrap .box main .all .sec1 .shangpin div {
@@ -112,13 +112,10 @@
 .wrap .box main .all .sec1 .shangpin div h2 {
   color: #333333;
   font-size: 12px;
-  height: 15px;
-  margin-top: -5px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
-  height: 15px;
-  font-size: 12px;
   color: #999999;
+  font-size: 12px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 span {
   font-size: 12px;
@@ -131,23 +128,26 @@
 }
 .wrap .box main .all .sec1 .shangpin div .defult {
   padding-bottom: 5px;
-  margin-right: 10px;
-  border-bottom: 1px solid #F8F8F8;
-}
-.wrap .box main .all .sec1 .shangpin div p {
-  margin: 0 10px 0 0;
-  height: 15px;
-  font-size: 10px;
-  color: #A5A5A5;
-}
-.wrap .box main .all .sec1 .shangpin div p span {
-  display: inline-block;
-  font-size: 10px;
-}
-.wrap .box main .all .sec1 .shangpin div p b {
-  float: left;
   font-size: 12px;
+  margin-right: 10px;
+}
+.wrap .box main .all .sec1 .shangpin div .defult span {
+  font-size: 12px;
+}
+.wrap .box main .all .sec1 h1 {
+  margin: 0 10px;
+  color: #A5A5A5;
+  text-align: right;
+  font-size: 12px;
+  padding: 5px 0;
+}
+.wrap .box main .all .sec1 h1 span {
+  display: inline-block;
+  font-size: 12px;
+}
+.wrap .box main .all .sec1 h1 b {
   color: #585858;
+  font-size: 12px;
 }
 .wrap .box main .all .sec1 .ding {
   width: 100%;
@@ -184,6 +184,10 @@
   border: 1px solid #999999;
   color: #999999;
 }
+.wrap .box main .all .sec1 .ding .jixu a,
+.wrap .box main .all .sec1 .ding .quxiao a {
+  color: #999;
+}
 .wrap .box main .all .sec1 .ding .quxiao {
   right: 10px;
 }
@@ -197,10 +201,10 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  overflow: hidden;
   display: none;
 }
-.wrap .back .back_que {
+.wrap .back .back_que,
+.wrap .back .back_shouhuo {
   width: 80%;
   background: white;
   border-radius: 5px;
@@ -209,85 +213,36 @@
   -webkit-box-orient: vertical;
   display: none;
 }
-.wrap .back .back_que p {
+.wrap .back .back_que p,
+.wrap .back .back_shouhuo p {
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
   line-height: 30px;
   margin-bottom: 10px;
 }
-.wrap .back .back_que h4:nth-child(2) {
-  padding-top: 10px;
-}
-.wrap .back .back_que h4 {
-  margin: 0 10px;
+.wrap .back .back_que h4,
+.wrap .back .back_shouhuo h4 {
+  margin: 0 15px;
   text-indent: 10px;
   letter-spacing: 1px;
-  padding-bottom: 10px;
 }
-.wrap .back .back_que h4 select {
-  display: inline-block;
-  width: 140px;
-  height: 25px;
-  margin-left: 5px;
-  border: 1px solid #C5C5C5;
-  color: #C5C5C5;
-}
-.wrap .back .back_que h4 input {
-  display: inline-block;
-  width: 136px;
-  margin-left: 5px;
-  height: 18px;
-  border: 1px solid #C5C5C5;
-  color: #C5C5C5;
-  text-indent: 5px;
-}
-.wrap .back .back_que h3 {
-  margin: 20px 32%;
-  background: #0FC420;
-  color: white;
-  padding: 2px 0px;
-  text-align: center;
-  border-radius: 5px;
-}
-.wrap .back .shouhuo {
-  width: 80%;
-  background: white;
-  border-radius: 5px;
-  z-index: 10;
+.wrap .back .back_que h3,
+.wrap .back .back_shouhuo h3 {
+  margin-top: 10px;
+  -webkit-box-flex: 1;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  display: none;
+  -webkit-box-align: center;
+  border-top: 1px solid #999999;
 }
-.wrap .back .shouhuo p {
-  margin: 0 10px;
-  color: #F74A11;
-  border-bottom: 1px solid #F74A11;
-  line-height: 30px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.wrap .back .shouhuo h4 {
-  margin: 0 10px;
-  text-indent: 10px;
-  letter-spacing: 1px;
-  padding-bottom: 5px;
-}
-.wrap .back .shouhuo h4 span {
+.wrap .back .back_que h3 span,
+.wrap .back .back_shouhuo h3 span {
   display: block;
-  float: left;
-}
-.wrap .back .shouhuo h4 span:nth-child(2) {
-  width: 160px;
-  margin-left: 5px;
-  text-indent: 0;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-.wrap .back .shouhuo h3 {
-  margin: 20px 32%;
-  background: #E3E3E3;
-  padding: 2px 0px;
+  -webkit-box-flex: 1;
   text-align: center;
-  border-radius: 5px;
+  line-height: 33px;
+}
+.wrap .back .back_que h3 span:nth-child(1),
+.wrap .back .back_shouhuo h3 span:nth-child(1) {
+  border-right: 1px solid #999;
 }

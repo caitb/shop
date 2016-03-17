@@ -1,135 +1,112 @@
 #wrap{
      width: 100%;
-    header{
-        width: 100%;
-        height: 100px; 
-        display: -webkit-box;
-        background: url("../images/icon_27.png") no-repeat;
-        background-size: cover;
-        -webkit-box-align:center;
-        position: relative;
-        margin-bottom: 10px;
-        &>p{
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            color: white;
-            padding-right: 20px;
-            background:url("../images/put.png") no-repeat 30px;
-            background-size:35%;
-        }
-        div{
+    .main{
+        padding-bottom: 3rem;
+        header{
             width: 100%;
-            height: 60px;
-            p{
-                width:55px;
-                height:55px;
-                display: block;
-                border-radius:30px;
-                overflow: hidden;
-                border: 1px solid #CF9E8C;
-                margin-left: 10px;
-                float: left;
-                    img{
-                        display: block;
-                        width:100%;
-                    }
+            height: 100px; 
+            display: -webkit-box;
+            background: url("../images/icon_27.png") no-repeat;
+            background-size: cover;
+            -webkit-box-align:center;
+            position: relative;
+            margin-bottom: 10px;
+            &>p{
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                color: white;
+                padding-right: 20px;
+                background:url("../images/put.png") no-repeat 30px;
+                background-size:35%;
             }
-            h1{
-                 float: left;
-                height: 100%;
-                display: -webkit-box;
-                -webkit-box-orient:vertical;
-                -webkit-box-pack:center;
-                padding-left: 20px;
-                b,span{
+            div{
+                width: 100%;
+                height: 60px;
+                p{
+                    width:55px;
+                    height:55px;
                     display: block;
-                    color: white;
+                    border-radius:30px;
+                    overflow: hidden;
+                    border: 1px solid #CF9E8C;
+                    margin-left: 10px;
+                    float: left;
+                        img{
+                            display: block;
+                            width:100%;
+                        }
                 }
-                b{
-                    font-size: 14px;
-                }
-                span{
-                    font-size: 12px;
+                h1{
+                     float: left;
+                    height: 100%;
+                    display: -webkit-box;
+                    -webkit-box-orient:vertical;
+                    -webkit-box-pack:center;
+                    padding-left: 20px;
+                    b,span{
+                        display: block;
+                        color: white;
+                    }
+                    b{
+                        font-size: 14px;
+                    }
+                    span{
+                        font-size: 12px;
+                    }
                 }
             }
         }
-    }
-    #box{
-        width: 100%;
-        background: white;
-        h1{
-            border-bottom: 1px solid #f3f4f5;
+        #box{
+            width: 100%;
+            background: white;
             &>p{
-                border: none;
                 margin: 0 10px;
-                padding: 8px 0;
+                border-bottom: 1px solid #F3F4F5; 
                 display: -webkit-box;
                 -webkit-box-pack:justify;
-                background:url("../images/list.png") no-repeat right;
                 background-size: 5%;
+                height: 40px;
+
+
                 span{
                     display:block;
                     color: #5A5A5A;
+                    line-height: 40px;
+                    position: relative;
+                    b{
+                        left: 20px;
+                        top: 6px;
+                        position: absolute;
+                        display: block;
+                        width:10px;
+                        height:10px;
+                        background: red;
+                        border-radius: 10px;
+                        font-size: 12px;
+                        text-align: center;
+                        line-height: 15px;
+                    }
+                    img{
+                          display: block;
+                          width: 22px;
+                          float: left;
+                          margin-right: 15px;
+                          margin-top: 10px;
+                    }
                 }
-                span:nth-child(2){                
+                span:nth-child(2){    
                     img{
                         display: block;
                         width: 10px;
                         height: 20px;
+                        margin-right: 0;
                     }
                 }
-                }
-        }
-        &>p{
-            margin: 0 10px;
-            border-bottom: 1px solid #F3F4F5; 
-            display: -webkit-box;
-            -webkit-box-pack:justify;
-            background-size: 5%;
-            height: 40px;
-            
-            
-            span{
-                display:block;
-                color: #5A5A5A;
-                line-height: 40px;
-                position: relative;
-                b{
-                    left: 30px;
-                    top: 5px;
-                    position: absolute;
-                    display: block;
-                    width: 15px;
-                    height: 15px;
-                    border: 1px solid red;
-                    border-radius: 10px;
-                    font-size: 12px;
-                    text-align: center;
-                    line-height: 15px;
-                    color: red;
-                    background: white;
-                }
-                img{
-                      display: block;
-                      width: 25px;
-                      float: left;
-                      margin-left: 15px;
-                      margin-right: 15px;
-                      margin-top: 10px;
-                }
             }
-            span:nth-child(2){    
-                img{
-                    display: block;
-                    width: 10px;
-                    height: 20px;
-                    margin-right: 0;
-                }
+            &>p:last-child{
+                border: none;
             }
-        }
-        &>p:last-child{
-            border: none;
         }
     }
 }

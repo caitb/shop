@@ -19,9 +19,9 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from com_user_address
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAddress" >
@@ -39,7 +39,7 @@
             )
     </insert>
     
-    <update id="settingDefaultAddress" parameterType = "java.lang.Integer">
+    <update id="settingDefaultAddress" parameterType = "java.lang.Long">
         update com_user_address
         SET is_default = 1
         WHERE id = #{id}
@@ -95,7 +95,7 @@
         ORDER BY create_time DESC
     </select>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, user_id, name, zip, province_id, province_name, city_id, 
         city_name, region_id, region_name, address, mobile, is_default, remark
         from com_user_address

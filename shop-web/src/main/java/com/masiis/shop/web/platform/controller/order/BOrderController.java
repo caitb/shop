@@ -9,6 +9,7 @@ import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -19,6 +20,7 @@ import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.MobileMessageUtil;
+import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.util.NetUtils;
 import org.apache.log4j.Logger;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -184,10 +187,10 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/payBOrder.shtml")
     public ModelAndView payBOrder(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     @RequestParam(value = "userAddressId", required = false) Long userAddressId,
-                                     @RequestParam(value = "userMessage", required = false) String userMessage,
-                                     @RequestParam(value = "bOrderId", required = false) Long bOrderId
+                                  HttpServletResponse response,
+                                  @RequestParam(value = "userAddressId", required = false) Long userAddressId,
+                                  @RequestParam(value = "userMessage", required = false) String userMessage,
+                                  @RequestParam(value = "bOrderId", required = false) Long bOrderId
     ) {
         ModelAndView mv = new ModelAndView();
         String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
@@ -240,13 +243,15 @@ public class BOrderController extends BaseController {
      * @author ZhaoLiang
      * @date 2016/3/17 14:32
      */
-    @ResponseBody
     @RequestMapping("/payBOrderSubmit.do")
-    public String payBOrderSubmit(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+    @ResponseBody
+    public String payBOrderSubmit(HttpServletRequest request,
+                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                   @RequestParam(value = "userMessage", required = true) String userMessage,
-                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId
-    ) {
+                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId,
+                                  RedirectAttributes attrs) {
         JSONObject jsonObject = new JSONObject();
+        WxPaySysParamReq req = null;
         try {
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
             pfBorder.setUserMessage(userMessage);
@@ -268,10 +273,21 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setZip(comUserAddress.getZip());
             pfBorderConsigneeMapper.insert(pfBorderConsignee);
             jsonObject.put("isError", false);
+            req = new WxPaySysParamReq();
+            req.setOrderId(pfBorder.getOrderCode());
+            req.setSignType("MD5");
+            req.setNonceStr(WXBeanUtils.createGenerateStr());
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSign(WXBeanUtils.toSignString(req));
         } catch (Exception ex) {
-
+            jsonObject.put("isError", true);
+            jsonObject.put("message", ex.getMessage());
+            return jsonObject.toJSONString();
         }
-        return jsonObject.toJSONString();
+
+        attrs.addAttribute("param", JSONObject.toJSONString(req));
+        return "redirect:/wxpay/wtpay";
     }
 
     /**

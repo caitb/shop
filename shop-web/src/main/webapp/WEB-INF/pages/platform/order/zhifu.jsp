@@ -20,21 +20,42 @@
     <script>
         $(document).ready(function () {
             var addressId = $("#addressId").val();
-            if (addressId==""){
+            if (addressId == "") {
                 $(".xinz").show();
                 $(".sec1").hide();
-            }else{
+            } else {
                 $(".xinz").hide();
-                $(".sec1").attr("style","display:-webkit-box;");
+                $(".sec1").attr("style", "display:-webkit-box;");
             }
         })
         var myScroll = new IScroll(".wrap", {
             preventDefault: false
         })
 
-        function toChooseAddressPage(){
+        function toChooseAddressPage() {
             var selectedAddressId = $("#addressId").val();
-            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId="+selectedAddressId+"&orderId=${bOrderId}";
+            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId=" + selectedAddressId + "&orderId=${bOrderId}";
+        }
+
+        function submit() {
+            var paraData = {};
+            paraData.bOrderId = "${bOrderId}";
+            paraData.userMessage = "";
+            paraData.userAddressId = $("#addressId").val();
+            $.ajax({
+                url: "<%=basePath%>border/payBOrderSubmit.do",
+                type: "post",
+                data: paraData,
+                dataType: "json",
+                success: function (data) {
+                    if (data.isError == false) {
+                        alert("OK");
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -42,7 +63,8 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript :;"onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript :;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                               alt=""></a>
             <p>支付订单</p>
         </header>
         <main>
@@ -63,7 +85,9 @@
                 <div>
                     <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.id}</span></h2></a>
-                    <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span><img   onclick="toChooseAddressPage()"   src="<%=path%>/static/images/next.png" alt=""></p></a>
+                    <a href="#"><p>收货地址：
+                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span><img
+                                onclick="toChooseAddressPage()" src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
             </section>
             ${productInfo}
@@ -79,9 +103,8 @@
                 <p><b>运费：</b><b style="text-align:left;text-indent:2px;">到付</b></p>
                 <p><b>需付：</b><span>￥${receivableAmount}</span></p>
             </section>
-
-            <a href="<%=basePath%>border/payBOrdersSuccess.shtml?bOrderId=${bOrderId}" class="weixin">微信支付</a>
-            <a href="javascript:;" class="xianxia">线下支付</a>
+            <a href="javascript:;" onclick="submit()" class="weixin">微信支付</a>
+            <%--<a href="javascript:;" class="xianxia">线下支付</a>--%>
         </main>
     </div>
 </div>

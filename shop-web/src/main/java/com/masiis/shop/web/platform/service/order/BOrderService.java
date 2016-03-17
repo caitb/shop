@@ -45,6 +45,8 @@ public class BOrderService {
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfBorderFreightMapper pfBorderFreightMapper;
 
     /**
      * 添加订单
@@ -87,6 +89,16 @@ public class BOrderService {
         pfBorderOperationLog.setRemark("新增订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         return pfBorder.getId();
+    }
+
+    /**
+     * 修改订单
+     * @author ZhaoLiang
+     * @date 2016/3/17 14:59
+     */
+    @Transactional
+    public void updateBOrder(PfBorder pfBorder) throws Exception {
+        pfBorderMapper.updateById(pfBorder);
     }
 
     /**
@@ -168,7 +180,9 @@ public class BOrderService {
                     pfBorderMapper.updateById(pfBorder);
                 }
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                pfSkuStockMapper.updateByIdAndVersion(pfSkuStock);
+                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
+                    throw new BusinessException("并发修改库存失败");
+                }
             } else {
                 pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
                 if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
@@ -176,7 +190,9 @@ public class BOrderService {
                     pfBorderMapper.updateById(pfBorder);
                 }
                 pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                    throw new BusinessException("并发修改库存失败");
+                }
             }
         }
 
@@ -208,7 +224,6 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/14 13:23
      */
-
     public PfBorder findByOrderCode(String orderId) {
         return pfBorderMapper.selectByOrderCode(orderId);
     }
@@ -231,7 +246,7 @@ public class BOrderService {
      * @date 2016/3/16 12:42
      */
     @Transactional
-    public void addBOrderPayment(PfBorderPayment pfBorderPayment) {
+    public void addBOrderPayment(PfBorderPayment pfBorderPayment) throws Exception {
         pfBorderPaymentMapper.insert(pfBorderPayment);
     }
 
@@ -243,5 +258,21 @@ public class BOrderService {
      */
     public PfBorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
         return pfBorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
+    /**
+     * 根据订单号获取快递信息
+     * @author muchaofeng
+     * @date 2016/3/16 15:21
+     */
+    public List<PfBorderFreight> findByPfBorderFreightOrderId(Long id){
+        return pfBorderFreightMapper.selectByBorderId(id);
+    }
+    /**
+     * 根据订单号获取收货人信息
+     * @author muchaofeng
+     * @date 2016/3/16 15:36
+     */
+    public PfBorderConsignee findpfBorderConsignee(Long id){
+        return pfBorderConsigneeMapper.selectByBorderId(id);
     }
 }

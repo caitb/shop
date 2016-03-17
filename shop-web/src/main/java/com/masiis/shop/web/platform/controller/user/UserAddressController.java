@@ -117,11 +117,11 @@ public class UserAddressController {
     @RequestMapping("/toEditAddress.html")
     public String toEditAddress(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = "id", required = true)Integer id,
+                                @RequestParam(value = "id", required = true)Long id,
                                 Model model)throws Exception{
         //获得用户地址
         if (StringUtils.isEmpty(id)){
-            id = 1;
+            id = 1L;
         }
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
         if (comUserAddress == null){

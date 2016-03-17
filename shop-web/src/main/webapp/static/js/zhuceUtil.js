@@ -42,10 +42,6 @@ $(function () {
     })
     $("#submit").click(function () {
         var n = 0;
-        if ($(".sec2 .on label").html() == null || $(".sec2 .on [name='amount']").html() == null) {
-            alert("请选择合伙人等级");
-            n++;
-        }
         if (!nameCheckFun($("#name"))) {
             n++;
         }
@@ -59,11 +55,11 @@ $(function () {
         paraData.name = $("#name").val();
         paraData.weixinId = $("#weixin").val();
         paraData.skuId = skuId;
-        paraData.levelId = $(".sec2 .on label").attr("levelId");
-        paraData.amount = $(".sec2 .on [name='amount']").html();
-        paraData.parentMobile = $("#parentMobile").val();
+        paraData.levelId = 1;
+        paraData.amount = 100;
+        paraData.pMobile = $("#pMobile").val();
         $.ajax({
-            url: path + "border/registerConfirm/check.do",
+            url: path + "userApply/registerConfirm/check.do",
             type: "POST",
             data: paraData,
             dataType: "json",
@@ -71,15 +67,14 @@ $(function () {
                 if (data && data.isError == false) {
                     var param = "?";
                     param += "name=" + paraData.name;
-                    param += "&mobile=" + paraData.mobile;
                     param += "&weixinId=" + paraData.weixinId;
-                    param += "&parentMobile=" + paraData.parentMobile;
                     param += "&skuId=" + paraData.skuId;
                     param += "&skuName=" + skuName;
                     param += "&levelId=" + paraData.levelId;
-                    param += "&levelName=" + paraData.levelName;
+                    param += "&levelName=高级合伙人";
                     param += "&amount=" + paraData.amount;
-                    param += "&yanzhengma=" + paraData.yanzhengma;
+                    param += "&pUserId=" + pUserId;
+                    param += "&pMobile=" + pMobile;
                     window.location.href = path + "userApply/registerConfirm.shtml" + param;
                 } else {
                     alert(data.message);

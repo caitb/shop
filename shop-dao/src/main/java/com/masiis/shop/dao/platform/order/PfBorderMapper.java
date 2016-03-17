@@ -29,4 +29,6 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 
+    void updateByPrimaryKey(PfBorder pfBorder);
+
 }

@@ -9,8 +9,10 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
+import com.masiis.shop.web.platform.service.order.PfCorderConsigneeService;
 import com.masiis.shop.web.platform.service.order.PfUserTrialService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +43,10 @@ public class COrderController extends BaseController {
     private UserService userService;
     @Resource
     private PfUserTrialService trialService;
+    @Resource
+    private UserAddressService userAddressService;
+    @Resource
+    private PfCorderConsigneeService pfCorderConsigneeService;
 
 
     /**
@@ -123,76 +129,31 @@ public class COrderController extends BaseController {
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
-            @RequestParam(value = "spuId", required = true) Integer spuId,
-            @RequestParam(value = "applyReason", required = false) String applyReason,
-            @RequestParam(value = "name", required = true) String name,
-            @RequestParam(value = "phone", required = true) String phone,
-            @RequestParam(value = "wechat", required = true) String wechat
+            @RequestParam(value="addressId",required = true) Integer addressId
     ) {
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        Long userId =  null;
         try{
             if (StringUtils.isEmpty(skuId)){
                 skuId = 111;
             }
-            if (StringUtils.isEmpty(spuId)){
-                spuId = 222;
+            if (comUser!=null){
+                userId = comUser.getId();
+            }else{
+                userId = 1L;
             }
-            if (StringUtils.isEmpty(name)){
-
-            }
-            if (StringUtils.isEmpty(phone)){
-
-            }
-            if (StringUtils.isEmpty(wechat)){
-
-            }
-            ComUser comUser = initComUserParamData(request, wechat, name, phone);
-            PfCorder pfCorder =  initPfCorderParamData(comUser.getId(),skuId);
+            PfCorder pfCorder =  initPfCorderParamData(userId,skuId);
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
             Long orderId = trialService.insert(pfCorder,pfCorderOperationLog,comUser);
+            ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
+            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(orderId,comUserAddress);
+            pfCorderConsigneeService.insertPfCC(pfCorderConsignee);
             return orderId;
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
-
-    /**
-     * 生成用户初始化数据
-     * @author hanzengzhi
-     * @date 2016/3/15 10:54
-     */
-    private ComUser initComUserParamData( HttpServletRequest request,
-                                          String wechat,String name,String phone)throws Exception{
-        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
-        if (comUser==null){
-            comUser = new ComUser();
-            comUser.setId(1L);
-        }
-        comUser =userService.getUserById(comUser.getId());
-        comUser.setWxId(wechat);
-        comUser.setRealName(name);
-        comUser.setMobile(phone);
-        if (comUser.getCreateTime()==null){
-            comUser.setCreateTime(new Date());
-        }
-        if (StringUtils.isEmpty(comUser.getOpenid())){
-            comUser.setOpenid("openid");
-        }
-        if (StringUtils.isEmpty(comUser.getAccessToken())){
-            comUser.setAccessToken("accessToken");
-        }
-        if (StringUtils.isEmpty(comUser.getRefreshToken())){
-            comUser.setRefreshToken("refreshToken");
-        }
-        if (StringUtils.isEmpty(comUser.getAtokenExpire())){
-            comUser.setAtokenExpire(new Date());
-        }
-        if (StringUtils.isEmpty(comUser.getRtokenExpire())){
-            comUser.setRtokenExpire(new Date());
-        }
-        return comUser;
-    }
-
     /**
      * 初始化订单参数数据
      * @author hanzengzhi
@@ -229,6 +190,33 @@ public class COrderController extends BaseController {
         return pcol;
     }
     /**
+     * 订单收获人信息
+     * @author hanzengzhi
+     * @date 2016/3/17 13:45
+     */
+    private PfCorderConsignee initPfCorderConsigneeParamData(Long cOrderId,ComUserAddress comUserAddress)throws Exception{
+        PfCorderConsignee pfCorderConsignee = new PfCorderConsignee();
+        try{
+            if (comUserAddress!=null){
+                pfCorderConsignee.setPfCorderId(cOrderId);
+                pfCorderConsignee.setUserId(comUserAddress.getUserId());
+                pfCorderConsignee.setConsignee(comUserAddress.getName());
+                pfCorderConsignee.setMobile(comUserAddress.getMobile());
+                pfCorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+                pfCorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+                pfCorderConsignee.setCityId(comUserAddress.getCityId());
+                pfCorderConsignee.setCityName(comUserAddress.getCityName());
+                pfCorderConsignee.setRegionId(comUserAddress.getRegionId());
+                pfCorderConsignee.setRegionName(comUserAddress.getRegionName());
+                pfCorderConsignee.setAddress(comUserAddress.getAddress());
+                pfCorderConsignee.setZip(comUserAddress.getZip());
+            }
+        }catch (Exception e){
+            throw  new Exception("生成订单获取用户地址错误");
+        }
+        return pfCorderConsignee;
+    }
+    /**
      * 确认订单
      * @author  hanzengzhi
      * @date  2016/3/8 10:16
@@ -236,8 +224,8 @@ public class COrderController extends BaseController {
     @RequestMapping("/confirmOrder.do")
     public String confirmOrder(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = "orderId", required = false) Long orderId,
-                                @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId,
+                                @RequestParam(value = "skuId", required = false) Integer skuId,
+                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                 Model model){
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
         Long userId = null;
@@ -246,10 +234,7 @@ public class COrderController extends BaseController {
         }else{
             userId = 1L;
         }
-        if (orderId==null){
-            orderId = 12L;
-        }
-        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(request,orderId,userId,selectedAddressId);
+        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(request,skuId,userId,selectedAddressId);
         ComUserAddress comUserAddress = (ComUserAddress)pfCorderMap.get("comUserAddress");
         //图片
         Product product = (Product)pfCorderMap.get("product");

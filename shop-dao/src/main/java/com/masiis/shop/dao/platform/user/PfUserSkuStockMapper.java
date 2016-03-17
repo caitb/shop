@@ -24,7 +24,9 @@ public interface PfUserSkuStockMapper {
 
     List<PfUserSkuStock> selectAll();
 
-    int updateByPrimaryKey(PfUserSkuStock record);
+    //int updateByPrimaryKey(PfUserSkuStock pfUserSkuStock);////没有设置乐观锁不建议使用
 
     PfUserSkuStock selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+
+    void updateByIdAndVersion(PfUserSkuStock pfUserSkuStock);
 }

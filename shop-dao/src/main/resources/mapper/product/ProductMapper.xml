@@ -20,7 +20,9 @@
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
         <result column="stock" property="stock" jdbcType="INTEGER" />
         <result column="agent_num" property="agentNum" jdbcType="INTEGER" />
+        <result column="pfuid" property="pfuId" jdbcType="INTEGER" />
     </resultMap>
+
     <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
@@ -64,10 +66,21 @@
     </select>
     <!-->用户商品列表<-->
     <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="int">
-        SELECT sku.id,sku.name,sku.price_retail,pfu.stock
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.user_id = #{userId}
     </select>
-
+    <!-->更新库存<-->
+    <update id="updateStock" parameterType="java.util.HashMap">
+        UPDATE pf_user_sku_stock SET stock = #{stock}
+        WHERE id = #{id}
+    </update>
+    <!-->查询库存表<-->
+    <select id="getProductStock" resultMap="ProductResultMap" parameterType="int">
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid
+        FROM pf_user_sku_stock pfu
+        LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
+        WHERE pfu.id = #{id}
+    </select>
 </mapper>

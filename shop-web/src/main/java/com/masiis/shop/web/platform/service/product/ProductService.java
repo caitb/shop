@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -128,5 +130,20 @@ public class ProductService {
              }
          }
          return userProducts;
+     }
+
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/16 0016 下午 7:38
+      *  更新库存
+      */
+     public void updateStock(Integer stock,Integer id) throws Exception{
+         Map<String, Object> param = new HashMap<>();
+         Product product = productMapper.getProductStock(id);
+         if(product!=null && (product.getStock()-stock>=0)){
+             param.put("stock",product.getStock()-stock);
+             param.put("id",id);
+             productMapper.updateStock(param);
+         }
      }
 }

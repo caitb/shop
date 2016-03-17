@@ -92,7 +92,7 @@
     <section class="sec3">
         <input id="applyTrialId" value="${productDetails.id}" style="display: none" />
         <p >
-            <a  id="applyTrial" onclick="applyTrial(${productDetails.id})">申请试用</a>
+            <a  id="applyTrial">申请试用</a>
             <a  id="trialed" >已试用</a>
         </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
@@ -111,10 +111,12 @@
                 if (dataObj == null || dataObj == "") {
                     $("#applyTrial").attr("style","display:block");
                     $("#trialed").attr("style","display:none");
-                    $("applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
+                    $("#trialed").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
+                    $("#applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
                 } else {
                     $("#applyTrial").attr("style","display:none");
                     $("#trialed").attr("style","display:block");
+                    $("#applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
                     $("#trialed").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
                 }
             }

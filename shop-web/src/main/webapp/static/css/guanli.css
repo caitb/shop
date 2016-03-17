@@ -42,6 +42,7 @@ body main .wrap .box .sec1 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   border-bottom: 1px solid #f6f6f6;
+  display: none;
 }
 body main .wrap .box .sec1 div:nth-child(1) {
   margin: 0 10px;

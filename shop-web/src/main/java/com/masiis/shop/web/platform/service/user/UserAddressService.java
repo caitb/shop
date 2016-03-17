@@ -41,7 +41,7 @@ public class UserAddressService {
      * @param request
      * @return
      */
-    public ComUserAddress getOrderAddress(HttpServletRequest request,Integer selectedAddressId,Long userId){
+    public ComUserAddress getOrderAddress(HttpServletRequest request,Long selectedAddressId,Long userId){
         //获得用户的默认地址
         ComUserAddress comUserAddress = new ComUserAddress();
         comUserAddress.setUserId(userId);
@@ -105,7 +105,7 @@ public class UserAddressService {
      * @author  hanzengzhi
      * @date  2016/3/9 15:23
      */
-    public int deleteUserAddressById(Integer id,Long userId,Integer defaultAddressId){
+    public Long deleteUserAddressById(Integer id,Long userId,Long defaultAddressId){
        int i = comUserAddressMapper.deleteByPrimaryKey(id);
         int ii = 0;
         ComUserAddress comUserAddress = new ComUserAddress();
@@ -124,10 +124,10 @@ public class UserAddressService {
             return comUserAddress.getId();
         }else if (i==1){
             //删除的不是默认地址
-            return -1;
+            return -1L;
         }else{
              //删除失败
-            return 0;
+            return 0L;
         }
     }
     /**

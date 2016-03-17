@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class ComUserAddress {
 
-    private Integer id;
+    private Long id;
     /**
      * 创建时间
      */
@@ -76,10 +76,10 @@ public class ComUserAddress {
      */
     private String remark;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Date getCreateTime() {

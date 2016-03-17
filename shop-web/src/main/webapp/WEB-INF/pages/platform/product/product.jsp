@@ -90,28 +90,51 @@
 </div>
 <footer>
     <section class="sec3">
-        <%--   <p><a href="<%=path%>/corder/applyTrialToPage.json?skuId=${productDetails.id}" onclick="applyTrial(${productDetails.id})">申请试用</a></p>--%>
-        <p><a  onclick="applyTrial(${productDetails.id})">申请试用</a></p>
+        <input id="applyTrialId" value="${productDetails.id}" style="display: none" />
+        <p >
+            <a  id="applyTrial" onclick="applyTrial(${productDetails.id})">申请试用</a>
+            <a  id="trialed" >已试用</a>
+        </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script>
-    function applyTrial(skuId) {
+    $(document).ready(function(){
+        var skuId = $("#applyTrialId").val();
         $.ajax({
             url: '<%=path%>/corder/isApplyTrial.do',
             type: 'post',
             data: {"skuId": skuId},
-            success: function(data){
-                var dataObj=eval("("+data+")");//转换为json对象
-                if (dataObj==null||dataObj==""){
-                    window.location.href = "<%=path%>/corder/applyTrialToPage.do?skuId=" + skuId;
-                }else{
+            success: function (data) {
+                var dataObj = eval("(" + data + ")");//转换为json对象
+                if (dataObj == null || dataObj == "") {
+                    $("#applyTrial").attr("style","display:block");
+                    $("#trialed").attr("style","display:none");
+                    $("applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
+                } else {
+                    $("#applyTrial").attr("style","display:none");
+                    $("#trialed").attr("style","display:block");
+                    $("#trialed").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
+                }
+            }
+        });
+    });
+/*    function applyTrial(skuId) {
+        $.ajax({
+            url: '<%=path%>/corder/isApplyTrial.do',
+            type: 'post',
+            data: {"skuId": skuId},
+            success: function (data) {
+                var dataObj = eval("(" + data + ")");//转换为json对象
+                if (dataObj == null || dataObj == "") {
+                    window.location.href = "<%=path%>/corder/confirmOrder.do?skuId=" + skuId;
+                } else {
                     alert("此商品您已申请使用，不能再次申请");
                 }
             }
         });
-    }
+    }*/
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

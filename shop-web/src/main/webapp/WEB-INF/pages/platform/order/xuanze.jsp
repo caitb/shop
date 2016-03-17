@@ -26,6 +26,7 @@
                         $(".pp").hide();
                         var jsonData=eval(data);
                         if (jsonData!=null&&jsonData!=""){
+                            $(".pp").attr("style","display:none");
                             $.each(jsonData, function(i, item) {
                                 var  address = "<section class=\"sec1\" onclick='selectClick("+jsonData[i].id+")'>";
                                 if (jsonData[i].id==selectedAddressId){

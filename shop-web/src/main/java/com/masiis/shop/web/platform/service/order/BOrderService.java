@@ -164,17 +164,19 @@ public class BOrderService {
             if (pfBorder.getUserPid() == 0) {
                 pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    throw new BusinessException("lowStocks");
+                    pfBorder.setOrderStatus(6);//排队订单
+                    pfBorderMapper.updateById(pfBorder);
                 }
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                pfSkuStockMapper.updateById(pfSkuStock);
+                pfSkuStockMapper.updateByIdAndVersion(pfSkuStock);
             } else {
                 pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
                 if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    throw new BusinessException("lowStocks");
+                    pfBorder.setOrderStatus(6);//排队订单
+                    pfBorderMapper.updateById(pfBorder);
                 }
                 pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                pfUserSkuStockMapper.updateByPrimaryKey(pfUserSkuStock);
+                pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
             }
         }
 

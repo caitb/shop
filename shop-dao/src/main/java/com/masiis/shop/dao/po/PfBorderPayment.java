@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-15 Created
+ * 2016-03-17 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -38,17 +38,17 @@ public class PfBorderPayment {
      */
     private Integer isEnabled;
     /**
-     * 备注
-     */
-    private String remark;
-    /**
      * 外部订单号
      */
     private String outOrderId;
     /**
-     * 系统支付流水号
+     * 支付流水号
      */
     private String paySerialNum;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Long getId() {
         return id;
@@ -92,24 +92,22 @@ public class PfBorderPayment {
     public void setIsEnabled(Integer isEnabled) {
         this.isEnabled = isEnabled;
     }
-    public String getRemark() {
-        return remark;
-    }
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
     public String getOutOrderId() {
         return outOrderId;
     }
     public void setOutOrderId(String outOrderId) {
         this.outOrderId = outOrderId == null ? null : outOrderId.trim();
     }
-
     public String getPaySerialNum() {
         return paySerialNum;
     }
-
     public void setPaySerialNum(String paySerialNum) {
-        this.paySerialNum = paySerialNum;
+        this.paySerialNum = paySerialNum == null ? null : paySerialNum.trim();
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

@@ -36,9 +36,10 @@ public class WxPayService {
     private PfBorderPaymentMapper bPaymentMapper;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
+        UnifiedOrderReq res = null;
         try {
             String orderType = req.getOrderId().charAt(0) + "";
-            UnifiedOrderReq res = new UnifiedOrderReq();
+            res = new UnifiedOrderReq();
 
             res.setAppid(WxConstants.APPID);
             res.setMch_id(WxConstants.WX_PAY_MCHID);
@@ -74,7 +75,7 @@ public class WxPayService {
             throw new BusinessException(e);
         }
 
-        return null;
+        return res;
     }
 
     @Transactional
@@ -94,7 +95,7 @@ public class WxPayService {
     private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r) {
         PfBorderPayment payment = new PfBorderPayment();
 
-        payment.setAmount(new BigDecimal(p.getTotal_fee()));
+        payment.setAmount(new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
         payment.setCreateTime(new Date());
         payment.setIsEnabled(0);
         // 给外部支付使用支付流水号

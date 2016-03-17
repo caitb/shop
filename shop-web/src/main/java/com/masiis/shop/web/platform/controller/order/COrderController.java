@@ -9,7 +9,6 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
-import com.masiis.shop.web.platform.service.order.PfCorderConsigneeService;
 import com.masiis.shop.web.platform.service.order.PfUserTrialService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
@@ -24,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,8 +44,7 @@ public class COrderController extends BaseController {
     private PfUserTrialService trialService;
     @Resource
     private UserAddressService userAddressService;
-    @Resource
-    private PfCorderConsigneeService pfCorderConsigneeService;
+
 
 
     /**
@@ -123,9 +121,9 @@ public class COrderController extends BaseController {
      * @author  hanzengzhi
      * @date  2016/3/5 13:46
      */
-    @RequestMapping("/trialApply.do")
+    @RequestMapping("/trialApplyPay.do")
     @ResponseBody
-    public Long trialApply(
+    public Long trialApplyPay(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
@@ -142,13 +140,20 @@ public class COrderController extends BaseController {
             }else{
                 userId = 1L;
             }
-            PfCorder pfCorder =  initPfCorderParamData(userId,skuId);
+            //获得产品信息
+            Product product = cOrderService.getProductDetail(skuId);
+            //订单
+            PfCorder pfCorder =  initPfCorderParamData(userId,skuId,product);
+            //订单日志
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
-            Long orderId = trialService.insert(pfCorder,pfCorderOperationLog,comUser);
+            //收获地址
             ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
-            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(orderId,comUserAddress);
-            pfCorderConsigneeService.insertPfCC(pfCorderConsignee);
-            return orderId;
+            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null,comUserAddress);
+            //生成订单
+            Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder,pfCorderOperationLog,comUserAddress,pfCorderConsignee);
+            weChatCallBack(orderId);
+            System.out.println("11111");
+            return null;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -159,7 +164,7 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/15 10:47
      */
-    private PfCorder initPfCorderParamData(Long userId,Integer skuId){
+    private PfCorder initPfCorderParamData(Long userId,Integer skuId,Product product){
         SfUserRelation sfUserRelation =  trialService.findPidById(userId);
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
@@ -168,6 +173,10 @@ public class COrderController extends BaseController {
         pfCorder.setOrderType(0);
         pfCorder.setSkuId(skuId);
         pfCorder.setUserId(userId);
+        pfCorder.setProductAmount(new BigDecimal(0));
+        pfCorder.setShipAmount(new BigDecimal(product.getShipAmount()));
+        pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
+        pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
         if (sfUserRelation!=null){
             pfCorder.setUserPid(sfUserRelation.getParentUserId());
         }
@@ -199,6 +208,7 @@ public class COrderController extends BaseController {
         try{
             if (comUserAddress!=null){
                 pfCorderConsignee.setPfCorderId(cOrderId);
+                pfCorderConsignee.setCreateTime(new Date());
                 pfCorderConsignee.setUserId(comUserAddress.getUserId());
                 pfCorderConsignee.setConsignee(comUserAddress.getName());
                 pfCorderConsignee.setMobile(comUserAddress.getMobile());
@@ -215,6 +225,33 @@ public class COrderController extends BaseController {
             throw  new Exception("生成订单获取用户地址错误");
         }
         return pfCorderConsignee;
+    }
+
+    /**
+     * 调用微信支付
+     * @author hanzengzhi
+     * @date 2016/3/17 16:34
+     */
+    private void toTrialOrderPay(HttpServletRequest request,HttpServletResponse response){
+
+    }
+    /**
+     * 微信支付回调
+     * @author hanzengzhi
+     * @date 2016/3/17 16:45
+     */
+    private void weChatCallBack(Long pfCorderId){
+        try{
+            PfCorderPayment pcp = new PfCorderPayment();
+            pcp.setCreateTime(new Date());
+            pcp.setId(1L);
+            pcp.setPfCorderId(pfCorderId);
+            pcp.setIsEnabled(0);
+            pcp.setOutOrderId("11111");
+            cOrderService.payCOrder(pcp,"22222");
+        }catch (Exception e){
+            e.getStackTrace();
+        }
     }
     /**
      * 确认订单

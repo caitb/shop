@@ -38,24 +38,25 @@
         }
 
         function submit() {
-            var paraData = {};
-            paraData.bOrderId = "${bOrderId}";
-            paraData.userMessage = "";
-            paraData.userAddressId = $("#addressId").val();
-            $.ajax({
-                url: "<%=basePath%>border/payBOrderSubmit.do",
-                type: "post",
-                data: paraData,
-                dataType: "json",
-                success: function (data) {
-                    if (data.isError == false) {
-                        alert("OK");
-                    }
-                    else {
-                        alert(data.message);
-                    }
-                }
-            });
+            var paraData = "?";
+            paraData += "bOrderId=${bOrderId}";
+            paraData += "&userMessage=" + $("#userMessage").val();
+            paraData += "&userAddressId=" + $("#addressId").val();
+            window.location.href = "<%=basePath%>border/payBOrderSubmit.shtml" + paraData;
+            <%--$.ajax({--%>
+            <%--url: "<%=basePath%>border/payBOrderSubmit.do",--%>
+            <%--type: "post",--%>
+            <%--data: paraData,--%>
+            <%--dataType: "json",--%>
+            <%--success: function (data) {--%>
+            <%--if (data.isError == false) {--%>
+            <%--alert("OK");--%>
+            <%--}--%>
+            <%--else {--%>
+            <%--alert(data.message);--%>
+            <%--}--%>
+            <%--}--%>
+            <%--});--%>
         }
     </script>
 </head>
@@ -95,7 +96,7 @@
                 <p>运费<span>到付</span></p>
                 <h1>共<b>${quantity}</b>件商品　运费：<span>到付</span><b>　合计：</b><span
                         style="padding-right: 10px;">￥${orderAmount}</span></h1>
-                <p>留言：<input type="text"></p>
+                <p>留言：<input type="text" id="userMessage" name="userMessage"></p>
             </section>
 
             <section class="sec4">

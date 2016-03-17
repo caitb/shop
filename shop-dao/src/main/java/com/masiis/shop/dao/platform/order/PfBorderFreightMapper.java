@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderFreight;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface PfBorderFreightMapper {
 
     PfBorderFreight selectById(Long id);

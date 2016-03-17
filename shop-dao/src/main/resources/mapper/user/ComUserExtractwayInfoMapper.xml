@@ -8,7 +8,7 @@
         <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
         <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
-        <result column="extract_way" property="extractWay" jdbcType="INTEGER" />
+        <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
         <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
         <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
@@ -27,7 +27,7 @@
             changed_time, changed_by)
         values (#{id,jdbcType=BIGINT}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
             #{depositBankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, #{comUserId,jdbcType=BIGINT}, 
-            #{extractWay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+            #{extractWay,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
             #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR})
     </insert>
 
@@ -38,7 +38,7 @@
             deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
             card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
             com_user_id = #{comUserId,jdbcType=BIGINT},
-            extract_way = #{extractWay,jdbcType=INTEGER},
+            extract_way = #{extractWay,jdbcType=BIGINT},
             is_enable = #{isEnable,jdbcType=INTEGER},
             created_time = #{createdTime,jdbcType=TIMESTAMP},
             changed_time = #{changedTime,jdbcType=TIMESTAMP},

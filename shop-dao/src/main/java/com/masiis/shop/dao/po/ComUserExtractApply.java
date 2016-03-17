@@ -29,6 +29,7 @@ public class ComUserExtractApply {
      * 提现申请时间
      */
     private Date applyTime;
+    private Long extractWay;
     /**
      * 审核通过时间
      */
@@ -88,6 +89,12 @@ public class ComUserExtractApply {
     }
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+    public Long getExtractWay() {
+        return extractWay;
+    }
+    public void setExtractWay(Long extractWay) {
+        this.extractWay = extractWay;
     }
     public Date getExtractTime() {
         return extractTime;

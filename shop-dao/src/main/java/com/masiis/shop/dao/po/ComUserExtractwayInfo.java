@@ -35,7 +35,7 @@ public class ComUserExtractwayInfo {
     /**
      * 提现方式
      */
-    private Integer extractWay;
+    private Long extractWay;
     /**
      * 是否启用:0,启用; 1,未启用
      */
@@ -80,10 +80,10 @@ public class ComUserExtractwayInfo {
     public void setComUserId(Long comUserId) {
         this.comUserId = comUserId;
     }
-    public Integer getExtractWay() {
+    public Long getExtractWay() {
         return extractWay;
     }
-    public void setExtractWay(Integer extractWay) {
+    public void setExtractWay(Long extractWay) {
         this.extractWay = extractWay;
     }
     public Integer getIsEnable() {

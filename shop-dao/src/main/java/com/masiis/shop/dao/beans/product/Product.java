@@ -32,6 +32,8 @@ public class Product extends ComSku {
 
     private ComSkuImage comSkuImage;
 
+    private Integer pfuId;
+
     public String getSpuName() {
         return spuName;
     }
@@ -118,5 +120,13 @@ public class Product extends ComSku {
 
     public void setComSkuImage(ComSkuImage comSkuImage) {
         this.comSkuImage = comSkuImage;
+    }
+
+    public Integer getPfuId() {
+        return pfuId;
+    }
+
+    public void setPfuId(Integer pfuId) {
+        this.pfuId = pfuId;
     }
 }

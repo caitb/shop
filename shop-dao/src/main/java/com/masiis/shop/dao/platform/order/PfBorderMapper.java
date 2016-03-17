@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorder;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface PfBorderMapper {
 
     PfBorder selectByOrderCode(String orderId);
 
-    List<PfBorder> selectByUserId(Long userId);
+    List<PfBorder> selectByUserId(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 

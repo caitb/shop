@@ -107,7 +107,7 @@ public class BOrderService {
      * @param pfBorderPayment
      */
     @Transactional
-    public void payBOrder(PfBorderPayment pfBorderPayment) {
+    public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) {
         try {
             PfBorder pfBorder = new PfBorder();
             if (pfBorderPayment.getAmount() != pfBorder.getReceivableAmount()) {
@@ -196,5 +196,14 @@ public class BOrderService {
     @Transactional
     public void addBOrderPayment(PfBorderPayment pfBorderPayment) throws Exception {
         pfBorderPaymentMapper.insert(pfBorderPayment);
+    }
+    /**
+     * 修改订单
+     * @author ZhaoLiang
+     * @date 2016/3/17 14:59
+     */
+    @Transactional
+    public void updateBOrder(PfBorder pfBorder) throws Exception {
+        pfBorderMapper.updateById(pfBorder);
     }
 }

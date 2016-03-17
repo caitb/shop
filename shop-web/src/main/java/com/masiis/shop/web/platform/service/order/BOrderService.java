@@ -107,7 +107,7 @@ public class BOrderService {
      * @param pfBorderPayment
      */
     @Transactional
-    public void payBOrder(PfBorderPayment pfBorderPayment) {
+    public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) {
         try {
             PfBorder pfBorder = new PfBorder();
             if (pfBorderPayment.getAmount() != pfBorder.getReceivableAmount()) {

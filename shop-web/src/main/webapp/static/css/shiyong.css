@@ -81,7 +81,6 @@ main .sec3 p {
   color: #333333;
   background: white;
   overflow: hidden;
-  font-size: 12px;
 }
 main .sec3 p input {
   color: #333333;
@@ -116,9 +115,13 @@ main .sec3 h1 b {
   font-size: 12px;
   font-weight: 600;
 }
+main .tishi {
+  text-indent: 10px;
+  color: red;
+  overflow: hidden;
+}
 main .pople {
   width: 100%;
-  font-size: 12px;
   text-indent: 10px;
   color: #333333;
   line-height: 30px;
@@ -138,7 +141,6 @@ main .sec4 p {
   line-height: 38px;
   border-bottom: 1px solid #f6f6f6;
   color: #333333;
-  font-size: 12px;
 }
 main .sec4 p input {
   color: #333333;

@@ -9,9 +9,12 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+@Repository
 public interface PfUserSkuStockMapper {
     int deleteByPrimaryKey(Long id);
 

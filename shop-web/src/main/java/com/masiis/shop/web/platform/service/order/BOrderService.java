@@ -161,8 +161,7 @@ public class BOrderService {
             pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
             pfSkuStatisticMapper.updateById(pfSkuStatistic);
             //<7>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
-            if (pfBorder.getUserId() == 0) {
-
+            if (pfBorder.getUserPid() == 0) {
                 pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
                     throw new BusinessException("lowStocks");

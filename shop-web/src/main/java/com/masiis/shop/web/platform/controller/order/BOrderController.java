@@ -244,7 +244,6 @@ public class BOrderController extends BaseController {
      * @date 2016/3/17 14:32
      */
     @RequestMapping("/payBOrderSubmit.do")
-    @ResponseBody
     public String payBOrderSubmit(HttpServletRequest request,
                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                   @RequestParam(value = "userMessage", required = true) String userMessage,

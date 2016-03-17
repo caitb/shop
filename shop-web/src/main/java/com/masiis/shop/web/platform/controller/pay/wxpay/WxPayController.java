@@ -51,7 +51,7 @@ public class WxPayController extends BaseController{
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "/wtpay", method = RequestMethod.POST)
+    @RequestMapping(value = "/wtpay")
     public String wxpayPage(HttpServletRequest request, String param) {
         String ip = getIpAddr(request);
         WxPaySysParamReq req = null;

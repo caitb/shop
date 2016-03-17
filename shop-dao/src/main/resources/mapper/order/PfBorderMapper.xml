@@ -230,7 +230,7 @@
         </where>
     </select>
 
-    <select id="selectByOrderCode" parameterType="java.lang.String" >
+    <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,

@@ -272,23 +272,16 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
             pfBorderConsigneeMapper.insert(pfBorderConsignee);
-            //************************************************
-            PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum("18612111522");
-            bOrderService.payBOrder(pfBorderPayment, "OKOKOOKK");
-            jsonObject.put("isError", false);
-//            req = new WxPaySysParamReq();
-//            req.setOrderId(pfBorder.getOrderCode());
-//            req.setSignType("MD5");
-//            req.setNonceStr(WXBeanUtils.createGenerateStr());
-//            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-//            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
-//            req.setSign(WXBeanUtils.toSignString(req));
+            req = new WxPaySysParamReq();
+            req.setOrderId(pfBorder.getOrderCode());
+            req.setSignType("MD5");
+            req.setNonceStr(WXBeanUtils.createGenerateStr());
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSign(WXBeanUtils.toSignString(req));
         } catch (Exception ex) {
-            jsonObject.put("isError", true);
-            jsonObject.put("message", ex.getMessage());
-            return jsonObject.toJSONString();
+            //DO ERROR
         }
-
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
     }

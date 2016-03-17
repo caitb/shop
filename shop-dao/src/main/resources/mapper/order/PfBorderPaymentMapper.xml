@@ -123,12 +123,12 @@
                 is_enabled = #{isEnabled,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR}
-            </if>out_order_id
-            <if test="outOrderId != null">
-                out_order_id = #{outOrderId,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
-            <if test="outPrepayId != null">
+            <if test="outOrderId != null">
+                out_order_id = #{outOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="paySerialNum != null">
                 pay_serial_num = #{paySerialNum,jdbcType=VARCHAR}
             </if>
         </set>
@@ -140,8 +140,8 @@
         delete from pf_border_payment where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <select id="selectBySerialNum" parameterType="java.lang.String" >
-        elect
+    <select id="selectBySerialNum"  resultMap="BaseResultMap" >
+        select
                id,
                create_time,
                pf_border_id,

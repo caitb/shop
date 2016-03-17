@@ -10,10 +10,12 @@ package com.masiis.shop.dao.platform.order;
 import com.masiis.shop.dao.po.PfBorderPayment;
 import com.masiis.shop.dao.po.PfCorderPayment;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Repository
 public interface PfBorderPaymentMapper {
 
     PfBorderPayment selectById(Long id);

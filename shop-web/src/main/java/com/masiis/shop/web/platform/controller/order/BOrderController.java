@@ -69,7 +69,6 @@ public class BOrderController extends BaseController {
     public String addBOrder(HttpServletRequest request,
                             HttpServletResponse response,
                             @RequestParam(value = "realName", required = true) String realName,
-                            @RequestParam(value = "mobile", required = true) String mobile,
                             @RequestParam(value = "weixinId", required = true) String weixinId,
                             @RequestParam(value = "skuId", required = true) Integer skuId,
                             @RequestParam(value = "levelId", required = true) Integer levelId,
@@ -78,9 +77,6 @@ public class BOrderController extends BaseController {
         try {
             if (StringUtils.isBlank(realName)) {
                 throw new BusinessException("名称不能为空");
-            }
-            if (StringUtils.isBlank(mobile)) {
-                throw new BusinessException("手机号不能为空");
             }
             if (StringUtils.isBlank(weixinId)) {
                 throw new BusinessException("微信号不能为空");
@@ -104,7 +100,6 @@ public class BOrderController extends BaseController {
             //处理用户数据
             ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
             comUser.setRealName(realName);
-            comUser.setMobile(mobile);
             comUser.setWxId(weixinId);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);

@@ -19,18 +19,18 @@
                     }
 })*/
 
-$("#ce").on("click",function(){
-                    if ($(".name").val()==""){                        
-                        $(".tishi").show().html("姓名不能为空");
+                $("#ce").on("click",function(){
+                    if($(".name").val()==""){                        
+                        $(".name").next().show()/*.html("姓名不能为空");*/
                         $(".name").focus();
                         return false;
                     }
-                    if (!isCardName($(".name").val())){                        
-                         $(".tishi").show().html("姓名格式错误")
-                         $(".name").focus().css("color","red");
+                    if(!isCardName($(".name").val())){                        
+                         $(".name").next().show()/*.html("姓名格式错误")*/
+                         $(".name").focus()/*.css("color","red");*/
                         return false;
                     }else{
-                       $(".tishi").hide();
+                       $(".onc").hide();
                     }
                 //检验汉字
                     function isChinese(s){
@@ -52,20 +52,20 @@ $("#ce").on("click",function(){
                         return true;
                     }
     
-    
+    /*手机号*/
          if ($(".tel").val()==""){
-                            $(".tishi").show().html("手机号不能为空")
+                            $(".tel").next().show()/*.html("手机号不能为空")*/
                             $(".tel").focus();
                             return false;
                         }
-                        if (!isMobile($(this).val()))
+                        if (!isMobile($(".tel").val()))
                         {
-                            $(".tishi").show().html("手机号输入有误")
+                             $(".tel").next().show();/*.html("手机号输入有误")*/
                             $(".tel").focus();
-                            $(".name").focus().css("color","red");
+                            $(".name").focus()/*.css("color","red");*/
                             return false;
                         }else{
-                            $(".tishi").hide()
+                            $(".onc").hide()
                         }
                         function isMobile(s){
                             var patrn=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
@@ -75,6 +75,69 @@ $("#ce").on("click",function(){
                             }
                             return true;
                         }
+                    /*验证码*/
+                 /*   if ($(".yan").val()=="")
+                    {                        
+                        $(".yan").parents("p").addClass("yno");
+                        return false;
+                    }
+                    if (!isNumber($(".yan").val()))
+                    {                        
+                        $(this).parents("p").addClass("yno");
+                        return false;
+                    }else{
+                        $(this).parents("p").addClass("yon");
+                        return true;
+                    }
+                //检验汉字
+                        function isNumber(s) 
+                    {
+                        var patrn =/^\d{6}$/;
+                        if(!patrn.exec(s))
+                        {
+                            return false;
+                        }
+                        return true;
+                    }*/
+                     /*微信*/
+                    if($(".wei").val()==""){                        
+                        $(".wei").next().show().next().html("微信号不能为空");
+                        $(".wei").focus();
+                        return false;
+                    }
+                    if(isChinese($(".wei").val())){                      
+                         $(".wei").next().show().next().html("微信号格式错误")
+                         $(".wei").focus()/*.css("color","red");*/
+                        return false;
+                    }else{
+                       $(".onc").hide();
+                    }
+                    /*上级电话*/
+                    if ($(".stel").val()==""){
+                            $(".stel").next().show()/*.html("手机号不能为空")*/
+                            $(".stel").focus();
+                            return false;
+                        }
+                        if (!isMobile($(".stel").val()))
+                        {
+                             $(".stel").next().show();/*.html("手机号输入有误")*/
+                            $(".stel").focus();
+                            $(".stel").focus()/*.css("color","red");*/
+                            return false;
+                        }else{
+                            $(".onc").hide()
+                        }
+                        function isMobile(s){
+                            var patrn=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                            if(!patrn.exec(s))
+                            {
+                                return false;
+                            }
+                            return true;
+                        }
+                    
+                   
+               
 })
 
 

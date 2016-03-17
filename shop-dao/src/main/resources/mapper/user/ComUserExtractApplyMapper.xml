@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.ComUserExtractApplyMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserExtractApply" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
+        <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP" />
+        <result column="audit_type" property="auditType" jdbcType="INTEGER" />
+        <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
+        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_user_extract_apply
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" >
+        insert into com_user_extract_apply (id, com_user_id, extract_fee, 
+            extractway_info_id, apply_time, extract_time, 
+            audit_type, audit_cause, bank_card, 
+            bank_name, card_owner_name, deposit_bank_name, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL}, 
+            #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractTime,jdbcType=TIMESTAMP}, 
+            #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, 
+            #{bankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, #{depositBankName,jdbcType=VARCHAR}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" >
+        update com_user_extract_apply
+        set com_user_id = #{comUserId,jdbcType=BIGINT},
+            extract_fee = #{extractFee,jdbcType=DECIMAL},
+            extractway_info_id = #{extractwayInfoId,jdbcType=BIGINT},
+            apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            extract_time = #{extractTime,jdbcType=TIMESTAMP},
+            audit_type = #{auditType,jdbcType=INTEGER},
+            audit_cause = #{auditCause,jdbcType=VARCHAR},
+            bank_card = #{bankCard,jdbcType=VARCHAR},
+            bank_name = #{bankName,jdbcType=VARCHAR},
+            card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
+            deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_time, 
+        audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name, 
+        remark
+        from com_user_extract_apply
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_time, 
+        audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name, 
+        remark
+        from com_user_extract_apply
+    </select>
+
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.ComUserExtractwayInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserExtractwayInfo" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
+        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="extract_way" property="extractWay" jdbcType="INTEGER" />
+        <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
+        <result column="changed_by" property="changedBy" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_user_extractway_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractwayInfo" >
+        insert into com_user_extractway_info (id, bank_card, bank_name, 
+            deposit_bank_name, card_owner_name, com_user_id, 
+            extract_way, is_enable, created_time, 
+            changed_time, changed_by)
+        values (#{id,jdbcType=BIGINT}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+            #{depositBankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, #{comUserId,jdbcType=BIGINT}, 
+            #{extractWay,jdbcType=INTEGER}, #{isEnable,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractwayInfo" >
+        update com_user_extractway_info
+        set bank_card = #{bankCard,jdbcType=VARCHAR},
+            bank_name = #{bankName,jdbcType=VARCHAR},
+            deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
+            card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
+            com_user_id = #{comUserId,jdbcType=BIGINT},
+            extract_way = #{extractWay,jdbcType=INTEGER},
+            is_enable = #{isEnable,jdbcType=INTEGER},
+            created_time = #{createdTime,jdbcType=TIMESTAMP},
+            changed_time = #{changedTime,jdbcType=TIMESTAMP},
+            changed_by = #{changedBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id, 
+        extract_way, is_enable, created_time, changed_time, changed_by
+        from com_user_extractway_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id, 
+        extract_way, is_enable, created_time, changed_time, changed_by
+        from com_user_extractway_info
+    </select>
+
+</mapper>

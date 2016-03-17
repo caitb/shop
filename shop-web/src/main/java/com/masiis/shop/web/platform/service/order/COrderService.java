@@ -67,30 +67,22 @@ public class COrderService {
      * @author hanzengzhi
      * @date 2016/3/8 14:55
      */
-    public Map<String, Object> confirmOrder(HttpServletRequest request, Long orderId, Long userId, Integer selectedAddressId) {
+    public Map<String, Object> confirmOrder(HttpServletRequest request, Integer skuId, Long userId, Integer selectedAddressId) {
         Map<String, Object> pfCorderMap = new HashMap<String, Object>();
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, userId);
-        Product product = getProductDetail(request, orderId);
+        Product product = getProductDetail(skuId);
         pfCorderMap.put("comUserAddress", comUserAddress);
         pfCorderMap.put("product", product);
         return pfCorderMap;
     }
-
     /**
-     * 获得订单产品信息
-     *
-     * @param request
-     * @param orderId
-     * @return
+     * 获得商品信息
+     * @author hanzengzhi
+     * @date 2016/3/17 14:40
      */
-    public Product getProductDetail(HttpServletRequest request, Long orderId) {
-        //获得订单信息
-        PfCorder pfCorder = queryPfCorderById(orderId);
+    public Product getProductDetail(Integer skuId) {
         //获得商品信息
-        Product product = null;
-        if (pfCorder != null) {
-            product = productService.applyTrialToPageService(pfCorder.getSkuId());
-        }
+         Product  product = productService.applyTrialToPageService(skuId);
         return product;
     }
 

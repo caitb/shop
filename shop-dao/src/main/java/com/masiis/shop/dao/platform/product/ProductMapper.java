@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by JingHao on 2016/3/2.
@@ -19,5 +20,9 @@ public interface ProductMapper {
     List<ComAgentLevel> agentLevelDiscount();
 
     List<Product> getProductsByUser(Integer userId);
+
+    void updateStock(Map<String, Object> paramsMap);
+
+    Product getProductStock(Integer id);
 
 }

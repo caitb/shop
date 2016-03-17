@@ -8,10 +8,10 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfCorder;
-
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public interface PfBorderMapper {
     int deleteByPrimaryKey(Long id);
 

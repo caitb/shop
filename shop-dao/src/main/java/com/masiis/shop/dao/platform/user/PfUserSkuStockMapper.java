@@ -9,9 +9,12 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
+@Repository
 public interface PfUserSkuStockMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -21,7 +24,9 @@ public interface PfUserSkuStockMapper {
 
     List<PfUserSkuStock> selectAll();
 
-    int updateByPrimaryKey(PfUserSkuStock record);
+    //int updateByPrimaryKey(PfUserSkuStock pfUserSkuStock);////没有设置乐观锁不建议使用
 
     PfUserSkuStock selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+
+    void updateByIdAndVersion(PfUserSkuStock pfUserSkuStock);
 }

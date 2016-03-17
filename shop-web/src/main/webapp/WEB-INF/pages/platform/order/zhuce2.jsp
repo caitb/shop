@@ -19,7 +19,8 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript :;"onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript :;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                           alt=""></a>
         <p>申请合伙人</p>
     </header>
     <div class="xinxi">
@@ -70,9 +71,8 @@
         var paraData = "?";
         paraData += "skuId=${skuId}";
         paraData += "&name=${name}";
-        paraData += "&mobile=${mobile}";
-        paraData += "&yanzhengma=${yanzhengma}";
         paraData += "&weixinId=${weixinId}";
+        paraData += "&parentUserId=${parentUserId}";
         paraData += "&parentMobile=${parentMobile}";
         paraData += "&levelId=${levelId}";
         window.location.href = "<%=basePath%>userApply/register.shtml" + paraData;
@@ -80,7 +80,6 @@
     var submit = function () {
         var paraData = {};
         paraData.realName = "${name}";
-        paraData.mobile = "${mobile}";
         paraData.weixinId = "${weixinId}";
         paraData.skuId = "${skuId}";
         paraData.levelId = "${levelId}";

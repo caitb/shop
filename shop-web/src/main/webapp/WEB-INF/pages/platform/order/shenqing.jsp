@@ -77,7 +77,7 @@
         </div>
     </section>
     <section class="sec2">
-        <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}">继续</a></p>
+        <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}">继续</a></p>
     </section>
 </main>
 </body>

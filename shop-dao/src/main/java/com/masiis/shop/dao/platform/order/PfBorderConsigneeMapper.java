@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.platform.order;
 
 import com.masiis.shop.dao.po.PfBorderConsignee;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface PfBorderConsigneeMapper {
 
     PfBorderConsignee selectById(Long id);

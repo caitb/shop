@@ -28,7 +28,7 @@
 }
 .wrap .box main .drap h2 img {
   display: block;
-  width: 70%;
+  width: 50%;
   margin: 0 auto;
 }
 .wrap .box main .drap p {
@@ -112,7 +112,8 @@
 .wrap .box main .sec2 .photo img {
   display: block;
   width: 62px;
-  height: 55px;
+  height: 62px;
+  border: 1px solid #999999;
 }
 .wrap .box main .sec2 div {
   -webkit-box-flex: 1;

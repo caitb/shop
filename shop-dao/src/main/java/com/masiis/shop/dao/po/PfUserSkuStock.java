@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-16 Created
+ * 2016-03-17 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -40,6 +40,10 @@ public class PfUserSkuStock {
      * 备注
      */
     private String remark;
+    /**
+     * 乐观锁
+     */
+    private Integer version;
 
     public Long getId() {
         return id;
@@ -88,5 +92,11 @@ public class PfUserSkuStock {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+    public Integer getVersion() {
+        return version;
+    }
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

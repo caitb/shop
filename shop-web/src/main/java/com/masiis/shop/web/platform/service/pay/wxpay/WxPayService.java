@@ -36,7 +36,7 @@ public class WxPayService {
     private PfBorderPaymentMapper bPaymentMapper;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
-        try{
+        try {
             String orderType = req.getOrderId().charAt(0) + "";
             UnifiedOrderReq res = new UnifiedOrderReq();
 
@@ -50,15 +50,15 @@ public class WxPayService {
             res.setSpbill_create_ip(ip);
             res.setTrade_type("JSAPI");
 
-            if("B".equals(orderType)){
+            if ("B".equals(orderType)) {
                 // 代理订单
                 PfBorder order = bOrderService.findByOrderCode(req.getOrderId());
-                if(order == null){
+                if (order == null) {
                     throw new BusinessException("订单号错误,不存在该订单号!");
                 }
                 List<PfBorderItem> orderList = bOrderService.getPfBorderItemByOrderId(order.getId());
                 StringBuilder body = new StringBuilder();
-                for(PfBorderItem item:orderList){
+                for (PfBorderItem item : orderList) {
                     body.append(item.getSkuName()).append(",");
                 }
                 res.setBody(body.substring(0, body.length() - 1));
@@ -78,9 +78,9 @@ public class WxPayService {
     }
 
     @Transactional
-    public void createPaymentRecord(UnifiedOrderReq req, UnifiedOrderRes res, String orderid){
+    public void createPaymentRecord(UnifiedOrderReq req, UnifiedOrderRes res, String orderid) throws Exception {
         String orderType = String.valueOf(orderid.charAt(0));
-        if("B".equals(orderType)){
+        if ("B".equals(orderType)) {
             // B类型订单
             PfBorder order = bOrderService.findByOrderCode(orderid);
             PfBorderPayment payment = createBorderPayment(req, res);
@@ -91,7 +91,7 @@ public class WxPayService {
         }
     }
 
-    private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r){
+    private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r) {
         PfBorderPayment payment = new PfBorderPayment();
 
         payment.setAmount(new BigDecimal(p.getTotal_fee()));

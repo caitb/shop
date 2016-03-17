@@ -129,7 +129,7 @@ public class COrderController extends BaseController {
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
-            @RequestParam(value="addressId",required = true) Integer addressId
+            @RequestParam(value="addressId",required = true) Long addressId
     ) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId =  null;

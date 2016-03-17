@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.beans.product.ProductSimple;
+import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -19,11 +20,13 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.MobileMessageUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.util.NetUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -57,6 +60,8 @@ public class BOrderController extends BaseController {
     private UserAddressService userAddressService;
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
+    @Resource
+    private PfBorderConsigneeMapper pfBorderConsigneeMapper;
 
     /**
      * 用户确认生成订单
@@ -72,7 +77,7 @@ public class BOrderController extends BaseController {
                             @RequestParam(value = "weixinId", required = true) String weixinId,
                             @RequestParam(value = "skuId", required = true) Integer skuId,
                             @RequestParam(value = "levelId", required = true) Integer levelId,
-                            @RequestParam(value = "parentUserId", required = true) Long parentUserId) {
+                            @RequestParam(value = "pUserId", required = true) Long pUserId) {
         JSONObject obj = new JSONObject();
         try {
             if (StringUtils.isBlank(realName)) {
@@ -84,16 +89,18 @@ public class BOrderController extends BaseController {
             if (levelId <= 0) {
                 throw new BusinessException("代理等级有误");
             }
-            ComUser pUser = userService.getUserById(parentUserId);
-            if (pUser == null) {
-                throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册");
-            } else {
-                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-                if (pfUserSku == null) {
-                    throw new BusinessException("您的推荐人还未代理此款商品");
+            if (pUserId != null && pUserId > 0) {
+                ComUser pUser = userService.getUserById(pUserId);
+                if (pUser == null) {
+                    throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册!");
                 } else {
-                    if (pfUserSku.getAgentLevelId() >= levelId) {
-                        throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
+                    PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+                    if (pfUserSku == null) {
+                        throw new BusinessException("您的推荐人还未代理此款商品");
+                    } else {
+                        if (pfUserSku.getAgentLevelId() >= levelId) {
+                            throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
+                        }
                     }
                 }
             }
@@ -113,7 +120,7 @@ public class BOrderController extends BaseController {
             order.setCreateMan(comUser.getId());
             String orderCode = OrderMakeUtils.makeOrder("B");
             order.setOrderCode(orderCode);
-            order.setUserMassage("");
+            order.setUserMessage("");
             order.setUserId(comUser.getId());
             order.setUserPid(0l);
             order.setSupplierId(0);
@@ -144,7 +151,7 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(parentUserId, comSku.getId());//获取上级代理ID
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, comSku.getId());//获取上级代理ID
             PfUserSku userSku = new PfUserSku();
             userSku.setCreateTime(new Date());
             if (pfUserSku == null) {
@@ -225,6 +232,46 @@ public class BOrderController extends BaseController {
         mv.setViewName("platform/order/zhifu");
 
         return mv;
+    }
+
+    /**
+     * 订单支付处理
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/17 14:32
+     */
+    @ResponseBody
+    @RequestMapping("/payBOrderSubmit.do")
+    public String payBOrderSubmit(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                  @RequestParam(value = "userMessage", required = true) String userMessage,
+                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId
+    ) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            pfBorder.setUserMessage(userMessage);
+            bOrderService.updateBOrder(pfBorder);
+            ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+            PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+            pfBorderConsignee.setCreateTime(new Date());
+            pfBorderConsignee.setPfBorderId(pfBorder.getId());
+            pfBorderConsignee.setUserId(comUserAddress.getUserId());
+            pfBorderConsignee.setConsignee(comUserAddress.getName());
+            pfBorderConsignee.setMobile(comUserAddress.getMobile());
+            pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+            pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+            pfBorderConsignee.setCityId(comUserAddress.getCityId());
+            pfBorderConsignee.setCityName(comUserAddress.getCityName());
+            pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+            pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+            pfBorderConsignee.setAddress(comUserAddress.getAddress());
+            pfBorderConsignee.setZip(comUserAddress.getZip());
+            pfBorderConsigneeMapper.insert(pfBorderConsignee);
+            jsonObject.put("isError", false);
+        } catch (Exception ex) {
+
+        }
+        return jsonObject.toJSONString();
     }
 
     /**

@@ -18,6 +18,8 @@
         var path = "<%=basePath%>";
         var skuId = "${skuId}";
         var skuName = "${skuName}";
+        var pUserId = "${pUserId}";
+        var pMobile = "${pMobile}";
     </script>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
@@ -66,7 +68,7 @@
                 <label for="b" style="margin-left:30px;" class="fou">否</label>
             </h3>
             <div id="hehuo">
-                <h3>上级合伙人电话： <input type="text" class="tel" value="${parentMobile}"></h3>
+                <h3>上级合伙人电话： <input type="text" class="tel" id="pMobile" name="pMobile" value="${pMobile}"></h3>
             </div>
             <h2 style="text-indent:25px;font-weight:500">合伙人等级：</h2>
             <div class="dengji">

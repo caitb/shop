@@ -117,11 +117,11 @@ public class UserAddressController {
     @RequestMapping("/toEditAddress.html")
     public String toEditAddress(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = "id", required = true)Integer id,
+                                @RequestParam(value = "id", required = true)Long id,
                                 Model model)throws Exception{
         //获得用户地址
         if (StringUtils.isEmpty(id)){
-            id = 1;
+            id = 1L;
         }
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
         if (comUserAddress == null){
@@ -157,12 +157,14 @@ public class UserAddressController {
     public String toChooseAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "pageType", required = true) String pageType,
-                                      @RequestParam(value = "orderId", required = true) Long orderId,
+                                      @RequestParam(value = "orderId", required = false) Long orderId,
+                                      @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Integer selectedAddressId,
                                       Model model){
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,pageType);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id,orderId);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID,skuId);
         model.addAttribute("addressId",selectedAddressId);
         return "platform/order/xuanze";
     }
@@ -178,19 +180,20 @@ public class UserAddressController {
 
         String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
         Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
+        Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
         StringBuffer sb = new StringBuffer();
         if (orderType.equals(SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE)){
             //跳转到支付使用界面
             sb.append("redirect:/corder/confirmOrder.do?");
-            if (!StringUtils.isEmpty(orderId)){
-                sb.append("orderId=").append(orderId).append("&");
+            if (!StringUtils.isEmpty(skuId)){
+                sb.append("skuId=").append(skuId).append("&");
             }
             if (!StringUtils.isEmpty(selectedAddressId)){
                 sb.append("&selectedAddressId=").append(selectedAddressId);
             }
         }else if (orderType.equals(SysConstants.SESSION_PAY_ORDER_TYPE_VALUE)){
             //跳转到支付界面
-            sb.append("redirect:/border/pay.shtml?");
+            sb.append("redirect:/border/payBOrder.shtml?");
             if (!StringUtils.isEmpty(orderId)){
                 sb.append("bOrderId=").append(orderId).append("&");
             }
@@ -201,6 +204,7 @@ public class UserAddressController {
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
         return  sb.toString();
     }
 

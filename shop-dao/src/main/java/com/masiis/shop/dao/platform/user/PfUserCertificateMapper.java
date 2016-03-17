@@ -8,9 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserCertificate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface PfUserCertificateMapper {
     int deleteByPrimaryKey(Long id);
 

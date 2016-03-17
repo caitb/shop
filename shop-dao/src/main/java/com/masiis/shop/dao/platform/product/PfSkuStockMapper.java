@@ -26,5 +26,5 @@ public interface PfSkuStockMapper {
 
     PfSkuStock selectBySkuId(Integer skuId);
 
-    void updateByIdAndVersion(PfSkuStock pfSkuStock);
+    int updateByIdAndVersion(PfSkuStock pfSkuStock);
 }

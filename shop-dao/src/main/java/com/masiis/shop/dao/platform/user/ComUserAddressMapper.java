@@ -10,9 +10,10 @@ package com.masiis.shop.dao.platform.user;
 import com.masiis.shop.dao.po.ComCategory;
 import com.masiis.shop.dao.po.ComUserAddress;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ComUserAddressMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -22,7 +23,7 @@ public interface ComUserAddressMapper {
 
     int insert(ComUserAddress record);
 
-    ComUserAddress selectByPrimaryKey(Integer id);
+    ComUserAddress selectByPrimaryKey(Long id);
 
     List<ComUserAddress> selectAll();
 

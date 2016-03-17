@@ -43,8 +43,17 @@ public class WxNotifyService {
                 // 调用borderService的方法处理
                 bOrderService.payBOrder(payment, param.getTransaction_id());
             } catch (Exception e) {
-                log.error("订单支付成功处理失败,系统支付流水号:" + paySerialNum, e);
                 // 判断异常类型
+                if(e instanceof BusinessException && "".equals(e.getMessage())){
+                    // 如果是订单已支付且缺货,走次流程
+                    String err = "订单已支付且缺货,系统支付流水号:" + paySerialNum + "||" + e.getMessage();
+                    log.error(err);
+                    throw new BusinessException(err);
+                } else {
+                    log.error("订单支付成功处理失败,系统支付流水号:" + paySerialNum, e);
+                    // 普通支付处理失败流程
+
+                }
             }
         } else {
             throw new BusinessException("支付流水号类型错误!");

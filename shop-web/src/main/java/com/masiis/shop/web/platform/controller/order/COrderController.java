@@ -152,7 +152,7 @@ public class COrderController extends BaseController {
             //生成订单
             Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
             //调用微信支付
-            toTrialOrderPay(wpspr, pfCorder, request, addressId);
+            wpspr = toTrialOrderPay(wpspr, pfCorder, request, addressId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -239,7 +239,7 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/17 16:34
      */
-    private void toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request, Long addressId) {
+    private WxPaySysParamReq toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request, Long addressId) {
         wpspr = new WxPaySysParamReq();
         wpspr.setOrderId(pfCorder.getOrderCode());
         wpspr.setSignType("MD5");
@@ -247,6 +247,7 @@ public class COrderController extends BaseController {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
         wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
+        return wpspr;
     }
 
     /**

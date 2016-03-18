@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComSkuImage;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface ComSkuImageMapper {
     int deleteByPrimaryKey(Integer id);
 

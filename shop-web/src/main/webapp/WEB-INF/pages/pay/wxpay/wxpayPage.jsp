@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>微信支付</title>
-    <script type="application/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" />
+    <script type="application/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script type="application/javascript">
         /*wx.config({
             debug:true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -89,7 +89,7 @@
             <ul>
                 <li><span class="name">测试支付信息</span></li>
             </ul>
-            <p class="cz_btn"><a href="javascript:pay();" class="btn_1">立即支付</a></p>
+            <p class="cz_btn"><a href="javascript:void(0);" onclick="pay();" class="btn_1">立即支付</a></p>
         </div>
     </div>
 </body>

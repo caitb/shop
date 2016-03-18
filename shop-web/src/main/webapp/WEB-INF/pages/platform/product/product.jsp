@@ -84,59 +84,42 @@
                 <p>文网文[2009]024号 新出网证（京）字069号</p>
                 <p>京公网安备 11000002000006号</p>
             </section>
-
         </main>
+        <div class="back">
+            <div class="back_j">
+                <p>绑定账号</p>
+                <div>
+                    <p>手机号：<input type="tel" id = "phoneId"></p>
+                    <em id="phoneErrorId"></em>
+                </div>
+                <div class="d">
+                    <p>验证码：<input type="number" id="validateNumberDataId">
+                        <botton id="validateNumberId"  >获取验证码</botton>
+                    </p>
+                    <em>asd</em>
+                </div>
+                <h1 class="j_qu" id="nextPageId">下一步</h1>
+            </div>
+        </div>
     </div>
 </div>
 <footer>
     <section class="sec3">
-        <input id="applyTrialId" value="${productDetails.id}" style="display: none" />
-        <p >
-            <a  id="applyTrial">申请试用</a>
-            <a  id="trialed" >已试用</a>
+        <input id="applyTrialId" value="${productDetails.id}" style="display: none"/>
+        <p>
+            <a id="applyTrial" onclick="productJS.applyTrial()">申请试用</a>
+            <a id="trialed" onclick="productJS.applyTrial()">已试用</a>
         </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
+<script src="<%=path%>/static/js/product.js"></script>
 <script>
-    $(document).ready(function(){
-        var skuId = $("#applyTrialId").val();
-        $.ajax({
-            url: '<%=path%>/corder/isApplyTrial.do',
-            type: 'post',
-            data: {"skuId": skuId},
-            success: function (data) {
-                var dataObj = eval("(" + data + ")");//转换为json对象
-                if (dataObj == null || dataObj == "") {
-                    $("#applyTrial").attr("style","display:block");
-                    $("#trialed").attr("style","display:none");
-                    $("#trialed").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
-                    $("#applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
-                } else {
-                    $("#applyTrial").attr("style","display:none");
-                    $("#trialed").attr("style","display:block");
-                    $("#applyTrial").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
-                    $("#trialed").attr("href","/corder/confirmOrder.do?skuId=" + skuId);
-                }
-            }
-        });
+    $(document).ready(function () {
+        productJS.initPage();
     });
-/*    function applyTrial(skuId) {
-        $.ajax({
-            url: '<%=path%>/corder/isApplyTrial.do',
-            type: 'post',
-            data: {"skuId": skuId},
-            success: function (data) {
-                var dataObj = eval("(" + data + ")");//转换为json对象
-                if (dataObj == null || dataObj == "") {
-                    window.location.href = "<%=path%>/corder/confirmOrder.do?skuId=" + skuId;
-                } else {
-                    alert("此商品您已申请使用，不能再次申请");
-                }
-            }
-        });
-    }*/
+
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

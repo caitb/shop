@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class WxPayService {
     @Resource
     private COrderService cOrderService;
     @Resource
-    private PfBorderPaymentMapper bPaymentMapper;
+    private SkuService skuService;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
         UnifiedOrderReq res = null;
@@ -68,7 +69,20 @@ public class WxPayService {
                 res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
             } else if ("C".equals(orderType)) {
+                log.info("订单类型为C,订单编号为:" + req.getOrderId());
                 // 使用订单
+                PfCorder order = cOrderService.findByOrderCode(req.getOrderId());
+                if (order == null) {
+                    throw new BusinessException("订单号错误,不存在该订单号!");
+                }
+                ComSku sku = skuService.getSkuById(order.getSkuId());
+                if(sku == null){
+                    throw new BusinessException("商品对象s为空,skuid为:" + order.getSkuId());
+                }
+                res.setBody(sku.getName());
+                res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
+                res.setTotal_fee("1");
+                log.info("订单类型orderType:B");
             } else {
                 throw new BusinessException("订单号错误,不存在该订单号!");
             }
@@ -89,6 +103,11 @@ public class WxPayService {
             PfBorderPayment payment = createBorderPayment(req, res, order);
             payment.setPfBorderId(order.getId());
             bOrderService.addBOrderPayment(payment);
+        } else if ("C".equals(orderType)) {
+            PfCorder order = cOrderService.findByOrderCode(orderid);
+            PfCorderPayment payment = createCorderPayment(req, res, order);
+            payment.setPfCorderId(order.getId());
+            cOrderService.addCOrderPayment(payment);
         } else {
             throw new BusinessException("订单类型不正确!");
         }
@@ -96,6 +115,20 @@ public class WxPayService {
 
     private PfBorderPayment createBorderPayment(UnifiedOrderReq p, UnifiedOrderRes r, PfBorder order) {
         PfBorderPayment payment = new PfBorderPayment();
+
+        payment.setAmount(order.getOrderAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+        payment.setCreateTime(new Date());
+        payment.setIsEnabled(0);
+        // 给外部支付使用支付流水号
+        payment.setPaySerialNum(p.getOut_trade_no());
+        payment.setPayTypeId(0);
+        payment.setPayTypeName("微信支付");
+
+        return payment;
+    }
+
+    private PfCorderPayment createCorderPayment(UnifiedOrderReq p, UnifiedOrderRes r, PfCorder order) {
+        PfCorderPayment payment = new PfCorderPayment();
 
         payment.setAmount(order.getOrderAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
         payment.setCreateTime(new Date());

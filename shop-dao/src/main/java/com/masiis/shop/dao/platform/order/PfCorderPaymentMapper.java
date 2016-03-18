@@ -23,4 +23,5 @@ public interface PfCorderPaymentMapper {
 
     void deleteById(Long id);
 
+    PfCorderPayment selectBySerialNum(String paySerialNum);
 }

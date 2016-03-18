@@ -9,4 +9,6 @@ import com.masiis.shop.dao.po.ComDictionary;
 
 public interface ComDictionarysMapper {
     ComDictionary selectByCodeKey(Integer key);
+
+    ComDictionary selectById(Integer id);
 }

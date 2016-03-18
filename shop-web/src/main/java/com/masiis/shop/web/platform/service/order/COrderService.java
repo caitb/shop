@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
@@ -104,7 +105,7 @@ public class COrderService {
             pfCorderConsigneeService.insertPfCC(pcc);
             return orderId;
         }catch (Exception e){
-            throw  new Exception(e.getMessage());
+            throw  new BusinessException(e.getMessage());
         }
     }
 
@@ -185,4 +186,16 @@ public class COrderService {
         pfSkuStatisticMapper.updateById(pfSkuStatistic);
     }
 
+    /**
+     *
+     *
+     * @param payment
+     */
+    public void addCOrderPayment(PfCorderPayment payment) {
+        pfCorderPaymentMapper.insert(payment);
+    }
+
+    public PfCorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
+        return pfCorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
 }

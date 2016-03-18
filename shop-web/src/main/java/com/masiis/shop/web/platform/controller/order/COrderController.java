@@ -1,11 +1,13 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
@@ -13,12 +15,14 @@ import com.masiis.shop.web.platform.service.order.PfUserTrialService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -45,30 +49,22 @@ public class COrderController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
 
-
-
-    /**
-     *
-     *@return
-     */
-    @RequestMapping("/index")
-    public String toIndex(HttpServletRequest request, HttpServletResponse response){
-        request.getSession().setAttribute("userId","1");
-        return "index";
-    }
     /**
      * 跳转到使用申请成功界面
-     * @author  hanzengzhi
-     * @date  2016/3/7 19:34
+     *
+     * @author hanzengzhi
+     * @date 2016/3/7 19:34
      */
     @RequestMapping("/continueStroll")
-    public String toContinueStroll(HttpServletRequest request, HttpServletResponse response){
+    public String toContinueStroll(HttpServletRequest request, HttpServletResponse response) {
         return "platform/order/jixuguangguang";
     }
+
     /**
      * 验证商品是否试用过
-     * @author  hanzengzhi
-     * @date  2016/3/9 11:10
+     *
+     * @author hanzengzhi
+     * @date 2016/3/9 11:10
      */
     @RequestMapping("/isApplyTrial.do")
     @ResponseBody
@@ -89,83 +85,89 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(skuId)) {
             skuId = 1;
         }
-        PfCorder pfCorder = cOrderService.isApplyTrial(userId,skuId);
+        PfCorder pfCorder = cOrderService.isApplyTrial(userId, skuId);
         String returnJson = objectMapper.writeValueAsString(pfCorder);
         return returnJson;
     }
+
     /**
      * 跳转到试用申请界面
-     * @author  hanzengzhi
-     * @date  2016/3/5 13:45
+     *
+     * @author hanzengzhi
+     * @date 2016/3/5 13:45
      */
     @RequestMapping("/applyTrialToPage.do")
     public String applyTrialToPage(HttpServletRequest request,
                                    HttpServletResponse response,
                                    @RequestParam(value = "skuId", required = true) Integer skuId,
-                                   Model model)throws Exception{
-        if (StringUtils.isEmpty(skuId)){
+                                   Model model) throws Exception {
+        if (StringUtils.isEmpty(skuId)) {
             skuId = 1;
         }
         Product productDetails = productService.applyTrialToPageService(skuId);
         String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
         model.addAttribute("skuName", productDetails.getName());
-        if (productDetails.getComSkuImages()!=null&&productDetails.getComSkuImages().size()>0){
-            model.addAttribute("skuDefaultImg",skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
+        if (productDetails.getComSkuImages() != null && productDetails.getComSkuImages().size() > 0) {
+            model.addAttribute("skuDefaultImg", skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
             model.addAttribute("skuImgAlt", productDetails.getComSkuImages().get(0).getImgName());
         }
-        model.addAttribute("product",productDetails);
+        model.addAttribute("product", productDetails);
         return "platform/order/shiyong";
     }
+
     /**
-     * 试用申请
-     * @author  hanzengzhi
-     * @date  2016/3/5 13:46
+     * 试用申请支付
+     *
+     * @author hanzengzhi
+     * @date 2016/3/5 13:46
      */
     @RequestMapping("/trialApplyPay.do")
-    @ResponseBody
-    public Long trialApplyPay(
+    public String trialApplyPay(
             HttpServletRequest request,
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
-            @RequestParam(value="addressId",required = true) Long addressId
-    ) {
+            @RequestParam(value = "addressId", required = true) Long addressId,
+            RedirectAttributes attrs) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        Long userId =  null;
-        try{
-            if (StringUtils.isEmpty(skuId)){
+        WxPaySysParamReq wpspr = null;
+        Long userId = null;
+        try {
+            if (StringUtils.isEmpty(skuId)) {
                 skuId = 111;
             }
-            if (comUser!=null){
+            if (comUser != null) {
                 userId = comUser.getId();
-            }else{
+            } else {
                 userId = 1L;
             }
             //获得产品信息
             Product product = cOrderService.getProductDetail(skuId);
             //订单
-            PfCorder pfCorder =  initPfCorderParamData(userId,skuId,product);
+            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product);
             //订单日志
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
             //收获地址
             ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
-            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null,comUserAddress);
+            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
             //生成订单
-            Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder,pfCorderOperationLog,comUserAddress,pfCorderConsignee);
-            weChatCallBack(orderId);
-            System.out.println("11111");
-            return null;
-        }catch (Exception e){
+            Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
+            //调用微信支付
+            wpspr = toTrialOrderPay(wpspr, pfCorder, request, addressId);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
+        return "redirect:/wxpay/wtpay";
     }
+
     /**
      * 初始化订单参数数据
+     *
      * @author hanzengzhi
      * @date 2016/3/15 10:47
      */
-    private PfCorder initPfCorderParamData(Long userId,Integer skuId,Product product){
-        SfUserRelation sfUserRelation =  trialService.findPidById(userId);
+    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product) {
+        SfUserRelation sfUserRelation = trialService.findPidById(userId);
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
         pfCorder.setCreateTime(new Date());
@@ -177,7 +179,7 @@ public class COrderController extends BaseController {
         pfCorder.setShipAmount(new BigDecimal(product.getShipAmount()));
         pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
         pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
-        if (sfUserRelation!=null){
+        if (sfUserRelation != null) {
             pfCorder.setUserPid(sfUserRelation.getParentUserId());
         }
         pfCorder.setUserMassage("");
@@ -185,12 +187,14 @@ public class COrderController extends BaseController {
         pfCorder.setCreateMan(userId);
         return pfCorder;
     }
+
     /**
      * 初始化pfcorderOperation日志表
+     *
      * @author hanzengzhi
      * @date 2016/3/15 10:38
      */
-    private PfCorderOperationLog initPfCorderOperationLog(ComUser comUser){
+    private PfCorderOperationLog initPfCorderOperationLog(ComUser comUser) {
         //生成试用日志
         PfCorderOperationLog pcol = new PfCorderOperationLog();
         pcol.setCreateTime(new Date());
@@ -198,15 +202,17 @@ public class COrderController extends BaseController {
         pcol.setPfCorderStatus(0);
         return pcol;
     }
+
     /**
      * 订单收获人信息
+     *
      * @author hanzengzhi
      * @date 2016/3/17 13:45
      */
-    private PfCorderConsignee initPfCorderConsigneeParamData(Long cOrderId,ComUserAddress comUserAddress)throws Exception{
+    private PfCorderConsignee initPfCorderConsigneeParamData(Long cOrderId, ComUserAddress comUserAddress) throws Exception {
         PfCorderConsignee pfCorderConsignee = new PfCorderConsignee();
-        try{
-            if (comUserAddress!=null){
+        try {
+            if (comUserAddress != null) {
                 pfCorderConsignee.setPfCorderId(cOrderId);
                 pfCorderConsignee.setCreateTime(new Date());
                 pfCorderConsignee.setUserId(comUserAddress.getUserId());
@@ -221,70 +227,80 @@ public class COrderController extends BaseController {
                 pfCorderConsignee.setAddress(comUserAddress.getAddress());
                 pfCorderConsignee.setZip(comUserAddress.getZip());
             }
-        }catch (Exception e){
-            throw  new Exception("生成订单获取用户地址错误");
+        } catch (Exception e) {
+            throw new Exception("生成订单获取用户地址错误");
         }
         return pfCorderConsignee;
     }
 
     /**
      * 调用微信支付
+     *
      * @author hanzengzhi
      * @date 2016/3/17 16:34
      */
-    private void toTrialOrderPay(HttpServletRequest request,HttpServletResponse response){
-
+    private WxPaySysParamReq toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request, Long addressId) {
+        wpspr = new WxPaySysParamReq();
+        wpspr.setOrderId(pfCorder.getOrderCode());
+        wpspr.setSignType("MD5");
+        wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setSign(WXBeanUtils.toSignString(wpspr));
+        return wpspr;
     }
+
     /**
-     * 微信支付回调
+     * 微信支付成功回调
+     *
      * @author hanzengzhi
      * @date 2016/3/17 16:45
      */
-    private void weChatCallBack(Long pfCorderId){
-        try{
-            PfCorderPayment pcp = new PfCorderPayment();
-            pcp.setCreateTime(new Date());
-            pcp.setId(1L);
-            pcp.setPfCorderId(pfCorderId);
-            pcp.setIsEnabled(0);
-            pcp.setOutOrderId("11111");
-            cOrderService.payCOrder(pcp,"22222");
-        }catch (Exception e){
+    @RequestMapping(value = "/weChatCallBackSuccess.shtml")
+    public String weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(value = "skuId", required = true) Integer skuId,
+                                        @RequestParam(value = "addressId", required = true) Long addressId) {
+        try {
+
+        } catch (Exception e) {
             e.getStackTrace();
         }
+        return "index";
     }
+
     /**
      * 确认订单
-     * @author  hanzengzhi
-     * @date  2016/3/8 10:16
+     *
+     * @author hanzengzhi
+     * @date 2016/3/8 10:16
      */
     @RequestMapping("/confirmOrder.do")
     public String confirmOrder(HttpServletRequest request,
-                                HttpServletResponse response,
-                                @RequestParam(value = "skuId", required = false) Integer skuId,
-                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-                                Model model){
-        ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");
+                               HttpServletResponse response,
+                               @RequestParam(value = "skuId", required = false) Integer skuId,
+                               @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
+                               Model model) {
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId = null;
-        if (comUser!=null){
+        if (comUser != null) {
             userId = comUser.getId();
-        }else{
+        } else {
             userId = 1L;
         }
-        Map<String,Object> pfCorderMap = cOrderService.confirmOrder(request,skuId,userId,selectedAddressId);
-        ComUserAddress comUserAddress = (ComUserAddress)pfCorderMap.get("comUserAddress");
+        Map<String, Object> pfCorderMap = cOrderService.confirmOrder(request, skuId, userId, selectedAddressId);
+        ComUserAddress comUserAddress = (ComUserAddress) pfCorderMap.get("comUserAddress");
         //图片
-        Product product = (Product)pfCorderMap.get("product");
-        if (product!=null){
+        Product product = (Product) pfCorderMap.get("product");
+        if (product != null) {
             String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             model.addAttribute("skuName", product.getName());
-            if (product.getComSkuImages()!=null&&product.getComSkuImages().size()>0){
-                model.addAttribute("skuDefaultImg",skuImg + product.getComSkuImages().get(0).getImgUrl());
+            if (product.getComSkuImages() != null && product.getComSkuImages().size() > 0) {
+                model.addAttribute("skuDefaultImg", skuImg + product.getComSkuImages().get(0).getImgUrl());
                 model.addAttribute("skuImgAlt", product.getComSkuImages().get(0).getImgName());
             }
         }
-        model.addAttribute("product",product);
-        model.addAttribute("comUserAddress",comUserAddress);
+        model.addAttribute("product", product);
+        model.addAttribute("comUserAddress", comUserAddress);
         return "platform/order/zhifushiyong";
     }
 }

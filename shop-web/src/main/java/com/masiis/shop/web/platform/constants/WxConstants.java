@@ -57,6 +57,19 @@ public class WxConstants {
 
     public static final String GRANT_TYPE_ACCESSTOKEN = "authorization_code";
 
+    /**
+     * JSSDK:access_token获取地址
+     */
+    public static final String URL_JSSDK_ACCESS_TOKEN = "https://api.weixin.qq.com/cgi-bin/token";
+    /**
+     * JSSDK:grant_type
+     */
+    public static final String JSSDK_GRANT_TYPE = "client_credential";
+    /**
+     * JSSDK:jsapi_ticket获取地址
+     */
+    public static final String URL_JSSDK_JSAPI_TICKET = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
+
     /*===============================================================================================================*/
     /**
      * 微信支付签名密钥

@@ -57,25 +57,9 @@ public class WxPayController extends BaseController{
         WxPaySysParamReq req = null;
         ComUser user = null;
         try{
-            if(StringUtils.isBlank(param)){
-                // 跳转错误页面,暂跳首页
-                throw new BusinessException("参数错误,param为空!");
-            }
-            req = JSONObject.parseObject(param, WxPaySysParamReq.class);
-
-            if(req == null
-                    || StringUtils.isBlank(req.getOrderId())
-                    || StringUtils.isBlank(req.getSign())
-                    || StringUtils.isBlank(req.getNonceStr())
-                    || StringUtils.isBlank(req.getSignType())){
-                // 参数有空值
-                // 跳转错误页面,暂跳首页
-                throw new BusinessException("参数错误,有部分参数为空!");
-            }
-            if(!WXBeanUtils.toSignString(req).equals(req.getSign())){
-                throw new BusinessException("签名错误");
-            }
-
+            // 参数校验
+            checkRequestParma(req, param);
+            // 获取当前登录用户
             user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         } catch (Exception e) {
             log.error("" + e.getMessage());
@@ -118,14 +102,9 @@ public class WxPayController extends BaseController{
             // 预付单下单失败处理
         }
 
-        BrandWCPayReq payReq = new BrandWCPayReq();
         // 组织微信支付请求参数,并形成签名
-        payReq.setAppId(WxConstants.APPID);
-        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
-        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
-        payReq.setSignType("MD5");
-        payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
-        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
+        BrandWCPayReq payReq = createBrandWCPayReq(resObj);
+
         // 获取成功支付后的跳转页面url
         request.setAttribute("req", payReq);
         request.setAttribute("successUrl", req.getSuccessUrl());
@@ -135,5 +114,49 @@ public class WxPayController extends BaseController{
         ////// 组织页面wx.config参数,并形成签名
         发现可以不用这种方式实现*/
         return "pay/wxpay/wxpayPage";
+    }
+
+    /**
+     * 针对请求的参数合法性进行校验
+     *
+     * @param req
+     * @param param
+     */
+    private void checkRequestParma(WxPaySysParamReq req, String param) {
+        if(StringUtils.isBlank(param)){
+            // 跳转错误页面,暂跳首页
+            throw new BusinessException("参数错误,param为空!");
+        }
+        req = JSONObject.parseObject(param, WxPaySysParamReq.class);
+
+        if(req == null
+                || StringUtils.isBlank(req.getOrderId())
+                || StringUtils.isBlank(req.getSign())
+                || StringUtils.isBlank(req.getNonceStr())
+                || StringUtils.isBlank(req.getSignType())){
+            // 参数有空值
+            // 跳转错误页面,暂跳首页
+            throw new BusinessException("参数错误,有部分参数为空!");
+        }
+        if(!WXBeanUtils.toSignString(req).equals(req.getSign())){
+            throw new BusinessException("签名错误");
+        }
+    }
+
+    /**
+     * 创建支付请求对象
+     *
+     * @param resObj
+     * @return
+     */
+    private BrandWCPayReq createBrandWCPayReq(UnifiedOrderRes resObj) {
+        BrandWCPayReq payReq = new BrandWCPayReq();
+        payReq.setAppId(WxConstants.APPID);
+        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
+        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
+        payReq.setSignType("MD5");
+        payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
+        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
+        return payReq;
     }
 }

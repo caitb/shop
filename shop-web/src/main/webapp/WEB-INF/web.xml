@@ -10,7 +10,7 @@
         <param-value>classpath:/spring/*.xml</param-value>
     </context-param>
 
-     spring-session过滤器
+     <!--spring-session过滤器-->
     <filter>
         <filter-name>springSessionRepositoryFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

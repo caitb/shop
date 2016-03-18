@@ -1,10 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
-import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.web.platform.constants.SysConstants;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;

@@ -6,18 +6,20 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/gerenzhongxin.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/xinjiandizhi.css">
-    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
-<body>
-<h1>发展合伙人</h1>
+    <title>微信JS-SDK Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="<%=basePath%>static/js/test/style.css">
+</head>
+<body ontouchstart="">
+<div class="wxapi_container">
+        <button class="btn btn_primary" id="chooseWXPay" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink');">获取分享链接</button>
+    </div>
+</div>
 </body>
+
 </html>

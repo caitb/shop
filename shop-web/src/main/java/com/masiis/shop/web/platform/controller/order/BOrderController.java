@@ -5,31 +5,24 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
-import com.masiis.shop.dao.beans.product.ProductSimple;
-import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.order.PfBorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
-import com.masiis.shop.web.platform.utils.MobileMessageUtil;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.util.NetUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -63,9 +56,7 @@ public class BOrderController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
     @Resource
-    private ComSkuImageMapper comSkuImageMapper;
-    @Resource
-    private PfBorderConsigneeMapper pfBorderConsigneeMapper;
+    private PfBorderConsigneeService pfBorderConsigneeService;
 
     /**
      * 用户确认生成订单
@@ -203,7 +194,7 @@ public class BOrderController extends BaseController {
         StringBuffer stringBuffer = new StringBuffer();
         int sumQuantity = 0;
         for (PfBorderItem pfBorderItem : pfBorderItems) {
-            ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(pfBorderItem.getSkuId());
+            ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
             stringBuffer.append("<section class=\"sec2\" >");
             stringBuffer.append("<p class=\"photo\" >");
             stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
@@ -253,12 +244,13 @@ public class BOrderController extends BaseController {
                                   @RequestParam(value = "userMessage", required = true) String userMessage,
                                   @RequestParam(value = "userAddressId", required = true) Long userAddressId,
                                   RedirectAttributes attrs) {
-        JSONObject jsonObject = new JSONObject();
         WxPaySysParamReq req = null;
         try {
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            if(!bOrderService.checkBOrderStock(pfBorder)){
+                throw new BusinessException("订单商品库存不足");
+            }
             pfBorder.setUserMessage(userMessage);
-            bOrderService.updateBOrder(pfBorder);
             ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
             PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
             pfBorderConsignee.setCreateTime(new Date());
@@ -274,7 +266,7 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
-            pfBorderConsigneeMapper.insert(pfBorderConsignee);
+            bOrderService.toPayBOrder(pfBorder,pfBorderConsignee);
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");

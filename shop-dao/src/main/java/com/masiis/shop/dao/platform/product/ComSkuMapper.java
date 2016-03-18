@@ -9,9 +9,10 @@ package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComSku;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ComSkuMapper {
     int deleteByPrimaryKey(Integer id);
 

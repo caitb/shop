@@ -58,7 +58,7 @@ public class WxPayController extends BaseController{
         ComUser user = null;
         try{
             // 参数校验
-            checkRequestParma(req, param);
+            req = checkRequestParma(req, param);
             // 获取当前登录用户
             user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         } catch (Exception e) {
@@ -122,7 +122,7 @@ public class WxPayController extends BaseController{
      * @param req
      * @param param
      */
-    private void checkRequestParma(WxPaySysParamReq req, String param) {
+    private WxPaySysParamReq checkRequestParma(WxPaySysParamReq req, String param) {
         if(StringUtils.isBlank(param)){
             // 跳转错误页面,暂跳首页
             throw new BusinessException("参数错误,param为空!");
@@ -141,6 +141,8 @@ public class WxPayController extends BaseController{
         if(!WXBeanUtils.toSignString(req).equals(req.getSign())){
             throw new BusinessException("签名错误");
         }
+
+        return req;
     }
 
     /**

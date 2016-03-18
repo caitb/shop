@@ -7,6 +7,7 @@
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
@@ -59,7 +60,7 @@
 
                             <h1><b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)</h1>
                             <div class="ding">
-                                <p><a href="jinhuoxiangqing.html">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
+                                <p><a href="<%=path%>/userCenterController/borderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
                                 <span class="jixu">
                                     <a href="buhuodingdan.html">继续支付</a>
                                 </span></c:if><c:if test="${pb.orderStatus ==1}">

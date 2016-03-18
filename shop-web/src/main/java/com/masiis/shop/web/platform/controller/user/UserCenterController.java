@@ -95,20 +95,28 @@ public class UserCenterController {
      * @author muchaofeng
      * @date 2016/3/16 15:00
      */
-    @RequestMapping("/borderDetils")
+    @RequestMapping("/borderDetils.html")
     public ModelAndView borderDetils(HttpServletRequest request,Long id){
         BorderDetail borderDetail = new BorderDetail();
+        String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
+        PfBorder pfBorder = bOrderService.getPfBorderById(id);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
+        for (PfBorderItem pfBorderItem: pfBorderItems) {
+            ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+            pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
+            pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+        }
         //快递公司信息
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
         //收货人
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
+        borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("borderDetail",borderDetail);
-        modelAndView.setViewName("");
+        modelAndView.setViewName("platform/user/jinhuoxiangqing");
         return modelAndView;
     }
 }

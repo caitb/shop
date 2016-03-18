@@ -1,5 +1,8 @@
 package com.masiis.shop.web.platform.controller.base;
 
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.platform.constants.SysConstants;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -83,6 +86,19 @@ public class BaseController {
         } catch (IOException e) {
 
         }
+    }
 
+    /**
+     * 从session中获取登录用户
+     *
+     * @param request
+     * @return
+     */
+    protected ComUser getComUser(HttpServletRequest request){
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if(user == null){
+            return null;
+        }
+        return user;
     }
 }

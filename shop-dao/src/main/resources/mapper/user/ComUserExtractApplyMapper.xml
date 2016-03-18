@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.ComUserExtractApplyMapper" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserExtractApplyMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserExtractApply" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
@@ -17,6 +17,34 @@
         <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
+    <resultMap id="ExtractApplyMap" type="com.masiis.shop.dao.beans.extract.ExtractApply" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
+        <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
+        <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP" />
+        <result column="audit_type" property="auditType" jdbcType="INTEGER" />
+        <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
+        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+
+        <association column="com_user_id" property="comUser"
+                     javaType="com.masiis.shop.dao.po.ComUser">
+            <id column="userId" property="id" jdbcType="INTEGER"/>
+            <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+            <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+            <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+            <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+            <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
+            <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from com_user_extract_apply
@@ -67,6 +95,19 @@
         extract_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name, 
         remark
         from com_user_extract_apply
+    </select>
+
+    <select id="getExtractApplyList" resultMap="ExtractApplyMap" >
+        SELECT
+          cuea.id,
+          cuea.com_user_id,cu.real_name,
+          cuea.extract_fee,
+          cuea.apply_time,
+          cuea.extract_way,
+          cuea.audit_type,
+          cuea.remark
+        FROM com_user_extract_apply cuea
+        LEFT JOIN com_user cu ON cuea.com_user_id = cu.id
     </select>
 
 </mapper>

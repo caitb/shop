@@ -25,4 +25,13 @@ public class ComDictionaryService {
     public ComDictionary findComDictionary(Integer key){
         return comDictionarysMapper.selectByCodeKey(key);
     }
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    public ComDictionary findById(Integer id){
+        return comDictionarysMapper.selectById(id);
+    }
 }

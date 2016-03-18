@@ -69,12 +69,16 @@ public class WxPayService {
                 res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
             } else if ("C".equals(orderType)) {
+                log.info("订单类型为C,订单编号为:" + req.getOrderId());
                 // 使用订单
                 PfCorder order = cOrderService.findByOrderCode(req.getOrderId());
                 if (order == null) {
                     throw new BusinessException("订单号错误,不存在该订单号!");
                 }
                 ComSku sku = skuService.getSkuById(order.getSkuId());
+                if(sku == null){
+                    throw new BusinessException("商品对象s为空,skuid为:" + order.getSkuId());
+                }
                 res.setBody(sku.getName());
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
                 res.setTotal_fee("1");

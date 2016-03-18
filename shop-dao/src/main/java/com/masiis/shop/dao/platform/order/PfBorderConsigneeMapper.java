@@ -26,4 +26,6 @@ public interface PfBorderConsigneeMapper {
     void deleteById(Long id);
 
     PfBorderConsignee selectByBorderId(Long borderId);
+
+    void deleteByOrderId(Long borderId);
 }

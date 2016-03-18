@@ -4,6 +4,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,14 +53,17 @@ public class UserController {
      * @date 2016/3/16 13:54
      */
     @RequestMapping(value = "/bindPhone.do")
-    public String bindPhone(HttpServletRequest request, HttpServletResponse response,
+    public Boolean bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
         try {
-           ComUser comUser =  userService.bindPhone(request,phone);
+            ComUser comUser =  userService.bindPhone(request,phone);
+            if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
+                return true;
+            }
         }catch (Exception e){
             e.getMessage();
         }
-        return null;
+        return false;
     }
 }
 

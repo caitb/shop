@@ -30,7 +30,7 @@ public class JsapiAccessTokenTask {
             Map<String, Object> resultMap = new JSONParser(jsonResult).parseMap();
 
             if (resultMap.get("access_token") != null){
-                SpringRedisUtil.saveEx("jsapi_access_tocken", resultMap.get("access_token"), Long.parseLong((String)resultMap.get("access_token")));//7200=2小时
+                SpringRedisUtil.saveEx("jsapi_access_tocken", resultMap.get("access_token"), Long.valueOf(resultMap.get("expires_in").toString()));//7200=2小时
             }else{
                 throw new RuntimeException("获取jsapi的令牌出错!");
             }

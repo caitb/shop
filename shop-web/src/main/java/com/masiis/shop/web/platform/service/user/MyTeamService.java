@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -116,13 +117,18 @@ public class MyTeamService {
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());
+        memberMap.put("idCardFrontImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardFrontUrl());
+        memberMap.put("idCardBackImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardBackUrl());
         memberMap.put("weixin", comUser.getWxId());
         memberMap.put("idCard", comUser.getIdCard());
         memberMap.put("frontImg", comUser.getIdCardFrontUrl());
         memberMap.put("backImg", comUser.getIdCardBackUrl());
+        memberMap.put("skuId", comSku.getId());
         memberMap.put("skuName", comSku.getName());
+        memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
         memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
+        memberMap.put("joinTime", pfUserCertificate.getBeginTime());
 
         return memberMap;
     }

@@ -26,7 +26,7 @@
     </header>
     <main>
         <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-        <div class="sec1">
+        <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}&skuId=${agentSkuMap.skuId}');">
             <img src="${agentSkuMap.brandLogo}" alt="">
             <p>合伙产品：<span>${agentSkuMap.skuName}</span></p>
         </div>

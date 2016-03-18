@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,8 +86,8 @@ public class COrderController extends BaseController {
         if (StringUtils.isEmpty(skuId)) {
             skuId = 1;
         }
-        PfCorder pfCorder = cOrderService.isApplyTrial(userId, skuId);
-        String returnJson = objectMapper.writeValueAsString(pfCorder);
+        List<PfCorder> pfCorders = cOrderService.isApplyTrial(userId, skuId);
+        String returnJson = objectMapper.writeValueAsString(pfCorders);
         return returnJson;
     }
 

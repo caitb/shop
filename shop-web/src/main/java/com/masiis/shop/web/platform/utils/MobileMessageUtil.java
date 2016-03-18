@@ -29,7 +29,8 @@ public class MobileMessageUtil {
         for (int i = 0; i < 4; i++) {
             code += random.nextInt(10);
         }
-        SpringRedisUtil.saveEx(phone + sign, code, new Date().getTime() + new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
+        SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
+
         String[] content = new String[2];
         content[0] = code;
         content[1] = SMSConstants.REGESTER_VALID_TIME;

@@ -30,6 +30,10 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from com_dictionary where id = #{id}
+    </select>
+
     <select id="selectByCodeKey" resultMap="BaseResultMap" >
         select  cd.code, cd.key, cd.value
         from com_dictionary cd

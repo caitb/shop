@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,25 +21,38 @@ import java.util.Map;
 @RequestMapping("/myteam")
 public class MyTeamController {
 
+    private final Log log = LogFactory.getLog(MyTeamController.class);
+
     @Resource
     private MyTeamService myTeamService;
 
     @RequestMapping("/teamlist")
     public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("platform/user/teamlist");
+        ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-        List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(1L);
+        List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(6L);
         mav.addObject("agentSkuMaps", agentSkuMaps);
 
         return mav;
     }
 
-    @RequestMapping("/team")
-    public ModelAndView team(HttpServletRequest request, HttpServletResponse response,
+    @RequestMapping("/teamdetail")
+    public ModelAndView teamDetail(HttpServletRequest request, HttpServletResponse response,
                              Integer userSkuId,
                              Integer skuId){
-        ModelAndView mav = new ModelAndView("platform/user/team");
 
-        return mav;
+        try {
+            ModelAndView mav = new ModelAndView("platform/user/teamDetail");
+
+            Map<String, Object> teamMaps = myTeamService.findTeam(userSkuId, skuId);
+
+            mav.addObject("teamMaps", teamMaps);
+            return mav;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取团队成员列表失败!");
+
+            return null;
+        }
     }
 }

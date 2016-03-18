@@ -186,4 +186,16 @@ public class COrderService {
         pfSkuStatisticMapper.updateById(pfSkuStatistic);
     }
 
+    /**
+     *
+     *
+     * @param payment
+     */
+    public void addCOrderPayment(PfCorderPayment payment) {
+        pfCorderPaymentMapper.insert(payment);
+    }
+
+    public PfCorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
+        return pfCorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
 }

@@ -73,9 +73,8 @@ public class LoginFilter implements Filter{
         String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
         String reUrl = basepath + "verify/wxcheck?"
                 + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
-
-        //request.getRequestDispatcher(reUrl).forward(request, response);
         response.sendRedirect(reUrl);*/
+        //request.getRequestDispatcher(reUrl).forward(request, response);
     }
 
     @Override

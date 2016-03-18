@@ -170,14 +170,14 @@ public class UserApplyController {
             if (StringUtils.isNotBlank(pMobile)) {
                 ComUser pUser = userService.getUserByMobile(pMobile);
                 if (pUser == null) {
-                    throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册!");
+                    throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
                 } else {
                     PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-                    if (pfUserSku == null) {
+                    if (null == pfUserSku ) {
                         throw new BusinessException("您的推荐人还未代理此款商品");
                     } else {
                         if (pfUserSku.getAgentLevelId() >= levelId) {
-                            throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
+                            throw new BusinessException(" 您的代理等级只能低于您的推荐人代理等级");
                         }
                     }
                 }

@@ -73,6 +73,8 @@ public class PfUserCertificate {
      */
     private String remark;
 
+    private ComSku comSku;
+
     public Long getId() {
         return id;
     }
@@ -168,5 +170,13 @@ public class PfUserCertificate {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public ComSku getComSku() {
+        return comSku;
+    }
+
+    public void setComSku(ComSku comSku) {
+        this.comSku = comSku;
     }
 }

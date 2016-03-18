@@ -43,7 +43,7 @@
                     </section>
                     <section class="sec3">
                         <p class="jianku" onclick="jiankucun('${sku.name}','${sku.stock}')">减库存</p>
-                        <p class="buhuo">补货</p>
+                        <p class="buhuo" onclick="buhuokucun('${sku.name}')">补货</p>
                     </section>
                 </c:forEach>
             </div>
@@ -77,8 +77,8 @@
             </h3>
         </div>
         <div class="back_b">
-            <p>减少库存</p>
-            <h4>商品:　　<span>抗引力-</span></h4>
+            <p>增加库存</p>
+            <h4>商品:　　<span id="addsku"></span></h4>
             <h4>数量:　　<div>
                 <span class="jian">-</span>
                 <span class="number">1</span>
@@ -151,10 +151,11 @@
         });
         location.reload();
     });
-    $(".buhuo").on("click",function(){
+    function buhuokucun(a){
+        $("#addsku").html(a);
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
-    })
+    }
     $(".b_qu").on("click",function(){
         $(".back").css("display","none");
         $(".back_b").hide();

@@ -93,12 +93,13 @@ public class BOrderController extends BaseController {
             if (levelId <= 0) {
                 throw new BusinessException("代理等级有误");
             }
+            PfUserSku pfUserSku = null;
             if (pUserId != null && pUserId > 0) {
                 ComUser pUser = userService.getUserById(pUserId);
                 if (pUser == null) {
                     throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册!");
                 } else {
-                    PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+                    pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
                     if (pfUserSku == null) {
                         throw new BusinessException("您的推荐人还未代理此款商品");
                     } else {
@@ -155,20 +156,22 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, comSku.getId());//获取上级代理ID
             PfUserSku userSku = new PfUserSku();
-            userSku.setCreateTime(new Date());
-            if (pfUserSku == null) {
-                userSku.setPid(0);
-            } else {
-                userSku.setPid(pfUserSku.getId());
+            PfUserSku checkUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
+            if (checkUserSku == null) {
+                userSku.setCreateTime(new Date());
+                if (pfUserSku == null) {
+                    userSku.setPid(0);
+                } else {
+                    userSku.setPid(pfUserSku.getId());
+                }
+                userSku.setCode("");
+                userSku.setUserId(comUser.getId());
+                userSku.setSkuId(comSku.getId());
+                userSku.setAgentLevelId(levelId);
+                userSku.setIsPay(0);
+                userSku.setIsCertificate(0);
             }
-            userSku.setCode("");
-            userSku.setUserId(comUser.getId());
-            userSku.setSkuId(comSku.getId());
-            userSku.setAgentLevelId(levelId);
-            userSku.setIsPay(0);
-            userSku.setIsCertificate(0);
             Long bOrderId = bOrderService.AddBOrder(order, orderItems, userSku, comUser);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);

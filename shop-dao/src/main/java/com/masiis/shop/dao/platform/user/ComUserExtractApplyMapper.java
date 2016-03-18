@@ -7,7 +7,10 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+
+import com.masiis.shop.dao.beans.extract.ExtractApply;
 import com.masiis.shop.dao.po.ComUserExtractApply;
+
 import java.util.List;
 
 public interface ComUserExtractApplyMapper {
@@ -20,4 +23,6 @@ public interface ComUserExtractApplyMapper {
     List<ComUserExtractApply> selectAll();
 
     int updateByPrimaryKey(ComUserExtractApply record);
+
+    List<ExtractApply> getExtractApplyList();
 }

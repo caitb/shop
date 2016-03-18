@@ -11,17 +11,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
+    <title>订单详情</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/gerenzhongxin.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/xinjiandizhi.css">
-    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="<%=basePath%>static/css/wodetuandui.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
+    <script src="<%=basePath%>static/js/iscroll.js"></script>
+</head>
 <body>
-<ul>
-    <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-    <li>${agentSkuMaps.skuName}</li>
-    </c:forEach>
-</ul>
+<div class="wrap">
+    <header class="xq_header">
+        <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+        <p>我的团队</p>
+    </header>
+    <main>
+        <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
+        <div class="sec1">
+            <img src="${agentSkuMap.brandLogo}" alt="">
+            <p>合伙产品：<span>${agentSkuMap.skuName}</span></p>
+        </div>
+        </c:forEach>
+    </main>
+</div>
 </body>
 </html>

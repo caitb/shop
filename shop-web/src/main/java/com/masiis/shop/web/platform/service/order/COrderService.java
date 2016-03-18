@@ -123,14 +123,15 @@ public class COrderService {
      * @author hanzengzhi
      * @date 2016/3/9 11:39
      */
-    public PfCorder isApplyTrial(Long userId, Integer skuId) {
+    public List<PfCorder> isApplyTrial(Long userId, Integer skuId) {
+        List<PfCorder> pfCorders = null;
         try {
             PfCorder pfCorder = new PfCorder();
             pfCorder.setUserId(userId);
             pfCorder.setSkuId(skuId);
             pfCorder.setOrderType(0);
-            pfCorder = pfCorderService.trialCorder(pfCorder);
-            return pfCorder;
+            pfCorders = pfCorderService.trialCorder(pfCorder);
+            return pfCorders;
         } catch (Exception e) {
             e.getMessage();
         }

@@ -93,10 +93,10 @@
                     <em id="phoneErrorId"></em>
                 </div>
                 <div class="d">
-                    <p>验证码：<input type="number" id="validateNumberDataId">
+                    <p>验证码：<input type="tel" id="validateNumberDataId">
                         <botton id="validateNumberId"  >获取验证码</botton>
                     </p>
-                    <em>asd</em>
+                    <em id="validateNameErrorId"></em>
                 </div>
                 <h1 class="j_qu" id="nextPageId">下一步</h1>
             </div>
@@ -107,8 +107,8 @@
     <section class="sec3">
         <input id="applyTrialId" value="${productDetails.id}" style="display: none"/>
         <p>
-            <a id="applyTrial" onclick="productJS.applyTrial()">申请试用</a>
-            <a id="trialed" onclick="productJS.applyTrial()">已试用</a>
+            <a id="applyTrial"  onclick="productJS.applyTrial()">申请试用</a>
+            <a id="trialed" style="display: none">已试用</a>
         </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
@@ -119,7 +119,6 @@
     $(document).ready(function () {
         productJS.initPage();
     });
-
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

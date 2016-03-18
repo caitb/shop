@@ -70,4 +70,10 @@
         DELETE FROM pf_corder_payment WHERE id = #{id}
     </delete>
 
+    <select id="selectBySerialNum" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        select id, create_time, pf_corder_id, amount, pay_type_id, pay_type_name, is_enabled,
+               out_order_id, pay_serial_num, remark
+        from pf_corder_payment
+        WHERE pay_serial_num = #{paySerialNum,JDBCType=VARCHAR}
+    </select>
 </mapper>

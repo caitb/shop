@@ -118,14 +118,9 @@ public class WxPayController extends BaseController{
             // 预付单下单失败处理
         }
 
-        BrandWCPayReq payReq = new BrandWCPayReq();
         // 组织微信支付请求参数,并形成签名
-        payReq.setAppId(WxConstants.APPID);
-        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
-        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
-        payReq.setSignType("MD5");
-        payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
-        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
+        BrandWCPayReq payReq = createBrandWCPayReq(resObj);
+
         // 获取成功支付后的跳转页面url
         request.setAttribute("req", payReq);
         request.setAttribute("successUrl", req.getSuccessUrl());
@@ -135,5 +130,22 @@ public class WxPayController extends BaseController{
         ////// 组织页面wx.config参数,并形成签名
         发现可以不用这种方式实现*/
         return "pay/wxpay/wxpayPage";
+    }
+
+    /**
+     * 创建支付请求对象
+     *
+     * @param resObj
+     * @return
+     */
+    private BrandWCPayReq createBrandWCPayReq(UnifiedOrderRes resObj) {
+        BrandWCPayReq payReq = new BrandWCPayReq();
+        payReq.setAppId(WxConstants.APPID);
+        payReq.setTimeStamp(String.valueOf(new Date().getTime()));
+        payReq.setNonceStr(WXBeanUtils.createGenerateStr());
+        payReq.setSignType("MD5");
+        payReq.setPackages("prepay_id=" + resObj.getPrepay_id());
+        payReq.setPaySign(WXBeanUtils.toSignString(payReq));
+        return payReq;
     }
 }

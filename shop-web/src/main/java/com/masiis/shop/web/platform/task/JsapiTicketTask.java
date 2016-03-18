@@ -32,8 +32,8 @@ public class JsapiTicketTask {
             jsonResult = HttpClientUtils.httpGet(jsapiTicketUrl);
             Map<String, Object> resultMap = new JSONParser(jsonResult).parseMap();
 
-            if("0".equals(resultMap.get("errcode")) && "ok".equals(resultMap.get("errmsg"))){
-                SpringRedisUtil.saveEx("jsapi_ticket", resultMap.get("ticket"), Long.parseLong((String)resultMap.get("expires_in")));
+            if("0".equals(resultMap.get("errcode").toString()) && "ok".equals(resultMap.get("errmsg").toString())){
+                SpringRedisUtil.saveEx("jsapi_ticket", resultMap.get("ticket"), Long.parseLong(resultMap.get("expires_in").toString()));
             }else{
                 throw new RuntimeException("请求jsapi票据失败!");
             }

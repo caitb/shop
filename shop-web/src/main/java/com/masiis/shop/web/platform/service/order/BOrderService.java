@@ -59,9 +59,6 @@ public class BOrderService {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
-        if (pfUserSku == null) {
-            throw new BusinessException("pfUserSku为空");
-        }
         if (pfBorderItems == null || pfBorderItems.size() == 0) {
             throw new BusinessException("pfBorderItems为空");
         }
@@ -75,9 +72,11 @@ public class BOrderService {
             pfBorderItem.setPfBorderId(pfBorder.getId());
             pfBorderItemMapper.insert(pfBorderItem);
         }
-        pfUserSku.setPfBorderId(pfBorder.getId());
         //添加用户代理商品关系
-        pfUserSkuMapper.insert(pfUserSku);
+        if (pfUserSku != null) {
+            pfUserSku.setPfBorderId(pfBorder.getId());
+            pfUserSkuMapper.insert(pfUserSku);
+        }
         //完善用户信息
         comUserMapper.updateByPrimaryKey(comUser);
         //添加订单日志
@@ -93,6 +92,7 @@ public class BOrderService {
 
     /**
      * 修改订单
+     *
      * @author ZhaoLiang
      * @date 2016/3/17 14:59
      */
@@ -160,10 +160,11 @@ public class BOrderService {
         }
         //<5>修改用户sku代理关系支付状态
         PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderId(bOrderId);
-        pfUserSku.setIsPay(1);
-        pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
+        if (pfUserSku != null) {
+            pfUserSku.setIsPay(1);
+            pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
+        }
         //**************维护商品信息******************
-
         PfSkuStatistic pfSkuStatistic = null;
         PfSkuStock pfSkuStock = null;
         PfUserSkuStock pfUserSkuStock = null;
@@ -235,8 +236,8 @@ public class BOrderService {
      * @date 2016/3/14 13:22
      */
 
-    public List<PfBorder> findByUserId(Long UserId) {
-        return pfBorderMapper.selectByUserId(UserId);
+    public List<PfBorder> findByUserId(Long UserId,Integer orderStatus,Integer shipStatus) {
+        return pfBorderMapper.selectByUserId(UserId,orderStatus,shipStatus);
     }
 
     /**
@@ -262,18 +263,21 @@ public class BOrderService {
 
     /**
      * 根据订单号获取快递信息
+     *
      * @author muchaofeng
      * @date 2016/3/16 15:21
      */
-    public List<PfBorderFreight> findByPfBorderFreightOrderId(Long id){
+    public List<PfBorderFreight> findByPfBorderFreightOrderId(Long id) {
         return pfBorderFreightMapper.selectByBorderId(id);
     }
+
     /**
      * 根据订单号获取收货人信息
+     *
      * @author muchaofeng
      * @date 2016/3/16 15:36
      */
-    public PfBorderConsignee findpfBorderConsignee(Long id){
+    public PfBorderConsignee findpfBorderConsignee(Long id) {
         return pfBorderConsigneeMapper.selectByBorderId(id);
     }
 

@@ -1,21 +1,21 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.UploadImage;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,14 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.channels.InterruptedByTimeoutException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
+import java.util.List;
 
 /**
  * UserCertificateController
@@ -50,6 +49,8 @@ public class UserCertificateController {
     private UserService userService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private UserCertificateService userCertificateService;
 
     /**
      * @author ZhaoLiang
@@ -197,6 +198,34 @@ public class UserCertificateController {
         OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
         return frontFile.getName();
     }
-
-
+   
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/17 0017 下午 5:12
+      * 个人的授权书列表
+      */
+    @RequestMapping(value = "/userList/{userId}")
+    public ModelAndView userCertificate(HttpServletRequest request, HttpServletResponse response,
+                                                   @PathVariable("userId") Integer userId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/certificateList");
+        List<PfUserCertificate> pfUserCertificates = userCertificateService.CertificateByUser(userId);
+        mav.addObject("pfUserCertificates",pfUserCertificates);
+        return mav;
+    }
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/17 0017 下午 6:37
+      * 个人商品证书详情
+      */
+    @RequestMapping(value = "/userct/{skuId}")
+    public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
+                                        @PathVariable("skuId") Integer skuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/certificateList");
+        HttpSession session = request.getSession();
+        ComUser comUser = (ComUser) session.getAttribute("comUser");
+        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(skuId,Long.valueOf(1));
+        mav.addObject("cdetail",cdetail);
+        mav.addObject("comUser",comUser);
+        return mav;
+    }
 }

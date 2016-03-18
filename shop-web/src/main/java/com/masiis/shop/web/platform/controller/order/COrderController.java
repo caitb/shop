@@ -51,6 +51,7 @@ public class COrderController extends BaseController {
 
     /**
      * 跳转到使用申请成功界面
+     *
      * @author hanzengzhi
      * @date 2016/3/7 19:34
      */
@@ -151,7 +152,7 @@ public class COrderController extends BaseController {
             //生成订单
             Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
             //调用微信支付
-            toTrialOrderPay(wpspr, pfCorder, request);
+            toTrialOrderPay(wpspr, pfCorder, request, addressId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -238,13 +239,13 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/17 16:34
      */
-    private void toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request) {
+    private void toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request, Long addressId) {
         wpspr = new WxPaySysParamReq();
         wpspr.setOrderId(pfCorder.getOrderCode());
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?bOrderId=" + pfCorder.getId());
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
     }
 
@@ -254,12 +255,16 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/17 16:45
      */
-    @RequestMapping(value = "/weChatCallBackSuccess.do")
-    public void weChatCallBackSuccess() {
+    @RequestMapping(value = "/weChatCallBackSuccess.shtml")
+    public String weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(value = "skuId", required = true) Integer skuId,
+                                        @RequestParam(value = "addressId", required = true) Long addressId) {
         try {
+
         } catch (Exception e) {
             e.getStackTrace();
         }
+        return "index";
     }
 
     /**

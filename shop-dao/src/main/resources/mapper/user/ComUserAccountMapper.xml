@@ -18,7 +18,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount">
         insert into com_user_account (id, com_user_id, transaction_fee, 
             extractable_fee, counting_fee, now_total_fee, 
             created_time, changed_time, changed_by

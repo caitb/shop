@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -93,6 +94,7 @@ public class MyTeamService {
             teamMap.put("skuId", pus.getSkuId());
             teamMap.put("agentLevelId", comAgentLevel.getId());
             teamMap.put("agentLevelName", comAgentLevel.getName());
+            teamMap.put("userSkuId", pus.getId());
             teamMap.put("code", pus.getCode());
 
             if(pus.getIsCertificate() == 1) isAuditTeamMaps.add(teamMap);
@@ -106,7 +108,14 @@ public class MyTeamService {
         return teamMaps;
     }
 
-    public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId){
+    /**
+     *
+     * @param comUserId
+     * @param skuId
+     * @param agentLevelId
+     * @return
+     */
+    public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId, Integer userSkuId){
         ComUser comUser = comUserMapper.selectByPrimaryKey(comUserId);
         ComSku comSku = comSkuMapper.selectById(skuId);
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(agentLevelId);
@@ -116,13 +125,23 @@ public class MyTeamService {
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());
+        memberMap.put("idCardFrontImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardFrontUrl());
+        memberMap.put("idCardBackImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardBackUrl());
         memberMap.put("weixin", comUser.getWxId());
         memberMap.put("idCard", comUser.getIdCard());
         memberMap.put("frontImg", comUser.getIdCardFrontUrl());
         memberMap.put("backImg", comUser.getIdCardBackUrl());
+        memberMap.put("skuId", comSku.getId());
         memberMap.put("skuName", comSku.getName());
+        memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
         memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
+        memberMap.put("joinTime", pfUserCertificate.getBeginTime());
+        memberMap.put("applyTime", pfUserCertificate.getCreateTime());
+        if(userSkuId != null){
+            PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
+            memberMap.put("payStatus", pfUserSku.getIsPay());
+        }
 
         return memberMap;
     }

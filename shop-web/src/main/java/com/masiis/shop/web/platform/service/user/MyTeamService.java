@@ -94,6 +94,7 @@ public class MyTeamService {
             teamMap.put("skuId", pus.getSkuId());
             teamMap.put("agentLevelId", comAgentLevel.getId());
             teamMap.put("agentLevelName", comAgentLevel.getName());
+            teamMap.put("userSkuId", pus.getId());
             teamMap.put("code", pus.getCode());
 
             if(pus.getIsCertificate() == 1) isAuditTeamMaps.add(teamMap);
@@ -107,7 +108,14 @@ public class MyTeamService {
         return teamMaps;
     }
 
-    public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId){
+    /**
+     *
+     * @param comUserId
+     * @param skuId
+     * @param agentLevelId
+     * @return
+     */
+    public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId, Integer userSkuId){
         ComUser comUser = comUserMapper.selectByPrimaryKey(comUserId);
         ComSku comSku = comSkuMapper.selectById(skuId);
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(agentLevelId);
@@ -129,6 +137,11 @@ public class MyTeamService {
         memberMap.put("agentLevelName", comAgentLevel.getName());
         memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
         memberMap.put("joinTime", pfUserCertificate.getBeginTime());
+        memberMap.put("applyTime", pfUserCertificate.getCreateTime());
+        if(userSkuId != null){
+            PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
+            memberMap.put("payStatus", pfUserSku.getIsPay());
+        }
 
         return memberMap;
     }

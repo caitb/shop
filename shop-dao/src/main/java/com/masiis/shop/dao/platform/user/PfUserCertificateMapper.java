@@ -11,6 +11,8 @@ import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface PfUserCertificateMapper {
     int deleteByPrimaryKey(Long id);
@@ -24,4 +26,8 @@ public interface PfUserCertificateMapper {
     int updateByPrimaryKey(PfUserCertificate record);
 
     PfUserCertificate selectByUserId(Long userId);
+
+    List<PfUserCertificate> selectByCode(Integer userId);
+
+    PfUserCertificate selectByUserSkuId(Map<String, Object> paramsMap);
 }

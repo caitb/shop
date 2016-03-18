@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;

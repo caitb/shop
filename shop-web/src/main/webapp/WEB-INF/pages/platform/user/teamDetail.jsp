@@ -33,7 +33,7 @@
     <main>
         <div class="yi">
             <c:forEach items="${teamMaps.isAuditTeamMaps}" var="isAuditTeamMap">
-            <div class="sec1">
+            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/memberinfo?comUserId=${isAuditTeamMap.comUserId}&skuId=${isAuditTeamMap.skuId}&agentLevelId=${isAuditTeamMap.agentLevelId}');">
                 <img src="${isAuditTeamMap.comUserImg}" alt="">
                 <p>
                     <b>队员姓名：<em>${isAuditTeamMap.comUserName}</em></b>

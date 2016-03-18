@@ -27,6 +27,13 @@ public class SpringRedisUtil {
         });
     }
 
+    /**
+     * 带有有效时间的保存
+     *
+     * @param key
+     * @param value
+     * @param expires 单位秒
+     */
     public static void saveEx(final String key, Object value, final long expires) {
 
         final byte[] vbytes = SerializeUtil.serialize(value);

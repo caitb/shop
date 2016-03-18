@@ -90,7 +90,7 @@
                 <p>绑定账号</p>
                 <div>
                     <p>手机号：<input type="tel" id = "phoneId"></p>
-                    <em>asd</em>
+                    <em id="phoneErrorId"></em>
                 </div>
                 <div class="d">
                     <p>验证码：<input type="number" id="validateNumberDataId">

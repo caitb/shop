@@ -26,7 +26,7 @@ public class MyTeamController {
     public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/user/teamlist");
 
-        List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(2L);
+        List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(1L);
         mav.addObject("agentSkuMaps", agentSkuMaps);
 
         return mav;

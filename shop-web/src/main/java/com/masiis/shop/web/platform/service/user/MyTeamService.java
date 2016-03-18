@@ -1,7 +1,9 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -25,11 +27,15 @@ public class MyTeamService {
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
+    private ComSpuMapper comSpuMapper;
+    @Resource
     private ComUserMapper comUserMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private ComBrandMapper comBrandMapper;
 
 
     /**
@@ -46,11 +52,14 @@ public class MyTeamService {
         List<Map<String, Object>> agentSkuMaps = new ArrayList<>();
         for(PfUserSku pus : pfUserSkus){
             ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
+            ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+            ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
 
             Map<String, Object> agentSkuMap = new HashMap<>();
             agentSkuMap.put("userSkuId", pus.getId());
             agentSkuMap.put("skuId", comSku.getId());
             agentSkuMap.put("skuName", comSku.getName());
+            agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
             agentSkuMaps.add(agentSkuMap);
         }

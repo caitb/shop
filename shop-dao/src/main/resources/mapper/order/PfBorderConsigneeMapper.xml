@@ -159,4 +159,7 @@
         delete from pf_border_consignee where id = #{id,jdbcType=BIGINT}
     </delete>
 
+    <delete id="deleteByOrderId" parameterType="java.lang.Long">
+        delete from pf_border_consignee where pf_border_id = #{borderId,jdbcType=BIGINT}
+    </delete>
 </mapper>

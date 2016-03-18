@@ -73,13 +73,18 @@
             },
             checkPhone: function () {
                 if (productJS.phone == null || productJS.phone == "") {
-                    alert("手机号不能为空");
+                    $("#phoneErrorId").empty();
+                    $("#phoneErrorId").html("手机号不能为空");
+                    $("#phoneErrorId").attr("style","display:block");
                     return false;
                 }
                 if (!isMobile()) {
-                    alert("手机号格式输入不正确");
+                    $("#phoneErrorId").empty();
+                    $("#phoneErrorId").html("手机号格式输入不正确");
+                    $("#phoneErrorId").attr("style","display:block");
                     return false;
                 } else {
+                    $("#phoneErrorId").empty();
                     return true;
                 }
                 function isMobile() {
@@ -87,6 +92,7 @@
                     if (!patrn.exec(productJS.phone)) {
                         return false;
                     }
+                    $("#phoneErrorId").attr("style","display:none");
                     return true;
                 }
             },

@@ -71,18 +71,17 @@ public class MyTeamService {
      * 获取团队列表
      * @param userSkuId
      * @param skuId
-     * @param isCertificate
      * @return
      */
-    public List<Map<String, Object>> findTeam(Integer userSkuId, Integer skuId, Integer isCertificate){
+    public Map<String, Object> findTeam(Integer userSkuId, Integer skuId){
         PfUserSku pfUserSku = new PfUserSku();
         pfUserSku.setPid(userSkuId);
         pfUserSku.setSkuId(skuId);
-        pfUserSku.setIsCertificate(isCertificate);
 
         List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(pfUserSku);
 
-        List<Map<String, Object>> teamMaps = new ArrayList<>();
+        List<Map<String, Object>> isAuditTeamMaps = new ArrayList<>();
+        List<Map<String, Object>> noAuditTeamMaps = new ArrayList<>();
         for(PfUserSku pus : pfUserSkus){
             ComUser comUser = comUserMapper.selectByPrimaryKey(pus.getUserId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
@@ -90,11 +89,19 @@ public class MyTeamService {
             Map<String, Object> teamMap = new HashMap<>();
             teamMap.put("comUserId", comUser.getId());
             teamMap.put("comUserName", comUser.getRealName());
+            teamMap.put("comUserImg", comUser.getWxHeadImg());
             teamMap.put("skuId", pus.getSkuId());
             teamMap.put("agentLevelId", comAgentLevel.getId());
             teamMap.put("agentLevelName", comAgentLevel.getName());
             teamMap.put("code", pus.getCode());
+
+            if(pus.getIsCertificate() == 1) isAuditTeamMaps.add(teamMap);
+            if(pus.getIsCertificate() == 0) noAuditTeamMaps.add(teamMap);
         }
+
+        Map<String, Object> teamMaps = new HashMap<>();
+        teamMaps.put("isAuditTeamMaps", isAuditTeamMaps);
+        teamMaps.put("noAuditTeamMaps", noAuditTeamMaps);
 
         return teamMaps;
     }

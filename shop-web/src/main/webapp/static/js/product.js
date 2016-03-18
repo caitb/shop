@@ -108,6 +108,9 @@
             toNextPage: function () {
                 if (productJS.isValidateNumber) {
                     productJS.toConfirmOrderPage();
+                }else{
+                    alert("验证码输入不正确");
+                    productJS.toConfirmOrderPage();
                 }
             },
             isValidateNumber: function () {

@@ -26,21 +26,22 @@
                 </header>
                 <nav>
                     <ul>
-                        <li><a href="<%=path%>/userCenterController/stockBorder" class="on">全部</a></li>
-                        <li><a href="<%=path%>/userCenterController/stockBorder?orderStatus=0">待付款</a></li>
-                        <li><a href="<%=path%>/userCenterController/stockBorder?orderStatus=1&&shipStatus=0">待发货</a></li>
-                        <li><a href="<%=path%>/userCenterController/stockBorder?orderStatus=1&&shipStatus=5">待收货</a></li>
-                        <li><a href="<%=path%>/userCenterController/stockBorder?orderStatus=3">已完成</a></li>
+                        <li><a href="javascript:;" class="on">全部</a></li>
+                        <li><a href="javascript:;">待付款</a></li>
+                        <li><a href="javascript:;">待发货</a></li>
+                        <li><a href="javascript:;">待收货</a></li>
+                        <li><a href="javascript:;">已完成</a></li>
                     </ul>
                 </nav>
                 <main>
+                    <c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">
                     <div class="all">
-                        <c:forEach items="${pfBorders}" var="pb">
+                        <c:forEach items="${pbs}" var="pb">
                         <section class="sec1">
                            <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b>待付款</b></c:if><c:if test="${pb.orderStatus ==1}"><b>等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b>交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if><c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                             </h2>
                             <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
@@ -62,42 +63,15 @@
                                 <span class="jixu">
                                     <a href="buhuodingdan.html">继续支付</a>
                                 </span></c:if><c:if test="${pb.orderStatus ==1}">
-                                <span class="fa">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
                             </div>
                         </section>
                         </c:forEach>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="jinhuoxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="jixu">--%>
-                                    <%--<a href="buhuodingdan.html">继续支付</a>--%>
-                                <%--</span>--%>
-                                <%--<span class="quxiao">--%>
-                                    <%--取消订单--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
                     </div>
+                    </c:forEach>
+
                     <%--<div class="all">           --%>
                         <%--<section class="sec1">--%>
                            <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
@@ -331,7 +305,7 @@
             <div class="back">
                 <div class="back_shouhuo">
                     <p>确认收到货品?</p>
-                    <h4>亲，请您核对却是厚道商品后在操作确认收货</h4>
+                    <h4>亲，请您核对商品后在操作确认收货</h4>
 
                     <h3>
                         <span class="que_qu">取消</span>
@@ -361,14 +335,44 @@
                 $(this).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
             })
-            $(".sh").on("click",function(){
+
+            $(".fa").on("click",function(){
                 $(".back").css("display","-webkit-box");
-                $(".shouhuo").css("display","-webkit-box");
+                $(".back_shouhuo").css("display","-webkit-box");
             })
-            $(".close").on("click",function(){
-                $(".shouhuo").hide();
+            function querenshouhuo(orderStatus,id){
+                $(".back").css("display","-webkit-box");
+                $(".back_shouhuo").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    orderStatus=3;
+                    $(".back_shouhuo").hide();
+                    $(".back").hide();
+
+                    var aa="querenshouhuo_"+id;
+                    alert(aa);
+                    $.ajax({
+                        type:"POST",
+                        async:false,
+                        url : "<%=path%>/userCenterController/closeDeal.do",
+                        data:{orderStatus:3,orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+                            alert($("b."+aa+"").html());
+                            $("span[name="+aa+"]").attr("style","display:none");
+                            $("b."+aa+"").html("交易成功");
+                        }
+                    })
+                })
+            }
+            $(".que_qu").on("click",function(){
+                $(".back_shouhuo").hide();
                 $(".back").hide();
             })
+//            $(".que_que").on("click",function(){
+//                $(".back_shouhuo").hide();
+//                $(".back").hide();
+//            })
+
        </script>
 </body>
 </html>

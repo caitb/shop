@@ -35,7 +35,7 @@ public class ComUserExtractApply {
      */
     private Date extractTime;
     /**
-     * 审核状态:0,待审核; 1,审核通过; 2, 审核失败
+     * 审核状态:0,待审核; 1,已拒绝; 2, 待打款;3,已付款
      */
     private Integer auditType;
     /**

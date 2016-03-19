@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,9 +42,10 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/index")
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
-        ComUser comUser = userService.getUserById(1l);
-        if (comUser != null) {
-            request.getSession().setAttribute("comUser", comUser);
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            request.getSession().setAttribute("comUser", user);
         }
 //        HttpSession session = request.getSession();
 //        ComUser comUser =(ComUser)session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
@@ -73,7 +75,7 @@ public class IndexController extends BaseController {
                 String url = skuValue + indexCom.getImgUrl();
                 //重新封装商品图片地址
                 indexCom.setImgUrl(url);
-                if(comUser!=null && comUser.getIsAgent()==1){
+                if(user!=null && user.getIsAgent()==1){
                     //判断会员权限
                     indexCom.setIsPartner(true);
                     //确定代理权限，显示优惠区间

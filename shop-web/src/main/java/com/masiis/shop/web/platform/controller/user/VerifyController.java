@@ -297,7 +297,7 @@ public class VerifyController extends BaseController {
             throw new BusinessException("openid is null");
         }
         String res = AESUtils.decrypt(tar, SysConstants.COOKIE_AES_KEY);
-        res.lastIndexOf(SysConstants.COOKIE_KEY_SALT);
+        res = res.substring(0, res.lastIndexOf(SysConstants.COOKIE_KEY_SALT));
         return res;
     }
 }

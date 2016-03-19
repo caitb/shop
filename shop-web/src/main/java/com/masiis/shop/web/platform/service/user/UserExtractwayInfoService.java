@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by wangbingjian on 2016/3/18.
@@ -60,5 +61,15 @@ public class UserExtractwayInfoService {
 
     public int updataComUserExtractwayInfo(ComUserExtractwayInfo comUserExtractwayInfo){
         return comUserExtractwayInfoMapper.updateByPrimaryKey(comUserExtractwayInfo);
+    }
+
+    /**
+     * 查询该用户的提现方式信息
+     *
+     * @param id
+     * @return
+     */
+    public List<ComUserExtractwayInfo> findByUserid(Long id) {
+        return comUserExtractwayInfoMapper.selectByUserid(id);
     }
 }

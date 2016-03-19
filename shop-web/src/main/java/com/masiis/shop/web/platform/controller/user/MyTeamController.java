@@ -1,7 +1,9 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/myteam")
-public class MyTeamController {
+public class MyTeamController extends BaseController {
 
     private final Log log = LogFactory.getLog(MyTeamController.class);
 
@@ -33,7 +35,9 @@ public class MyTeamController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(1L);
+            ComUser comUser = getComUser(request);
+
+            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;

@@ -60,7 +60,7 @@
 
                             <h1><b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/userCenterController/borderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
+                                <p><a href="<%=path%>/border/borderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
                                 <span class="jixu">
                                     <a href="buhuodingdan.html">继续支付</a>
                                 </span></c:if><c:if test="${pb.orderStatus ==1 && pb.shipStatus==5}">
@@ -354,7 +354,7 @@
                     $.ajax({
                         type:"POST",
                         async:false,
-                        url : "<%=path%>/userCenterController/closeDeal.do",
+                        url : "<%=path%>/border/closeDeal.do",
                         data:{orderStatus:3,orderId:id},
                         dataType:"Json",
                         success:function(date){

@@ -77,8 +77,36 @@
         </div>
     </section>
     <section class="sec2">
+<%--
         <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}">继续</a></p>
+--%>
+    <p><a id="applyTrial"  onclick="validateCodeJS.applyTrial()">继续</a></p>
     </section>
+    <input id="skuId" value="${skuId}" style="display: none"/>
+    <input id="pUserId" value="${pUserId}" style="display: none"/>
+    <input id="skipPageId" value="register" style="display: none" />
+    <div class="back" style="display: none">
+        <div class="back_j">
+            <p>绑定账号</p>
+            <div>
+                <p>手机号：<input type="tel" id = "phoneId"></p>
+                <em id="phoneErrorId"></em>
+            </div>
+            <div class="d">
+                <p>验证码：<input type="tel" id="validateNumberDataId">
+                    <botton id="validateNumberId"  >获取验证码</botton>
+                </p>
+                <em id="validateNameErrorId"></em>
+            </div>
+            <h1 class="j_qu" id="nextPageId">下一步</h1>
+        </div>
+    </div>
 </main>
+<script src="<%=path%>/static/js/validateCode.js"></script>
+<script>
+    $(document).ready(function(){
+        validateCodeJS.initPage();
+    })
+</script>
 </body>
 </html>

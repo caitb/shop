@@ -43,6 +43,13 @@ public interface ComUserMapper {
     int updateByPrimaryKey(ComUser record);
 
     /**
+     * 更新手机号
+     * @author hanzengzhi
+     * @date 2016/3/19 17:35
+     */
+    int updatePhone(ComUser record);
+
+    /**
      * 通过手机号获取用户
      * @param mobile
      * @return

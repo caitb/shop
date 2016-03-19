@@ -72,18 +72,42 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku">
-        update pf_user_sku
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-        code = #{code,jdbcType=VARCHAR},
-        pid = #{pid,jdbcType=INTEGER},
-        user_id = #{userId,jdbcType=BIGINT},
-        sku_id = #{skuId,jdbcType=INTEGER},
-        agent_level_id = #{agentLevelId,jdbcType=INTEGER},
-        is_pay = #{isPay,jdbcType=INTEGER},
-        is_certificate = #{isCertificate,jdbcType=INTEGER},
-        pf_border_id = #{pfBorderId,jdbcType=BIGINT},
-        remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
+        update
+               pf_user_sku
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="skuId != null">
+                sku_id = #{skuId,jdbcType=INTEGER},
+            </if>
+            <if test="agentLevelId != null">
+                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="isPay != null">
+                is_pay = #{isPay,jdbcType=INTEGER},
+            </if>
+            <if test="isCertificate != null">
+                is_certificate = #{isCertificate,jdbcType=INTEGER},
+            </if>
+            <if test="pfBorderId != null">
+                pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">

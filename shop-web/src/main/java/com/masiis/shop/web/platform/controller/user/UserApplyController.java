@@ -10,8 +10,6 @@ import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
-import com.masiis.shop.web.platform.utils.MobileMessageUtil;
-import org.apache.commons.collections.set.CompositeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -199,10 +197,6 @@ public class UserApplyController {
                                                 @RequestParam(value = "amount", required = true) BigDecimal amount,
                                                 @RequestParam(value = "pUserId", required = true) Long pUserId,
                                                 @RequestParam(value = "pMobile", required = true) String pMobile) {
-//        ComUser comUser = userService.getUserByMobile(parentMobile);
-//        if (comUser == null) {
-//            throw new BusinessException("");
-//        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/zhuce2");
         modelAndView.addObject("name", name);
@@ -229,5 +223,36 @@ public class UserApplyController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/shenqingok");
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping("/checkPMobile.do")
+    public String checkPMobile(HttpServletRequest request,
+                               @RequestParam(value = "skuId", required = true) Integer skuId,
+                               @RequestParam(value = "pMobile", required = true) String pMobile) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (StringUtils.isBlank(pMobile)) {
+                throw new BusinessException("推荐人电话不能为空");
+            }
+            ComUser comUser = userService.getUserByMobile(pMobile);
+            if (comUser == null) {
+                throw new BusinessException("推荐人电话有误");
+            }
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
+            if (pfUserSku == null) {
+                throw new BusinessException("推荐人还没有代理过此产品");
+            }
+            if (pfUserSku.getAgentLevelId() == 3) {
+                throw new BusinessException("推荐人等级原因无法发展下级代理");
+            }
+            jsonObject.put("isError", false);
+            jsonObject.put("pUserId", comUser.getId());
+            jsonObject.put("levelId", pfUserSku.getAgentLevelId());
+        } catch (Exception ex) {
+            jsonObject.put("isError", true);
+            jsonObject.put("message", ex.getMessage());
+        }
+        return jsonObject.toJSONString();
     }
 }

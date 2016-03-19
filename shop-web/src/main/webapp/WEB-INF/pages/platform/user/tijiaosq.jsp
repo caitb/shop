@@ -70,7 +70,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.isError == false) {
-                        alert(1);
+                        window.location.href = "<%=basePath%>userApply/applyOK.shtml";
                     }
                     else {
                         alert(data.message);

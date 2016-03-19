@@ -32,6 +32,7 @@ $(function () {
         return true;
     }
     var mobileCheckFun = function (data) {
+        var bl = true;
         if ($('input[name="danx"]:checked').attr("class") == "shi") {
             if ($(data).val() == "") {
                 $(data).parent().find("span").show();
@@ -46,8 +47,36 @@ $(function () {
                 $(data).parent().find("b").html("手机号格式不正确");
                 return false;
             }
+            var para = {};
+            para.skuId = skuId;
+            para.pMobile = $(data).val();
+            $.ajax({
+                url: path + "userApply/checkPMobile.do",
+                data: para,
+                dataType: "json",
+                type: "POST",
+                async: false,
+                success: function (rdata) {
+                    if (rdata && rdata.isError == false) {
+                        pUserId = rdata.pUserId;
+                        var levelId = rdata.levelId;
+                        var checkLevelId = $(".dengji .on").attr("levelId");
+
+                    } else {
+                        $(data).parent().find("span").show();
+                        $(data).css({"color": "#F74A11"})
+                        $(data).parent().find("b").html(rdata.message);
+                        bl = false;
+                    }
+                }
+            });
         }
-        return true;
+        if (bl) {
+            return true;
+        }
+        else {
+            return false;
+        }
         function isMobile(s) {
             var patrn = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
             if (!patrn.exec(s)) {

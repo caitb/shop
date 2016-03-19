@@ -219,9 +219,10 @@ body .back .back_j div p input {
 body .back .back_j div em {
   font-size: 12px;
   position: absolute;
-  left: 23%;
+  right: 5px;
   top: 46%;
   display: none;
+  text-align: right;
 }
 body .back .back_j .d {
   margin-top: 0;
@@ -262,6 +263,7 @@ body footer .sec3 {
   height: 42px;
 }
 body footer .sec3 p {
+  width: 1px;
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
@@ -282,7 +284,6 @@ body footer .sec3 p:nth-child(1) {
   -moz-box-flex: 1;
 }
 body footer .sec3 p:nth-child(2) {
-  -webkit-box-flex: 2;
-  -moz-box-flex: 2;
+  -webkit-box-flex: 1;
   background: #DA3600;
 }

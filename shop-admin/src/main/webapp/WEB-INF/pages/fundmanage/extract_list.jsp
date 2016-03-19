@@ -68,7 +68,7 @@
                                data-page-list="[10, 25, 50, 100, ALL]"
                                data-show-footer="false"
                                data-side-pagination="server"
-                               data-url="<%=basePath%>extract/list.do"
+                               data-url="<%=basePath%>fundmanage/extract/list.do"
                                data-response-handler="responseHandler">
                         </table>
                         <script>

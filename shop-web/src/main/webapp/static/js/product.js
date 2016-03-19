@@ -11,6 +11,7 @@
                 $.ajax({
                     url: '/corder/isApplyTrial.do',
                     type: 'post',
+                    async:false,
                     data: {"skuId": productJS.skuId},
                     success: function (data) {
                         var dataObj = eval("(" + data + ")");//转换为json对象
@@ -66,12 +67,14 @@
                                 productJS.times();
                             } else {
                                 alert("短信发送失败,请重试!");
+                                productJS.times();
                             }
                         }
                     });
                 }
             },
             checkPhone: function () {
+                productJS.phone = $("#phoneId").val();
                 if (productJS.phone == null || productJS.phone == "") {
                     $("#phoneErrorId").empty();
                     $("#phoneErrorId").html("手机号不能为空");
@@ -96,31 +99,32 @@
                     return true;
                 }
             },
+            s:60,
+            t:"",
             times: function () {
-                var s = 60, t;
-                s--;
-                $("#validateNumberId").html("剩余" + s + "s");
+                productJS.s--;
+                $("#validateNumberId").html("剩余" + productJS.s + "s");
                 $("#validateNumberId").attr("disabled", true);
-                t = setTimeout(function () {
-                    times();
+                productJS.t = setTimeout(function () {
+                    productJS.times();
                 }, 1000);
-                if (s <= 0) {
-                    s = 60;
+                if (productJS.s <= 0) {
+                    productJS.s = 60;
                     $("#validateNumberId").attr("disabled", false);
                     $("#validateNumberId").html("重新获取验证码");
-                    clearTimeout(t);
+                    clearTimeout(productJS.t);
                 }
             },
             toNextPage: function () {
-                if (productJS.isValidateNumber) {
-                    productJS.toConfirmOrderPage();
-                }else{
-                    alert("验证码输入不正确");
-                    productJS.toConfirmOrderPage();
-                }
+                productJS.checkPhone()?(productJS.isValidateNumber()?(productJS.toConfirmOrderPage()?"":""):false) :false;
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();
+                $("#validateNameErrorId").attr("style","display:block");
+                if (verificationCode==null||verificationCode==""){
+                    $("#validateNameErrorId").html("验证码不能为空");
+                    return false;
+                }
                 var bl = false;
                 $.ajax({
                     type: "POST",
@@ -130,13 +134,16 @@
                     dataType: "Json",
                     success: function (result) {
                         if (result) {
+                            $("#validateNameErrorId").empty();
                             bl = true;
                         } else {
                             bl = false;
-                            alert("验证码输入错误");
+                            $("#validateNameErrorId").empty();
+                            $("#validateNameErrorId").html("验证码输入错误");
                         }
                     }
                 })
+                return bl;
             },
             toConfirmOrderPage: function () {
                 window.location.href = "/corder/confirmOrder.do?skuId=" + productJS.skuId;

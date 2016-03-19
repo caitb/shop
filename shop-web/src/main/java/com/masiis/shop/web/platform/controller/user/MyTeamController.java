@@ -89,12 +89,35 @@ public class MyTeamController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/memberInfo");
 
-            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId);
+            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, null);
             mav.addObject("memberMap", memberMap);
 
             return mav;
         } catch (Exception e) {
             log.error("获取团队成员信息失败!");
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+
+    @RequestMapping("/toaudit")
+    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response,
+                                Long comUserId,
+                                Integer skuId,
+                                Integer agentLevelId,
+                                Integer userSkuId){
+
+        try {
+            ModelAndView mav = new ModelAndView("platform/user/audit");
+
+            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
+            mav.addObject("memberMap", memberMap);
+
+            return mav;
+        } catch (Exception e) {
+            log.error("获取被审核人信息失败!");
             e.printStackTrace();
 
             return null;

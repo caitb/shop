@@ -44,7 +44,7 @@
         </div>
         <div class="wei">
             <c:forEach items="${teamMaps.noAuditTeamMaps}" var="noAuditTeamMap">
-            <div class="sec1">
+            <div class="sec1"  onclick="javascript:window.location.replace('<%=basePath%>myteam/toaudit?comUserId=${noAuditTeamMap.comUserId}&skuId=${noAuditTeamMap.skuId}&agentLevelId=${noAuditTeamMap.agentLevelId}&userSkuId=${noAuditTeamMap.userSkuId}');">
                 <img src="${noAuditTeamMap.comUserImg}" alt="">
                 <p>
                     <b>队员姓名：<em>${noAuditTeamMap.comUserName}</em></b>

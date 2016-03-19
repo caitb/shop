@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.controller.extract;
+package com.masiis.shop.admin.controller.fundmanage;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/extract")
+@RequestMapping("/fundmanage/extract")
 public class ExtractApplyController extends BaseController {
 
     @Resource
@@ -32,7 +32,7 @@ public class ExtractApplyController extends BaseController {
 
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response) {
-        return "extract/extract_list";
+        return "fundmanage/extract_list";
     }
 
     @RequestMapping("list.do")

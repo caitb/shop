@@ -171,6 +171,7 @@ public class MyTeamService {
     public void audit(Integer userSkuId, Long pfUserCertificateId, Integer status, String reason, String rootPath){
         PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByPrimaryKey(pfUserCertificateId);
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
+        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
 
         pfUserCertificate.setStatus(status);
         pfUserCertificate.setReason(reason);
@@ -180,14 +181,12 @@ public class MyTeamService {
         curDate.setYear(curDate.getYear()+1);
         pfUserCertificate.setEndTime(curDate);
 
-        String bgPic = null;
-
         String name = comUser.getRealName();
         String value1 = "证件号：" + comUser.getIdCard() + "，手机：" + comUser.getMobile() + "，微信：" + comUser.getWxId();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         String value2 = "授权期限：" + sdf.format(pfUserCertificate.getBeginTime()).toString() + "至" + sdf.format(pfUserCertificate.getEndTime()).toString() + "，证书编号" + pfUserCertificate.getCode();
         String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-        String picName = uploadFile(webappPath + "/static/images/" + bgPic, new String[]{name, value1, value2});
+        String picName = uploadFile(webappPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
 
         pfUserCertificate.setImgUrl(picName + ".jpg");
 

@@ -230,14 +230,6 @@
             </if>
         </where>
     </select>
-
-    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
-        select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark
-        from pf_user_sku
-        where user_id = #{userId}
-        and sku_id = #{skuId}
-    </select>
 </mapper>
 
 

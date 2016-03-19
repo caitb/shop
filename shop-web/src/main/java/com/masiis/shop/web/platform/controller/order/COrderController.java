@@ -118,7 +118,6 @@ public class COrderController extends BaseController {
 
     /**
      * 试用申请支付
-     *
      * @author hanzengzhi
      * @date 2016/3/5 13:46
      */
@@ -128,6 +127,7 @@ public class COrderController extends BaseController {
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
             @RequestParam(value = "addressId", required = true) Long addressId,
+            @RequestParam(value = "reason",required = false) String reason,
             RedirectAttributes attrs) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         WxPaySysParamReq wpspr = null;
@@ -144,7 +144,7 @@ public class COrderController extends BaseController {
             //获得产品信息
             Product product = cOrderService.getProductDetail(skuId);
             //订单
-            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product);
+            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product,reason);
             //订单日志
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
             //收获地址
@@ -167,7 +167,7 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/15 10:47
      */
-    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product) {
+    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product,String reason) {
         SfUserRelation sfUserRelation = trialService.findPidById(userId);
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
@@ -181,6 +181,7 @@ public class COrderController extends BaseController {
         pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
         pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
         pfCorder.setPayAmount(new BigDecimal(0));
+        pfCorder.setUserMassage(reason);
         if (sfUserRelation != null) {
             pfCorder.setUserPid(sfUserRelation.getParentUserId());
         }

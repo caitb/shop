@@ -35,7 +35,7 @@
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span>申请提现</span></p>
+                    <p>可提现<span><a href="<%=basePath%>">申请提现</a></span></p>
                     <h1>￥12313.00</h1>
                 </li>
                 <li>

@@ -42,7 +42,7 @@
                            <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if><c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==0}"> <b class="querenshouhuo_${pb.id}">等待发货</b></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==5}"><b class="querenshouhuo_${pb.id}">等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                             </h2>
                             <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">
@@ -63,7 +63,7 @@
                                 <p><a href="<%=path%>/userCenterController/borderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
                                 <span class="jixu">
                                     <a href="buhuodingdan.html">继续支付</a>
-                                </span></c:if><c:if test="${pb.orderStatus ==1}">
+                                </span></c:if><c:if test="${pb.orderStatus ==1 && pb.shipStatus==5}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>

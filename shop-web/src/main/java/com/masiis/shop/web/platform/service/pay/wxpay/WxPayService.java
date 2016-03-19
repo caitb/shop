@@ -66,7 +66,7 @@ public class WxPayService {
                 res.setBody(body.substring(0, body.length() - 1));
                 // 给外部支付的是系统的支付流水号,自己生成
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
-                res.setTotal_fee("1");
+                res.setTotal_fee(order.getReceivableAmount().multiply(new BigDecimal(100)).intValue() + "");
                 log.info("订单类型orderType:B");
             } else if ("C".equals(orderType)) {
                 log.info("订单类型为C,订单编号为:" + req.getOrderId());
@@ -81,7 +81,7 @@ public class WxPayService {
                 }
                 res.setBody(sku.getName());
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
-                res.setTotal_fee("1");
+                res.setTotal_fee(order.getReceivableAmount().multiply(new BigDecimal(100)).intValue() + ""); //res.setTotal_fee("1");
                 log.info("订单类型orderType:B");
             } else {
                 throw new BusinessException("订单号错误,不存在该订单号!");

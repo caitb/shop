@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.ComUserAccount;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface ComUserAccountMapper {
     int deleteByPrimaryKey(Long id);
 

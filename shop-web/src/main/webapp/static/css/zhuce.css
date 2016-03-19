@@ -32,7 +32,7 @@
   -moz-box-orient: vertical;
 }
 .wrap #box main .sec1 div p {
-  text-indent: 25px;
+  text-indent: 10px;
   color: #333333;
   line-height: 40px;
   font-size: 14px;
@@ -51,7 +51,7 @@
   right: 13px;
   top: 28px;
   background: url("../images/icon_33.png") no-repeat;
-  background-size: 100% 100%;
+  background-size: contain;
   color: white;
   padding: 10px 20px;
   text-indent: 0;
@@ -119,7 +119,7 @@
   text-indent: 10px;
 }
 .wrap #box main .sec2 > h3 {
-  margin: 0 25px;
+  margin: 0 10px;
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
 }
@@ -148,23 +148,22 @@
 .wrap #box main .sec2 div h3 {
   position: relative;
   margin-right: 10px;
-  text-indent: 25px;
+  text-indent: 10px;
   color: #333333;
   line-height: 40px;
   font-size: 14px;
 }
 .wrap #box main .sec2 div h3 .gao {
   position: absolute;
-  right: 21px;
-  top: 4px;
+  right: 2px;
+  top: 28px;
   background: url("../images/icon_33.png") no-repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 10px;
   text-indent: 0;
   z-index: 100;
   display: none;
-  padding-left: 14px;
 }
 .wrap #box main .sec2 div h3 b {
   font-size: 12px;
@@ -196,8 +195,8 @@
   color: #999999;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
-  text-indent: 50px;
-  background: url("../images/icon_14.png") no-repeat 27px;
+  text-indent: 35px;
+  background: url("../images/icon_14.png") no-repeat 10px;
   background-size: 5%;
   font-size: 13px;
 }

@@ -17,9 +17,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
     <script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script type="application/javascript">
-        $(function(){
-            choiceBank();
-        });
         function choiceBank(){
             alert("ads");
         }
@@ -35,7 +32,7 @@
             <p>提现到银行卡</p>
             <div class="sec2" onclick="choiceBank()">
                 <c:choose>
-                    <c:when test="${hasCard == null}">
+                    <c:when test="${hasCard == true}">
                         <img src="<%=path%>/static/images/icon_57.png" alt="">
                         <p>
                             <span><em>${extractwayInfo.bankName}</em></span>

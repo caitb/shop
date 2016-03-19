@@ -61,7 +61,6 @@
                                 validateCodeJS.times();
                             } else {
                                 alert("短信发送失败,请重试!");
-                                validateCodeJS.times();
                             }
                         }
                     });
@@ -127,10 +126,9 @@
                     async: false,
                     url: "/binding/verificationCode.do",
                     data: "verificationCode=" + verificationCode + "&phone=" + validateCodeJS.phone,
-                    dataType: "Json",
+                    dataType: "text",
                     success: function (result) {
-                        alert(result);
-                        if (result) {
+                        if (result=="true") {
                             $("#validateNameErrorId").empty();
                             bl = true;
                         } else {
@@ -151,7 +149,6 @@
                     data: "phone=" + validateCodeJS.phone,
                     dataType: "text",
                     success: function (result) {
-                        alert(result);
                         if (result=="true") {
                             validateCodeJS.skipPage();
                         } else {

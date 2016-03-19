@@ -89,16 +89,16 @@ public class BindingController {
 
     @RequestMapping("verificationCode.do")
     @ResponseBody
-    public Boolean VerificationCode(HttpServletRequest request, HttpServletResponse response, String phone ,String verificationCode) throws Exception{
+    public String VerificationCode(HttpServletRequest request, HttpServletResponse response, String phone ,String verificationCode) throws Exception{
         JSONObject result = new JSONObject();
 //        HttpSession session = request.getSession();
 //        Object attribute = session.getAttribute(SMSConstants.CKCODE_RESET_PWD_NAME);
         String identifyingCode = MobileMessageUtil.getIdentifyingCode(phone);
         if(identifyingCode.equals(verificationCode)) {
-            return true;
+            return "true";
             //result.put("msg","验证成功");
         }else{
-            return false;
+            return "false";
             //result.put("msg","验证失败");
         }
     }

@@ -23,5 +23,5 @@ public interface ComUserExtractwayInfoMapper {
 
     ComUserExtractwayInfo selectByBankcardAndCardownername(ComUserExtractwayInfo record);
 
-    List<ComUserExtractwayInfo> selectByUserid(Long id);
+    List<ComUserExtractwayInfo> selectByUserId(Long userId);
 }

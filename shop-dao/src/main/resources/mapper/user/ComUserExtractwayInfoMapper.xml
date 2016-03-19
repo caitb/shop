@@ -28,7 +28,7 @@
             changed_time, changed_by)
         values (#{id,jdbcType=BIGINT}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
             #{depositBankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, #{comUserId,jdbcType=BIGINT}, 
-            #{extractWay,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, #{cardImg,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP},
+            #{extractWay,jdbcType=BIGINT},#{cardImg,jdbcType=VARCHAR}, #{isEnable,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP},
             #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR})
     </insert>
 

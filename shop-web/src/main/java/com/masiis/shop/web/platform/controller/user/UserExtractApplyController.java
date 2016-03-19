@@ -41,10 +41,19 @@ public class UserExtractApplyController extends BaseController {
         if(account == null){
             log.error("系统错误,请联系管理员!");
         }
-        List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserid(user.getId());
-        if(extractwayInfos == null || extractwayInfos.size() <= 0){
-
+        List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserId(user.getId());
+        boolean hasCard = false;
+        ComUserExtractwayInfo extractwayInfo = null;
+        if(extractwayInfos != null && extractwayInfos.size() > 0){
+            hasCard = true;
+            extractwayInfo = extractwayInfos.get(0);
         }
+
+        String extractMoney = account.getExtractableFee().toString();
+
+        model.addAttribute("extractMoney", extractMoney);
+        model.addAttribute("extractwayInfo", extractwayInfo);
+        model.addAttribute("hasCard", hasCard);
         return "platform/user/extract_apply";
     }
 }

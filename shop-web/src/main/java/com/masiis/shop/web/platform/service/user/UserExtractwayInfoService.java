@@ -52,24 +52,28 @@ public class UserExtractwayInfoService {
      * @param cardOwnerName    持卡人姓名
      * @return
      */
-    public ComUserExtractwayInfo ByBankcardAndCardownernamefind(String bankCard,String cardOwnerName){
+    public ComUserExtractwayInfo findByBankcardAndCardownername(String bankCard,String cardOwnerName){
         ComUserExtractwayInfo comUserExtractwayInfo = new ComUserExtractwayInfo();
         comUserExtractwayInfo.setBankCard(bankCard);
         comUserExtractwayInfo.setCardOwnerName(cardOwnerName);
         return comUserExtractwayInfoMapper.selectByBankcardAndCardownername(comUserExtractwayInfo);
     }
 
+    /**
+     * 通过主键更新
+     * @param comUserExtractwayInfo
+     * @return
+     */
     public int updataComUserExtractwayInfo(ComUserExtractwayInfo comUserExtractwayInfo){
         return comUserExtractwayInfoMapper.updateByPrimaryKey(comUserExtractwayInfo);
     }
 
     /**
-     * 查询该用户的提现方式信息
-     *
-     * @param id
+     * 通过用户id查询
+     * @param userId 用户id
      * @return
      */
-    public List<ComUserExtractwayInfo> findByUserid(Long id) {
-        return comUserExtractwayInfoMapper.selectByUserid(id);
+    public List<ComUserExtractwayInfo> findByUserId(Long userId){
+        return comUserExtractwayInfoMapper.selectByUserId(userId);
     }
 }

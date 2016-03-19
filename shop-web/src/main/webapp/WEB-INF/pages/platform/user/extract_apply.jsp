@@ -17,9 +17,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
     <script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script type="application/javascript">
-        $(function(){
-            choiceBank();
-        });
         function choiceBank(){
             alert("ads");
         }
@@ -35,22 +32,29 @@
             <p>提现到银行卡</p>
             <div class="sec2" onclick="choiceBank()">
                 <c:choose>
-                    <c:when test="${}">
+                    <c:when test="${hasCard == true}">
                         <img src="<%=path%>/static/images/icon_57.png" alt="">
                         <p>
-                            <span><em>交通银行</em></span>
-                            <span>持卡人:<b>张云</b>卡号:<b>1231231231231231233</b></span>
+                            <span><em>${extractwayInfo.bankName}</em></span>
+                            <span>
+                                持卡人:
+                                <b>${extractwayInfo.cardOwnerName}</b>
+                                卡号:
+                                <b>${extractwayInfo.bankCard}</b>
+                            </span>
                         </p>
                     </c:when>
                     <c:otherwise>
-
+                        <div class="xinz" style="margin-bottom:5px;">
+                            <p><a href="../html/xinjianka.html" style="color:#333;">新增银行卡</a></p>
+                        </div>
                     </c:otherwise>
                 </c:choose>
             </div>
             <h1>
                 转出金额<input type="text" placeholder="输入金额" style="font-size:14px;">
             </h1>
-            <h2>您当前可体检的金额为<span>￥123123.00</span></h2>
+            <h2>您当前可提现的金额为<span>￥${extractMoney}</span></h2>
             <botton>
                 提现
             </botton>
@@ -58,7 +62,7 @@
     </div>
     <div class="back">
         <div class="back_que">
-            <p>确认减库存?</p>
+            <p>确认提现请求?</p>
             <h4><span>提现金额:</span><span>抗引力-手链</span></h4>
             <h4><span>提现方式:</span><span>抗引力-手链</span></h4>
             <h4><span>银行卡号:</span><span>抗引力-手链</span></h4>

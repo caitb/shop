@@ -71,7 +71,7 @@
                     <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble"><span class="onc"></span><b
                             class="gao"></b></h3>
                 </div>
-                <h2 style="text-indent:25px;font-weight:500">合伙人等级：</h2>
+                <h2 style="text-indent:10px;font-weight:500">合伙人等级：</h2>
                 <div class="dengji">
                     ${agentInfo}
                 </div>

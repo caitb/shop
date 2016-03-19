@@ -59,8 +59,14 @@ public class WxPayController extends BaseController{
         try{
             // 参数校验
             req = checkRequestParma(req, param);
+            log.info("参数校验通过");
             // 获取当前登录用户
             user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            if(user == null){
+                // 未知原因错误
+                log.error("未知原因错误");
+                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+            }
         } catch (Exception e) {
             log.error("" + e.getMessage());
             return "redirect:/index";

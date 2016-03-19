@@ -1,11 +1,13 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -31,7 +33,7 @@ public class MyTeamController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(6L);
+            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(1L);
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;
@@ -121,6 +123,34 @@ public class MyTeamController {
             e.printStackTrace();
 
             return null;
+        }
+    }
+
+    /**
+     * 证书审核
+     * @param request
+     * @param response
+     * @param userSkuId
+     * @param pfUserCertificateId
+     * @param status
+     * @param reason
+     * @return
+     */
+    @RequestMapping("/audit")
+    @ResponseBody
+    public Object audit(HttpServletRequest request, HttpServletResponse response,
+                        Integer userSkuId,
+                        Long pfUserCertificateId,
+                        Integer status,
+                        String reason){
+
+        try {
+            myTeamService.audit(userSkuId, pfUserCertificateId, status, reason, request.getServletContext().getRealPath("/"));
+            return "success";
+        } catch (Exception e) {
+            log.error("审核失败![userSkuId="+userSkuId+"][pfUserCertificateId="+pfUserCertificateId+"]");
+            e.printStackTrace();
+            return "error";
         }
     }
 }

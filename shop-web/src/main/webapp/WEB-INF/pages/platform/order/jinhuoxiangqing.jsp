@@ -28,7 +28,13 @@
             </header>
             <div class="tai"><c:if test="${borderDetail.pfBorder.orderStatus==0}">
                            <h1>未付款</h1>
-                           <p>亲，未付款的订单可以保留7天~~</p></c:if><c:if test="${borderDetail.pfBorder.orderStatus==0}">
+                           <p>亲，未付款的订单可以保留7天~~</p></c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==0}"><h1>待发货</h1>
+                    <p>亲，卖家会很快发货~~</p></c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==5}"><h1>待收货</h1>
+                    <p>亲，卖家已发货~~</p></c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==3 }"><h1>已完成</h1>
+                    <p>亲，交易完成~~</p></c:if>
             </div>
             <div class="kuaidi"> <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
                 <p>承运公司：<span>${bdpb.shipManName}</span></p>
@@ -61,23 +67,23 @@
             <section class="sec4">
                 <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}元</span></p>
                 <p>运费：<span>￥${borderDetail.pfBorder.shipAmount}元</span></p>
-                <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　运费：<span>￥${borderDetail.pfBorder.orderAmount}</span>　<b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.payAmount}</span></h1>
+                <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　运费：<span>￥${borderDetail.pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.orderAmount}</span></h1>
             </section>
             <div class="sec5">
                 <p>订单编号：<span>${borderDetail.pfBorder.orderCode}</span></p>
                 <p>创建时间：<span><fmt:formatDate value="${borderDetail.pfBorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>付款时间：<span><fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-            </div>
-            <botton class="btn">
+            </div><c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==5}">
+            <botton class="btn" onclick="querenshouhuo('${borderDetail.pfBorder.id}','${borderDetail.pfBorder.orderStatus}','${borderDetail.pfBorder.shipStatus}') ">
                 确认收货
-            </botton>
+            </botton></c:if>
             <h3></h3>
         </main>
         <div class="back">
                 <div class="back_que">
-                    <p>确认减库存?</p>
-                    <h4>亲，请您核对却是厚道商品后在操作确认收货</h4>
+                    <p>确认收货?</p>
+                    <h4>亲，请您核对商品后在操作确认收货</h4>
 
                     <h3>
                         <span class="que_qu">取消</span>
@@ -86,6 +92,37 @@
                 </div>
     </div>
     </div>
-    
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script>
+        var myScroll = new IScroll("main",{
+            preventDefault: false
+        })
+
+//        $(".btn").on("click",function(){
+//            $(".back").css("display","-webkit-box");
+//            $(".back_que").css("display","-webkit-box");
+//        })
+        function querenshouhuo(id,orderStatus,shipStatus){
+            $(".back").css("display","-webkit-box");
+            $(".back_que").css("display","-webkit-box");
+            $(".que_que").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/border/closeDeal.do",
+                    data:{orderStatus:3,orderId:id,shipStatus:9},
+                    dataType:"Json",
+                    success:function(date){
+                        $(".btn").html("已完成");
+                    }
+                })
+            })
+        }
+        $(".que_qu").on("click",function(){
+            $(".back_shouhuo").hide();
+            $(".back").hide();
+        })
+    </script>
 </body>
 </html>

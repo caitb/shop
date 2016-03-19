@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.base;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
 
@@ -101,4 +103,18 @@ public class BaseController {
         }
         return user;
     }
+
+    protected String aesEncryptBySalt(String content, String password, String salt){
+        return AESUtils.encrypt(content + salt, password);
+    }
+
+    protected String aesDecryptBySalt(String content, String password, String salt){
+        String res = AESUtils.decrypt(content, password);
+        int end = res.lastIndexOf(salt);
+        if(end > 0){
+            res = res.substring(0, end);
+        }
+        return res;
+    }
+
 }

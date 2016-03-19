@@ -60,22 +60,20 @@
         </p>
         <div>
             <h2>${product.name}<span>x1</span></h2>
-            <h3>规格：<span>默认</span></h3>
+            <h3>规格：<span>试用装</span></h3>
             <p>￥0</p>
         </div>
     </section>
     <section class="sec3">
         <p>运费<span>${product.shipAmount}</span></p>
-        <p>留言：<input type="text"></p>
+        <p>试用理由：<input type="text"></p>
         <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
     </section>
     <section class="sec4">
-        <p>合计：<span>${product.shipAmount}</span></p>
         <p>运费：<b>${product.shipAmount}</b></p>
-        <p>需付：<span>￥${product.shipAmount}</span></p>
+        <p>共支付：<span>￥${product.shipAmount}</span></p>
     </section>
     <a href="javascript:weChatPay();" class="weixin">微信支付</a>
-    <a href="javascript:;" class="xianxia">线下支付</a>
 </main>
 </body>
 <script>

@@ -212,9 +212,6 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-success">通过申请</button>
             <button type="button" class="btn btn-danger">拒绝申请</button>
-            <%--<button type="button" class="btn btn-primary" id="userSubmit">
-                提交
-            </button>--%>
         </div>
     </div>
 </div>

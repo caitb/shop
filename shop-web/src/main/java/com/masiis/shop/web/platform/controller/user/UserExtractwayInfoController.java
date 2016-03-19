@@ -211,17 +211,24 @@ public class UserExtractwayInfoController extends BaseController {
 
     /**
      * 设置银行卡为支付默认卡号
-     * @param userId
      * @param id
      * @return
      */
     @RequestMapping(value = "/setbankdefault.do")
     @ResponseBody
-    public String setBankDefault(@RequestParam(value = "userId",required = true) String userId ,
-                                 @RequestParam(value = "id",required = true) String id){
+    public String setBankDefault(@RequestParam(value = "id",required = true) String id,
+                                 HttpServletRequest request){
+
+        ComUser user = getComUser(request);
+//        if (user == null){
+//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+//        }
+//        Long userId = user.getId();
+//        log.info("userId="+userId);
+        Long userId = Long.valueOf(1);
         log.info("userId:"+userId);
         log.info("id:"+id);
-        List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(Long.valueOf(userId));
+        List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
         JSONObject jsonobject = new JSONObject();
         try{
             for (ComUserExtractwayInfo info:list){

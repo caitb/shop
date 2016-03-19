@@ -48,13 +48,12 @@
         $(".sec1").on("click",function(){
             $(this).addClass("on").siblings().removeClass("on")
             var id = $(this).attr("id");
-            alert(id);
             $("#selectId").val(id);
             $.ajax({
                 type:"POST",
                 async:false,
                 url : "<%=path%>/extractwayinfo/setbankdefault.do",
-                data:{userId:${userId},id:id},
+                data:{id:id},
                 dataType:"Json",
                 beforeSend:function(){
 

@@ -26,20 +26,20 @@
   text-decoration: underline;
   margin-left: 20px;
 }
-.wrap main div:nth-child(10) {
+.wrap main div:nth-child(8) {
   display: -webkit-box;
   margin: 0 10px;
 }
-.wrap main div:nth-child(10) h1 {
+.wrap main div:nth-child(8) h1 {
   -webkit-box-flex: 1;
   width: 1px;
   text-align: center;
 }
-.wrap main div:nth-child(10) h1 img {
+.wrap main div:nth-child(8) h1 img {
   display: block;
   width: 100%;
 }
-.wrap main div:nth-child(10) h1:first-child {
+.wrap main div:nth-child(8) h1:first-child {
   margin-right: 10px;
   border-radius: 5px;
   overflow: hidden;
@@ -50,7 +50,7 @@
   display: -webkit-box;
   -webkit-box-pack: center;
 }
-.wrap main footer button {
+.wrap main footer botton {
   display: block;
   padding: 5px 30px;
   background: #E7E7E7;

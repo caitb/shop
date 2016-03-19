@@ -146,7 +146,7 @@ $(function () {
                     }
                     $("#q_levelName").html($(".dengji .on [name='levelName']"));
                     $("#q_amount").html($(".dengji .on [name='amount']"));
-                    $(".back").show();
+                    $(".back").css("display", "-webkit-box");
                 } else {
                     alert(data.message);
                 }

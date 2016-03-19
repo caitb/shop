@@ -149,7 +149,7 @@
                     data: "phone=" + validateCodeJS.phone,
                     dataType: "Json",
                     success: function (result) {
-                        if (result) {
+                        if (result=="true") {
                             validateCodeJS.skipPage();
                         } else {
                             alert("绑定手机号失败");

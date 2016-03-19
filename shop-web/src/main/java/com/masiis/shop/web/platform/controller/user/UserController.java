@@ -41,7 +41,7 @@ public class UserController {
     @ResponseBody
     public String isBindPhone(HttpServletRequest request,HttpServletResponse response){
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        if (comUser != null&&!comUser.getMobile().equals("")){
+        if (comUser != null&&!StringUtils.isEmpty(comUser.getMobile())){
             return "true";
         }else {
             return "false";

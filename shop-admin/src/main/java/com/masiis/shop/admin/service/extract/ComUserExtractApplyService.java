@@ -33,4 +33,16 @@ public class ComUserExtractApplyService {
     public ExtractApply findById(Long id) {
         return comUserExtractApplyMapper.findById(id);
     }
+
+    public void pass(Long id) {
+        comUserExtractApplyMapper.pass(id);
+    }
+
+    public void refuse(Long id) {
+        comUserExtractApplyMapper.refuse(id);
+    }
+
+    public void pay(Long id) {
+        comUserExtractApplyMapper.pay(id);
+    }
 }

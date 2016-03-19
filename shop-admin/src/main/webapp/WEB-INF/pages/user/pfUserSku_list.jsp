@@ -554,8 +554,8 @@
             location.reload();
         })*/
         //更改上级
-        function changeLeader(){
-            var approveId = $("#approveId").val();
+        function changeLeader(approveId){
+            //var approveId = $("#approveId").val();
             $.ajax({
                 type: "GET",
                 url: '<%=basePath%>certificate/listUpper.do',

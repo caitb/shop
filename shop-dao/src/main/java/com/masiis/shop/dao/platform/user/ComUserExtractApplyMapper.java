@@ -27,4 +27,10 @@ public interface ComUserExtractApplyMapper {
     List<ExtractApply> getExtractApplyList();
 
     ExtractApply findById(Long id);
+
+    void pass(Long id);
+
+    void refuse(Long id);
+
+    void pay(Long id);
 }

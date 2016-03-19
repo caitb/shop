@@ -129,4 +129,15 @@
         WHERE cuea.id = #{id}
     </select>
 
+
+    <update id="pass">
+          update com_user_extract_apply set audit_type = 2 where id = #{id}
+    </update>
+    <update id="refuse">
+          update com_user_extract_apply set audit_type = 1 where id = #{id}
+    </update>
+    <update id="pay">
+          update com_user_extract_apply set audit_type = 3 where id = #{id}
+    </update>
+
 </mapper>

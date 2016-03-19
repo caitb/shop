@@ -152,9 +152,10 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            PfUserSku userSku = new PfUserSku();
+            PfUserSku userSku = null;
             PfUserSku checkUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
             if (checkUserSku == null) {
+                userSku = new PfUserSku();
                 userSku.setCreateTime(new Date());
                 if (pfUserSku == null) {
                     userSku.setPid(0);
@@ -252,7 +253,7 @@ public class BOrderController extends BaseController {
         WxPaySysParamReq req = null;
         try {
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            if(!bOrderService.checkBOrderStock(pfBorder)){
+            if (!bOrderService.checkBOrderStock(pfBorder)) {
                 throw new BusinessException("订单商品库存不足");
             }
             pfBorder.setUserMessage(userMessage);
@@ -271,7 +272,7 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
-            bOrderService.toPayBOrder(pfBorder,pfBorderConsignee);
+            bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");

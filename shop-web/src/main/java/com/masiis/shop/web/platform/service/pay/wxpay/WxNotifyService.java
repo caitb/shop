@@ -57,7 +57,7 @@ public class WxNotifyService {
                 } else {
                     log.error("订单支付成功处理失败,系统支付流水号:" + paySerialNum, e);
                     // 普通支付处理失败流程
-
+                    throw new BusinessException(e.getMessage());
                 }
             }
         } else if ("C".equals(orderType)){
@@ -84,7 +84,7 @@ public class WxNotifyService {
                 } else {
                     log.error("订单支付成功处理失败,系统支付流水号:" + paySerialNum, e);
                     // 普通支付处理失败流程
-
+                    throw new BusinessException(e.getMessage());
                 }
             }
         } else {

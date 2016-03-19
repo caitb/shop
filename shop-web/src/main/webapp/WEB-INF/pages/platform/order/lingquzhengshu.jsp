@@ -52,7 +52,7 @@
                 <p>${orderUserSku.superiorName}</p>
             </div>
         </div>
-        <a href="<%=basePath%>userApply/applyOK.shtml" class="lingqu">领取证书</a>
+        <a href="<%=basePath%>userCertificate/setUserCertificate.shtml?userSkuId=${userSkuId}" class="lingqu">领取证书</a>
         <p class="ll">领取证书后可以获得更多特权哦</p>
     </div>
 </main>

@@ -269,6 +269,7 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
+  display: none;
 }
 .wrap .back .back_que {
   width: 90%;
@@ -301,6 +302,7 @@
   width: 1px;
   display: block;
   -webkit-box-flex: 1;
+  margin-left: 10px;
 }
 .wrap .back .back_que h3 {
   margin-top: 10px;

@@ -37,4 +37,6 @@ public class SysConstants {
     public static final String INDEX_PRODUCT_IMAGE_MIN = "index_product_220_220_url";
 
     public static final String SESSION_LOGIN_USER_NAME = "comUser";
+
+    public static final String SYS_RUN_ENVIROMENT_KEY = "sys_run_enviroment_key";
 }

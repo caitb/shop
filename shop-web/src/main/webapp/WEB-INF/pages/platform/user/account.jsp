@@ -29,18 +29,18 @@
     </header>
     <main>
         <div class="ban">
-            <h1>￥<b>23456.00</b></h1>
+            <h1>￥<b>${account.transactionFee}</b></h1>
             <p>累计收入</p>
         </div>
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span>申请提现</span></p>
-                    <h1>￥12313.00</h1>
+                    <p>可提现<span><a href="<%=basePath%>">申请提现</a></span></p>
+                    <h1>￥<span>${account.extractableFee}</span></h1>
                 </li>
                 <li>
                     <p>结算中<b id="countExplainId">?</b></p>
-                    <h1>￥<span>123123.00</span></h1>
+                    <h1>￥<span>${account.countingFee}</span></h1>
                 </li>
             </ul>
         </nav>

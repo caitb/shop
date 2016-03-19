@@ -37,6 +37,10 @@ public class ComUserExtractwayInfo {
      */
     private Long extractWay;
     /**
+     * 银行卡图片相对地址
+     */
+    private String cardImg;
+    /**
      * 是否启用:0,启用; 1,未启用
      */
     private Integer isEnable;
@@ -86,6 +90,15 @@ public class ComUserExtractwayInfo {
     public void setExtractWay(Long extractWay) {
         this.extractWay = extractWay;
     }
+
+    public String getCardImg() {
+        return cardImg;
+    }
+
+    public void setCardImg(String cardImg) {
+        this.cardImg = cardImg;
+    }
+
     public Integer getIsEnable() {
         return isEnable;
     }

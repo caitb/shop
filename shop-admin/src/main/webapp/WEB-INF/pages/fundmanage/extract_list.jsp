@@ -294,8 +294,26 @@
                                                 //field: 'operate',
                                                 title: '操作项',
                                                 align: 'center',
-                                                //events: operateEvents,
-                                                formatter: operateFormatter
+                                                events: {
+                                                    'click .view': function(e, value, row, index){
+                                                        $.ajax({
+                                                            url: '<%=basePath%>fundmanage/extract/toaudit',
+                                                            data: {comUserId: row.comUserId},
+                                                            success: function(data){
+                                                                $('#myModal1 .modal-body').html(data);
+                                                                $('#myModal1').modal({
+                                                                    show: true,
+                                                                    backdrop: true
+                                                                });
+                                                            }
+                                                        });
+                                                    }
+                                                },
+                                                formatter: function(value, row, index){
+                                                    return ['<a class="view" href="javascript:void(0);">查看</a>',
+                                                            '<a class="confirm" href="javascript:void(0);">确认收款</a>'
+                                                    ].join('');
+                                                }
                                             }
                                         ]
                                     ]
@@ -359,17 +377,6 @@
                                     html.push('<p><b>' + key + ':</b> ' + value + '</p>');
                                 });
                                 return html.join('');
-                            }
-
-                            function operateFormatter(value, row, index) {
-                                var sArr = [];
-                                //alert(row.id);
-
-                                sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看</a>');
-                                sArr.push( '&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/userSku/partner.shtml?id='+ row.id +'">确认付款</a>');
-                                //sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
-
-                                return sArr;
                             }
 
                             function totalTextFormatter(data) {

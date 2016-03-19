@@ -33,7 +33,9 @@
         <div class="sec1"><p>付 款 状 态：<span>
                                          <c:if test="${memberMap.payStatus == 0}">未付款</c:if>
                                          <c:if test="${memberMap.payStatus == 1}">已付款</c:if>
-                                        </span></p></div>
+                                        </span>
+                         </p>
+        </div>
         <div class="sec1"><p>手机号：<span>${memberMap.mobile}</span></p></div>
         <div class="sec1"><p>微信号：<span>${memberMap.weixin}</span></p></div>
         <div class="sec1"><p>身份证号：<span>${memberMap.idCard}</span></p> </div>
@@ -43,8 +45,8 @@
             <h1><img src="${memberMap.idCardBackImg}" alt="">反面</h1>
         </div>
         <footer>
-            <botton class="btn">拒绝</botton>
-            <botton class="btn2">通过</botton>
+            <button class="btn">拒绝</button>
+            <button class="btn2">通过</button>
         </footer>
     </main>
     <div class="back">

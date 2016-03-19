@@ -21,7 +21,7 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="#" onClick="javascript :window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>注册链接</p>
         </header>
         <p>

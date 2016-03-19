@@ -22,7 +22,7 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>发展合伙人</p>
         </header>
         <div class="banner">

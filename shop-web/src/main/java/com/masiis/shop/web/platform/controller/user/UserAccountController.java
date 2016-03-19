@@ -39,8 +39,6 @@ public class UserAccountController extends BaseController{
         //String kid = aesEncryptBySalt(String.valueOf(user.getId()), SysConstants.COOKIE_AES_KEY, SysConstants.COOKIE_KEY_SALT);
         ComUserAccount account = accountService.findAccountByUserid(user.getId());
 
-
-
         model.addAttribute("account", account);
         return "platform/user/account";
     }

@@ -177,11 +177,23 @@ public class UserService {
         ComUser comUser = null;
         try {
             comUser = (ComUser) request.getSession().getAttribute("comUser");
+
+            /**
+             * 测试用
+             */
+            if (comUser==null){
+                comUser = new ComUser();
+                comUser.setId(1L);
+            }
+
+
+
+
             if (comUser != null) {
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
                 //更新表中的信息
-                int i = comUserMapper.updateByPrimaryKey(comUser);
+                int i = comUserMapper.updatePhone(comUser);
                 if (i == 1) {
                     //更新session缓存中的中user
                     request.getSession().removeAttribute("comUser");

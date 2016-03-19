@@ -38,7 +38,7 @@
             #{skuId,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
             #{wxId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
             #{agentLevelId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-            #{remark,jdbcType=VARCHAR}),#{reason,jdbcType=VARCHAR})
+            #{remark,jdbcType=VARCHAR},#{reason,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserCertificate">

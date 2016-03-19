@@ -118,9 +118,11 @@ public class UserApplyController {
             mv.addObject("agentInfo", sb.toString());
             mv.addObject("skuId", comSku.getId());
             mv.addObject("skuName", comSku.getName());
-            mv.addObject("name", comUser.getRealName());
-            mv.addObject("weixinId", comUser.getWxId());
-            mv.addObject("mobile", comUser.getMobile());
+            if (comUser!=null){
+                mv.addObject("name", comUser.getRealName());
+                mv.addObject("weixinId", comUser.getWxId());
+                mv.addObject("mobile", comUser.getMobile());
+            }
             mv.addObject("pUserId", pUserId);
             mv.setViewName("platform/order/zhuce");
         } catch (Exception ex) {

@@ -25,7 +25,7 @@ public interface PfUserCertificateMapper {
 
     PfUserCertificate selectByUserId(Long userId);
 
-    List<PfUserCertificate> selectByCode(Integer userId);
+    List<PfUserCertificate> selectByCode(Long userId);
 
     PfUserCertificate selectByUserSkuId(Integer pfuId);
 }

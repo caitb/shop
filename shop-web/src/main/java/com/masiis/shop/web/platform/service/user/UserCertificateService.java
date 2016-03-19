@@ -5,6 +5,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class UserCertificateService {
     private ComSkuMapper comSkuMapper;
     @Resource
     private CertificateMapper certificateMapper;
+    @Resource
+    private ComUserMapper comUserMapper;
 
     public void addUserCertificate(PfUserCertificate pfUserCertificate) {
         pfUserCertificateMapper.insert(pfUserCertificate);
@@ -45,7 +48,13 @@ public class UserCertificateService {
         if(certificateInfoList!=null){
            for(CertificateInfo certificateInfo :certificateInfoList){
               if(certificateInfo!=null && certificateInfo.getIsCertificate()!=0){ //授权书已经生成
-                  certificateInfo.setPfUserCertificateInfo(pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId()));
+                  PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
+                  if(pfUserCertificate!=null){
+                      certificateInfo.setPfUserCertificateInfo(pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId()));
+                      certificateInfo.setReceivect(1);
+                  }else{
+                      certificateInfo.setReceivect(0);//证书已经生成，未领取
+                  }
               }
            }
         }
@@ -58,10 +67,42 @@ public class UserCertificateService {
       */
     public PfUserCertificate CertificateDetailsByUser(Integer pfuId){
         PfUserCertificate pfc = pfUserCertificateMapper.selectByUserSkuId(pfuId);
+        CertificateInfo certificateInfo = certificateMapper.get(pfuId);
+        if(certificateInfo!=null){
+            pfc.setSjName(comUserMapper.findByPid(certificateInfo.getPid()));
+        }
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
         pfc.setImgUrl(ctValue + pfc.getImgUrl());
         String beginTime = DateUtil.Date2String(pfc.getBeginTime(), "yyyy-MM-dd hh:mm:ss", null);
-        pfc.setBeginTime(new Date(beginTime));
+        pfc.setTjDate(beginTime);
         return pfc;
+    }
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/19 0019 下午 3:58
+      * 领取证书
+      */
+    public void receiveCertificate(Integer pfuId){
+        CertificateInfo ctInfo = certificateMapper.get(pfuId);
+        List<PfUserCertificate> uct = pfUserCertificateMapper.selectByCode(ctInfo.getUserId());
+        if(uct!=null){
+            PfUserCertificate pfc = uct.get(0);
+            pfc.setCreateTime(new Date());
+            pfc.setId(null);
+            pfc.setPfUserSkuId(pfuId);
+            pfc.setReason(null);
+            pfc.setSkuId(ctInfo.getSkuId());
+            pfc.setStatus(1);//审核成功状态
+            pfUserCertificateMapper.insert(pfc);
+        }
+    }
+
+    /**
+     *  证书
+     * @param pfuId
+     * Jing Hao
+     */
+    public PfUserCertificate getCertificateBypfuId(Integer pfuId){
+        return pfUserCertificateMapper.selectByUserSkuId(pfuId);
     }
 }

@@ -181,10 +181,10 @@ public class UserService {
             /**
              * 测试用
              */
-            if (comUser==null){
+/*            if (comUser==null){
                 comUser = new ComUser();
                 comUser.setId(1L);
-            }
+            }*/
 
 
 

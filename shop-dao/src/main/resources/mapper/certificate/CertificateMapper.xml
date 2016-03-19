@@ -75,7 +75,7 @@
             LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
             LEFT JOIN com_user u ON pfku.user_id = u.id
             LEFT JOIN sf_user_relation sr ON sr.user_id = pfku.user_id
-         WHERE 1=1
+         WHERE pfku.is_pay =1
             <if test="beginTime !=null">
                 AND ctf.begin_time = #{beginTime}
             </if>
@@ -137,7 +137,7 @@
        select img_url from pf_user_certificate where pf_user_sku_id = #{id}
     </select>
     <select id="getCertificatesByUser" parameterType="int" resultMap="CertificateResultMap">
-        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate
+        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid
         FROM pf_user_sku pfku
         LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
         WHERE pfku.user_id = #{userId}

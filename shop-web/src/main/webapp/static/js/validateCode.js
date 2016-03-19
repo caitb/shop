@@ -24,7 +24,7 @@
                     type: 'post',
                     async: false,
                     success: function (data) {
-                        if (data) {
+                        if (data=="true") {
                             switch (validateCodeJS.skipPageId) {
                                 case "register":
                                     var pUserId = $("#pUserId").val();
@@ -149,7 +149,7 @@
                     data: "phone=" + validateCodeJS.phone,
                     dataType: "Json",
                     success: function (result) {
-                        if (result) {
+                        if (result=="true") {
                             validateCodeJS.skipPage();
                         } else {
                             alert("绑定手机号失败");

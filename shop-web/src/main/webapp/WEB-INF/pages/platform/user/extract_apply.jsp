@@ -27,7 +27,7 @@
             <div class="sec2" onclick="choiceBank()">
                 <c:choose>
                     <c:when test="${hasCard == true}">
-                        <img src="<%=path%>/${extractwayInfo.cardImg}" alt="">
+                        <span><img src="<%=path%>${extractwayInfo.cardImg}" alt=""></span>
                         <p>
                             <span><em>${extractwayInfo.bankName}</em></span>
                             <span>

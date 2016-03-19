@@ -21,13 +21,13 @@
 <body>
 
 <div class="wrap">
-
+    <main>
     <header class="xq_header">
         <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
-    <main>
         <div id="box">
+            <div class="main">
             <div class="d_box">
                 <c:forEach items="${userProducts}" var="sku">
                     <section class="sec2">
@@ -47,9 +47,8 @@
                     </section>
                 </c:forEach>
             </div>
+            </div>
         </div>
-    </main>
-    <div class="back">
         <div class="back_j">
             <p>减少库存</p>
             <h4>商　　品:　　<span id="skuName"></span></h4>
@@ -65,17 +64,6 @@
                 <h1 class="j_que">确定</h1>
             </div>
         </div>
-        <div class="back_que">
-            <p>确认减库存?</p>
-            <h4>商品:<span id="sku3"></span></h4>
-            <h4>当前库存:<span id="stock1"></span></h4>
-            <h4>减库存:<span id="stock2"></span></h4>
-            <h4>剩余库存:<span id="stock3"></span></h4>
-            <h3>
-                <span class="que_qu">取消</span>
-                <span class="que_que">确认</span>
-            </h3>
-        </div>
         <div class="back_b">
             <p>增加库存</p>
             <h4>商品:　　<span id="addsku"></span></h4>
@@ -90,7 +78,21 @@
                 <h1 class="b_que"><a href="buhuodingdan.html">确定</a></h1>
             </div>
         </div>
-    </div>
+        <div class="back_que">
+            <p>确认减库存?</p>
+            <h4>商品:<span id="sku3"></span></h4>
+            <h4>当前库存:<span id="stock1"></span></h4>
+            <h4>减库存:<span id="stock2"></span></h4>
+            <h4>剩余库存:<span id="stock3"></span></h4>
+            <h3>
+                <span class="que_qu">取消</span>
+                <span class="que_que">确认</span>
+            </h3>
+        </div>
+        <div class="back">
+
+        </div>
+    </main>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
@@ -147,9 +149,9 @@
             success: function (data) {
                 $(".back").css("display","none");
                 $(".back_que").css("display","none");
+                location.reload(true);
             }
         });
-        location.reload();
     });
     function buhuokucun(a){
         $("#addsku").html(a);

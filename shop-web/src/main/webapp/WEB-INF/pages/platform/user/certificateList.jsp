@@ -46,6 +46,9 @@
                         <c:when test="${cet.isCertificate==0}">
                             <em>未生成证书</em>
                         </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.receivect==0}">
+                            <em>领取证书</em>
+                        </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
                             <em>未审核</em>
                         </c:when>
@@ -60,6 +63,9 @@
                     <c:choose>
                         <c:when test="${cet.isCertificate==0}">
                             <a href="<%=path%>/userCertificate/setUserCertificate.shtml/?userSkuId=${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.receivect==0}">
+                            <a href="<%=path%>/userCertificate/add/${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
                             <a href="<%=path%>/userCertificate/ready/${cet.skuName}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>

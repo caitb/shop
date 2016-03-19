@@ -39,12 +39,12 @@ public class UserController {
      */
     @RequestMapping(value = "/isBindPhone.do")
     @ResponseBody
-    public Boolean isBindPhone(HttpServletRequest request,HttpServletResponse response){
+    public String isBindPhone(HttpServletRequest request,HttpServletResponse response){
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        if (comUser != null&&!comUser.getMobile().equals("")){
-            return true;
+        if (comUser != null&&!StringUtils.isEmpty(comUser.getMobile())){
+            return "true";
         }else {
-            return false;
+            return "false";
         }
     }
 
@@ -55,17 +55,17 @@ public class UserController {
      */
     @RequestMapping(value = "/bindPhone.do")
     @ResponseBody
-    public Boolean bindPhone(HttpServletRequest request, HttpServletResponse response,
+    public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
         try {
             ComUser comUser =  userService.bindPhone(request,phone);
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
-                return true;
+                return "true";
             }
         }catch (Exception e){
             e.getMessage();
         }
-        return false;
+        return "false";
     }
 
     @RequestMapping(value = "/bingPhoneStatusToPage.shtml")

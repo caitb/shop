@@ -36,6 +36,7 @@
             <h1>宣传海报，将海报发到您的朋友圈</h1>
             <img src="<%=basePath%>static/images/asd.JPG" alt="">
             <h3 id="downloadImage">下载海报</h3>
+            <button type="button" id="onMenuShareQQ">分享到QQ</button>
         </div>
     </div>
 </div>

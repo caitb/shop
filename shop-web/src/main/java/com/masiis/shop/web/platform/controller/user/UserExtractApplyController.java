@@ -46,7 +46,14 @@ public class UserExtractApplyController extends BaseController {
         ComUserExtractwayInfo extractwayInfo = null;
         if(extractwayInfos != null && extractwayInfos.size() > 0){
             hasCard = true;
-            extractwayInfo = extractwayInfos.get(0);
+            for(ComUserExtractwayInfo info:extractwayInfos){
+                if(info.getIsDefault() == 0){
+                    extractwayInfo = info;
+                }
+            }
+            if(extractwayInfo == null){
+                extractwayInfo = extractwayInfos.get(0);
+            }
         }
 
         String extractMoney = account.getExtractableFee().toString();

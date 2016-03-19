@@ -144,8 +144,8 @@ $(function () {
                     } else {
                         $("#q_pMobile").html("");
                     }
-                    $("#q_levelName").html($(".dengji .on [name='levelName']"));
-                    $("#q_amount").html($(".dengji .on [name='amount']"));
+                    $("#q_levelName").html($(".dengji .on [name='levelName']").html());
+                    $("#q_amount").html($(".dengji .on [name='amount']").html());
                     $(".back").css("display", "-webkit-box");
                 } else {
                     alert(data.message);

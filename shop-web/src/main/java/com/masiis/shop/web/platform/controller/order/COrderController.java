@@ -249,26 +249,45 @@ public class COrderController extends BaseController {
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
         wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }
 
     /**
      * 微信支付成功回调
-     *
      * @author hanzengzhi
      * @date 2016/3/17 16:45
      */
     @RequestMapping(value = "/weChatCallBackSuccess.shtml")
     public String weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
-                                        @RequestParam(value = "addressId", required = true) Long addressId) {
+                                        @RequestParam(value = "addressId", required = true) Long addressId,
+                                        Model model) {
         try {
-
+            model = getOrderInfo(request,model,skuId,addressId);
         } catch (Exception e) {
             e.getStackTrace();
         }
-        return "index";
+        return "platform/order/zhifuchenggong";
+    }
+
+    /**
+     * 微信支付失败回调
+     * @author hanzengzhi
+     * @date 2016/3/17 16:45
+     */
+    @RequestMapping(value = "/weChatCallBackFail.shtml")
+    public String weChatCallBackFail(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(value = "skuId", required = true) Integer skuId,
+                                        @RequestParam(value = "addressId", required = true) Long addressId,
+                                        Model model) {
+        try {
+            model = getOrderInfo(request,model,skuId,addressId);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return "platform/order/zhifushibai";
     }
 
     /**
@@ -283,6 +302,15 @@ public class COrderController extends BaseController {
                                @RequestParam(value = "skuId", required = false) Integer skuId,
                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                Model model) {
+        model = getOrderInfo(request,model,skuId,selectedAddressId);
+        return "platform/order/zhifushiyong";
+    }
+    /**
+     * 获得试用订单信息
+     * @author hanzengzhi
+     * @date 2016/3/19 15:06
+     */
+    private Model getOrderInfo(HttpServletRequest request,Model model,Integer skuId ,Long selectedAddressId){
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId = null;
         if (comUser != null) {
@@ -304,6 +332,6 @@ public class COrderController extends BaseController {
         }
         model.addAttribute("product", product);
         model.addAttribute("comUserAddress", comUserAddress);
-        return "platform/order/zhifushiyong";
+        return model ;
     }
 }

@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -128,9 +129,8 @@ public class MyTeamController {
     @RequestMapping("/audit")
     @ResponseBody
     public Object audit(HttpServletRequest request, HttpServletResponse response,
-                              Long comUserId,
-                              Integer status,
-                              String reason){
+                        Long userSkuId,
+                        PfUserCertificate pfUserCertificate){
 
 
         return null;

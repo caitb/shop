@@ -54,7 +54,8 @@
     <div class="back">
         <div class="back_j">
             <p>请填写拒绝原因</p>
-            <input type="hidden" id="comUserId" name="comUserId" value="${memberMap.comUserId}" >
+            <input type="hidden" id="userSkuId" name="userSkuId" value="${memberMap.userSkuId}">
+            <input type="hidden" id="pfUserCertificateId" name="id" value="${memberMap.pfUserCertificateId}" >
             <input type="hidden" id="status" name="status" value="1" >
             <textarea name="reason"></textarea>
             <div>

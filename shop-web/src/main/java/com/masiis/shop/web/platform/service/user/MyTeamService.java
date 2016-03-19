@@ -136,13 +136,29 @@ public class MyTeamService {
         memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
         memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
+        memberMap.put("pfUserCertificateId", pfUserCertificate.getId());
         memberMap.put("joinTime", pfUserCertificate.getBeginTime());
         memberMap.put("applyTime", pfUserCertificate.getCreateTime());
         if(userSkuId != null){
             PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
             memberMap.put("payStatus", pfUserSku.getIsPay());
+            memberMap.put("userSkuId", pfUserSku.getId());
         }
 
         return memberMap;
+    }
+
+    /**
+     * 审核证书
+     * @param userSkuId
+     * @param pfUserCertificate
+     */
+    public void audit(Integer userSkuId, PfUserCertificate pfUserCertificate){
+        PfUserSku pfUserSku = new PfUserSku();
+        pfUserSku.setId(userSkuId);
+        pfUserSku.setIsCertificate(pfUserCertificate.getStatus());
+
+        pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);
+        pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
     }
 }

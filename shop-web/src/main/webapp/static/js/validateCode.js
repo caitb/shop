@@ -21,7 +21,7 @@
                     type: 'post',
                     async: false,
                     success: function (data) {
-                        if (!data) {
+                        if (data) {
                             switch (validateCodeJS.skipPageId) {
                                 case "register":
                                     var pUserId = $("#pUserId").val();

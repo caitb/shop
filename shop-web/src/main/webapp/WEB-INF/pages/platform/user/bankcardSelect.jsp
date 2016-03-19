@@ -18,7 +18,6 @@
 </head>
 <body>
 <input type="hidden" id="selectId" name="selectId" value = ""/>
-<input type="hidden" id="userId" name="userId" value = "${userId}"/>
    <div class="wrap">
         <header class="xq_header">
             <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -50,6 +49,32 @@
             $(this).addClass("on").siblings().removeClass("on")
             var id = $(this).attr("id");
             $("#selectId").val(id);
+            $.ajax({
+                type:"POST",
+                async:false,
+                url : "<%=path%>/extractwayinfo/setbankdefault.do",
+                data:{id:id},
+                dataType:"Json",
+                beforeSend:function(){
+
+                },
+                success:function(data){
+                    if(data.isTrue == "false"){
+                        alert(data.message);
+                    }else {
+                        window.location.href="<%=basePath%>extractapply/toapply";
+                    }
+                },
+                //调用执行后调用的函数
+                complete: function(XMLHttpRequest, textStatus){
+//                alert(XMLHttpRequest.responseText);
+//                alert(textStatus);
+                },
+                error: function(){
+                    //请求出错处理
+                    alert("请求出错，请稍后再试");
+                }
+            });
         })
     </script>
 </body>

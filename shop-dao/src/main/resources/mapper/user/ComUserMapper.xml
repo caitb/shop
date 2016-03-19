@@ -54,6 +54,13 @@
         )
     </insert>
 
+    <update id="updatePhone" parameterType="com.masiis.shop.dao.po.ComUser">
+        update com_user
+        set mobile = #{mobile,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUser">
         update com_user
         set create_time = #{createTime,jdbcType=TIMESTAMP},

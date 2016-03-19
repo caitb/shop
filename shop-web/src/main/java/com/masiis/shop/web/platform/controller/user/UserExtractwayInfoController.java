@@ -115,6 +115,7 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setExtractWay(comDictionary.getKey()==null?1:comDictionary.getKey().longValue());
                 extractway.setCardImg(comBank.getBankImg());
                 extractway.setIsEnable(0);//新增用户体现方式，是否启用默认为启用
+                extractway.setIsDefault(0);//设置为提现默认银行卡
                 extractway.setChangedBy("add");
                 extractway.setCreatedTime(new Date());
                 extractway.setChangedTime(new Date());
@@ -130,6 +131,7 @@ public class UserExtractwayInfoController extends BaseController {
                     extractway.setExtractWay(comDictionary.getKey() == null ? 1 : comDictionary.getKey().longValue());
                     extractway.setCardImg(comBank.getBankImg());
                     extractway.setIsEnable(0);//将未启用状态改为启用状态
+                    extractway.setIsDefault(0);//设置为提现默认银行卡
                     extractway.setChangedBy("edit");
                     extractway.setChangedTime(new Date());
                     userExtractwayInfoService.updataComUserExtractwayInfo(extractway);
@@ -205,6 +207,50 @@ public class UserExtractwayInfoController extends BaseController {
         mv.addObject("bankList",list);
         mv.setViewName("platform/user/bankcardCreate");
         return mv;
+    }
+
+    /**
+     * 设置银行卡为支付默认卡号
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/setbankdefault.do")
+    @ResponseBody
+    public String setBankDefault(@RequestParam(value = "id",required = true) String id,
+                                 HttpServletRequest request){
+
+        ComUser user = getComUser(request);
+//        if (user == null){
+//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+//        }
+//        Long userId = user.getId();
+//        log.info("userId="+userId);
+        Long userId = Long.valueOf(1);
+        log.info("userId:"+userId);
+        log.info("id:"+id);
+        List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
+        JSONObject jsonobject = new JSONObject();
+        try{
+            for (ComUserExtractwayInfo info:list){
+                if (info.getId()==Long.valueOf(id)){
+                    if (info.getIsDefault() != 0){
+                        info.setIsDefault(0);
+                        userExtractwayInfoService.updataComUserExtractwayInfo(info);
+                    }
+                }else {
+                    if (info.getIsDefault() != 1){
+                        info.setIsDefault(1);
+                        userExtractwayInfoService.updataComUserExtractwayInfo(info);
+                    }
+                }
+            }
+            jsonobject.put("isTrue","true");
+        }catch (Exception e){
+            e.printStackTrace();
+            jsonobject.put("isTrue","false");
+            jsonobject.put("message","服务忙请稍后。。。");
+        }
+        return jsonobject.toJSONString();
     }
 }
 

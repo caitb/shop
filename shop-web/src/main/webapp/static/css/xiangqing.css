@@ -264,6 +264,7 @@ body footer .sec3 {
 }
 body footer .sec3 p {
   width: 1px;
+  -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
@@ -278,12 +279,4 @@ body footer .sec3 p a {
   color: #FCFFFF;
   font-size: 15px;
   text-align: center;
-}
-body footer .sec3 p:nth-child(1) {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-}
-body footer .sec3 p:nth-child(2) {
-  -webkit-box-flex: 1;
-  background: #DA3600;
 }

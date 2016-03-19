@@ -110,8 +110,7 @@
             },
             toNextPage: function () {
                 //validateCodeJS.bindPhone();
-                validateCodeJS.bindPhone()
-                //validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
+                validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();

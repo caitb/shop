@@ -27,7 +27,7 @@
             <div class="sec2" onclick="choiceBank()">
                 <c:choose>
                     <c:when test="${hasCard == true}">
-                        <img src="<%=path%>/static/images/icon_57.png" alt="">
+                        <img src="<%=path%>/${extractwayInfo.cardImg}" alt="">
                         <p>
                             <span><em>${extractwayInfo.bankName}</em></span>
                             <span>
@@ -46,10 +46,10 @@
                 </c:choose>
             </div>
             <h1>
-                转出金额<input type="text" placeholder="输入金额" style="font-size:14px;">
+                转出金额<input id="extractMoneyId" type="text" placeholder="输入金额" style="font-size:14px;">
             </h1>
             <h2>您当前可提现的金额为<span>￥${extractMoney}</span></h2>
-            <botton>
+            <botton id="extractBtnId">
                 提现
             </botton>
         </main>

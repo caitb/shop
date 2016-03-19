@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.admin.service.system.PbUserMenuService;
 import com.masiis.shop.admin.service.system.PbUserService;
+import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.PbUserMenu;
@@ -31,6 +32,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    private final static String key = "MASIIS";
 
     @Resource
     private PbUserService pbUserService;
@@ -102,6 +105,7 @@ public class UserController {
         }
 
 
+        pbUser.setPassword(AESUtils.encrypt(pbUser.getPassword(), key));
         List<PbUser> pbUsers = this.pbUserService.findByCondition(pbUser);
 
         //用户名或密码不对
@@ -202,7 +206,7 @@ public class UserController {
     @ResponseBody
     public String add(HttpServletRequest request, HttpServletResponse response, PbUser pbUser) {
         if (StringUtil.isNotEmpty(pbUser.getPassword())) {
-            pbUser.setPassword(KeysUtil.md5Encrypt(pbUser.getPassword()));
+            pbUser.setPassword(AESUtils.encrypt(pbUser.getPassword(), key));
         }
 
         if (pbUser.getId() == null) {

@@ -85,18 +85,18 @@
                 <p>京公网安备 11000002000006号</p>
             </section>
         </main>
-        <div class="back">
+        <div class="back" style="display: none">
             <div class="back_j">
                 <p>绑定账号</p>
                 <div>
                     <p>手机号：<input type="tel" id = "phoneId"></p>
-                    <em>asd</em>
+                    <em id="phoneErrorId"></em>
                 </div>
                 <div class="d">
-                    <p>验证码：<input type="number" id="validateNumberDataId">
+                    <p>验证码：<input type="tel" id="validateNumberDataId">
                         <botton id="validateNumberId"  >获取验证码</botton>
                     </p>
-                    <em>asd</em>
+                    <em id="validateNameErrorId"></em>
                 </div>
                 <h1 class="j_qu" id="nextPageId">下一步</h1>
             </div>
@@ -105,21 +105,23 @@
 </div>
 <footer>
     <section class="sec3">
-        <input id="applyTrialId" value="${productDetails.id}" style="display: none"/>
+        <input id="skipPageId" value="trial" style="display: none" />
+        <input id="skuId" value="${productDetails.id}" style="display: none"/>
         <p>
-            <a id="applyTrial" onclick="productJS.applyTrial()">申请试用</a>
-            <a id="trialed" onclick="productJS.applyTrial()">已试用</a>
+            <a id="applyTrial"  onclick="validateCodeJS.applyTrial()">申请试用</a>
+            <a id="trialed" style="display: none">已试用</a>
         </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/product.js"></script>
+<script src="<%=path%>/static/js/validateCode.js"></script>
 <script>
     $(document).ready(function () {
         productJS.initPage();
+        validateCodeJS.initPage();
     });
-
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

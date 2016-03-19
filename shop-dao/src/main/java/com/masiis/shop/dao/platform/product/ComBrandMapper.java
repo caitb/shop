@@ -15,7 +15,7 @@ public interface ComBrandMapper {
      * @param id
      * @return
      */
-    ComBrand selectById(@Param("id")Long id);
+    ComBrand selectById(Integer id);
 
     /**
      * 根据条件查询记录

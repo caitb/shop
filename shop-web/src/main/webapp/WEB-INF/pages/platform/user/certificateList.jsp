@@ -28,7 +28,7 @@
         <div id="box">
             <c:forEach items="${pfUserCertificates}" var="cet">
                 <div class="sec1">
-                    <p><span>合伙产品</span><b>${cet.comSku.name}</b></p>
+                    <p><span>合伙产品</span><b>${cet.skuName}</b></p>
                     <p><span>合伙人等级：
                         <c:choose>
                             <c:when test="${cet.agentLevelId==1}">
@@ -43,18 +43,34 @@
                         </c:choose>
                         </span><span>授权书状态：
                     <c:choose>
-                        <c:when test="${cet.status==0}">
+                        <c:when test="${cet.isCertificate==0}">
+                            <em>未生成证书</em>
+                        </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
                             <em>未审核</em>
                         </c:when>
-                        <c:when test="${cet.status==1}">
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==1}">
                             <em>审核成功</em>
                         </c:when>
-                        <c:otherwise>
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==2}">
                             <em>审核失败</em>
-                        </c:otherwise>
+                        </c:when>
                     </c:choose>
                     </span></p>
-                     <a href="<%=path%>/userCertificate/userct/${cet.comSku.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                    <c:choose>
+                        <c:when test="${cet.isCertificate==0}">
+                            <a href="<%=path%>/userCertificate/setUserCertificate.shtml/?userSkuId=${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
+                            <a href="<%=path%>/userCertificate/ready/${cet.skuName}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==1}">
+                            <a href="<%=path%>/userCertificate/userct/${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        </c:when>
+                        <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==2}">
+                            <a href="<%=path%>/userCertificate/fail/${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        </c:when>
+                    </c:choose>
                 </div>
             </c:forEach>
         </div>

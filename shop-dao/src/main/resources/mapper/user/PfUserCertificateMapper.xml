@@ -96,7 +96,7 @@
         where
                user_id = #{userId,jdbcType=BIGINT}
     </select>
-    <select id="selectByUserSkuId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    <select id="selectByUserSkuId" parameterType="int" resultMap="BaseResultMap">
         select
         id,
         create_time,
@@ -117,7 +117,7 @@
         from
         pf_user_certificate
         where
-        user_id = #{userId,jdbcType=BIGINT} AND sku_id = #{skuId}
+        pf_user_sku_id = #{pfuId}
     </select>
 
 

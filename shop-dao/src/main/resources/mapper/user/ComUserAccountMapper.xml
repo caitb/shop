@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.ComUserAccountMapper" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserAccountMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAccount" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
@@ -18,7 +18,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount">
         insert into com_user_account (id, com_user_id, transaction_fee, 
             extractable_fee, counting_fee, now_total_fee, 
             created_time, changed_time, changed_by
@@ -50,9 +50,15 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee, 
+        select id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee,
         created_time, changed_time, changed_by
         from com_user_account
+    </select>
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee,
+        created_time, changed_time, changed_by
+        FROM com_user_account
+        where com_user_id = #{comUserId}
     </select>
 
 </mapper>

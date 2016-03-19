@@ -28,4 +28,6 @@ public interface CertificateMapper {
     List<ComUser> getUpperPartnerByUserId(Integer pid);
 
     String findById(Integer id);
+
+    List<CertificateInfo> getCertificatesByUser(Integer userId);
 }

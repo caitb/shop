@@ -111,7 +111,8 @@
             },
             toNextPage: function () {
                 //validateCodeJS.bindPhone();
-                validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
+                validateCodeJS.bindPhone()
+                //validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();
@@ -128,6 +129,7 @@
                     data: "verificationCode=" + verificationCode + "&phone=" + validateCodeJS.phone,
                     dataType: "Json",
                     success: function (result) {
+                        alert(result);
                         if (result) {
                             $("#validateNameErrorId").empty();
                             bl = true;
@@ -147,8 +149,9 @@
                     async: false,
                     url: "/user/bindPhone.do",
                     data: "phone=" + validateCodeJS.phone,
-                    dataType: "Json",
+                    dataType: "text",
                     success: function (result) {
+                        alert(result);
                         if (result=="true") {
                             validateCodeJS.skipPage();
                         } else {

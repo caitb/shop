@@ -188,50 +188,6 @@
                                                 },
                                                 align: 'center'
                                             },
-                                           /* {
-                                                field: 'skuName',
-                                                title: '合伙商品',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                            },*/
-                                            /*{
-                                                field: 'name',
-                                                title: '合伙人级别',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    if(row.comAgentLevel){
-                                                        return row.comAgentLevel.name;
-                                                    }
-                                                    return "-";
-                                                }
-                                            },
-                                            {
-                                                field: 'pRealName',
-                                                title: '上级合伙人',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                /!*formatter: function(value, row, index){
-                                                    return '<a href="javascript:void(0)" onclick="cha('+row.pfUserTrial.id+')">查看</a>';
-                                                }*!/
-                                            },
-                                            {
-                                                field: 'createTime',
-                                                title: '加入时间',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
-                                                }
-                                            },*/
                                             {
                                                 field: 'isPay',
                                                 title: '是否交代理款',
@@ -247,17 +203,6 @@
                                                     }
                                                 }
                                             },
-                                            /*{
-                                                field: 'lowerCount',
-                                                title: '下级合伙人',
-                                                sortable: true,
-                                                //editable: true,
-                                                footerFormatter: totalNameFormatter,
-                                                align: 'center',
-                                                formatter: function(value, row, index){
-                                                    return '<a href="#" onclick=lower('+row.comUser.id+')>'+row.lowerCount+'人</a>';
-                                                 }
-                                            },*/
                                             {
                                                 field: 'isCertificate',
                                                 title: '是否申请证书',
@@ -269,17 +214,10 @@
                                                     if(row.isCertificate==0){
                                                         return "未完成";
                                                     }else if(row.isCertificate==1){
-                                                        return '<a href="#" onclick="certificate('${pfUserSku.id}')">点击查看</a>';
+                                                        return '<a href="javascript:void(0)" onclick="certificate(${pfUserSku.id})">点击查看</a>';
                                                     }
                                                 }
-                                            }/*,
-                                            {
-                                                //field: 'operate',
-                                                title: '操作项',
-                                                align: 'center',
-                                                //events: operateEvents,
-                                                formatter: operateFormatter
-                                            }*/
+                                            }
                                         ]
                                     ]
                                 });
@@ -375,42 +313,44 @@
                             }
 
                             $(function () {
-                                var scripts = [
-                                            location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',
-                                            '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'
-                                        ],
-                                        eachSeries = function (arr, iterator, callback) {
-                                            callback = callback || function () {
-                                                    };
-                                            if (!arr.length) {
-                                                return callback();
-                                            }
-                                            var completed = 0;
-                                            var iterate = function () {
-                                                iterator(arr[completed], function (err) {
-                                                    if (err) {
-                                                        callback(err);
-                                                        callback = function () {
-                                                        };
-                                                    }
-                                                    else {
-                                                        completed += 1;
-                                                        if (completed >= arr.length) {
-                                                            callback(null);
-                                                        }
-                                                        else {
-                                                            iterate();
-                                                        }
-                                                    }
-                                                });
-                                            };
-                                            iterate();
-                                        };
+                                <%--var scripts = [--%>
+                                            <%--location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',--%>
+                                            <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'--%>
+                                        <%--],--%>
+                                        <%--eachSeries = function (arr, iterator, callback) {--%>
+                                            <%--callback = callback || function () {--%>
+                                                    <%--};--%>
+                                            <%--if (!arr.length) {--%>
+                                                <%--return callback();--%>
+                                            <%--}--%>
+                                            <%--var completed = 0;--%>
+                                            <%--var iterate = function () {--%>
+                                                <%--iterator(arr[completed], function (err) {--%>
+                                                    <%--if (err) {--%>
+                                                        <%--callback(err);--%>
+                                                        <%--callback = function () {--%>
+                                                        <%--};--%>
+                                                    <%--}--%>
+                                                    <%--else {--%>
+                                                        <%--completed += 1;--%>
+                                                        <%--if (completed >= arr.length) {--%>
+                                                            <%--callback(null);--%>
+                                                        <%--}--%>
+                                                        <%--else {--%>
+                                                            <%--iterate();--%>
+                                                        <%--}--%>
+                                                    <%--}--%>
+                                                <%--});--%>
+                                            <%--};--%>
+                                            <%--iterate();--%>
+                                        <%--};--%>
 
-                                eachSeries(scripts, getScript, initTable);
+                                <%--eachSeries(scripts, getScript, initTable);--%>
+
+                                initTable();
                             });
 
 

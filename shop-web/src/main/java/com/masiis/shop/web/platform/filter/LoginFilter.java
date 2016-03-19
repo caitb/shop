@@ -1,10 +1,14 @@
 package com.masiis.shop.web.platform.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.beans.wxauth.RedirectParam;
 import com.masiis.shop.web.platform.constants.RedirectCons;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,46 +39,56 @@ public class LoginFilter implements Filter{
 
         String uri = request.getRequestURI();
 
+        String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
+        if(StringUtils.isBlank(enviromentkey)
+                || enviromentkey.equals("0")){
+            // 开发阶段可以先跳过
+            log.info("uri:" + uri);
+            // 给开发组织一个默认的登录人
+            UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
+            ComUser user = userService.getUserById(1L);
+            request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
 
-        // 开发阶段可以先跳过
-        log.info("uri:" + uri);
-        chain.doFilter(request, response);
-        return;
-
-        /*// 过滤静态资源,以及一些放行的路径
-        if(uri.startsWith(request.getContextPath() + "/static/")
-                ||(request.getContextPath() + "/verify/actk").equals(uri)
-                || (request.getContextPath() + "/verify/wxcheck").equals(uri)
-                || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)){
-            // 放行
             chain.doFilter(request, response);
             return;
+        }else if(enviromentkey.equals("1")) {
+            // 过滤静态资源,以及一些放行的路径
+            if (uri.startsWith(request.getContextPath() + "/static/")
+                    || (request.getContextPath() + "/verify/actk").equals(uri)
+                    || (request.getContextPath() + "/verify/wxcheck").equals(uri)
+                    || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
+                // 放行
+                chain.doFilter(request, response);
+                return;
+            }
+
+            log.info("uri:" + uri);
+
+            ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            if (login != null
+                    && StringUtils.isNotBlank(login.getId() + "")
+                    && StringUtils.isNotBlank(login.getOpenid())) {
+                // 后面再斟酌是否需要进行验证有效性
+                //
+                chain.doFilter(request, response);
+                return;
+            }
+
+            // cookie验证由controller来验证
+            RedirectParam rp = new RedirectParam();
+            rp.setCode(RedirectCons.WX_CHECK_CODE);
+            rp.setSurl(request.getRequestURL().toString());
+            rp.setNonceStr(WXBeanUtils.createGenerateStr());
+            rp.creatSign();
+
+            String basepath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            String reUrl = basepath + "verify/wxcheck?"
+                    + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
+            response.sendRedirect(reUrl);
+            //request.getRequestDispatcher(reUrl).forward(request, response);
+        } else {
+
         }
-
-        log.info("uri:" + uri);
-
-        ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
-        if(login != null
-                && StringUtils.isNotBlank(login.getId() + "")
-                && StringUtils.isNotBlank(login.getOpenid())){
-            // 后面再斟酌是否需要进行验证有效性
-            //
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // cookie验证由controller来验证
-        RedirectParam rp = new RedirectParam();
-        rp.setCode(RedirectCons.WX_CHECK_CODE);
-        rp.setSurl(request.getRequestURL().toString());
-        rp.setNonceStr(WXBeanUtils.createGenerateStr());
-        rp.creatSign();
-
-        String basepath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
-        String reUrl = basepath + "verify/wxcheck?"
-                + "state=" + URLEncoder.encode(JSONObject.toJSONString(rp), "UTF-8");
-        response.sendRedirect(reUrl);*/
-        //request.getRequestDispatcher(reUrl).forward(request, response);
     }
 
     @Override

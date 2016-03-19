@@ -41,6 +41,10 @@ public class ComUserExtractwayInfo {
      */
     private String cardImg;
     /**
+     * 是否是默认设置: 0,默认; 1非默认
+     */
+    private Integer isDefault;
+    /**
      * 是否启用:0,启用; 1,未启用
      */
     private Integer isEnable;
@@ -97,6 +101,14 @@ public class ComUserExtractwayInfo {
 
     public void setCardImg(String cardImg) {
         this.cardImg = cardImg;
+    }
+
+    public Integer getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
     }
 
     public Integer getIsEnable() {

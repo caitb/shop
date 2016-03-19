@@ -29,4 +29,8 @@ public class ComUserExtractApplyService {
     public ComUserAccount findByUserId(Long comUserId) {
         return comUserAccountMapper.findByUserId(comUserId);
     }
+
+    public ExtractApply findById(Long id) {
+        return comUserExtractApplyMapper.findById(id);
+    }
 }

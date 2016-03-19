@@ -82,4 +82,18 @@ public class ExtractApplyController extends BaseController {
     }
 
 
+    @RequestMapping("findById.do")
+    @ResponseBody
+    public Map<String,Object> findById(HttpServletRequest request,HttpServletResponse response,Long id){
+        HashMap<String, Object> map = new HashMap<>();
+        ExtractApply extractApply = comUserExtractApplyService.findById(id);
+        if (extractApply!=null){
+            ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+            extractApply.setComUserAccount(comUserAccount);
+        }
+        map.put("extract",extractApply);
+        return map;
+
+    }
+
 }

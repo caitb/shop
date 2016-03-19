@@ -108,11 +108,11 @@ public class UserApplyController {
                 }
                 for (ComAgentLevel comAgentLevel : comAgentLevels) {
                     if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
-                        sb.append("&nbsp;&nbsp;<label name='levelName'>" + comAgentLevel.getName() + "</label>");
+                        sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
                     }
                 }
-                sb.append("<b>&nbsp;&nbsp;商品数量：</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                sb.append("<b>&nbsp;&nbsp;金额：</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                sb.append("<b>商品数量：</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
+                sb.append("<b>金额：</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
                 sb.append("</p>");
             }
             mv.addObject("agentInfo", sb.toString());

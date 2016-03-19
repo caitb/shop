@@ -107,7 +107,8 @@
                 }
             },
             toNextPage: function () {
-                validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.skipPage() ? "" : "") : false) : false;
+                validateCodeJS.skipPage();
+                //validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.skipPage() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();

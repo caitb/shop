@@ -38,10 +38,12 @@ public class UserCenterController {
     @ResponseBody
     public String toUserCenter(HttpServletRequest request,
                              @RequestParam(required = true)Integer orderStatus,
-                             @RequestParam(required = true)Long orderId) {
+                             @RequestParam(required = true)Long orderId,
+                               @RequestParam(required = true)Integer shipStatus  ) {
         JSONObject json = new JSONObject();
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
+        pfBorder.setShipStatus(shipStatus);
         try {
             bOrderService.updateBOrder(pfBorder);
             json.put("mesg","交易成功");
@@ -66,8 +68,8 @@ public class UserCenterController {
         List<List<PfBorder>> pfBorderss=new ArrayList<List<PfBorder>>();
         pfBorderss.add(0,pfBorders);
         pfBorderss.add(1,pfBorders0);
-        pfBorderss.add(2,pfBorders15);
-        pfBorderss.add(3,pfBorders10);
+        pfBorderss.add(2,pfBorders10);
+        pfBorderss.add(3,pfBorders15);
         pfBorderss.add(4,pfBorders3);
         String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
         for (List<PfBorder> pfsBorder: pfBorderss) {

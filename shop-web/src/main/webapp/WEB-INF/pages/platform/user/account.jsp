@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/zichan.css">
+    <script type="application/javascript">
+        var path = "<%=path%>";
+        var basepath = "<%=basePath%>";
+    </script>
 </head>
 <body>
 <div class="wrap">
@@ -31,11 +35,11 @@
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span>申请提现</span></p>
+                    <p>可提现<span><a href="<%=basePath%>">申请提现</a></span></p>
                     <h1>￥12313.00</h1>
                 </li>
                 <li>
-                    <p>结算中<b>?</b></p>
+                    <p>结算中<b id="countExplainId">?</b></p>
                     <h1>￥<span>123123.00</span></h1>
                 </li>
             </ul>
@@ -70,12 +74,14 @@
 </div>
 <div class="back">
     <div class="back_j">
-        <h1>什么事结算中</h1>
+        <h1>什么是结算中</h1>
         <p>
             为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
         </p>
-        <botton>我知道了</botton>
+        <botton id="countExplainCloseId">我知道了</botton>
     </div>
 </div>
 </body>
+<script type="application/javascript" src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="<%=basePath%>static/js/account.js"></script>
 </html>

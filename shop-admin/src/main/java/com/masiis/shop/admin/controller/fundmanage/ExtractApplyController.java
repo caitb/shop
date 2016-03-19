@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.controller.extract;
+package com.masiis.shop.admin.controller.fundmanage;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComUserAccount;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/extract")
+@RequestMapping("/fundmanage/extract")
 public class ExtractApplyController extends BaseController {
 
     @Resource
@@ -32,7 +33,7 @@ public class ExtractApplyController extends BaseController {
 
     @RequestMapping("/list.shtml")
     public String list(HttpServletRequest request, HttpServletResponse response) {
-        return "extract/extract_list";
+        return "fundmanage/extract_list";
     }
 
     @RequestMapping("list.do")
@@ -70,6 +71,14 @@ public class ExtractApplyController extends BaseController {
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", extractApplyList);
         return pageMap;
+    }
+
+    @RequestMapping("/toaudit")
+    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long comUserId){
+
+        ModelAndView mav = new ModelAndView("fundmanage/toAudit");
+
+        return mav;
     }
 
 

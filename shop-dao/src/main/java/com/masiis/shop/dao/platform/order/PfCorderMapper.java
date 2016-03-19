@@ -28,6 +28,6 @@ public interface PfCorderMapper {
 
     void deleteById(Long id);
 
-    PfCorder trialCorder(PfCorder pfCorder);
+    List<PfCorder> trialCorder(PfCorder pfCorder);
 
 }

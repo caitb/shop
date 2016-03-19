@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
@@ -13,6 +14,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PfBorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -57,6 +59,9 @@ public class BOrderController extends BaseController {
     private UserAddressService userAddressService;
     @Resource
     private PfBorderConsigneeService pfBorderConsigneeService;
+    @Resource
+    private ComDictionaryService comDictionaryService;
+
 
     /**
      * 用户确认生成订单
@@ -147,9 +152,10 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            PfUserSku userSku = new PfUserSku();
+            PfUserSku userSku = null;
             PfUserSku checkUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
             if (checkUserSku == null) {
+                userSku = new PfUserSku();
                 userSku.setCreateTime(new Date());
                 if (pfUserSku == null) {
                     userSku.setPid(0);
@@ -247,7 +253,7 @@ public class BOrderController extends BaseController {
         WxPaySysParamReq req = null;
         try {
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            if(!bOrderService.checkBOrderStock(pfBorder)){
+            if (!bOrderService.checkBOrderStock(pfBorder)) {
                 throw new BusinessException("订单商品库存不足");
             }
             pfBorder.setUserMessage(userMessage);
@@ -266,7 +272,7 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
-            bOrderService.toPayBOrder(pfBorder,pfBorderConsignee);
+            bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
@@ -324,5 +330,91 @@ public class BOrderController extends BaseController {
         return mav;
     }
 
-
+    @RequestMapping("/closeDeal.do")
+    @ResponseBody
+    public String toUserCenter(HttpServletRequest request,
+                               @RequestParam(required = true)Integer orderStatus,
+                               @RequestParam(required = true)Long orderId,
+                               @RequestParam(required = true)Integer shipStatus  ) {
+        JSONObject json = new JSONObject();
+        PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+        pfBorder.setOrderStatus(orderStatus);
+        pfBorder.setShipStatus(shipStatus);
+        try {
+            bOrderService.updateBOrder(pfBorder);
+            json.put("mesg","交易成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json.toString();
+    }
+    /**
+     * 进货订单
+     * @author muchaofeng
+     * @date 2016/3/16 11:37
+     */
+    @RequestMapping("/stockBorder")
+    public ModelAndView stockBorder(HttpServletRequest request,Integer orderStatus,Integer shipStatus) {
+        ComUser comUser =(ComUser)request.getSession().getAttribute("comUser");
+        List<PfBorder> pfBorders =bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);
+        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(),0,shipStatus);//待付款
+        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(),1,0);//代发货
+        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(),1,5);//待收货
+        List<PfBorder> pfBorders3= bOrderService.findByUserId(comUser.getId(),3,shipStatus);//已完成
+        List<List<PfBorder>> pfBorderss=new ArrayList<List<PfBorder>>();
+        pfBorderss.add(0,pfBorders);
+        pfBorderss.add(1,pfBorders0);
+        pfBorderss.add(2,pfBorders10);
+        pfBorderss.add(3,pfBorders15);
+        pfBorderss.add(4,pfBorders3);
+        String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
+        for (List<PfBorder> pfsBorder: pfBorderss) {
+            if(pfsBorder!= null && pfsBorder.size()!=0){
+                for (PfBorder pfBorder: pfsBorder) {
+                    List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
+                    for (PfBorderItem pfBorderItem: pfBorderItems) {
+                        ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+                        pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
+                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+                    }
+                    ComDictionary comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
+                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
+                    pfBorder.setPfBorderItems(pfBorderItems);
+                }
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("pfBorders",pfBorderss);
+        modelAndView.setViewName("platform/user/jinhuodingdan");
+        return modelAndView;
+    }
+    /**
+     * 订单详情
+     * @author muchaofeng
+     * @date 2016/3/16 15:00
+     */
+    @RequestMapping("/borderDetils.html")
+    public ModelAndView borderDetils(HttpServletRequest request,Long id){
+        BorderDetail borderDetail = new BorderDetail();
+        String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
+        PfBorder pfBorder = bOrderService.getPfBorderById(id);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
+        for (PfBorderItem pfBorderItem: pfBorderItems) {
+            ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+            pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
+            pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+        }
+        //快递公司信息
+        List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
+        //收货人
+        PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
+        borderDetail.setPfBorder(pfBorder);
+        borderDetail.setPfBorderItems(pfBorderItems);
+        borderDetail.setPfBorderFreights(pfBorderFreights);
+        borderDetail.setPfBorderConsignee(pfBorderConsignee);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("borderDetail",borderDetail);
+        modelAndView.setViewName("platform/user/jinhuoxiangqing");
+        return modelAndView;
+    }
 }

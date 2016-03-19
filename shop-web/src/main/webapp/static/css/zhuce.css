@@ -2,8 +2,15 @@
 .wrap {
   width: 100%;
   height: 100%;
+  position: relative;
+  overflow: hidden;
 }
-.wrap main {
+.wrap #box {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.wrap #box main {
   width: 100%;
   padding-bottom: 20px;
   display: -webkit-box;
@@ -11,11 +18,11 @@
   -webkit-box-orient: vertical;
   -moz-box-orient: vertical;
 }
-.wrap main .sec1 {
+.wrap #box main .sec1 {
   margin-bottom: 5px;
   width: 100%;
 }
-.wrap main .sec1 div {
+.wrap #box main .sec1 div {
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
   background: white;
@@ -24,14 +31,14 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
-.wrap main .sec1 div p {
-  text-indent: 25px;
+.wrap #box main .sec1 div p {
+  text-indent: 10px;
   color: #333333;
   line-height: 40px;
   font-size: 14px;
   position: relative;
 }
-.wrap main .sec1 div p .onc {
+.wrap #box main .sec1 div p .onc {
   float: right;
   margin: 10px 28px 0 0;
   width: 24px;
@@ -39,7 +46,7 @@
   display: none;
   background: url("../images/no.png") no-repeat;
 }
-.wrap main .sec1 div p .gao {
+.wrap #box main .sec1 div p .gao {
   position: absolute;
   right: 13px;
   top: 28px;
@@ -52,10 +59,10 @@
   display: none;
   padding-left: 14px;
 }
-.wrap main .sec1 div p b {
+.wrap #box main .sec1 div p b {
   font-size: 12px;
 }
-.wrap main .sec1 div p input {
+.wrap #box main .sec1 div p input {
   color: #333333;
   border: none;
   font-size: 12px;
@@ -64,7 +71,7 @@
   margin-top: -4px;
   font-weight: 600;
 }
-.wrap main .sec1 div p .btn {
+.wrap #box main .sec1 div p .btn {
   text-indent: 0;
   font-size: 12px;
   display: inline-block;
@@ -79,7 +86,7 @@
   background: #F74A11;
   margin-right: 10px;
 }
-.wrap main .sec1 div span {
+.wrap #box main .sec1 div span {
   float: right;
   display: block;
   width: 21px;
@@ -92,44 +99,44 @@
   color: #999999;
   display: none;
 }
-.wrap main .sec1 div .yon {
+.wrap #box main .sec1 div .yon {
   background: url("../images/ok.png") no-repeat 54%;
   background-size: 6%;
 }
-.wrap main .sec1 div .yno {
+.wrap #box main .sec1 div .yno {
   background: url("../images/nok.png") no-repeat 54%;
   background-size: 6%;
 }
-.wrap main .sec2 {
+.wrap #box main .sec2 {
   width: 100%;
   background: white;
 }
-.wrap main .sec2 h2 {
+.wrap #box main .sec2 h2 {
   font-size: 13px;
   font-weight: 600;
   color: #333333;
   line-height: 30px;
   text-indent: 10px;
 }
-.wrap main .sec2 > h3 {
-  margin: 0 25px;
+.wrap #box main .sec2 > h3 {
+  margin: 0 10px;
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
 }
-.wrap main .sec2 > h3 input {
+.wrap #box main .sec2 > h3 input {
   display: none;
 }
-.wrap main .sec2 > h3 label {
+.wrap #box main .sec2 > h3 label {
   background: url("../images/icon_14.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
 }
-.wrap main .sec2 > h3 input:checked + label {
+.wrap #box main .sec2 > h3 input:checked + label {
   background: url("../images/icon_11.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
 }
-.wrap main .sec2 div {
+.wrap #box main .sec2 div {
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
   background: white;
@@ -138,31 +145,30 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
-.wrap main .sec2 div h3 {
+.wrap #box main .sec2 div h3 {
   position: relative;
   margin-right: 10px;
-  text-indent: 25px;
+  text-indent: 10px;
   color: #333333;
   line-height: 40px;
   font-size: 14px;
 }
-.wrap main .sec2 div h3 .gao {
+.wrap #box main .sec2 div h3 .gao {
   position: absolute;
-  right: 21px;
-  top: 4px;
+  right: 2px;
+  top: 28px;
   background: url("../images/icon_33.png") no-repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 10px;
   text-indent: 0;
   z-index: 100;
   display: none;
-  padding-left: 14px;
 }
-.wrap main .sec2 div h3 b {
+.wrap #box main .sec2 div h3 b {
   font-size: 12px;
 }
-.wrap main .sec2 div h3 input {
+.wrap #box main .sec2 div h3 input {
   color: #333333;
   border: none;
   font-size: 12px;
@@ -171,7 +177,7 @@
   margin-top: -4px;
   font-weight: 600;
 }
-.wrap main .sec2 div h3 span {
+.wrap #box main .sec2 div h3 span {
   position: absolute;
   display: block;
   width: 21px;
@@ -184,38 +190,35 @@
   color: #999999;
   display: none;
 }
-.wrap main .sec2 .dengji input {
-  display: none;
-}
-.wrap main .sec2 .dengji label {
+.wrap #box main .sec2 .dengji p {
   display: block;
   color: #999999;
   line-height: 40px;
   border-bottom: 1px solid #F6F6F6;
-  text-indent: 50px;
-  background: url("../images/icon_14.png") no-repeat 27px;
+  text-indent: 35px;
+  background: url("../images/icon_14.png") no-repeat 10px;
   background-size: 5%;
   font-size: 13px;
 }
-.wrap main .sec2 .dengji label span,
-.wrap main .sec2 .dengji label b {
+.wrap #box main .sec2 .dengji p span,
+.wrap #box main .sec2 .dengji p b {
   font-size: 12px;
   color: #999999;
 }
-.wrap main .sec2 .dengji input:checked + label {
-  background: url("../images/icon_11.png") no-repeat 27px;
+.wrap #box main .sec2 .dengji .on {
+  background: url("../images/icon_11.png") no-repeat 10px;
   background-size: 5%;
 }
-.wrap main .sec2 .jin {
+.wrap #box main .sec2 .jin {
   color: #c5c5c5;
   background: url("../images/jin.png") no-repeat 27px;
   background-size: 5%;
 }
-.wrap main .sec2 .jin span,
-.wrap main .sec2 .jin b {
+.wrap #box main .sec2 .jin span,
+.wrap #box main .sec2 .jin b {
   color: #c5c5c5;
 }
-.wrap main .sec3 {
+.wrap #box main .sec3 {
   width: 100%;
   display: -webkit-box;
   -webkit-box-pack: center;
@@ -224,20 +227,20 @@
   -moz-box-pack: center;
   -moz-box-align: center;
 }
-.wrap main .sec3 label {
+.wrap #box main .sec3 label {
   font-size: 12px;
   color: #333333;
   text-indent: 20px;
   line-height: 14px;
 }
-.wrap main .sec3 label a {
+.wrap #box main .sec3 label a {
   text-decoration: underline;
   color: #F74A11;
 }
-.wrap main .sec3 input {
+.wrap #box main .sec3 input {
   display: none;
 }
-.wrap main .sec4 {
+.wrap #box main .sec4 {
   margin: 0 10px;
   height: 42px;
   background: #F74A11;
@@ -248,11 +251,70 @@
   -webkit-box-pack: center;
   -moz-box-pack: center;
 }
-.wrap main .sec4 a {
+.wrap #box main .sec4 a {
   display: block;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   line-height: 42px;
   color: white;
   text-align: center;
+}
+.wrap .back {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+}
+.wrap .back .back_que {
+  width: 90%;
+  background: white;
+  border-radius: 5px;
+  z-index: 10;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.wrap .back .back_que p {
+  margin: 0 10px;
+  color: #F74A11;
+  border-bottom: 1px solid #F74A11;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+.wrap .back .back_que h4 {
+  margin: 0 10px;
+  letter-spacing: 1px;
+  display: -webkit-box;
+}
+.wrap .back .back_que h4 b {
+  display: block;
+  text-align: right;
+  -webkit-box-flex: 1;
+  width: 1px;
+  margin-left: -10px;
+}
+.wrap .back .back_que h4 span {
+  width: 1px;
+  display: block;
+  -webkit-box-flex: 1;
+}
+.wrap .back .back_que h3 {
+  margin-top: 10px;
+  -webkit-box-flex: 1;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  border-top: 1px solid #999999;
+}
+.wrap .back .back_que h3 span {
+  display: block;
+  -webkit-box-flex: 1;
+  text-align: center;
+  line-height: 33px;
+}
+.wrap .back .back_que h3 span:nth-child(1) {
+  border-right: 1px solid #999;
 }

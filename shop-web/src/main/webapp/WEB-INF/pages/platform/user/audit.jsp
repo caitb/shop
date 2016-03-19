@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/kangyinli.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <script src="<%=basePath%>static/js/iscroll.js"></script>
+    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -33,7 +34,9 @@
         <div class="sec1"><p>付 款 状 态：<span>
                                          <c:if test="${memberMap.payStatus == 0}">未付款</c:if>
                                          <c:if test="${memberMap.payStatus == 1}">已付款</c:if>
-                                        </span></p></div>
+                                        </span>
+                         </p>
+        </div>
         <div class="sec1"><p>手机号：<span>${memberMap.mobile}</span></p></div>
         <div class="sec1"><p>微信号：<span>${memberMap.weixin}</span></p></div>
         <div class="sec1"><p>身份证号：<span>${memberMap.idCard}</span></p> </div>
@@ -43,20 +46,54 @@
             <h1><img src="${memberMap.idCardBackImg}" alt="">反面</h1>
         </div>
         <footer>
-            <botton class="btn">拒绝</botton>
-            <botton class="btn2">通过</botton>
+            <button class="btn audit" status="0">拒绝</button>
+            <button class="btn2 audit" status="1">通过</button>
         </footer>
     </main>
+    <form id="auditForm" action="<%=basePath%>myteam/audit">
     <div class="back">
         <div class="back_j">
             <p>请填写拒绝原因</p>
-            <textarea></textarea>
+            <input type="hidden" id="userSkuId" name="userSkuId" value="${memberMap.userSkuId}">
+            <input type="hidden" id="pfUserCertificateId" name="id" value="${memberMap.pfUserCertificateId}" >
+            <input type="hidden" id="status" name="status" value="1" >
+            <textarea name="reason"></textarea>
             <div>
                 <h1 class="j_qu">取消</h1>
-                <h1 class="j_que">确定</h1>
+                <h1 class="j_que audit" status="1">确定</h1>
             </div>
         </div>
     </div>
+    </form>
 </div>
+<script>
+    $('.audit').on('click', function(){
+        //如果拒绝,完善表单信息
+       if($(this).attr('status') == 0){
+           $('#status').val(0);
+           $('.back').css('display', '-webkit-box');
+           return;
+       }
+
+        //提交表单
+        $.ajax({
+            url: '<%=basePath%>myteam/audit',
+            type: 'post',
+            data: $('#auditForm').serialize(),
+            success: function(data){
+                if(data == 'success'){
+                    window.history.go(-1);
+                }else{
+                    $('.back').css('display', 'none');
+                    alert('审核失败');
+                }
+            }
+        });
+    });
+
+    $('.j_qu').on('click', function(){
+        $('.back').css('display', 'none');
+    });
+</script>
 </body>
 </html>

@@ -85,7 +85,7 @@
                 <p>京公网安备 11000002000006号</p>
             </section>
         </main>
-        <div class="back">
+        <div class="back" style="display: none">
             <div class="back_j">
                 <p>绑定账号</p>
                 <div>
@@ -105,9 +105,10 @@
 </div>
 <footer>
     <section class="sec3">
-        <input id="applyTrialId" value="${productDetails.id}" style="display: none"/>
+        <input id="skipPageId" value="trial" style="display: none" />
+        <input id="skuId" value="${productDetails.id}" style="display: none"/>
         <p>
-            <a id="applyTrial"  onclick="productJS.applyTrial()">申请试用</a>
+            <a id="applyTrial"  onclick="validateCodeJS.applyTrial()">申请试用</a>
             <a id="trialed" style="display: none">已试用</a>
         </p>
         <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
@@ -115,9 +116,11 @@
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/product.js"></script>
+<script src="<%=path%>/static/js/validateCode.js"></script>
 <script>
     $(document).ready(function () {
         productJS.initPage();
+        validateCodeJS.initPage();
     });
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',

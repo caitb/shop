@@ -175,20 +175,25 @@ public class MyTeamService {
 
         pfUserCertificate.setStatus(status);
         pfUserCertificate.setReason(reason);
-        pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
-        Date curDate = new Date();
-        pfUserCertificate.setBeginTime(curDate);
-        curDate.setYear(curDate.getYear()+1);
-        pfUserCertificate.setEndTime(curDate);
 
-        String name = comUser.getRealName();
-        String value1 = "证件号：" + comUser.getIdCard() + "，手机：" + comUser.getMobile() + "，微信：" + comUser.getWxId();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-        String value2 = "授权期限：" + sdf.format(pfUserCertificate.getBeginTime()).toString() + "至" + sdf.format(pfUserCertificate.getEndTime()).toString() + "，证书编号" + pfUserCertificate.getCode();
-        String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-        String picName = uploadFile(webappPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
+        if(status == 1){
+            pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
+            Date curDate = new Date();
+            pfUserCertificate.setBeginTime(curDate);
+            curDate.setYear(curDate.getYear()+1);
+            pfUserCertificate.setEndTime(curDate);
 
-        pfUserCertificate.setImgUrl(picName + ".jpg");
+            String name = comUser.getRealName();
+            String value1 = "证件号：" + comUser.getIdCard() + "，手机：" + comUser.getMobile() + "，微信：" + comUser.getWxId();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+            String value2 = "授权期限：" + sdf.format(pfUserCertificate.getBeginTime()).toString() + "至" + sdf.format(pfUserCertificate.getEndTime()).toString() + "，证书编号" + pfUserCertificate.getCode();
+            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
+            String picName = uploadFile(webappPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
+
+            pfUserCertificate.setImgUrl(picName + ".jpg");
+
+            CCPRestSmsSDK.sendSMS(comUser.getMobile(), "65446", new String[]{comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId()).getName()});
+        }
 
 
         PfUserSku pfUserSku = new PfUserSku();
@@ -198,9 +203,6 @@ public class MyTeamService {
         pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);
         pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
 
-        if (status == 1) {
-            CCPRestSmsSDK.sendSMS(comUser.getMobile(), "65446", new String[]{comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId()).getName()});
-        }
     }
 
     private String getCertificateCode(PfUserCertificate pfUserCertificate){

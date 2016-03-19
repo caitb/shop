@@ -9,9 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>登录 - Bootstrap后台管理系统模版Ace下载</title>
-    <meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文" />
-    <meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载" />
+    <title>麦士商城后台系统</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- basic styles -->
@@ -57,7 +55,6 @@
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
-                                        <i class="icon-coffee green"></i>
                                         麦士商城后台管理系统
                                     </h4>
 
@@ -84,7 +81,6 @@
                                             <div class="clearfix">
                                                 <label class="inline">
                                                     <input type="checkbox" class="ace" />
-                                                    <span class="lbl"> Remember Me</span>
                                                 </label>
 
                                                 <button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="submit()">

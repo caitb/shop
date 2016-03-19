@@ -3,6 +3,9 @@
             skuId: $("#skuId").val(),
             phone: null,
             skipPageId: $("#skipPageId").val(),
+            bindPhoneStatus:true,
+            bindPhoneSkipBasePath:"/user/bingPhoneStatusToPage.shtml",
+            bindPhoneSkipParam:"",
             initPage: function () {
                 validateCodeJS.initClick();
             },
@@ -21,7 +24,7 @@
                     type: 'post',
                     async: false,
                     success: function (data) {
-                        if (data) {
+                        if (data=="true") {
                             switch (validateCodeJS.skipPageId) {
                                 case "register":
                                     var pUserId = $("#pUserId").val();
@@ -107,8 +110,8 @@
                 }
             },
             toNextPage: function () {
-                validateCodeJS.skipPage();
-                //validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.skipPage() ? "" : "") : false) : false;
+                //validateCodeJS.bindPhone();
+                validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();
@@ -137,18 +140,38 @@
                 })
                 return bl;
             },
+            bindPhone:function(){
+                validateCodeJS.phone = $("#phoneId").val();
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "/user/bindPhone.do",
+                    data: "phone=" + validateCodeJS.phone,
+                    dataType: "Json",
+                    success: function (result) {
+                        if (result=="true") {
+                            validateCodeJS.skipPage();
+                        } else {
+                            alert("绑定手机号失败");
+                        }
+                    }
+                })
+            },
             skipPage: function () {
+                var path;
                 switch (validateCodeJS.skipPageId) {
                     case "register":
-                        var pUserId = $("#pUserId").val();
-                        window.location.href = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
+                        path = "/userApply/apply.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
+                        validateCodeJS.bindPhoneSkipParam="?skipPage=register&status=success&path="+path
                         break;
                     case "trial":
-                        window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
+                        path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
+                        validateCodeJS.bindPhoneSkipParam="?skipPage=trial&status=success&path="+path;
                         break;
                     default:
                         break;
                 }
+                window.location.href = validateCodeJS.bindPhoneSkipBasePath+validateCodeJS.bindPhoneSkipParam;
             }
         }
 })();

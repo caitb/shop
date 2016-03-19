@@ -1,7 +1,7 @@
 package com.masiis.shop.web.platform.controller.product;
 
-import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.beans.product.Product;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import org.springframework.stereotype.Controller;

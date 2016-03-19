@@ -49,6 +49,7 @@
                                 address +="</div></section>";
                                 $(".box").append(address);
                             })
+                            $(".sec1").attr("style","display:block");
                         }else{
                             //显示没有收获地址的提示信息
                             $(".pp").css("display","-webkit-box");

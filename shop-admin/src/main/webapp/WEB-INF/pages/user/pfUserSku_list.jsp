@@ -554,27 +554,29 @@
             location.reload();
         })*/
         //更改上级
-        function changeLeader(approveId){
-            //var approveId = $("#approveId").val();
+        function changeLeader(){
+            var approveId = $("#approveId").val();
             $.ajax({
                 type: "GET",
                 url: '<%=basePath%>certificate/listUpper.do',
                 data: {id: approveId},
                 dataType: "json",
                 success: function (data) {
-                    $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
-                    $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
-                    $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
-                    $("#userSkuId").val(data["certificateInfo"].id);
-                    //option属性
-                    if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
-                        var comUserList = {upperList:data["certificateInfo"].comUserList};
-                        $("#userList").val(comUserList);
-                        $.each(data["certificateInfo"].comUserList,function(index,value){
-                            $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
-                        });
-                    }else{
-                        $("#userSubmit").attr("disabled", true);
+                    if (data!=null){
+                        $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
+                        $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
+                        $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
+                        $("#userSkuId").val(data["certificateInfo"].id);
+                        //option属性
+                        if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
+                            var comUserList = {upperList:data["certificateInfo"].comUserList};
+                            $("#userList").val(comUserList);
+                            $.each(data["certificateInfo"].comUserList,function(index,value){
+                                $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                            });
+                        }else{
+                            $("#userSubmit").attr("disabled", true);
+                        }
                     }
                     $('#myModal').modal({
                         show: true,

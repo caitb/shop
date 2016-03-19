@@ -49,6 +49,7 @@
                                 address +="</span></p></div></section>";
                                 $(".box").append(address);
                             });
+                            $(".sec1").attr("style","display:block");
                         }else{
                             $(".pp").css("display","-webkit-box");
                         }

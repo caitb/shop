@@ -22,20 +22,20 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>订单详情</p>
+        <p>证书详情</p>
     </header>
     <main>
         <div id="box">
             <div class="sec1">
-                <h1>您的${skuName} 授权书申请成功！</h1>
+                <h1>您的 ${skuName} 授权书申请成功！</h1>
             </div>
             <div class="sec2">
                 <img src="<%=path%>/static/images/icon_45.png" alt="">
                 <p>审核结果会在1个工作日内完成</p>
             </div>
             <div class="sec6">
-                <p><a href="index.html">返回首页</a></p>
-                <p><a href="gerenzhongxin.html">返回个人中心</a></p>
+                <p><a href="javascript:window.location.replace('<%=basePath%>/index');">返回首页</a></p>
+                <p><a href="javascript:window.location.replace('<%=basePath%>profile/profile');">返回个人中心</a></p>
             </div>
         </div>
     </main>

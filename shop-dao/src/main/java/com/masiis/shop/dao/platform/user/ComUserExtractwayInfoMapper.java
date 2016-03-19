@@ -22,4 +22,6 @@ public interface ComUserExtractwayInfoMapper {
     int updateByPrimaryKey(ComUserExtractwayInfo record);
 
     ComUserExtractwayInfo selectByBankcardAndCardownername(ComUserExtractwayInfo record);
+
+    List<ComUserExtractwayInfo> selectByUserId(Long userId);
 }

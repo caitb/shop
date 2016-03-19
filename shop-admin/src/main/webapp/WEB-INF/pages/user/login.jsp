@@ -55,7 +55,6 @@
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
-                                        <i class="icon-coffee green"></i>
                                         麦士商城后台管理系统
                                     </h4>
 
@@ -82,7 +81,6 @@
                                             <div class="clearfix">
                                                 <label class="inline">
                                                     <input type="checkbox" class="ace" />
-                                                    <span class="lbl"> Remember Me</span>
                                                 </label>
 
                                                 <button type="button" class="width-35 pull-right btn btn-sm btn-primary" onclick="submit()">

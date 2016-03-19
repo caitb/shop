@@ -36,12 +36,12 @@ public class UserAccountController extends BaseController{
         if(user == null){
             user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
         }
-        String kid = aesEncryptBySalt(String.valueOf(user.getId())
-                , SysConstants.COOKIE_AES_KEY, SysConstants.COOKIE_KEY_SALT);
-
+        //String kid = aesEncryptBySalt(String.valueOf(user.getId()), SysConstants.COOKIE_AES_KEY, SysConstants.COOKIE_KEY_SALT);
         ComUserAccount account = accountService.findAccountByUserid(user.getId());
 
-        model.addAttribute("kid", kid);
+
+
+        model.addAttribute("account", account);
         return "platform/user/account";
     }
 }

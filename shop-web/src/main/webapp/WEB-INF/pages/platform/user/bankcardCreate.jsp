@@ -26,9 +26,11 @@
     <main>
         <p>新增银行卡信息</p>
         <h1>银行卡号：<input type="text" id="bankcard" placeholder="填写您的卡号"></h1>
-        <h1>银行名称：<select id="bankname" name="bankname">
+        <h1>银行名称：<select id="bankid" name="bankid">
             <option value="">请选择银行</option>
-            <option value="中国银行">中国银行</option>
+            <c:forEach var="bank" items="${bankList}">
+                <option value="${bank.id}">${bank.bankName}</option>
+            </c:forEach>
         </select></h1>
         <h1>开户行名称 ：<input type="text" id="depositbankname" placeholder="输入您的开户行名称"></h1>
         <h1>持卡人姓名：<input type="text" id="cardownername" placeholder="输入持卡人姓名"></h1>
@@ -41,14 +43,14 @@
 <script>
     function submitClick() {
         var bankcard = $("#bankcard").val();
-        var bankname = $("#bankname").val();
+        var bankid = $("#bankid").val();
         var depositbankname = $("#depositbankname").val();
         var cardownername = $("#cardownername").val();
         if (bankcard == "") {
             alert("请输入银行卡号");
             return;
         }
-        if(bankname == ""){
+        if(bankid == ""){
             alert("请选择银行名称");
             return;
         }
@@ -64,7 +66,7 @@
             type:"POST",
             async:false,
             url : "<%=path%>/extractwayinfo/add.do",
-            data:{bankcard:bankcard,bankname:bankname,depositbankname:depositbankname,cardownername:cardownername},
+            data:{bankcard:bankcard,bankid:bankid,depositbankname:depositbankname,cardownername:cardownername},
             dataType:"Json",
             beforeSend:function(){
 

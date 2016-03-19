@@ -177,7 +177,7 @@ public class COrderController extends BaseController {
         pfCorder.setSkuId(skuId);
         pfCorder.setUserId(userId);
         pfCorder.setProductAmount(new BigDecimal(0));
-        pfCorder.setShipAmount(new BigDecimal(product.getShipAmount()));
+        pfCorder.setShipAmount(product.getShipAmount());
         pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
         pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
         pfCorder.setPayAmount(new BigDecimal(0));

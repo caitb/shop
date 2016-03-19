@@ -86,11 +86,11 @@ public class UserController {
                 break;
         }
         if (status.equals("success")){
-            return "platform/user/tiaozhuan";
             //绑定成功界面
+            return "platform/user/tiaozhuan";
         }else{
-            return "platform/user/bangdingshibai";
             //绑定失败界面
+            return "platform/user/bangdingshibai";
         }
     }
 }

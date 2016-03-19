@@ -58,8 +58,7 @@
             <p>运费：<span>￥${product.shipAmount}</span></p>
             <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
         </section>
-        <p><a href="">返回首页</a></p>
-        <button>继续支付</button>
+        <p><a href="<%=path%>/index">返回首页</a></p>
     </div>
 </div>
 </body>

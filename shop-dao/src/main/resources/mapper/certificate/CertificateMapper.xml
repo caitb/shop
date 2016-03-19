@@ -136,4 +136,10 @@
     <select id="findById" parameterType="int" resultType="String">
        select img_url from pf_user_certificate where pf_user_sku_id = #{id}
     </select>
+    <select id="getCertificatesByUser" parameterType="int" resultMap="CertificateResultMap">
+        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate
+        FROM pf_user_sku pfku
+        LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
+        WHERE pfku.user_id = #{userId}
+    </select>
 </mapper>

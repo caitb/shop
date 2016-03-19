@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
@@ -208,7 +209,7 @@ public class UserCertificateController {
     public ModelAndView userCertificate(HttpServletRequest request, HttpServletResponse response,
                                                    @PathVariable("userId") Integer userId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/certificateList");
-        List<PfUserCertificate> pfUserCertificates = userCertificateService.CertificateByUser(userId);
+        List<CertificateInfo> pfUserCertificates = userCertificateService.CertificateByUser(userId);
         mav.addObject("pfUserCertificates",pfUserCertificates);
         return mav;
     }
@@ -217,15 +218,110 @@ public class UserCertificateController {
       * @Date 2016/3/17 0017 下午 6:37
       * 个人商品证书详情
       */
-    @RequestMapping(value = "/userct/{skuId}")
+    @RequestMapping(value = "/userct/{pfuId}")
     public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable("skuId") Integer skuId) throws Exception {
-        ModelAndView mav = new ModelAndView("/platform/user/certificateList");
+                                        @PathVariable("pfuId") Integer pfuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/cdetail");
         HttpSession session = request.getSession();
         ComUser comUser = (ComUser) session.getAttribute("comUser");
-        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(skuId,Long.valueOf(1));
+        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(pfuId);
+        ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
         mav.addObject("cdetail",cdetail);
         mav.addObject("comUser",comUser);
+        mav.addObject("comSku",comSku);
         return mav;
+    }
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/18 0018 下午 1:50
+      * 等待申请
+      */
+    @RequestMapping(value = "/ready/{skuName}")
+    public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
+                                              @PathVariable("skuName") String skuName) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/cready");
+        mav.addObject("skuName",skuName);
+        return mav;
+    }
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/18 0018 下午 2:19
+      * 审核失败详情
+      */
+    @RequestMapping(value = "/fail/{pfuId}")
+    public ModelAndView userCertificateFailDetail(HttpServletRequest request, HttpServletResponse response,
+                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/ctfail");
+        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(pfuId);
+        ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
+        ComUser comuser = userService.getUserById(cdetail.getUserId());
+        String ctValue = PropertiesUtils.getStringValue("index_user_idCard_url");
+        comuser.setIdCardFrontUrl(ctValue + comuser.getIdCardFrontUrl());
+        comuser.setIdCardBackUrl(ctValue + comuser.getIdCardBackUrl());
+        mav.addObject("ctfaildetail",cdetail);
+        mav.addObject("comUser",comuser);
+        mav.addObject("comSku",comSku);
+        return mav;
+    }
+
+    /**
+     * 更新授权书信息
+     * Jing Hao
+     */
+    @ResponseBody
+    @RequestMapping("/update.do")
+    public String userCertificateUpdate(HttpServletRequest request,
+                                     @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
+                                     @RequestParam(value = "name", required = true) String name,
+                                     @RequestParam(value = "wxh", required = true) String wxh,
+                                     @RequestParam(value = "idCard", required = true) String idCard,
+                                     @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
+                                     @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
+    ) {
+        JSONObject object = new JSONObject();
+        try {
+            if (StringUtils.isBlank(name)) {
+                throw new BusinessException("姓名不能为空");
+            }
+            if (StringUtils.isBlank(idCard)) {
+                throw new BusinessException("身份证号不能为空");
+            }
+            if (StringUtils.isBlank(idCard)) {
+                throw new BusinessException("微信号不能为空");
+            }
+            if (StringUtils.isBlank(idCardFrontUrl)) {
+                throw new BusinessException("身份证照片不能为空");
+            }
+            if (StringUtils.isBlank(idCardBackUrl)) {
+                throw new BusinessException("身份证照片不能为空");
+            }
+            PfUserSku pfUserSku = userSkuService.getUserSkuById(userSkuId);
+            if (pfUserSku == null) {
+                throw new BusinessException("代理信息有误");
+            }
+            String rootPath = request.getServletContext().getRealPath("/");
+            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
+            String frontFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardFrontUrl);
+            String backFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardBackUrl);
+            //修改用户数据
+            ComUser comUser = userService.getUserById(pfUserSku.getUserId());
+            comUser.setIdCard(idCard);
+            comUser.setWxId(wxh);
+            comUser.setIdCardFrontUrl(frontFillFullName);
+            comUser.setIdCardBackUrl(backFillFullName);
+            //更新证书申请数据
+            PfUserCertificate pfUserCertificate =userCertificateService.CertificateDetailsByUser(pfUserSku.getId());
+            pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
+            pfUserCertificate.setIdCard(idCard);
+            pfUserCertificate.setMobile(comUser.getMobile());
+            pfUserCertificate.setWxId(comUser.getWxId());
+            pfUserCertificate.setStatus(0);
+            userService.updateUserCertificate(comUser, pfUserCertificate);
+            object.put("isError", false);
+        } catch (Exception ex) {
+            object.put("isError", true);
+            object.put("message", ex.getMessage());
+        }
+        return object.toJSONString();
     }
 }

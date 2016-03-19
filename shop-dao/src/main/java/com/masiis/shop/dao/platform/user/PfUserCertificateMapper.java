@@ -8,10 +8,8 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserCertificate;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 public interface PfUserCertificateMapper {
     int deleteByPrimaryKey(Long id);
@@ -28,5 +26,5 @@ public interface PfUserCertificateMapper {
 
     List<PfUserCertificate> selectByCode(Integer userId);
 
-    PfUserCertificate selectByUserSkuId(Map<String, Object> paramsMap);
+    PfUserCertificate selectByUserSkuId(Integer pfuId);
 }

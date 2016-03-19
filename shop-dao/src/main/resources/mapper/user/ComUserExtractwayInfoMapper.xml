@@ -67,4 +67,11 @@
         from com_user_extractway_info
     </select>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id,
+        extract_way, is_enable, created_time, changed_time, changed_by
+        from com_user_extractway_info
+        WHERE com_user_id = #{comUserId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

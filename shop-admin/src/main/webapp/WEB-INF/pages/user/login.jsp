@@ -51,24 +51,14 @@
         <div class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <div class="login-container">
-                    <div class="center">
-                        <h1>
-                            <i class="icon-leaf green"></i>
-                            <span class="red">麦士商城</span>
-                            <span class="white">后台管理系统</span>
-                        </h1>
-                        <h4 class="blue">&copy; 麦士网络科技</h4>
-                    </div>
-
-                    <div class="space-6"></div>
 
                     <div class="position-relative">
-                        <div id="login-box" class="login-box visible widget-box no-border">
+                        <div id="login-box" class="login-box visible widget-box no-border" style="margin-top: 300px;">
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
                                         <i class="icon-coffee green"></i>
-                                        请输入您的信息
+                                        麦士商城后台管理系统
                                     </h4>
 
                                     <div class="space-6"></div>
@@ -107,40 +97,8 @@
                                         </fieldset>
                                     </form>
 
-                                    <div class="social-or-login center">
-                                        <span class="bigger-110">也可以使用以下方式登陆</span>
-                                    </div>
-
-                                    <div class="social-login center">
-                                        <a class="btn btn-primary">
-                                            <i class="icon-facebook"></i>
-                                        </a>
-
-                                        <a class="btn btn-info">
-                                            <i class="icon-twitter"></i>
-                                        </a>
-
-                                        <a class="btn btn-danger">
-                                            <i class="icon-google-plus"></i>
-                                        </a>
-                                    </div>
                                 </div><!-- /widget-main -->
 
-                                <div class="toolbar clearfix">
-                                    <div>
-                                        <a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
-                                            <i class="icon-arrow-left"></i>
-                                            我忘记密码了
-                                        </a>
-                                    </div>
-
-                                    <div>
-                                        <a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
-                                            我要注册
-                                            <i class="icon-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
                             </div><!-- /widget-body -->
                         </div><!-- /login-box -->
 

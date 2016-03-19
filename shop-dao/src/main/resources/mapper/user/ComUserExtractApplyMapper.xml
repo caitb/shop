@@ -110,4 +110,34 @@
         LEFT JOIN com_user cu ON cuea.com_user_id = cu.id
     </select>
 
+    <select id="findById" resultMap="ExtractApplyMap" >
+        SELECT
+            cuea.id,
+            cuea.com_user_id,cu.real_name,
+            cu.openid,
+            cuea.extract_fee,
+            cuea.apply_time,
+            cuea.bank_card,
+            cuea.bank_name,
+            cuea.deposit_bank_name,
+            cuea.card_owner_name,
+            cuea.extract_way,
+            cuea.audit_type,
+            cuea.remark
+        FROM com_user_extract_apply cuea
+        LEFT JOIN com_user cu ON cuea.com_user_id = cu.id
+        WHERE cuea.id = #{id}
+    </select>
+
+
+    <update id="pass">
+          update com_user_extract_apply set audit_type = 2 where id = #{id}
+    </update>
+    <update id="refuse">
+          update com_user_extract_apply set audit_type = 1 where id = #{id}
+    </update>
+    <update id="pay">
+          update com_user_extract_apply set audit_type = 3 where id = #{id}
+    </update>
+
 </mapper>

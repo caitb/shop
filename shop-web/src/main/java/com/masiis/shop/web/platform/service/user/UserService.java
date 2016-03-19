@@ -35,7 +35,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public ComUser getUserById(Long userId) throws Exception {
+    public ComUser getUserById(Long userId) {
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         return comUser;
     }

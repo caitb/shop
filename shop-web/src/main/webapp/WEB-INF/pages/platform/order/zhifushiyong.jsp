@@ -80,6 +80,10 @@
     function weChatPay() {
         var addressId = $("#addressId").val();
         var skuId = $("#skuId").val();
+        if(addressId==null||addressId==""){
+            alert("请填写收获地址");
+            return;
+        }
         window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId;
     }
 </script>

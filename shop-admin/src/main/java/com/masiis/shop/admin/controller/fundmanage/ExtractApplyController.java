@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComUserAccount;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,14 @@ public class ExtractApplyController extends BaseController {
         pageMap.put("total", pageInfo.getTotal());
         pageMap.put("rows", extractApplyList);
         return pageMap;
+    }
+
+    @RequestMapping("/toaudit")
+    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long comUserId){
+
+        ModelAndView mav = new ModelAndView("fundmanage/toAudit");
+
+        return mav;
     }
 
 

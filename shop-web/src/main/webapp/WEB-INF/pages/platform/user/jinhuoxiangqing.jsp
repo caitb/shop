@@ -110,7 +110,7 @@
                 $(".back").hide();
                 $.ajax({
                     type:"POST",
-                    url : "<%=path%>/userCenterController/closeDeal.do",
+                    url : "<%=path%>/border/closeDeal.do",
                     data:{orderStatus:3,orderId:id,shipStatus:9},
                     dataType:"Json",
                     success:function(date){

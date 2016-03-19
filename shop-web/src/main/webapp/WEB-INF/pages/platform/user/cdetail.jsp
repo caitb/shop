@@ -29,17 +29,26 @@
             <div class="sec1">
                 <h1>所属人信息</h1>
 
-                <%--<p>姓名：<span>${comUser.realName}</span></p>--%>
+                <p>姓名：<span>${comUser.realName}</span></p>
 
-                <p>合作产品：<span>${cdetail.comSku.name}</span></p>
+                <p>合作产品：<span>${comSku.name}</span></p>
 
-                <%--<p>合伙人等级：<span>${comUser.realName}</span></p>--%>
-
-                <p>上级合伙人：<span>${cdetail.agentLevelId}</span></p>
+                <p>合伙人等级：<span>
+                    <c:choose>
+                    <c:when test="${cdetail.agentLevelId==1}">
+                        <em>初级合伙人</em>
+                    </c:when>
+                    <c:when test="${cdetail.agentLevelId==2}">
+                        <em>中级合伙人</em>
+                    </c:when>
+                    <c:when test="${cdetail.agentLevelId==3}">
+                        <em>高级合伙人</em>
+                    </c:when>
+                </c:choose></span></p>
+                <p>上级合伙人：<span>${comUser.realName}</span></p>
             </div>
             <div class="sec2">
                 <h1>证书图片</h1>
-
                 <p>
                     <img src="${cdetail.imgUrl}" alt="">
                 </p>

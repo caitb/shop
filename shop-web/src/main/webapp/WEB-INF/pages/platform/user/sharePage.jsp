@@ -69,6 +69,6 @@
         ]
     });
 </script>
-<script src="<%=basePath%>static/js/test/zepto.min.js"></script>
-<script src="<%=basePath%>static/js/test/demo.js"> </script>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
+<script src="<%=basePath%>static/js/share.js"> </script>
 </html>

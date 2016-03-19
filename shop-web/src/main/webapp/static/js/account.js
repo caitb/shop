@@ -1,4 +1,5 @@
 $(function(){
+
     $("#countExplainId").on("click", function(){
         $(".back").css("display", "-webkit-box");
     });

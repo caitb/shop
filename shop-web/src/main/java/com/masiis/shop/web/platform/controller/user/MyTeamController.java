@@ -126,13 +126,31 @@ public class MyTeamController {
         }
     }
 
+    /**
+     * 证书审核
+     * @param request
+     * @param response
+     * @param userSkuId
+     * @param pfUserCertificateId
+     * @param status
+     * @param reason
+     * @return
+     */
     @RequestMapping("/audit")
     @ResponseBody
     public Object audit(HttpServletRequest request, HttpServletResponse response,
-                        Long userSkuId,
-                        PfUserCertificate pfUserCertificate){
+                        Integer userSkuId,
+                        Long pfUserCertificateId,
+                        Integer status,
+                        String reason){
 
-
-        return null;
+        try {
+            myTeamService.audit(userSkuId, pfUserCertificateId, status, reason, request.getServletContext().getRealPath("/"));
+            return "success";
+        } catch (Exception e) {
+            log.error("审核失败![userSkuId="+userSkuId+"][pfUserCertificateId="+pfUserCertificateId+"]");
+            e.printStackTrace();
+            return "error";
+        }
     }
 }

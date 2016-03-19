@@ -18,6 +18,7 @@
         <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="reason" property="reason" jdbcType="VARCHAR"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -31,13 +32,13 @@
             sku_id, id_card, mobile, 
             wx_id, begin_time, end_time, 
             agent_level_id, img_url, status, 
-            remark)
+            remark,reason)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
             #{pfUserSkuId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, 
             #{skuId,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
             #{wxId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
             #{agentLevelId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-            #{remark,jdbcType=VARCHAR})
+            #{remark,jdbcType=VARCHAR}),#{reason,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserCertificate">
@@ -56,20 +57,21 @@
             agent_level_id = #{agentLevelId,jdbcType=INTEGER},
             img_url = #{imgUrl,jdbcType=VARCHAR},
             status = #{status,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+            remark = #{remark,jdbcType=VARCHAR},
+            reason = #{reason,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark, reason
         from pf_user_certificate
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark, reason
         from pf_user_certificate
     </select>
 
@@ -90,7 +92,8 @@
                agent_level_id,
                img_url,
                status,
-               remark
+               remark,
+               reason
         from
                pf_user_certificate
         where
@@ -113,7 +116,8 @@
         agent_level_id,
         img_url,
         status,
-        remark
+        remark,
+        reason
         from
         pf_user_certificate
         where
@@ -137,7 +141,8 @@
         agent_level_id,
         img_url,
         status,
-        remark
+        remark,
+        reason
         from
         pf_user_certificate
         where

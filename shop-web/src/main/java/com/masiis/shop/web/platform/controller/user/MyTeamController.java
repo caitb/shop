@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -31,7 +32,7 @@ public class MyTeamController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(6L);
+            List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(1L);
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;
@@ -122,5 +123,16 @@ public class MyTeamController {
 
             return null;
         }
+    }
+
+    @RequestMapping("/audit")
+    @ResponseBody
+    public Object audit(HttpServletRequest request, HttpServletResponse response,
+                              Long comUserId,
+                              Integer status,
+                              String reason){
+
+
+        return null;
     }
 }

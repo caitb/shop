@@ -41,7 +41,7 @@ public class UserExtractApplyController extends BaseController {
         if(account == null){
             log.error("系统错误,请联系管理员!");
         }
-        List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserid(user.getId());
+        List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserId(user.getId());
         boolean hasCard = false;
         ComUserExtractwayInfo extractwayInfo = null;
         if(extractwayInfos != null && extractwayInfos.size() > 0){

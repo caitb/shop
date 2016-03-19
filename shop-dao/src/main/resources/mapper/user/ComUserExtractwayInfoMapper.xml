@@ -9,6 +9,7 @@
         <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
         <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
+        <result column="card_img" property="cardImg" jdbcType="VARCHAR" />
         <result column="is_enable" property="isEnable" jdbcType="INTEGER" />
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
         <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
@@ -23,11 +24,11 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractwayInfo" >
         insert into com_user_extractway_info (id, bank_card, bank_name, 
             deposit_bank_name, card_owner_name, com_user_id, 
-            extract_way, is_enable, created_time, 
+            extract_way, card_img, is_enable, created_time,
             changed_time, changed_by)
         values (#{id,jdbcType=BIGINT}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
             #{depositBankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, #{comUserId,jdbcType=BIGINT}, 
-            #{extractWay,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, 
+            #{extractWay,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, #{cardImg,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP},
             #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR})
     </insert>
 
@@ -39,6 +40,7 @@
             card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
             com_user_id = #{comUserId,jdbcType=BIGINT},
             extract_way = #{extractWay,jdbcType=BIGINT},
+            card_img = #{cardImg,jdbcType=VARCHAR},
             is_enable = #{isEnable,jdbcType=INTEGER},
             created_time = #{createdTime,jdbcType=TIMESTAMP},
             changed_time = #{changedTime,jdbcType=TIMESTAMP},
@@ -48,7 +50,7 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id, 
-        extract_way, is_enable, created_time, changed_time, changed_by
+        extract_way, card_img, is_enable, created_time, changed_time, changed_by
         from com_user_extractway_info
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -63,13 +65,13 @@
     
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id, 
-        extract_way, is_enable, created_time, changed_time, changed_by
+        extract_way, card_img, is_enable, created_time, changed_time, changed_by
         from com_user_extractway_info
     </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id,
-        extract_way, is_enable, created_time, changed_time, changed_by
+        extract_way, card_img, is_enable, created_time, changed_time, changed_by
         from com_user_extractway_info
         WHERE com_user_id = #{comUserId,jdbcType=BIGINT}
     </select>

@@ -270,7 +270,7 @@ public class UserCertificateController {
      */
     @ResponseBody
     @RequestMapping("/update.do")
-    public String userCertificateUpdate(HttpServletRequest request,
+    public ModelAndView userCertificateUpdate(HttpServletRequest request,
                                      @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
                                      @RequestParam(value = "name", required = true) String name,
                                      @RequestParam(value = "wxh", required = true) String wxh,
@@ -310,7 +310,7 @@ public class UserCertificateController {
             comUser.setIdCardFrontUrl(frontFillFullName);
             comUser.setIdCardBackUrl(backFillFullName);
             //更新证书申请数据
-            PfUserCertificate pfUserCertificate =userCertificateService.CertificateDetailsByUser(pfUserSku.getId());
+            PfUserCertificate pfUserCertificate =userCertificateService.getCertificateBypfuId(pfUserSku.getId());
             pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
             pfUserCertificate.setIdCard(idCard);
             pfUserCertificate.setMobile(comUser.getMobile());
@@ -322,6 +322,24 @@ public class UserCertificateController {
             object.put("isError", true);
             object.put("message", ex.getMessage());
         }
-        return object.toJSONString();
+        ModelAndView mav = new ModelAndView("/platform/user/cready");
+        return mav;
+    }
+
+    /**
+     * 更新证书
+     * Jing Hao
+     * param :user_sku_id
+     */
+    @RequestMapping(value = "/add/{pfuId}")
+    public ModelAndView addCertificate(HttpServletRequest request, HttpServletResponse response,
+                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/cready");
+       try {
+           userCertificateService.receiveCertificate(pfuId);
+       }catch (Exception e){
+          e.printStackTrace();
+       }
+      return mav;
     }
 }

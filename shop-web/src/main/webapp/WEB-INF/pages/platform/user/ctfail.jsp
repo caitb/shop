@@ -57,9 +57,9 @@
             fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
             bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
             var paraData = {};
-            paraData.userSkuId = "${ctfaildetail.id}";
+            paraData.userSkuId = "${ctfaildetail.pfUserSkuId}";
             paraData.name = "${comUser.realName}";
-            paraData.name = "${ctfaildetail.wxId}";
+            paraData.wxh = "${ctfaildetail.wxId}";
             paraData.idCard = $("#idCard").val();
             paraData.idCardFrontUrl = fCardUrl;
             paraData.idCardBackUrl = bCardUrl;
@@ -90,10 +90,10 @@
         <div id="box">
             <div class="sec1">
                 <h1>您的资料审核失败了！</h1>
-                <p>失败原因：<span>${ctfaildetail.remark}</span></p>
+                <p>失败原因：<span>${ctfaildetail.reason}</span></p>
             </div>
             <div class="sec2">
-                <p>提交时间：<span>${ctfaildetail.beginTime}</span></p>
+                <p>提交时间：<span>${ctfaildetail.tjDate}</span></p>
                 <p>申请产品：<span>${comSku.name}</span></p>
                 <p>申请等级：<span>
                     <c:choose>
@@ -111,7 +111,7 @@
             </div>
             <div class="sec3">
                 <p>申请人：<span><input type="text" id="userName" name="userName" value="${comUser.realName}"></span></p>
-                <p>手机号：<span>${ctfaildetail.mobile}</span><label>已验证</label><a href="">更改手机号</a></p>
+                <p>手机号：<span>${ctfaildetail.mobile}</span><label>已验证</label></p>
                 <p>微信号：<span><input type="text" id="wxId" name="wxId" value="${ctfaildetail.wxId}"></span></p>
                 <p>身份证号：<span><input type="tel" id="idCard" name="idCard" value="${ctfaildetail.idCard}"></span></p>
                 <p style="border:none;">身份证扫描件：</p>
@@ -129,7 +129,7 @@
                         <label for="idCardImg" onclick="F_Open_dialog(1)">重新上传</label>
                     </div>
                 </div>
-                <botton class="btn">重新提交</botton>
+                <botton class="btn"onclick="submit();">重新提交</botton>
             </div>
         </div>
     </main>

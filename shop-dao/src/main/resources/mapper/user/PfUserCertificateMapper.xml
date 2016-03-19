@@ -42,125 +42,39 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserCertificate">
-        update
-               pf_user_certificate
-        <set>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="code != null">
-                code = #{code,jdbcType=VARCHAR},
-            </if>
-            <if test="pfUserSkuId != null">
-                pf_user_sku_id = #{pfUserSkuId,jdbcType=INTEGER},
-            </if>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
-            <if test="spuId != null">
-                spu_id = #{spuId,jdbcType=INTEGER},
-            </if>
-            <if test="skuId != null">
-                sku_id = #{skuId,jdbcType=INTEGER},
-            </if>
-            <if test="idCard != null">
-                id_card = #{idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="mobile != null">
-                mobile = #{mobile,jdbcType=VARCHAR},
-            </if>
-            <if test="wxId != null">
-                wx_id = #{wxId,jdbcType=VARCHAR},
-            </if>
-            <if test="beginTime != null">
-                begin_time = #{beginTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="endTime != null">
-                end_time = #{endTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="agentLevelId != null">
-                agent_level_id = #{agentLevelId,jdbcType=INTEGER},
-            </if>
-            <if test="imgUrl != null">
-                img_url = #{imgUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null">
-                status = #{status,jdbcType=INTEGER},
-            </if>
-            <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="reason != null">
-                reason = #{reason,jdbcType=VARCHAR}
-            </if>
-        </set>
-        where
-              id = #{id,jdbcType=BIGINT}
+        update pf_user_certificate
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        code = #{code,jdbcType=VARCHAR},
+        pf_user_sku_id = #{pfUserSkuId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=BIGINT},
+        spu_id = #{spuId,jdbcType=INTEGER},
+        sku_id = #{skuId,jdbcType=INTEGER},
+        id_card = #{idCard,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        wx_id = #{wxId,jdbcType=VARCHAR},
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+        agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark, reason
+        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile,
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason
         from pf_user_certificate
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile, 
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark, reason
+        select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile,
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason
         from pf_user_certificate
     </select>
 
-    <select id="selectByCode" parameterType="int" resultMap="BaseResultMap">
-        select
-               id,
-               create_time,
-               code,
-               pf_user_sku_id,
-               user_id,
-               spu_id,
-               sku_id,
-               id_card,
-               mobile,
-               wx_id,
-               begin_time,
-               end_time,
-               agent_level_id,
-               img_url,
-               status,
-               remark,
-               reason
-        from
-               pf_user_certificate
-        where
-               user_id = #{userId,jdbcType=BIGINT}
-    </select>
-    <select id="selectByUserSkuId" parameterType="java.util.HashMap" resultMap="BaseResultMap">
-        select
-        id,
-        create_time,
-        code,
-        pf_user_sku_id,
-        user_id,
-        spu_id,
-        sku_id,
-        id_card,
-        mobile,
-        wx_id,
-        begin_time,
-        end_time,
-        agent_level_id,
-        img_url,
-        status,
-        remark,
-        reason
-        from
-        pf_user_certificate
-        where
-        pf_user_sku_id = #{userId,jdbcType=BIGINT} AND sku_id = #{skuId}
-    </select>
-
-    <select id="selectByUserId" parameterType="Long" resultMap="BaseResultMap">
+    <select id="selectByCode" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         id,
         create_time,
@@ -184,6 +98,28 @@
         where
         user_id = #{userId,jdbcType=BIGINT}
     </select>
-
-
+    <select id="selectByUserSkuId" parameterType="int" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        code,
+        pf_user_sku_id,
+        user_id,
+        spu_id,
+        sku_id,
+        id_card,
+        mobile,
+        wx_id,
+        begin_time,
+        end_time,
+        agent_level_id,
+        img_url,
+        status,
+        remark,
+        reason
+        from
+        pf_user_certificate
+        where
+        pf_user_sku_id = #{pfuId}
+    </select>
 </mapper>

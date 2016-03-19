@@ -15,12 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
-    <script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript">
-        function choiceBank(){
-            alert("ads");
-        }
-    </script>
 </head>
 <body>
    <div class="wrap">
@@ -77,4 +71,6 @@
         </div>
     </div>
 </body>
+<script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/extract_apply.js"></script>
 </html>

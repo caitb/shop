@@ -1,7 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.ibatis.annotations.Param;
@@ -70,9 +69,8 @@ public class UserController {
                 obj.put("msg","comUsr为null");
             }
         }catch (Exception e){
-//            obj.put("isError",true);
-//            obj.put("msg",e.getMessage());
-            throw new BusinessException(e);
+            obj.put("isError",true);
+            obj.put("msg",e.getMessage());
         }
         return obj.toJSONString();
 

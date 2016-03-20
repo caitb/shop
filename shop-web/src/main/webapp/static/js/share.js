@@ -550,6 +550,7 @@ wx.ready(function () {
     };
     wx.onMenuShareAppMessage(shareData);
     wx.onMenuShareTimeline(shareData);
+    wx.onMenuShareQQ(shareData);
 
     function decryptCode(code, callback) {
         $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {

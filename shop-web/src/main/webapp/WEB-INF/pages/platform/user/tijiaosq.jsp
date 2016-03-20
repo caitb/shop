@@ -108,7 +108,7 @@
             </div>
             <div class="sfphoto">
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
-                       style="opacity:0;filter:alpha(opacity=0);height: 95px;width: 100px;position: absolute;top: -50;left: -50;z-index: 9;">
+                       style="display: none;">
                 <label class="zheng">
                     <c:if test="${idCardFrontUrl==''}">
                         <img src="<%=path%>/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"

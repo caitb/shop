@@ -150,7 +150,6 @@
                     data: para,
                     dataType: "JSON",
                     success: function (result) {
-                        alert(JSON.stringify(result));
                         if (result && result.isError == false) {
                             validateCodeJS.skipPage();
                         } else {

@@ -18,7 +18,7 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="javascript :;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
 <div class="kang">

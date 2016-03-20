@@ -15,8 +15,8 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComDictionary" >
-        insert into com_dictionary (id, code, key, 
-            value, remark)
+        insert into com_dictionary (id, code, `key`,
+            `value`, remark)
         values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{key,jdbcType=INTEGER}, 
             #{value,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -24,8 +24,8 @@
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComDictionary" >
         update com_dictionary
         set code = #{code,jdbcType=VARCHAR},
-            key = #{key,jdbcType=INTEGER},
-            value = #{value,jdbcType=VARCHAR},
+            `key` = #{key,jdbcType=INTEGER},
+            `value` = #{value,jdbcType=VARCHAR},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -41,8 +41,13 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, code, key, value, remark
+        select id, code, `key`, `value`, remark
         from com_dictionary
     </select>
 
+    <select id="selectByCodeAndKey" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select id, code, `key`, `value`, remark
+        from com_dictionary
+        where code = #{code,jdbcType=VARCHAR} and `key` = #{key,jdbcType=INTEGER}
+    </select>
 </mapper>

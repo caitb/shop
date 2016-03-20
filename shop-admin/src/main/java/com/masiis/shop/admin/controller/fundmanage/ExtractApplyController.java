@@ -93,9 +93,9 @@ public class ExtractApplyController extends BaseController {
      */
     @RequestMapping("pass.do")
     @ResponseBody
-    public String pass(Long id){
+    public Object pass(Long id){
         comUserExtractApplyService.pass(id);
-        return "redirect:list.shtml";
+        return "1";
     }
 
     /**
@@ -105,9 +105,9 @@ public class ExtractApplyController extends BaseController {
      */
     @RequestMapping("refuse.do")
     @ResponseBody
-    public String refuse(Long id){
+    public Object refuse(Long id){
         comUserExtractApplyService.refuse(id);
-        return "redirect:list.shtml";
+        return "2";
     }
 
     /**
@@ -117,9 +117,9 @@ public class ExtractApplyController extends BaseController {
      */
     @RequestMapping("pay.do")
     @ResponseBody
-    public String pay(Long id){
+    public Object pay(Long id){
         comUserExtractApplyService.pay(id);
-        return "redirect:list.shtml";
+        return "3";
     }
 
     /*@RequestMapping("findById.do")

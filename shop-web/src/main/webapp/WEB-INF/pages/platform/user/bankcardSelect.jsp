@@ -34,7 +34,7 @@
             <p>选择提现银行卡</p>
             <c:forEach var="extractway" items="${extractwayList}">
                 <div class="sec1" id="${extractway.id}">
-                    <img src="<%=path%>${extractway.cardImg}" alt="">
+                    <span><img src="<%=path%>${extractway.cardImg}" alt=""></span>
                     <p>
                         <span><em>${extractway.bankName}</em></span>
                         <span>持卡人:<b>${extractway.cardOwnerName}</b>卡号:<b>${extractway.bankCard}</b></span>

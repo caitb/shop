@@ -181,10 +181,10 @@ public class UserService {
             /**
              * 测试用
              */
-            if (comUser==null){
+/*            if (comUser==null){
                 comUser = new ComUser();
                 comUser.setId(1L);
-            }
+            }*/
 
 
 
@@ -205,7 +205,7 @@ public class UserService {
                 throw new Exception("查询用户信息失败");
             }
         } catch (Exception e) {
-            throw new Exception("绑定手机号失败");
+            throw new Exception(e.getMessage());
         }
         return comUser;
     }

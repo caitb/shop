@@ -15,9 +15,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ComUserAddressMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
-    int settingDefaultAddress(Integer id);
+    int settingDefaultAddress(Long id);
 
     int cancelDefaultAddress(Long userId);
 

@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.ibatis.annotations.Param;
@@ -55,17 +56,24 @@ public class UserController {
      */
     @RequestMapping(value = "/bindPhone.do")
     @ResponseBody
-    public Boolean bindPhone(HttpServletRequest request, HttpServletResponse response,
+    public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
+        JSONObject obj = new JSONObject();
         try {
             ComUser comUser =  userService.bindPhone(request,phone);
+
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
-                return true;
+                obj.put("isError",false);
+            }else{
+                obj.put("isError",true);
+                obj.put("msg","comUsr为null");
             }
         }catch (Exception e){
-            e.getMessage();
+            obj.put("isError",true);
+            obj.put("msg",e.getMessage());
         }
-        return false;
+        return obj.toJSONString();
+
     }
 
     @RequestMapping(value = "/bingPhoneStatusToPage.shtml")

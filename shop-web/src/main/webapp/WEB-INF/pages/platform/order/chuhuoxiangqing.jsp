@@ -83,8 +83,8 @@
             })
 
             $(".fah").on("click",function(){
-                $(".back").css("display","-webkit-box");
-                $(".back_que").css("display","-webkit-box");
+                $(".back").show();
+                $(".back_que").show();
             })
 
             $("#faHuo").on("click",function(){

@@ -25,8 +25,8 @@
 <div class="wrap">
     <div class="box">
         <div class="admin">
-            <img src="<%=path%>/static/images/admin.png" alt="">
-            <h3>王平—欢迎您登入</h3>
+            <img src="${user.wxHeadImg}" alt="">
+            <h3>${user.wxNkName}—欢迎您登入</h3>
             <%--<span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>--%>
         </div>
         <div class="banner">

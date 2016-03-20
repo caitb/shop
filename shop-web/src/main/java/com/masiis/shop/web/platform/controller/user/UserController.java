@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.service.user.UserService;
+import org.apache.commons.logging.Log;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,7 @@ public class UserController {
         return "";
     }
 
+    private final static com.alibaba.druid.support.logging.Log log = LogFactory.getLog(UserController.class);
 
     /**
      * 判断是否绑定了手机号
@@ -59,11 +62,12 @@ public class UserController {
     public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
         JSONObject obj = new JSONObject();
+        System.out.println("---------------phone----------------"+phone);
         try {
             ComUser comUser =  userService.bindPhone(request,phone);
-
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
                 obj.put("isError",false);
+                obj.put("isError","绑定成功");
             }else{
                 obj.put("isError",true);
                 obj.put("msg","comUsr为null");
@@ -72,6 +76,7 @@ public class UserController {
             obj.put("isError",true);
             obj.put("msg",e.getMessage());
         }
+        System.out.println("-------------返回前台的json数据--------------------"+obj.toJSONString());
         return obj.toJSONString();
 
     }

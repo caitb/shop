@@ -7,6 +7,7 @@ $(function(){
             return;
         }
         // 可以提现
+        $("#ex_money").val(money);
         $(".back").css("display", "-webkit-box");
     });
 });

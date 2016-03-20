@@ -94,7 +94,7 @@
     </div>
     <div class="d">
         <p>验证码：<input type="tel" id="validateNumberDataId">
-            <botton id="validateNumberId">获取验证码</botton>
+            <button id="validateNumberId">获取验证码</button>
         </p>
     </div>
     <p class="tishi" id="errorMessageId"></p>

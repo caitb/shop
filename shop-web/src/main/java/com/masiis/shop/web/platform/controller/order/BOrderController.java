@@ -349,10 +349,6 @@ public class BOrderController extends BaseController {
                                @RequestParam(required = true)Integer orderStatus,
                                @RequestParam(required = true)Long orderId,
                                @RequestParam(required = true)Integer shipStatus  ) {
-    public String toUserCenter(HttpServletRequest request,
-                               @RequestParam(required = true) Integer orderStatus,
-                               @RequestParam(required = true) Long orderId,
-                               @RequestParam(required = true) Integer shipStatus) {
         JSONObject json = new JSONObject();
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
@@ -402,19 +398,6 @@ public class BOrderController extends BaseController {
      * @date 2016/3/16 11:37
      */
     @RequestMapping("/stockBorder")
-    public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
-        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
-        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
-        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(), 1, 5);//待收货
-        List<PfBorder> pfBorders3 = bOrderService.findByUserId(comUser.getId(), 3, shipStatus);//已完成
-        List<List<PfBorder>> pfBorderss = new ArrayList<List<PfBorder>>();
-        pfBorderss.add(0, pfBorders);
-        pfBorderss.add(1, pfBorders0);
-        pfBorderss.add(2, pfBorders10);
-        pfBorderss.add(3, pfBorders15);
-        pfBorderss.add(4, pfBorders3);
     public ModelAndView stockBorder(HttpServletRequest request,Integer orderStatus,Integer shipStatus) {
         ComUser comUser =(ComUser)request.getSession().getAttribute("comUser");
         List<PfBorder> pfBorders =bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);

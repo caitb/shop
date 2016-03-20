@@ -140,46 +140,6 @@
         </div>
     </div>
 </div>
-
-
-
-<div class="wxapi_container">
-    <div class="wxapi_index_container">
-        <ul class="label_box lbox_close wxapi_index_list">
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-basic">基础接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-share">分享接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-image">图像接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-voice">音频接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-smart">智能接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-device">设备信息接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-location">地理位置接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-webview">界面操作接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-scan">微信扫一扫接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-shopping">微信小店接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-card">微信卡券接口</a></li>
-            <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">微信支付接口</a></li>
-        </ul>
-    </div>
-    <div class="lbox_close wxapi_form">
-        <h3 id="menu-basic">基础接口</h3>
-        <span class="desc">判断当前客户端是否支持指定JS接口</span>
-        <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
-
-        <h3 id="menu-share">分享接口</h3>
-        <span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</span>
-        <button class="btn btn_primary" id="onMenuShareTimeline">onMenuShareTimeline</button>
-        <span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口</span>
-        <button class="btn btn_primary" id="onMenuShareAppMessage">onMenuShareAppMessage</button>
-        <span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口</span>
-        <button class="btn btn_primary" id="onMenuShareQQ">onMenuShareQQ</button>
-        <span class="desc">获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口</span>
-        <button class="btn btn_primary" id="onMenuShareWeibo">onMenuShareWeibo</button>
-        <span class="desc">获取“分享到QZone”按钮点击状态及自定义分享内容接口</span>
-        <button class="btn btn_primary" id="onMenuShareQZone">onMenuShareQZone</button>
-
-
-    </div>
-</div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>

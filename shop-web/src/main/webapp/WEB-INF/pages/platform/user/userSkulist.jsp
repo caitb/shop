@@ -23,7 +23,7 @@
 <div class="wrap">
     <main>
     <header class="xq_header">
-        <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
         <div id="box">
@@ -90,7 +90,6 @@
             </h3>
         </div>
         <div class="back">
-
         </div>
     </main>
 </div>
@@ -135,10 +134,6 @@
         $(".back").css("display","none");
         $(".back_que").css("display","none");
     })
-//    $(".que_que").on("click",function(){
-//        $(".back").css("display","none");
-//        $(".back_que").css("display","none");
-//    })
     //ajax
     $('.que_que').on('click', function () {
         var pfuId = $("#pfuId").val();
@@ -162,7 +157,6 @@
         $(".back").css("display","none");
         $(".back_b").hide();
     })
-
 </script>
 </body>
 </html>

@@ -85,21 +85,22 @@
     <input id="skuId" value="${skuId}" style="display: none"/>
     <input id="pUserId" value="${pUserId}" style="display: none"/>
     <input id="skipPageId" value="register" style="display: none" />
-    <div class="back" style="display: none">
-        <div class="back_j">
-            <p>绑定账号</p>
-            <div>
-                <p>手机号：<input type="tel" id = "phoneId"></p>
-                <em id="phoneErrorId"></em>
-            </div>
-            <div class="d">
-                <p>验证码：<input type="tel" id="validateNumberDataId">
-                    <botton id="validateNumberId"  >获取验证码</botton>
-                </p>
-                <em id="validateNameErrorId"></em>
-            </div>
-            <h1 class="j_qu" id="nextPageId">下一步</h1>
+    <div class="back_j">
+        <p>绑定账号</p>
+        <div>
+            <p>手机号：<input type="tel" id = "phoneId"></p>
+            <em id="phoneErrorId"></em>
         </div>
+        <div class="d">
+            <p>验证码：<input type="tel" id="validateNumberDataId">
+                <botton id="validateNumberId"  >获取验证码</botton>
+            </p>
+            <em id="validateNameErrorId"></em>
+        </div>
+        <h1 class="j_qu" id="nextPageId">下一步</h1>
+    </div>
+    <div class="back" style="display: none">
+
     </div>
 </main>
 <script src="<%=path%>/static/js/validateCode.js"></script>

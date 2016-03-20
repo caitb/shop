@@ -76,16 +76,19 @@
   background-size: 3%;
   padding: 8px 0 10px 0;
   margin-bottom: 10px;
+  -webkit-box-align: center;
 }
-.wrap main .sec2 img {
+.wrap main .sec2 span {
   display: block;
-  width: 25px;
-  height: 25px;
+}
+.wrap main .sec2 span img {
+  display: block;
+  width: 50%;
   margin-left: 10px;
-  margin-top: 6px;
 }
 .wrap main .sec2 p {
-  margin-left: 10px;
+  -webkit-box-flex: 1;
+  margin-left: -15px;
 }
 .wrap main .sec2 p span {
   display: block;

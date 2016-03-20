@@ -140,12 +140,14 @@
                 return bl;
             },
             bindPhone: function () {
+                var para = {};
                 validateCodeJS.phone = $("#phoneId").val();
+                para.phone = validateCodeJS.phone;
                 $.ajax({
                     type: "POST",
                     async: false,
                     url: "/user/bindPhone.do",
-                    data: "{phone:" + validateCodeJS.phone + "}",
+                    data: para,
                     dataType: "JSON",
                     success: function (result) {
                         if (result && result.isError == false) {
@@ -160,7 +162,7 @@
                 var path;
                 switch (validateCodeJS.skipPageId) {
                     case "register":
-                        path = "/userApply/apply.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
+                        path = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
                         validateCodeJS.bindPhoneSkipParam = "?skipPage=register&status=success&path=" + path
                         break;
                     case "trial":

@@ -198,6 +198,10 @@ $(function () {
     })
     $("body").on("click", function () {
         $(".gao").hide();
+    })
+    $("#getBack").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
         $(".back").hide();
     })
 })

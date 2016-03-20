@@ -115,6 +115,7 @@
             },
             toNextPage: function () {
                 //validateCodeJS.bindPhone();
+                //validateCodeJS.skipPage();
                 validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {

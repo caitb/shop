@@ -60,9 +60,15 @@
                 </p>
                 <div class="address">
                     联系地址
-                    <select class="sel" id="s_province" name="s_province"></select>
-                    <select class="sel" id="s_city" name="s_city"></select>
-                    <select class="sel" id="s_county" name="s_county"></select>
+                    <select class="sel" id="s_province" name="s_province">
+                        <option value='-1'>--省份--</option>
+                    </select>
+                    <select class="sel" id="s_city" name="s_city">
+                        <option value='-1'>--地级市--</option>
+                    </select>
+                    <select class="sel" id="s_county" name="s_county">
+                        <option value='-1'>--县/区--</option>
+                    </select>
                 </div>
                 <p class="sf">
                     详细地址
@@ -78,7 +84,13 @@
         </a>
     </div>
 </main>
+<script src="<%=path%>/static/js/comArea.js"></script>
+<script src="<%=path%>/static/js/address.js"></script>
 <script>
+    comAreaJS.init("add");
+    addressJS.init();
+</script>
+<%--<script>
     var categories = window.eval('(' + '${comAreas}' + ')');
     var c1 = {};//一级类别
     var c2 = {};//二级类别
@@ -124,10 +136,6 @@
             $skuC3.append('<option value="' + c3['sub' + $(this).val()][sub].id + '">' + c3['sub' + $(this).val()][sub].name + '</option>');
         }
     });
-</script>
-<script src="<%=path%>/static/js/address.js"></script>
-<script>
-    addressJS.init();
-</script>
+</script>--%>
 </body>
 </html>

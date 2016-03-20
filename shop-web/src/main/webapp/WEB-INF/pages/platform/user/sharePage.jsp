@@ -66,7 +66,37 @@
             <%--'onMenuShareAppMessage',--%>
             <%--'onMenuShareQQ',--%>
             <%--'onMenuShareWeibo',--%>
-            <%--'onMenuShareQZone'--%>
+            <%--'onMenuShareQZone',--%>
+            <%--'hideMenuItems',--%>
+            <%--'showMenuItems',--%>
+            <%--'hideAllNonBaseMenuItem',--%>
+            <%--'showAllNonBaseMenuItem',--%>
+            <%--'translateVoice',--%>
+            <%--'startRecord',--%>
+            <%--'stopRecord',--%>
+            <%--'onVoiceRecordEnd',--%>
+            <%--'playVoice',--%>
+            <%--'onVoicePlayEnd',--%>
+            <%--'pauseVoice',--%>
+            <%--'stopVoice',--%>
+            <%--'uploadVoice',--%>
+            <%--'downloadVoice',--%>
+            <%--'chooseImage',--%>
+            <%--'previewImage',--%>
+            <%--'uploadImage',--%>
+            <%--'downloadImage',--%>
+            <%--'getNetworkType',--%>
+            <%--'openLocation',--%>
+            <%--'getLocation',--%>
+            <%--'hideOptionMenu',--%>
+            <%--'showOptionMenu',--%>
+            <%--'closeWindow',--%>
+            <%--'scanQRCode',--%>
+            <%--'chooseWXPay',--%>
+            <%--'openProductSpecificView',--%>
+            <%--'addCard',--%>
+            <%--'chooseCard',--%>
+            <%--'openCard'--%>
         <%--]--%>
     <%--});--%>
 <%--</script>--%>
@@ -79,11 +109,40 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>微信JS-SDK Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>麦链商城</title>
+    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/zhucelianjie.css">
+
     <link rel="stylesheet" href="<%=basePath%>static/js/test/style.css">
 </head>
 <body ontouchstart="">
+<div class="wrap">
+    <div id="box">
+        <header class="xq_header">
+            <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <p>注册链接</p>
+        </header>
+        <p>
+            您有两种方式发展合伙人
+        </p>
+        <div class="sec1">
+            <p>方法一</p>
+            <img src="<%=basePath%>static/images/icon_63.png" alt="">
+        </div>
+        <div class="sec2">
+            <p>方法二</p>
+            <h1>宣传海报，将海报发到您的朋友圈</h1>
+            <img src="<%=basePath%>static/images/asd.JPG" alt="">
+            <h3 id="downloadImage2">下载海报</h3>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="wxapi_container">
     <div class="wxapi_index_container">
         <ul class="label_box lbox_close wxapi_index_list">

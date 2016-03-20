@@ -15,6 +15,11 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
+    <script type="application/javascript">
+        var path = "<%=path%>";
+        var basepath = "<%=basePath%>";
+        var maxMoney = "${extractMoney}";
+    </script>
 </head>
 <body>
    <div class="wrap">
@@ -56,13 +61,13 @@
     </div>
     <div class="back">
         <div class="back_que">
-            <p>确认提现请求?</p>
-            <h4><span>提现金额:</span><span>抗引力-手链</span></h4>
-            <h4><span>提现方式:</span><span>抗引力-手链</span></h4>
-            <h4><span>银行卡号:</span><span>抗引力-手链</span></h4>
-            <h4><span>银行名称:</span><span>抗引力-手链</span></h4>
-            <h4><span>开户行:</span><span>抗引力-手链</span></h4>
-            <h4><span>持卡人姓名:</span><span>抗引力-手链</span></h4>
+            <p>再次确认提现请求?</p>
+            <h4><span>提现金额:</span><span id="ex_money"></span></h4>
+            <h4><span>提现方式:</span><span>${extractwayInfo.extractway}</span></h4>
+            <h4><span>银行卡号:</span><span>${extractwayInfo.bankCard}</span></h4>
+            <h4><span>银行名称:</span><span>${extractwayInfo.bankName}</span></h4>
+            <h4><span>开户行:</span><span>${extractwayInfo.depositBankName}</span></h4>
+            <h4><span>持卡人姓名:</span><span>${extractwayInfo.cardOwnerName}</span></h4>
 
             <h3>
                 <span class="que_qu">取消</span>

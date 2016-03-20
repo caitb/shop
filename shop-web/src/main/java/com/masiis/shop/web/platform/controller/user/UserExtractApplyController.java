@@ -1,9 +1,11 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -30,6 +32,8 @@ public class UserExtractApplyController extends BaseController {
     private UserExtractwayInfoService extractwayInfoService;
     @Resource
     private ComUserAccountService accountService;
+    @Resource
+    private ComDictionaryService dictionaryService;
 
     @RequestMapping("/toapply")
     public String toApply(HttpServletRequest request, Model model){
@@ -57,10 +61,16 @@ public class UserExtractApplyController extends BaseController {
         }
 
         String extractMoney = account.getExtractableFee().toString();
+        ComDictionary cd = dictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY", extractwayInfo.getExtractWay().intValue());
+        if(cd == null){
+            log.error("系统错误,字典表没查到提现方式!");
+        }
+        String extractway = cd.getValue();
 
         model.addAttribute("extractMoney", extractMoney);
         model.addAttribute("extractwayInfo", extractwayInfo);
         model.addAttribute("hasCard", hasCard);
+        model.addAttribute("extractway", extractway);
         return "platform/user/extract_apply";
     }
 }

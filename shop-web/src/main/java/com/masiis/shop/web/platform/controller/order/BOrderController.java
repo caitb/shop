@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.order.BorderFreightService;
 import com.masiis.shop.web.platform.service.order.PfBorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
@@ -63,7 +64,8 @@ public class BOrderController extends BaseController {
     private PfBorderConsigneeService pfBorderConsigneeService;
     @Resource
     private ComDictionaryService comDictionaryService;
-
+    @Resource
+    private BorderFreightService borderFreightService;
 
     /**
      * 用户确认生成订单
@@ -375,18 +377,25 @@ public class BOrderController extends BaseController {
                                @RequestParam(required = true)Long orderId,
                                @RequestParam(required = true)String freight  ) {
         JSONObject json = new JSONObject();
-        PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-        pfBorder.setShipStatus(5);
-        PfBorderFreight pfBorderFreight = new PfBorderFreight();
-        pfBorderFreight.setCreateTime(new Date());
-        pfBorderFreight.setPfBorderId(orderId);
-        pfBorderFreight.setFreight(freight);
-        pfBorderFreight.setShipManName(shipManName);
-        try {
-            bOrderService.updateBOrder(pfBorder);
-            json.put("msg","已发货");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (freight==null ||freight==""){
+            json.put("msgs",false);
+            json.put("msg","请重新输入快递单号");
+        }else{
+            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            pfBorder.setShipStatus(5);
+            PfBorderFreight pfBorderFreight = new PfBorderFreight();
+            pfBorderFreight.setCreateTime(new Date());
+            pfBorderFreight.setPfBorderId(orderId);
+            pfBorderFreight.setFreight(freight);
+            pfBorderFreight.setShipManName(shipManName);
+            try {
+                bOrderService.updateBOrder(pfBorder);
+                borderFreightService.addPfBorderFreight(pfBorderFreight);
+                json.put("msgs",true);
+                json.put("msg","已发货，待收货");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return json.toString();
     }

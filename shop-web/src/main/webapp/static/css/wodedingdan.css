@@ -197,33 +197,38 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  overflow: hidden;
+  display: none;
 }
-.back .back_que {
+.back_que {
   width: 80%;
+  position: fixed;
+  top:30%;
+  left:10%;
   background: white;
   border-radius: 5px;
   z-index: 10;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  z-index: 10;
+  display: none;
 }
-.back .back_que p {
+.back_que p {
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
   line-height: 30px;
   margin-bottom: 10px;
 }
-.back .back_que h4:nth-child(2) {
+.back_que h4:nth-child(2) {
   padding-top: 10px;
 }
-.back .back_que h4 {
+.back_que h4 {
   margin: 0 10px;
   text-indent: 10px;
   letter-spacing: 1px;
   padding-bottom: 10px;
 }
-.back .back_que h4 select {
+.back_que h4 select {
   display: inline-block;
   width: 150px;
   height: 25px;
@@ -231,7 +236,12 @@
   border: 1px solid #C5C5C5;
   color: #C5C5C5;
 }
-.back .back_que h4 input {
+.back_que h4 select option{
+  width: 150px;
+  height: 25px;
+  color: #C5C5C5;
+}
+.back_que h4 input {
   display: inline-block;
   width: 136px;
   margin-left: 5px;
@@ -240,7 +250,7 @@
   color: #C5C5C5;
   text-indent: 5px;
 }
-.back .back_que h3 {
+.back_que h3 {
   margin: 20px 32%;
   background: #0FC420;
   color: white;
@@ -248,7 +258,10 @@
   text-align: center;
   border-radius: 5px;
 }
-.back .shouhuo {
+.shouhuo {
+  position:fixed ;
+  top:30%;
+  left:10%;
   width: 80%;
   background: white;
   border-radius: 5px;
@@ -256,8 +269,9 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   display: none;
+  z-index:10;
 }
-.back .shouhuo p {
+.shouhuo p {
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
@@ -265,24 +279,24 @@
   margin-bottom: 10px;
   text-align: center;
 }
-.back .shouhuo h4 {
+.shouhuo h4 {
   margin: 0 10px;
   text-indent: 10px;
   letter-spacing: 1px;
   padding-bottom: 5px;
 }
-.back .shouhuo h4 span {
+.shouhuo h4 span {
   display: block;
   float: left;
 }
-.back .shouhuo h4 span:nth-child(2) {
+.shouhuo h4 span:nth-child(2) {
   width: 160px;
   margin-left: 5px;
   text-indent: 0;
   word-break: break-all;
   word-wrap: break-word;
 }
-.back .shouhuo h3 {
+.shouhuo h3 {
   margin: 20px 32%;
   background: #E3E3E3;
   padding: 2px 0px;

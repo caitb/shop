@@ -350,14 +350,12 @@
                     $(".back").hide();
 
                     var aa="querenshouhuo_"+id;
-                    alert(aa);
                     $.ajax({
                         type:"POST",
                         url : "<%=path%>/border/closeDeal.do",
                         data:{orderStatus:3,shipStatus:9,orderId:id},
                         dataType:"Json",
                         success:function(date){
-                            alert($("b."+aa+"").html());
                             $("span[name="+aa+"]").attr("style","display:none");
                             $("b."+aa+"").html("交易成功");
                             location.reload(true);

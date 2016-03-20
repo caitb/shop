@@ -21,7 +21,7 @@
 <body>
        <div class="wrap">
           <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=basePath%>border/deliveryBorder"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>订单详情</p>  
                 </header>
            <main>
@@ -66,19 +66,55 @@
                    </div>
                </div>
            </main>
+           <div class="back_que">
+               <p>确认发货?</p>
+               <h4>快递公司:<select id="select"><option>顺风</option><option >EMS</option></select></h4>
+               <h4>快递单号:<input type="text" id="input"/></h4>
+               <h3 id="faHuo">发货</h3>
+           </div>
            <div class="back">
-               <div class="back_que">
-                    <p>确认减库存?</p>
-                    <h4>快递公司:<select><option>顺风</option></select></h4>
-                    <h4>快递单号:<input type="text"/></h4>
-                    <h3>发货</h3>
-                </div>
+
            </div>
         </div>
         <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
         <script>
         var myScroll = new IScroll("main",{
                  preventDefault: false
+            })
+
+            $(".fah").on("click",function(){
+                $(".back").css("display","-webkit-box");
+                $(".back_que").css("display","-webkit-box");
+            })
+
+            $("#faHuo").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
+                var shipManName = $("#select").val();
+                var freight = $("#input").val();
+                var borderId = ${borderDetail.pfBorder.id};
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/border/deliver.do",
+                    data:{shipManName:shipManName,freight:freight,orderId:borderId},
+                    dataType:"Json",
+                    success:function(date){
+                        if(!date.msgs){
+                            alert(date.msg);
+                        }else{
+                            $(".fah").html("待收货");
+                            location.reload(true);
+                        }
+                    }
+                })
+            })
+            $(".close").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
+            })
+            $(".back").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
             })
     </script>
 </body>

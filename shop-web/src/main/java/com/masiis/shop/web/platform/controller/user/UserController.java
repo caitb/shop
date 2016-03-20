@@ -79,7 +79,6 @@ public class UserController {
         }
         System.out.println("-------------返回前台的json数据--------------------"+obj.toJSONString());
         return obj.toJSONString();
-
     }
 
     @RequestMapping(value = "/bingPhoneStatusToPage.shtml")

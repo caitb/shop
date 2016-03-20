@@ -46,7 +46,7 @@
                 alert("请填写收获地址");
                 return;
             }
-            window.location.href = "<%=basePath%>border/payBOrderSubmit.shtml" + paraData;
+            window.location.href = "<%=basePath%>border/payBOrderSubmit.do" + paraData;
             <%--$.ajax({--%>
             <%--url: "<%=basePath%>border/payBOrderSubmit.do",--%>
             <%--type: "post",--%>

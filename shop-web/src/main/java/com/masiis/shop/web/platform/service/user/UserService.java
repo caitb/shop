@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
@@ -175,9 +176,11 @@ public class UserService {
      */
     public ComUser bindPhone(HttpServletRequest request, String phone) throws Exception {
         ComUser comUser = null;
+        JSONObject jsonObject = new JSONObject();
         try {
             comUser = (ComUser) request.getSession().getAttribute("comUser");
 
+            System.out.println("----------session里的comuser---------------"+JSONObject.toJSONString(comUser));
             /**
              * 测试用
              */
@@ -187,24 +190,33 @@ public class UserService {
             }*/
 
 
-
-
             if (comUser != null) {
+                System.out.println("---------------------------comuser不是null---------------");
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
+
+                System.out.println("----------数据库里的comuser---------------"+JSONObject.toJSONString(comUser));
+
+
                 //更新表中的信息
                 int i = comUserMapper.updatePhone(comUser);
+                System.out.println("---------------------------更新数据库中电话号码99999999999999--------------"+i);
                 if (i == 1) {
                     //更新session缓存中的中user
                     request.getSession().removeAttribute("comUser");
                     request.getSession().setAttribute("comUser", comUser);
+                    System.out.println("---------------------------更新缓存中电话号码成功--------------");
                 } else {
+                    System.out.println("---------------------------更新数据库中电话号码失败--------------");
                     throw new Exception("更新用户信息失败");
                 }
             } else {
+                System.out.println("---------------------------查询用户信息失败comuser为null--------------");
                 throw new Exception("查询用户信息失败");
             }
         } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("---------------------------更新数据库电话号码报错-------------"+e.getMessage());
             throw new Exception(e.getMessage());
         }
         return comUser;

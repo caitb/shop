@@ -353,14 +353,14 @@
                     alert(aa);
                     $.ajax({
                         type:"POST",
-                        async:false,
                         url : "<%=path%>/border/closeDeal.do",
-                        data:{orderStatus:3,orderId:id},
+                        data:{orderStatus:3,shipStatus:9,orderId:id},
                         dataType:"Json",
                         success:function(date){
                             alert($("b."+aa+"").html());
                             $("span[name="+aa+"]").attr("style","display:none");
                             $("b."+aa+"").html("交易成功");
+                            location.reload(true);
                         }
                     })
                 })
@@ -369,10 +369,6 @@
                 $(".back_shouhuo").hide();
                 $(".back").hide();
             })
-//            $(".que_que").on("click",function(){
-//                $(".back_shouhuo").hide();
-//                $(".back").hide();
-//            })
 
        </script>
 </body>

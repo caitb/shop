@@ -13,10 +13,15 @@ import java.util.List;
  */
 
 public class BorderDetail {
+    private String buyerName;
     private PfBorder pfBorder;
     private List<PfBorderItem> pfBorderItems;
     private List<PfBorderFreight> pfBorderFreights;//快递公司信息
     private PfBorderConsignee pfBorderConsignee;//收货人
+
+    public void setBuyerName(String buyerName) {this.buyerName = buyerName;}
+
+    public String getBuyerName() {return buyerName;}
 
     public List<PfBorderItem> getPfBorderItems() {
         return pfBorderItems;

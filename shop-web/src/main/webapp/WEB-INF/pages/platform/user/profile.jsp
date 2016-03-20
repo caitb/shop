@@ -35,7 +35,7 @@
         <div id="box">
 
             <p><span><img src="<%=basePath%>static/images/icon_28.png" alt="">商品管理</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-            <p><span><img src="<%=basePath%>static/images/icon_29.png" alt="">出货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>border/deliveryBorder');"><span><img src="<%=basePath%>static/images/icon_29.png" alt="">出货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>border/stockBorder');"><span><b></b><img src="<%=basePath%>static/images/icon_49.png" alt="">进货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p><span><img src="<%=basePath%>static/images/icon_31.png" alt="">我的授权书</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><span><img src="<%=basePath%>static/images/icon_48.png" alt="">发展合伙人</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>

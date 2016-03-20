@@ -143,6 +143,7 @@
                 var para = {};
                 validateCodeJS.phone = $("#phoneId").val();
                 para.phone = validateCodeJS.phone;
+                alert(para + "&&&&&&&&&&" + JSON.stringify(para));
                 $.ajax({
                     type: "POST",
                     async: false,
@@ -155,6 +156,9 @@
                         } else {
                             alert(result.msg);
                         }
+                    },
+                    error: function (result) {
+                        alert(result + "&&&&&&&&&&" + JSON.stringify(result));
                     }
                 })
             },

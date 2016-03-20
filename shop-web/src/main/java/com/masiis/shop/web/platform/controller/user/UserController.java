@@ -65,6 +65,7 @@ public class UserController {
         System.out.println("---------------phone----------------"+phone);
         try {
             ComUser comUser =  userService.bindPhone(request,phone);
+            System.out.println("-------------coumserPhone-------------------"+comUser.getMobile());
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
                 obj.put("isError",false);
                 obj.put("isError","绑定成功");

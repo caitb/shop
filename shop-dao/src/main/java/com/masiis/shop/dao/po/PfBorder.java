@@ -143,7 +143,10 @@ public class PfBorder {
      * 订单商品
      */
     private List<PfBorderItem> pfBorderItems;
+    private PfBorderConsignee pfBorderConsignee;
 
+    public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {this.pfBorderConsignee = pfBorderConsignee;}
+    public PfBorderConsignee getPfBorderConsignee() {return pfBorderConsignee;}
     public void setTotalQuantity(Integer totalQuantity) {this.totalQuantity = totalQuantity;}
     public Integer getTotalQuantity() {return totalQuantity;}
     public void setImgUrl(String imgUrl) {

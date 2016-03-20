@@ -792,11 +792,9 @@
                 url: '<%=basePath%>/fundmanage/extract/pass.do',
                 data: {id: extractApplyId},
                 dataType: "json",
-                success:function(){
-                    $('#myModal1').modal({
-                        show: false,
-                        backdrop: false
-                    });
+                success:function(data){
+                    alert("审核通过成功");
+                    document.location.reload();
                 }
             })
         })
@@ -809,7 +807,8 @@
                 url: '<%=basePath%>/fundmanage/extract/refuse.do',
                 data: {id: extractApplyId},
                 dataType: "json",
-                success:function(){
+                success:function(data){
+                    alert("审核拒绝");
                     document.location.reload();
                 }
             })
@@ -823,7 +822,8 @@
                 url: '<%=basePath%>/fundmanage/extract/pay.do',
                 data: {id: extractApplyId},
                 dataType: "json",
-                success:function(){
+                success:function(data){
+                    alert("付款成功");
                     window.location.reload();
                 }
             })

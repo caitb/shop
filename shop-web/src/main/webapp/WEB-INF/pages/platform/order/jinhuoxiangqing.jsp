@@ -31,9 +31,9 @@
                            <p>亲，未付款的订单可以保留7天~~</p></c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==0}"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==5}"><h1>待收货</h1>
+                <c:if test="${borderDetail.pfBorder.payStatus==1 && borderDetail.pfBorder.shipStatus==5}"><h1>待收货</h1>
                     <p>亲，卖家已发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==3 }"><h1>已完成</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==3}"><h1>已完成</h1>
                     <p>亲，交易完成~~</p></c:if>
             </div>
             <div class="kuaidi"> <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">

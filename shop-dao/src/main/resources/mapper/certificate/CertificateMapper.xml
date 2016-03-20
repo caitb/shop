@@ -27,6 +27,7 @@
             <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
             <result column="imgUrl" property="img_url" jdbcType="VARCHAR"/>
             <result column="status" property="status" jdbcType="INTEGER"/>
+            <result column="reason" property="reason" jdbcType="VARCHAR"/>
         </association>
 
         <association column="user_id" property="comUser"
@@ -99,7 +100,13 @@
     </update>
     <!--> 表示审核授权书<-->
     <update id="updateCertificateStatus" parameterType="java.util.HashMap">
-        UPDATE pf_user_certificate SET status = #{status}
+        UPDATE pf_user_certificate
+        <set>
+            <if test="reason !=null">
+                reason = #{reason},
+            </if>
+            status = #{status}
+        </set>
         WHERE id = #{id}
     </update>
     <select id="get" parameterType="int" resultMap="CertificateResultMap">

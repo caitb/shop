@@ -4,13 +4,30 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>麦士商城 - 后台管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-table.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-editable.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css">
+    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/examples.css">
+    <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
+    <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js"></script>
+    <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
+    <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+</head>
+<body>
 <table class="table">
     <input type="hidden" id="approveId" name ="id" value="${certificateInfo.id}"/>
-   <tr>
-       <td width="50%"><label class="col-sm-3 control-label no-padding-right">合伙商品</label></td>
-       <td colspan="2">${certificateInfo.skuName}</td>
-   </tr>
+    <tr>
+        <td width="50%"><label class="col-sm-3 control-label no-padding-right">合伙商品</label></td>
+        <td colspan="2">${certificateInfo.skuName}</td>
+    </tr>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">申请证书级别</label></td>
         <td colspan="2">${certificateInfo.agentLevelId}</td>
@@ -49,8 +66,8 @@
 
     </tr>
     <%--<tr>--%>
-        <%--<td><label class="col-sm-3 control-label no-padding-right">联系地址</label></td>--%>
-        <%--<td>${certificateInfo.pfUserCertificateInfo.beginTime}</td>--%>
+    <%--<td><label class="col-sm-3 control-label no-padding-right">联系地址</label></td>--%>
+    <%--<td>${certificateInfo.pfUserCertificateInfo.beginTime}</td>--%>
     <%--</tr>--%>
     <tr>
         <td><label class="col-sm-3 control-label no-padding-right">身份证号</label></td>
@@ -73,13 +90,13 @@
         </td>
         <td>
             <c:choose>
-                <c:when test="${certificateInfo.pfUserCertificateInfo.status==0}">
-                   <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon" id="reject">拒绝</a></td>
-                </c:when>
-                <%--<c:otherwise>--%>
-                    <%--<a href="javascript:void(0)" class="btn btn-primary" aria-disabled="true">拒绝</a></td>--%>
-                <%--</c:otherwise>--%>
-            </c:choose>
+            <c:when test="${certificateInfo.pfUserCertificateInfo.status==0}">
+            <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon" id="reject">拒绝</a></td>
+        </c:when>
+            <%--<c:otherwise>--%>
+            <%--<a href="javascript:void(0)" class="btn btn-primary" aria-disabled="true">拒绝</a></td>--%>
+            <%--</c:otherwise>--%>
+        </c:choose>
     </tr>
 </table>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -134,34 +151,41 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
-<%--<div class="modal fade" id="orderModal" tabindex="-1" role="dialog"--%>
-     <%--aria-labelledby="orderModalLabel" aria-hidden="true">--%>
-    <%--<div class="modal-dialog">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button type="button" class="close"--%>
-                        <%--data-dismiss="modal" aria-hidden="true">--%>
-                    <%--&times;--%>
-                <%--</button>--%>
-                <%--<h4 class="modal-title" id="orderModalLabel">--%>
-                    <%--订单详情--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--<button type="button" class="btn btn-default"--%>
-                        <%--data-dismiss="modal">关闭--%>
-                <%--</button>--%>
-                <%--<button type="button" class="btn btn-primary" id="Submit">--%>
-                    <%--提交--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div><!-- /.modal-content -->--%>
-    <%--</div><!-- /.modal -->--%>
-
-<%--</div>--%>
+<!-- 拒绝理由 -->
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog"
+     aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="rejectModalLabel">
+                    填写拒绝理由
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="rejectForm" >
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">拒绝理由:</label>
+                        <div class="controls col-sm-3">
+                            <textarea class="form-control" rows="3" style="width: 396px; height: 99px;" id="reason"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="rejectSubmit">
+                            提交
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div>
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
@@ -185,14 +209,31 @@
         });
     });
     // 拒绝
-    $('#reject').on('click', function(){
+    $('#rejectSubmit').on('click', function(){
         var approveId = $("#approveId").val();
-        $.ajax({
-            url: '<%=basePath%>certificate/update.do',
-            data: {status: 2, id: approveId},
-            success: function(data){
-                alert(data);
-            }
+        var reason = $("#reason").val();
+        if(reason==null || reason==""){
+            alert("请填写拒绝理由");
+        }else{
+            $.ajax({
+                url: '<%=basePath%>certificate/update.do',
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: {status: 2,
+                    id: approveId,
+                    reason: reason},
+                success: function(data){
+                    $('#rejectModal').modal("hide");
+                    alert(data);
+                }
+            });
+        }
+
+    });
+    //拒绝理由
+    $('#reject').on('click', function(){
+        $('#rejectModal').modal({
+            show: true,
+            backdrop: true
         });
     });
     //更改上级
@@ -205,17 +246,18 @@
             dataType: "json",
             success: function (data) {
                 $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
-                $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
                 $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
                 $("#userSkuId").val(data["certificateInfo"].id);
                 //option属性
-                if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
+                if(data["certificateInfo"].comUserList !=null && data["certificateInfo"].comUserList[0]!=null){
+                    $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
                     var comUserList = {upperList:data["certificateInfo"].comUserList};
                     $("#userList").val(comUserList);
                     $.each(data["certificateInfo"].comUserList,function(index,value){
                         $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
                     });
                 }else{
+                    $("#upperName").html("当前上级 :  -");
                     $("#userSubmit").attr("disabled", true);
                 }
                 $('#myModal').modal({
@@ -226,28 +268,28 @@
         });
     }
     //订单列表
-//    function orderList(id){
-//        $('#trialId').val(id);
-//        $('#orderModal').modal({
-//            show: true,
-//            backdrop: true
-//        });
-//    }
+    //    function orderList(id){
+    //        $('#trialId').val(id);
+    //        $('#orderModal').modal({
+    //            show: true,
+    //            backdrop: true
+    //        });
+    //    }
 
-        <%--$('#btnSubmit').on('click', function () {--%>
-            <%--var id = $("#userSkuId").val;--%>
+    <%--$('#btnSubmit').on('click', function () {--%>
+    <%--var id = $("#userSkuId").val;--%>
     <%--//        var pid = $("#userList option:selected").attr("id");--%>
-            <%--alert(id);--%>
-            <%--$.ajax({--%>
-                <%--url: '<%=basePath%>certificate/updateUpper.do',--%>
-                <%--data: {id:id,pid:2},--%>
-                <%--success: function (data) {--%>
-                    <%--alert(data);--%>
-                    <%--$('#myModal').modal('hide');--%>
-                <%--}--%>
-            <%--});--%>
-            <%--location.reload();--%>
-        <%--})--%>
+    <%--alert(id);--%>
+    <%--$.ajax({--%>
+    <%--url: '<%=basePath%>certificate/updateUpper.do',--%>
+    <%--data: {id:id,pid:2},--%>
+    <%--success: function (data) {--%>
+    <%--alert(data);--%>
+    <%--$('#myModal').modal('hide');--%>
+    <%--}--%>
+    <%--});--%>
+    <%--location.reload();--%>
+    <%--})--%>
 
     $('#userSubmit').on('click', function () {
         var id = $('#userSkuId').val();
@@ -263,3 +305,5 @@
         });
     });
 </script>
+</body>
+</html>

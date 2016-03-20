@@ -77,13 +77,14 @@ public class CertificateService {
      * @Date 2016/3/9  上午 10:22
      * 审核授权书
      */
-    public void approveCertificate(HttpServletRequest request, Integer status, Integer id) throws Exception {
+    public void approveCertificate(HttpServletRequest request, Integer status, Integer id,String reason) throws Exception {
         String bgPic = null;
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
         if (certificateInfo != null) {
             Map<String, Object> param = new HashMap<>();
             param.put("status", status);
             param.put("id", certificateInfo.getPfUserCertificateInfo().getId());
+            param.put("reason", reason);
             certificateMapper.updateCertificateStatus(param);//审核
             if (status == 1) { //审核成功
                 //生成授权书,并上传至OSS服务器

@@ -81,16 +81,5 @@
     </script>
 </head>
 <body>
-    <div class="index_box">
-        <div class="apply_name">微信js支付测试</div>
-
-
-        <div class="branch_con">
-            <ul>
-                <li><span class="name">测试支付信息</span></li>
-            </ul>
-            <p class="cz_btn"><a href="javascript:void(0);" onclick="pay();" class="btn_1">立即支付</a></p>
-        </div>
-    </div>
 </body>
 </html>

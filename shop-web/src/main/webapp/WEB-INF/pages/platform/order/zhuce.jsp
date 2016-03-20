@@ -32,8 +32,8 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="javascript :;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                               alt=""></a>
+            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                              alt=""></a>
             <p>申请合伙人</p>
         </header>
         <div class="xinxi">
@@ -87,21 +87,21 @@
             </section>
         </main>
     </div>
+    <div class="back_que">
+        <p>数据确认</p>
+        <h4><b>商品选择:</b><span id="q_skuName"></span></h4>
+        <h4><b>姓名:</b><span id="q_name"></span></h4>
+        <h4><b>手机号:</b><span id="q_mobile"></span></h4>
+        <h4><b>微信:</b><span id="q_weixinId"></span></h4>
+        <h4><b>推荐人电话:</b><span id="q_pMobile"></span></h4>
+        <h4><b>合伙人等级:</b><span id="q_levelName"></span></h4>
+        <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
+        <h3>
+            <span class="que_qu" id="getBack">返回修改</span>
+            <span class="que_que" id="submit">我填的正确</span>
+        </h3>
+    </div>
     <div class="back">
-        <div class="back_que">
-            <p>数据确认</p>
-            <h4><b>商品选择:</b><span id="q_skuName"></span></h4>
-            <h4><b>姓名:</b><span id="q_name"></span></h4>
-            <h4><b>手机号:</b><span id="q_mobile"></span></h4>
-            <h4><b>微信:</b><span id="q_weixinId"></span></h4>
-            <h4><b>推荐人电话:</b><span id="q_pMobile"></span></h4>
-            <h4><b>合伙人等级:</b><span id="q_levelName"></span></h4>
-            <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
-            <h3>
-                <span class="que_qu">返回修改</span>
-                <span class="que_que" id="submit">我填的正确</span>
-            </h3>
-        </div>
     </div>
 </div>
 </body>

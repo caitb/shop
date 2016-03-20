@@ -146,7 +146,8 @@ $(function () {
                     }
                     $("#q_levelName").html($(".dengji .on [name='levelName']").html());
                     $("#q_amount").html($(".dengji .on [name='amount']").html());
-                    $(".back").css("display", "-webkit-box");
+                    $(".back_que").show();
+                    $(".back").show();
                 } else {
                     alert(data.message);
                 }
@@ -198,6 +199,11 @@ $(function () {
     })
     $("body").on("click", function () {
         $(".gao").hide();
+    })
+    $("#getBack").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_que").hide();
         $(".back").hide();
     })
 })

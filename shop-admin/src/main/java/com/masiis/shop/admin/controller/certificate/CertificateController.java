@@ -67,8 +67,9 @@ public class CertificateController {
     @ResponseBody
     public String update(HttpServletRequest request, HttpServletResponse response,
                          @RequestParam(required = true) Integer status,
-                         @RequestParam(required = true) Integer id)throws Exception {
-        certificateService.approveCertificate(request,status,id);
+                         @RequestParam(required = true) Integer id,
+                         @RequestParam(required = false) String reason)throws Exception {
+        certificateService.approveCertificate(request, status, id,reason);
         return "已审核";
      }
 

@@ -147,41 +147,35 @@ body{
 
         }
     }
-        .back{
-            width: 100%;
-            height: 100%;
-            background-color:rgba(0,0,0,0.4);
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: -webkit-box;
-            -webkit-box-align:center;
-            -webkit-box-pack:center;
-            .back_j{
-                -webkit-box-flex:1;
-                margin: 0 10%;
-                background: white;
-                border-radius: 5px;
-                &>p{
+    .back_j{
+        display: none;
+                width: 90%;
+                position: fixed;
+                top:30%;
+                left: 5%;
+                background: #fff;
+                z-index: 10;
+               border-radius: 5px;
+                .biao{
                     margin: 0 5px;
                     border-bottom: 1px solid #F74A11;
                     text-indent: 10px;
-                    line-height: 28px;
+                    line-height: 50px;
+                    font-weight: 600;
                     margin-bottom: 5px;
                     color:#FF5200;
+                    letter-spacing: 1px;
                 }
                 div{
-                    margin: 0 5px;
-                    height:25px;
-                    padding-left:5px;
-                    padding-bottom:20px;
-                    margin-top:15px;
+                    margin: 0 20px;
                     position: relative;
+                    border-bottom: 1px solid #cdcdcd;
                     p{
-                        line-height: 25px;
-                        border: 1px solid #999;
                         border-radius: 5px;
-                        height: 25px;
+                        line-height:44px;
+                        font-size: 12px;
+                        text-indent: 10px;
+                        
                         input{
                             border: none;
                         }
@@ -199,29 +193,44 @@ body{
                     p{
                         input{
                             display: inline-block;
-                            width: 60px;
+                            width: 30%;
                         }
-                        botton{
-                            display: inline-block;
-                            padding:0 10px;
+                        button{
+                            display:block;
+                            padding:5px 10px;
                             border-radius: 5px;
                             background:#F74A11;
                             color: white;
                             float: right;
+                            margin-top:8px;
                         }
                     }
+                }
+                .tishi{
+                    position: absolute;
+                    bottom: 60px;
+                    width: 100%;
+                    text-align: center;
+                    color: red;
                 }
                 .j_qu{
                     width: 100px;
                     height: 30px;
                     line-height: 30px;
                     background: #ff5200;
-                    margin: 0 auto;
+                    margin:40px auto 20px auto;
                     text-align: center;
                     border-radius: 5px;
-                    margin-bottom: 10px;
                     color: white;
                 }
             }
+        .back{
+            width: 100%;
+            height: 100%;
+            background-color:rgba(0,0,0,0.4);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none;
         }
 }

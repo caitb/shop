@@ -34,13 +34,13 @@
         </header>
         <div id="box">
 
-            <p><span><img src="<%=basePath%>static/images/icon_28.png" alt="">商品管理</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-            <p onclick="javascript:window.location.replace('<%=basePath%>border/deliveryBorder');"><span><img src="<%=basePath%>static/images/icon_29.png" alt="">出货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>product/user/${comUser.id}');"><span><img src="<%=basePath%>static/images/icon_28.png" alt="">商品管理</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p><span><img src="<%=basePath%>static/images/icon_29.png" alt="">出货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>border/stockBorder');"><span><b></b><img src="<%=basePath%>static/images/icon_49.png" alt="">进货订单</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-            <p><span><img src="<%=basePath%>static/images/icon_31.png" alt="">我的授权书</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${comUser.id}');"><span><img src="<%=basePath%>static/images/icon_31.png" alt="">我的授权书</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><span><img src="<%=basePath%>static/images/icon_48.png" alt="">发展合伙人</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><span><img src="<%=basePath%>static/images/icon_50.png" alt="">我的团队</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-            <p><span><img src="<%=basePath%>static/images/icon_51.png" alt="">我的产品</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>account/home');"><span><img src="<%=basePath%>static/images/icon_51.png" alt="">我的资产</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p><span><img src="<%=basePath%>static/images/icon_52.png" alt="">个人信息</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
         </div>
     </div>
@@ -48,7 +48,7 @@
 <div class="bottom">
     <footer>
         <div class="btm">
-            <a href="javascript:;">
+            <a href="javascript:window.location.replace('<%=basePath%>/index');">
                 <span><img src="<%=basePath%>static/images/shouye_footer.png" alt=""></span>
                 <span>首页</span>
             </a>

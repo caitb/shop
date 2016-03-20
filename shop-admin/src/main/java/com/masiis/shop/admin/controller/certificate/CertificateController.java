@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,8 @@ public class CertificateController {
                          @RequestParam(required = true) Integer status,
                          @RequestParam(required = true) Integer id,
                          @RequestParam(required = false) String reason)throws Exception {
-        certificateService.approveCertificate(request, status, id,reason);
+        String reasonCode = URLDecoder.decode(reason, "UTF-8");
+        certificateService.approveCertificate(request, status, id,reasonCode);
         return "已审核";
      }
 

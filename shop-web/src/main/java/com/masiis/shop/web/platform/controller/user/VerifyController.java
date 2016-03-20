@@ -110,9 +110,11 @@ public class VerifyController extends BaseController {
                 user.setSex(new Integer(userRes.getSex()));
                 if(user.getId() == null){
                     userService.insertComUser(user);
+                    user = userService.getUserByOpenid(user.getOpenid());
                 } else {
                     userService.updateComUser(user);
                 }
+                log.info("userid:" + user.getId());
                 // 登录
                 session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 // 保存Cookie
@@ -244,7 +246,7 @@ public class VerifyController extends BaseController {
                     user.setWxHeadImg(userRes.getHeadimgurl());
                     user.setWxNkName(userRes.getNickname());
                     user.setSex(new Integer(userRes.getSex()));
-                    userService.insertComUser(user);
+                    userService.updateComUser(user);
                     // 登录
                     session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                     // 保存Cookie

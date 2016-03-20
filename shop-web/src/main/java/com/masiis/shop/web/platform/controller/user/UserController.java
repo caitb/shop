@@ -75,7 +75,6 @@ public class UserController {
             obj.put("msg",e.getMessage());
         }
         return obj.toJSONString();
-
     }
 
     @RequestMapping(value = "/bingPhoneStatusToPage.shtml")

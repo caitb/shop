@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author muchaofeng
@@ -33,5 +35,19 @@ public class ComDictionaryService {
      */
     public ComDictionary findById(Integer id){
         return comDictionarysMapper.selectById(id);
+    }
+
+    /**
+     * 根据code和key查询字典表对象
+     *
+     * @param code
+     * @param key
+     * @return
+     */
+    public ComDictionary findByCodeAndKey(String code, Integer key){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("code", code);
+        map.put("key", key);
+        return comDictionarysMapper.selectByCodeAndKey(map);
     }
 }

@@ -32,6 +32,8 @@ public class CertificateInfo extends PfUserSku {
 
     private String beginTime;//加入时间
 
+    private Integer receivect=0;//是否领取证书:0未领取，1已经领取
+
     public String getCtName() {
         return ctName;
     }
@@ -110,5 +112,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setBeginTime(String beginTime) {
         this.beginTime = beginTime;
+    }
+
+    public Integer getReceivect() {
+        return receivect;
+    }
+
+    public void setReceivect(Integer receivect) {
+        this.receivect = receivect;
     }
 }

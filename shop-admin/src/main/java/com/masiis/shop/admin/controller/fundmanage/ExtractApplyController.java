@@ -73,13 +73,66 @@ public class ExtractApplyController extends BaseController {
         return pageMap;
     }
 
-    @RequestMapping("/toaudit")
-    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long comUserId){
+    @RequestMapping("/toaudit.do")
+    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long id){
 
         ModelAndView mav = new ModelAndView("fundmanage/toAudit");
-
+        ExtractApply extractApply = comUserExtractApplyService.findById(id);
+        if (extractApply!=null){
+            ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+            extractApply.setComUserAccount(comUserAccount);
+        }
+        mav.addObject(extractApply);
         return mav;
     }
 
+    /**
+     * 待打款
+     * @param id
+     * @return
+     */
+    @RequestMapping("pass.do")
+    @ResponseBody
+    public Object pass(Long id){
+        comUserExtractApplyService.pass(id);
+        return "1";
+    }
+
+    /**
+     * 拒绝
+     * @param id
+     * @return
+     */
+    @RequestMapping("refuse.do")
+    @ResponseBody
+    public Object refuse(Long id){
+        comUserExtractApplyService.refuse(id);
+        return "2";
+    }
+
+    /**
+     * 已付款
+     * @param id
+     * @return
+     */
+    @RequestMapping("pay.do")
+    @ResponseBody
+    public Object pay(Long id){
+        comUserExtractApplyService.pay(id);
+        return "3";
+    }
+
+    /*@RequestMapping("findById.do")
+    @ResponseBody
+    public Map<String,Object> findById(HttpServletRequest request,HttpServletResponse response,Long id){
+        HashMap<String, Object> map = new HashMap<>();
+        ExtractApply extractApply = comUserExtractApplyService.findById(id);
+        if (extractApply!=null){
+            ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+            extractApply.setComUserAccount(comUserAccount);
+        }
+        map.put("extract",extractApply);
+        return map;
+    }*/
 
 }

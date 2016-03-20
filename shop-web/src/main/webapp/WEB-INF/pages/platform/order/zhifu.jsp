@@ -42,7 +42,11 @@
             paraData += "bOrderId=${bOrderId}";
             paraData += "&userMessage=" + $("#userMessage").val();
             paraData += "&userAddressId=" + $("#addressId").val();
-            window.location.href = "<%=basePath%>border/payBOrderSubmit.shtml" + paraData;
+            if($("#addressId").val()==null||$("#addressId").val()==""){
+                alert("请填写收获地址");
+                return;
+            }
+            window.location.href = "<%=basePath%>border/payBOrderSubmit.do" + paraData;
             <%--$.ajax({--%>
             <%--url: "<%=basePath%>border/payBOrderSubmit.do",--%>
             <%--type: "post",--%>

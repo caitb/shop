@@ -45,7 +45,7 @@
                         <em>高级合伙人</em>
                     </c:when>
                 </c:choose></span></p>
-                <p>上级合伙人：<span>${comUser.realName}</span></p>
+                <p>上级合伙人：<span>${cdetail.sjName}</span></p>
             </div>
             <div class="sec2">
                 <h1>证书图片</h1>

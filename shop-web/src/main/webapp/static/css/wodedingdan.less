@@ -2,8 +2,7 @@
      width: 100%;
     height: 100%;
     .box{
-        width: 100%;
-        height:100%;
+        -webkit-box-flex:1;
         display: -webkit-box;
         -webkit-box-orient:vertical;
         nav{
@@ -32,7 +31,8 @@
             }
         }
         main{
-            -webkit-box-flex:1;
+            width: 100%;
+            height: 100%;
             display: -webkit-box;
             overflow-x: hidden;
             div{
@@ -184,18 +184,19 @@
             }
         }
     }
+}
+
     .back{
             width: 100%;
             height: 100%;
             background-color:rgba(0,0,0,0.4);
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             display: -webkit-box;
             -webkit-box-align:center;
             -webkit-box-pack:center;
             overflow: hidden;
-            display: none;
         .back_que{
                 width: 80%;
                 background: white;
@@ -203,7 +204,6 @@
                 z-index: 10;
                 display: -webkit-box;
                 -webkit-box-orient:vertical;
-                display: none;
                 p{
                     margin: 0 10px;
                     color: #F74A11;
@@ -221,7 +221,7 @@
                     padding-bottom: 10px;
                     select{
                         display: inline-block;
-                        width: 140px;
+                        width: 150px;
                         height: 25px;
                         margin-left: 5px;
                         border: 1px solid #C5C5C5;
@@ -253,7 +253,7 @@
                 z-index: 10;
                 display: -webkit-box;
                 -webkit-box-orient:vertical;
-                display: none;
+            display: none;
                 p{
                     margin: 0 10px;
                     color: #F74A11;
@@ -291,4 +291,3 @@
 
             }
         }
-}

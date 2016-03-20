@@ -75,6 +75,12 @@ public class PfUserCertificate {
 
     private ComSku comSku;
 
+    private String tjDate;
+
+    private String sjName;
+
+    private String reason;//拒绝理由
+
     public Long getId() {
         return id;
     }
@@ -178,5 +184,28 @@ public class PfUserCertificate {
 
     public void setComSku(ComSku comSku) {
         this.comSku = comSku;
+    }
+
+    public String getTjDate() {
+        return tjDate;
+    }
+
+    public void setTjDate(String tjDate) {
+        this.tjDate = tjDate;
+    }
+
+    public String getSjName() {
+        return sjName;
+    }
+    public void setSjName(String sjName) {
+        this.sjName = sjName;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

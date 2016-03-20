@@ -17,47 +17,64 @@
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
 </head>
 <body>
+<input type="hidden" id="selectId" name="selectId" value = ""/>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="../images/xq_rt.png" alt=""></a>
+            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">
-                    <p><a href="../html/xinjianka.html" style="color:#333;">新增银行卡</a></p>
+                    <p><a href="<%=basePath%>extractwayinfo/toCreateBankcard.do" style="color:#333;">新增银行卡</a></p>
             </div>
        <div class="main">
-                <img src="../images/icon_56.png" alt="">
+                <img src="<%=path%>/static/images/icon_56.png" alt="">
                 <p>您还没有银行卡，马上新增一个银行卡吧！</p>
         </div>
         <main>
             <p>选择提现银行卡</p>
-            <div class="sec1">
-                <img src="../images/icon_57.png" alt="">
-                <p>
-                    <span><em>交通银行</em></span>
-                    <span>持卡人:<b>张云</b>卡号:<b>1231231231231231233</b></span>
-                </p>
-            </div>
-            <div class="sec1">
-                <img src="../images/icon_57.png" alt="">
-                <p>
-                    <span><em>交通银行</em></span>
-                    <span>持卡人:<b>张云</b>卡号:<b>1231231231231231233</b></span>
-                </p>
-            </div>
-            <div class="sec1">
-                <img src="../images/icon_57.png" alt="">
-                <p>
-                    <span><em>交通银行</em></span>
-                    <span>持卡人:<b>张云</b>卡号:<b>1231231231231231233</b></span>
-                </p>
-            </div>
+            <c:forEach var="extractway" items="${extractwayList}">
+                <div class="sec1" id="${extractway.id}">
+                    <span><img src="<%=path%>${extractway.cardImg}" alt=""></span>
+                    <p>
+                        <span><em>${extractway.bankName}</em></span>
+                        <span>持卡人:<b>${extractway.cardOwnerName}</b>卡号:<b>${extractway.bankCard}</b></span>
+                    </p>
+                </div>
+            </c:forEach>
         </main>
      </div>
      <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
      <script>
         $(".sec1").on("click",function(){
             $(this).addClass("on").siblings().removeClass("on")
+            var id = $(this).attr("id");
+            $("#selectId").val(id);
+            $.ajax({
+                type:"POST",
+                async:false,
+                url : "<%=path%>/extractwayinfo/setbankdefault.do",
+                data:{id:id},
+                dataType:"Json",
+                beforeSend:function(){
+
+                },
+                success:function(data){
+                    if(data.isTrue == "false"){
+                        alert(data.message);
+                    }else {
+                        window.location.href="<%=basePath%>extractapply/toapply";
+                    }
+                },
+                //调用执行后调用的函数
+                complete: function(XMLHttpRequest, textStatus){
+//                alert(XMLHttpRequest.responseText);
+//                alert(textStatus);
+                },
+                error: function(){
+                    //请求出错处理
+                    alert("请求出错，请稍后再试");
+                }
+            });
         })
     </script>
 </body>

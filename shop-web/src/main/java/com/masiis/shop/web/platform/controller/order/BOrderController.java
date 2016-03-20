@@ -21,6 +21,7 @@ import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.log4j.or.ThreadGroupRenderer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -181,7 +182,7 @@ public class BOrderController extends BaseController {
     }
 
     /**
-     * 合伙人支付
+     * 合伙人支付页面
      *
      * @author ZhaoLiang
      * @date 2016/3/5 16:32
@@ -244,7 +245,7 @@ public class BOrderController extends BaseController {
      * @author ZhaoLiang
      * @date 2016/3/17 14:32
      */
-    @RequestMapping("/payBOrderSubmit.shtml")
+    @RequestMapping("/payBOrderSubmit.do")
     public String payBOrderSubmit(HttpServletRequest request,
                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                   @RequestParam(value = "userMessage", required = true) String userMessage,
@@ -252,8 +253,14 @@ public class BOrderController extends BaseController {
                                   RedirectAttributes attrs) {
         WxPaySysParamReq req = null;
         try {
+            if (userAddressId <= 0) {
+                throw new BusinessException("收货地址不能为空");
+            }
+            if(bOrderId<=0){
+                throw new BusinessException("订单号错误");
+            }
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            if(!bOrderService.checkBOrderStock(pfBorder)){
+            if (!bOrderService.checkBOrderStock(pfBorder)) {
                 throw new BusinessException("订单商品库存不足");
             }
             pfBorder.setUserMessage(userMessage);
@@ -272,7 +279,7 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
-            bOrderService.toPayBOrder(pfBorder,pfBorderConsignee);
+            bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
@@ -342,13 +349,17 @@ public class BOrderController extends BaseController {
                                @RequestParam(required = true)Integer orderStatus,
                                @RequestParam(required = true)Long orderId,
                                @RequestParam(required = true)Integer shipStatus  ) {
+    public String toUserCenter(HttpServletRequest request,
+                               @RequestParam(required = true) Integer orderStatus,
+                               @RequestParam(required = true) Long orderId,
+                               @RequestParam(required = true) Integer shipStatus) {
         JSONObject json = new JSONObject();
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
         pfBorder.setShipStatus(shipStatus);
         try {
             bOrderService.updateBOrder(pfBorder);
-            json.put("mesg","交易成功");
+            json.put("mesg", "交易成功");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -383,12 +394,27 @@ public class BOrderController extends BaseController {
         }
         return json.toString();
     }
+
     /**
      * 进货订单
+     *
      * @author muchaofeng
      * @date 2016/3/16 11:37
      */
     @RequestMapping("/stockBorder")
+    public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
+        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
+        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
+        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(), 1, 5);//待收货
+        List<PfBorder> pfBorders3 = bOrderService.findByUserId(comUser.getId(), 3, shipStatus);//已完成
+        List<List<PfBorder>> pfBorderss = new ArrayList<List<PfBorder>>();
+        pfBorderss.add(0, pfBorders);
+        pfBorderss.add(1, pfBorders0);
+        pfBorderss.add(2, pfBorders10);
+        pfBorderss.add(3, pfBorders15);
+        pfBorderss.add(4, pfBorders3);
     public ModelAndView stockBorder(HttpServletRequest request,Integer orderStatus,Integer shipStatus) {
         ComUser comUser =(ComUser)request.getSession().getAttribute("comUser");
         List<PfBorder> pfBorders =bOrderService.findByUserId(comUser.getId(),orderStatus,shipStatus);
@@ -423,14 +449,14 @@ public class BOrderController extends BaseController {
 //            }
 //        }
         String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
-        for (List<PfBorder> pfsBorder: pfBorderss) {
-            if(pfsBorder!= null && pfsBorder.size()!=0){
-                for (PfBorder pfBorder: pfsBorder) {
+        for (List<PfBorder> pfsBorder : pfBorderss) {
+            if (pfsBorder != null && pfsBorder.size() != 0) {
+                for (PfBorder pfBorder : pfsBorder) {
                     List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(pfBorder.getId());
-                    for (PfBorderItem pfBorderItem: pfBorderItems) {
+                    for (PfBorderItem pfBorderItem : pfBorderItems) {
                         ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-                        pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
-                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+                        pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
+                        pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                     }
                     ComDictionary comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
                     pfBorder.setOrderSkuStatus(comDictionary.getValue());
@@ -439,25 +465,30 @@ public class BOrderController extends BaseController {
             }
         }
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("pfBorders", pfBorderss);
+        modelAndView.setViewName("platform/user/jinhuodingdan");
         modelAndView.addObject("pfBorders",pfBorderss);
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;
     }
+
     /**
+     * 订单详情
+     *
      * 进货订单详情
      * @author muchaofeng
      * @date 2016/3/16 15:00
      */
     @RequestMapping("/borderDetils.html")
-    public ModelAndView borderDetils(HttpServletRequest request,Long id){
+    public ModelAndView borderDetils(HttpServletRequest request, Long id) {
         BorderDetail borderDetail = new BorderDetail();
         String skuValue = PropertiesUtils.getStringValue("index_product_220_220_url");
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
-        for (PfBorderItem pfBorderItem: pfBorderItems) {
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-            pfBorderItem.setSkuUrl(skuValue+comSkuImage.getImgUrl());
-            pfBorder.setTotalQuantity(pfBorder.getTotalQuantity()+pfBorderItem.getQuantity());//订单商品总量
+            pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
+            pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
         }
         //快递公司信息
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
@@ -468,6 +499,8 @@ public class BOrderController extends BaseController {
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("borderDetail", borderDetail);
+        modelAndView.setViewName("platform/user/jinhuoxiangqing");
         modelAndView.addObject("borderDetail",borderDetail);
         modelAndView.setViewName("platform/order/jinhuoxiangqing");
         return modelAndView;

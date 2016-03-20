@@ -144,7 +144,7 @@ public class UserAddressController {
                                                        HttpServletResponse response,
                                                        Model model){
 
-        Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         model.addAttribute("addressId",selectedAddressId);
         return "platform/order/xuanze";
     }
@@ -159,7 +159,7 @@ public class UserAddressController {
                                       @RequestParam(value = "pageType", required = true) String pageType,
                                       @RequestParam(value = "orderId", required = false) Long orderId,
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
-                                      @RequestParam(value = "selectedAddressId", required = true) Integer selectedAddressId,
+                                      @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       Model model){
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS,selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE,pageType);
@@ -176,7 +176,7 @@ public class UserAddressController {
     @RequestMapping("/clickAddressOrReturnToPage.do")
     public String clickAddressOrReturnToPage(HttpServletRequest request,
                                      HttpServletResponse response,
-                                     @RequestParam(value = "selectedAddressId", required = false) Integer selectedAddressId){
+                                     @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId){
 
         String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
         Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
@@ -250,10 +250,10 @@ public class UserAddressController {
     @ResponseBody
     public Long deleteUserAddressById(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "id", required = true)Integer id,
+                                      @RequestParam(value = "id", required = true)Long id,
                                          @RequestParam(value = "defaultAddressId", required = false)Long defaultAddressId)throws Exception{
         if (StringUtils.isEmpty(id)){
-            id = 1;
+            id = 1L;
         }else{
 
         }
@@ -268,7 +268,7 @@ public class UserAddressController {
         if (i==0){
             return 0L;
         }else{
-            Integer selectedAddressId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+            Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
             if (id.equals(selectedAddressId)){
                 request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
             }
@@ -284,9 +284,9 @@ public class UserAddressController {
     @ResponseBody
     public Boolean settingDefaultAddress(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "id", required = true)Integer id){
+                                      @RequestParam(value = "id", required = true)Long id){
         if (StringUtils.isEmpty(id)){
-            id = 1;
+            id = 1L;
         }else{
         }
         ComUser comUser = (ComUser)request.getSession().getAttribute("comUser");

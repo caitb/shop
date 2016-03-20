@@ -3,6 +3,7 @@ package com.masiis.shop.dao.beans.product;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class Product extends ComSku {
 
     private String discountLevel;//代理商折扣区间
 
-    private Long shipAmount;//快递费用
+    private BigDecimal shipAmount;//快递费用
 
     private Integer agentNum;//代理人数
 
@@ -98,11 +99,11 @@ public class Product extends ComSku {
         this.discountLevel = discountLevel;
     }
 
-    public Long getShipAmount() {
+    public BigDecimal getShipAmount() {
         return shipAmount;
     }
 
-    public void setShipAmount(Long shipAmount) {
+    public void setShipAmount(BigDecimal shipAmount) {
         this.shipAmount = shipAmount;
     }
 

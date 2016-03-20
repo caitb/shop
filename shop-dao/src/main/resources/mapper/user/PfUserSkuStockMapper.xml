@@ -53,6 +53,14 @@
         from pf_user_sku_stock
     </select>
 
+    <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
+        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, remark, version
+        from pf_user_sku_stock
+        where user_id = #{userId}
+        and sku_id = #{skuId}
+    </select>
+
+
     <update id="updateByIdAndVersion" parameterType="com.masiis.shop.dao.po.PfUserSkuStock">
         update pf_user_sku_stock
         set stock = #{stock,jdbcType=INTEGER},

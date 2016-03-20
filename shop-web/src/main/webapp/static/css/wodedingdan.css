@@ -4,8 +4,7 @@
   height: 100%;
 }
 .wrap .box {
-  width: 100%;
-  height: 100%;
+  -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
@@ -35,7 +34,8 @@
   color: #FF6F35;
 }
 .wrap .box main {
-  -webkit-box-flex: 1;
+  width: 100%;
+  height: 100%;
   display: -webkit-box;
   overflow-x: hidden;
 }
@@ -198,7 +198,6 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   overflow: hidden;
-  display: none;
 }
 .back .back_que {
   width: 80%;
@@ -207,7 +206,6 @@
   z-index: 10;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  display: none;
 }
 .back .back_que p {
   margin: 0 10px;
@@ -227,7 +225,7 @@
 }
 .back .back_que h4 select {
   display: inline-block;
-  width: 140px;
+  width: 150px;
   height: 25px;
   margin-left: 5px;
   border: 1px solid #C5C5C5;

@@ -102,7 +102,7 @@ public class UserAddressService {
      * @author  hanzengzhi
      * @date  2016/3/9 15:23
      */
-    public Long deleteUserAddressById(Integer id,Long userId,Long defaultAddressId){
+    public Long deleteUserAddressById(Long id,Long userId,Long defaultAddressId){
        int i = comUserAddressMapper.deleteByPrimaryKey(id);
         int ii = 0;
         ComUserAddress comUserAddress = new ComUserAddress();
@@ -117,10 +117,10 @@ public class UserAddressService {
             }
         }
         if (i==1&&ii==1){
-            //设置默认地址的id值
+            //删除成功，设置默认地址的id值
             return comUserAddress.getId();
         }else if (i==1){
-            //删除的不是默认地址
+            //删除成功
             return -1L;
         }else{
              //删除失败
@@ -132,7 +132,7 @@ public class UserAddressService {
      * @author  hanzengzhi
      * @date  2016/3/9 16:24
      */
-    public Boolean settingDefaultAddress(Integer id,Long userId){
+    public Boolean settingDefaultAddress(Long id,Long userId){
         //取消之前的默认地址
         int ii = comUserAddressMapper.cancelDefaultAddress(userId);
         //设置新的默认地址

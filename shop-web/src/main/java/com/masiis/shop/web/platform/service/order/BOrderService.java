@@ -207,6 +207,7 @@ public class BOrderService {
                 defaultUserSkuStock.setSkuId(pfBorderItem.getSkuId());
                 defaultUserSkuStock.setStock(0);
                 defaultUserSkuStock.setFrozenStock(0);
+                defaultUserSkuStock.setVersion(0);
                 pfUserSkuStockMapper.insert(defaultUserSkuStock);
             }
         }

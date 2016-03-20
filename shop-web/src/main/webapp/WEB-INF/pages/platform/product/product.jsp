@@ -107,11 +107,11 @@
     <section class="sec3">
         <input id="skipPageId" value="trial" style="display: none" />
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <p>
+        <p >
             <a id="applyTrial"  onclick="validateCodeJS.applyTrial()">申请试用</a>
             <a id="trialed" style="display: none">已试用</a>
         </p>
-        <p><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
+        <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>

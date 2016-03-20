@@ -23,7 +23,7 @@
     <div class="wrap">
        <main>
             <header class="xq_header">
-                  <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>订单详情</p>            
             </header>
             <div class="tai"><c:if test="${borderDetail.pfBorder.orderStatus==0}">

@@ -5,6 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
@@ -58,7 +59,7 @@ public class UserApplyController {
                                       @RequestParam(value = "pUserId", required = false) Long pUserId) {
         ModelAndView mv = new ModelAndView();
         try {
-            String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
+            String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             ProductSimple productSimple = productService.getSkuSimple(skuId);
             mv.addObject("skuId", skuId);
             mv.addObject("skuName", productSimple.getSkuName());

@@ -215,15 +215,16 @@
         if(reason==null || reason==""){
             alert("请填写拒绝理由");
         }else{
+            var reasonCode = encodeURI(reason);
             $.ajax({
                 url: '<%=basePath%>certificate/update.do',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 data: {status: 2,
                     id: approveId,
-                    reason: reason},
+                    reason: reasonCode},
                 success: function(data){
                     $('#rejectModal').modal("hide");
                     alert(data);
+                    location.reload(true);
                 }
             });
         }

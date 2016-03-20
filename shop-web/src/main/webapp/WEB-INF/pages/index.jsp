@@ -27,7 +27,7 @@
         <div class="admin">
             <img src="${user.wxHeadImg}" alt="">
             <h3>${user.wxNkName}—欢迎您登入</h3>
-            <span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>
+            <%--<span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>--%>
         </div>
         <div class="banner">
             <div class="swiper-container">

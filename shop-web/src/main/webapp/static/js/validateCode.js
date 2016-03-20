@@ -38,12 +38,14 @@
                             }
                         } else {
                             //显示绑定手机号
-                            $(".back").attr("style", "display:-webkit-box");
+                            $(".back").show();
+                            $(".back_j").show();
                         }
                     },
                     error: function () {
                         //显示绑定手机号
-                        $(".back").attr("style", "display:-webkit-box");
+                        $(".back").show();
+                        $(".back_j").show();
                     }
                 });
             },
@@ -69,15 +71,15 @@
             checkPhone: function () {
                 validateCodeJS.phone = $("#phoneId").val();
                 if (validateCodeJS.phone == null || validateCodeJS.phone == "") {
-                    $("#phoneErrorId").empty();
-                    $("#phoneErrorId").html("手机号不能为空");
-                    $("#phoneErrorId").attr("style", "display:block");
+                    $("#errorMessageId").empty();
+                    $("#errorMessageId").html("手机号不能为空");
+                    $("#errorMessageId").attr("style", "display:block");
                     return false;
                 }
                 if (!isMobile()) {
-                    $("#phoneErrorId").empty();
-                    $("#phoneErrorId").html("手机号格式输入不正确");
-                    $("#phoneErrorId").attr("style", "display:block");
+                    $("#errorMessageId").empty();
+                    $("#errorMessageId").html("手机号格式输入不正确");
+                    $("#errorMessageId").attr("style", "display:block");
                     return false;
                 } else {
                     $("#phoneErrorId").empty();
@@ -88,7 +90,7 @@
                     if (!patrn.exec(validateCodeJS.phone)) {
                         return false;
                     }
-                    $("#phoneErrorId").attr("style", "display:none");
+                    $("#errorMessageId").attr("style", "display:none");
                     return true;
                 }
             },
@@ -97,13 +99,16 @@
             times: function () {
                 validateCodeJS.s--;
                 $("#validateNumberId").html("剩余" + validateCodeJS.s + "s");
-                $("#validateNumberId").attr("disabled", true);
+                $("#validateNumberId").unbind("click");
+                //$("#validateNumberId").attr("disabled", true);
                 validateCodeJS.t = setTimeout(function () {
                     validateCodeJS.times();
                 }, 1000);
                 if (validateCodeJS.s <= 0) {
                     validateCodeJS.s = 60;
-                    $("#validateNumberId").attr("disabled", false);
+                    $("#validateNumberId").bind("click",function(){
+                        validateCodeJS.getValidateNumber();
+                    });
                     $("#validateNumberId").html("重新获取验证码");
                     clearTimeout(validateCodeJS.t);
                 }
@@ -114,9 +119,9 @@
             },
             isValidateNumber: function () {
                 var verificationCode = $("#validateNumberDataId").val();
-                $("#validateNameErrorId").attr("style", "display:block");
+                $("#errorMessageId").attr("style", "display:block");
                 if (verificationCode == null || verificationCode == "") {
-                    $("#validateNameErrorId").html("验证码不能为空");
+                    $("#errorMessageId").html("验证码不能为空");
                     return false;
                 }
                 var bl = false;
@@ -128,12 +133,12 @@
                     dataType: "text",
                     success: function (result) {
                         if (result == "true") {
-                            $("#validateNameErrorId").empty();
+                            $("#errorMessageId").empty();
                             bl = true;
                         } else {
                             bl = false;
-                            $("#validateNameErrorId").empty();
-                            $("#validateNameErrorId").html("验证码输入错误");
+                            $("#errorMessageId").empty();
+                            $("#errorMessageId").html("验证码输入错误");
                         }
                     }
                 })
@@ -150,7 +155,6 @@
                     data: para,
                     dataType: "JSON",
                     success: function (result) {
-                        alert(JSON.stringify(result));
                         if (result && result.isError == false) {
                             validateCodeJS.skipPage();
                         } else {

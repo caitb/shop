@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
-    <link rel="stylesheet" href="<%=path%>/static/plugins/font-awesome/font-awesome.min.css">
     <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 </head>
 <body>
@@ -85,22 +84,23 @@
                 <p>京公网安备 11000002000006号</p>
             </section>
         </main>
-        <div class="back" style="display: none">
-            <div class="back_j">
-                <p>绑定账号</p>
-                <div>
-                    <p>手机号：<input type="tel" id = "phoneId"></p>
-                    <em id="phoneErrorId"></em>
-                </div>
-                <div class="d">
-                    <p>验证码：<input type="tel" id="validateNumberDataId">
-                        <botton id="validateNumberId"  >获取验证码</botton>
-                    </p>
-                    <em id="validateNameErrorId"></em>
-                </div>
-                <h1 class="j_qu" id="nextPageId">下一步</h1>
+
+        <div class="back_j" style="display: none">
+            <p class="biao">绑定账号</p>
+            <div>
+                <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
             </div>
+            <div class="d">
+                <p>验证码：<input type="tel" id="validateNumberDataId">
+                    <button id="validateNumberId">获取验证码</button>
+                </p>
+            </div>
+            <p class="tishi" id="errorMessageId"></p>
+            <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
+        <div class="back" style="display: none">
+
+
     </div>
 </div>
 <footer>

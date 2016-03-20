@@ -35,7 +35,7 @@
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
-                <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png"
                                                                        alt=""></a>
                 <p>新建收货地址</p>
             </header>
@@ -89,7 +89,7 @@
             if (categories[i].pid == 1) {
                 c1['sub' + 0].push(categories[i]);
             }
-            c2['sub' + categories[i].id] = [];
+           c2['sub' + categories[i].id] = [];
             for (var sub in categories) {
                 if (categories[sub].pid == categories[i].id) c2['sub' + categories[i].id].push(categories[sub]);
             }

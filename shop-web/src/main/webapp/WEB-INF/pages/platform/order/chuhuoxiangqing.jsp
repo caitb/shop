@@ -21,7 +21,7 @@
 <body>
        <div class="wrap">
           <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>订单详情</p>  
                 </header>
            <main>
@@ -41,8 +41,8 @@
                        <p><span>支付类型：</span><span>微信支付</span></p>
                        <p><span>物流状态：</span><c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}"><span>已完成</span></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==5}"><span>已发货</span></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==0}"><span>未发货</span><a class="fah">发货</a></c:if></p>
                        <p><span>配送方式：</span><span>物流配送</span></p>
-                       <p><span>发货时间：</span><span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p><c:forEach items="${borderDetail.pfBorderFreights}" var="bpf">
-                       <p><span>发货单号：</span><span>${bpf.freight}</span></p></c:forEach>
+                       <p><span>发货时间：</span><span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p><c:forEach items="${borderDetail.pfBorderFreights}" var="bpf"><c:if test="${bpf.freight!=null}">
+                       <p><span>发货单号：</span><span>${bpf.freight}</span></p></c:if></c:forEach>
                    </div>
                    <div class="sec3">
                        <section class="dizhi">
@@ -66,19 +66,55 @@
                    </div>
                </div>
            </main>
+           <div class="back_que">
+               <p>确认发货?</p>
+               <h4>快递公司:<select id="select"><option>顺风</option><option >EMS</option></select></h4>
+               <h4>快递单号:<input type="text" id="input"/></h4>
+               <h3 id="faHuo">发货</h3>
+           </div>
            <div class="back">
-               <div class="back_que">
-                    <p>确认减库存?</p>
-                    <h4>快递公司:<select><option>顺风</option></select></h4>
-                    <h4>快递单号:<input type="text"/></h4>
-                    <h3>发货</h3>
-                </div>
+
            </div>
         </div>
         <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
         <script>
         var myScroll = new IScroll("main",{
                  preventDefault: false
+            })
+
+            $(".fah").on("click",function(){
+                $(".back").show();
+                $(".back_que").css("display","-webkit-box");
+            })
+
+            $("#faHuo").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
+                var shipManName = $("#select").val();
+                var freight = $("#input").val();
+                var borderId = ${borderDetail.pfBorder.id};
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/border/deliver.do",
+                    data:{shipManName:shipManName,freight:freight,orderId:borderId},
+                    dataType:"Json",
+                    success:function(date){
+                        if(!date.msgs){
+                            alert(date.msg);
+                        }else{
+                            $(".fah").html("");
+                            location.reload(true);
+                        }
+                    }
+                })
+            })
+            $(".close").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
+            })
+            $(".back").on("click",function(){
+                $(".back_que").hide();
+                $(".back").hide();
             })
     </script>
 </body>

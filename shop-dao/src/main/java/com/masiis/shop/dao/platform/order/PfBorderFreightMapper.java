@@ -21,7 +21,8 @@ public interface PfBorderFreightMapper {
 
     List<PfBorderFreight> selectByCondition(PfBorderFreight pfBorderFreight);
 
-    int insert(PfBorderFreight pfBorderFreight);
+    void insert(PfBorderFreight pfBorderFreight);
+
 
     void updateById(PfBorderFreight pfBorderFreight);
 

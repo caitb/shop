@@ -21,7 +21,7 @@
 <body>
        <div class="wrap">
           <header class="xq_header">
-                   <a href="<%=basePath%>border/deliveryBorder"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>订单详情</p>  
                 </header>
            <main>

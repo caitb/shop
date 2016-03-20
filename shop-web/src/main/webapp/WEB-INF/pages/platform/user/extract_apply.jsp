@@ -63,15 +63,15 @@
         <div class="back_que">
             <p>再次确认提现请求?</p>
             <h4><span>提现金额:</span><span id="ex_money"></span></h4>
-            <h4><span>提现方式:</span><span>${extractwayInfo.extractway}</span></h4>
+            <h4><span>提现方式:</span><span>${extractWay}</span>&nbsp;提现</h4>
             <h4><span>银行卡号:</span><span>${extractwayInfo.bankCard}</span></h4>
             <h4><span>银行名称:</span><span>${extractwayInfo.bankName}</span></h4>
             <h4><span>开户行:</span><span>${extractwayInfo.depositBankName}</span></h4>
             <h4><span>持卡人姓名:</span><span>${extractwayInfo.cardOwnerName}</span></h4>
 
             <h3>
-                <span class="que_qu">取消</span>
-                <span class="que_que">确认</span>
+                <span class="que_qu" id="exBtnCancel">取消</span>
+                <span class="que_que" id="exBtnOk">确认</span>
             </h3>
         </div>
     </div>

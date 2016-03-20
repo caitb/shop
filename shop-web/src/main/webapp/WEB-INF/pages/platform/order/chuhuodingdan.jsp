@@ -22,7 +22,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=basePath%>profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>
                 <nav>
@@ -456,22 +456,22 @@
                 </main>
            </div>
        </div>
-       
+       <div class="back_que">
+           <p>确认发货?</p>
+           <h4>快递公司:<select id="select"><option selected="selected">顺风</option><option >EMS</option></select></h4>
+           <h4>快递单号:<input type="text" id="input"/></h4>
+           <h3 id="fahuo">发货</h3>
+       </div>
+       <div class="shouhuo">
+           <p>收货人信息</p>
+           <h4><span>姓　名:</span><span id="1"></span></h4>
+           <h4><span>地　址:</span><span id="2">阿斯科利的asdasdasdasdas将阿</span></h4>
+           <h4><span>手机号:</span><span id="3"></span></h4>
+           <h4><span>邮　编:</span><span id="4"></span></h4>
+           <h3 class="close">关闭</h3>
+       </div>
            <div class="back">
-               <div class="back_que">
-                    <p>确认发货?</p>
-                    <h4>快递公司:<select id="select"><option selected="selected">顺风</option><option >EMS</option></select></h4>
-                    <h4>快递单号:<input type="text" id="input"/></h4>
-                    <h3>发货</h3><h3 class="close">关闭</h3>
-                </div>
-                <div class="shouhuo">
-                    <p>收货人信息</p>
-                    <h4><span>姓　名:</span><span id="1"></span></h4>
-                    <h4><span>地　址:</span><span id="2">阿斯科利的asdasdasdasdas将阿</span></h4>
-                    <h4><span>手机号:</span><span id="3"></span></h4>
-                    <h4><span>邮　编:</span><span id="4"></span></h4>
-                    <h3 class="close">关闭</h3>
-                </div>
+
            </div>
        <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
        <script>
@@ -497,25 +497,39 @@
                function fahuo(id){
                    $(".back").css("display","-webkit-box");
                    $(".back_que").css("display","-webkit-box");
-                   var shipManName = $("#select").val();
-                   var freight = $("#input").val();
-                   var aa="fahuo_"+id;
-                   $.ajax({
-                       type:"POST",
-                       url : "<%=path%>/border/deliver.do",
-                       data:{shipManName:shipManName,freight:freight,orderId:id},
-                       dataType:"Json",
-                       success:function(date){
-                           alert($("b."+aa).html());
-                           $("span[name="+aa+"]").attr("style","display:none");
-                           $("b."+aa+"").html("待收货");
-                           location.reload(true);
-                       }
+                   $("#fahuo").on("click",function(){
+                       $(".back_que").hide();
+                       $(".back").hide();
+                       var shipManName = $("#select").val();
+                       var freight = $("#input").val();
+                       var aa="fahuo_"+id;
+
+                       $.ajax({
+                           type:"POST",
+                           url : "<%=path%>/border/deliver.do",
+                           data:{shipManName:shipManName,freight:freight,orderId:id},
+                           dataType:"Json",
+                           success:function(date){
+                               if(!date.msgs){
+                                   alert(date.msg);
+                               }else {
+                                   $("span[name=" + aa + "]").attr("style", "display:none");
+                                   $("b." + aa + "").html("待收货");
+                                   location.reload(true);
+                               }
+                           }
+                       })
                    })
-               })
+               }
+
                $(".close").on("click",function(){
                    $(".shouhuo").hide();
                    $(".back").hide();
+               })
+               $(".back").on("click",function(){
+                   $(".back_que").hide();
+                   $(".back").hide();
+                   $(".shouhuo").hide();
                })
        </script>
 </body>

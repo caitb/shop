@@ -39,7 +39,10 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
         insert into pf_border (id, create_time, create_man,
         order_code, user_id, user_pid,
         user_message, supplier_id, modify_time,

@@ -84,7 +84,7 @@
 
             $(".fah").on("click",function(){
                 $(".back").show();
-                $(".back_que").show();
+                $(".back_que").css("display","-webkit-box");
             })
 
             $("#faHuo").on("click",function(){
@@ -102,7 +102,7 @@
                         if(!date.msgs){
                             alert(date.msg);
                         }else{
-                            $(".fah").html("待收货");
+                            $(".fah").html("");
                             location.reload(true);
                         }
                     }

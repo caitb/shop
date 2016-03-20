@@ -89,7 +89,7 @@
             if (categories[i].pid == 1) {
                 c1['sub' + 0].push(categories[i]);
             }
-            c2['sub' + categories[i].id] = [];
+           c2['sub' + categories[i].id] = [];
             for (var sub in categories) {
                 if (categories[sub].pid == categories[i].id) c2['sub' + categories[i].id].push(categories[sub]);
             }

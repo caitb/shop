@@ -39,7 +39,7 @@
         </section>
         <section class="sec2">
             <p class="photo">
-                <a href="<%=path%>/static/html/xiangqing.html">
+                <a>
                     <img src="<%=path%>/static/images/shenqing_1.png" alt="">
                 </a>
             </p>

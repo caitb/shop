@@ -145,8 +145,8 @@
                     type: "POST",
                     async: false,
                     url: "/user/bindPhone.do",
-                    data: "phone=" + validateCodeJS.phone,
-                    dataType: "json",
+                    data: "{phone:" + validateCodeJS.phone + "}",
+                    dataType: "JSON",
                     success: function (result) {
                         if (result && result.isError == false) {
                             validateCodeJS.skipPage();

@@ -114,6 +114,7 @@ public class VerifyController extends BaseController {
                 } else {
                     userService.updateComUser(user);
                 }
+                log.info("userid:" + user.getId());
                 // 登录
                 session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 // 保存Cookie

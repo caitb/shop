@@ -90,6 +90,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("indexComS",ComS);
         modelAndView.addObject("ComSize",ComS.size());
         modelAndView.setViewName("index");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 }

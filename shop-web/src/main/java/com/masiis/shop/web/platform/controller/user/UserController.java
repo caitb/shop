@@ -62,13 +62,10 @@ public class UserController {
     public String bindPhone(HttpServletRequest request, HttpServletResponse response,
                             @RequestParam(value = "phone",required = true)String phone){
         JSONObject obj = new JSONObject();
-        System.out.println("---------------phone----------------"+phone);
         try {
             ComUser comUser =  userService.bindPhone(request,phone);
-            System.out.println("-------------coumserPhone-------------------"+comUser.getMobile());
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
                 obj.put("isError",false);
-                obj.put("isError","绑定成功");
             }else{
                 obj.put("isError",true);
                 obj.put("msg","comUsr为null");
@@ -77,7 +74,6 @@ public class UserController {
             obj.put("isError",true);
             obj.put("msg",e.getMessage());
         }
-        System.out.println("-------------返回前台的json数据--------------------"+obj.toJSONString());
         return obj.toJSONString();
 
     }

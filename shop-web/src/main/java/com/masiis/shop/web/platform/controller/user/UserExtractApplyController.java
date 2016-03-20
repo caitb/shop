@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
@@ -9,13 +11,18 @@ import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.tags.Param;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -65,12 +72,34 @@ public class UserExtractApplyController extends BaseController {
         if(cd == null){
             log.error("系统错误,字典表没查到提现方式!");
         }
-        String extractway = cd.getValue();
+        String extractWay = cd.getValue();
 
         model.addAttribute("extractMoney", extractMoney);
         model.addAttribute("extractwayInfo", extractwayInfo);
         model.addAttribute("hasCard", hasCard);
-        model.addAttribute("extractway", extractway);
+        model.addAttribute("extractWay", extractWay);
         return "platform/user/extract_apply";
+    }
+
+
+    @RequestMapping("/apply")
+    @ResponseBody
+    public String extractApply(HttpServletRequest request,
+                @RequestParam(required = true) String money){
+        BigDecimal exMoney = null;
+        try{
+            if(StringUtils.isBlank(money)){
+                throw new BusinessException("提现金额未填写!");
+            }
+            try{
+                exMoney = new BigDecimal(money);
+            } catch (Exception e) {
+                throw new BusinessException("金额不是数字类型的值!");
+            }
+
+        } catch (Exception e) {
+
+        }
+        return "{\"response\":\"SUCCESS\"";
     }
 }

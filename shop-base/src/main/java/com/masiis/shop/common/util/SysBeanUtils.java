@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -64,7 +65,24 @@ public class SysBeanUtils {
         return res.toString();
     }
 
+    /**
+     * 判断字符串能否转数字
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str){
+        String[] strArr = str.split(".");
+        if(strArr.length > 2){
+            return false;
+        }
+        if(strArr.length == 1){
+            return Pattern.compile("[0-9]*").matcher(str).matches();
+        }
+        return isNumeric(strArr[0]) && isNumeric(strArr[1]);
+    }
+
     public static void main(String[] aa) {
-        System.out.println(createPaySerialNumByOrderType("B"));
+        System.out.println(isNumeric("23.45"));
     }
 }

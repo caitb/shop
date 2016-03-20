@@ -210,6 +210,7 @@ public class UserService {
                 throw new Exception("查询用户信息失败");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("---------------------------更新数据库电话号码报错-------------"+e.getMessage());
             throw new Exception(e.getMessage());
         }

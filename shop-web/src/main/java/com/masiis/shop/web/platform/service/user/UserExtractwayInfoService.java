@@ -76,4 +76,18 @@ public class UserExtractwayInfoService {
     public List<ComUserExtractwayInfo> findByUserId(Long userId){
         return comUserExtractwayInfoMapper.selectByUserId(userId);
     }
+
+    /**
+     * 查询默认的支付方式
+     *
+     * @return
+     */
+    public ComUserExtractwayInfo findDefaultInfo(Long userid) {
+        List<ComUserExtractwayInfo> list = comUserExtractwayInfoMapper.selectDefault(userid);
+        if(list == null || list.size() <= 0){
+            return null;
+        }
+
+        return list.get(0);
+    }
 }

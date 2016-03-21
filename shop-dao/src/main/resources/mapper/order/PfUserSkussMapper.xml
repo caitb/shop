@@ -11,7 +11,7 @@
         <result column="is_pay" property="isPay" jdbcType="INTEGER" />
         <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="is_authorized" property="isAuthorized" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -22,5 +22,10 @@
         where pf_border_id = #{pfBorderId}
     </select>
 
+    <select id="selectPfUserSkuBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, pid, agent_level_id,is_pay
+        from pf_user_sku
+        where sku_id = #{skuId}
+    </select>
 
 </mapper>

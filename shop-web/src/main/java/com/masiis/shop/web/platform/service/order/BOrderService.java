@@ -364,6 +364,14 @@ public class BOrderService {
     }
 
     /**
+     * 根据userId获取关系
+     * @author muchaofeng
+     * @date 2016/3/21 17:37
+     */
+    public PfUserSku findPfUserSku(Integer id) {
+        return pfUserSkussMapper.selectPfUserSkuBySkuId(id);
+    }
+    /**
      * 判断订单库存是否充足
      *
      * @author ZhaoLiang

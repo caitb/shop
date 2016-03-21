@@ -3,8 +3,10 @@ package com.masiis.shop.web.platform.controller.product;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +29,9 @@ public class ProductController extends BaseController {
     @Resource
     private ProductService productService;
 
+    @Resource
+    private UserSkuService userSkuService;
+
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/product");
@@ -37,7 +42,9 @@ public class ProductController extends BaseController {
             productDetails.setIsPartner(true);
             productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
         }
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
         mav.addObject("productDetails",productDetails);
+        mav.addObject("pfUserSku",pfUserSku);//是否代理过
         return mav;
     }
 

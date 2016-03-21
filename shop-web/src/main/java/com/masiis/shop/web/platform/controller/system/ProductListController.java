@@ -50,7 +50,7 @@ public class ProductListController {
                 indexComSku.setImgUrl(url);
                 if (comUser != null && comUser.getIsAgent() == 1) {
                     //确定代理权限
-                    indexComSku.setIsPartner(true);
+                    indexComSku.setIsPartner(1);
                     //显示优惠区间
                     indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel(indexComSku.getComSku().getPriceRetail()));
                 } else {

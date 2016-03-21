@@ -68,24 +68,23 @@ public class IndexController extends BaseController {
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
 //            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());
-                //获取商品图片地址
-                String url = skuValue + indexCom.getImgUrl();
-                //重新封装商品图片地址
-                indexCom.setImgUrl(url);
-                if(user!=null && user.getIsAgent()==1){
-                    //判断会员权限
-                    indexCom.setIsPartner(true);
-                    //确定代理权限，显示优惠区间
-                    indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
-                }else{
-                    indexCom.setDiscountLevel("成为合伙人可查看");
-                }
-                PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
-                if (pfUserSku !=null){
-                    indexCom.setIspay(pfUserSku.getIsPay());
-                }
-                ComS.add(indexCom);
-
+            //获取商品图片地址
+            String url = skuValue + indexCom.getImgUrl();
+            //重新封装商品图片地址
+            indexCom.setImgUrl(url);
+            if(user!=null && user.getIsAgent()==1){
+                //判断会员权限
+                indexCom.setIsPartner(1);
+                //确定代理权限，显示优惠区间
+                indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
+            }else{
+                indexCom.setDiscountLevel("成为合伙人可查看");
+            }
+            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
+            if (pfUserSku !=null){
+                indexCom.setIspay(pfUserSku.getIsPay());
+            }
+            ComS.add(indexCom);
         }
         //封装展示商品信息集合
         modelAndView.addObject("indexComS",ComS);

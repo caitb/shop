@@ -77,4 +77,22 @@
         from com_area
     </select>
 
+
+    <select id="queryAllProvince"  resultMap="BaseResultMap">
+        select id,name
+        from com_area
+        WHERE pid=1
+    </select>
+
+    <select id="queryCityByProviceId"  resultMap="BaseResultMap">
+        select id,name
+        from com_area
+        WHERE pid = #{pid,jdbcType=INTEGER}
+    </select>
+    <select id="queryCountyByCityId"  resultMap="BaseResultMap">
+        select id,name
+        from com_area
+        WHERE pid = #{pid,jdbcType=INTEGER}
+    </select>
+
 </mapper>

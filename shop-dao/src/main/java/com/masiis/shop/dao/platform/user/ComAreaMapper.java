@@ -11,4 +11,10 @@ import java.util.List;
 public interface ComAreaMapper {
 
     List<ComArea> queryComAreasByParam(@Param("comArea")ComArea comArea);
+
+    List<ComArea> queryAllProvince();
+
+    List<ComArea> queryCityByProviceId(Integer pid);
+
+    List<ComArea> queryCountyByCityId(Integer pid);
 }

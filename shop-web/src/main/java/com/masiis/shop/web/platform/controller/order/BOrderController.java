@@ -352,16 +352,18 @@ public class BOrderController extends BaseController {
     public String closeDeal(HttpServletRequest request,
                             @RequestParam(required = true) Integer orderStatus,
                             @RequestParam(required = true) Long orderId,
-                            @RequestParam(required = true) Integer shipStatus) {
+                            @RequestParam(required = true) Integer shipStatus,
+                            Integer stock) {
         JSONObject json = new JSONObject();
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
         pfBorder.setShipStatus(shipStatus);
         try {
+            bOrderService.updateGetStock(pfBorder);
             bOrderService.updateBOrder(pfBorder);
             json.put("mesg", "交易成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            json.put("message",e.getMessage());
         }
         return json.toString();
     }
@@ -392,12 +394,13 @@ public class BOrderController extends BaseController {
             pfBorderFreight.setFreight(freight);
             pfBorderFreight.setShipManName(shipManName);
             try {
+                bOrderService.updateStock(pfBorder);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
                 json.put("msgs", true);
-                json.put("msg", "已发货，待收货");
             } catch (Exception e) {
-                e.printStackTrace();
+                json.put("msgs", false);
+                json.put("msg", e.getMessage());
             }
         }
         return json.toString();

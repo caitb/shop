@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
@@ -51,6 +52,8 @@ public class BOrderService {
     private PfBorderFreightMapper pfBorderFreightMapper;
     @Resource
     private SkuService skuService;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
 
     /**
      * 添加订单
@@ -128,7 +131,8 @@ public class BOrderService {
      * <5>修改用户sku代理关系支付状态
      * <6>修改sku代理量
      * <7>冻结sku库存<
-     * 8>初始化个人库存信息
+     * <8>初始化个人库存信息
+     * <9>更新用户资产
      */
     @Transactional
     public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
@@ -210,10 +214,53 @@ public class BOrderService {
                 defaultUserSkuStock.setVersion(0);
                 pfUserSkuStockMapper.insert(defaultUserSkuStock);
             }
+            //<9>更新上级用户资产
+            if (pfBorder.getUserPid() != 0) {
+                int i = comUserAccountMapper.payBOrderToUpdateUserAccount(pfBorder.getUserPid(), pfBorder.getPayAmount());
+                if (i == 0) {
+                    throw new BusinessException("更新用户资产失败");
+                }
+            }
         }
 
     }
 
+
+    /**
+     * 更新出货库存
+     * @author muchaofeng
+     * @date 2016/3/21 14:35
+     */
+    public void updateStock(PfBorder pfBorder){
+        PfUserSkuStock pfUserSkuStock = null;
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+            if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
+                throw new BusinessException("当前库存不足！");
+            }else{
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                    throw new BusinessException("并发修改库存失败");
+                }
+            }
+        }
+    }
+
+    /**
+     * 更新进货库存
+     * @author muchaofeng
+     * @date 2016/3/21 16:22
+     */
+    public void updateGetStock(PfBorder pfBorder){
+        PfUserSkuStock pfUserSkuStock = null;
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+            pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
+            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                throw new BusinessException("并发修改库存失败");
+            }
+        }
+    }
     /**
      * 获取订单
      *
@@ -316,6 +363,14 @@ public class BOrderService {
         return pfBorderConsigneeMapper.selectByBorderId(id);
     }
 
+    /**
+     * 根据userId获取关系
+     * @author muchaofeng
+     * @date 2016/3/21 17:37
+     */
+    public PfUserSku findPfUserSku(long userId,Integer id) {
+        return pfUserSkuMapper.selectByUserIdAndSkuId(userId,id);
+    }
     /**
      * 判断订单库存是否充足
      *

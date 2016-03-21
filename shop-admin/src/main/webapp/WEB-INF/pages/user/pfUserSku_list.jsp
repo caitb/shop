@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-table.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-editable.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css">
-    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/examples.css">
 
 
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
@@ -352,12 +351,11 @@
                             }
 
                             function operateFormatter(value, row, index) {
+                                //alert(row.userId);
                                 var sArr = [];
-                                //alert(row.id);
-
                                 sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
                                 sArr.push( '&nbsp;|<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
-                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
+                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')">更改上级</a>');
 
                                 return sArr;
                             }
@@ -455,13 +453,6 @@
                                 return undefined;
                             }
 
-                            $('#add').on('click', function () {
-                                $('#addModalLabel').html('添加管理员');
-                                $('#addModal').modal({
-                                    show: true,
-                                    backdrop: true
-                                });
-                            });
                         </script>
 
 
@@ -554,29 +545,28 @@
             location.reload();
         })*/
         //更改上级
-        function changeLeader(){
-            var approveId = $("#approveId").val();
+        function changeLeader(approveId){
+            //var approveId = $("#approveId").val();
             $.ajax({
                 type: "GET",
                 url: '<%=basePath%>certificate/listUpper.do',
                 data: {id: approveId},
                 dataType: "json",
                 success: function (data) {
-                    if (data!=null){
-                        $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
+                    $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
+                    $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
+                    $("#userSkuId").val(data["certificateInfo"].id);
+                    //option属性
+                    if(data["certificateInfo"].comUserList !=null && data["certificateInfo"].comUserList[0]!=null){
                         $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
-                        $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
-                        $("#userSkuId").val(data["certificateInfo"].id);
-                        //option属性
-                        if((data["certificateInfo"].comUserList).length>0 && data["certificateInfo"].comUserList[0]!=null){
-                            var comUserList = {upperList:data["certificateInfo"].comUserList};
-                            $("#userList").val(comUserList);
-                            $.each(data["certificateInfo"].comUserList,function(index,value){
-                                $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
-                            });
-                        }else{
-                            $("#userSubmit").attr("disabled", true);
-                        }
+                        var comUserList = {upperList:data["certificateInfo"].comUserList};
+                        $("#userList").val(comUserList);
+                        $.each(data["certificateInfo"].comUserList,function(index,value){
+                            $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                        });
+                    }else{
+                        $("#upperName").html("当前上级 :  -");
+                        $("#userSubmit").attr("disabled", true);
                     }
                     $('#myModal').modal({
                         show: true,
@@ -596,7 +586,7 @@
                 data: {id:id,pid:pid},
                 success: function (data) {
                     $('#myModal').modal('hide');
-                    alert(data);
+                    //alert(data);
                 }
             });
         });

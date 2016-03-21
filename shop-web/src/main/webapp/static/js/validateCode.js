@@ -28,7 +28,8 @@
                             switch (validateCodeJS.skipPageId) {
                                 case "register":
                                     var pUserId = $("#pUserId").val();
-                                    window.location.href = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
+                                    var type = $("#type").val();
+                                    window.location.href = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId + "&type=" + type;
                                     break;
                                 case "trial":
                                     window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
@@ -105,7 +106,7 @@
                 }, 1000);
                 if (validateCodeJS.s <= 0) {
                     validateCodeJS.s = 60;
-                    $("#validateNumberId").bind("click",function(){
+                    $("#validateNumberId").bind("click", function () {
                         validateCodeJS.getValidateNumber();
                     });
                     $("#validateNumberId").html("重新获取验证码");
@@ -167,7 +168,8 @@
                 var path;
                 switch (validateCodeJS.skipPageId) {
                     case "register":
-                        path = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId;
+                        var type = $("#type").val();
+                        path = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId + "&type=" + type;
                         validateCodeJS.bindPhoneSkipParam = "?skipPage=register&status=success&path=" + path
                         break;
                     case "trial":

@@ -76,7 +76,7 @@
     </select>
 
     <select id="trialCorder" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfCorder"  >
-        select id from
+        select id,pay_status from
         pf_corder
         where
         user_id = #{userId,jdbcType=BIGINT}
@@ -331,5 +331,48 @@
     <delete id="deleteById" parameterType="java.lang.Long" >
         delete from pf_corder where id = #{id,jdbcType=BIGINT}
     </delete>
+
+    <select id="queryTrialNoPayOrder" resultMap="BaseResultMap" parameterType="com.masiis.shop.dao.po.PfCorder" >
+        select
+               id,
+               create_time,
+               create_man,
+               order_code,
+               order_type,
+               sku_id,
+               user_id,
+               user_pid,
+               user_massage,
+               supplier_id,
+               modify_time,
+               modify_man,
+               receivable_amount,
+               order_amount,
+               product_amount,
+               ship_amount,
+               pay_amount,
+               pay_time,
+               ship_man_id,
+               ship_man_name,
+               delivery_time,
+               ship_remark,
+               replace_order_id,
+               order_status,
+               ship_status,
+               pay_status,
+               is_ship,
+               is_replace,
+               is_receipt,
+               receipt_time,
+               remark
+        from
+        pf_corder
+        where
+        user_id = #{userId,jdbcType=BIGINT}
+        AND sku_id = #{skuId,jdbcType=INTEGER}
+        AND order_type = 0
+        AND pay_status = 0
+        AND order_status = 0
+    </select>
 
 </mapper>

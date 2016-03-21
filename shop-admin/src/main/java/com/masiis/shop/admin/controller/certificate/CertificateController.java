@@ -70,7 +70,10 @@ public class CertificateController {
                          @RequestParam(required = true) Integer status,
                          @RequestParam(required = true) Integer id,
                          @RequestParam(required = false) String reason)throws Exception {
-        String reasonCode = URLDecoder.decode(reason, "UTF-8");
+        String reasonCode = null;
+        if(reason!=null){
+            reasonCode = URLDecoder.decode(reason, "UTF-8");
+        }
         certificateService.approveCertificate(request, status, id,reasonCode);
         return "已审核";
      }

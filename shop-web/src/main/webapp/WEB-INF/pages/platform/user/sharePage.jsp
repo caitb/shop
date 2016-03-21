@@ -107,7 +107,7 @@
         link: '<%=basePath%>${shareMap.shareLink}',
         imgUrl: '${shareMap.shareImg}',
         trigger: function (res) {
-            alert('用户点击分享到QQ');
+            alert('用户点击分享到QQ: ' + "这是最新的masiis产品数据");
         },
         complete: function (res) {
             alert(JSON.stringify(res));

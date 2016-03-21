@@ -22,7 +22,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="code" property="code" jdbcType="VARCHAR"/>
         <result column="pid" property="pid" jdbcType="INTEGER"/>
-        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="userId" property="userId" jdbcType="BIGINT"/>
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
         <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
@@ -172,7 +172,12 @@
         LEFT JOIN com_user cu on pus.user_id = cu.id
         LEFT JOIN com_sku cs on pus.sku_id = cs.id
         LEFT JOIN com_agent_level cal on pus.agent_level_id = cal.id
-        where pus.id = #{id,jdbcType=INTEGER};
+        <where>
+            <if test="id != null">
+                AND pus.id = #{id,jdbcType=INTEGER}
+            </if>
+
+        </where>
     </select>
 
     <select id="selectByOrderId" resultMap="BaseResultMap">

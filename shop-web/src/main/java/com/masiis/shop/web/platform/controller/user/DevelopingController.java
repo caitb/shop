@@ -115,6 +115,8 @@ public class DevelopingController extends BaseController {
         return mav;
     }
 
+
+
     public static Map<String, String> sign(String jsapi_ticket, String url) {
         Map<String, String> ret = new HashMap<String, String>();
         String nonce_str = create_nonce_str();
@@ -151,7 +153,7 @@ public class DevelopingController extends BaseController {
         ret.put("timestamp", timestamp);
         ret.put("signature", signature);
 
-        log.info("jsapi签名后的结果[ret="+ret+"]");
+        log.info("jsapi签名结果[ret="+ret+"]");
 
         return ret;
     }

@@ -51,33 +51,41 @@ public class DevelopingController extends BaseController {
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/user/developing");
+        ComUser comUser = null;
 
-        ComUser comUser = getComUser(request);
-        PfUserSku userSkuC = new PfUserSku();
-        userSkuC.setUserId(comUser.getId());
-        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(userSkuC);
+        try {
+            comUser = getComUser(request);
+            PfUserSku userSkuC = new PfUserSku();
+            userSkuC.setUserId(comUser.getId());
+            List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(userSkuC);
 
 
-        if(pfUserSkus != null && pfUserSkus.size() > 0){
+            if(pfUserSkus != null && pfUserSkus.size() > 0){
 
-            List<Map<String, Object>> agentMaps = new ArrayList<>();
-            for(PfUserSku pus : pfUserSkus){
+                List<Map<String, Object>> agentMaps = new ArrayList<>();
+                for(PfUserSku pus : pfUserSkus){
 
-                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
-                ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
-                ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
-                ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
+                    ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
+                    ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+                    ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
 
-                Map<String, Object> agentMap = new HashMap<>();
-                agentMap.put("levelName", comAgentLevel.getName());
-                agentMap.put("skuName", comSku.getName());
-                agentMap.put("skuId", comSku.getId());
-                agentMap.put("brandLogo", comBrand.getLogoUrl());
+                    Map<String, Object> agentMap = new HashMap<>();
+                    agentMap.put("levelName", comAgentLevel.getName());
+                    agentMap.put("skuName", comSku.getName());
+                    agentMap.put("skuId", comSku.getId());
+                    agentMap.put("brandLogo", comBrand.getLogoUrl());
 
-                agentMaps.add(agentMap);
+                    agentMaps.add(agentMap);
+                }
+
+                mav.addObject("agentMaps", agentMaps);
+
+                return mav;
             }
-
-            mav.addObject("agentMaps", agentMaps);
+        } catch (Exception e) {
+            log.error("获取我代理的产品失败![comUser="+comUser+"]");
+            e.printStackTrace();
         }
 
         return mav;
@@ -88,31 +96,38 @@ public class DevelopingController extends BaseController {
 
         ModelAndView mav = new ModelAndView("platform/user/sharePage");
 
-        String curUrl = request.getRequestURL().toString();
-        String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
-        if(jsapi_ticket == null){
-            log.info("从redis获取的jsapi_ticket=null");
-            jsapi_ticket = new JsapiTicketTask().requestTicket();
+        try {
+            String curUrl = request.getRequestURL().toString();
+            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+            if(jsapi_ticket == null){
+                log.info("从redis获取的jsapi_ticket=null");
+                jsapi_ticket = new JsapiTicketTask().requestTicket();
+            }
+
+            Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
+
+            ComUser comUser = getComUser(request);
+            ComSku comSku = comSkuMapper.selectById(skuId);
+            ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+            ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+
+            resultMap.put("appId", WxConstants.APPID);
+            resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
+            resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
+            resultMap.put("shareLink", "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId());
+            resultMap.put("shareImg", comBrand.getLogoUrl());
+
+            //TODO
+
+            mav.addObject("shareMap", resultMap);
+
+            return mav;
+        } catch (Exception e) {
+            log.error("获取分享链接失败![skuId="+skuId+"]");
+            e.printStackTrace();
         }
 
-        Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
-
-        ComUser comUser = getComUser(request);
-        ComSku comSku = comSkuMapper.selectById(skuId);
-        ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
-        ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
-
-        resultMap.put("appId", WxConstants.APPID);
-        resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
-        resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
-        resultMap.put("shareLink", "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId());
-        resultMap.put("shareImg", comBrand.getLogoUrl());
-
-        //TODO
-
-        mav.addObject("shareMap", resultMap);
-
-        return mav;
+        return null;
     }
 
 

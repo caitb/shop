@@ -68,11 +68,11 @@ public class LoginFilter implements Filter{
                 return;
             }
 
-            /*if(!checkUriIsValid(uri)){
+            if(!checkUriIsValid(uri)){
                 // 404处理
                 log.info("访问的uri不存在,uri:" + uri);
                 return;
-            }*/
+            }
 
             log.info("uri:" + uri);
 
@@ -119,9 +119,9 @@ public class LoginFilter implements Filter{
     }
 
     public static void main(String[] args) {
-        String aa = "/sss/{skuId}/ee/{ss}/dd";
+        String aa = "/";
         String cc = aa.replaceAll("\\{.*\\}", "(.*)");
-        String bb = "/sss/333/ee/sdf/dd";
+        String bb = "/";
         System.out.println(bb.matches(cc));
     }
 }

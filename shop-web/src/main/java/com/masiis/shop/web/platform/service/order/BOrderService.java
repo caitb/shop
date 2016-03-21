@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
@@ -51,6 +52,8 @@ public class BOrderService {
     private PfBorderFreightMapper pfBorderFreightMapper;
     @Resource
     private SkuService skuService;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
 
     /**
      * 添加订单
@@ -128,7 +131,8 @@ public class BOrderService {
      * <5>修改用户sku代理关系支付状态
      * <6>修改sku代理量
      * <7>冻结sku库存<
-     * 8>初始化个人库存信息
+     * <8>初始化个人库存信息
+     * <9>更新用户资产
      */
     @Transactional
     public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
@@ -209,6 +213,13 @@ public class BOrderService {
                 defaultUserSkuStock.setFrozenStock(0);
                 defaultUserSkuStock.setVersion(0);
                 pfUserSkuStockMapper.insert(defaultUserSkuStock);
+            }
+            //<9>更新上级用户资产
+            if (pfBorder.getUserPid() != 0) {
+                int i = comUserAccountMapper.payBOrderToUpdateUserAccount(pfBorder.getUserPid(), pfBorder.getPayAmount());
+                if (i == 0) {
+                    throw new BusinessException("更新用户资产失败");
+                }
             }
         }
 

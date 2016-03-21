@@ -119,7 +119,7 @@ public class UserApplyController {
             mv.addObject("agentInfo", sb.toString());
             mv.addObject("skuId", comSku.getId());
             mv.addObject("skuName", comSku.getName());
-            if (comUser!=null){
+            if (comUser != null) {
                 mv.addObject("name", comUser.getRealName());
                 mv.addObject("weixinId", comUser.getWxId());
                 mv.addObject("mobile", comUser.getMobile());
@@ -235,22 +235,23 @@ public class UserApplyController {
                                @RequestParam(value = "pMobile", required = true) String pMobile) {
         JSONObject jsonObject = new JSONObject();
         try {
-            if (StringUtils.isBlank(pMobile)) {
-                throw new BusinessException("推荐人电话不能为空");
-            }
-            ComUser comUser = userService.getUserByMobile(pMobile);
-            if (comUser == null) {
-                throw new BusinessException("推荐人电话有误");
-            }
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            if (pfUserSku == null) {
-                throw new BusinessException("推荐人还没有代理过此产品");
-            }
-            if (pfUserSku.getAgentLevelId() == 3) {
-                throw new BusinessException("推荐人等级原因无法发展下级代理");
+            ComUser pUser = null;
+            PfUserSku pfUserSku = null;
+            if (StringUtils.isNotBlank(pMobile)) {
+                pUser = userService.getUserByMobile(pMobile);
+                if (pUser == null) {
+                    throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
+                } else {
+                    pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+                    if (null == pfUserSku) {
+                        throw new BusinessException("您的推荐人还未代理此款商品");
+                    }
+                }
+            }else{
+                throw new BusinessException("手机号为空");
             }
             jsonObject.put("isError", false);
-            jsonObject.put("pUserId", comUser.getId());
+            jsonObject.put("pUserId", pUser.getId());
             jsonObject.put("levelId", pfUserSku.getAgentLevelId());
         } catch (Exception ex) {
             jsonObject.put("isError", true);

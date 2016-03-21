@@ -1,6 +1,14 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.ComBrandMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import org.springframework.stereotype.Controller;
@@ -13,10 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Formatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 发展合伙人
@@ -24,17 +29,58 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/developing")
-public class DevelopingController {
+public class DevelopingController extends BaseController {
+
+    @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
+    private ComSkuMapper comSkuMapper;
+    @Resource
+    private ComSpuMapper comSpuMapper;
+    @Resource
+    private ComBrandMapper comBrandMapper;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/user/developing");
 
+        ComUser comUser = getComUser(request);
+        PfUserSku userSkuC = new PfUserSku();
+        userSkuC.setUserId(comUser.getId());
+        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(userSkuC);
+
+
+        if(pfUserSkus != null && pfUserSkus.size() > 0){
+
+            List<Map<String, Object>> agentMaps = new ArrayList<>();
+            for(PfUserSku pus : pfUserSkus){
+
+                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
+                ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
+                ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+                ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+
+                Map<String, Object> agentMap = new HashMap<>();
+                agentMap.put("levelName", comAgentLevel.getName());
+                agentMap.put("skuName", comSku.getName());
+                agentMap.put("skuId", comSku.getId());
+                agentMap.put("brandLogo", comBrand.getLogoUrl());
+
+                agentMaps.add(agentMap);
+            }
+
+            mav.addObject("agentMaps", agentMaps);
+        }
+
         return mav;
     }
 
     @RequestMapping("/sharelink")
-    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response, Long userId, Integer skuId){
+    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response, Integer skuId){
 
         ModelAndView mav = new ModelAndView("platform/user/sharePage");
 
@@ -45,8 +91,18 @@ public class DevelopingController {
         }
 
         Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
+
+        ComUser comUser = getComUser(request);
+        ComSku comSku = comSkuMapper.selectById(skuId);
+        ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
+        ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+
         resultMap.put("appId", WxConstants.APPID);
-        resultMap.put("shareLink", null);
+        resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
+        resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
+        resultMap.put("shareLink", "userApply/apply.shtml?skuId="+skuId+"&pUserId="+comUser.getId());
+        resultMap.put("shareImg", comBrand.getLogoUrl());
+
         //TODO
 
         mav.addObject("shareMap", resultMap);

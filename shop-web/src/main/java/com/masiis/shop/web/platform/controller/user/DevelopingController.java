@@ -97,7 +97,7 @@ public class DevelopingController extends BaseController {
         ModelAndView mav = new ModelAndView("platform/user/sharePage");
 
         try {
-            String curUrl = request.getRequestURL().toString();
+            String curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
             String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
             if(jsapi_ticket == null){
                 log.info("从redis获取的jsapi_ticket=null");

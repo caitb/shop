@@ -16,4 +16,11 @@ public interface PfUserSkussMapper {
      */
 
     PfUserSku selectPfUserSkusById(Long pfCorderId);
+    /**
+     * 通过用户id查用户商品关系
+     * @author muchaofeng
+     * @date 2016/3/21 17:36
+     */
+
+    PfUserSku selectPfUserSkuBySkuId(Integer skuId);
 }

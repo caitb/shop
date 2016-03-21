@@ -106,22 +106,12 @@
                         <h2>${Sku.comSku.name}</h2>
                         <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>
                         <h3>
-                            <p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner}"><a
-                                href="javascript:;">您已合伙</a></c:when>
-                            <c:otherwise><a
-                                    href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
+                            <p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner && Sku.ispay==1}">
+                            <a href="javascript:;">您已合伙</a></c:when>
+                            <c:otherwise><a href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
                         </h3>
                     </div>
                 </c:forEach>
-                <%--<div>--%>
-                <%--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>--%>
-                <%--<h2>抗引力—快速瘦脸精华</h2>--%>
-                <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
-                <%--<h3>--%>
-                <%--<p>超过<span>9999</span>人代理</p>--%>
-                <%--<a href="shenqing.html">我要合伙</a>--%>
-                <%--</h3>--%>
-                <%--</div>--%>
             </section>
             <%--<section class="sec1">--%>
             <%--<div>--%>

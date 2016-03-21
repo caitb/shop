@@ -89,12 +89,16 @@
             alert("试用理由不能超过100字");
             return;
         }
-        if (!isTrial(skuId)){
+
+        var trialReason = $("#trialReasonId").val();
+        window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
+
+/*        if (!isTrial(skuId)){
             var trialReason = $("#trialReasonId").val();
             window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
         }else{
             alert("已试用过不能再试用");
-        }
+        }*/
     }
     function isTrial(skuId){
         var bl = false;

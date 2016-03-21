@@ -22,7 +22,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                    <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>
                 <nav>
@@ -62,7 +62,7 @@
                             <div class="ding">
                                 <p><a href="<%=path%>/border/borderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderStatus ==0}">
                                 <span class="jixu">
-                                    <a href="buhuodingdan.html">继续支付</a>
+                                    <a href="<%=path%>/border/payBOrder.shtml?bOrderId=${pb.id}">继续支付</a>
                                 </span></c:if><c:if test="${pb.orderStatus ==1 && pb.shipStatus==5}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货

@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.ComDictionary;
@@ -9,6 +10,7 @@ import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
@@ -41,6 +43,8 @@ public class UserExtractApplyController extends BaseController {
     private ComUserAccountService accountService;
     @Resource
     private ComDictionaryService dictionaryService;
+    @Resource
+    private UserExtractApplyService applyService;
 
     @RequestMapping("/toapply")
     public String toApply(HttpServletRequest request, Model model){
@@ -86,20 +90,42 @@ public class UserExtractApplyController extends BaseController {
     @ResponseBody
     public String extractApply(HttpServletRequest request,
                 @RequestParam(required = true) String money){
+        JSONObject res = new JSONObject();
         BigDecimal exMoney = null;
+        ComUser user = null;
         try{
+            user = getComUser(request);
+            if(user == null){
+                throw new BusinessException("该用户未登录");
+            }
             if(StringUtils.isBlank(money)){
+                log.error("提现金额未填写,用户id:" + user.getId());
                 throw new BusinessException("提现金额未填写!");
             }
-            try{
-                exMoney = new BigDecimal(money);
-            } catch (Exception e) {
+            if(!SysBeanUtils.isNumeric(money)){
+                log.error("金额不是数字类型的值,用户id:" + user.getId());
                 throw new BusinessException("金额不是数字类型的值!");
             }
+            // 提现金额
+            exMoney = new BigDecimal(money);
+            // 获取用户资产
+            ComUserAccount account = accountService.findAccountByUserid(user.getId());
+            if(account == null){
+                log.error("系统错误,用户资产未找到");
+                throw new BusinessException("系统错误,用户资产未找到");
+            }
+            // 查询默认的支付方式
+            ComUserExtractwayInfo info = extractwayInfoService.findDefaultInfo(user.getId());
+            if(info == null){
+                throw new BusinessException();
+            }
+
+            // 开始提现业务
+            applyService.applyExtract(account, exMoney, user, info);
 
         } catch (Exception e) {
-
+            log.error("提现申请错误:" + e.getMessage());
         }
-        return "{\"response\":\"SUCCESS\"";
+        return "";
     }
 }

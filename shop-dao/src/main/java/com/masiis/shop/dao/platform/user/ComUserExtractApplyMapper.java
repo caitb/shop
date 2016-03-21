@@ -10,9 +10,10 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.extract.ExtractApply;
 import com.masiis.shop.dao.po.ComUserExtractApply;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface ComUserExtractApplyMapper {
     int deleteByPrimaryKey(Long id);
 

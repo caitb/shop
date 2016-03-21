@@ -43,14 +43,9 @@ public class UserAddressController {
     @RequestMapping("/toAddAddressPage.html")
     public String toAddAddressPage(HttpServletRequest request,
                                    HttpServletResponse response, Model model) throws JsonProcessingException {
-        Long startTime = System.currentTimeMillis();
-        System.out.println("----开始时间----"+startTime);
-        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
-        Long endTime = System.currentTimeMillis();
-        System.out.println("----结束时间----"+endTime);
-        System.out.println("----耗时时间----"+(endTime-startTime));
+/*        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
         ObjectMapper objectMapper = new ObjectMapper();
-        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));
+        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));*/
         return "platform/order/xinjiandizhi";
     }
 
@@ -133,12 +128,15 @@ public class UserAddressController {
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
         if (comUserAddress == null) {
         } else {
+            model.addAttribute("provinceId", comUserAddress.getProvinceId());
+            model.addAttribute("cityId", comUserAddress.getCityId());
+            model.addAttribute("countyId", comUserAddress.getRegionId());
             model.addAttribute("comUserAddress", comUserAddress);
         }
         //获得省市区
-        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
+/*        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
         ObjectMapper objectMapper = new ObjectMapper();
-        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));
+        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));*/
         return "platform/order/editAddress";
     }
 

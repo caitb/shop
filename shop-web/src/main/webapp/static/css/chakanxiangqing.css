@@ -140,10 +140,10 @@
   background: white;
   border-radius: 5px;
   z-index: 10;
-  display: none;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   z-index: 10;
+  display: none;
 }
 .wrap .back_que p {
   margin: 0 10px;

@@ -56,7 +56,7 @@
                 $(".onc").eq(1).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(1).next().show().html("手机号输入错误");
+                    $(".onc").eq(1).next().show().html("手机号输入格式不争取");
                 })
                 $(".onc").eq(2).on("click", function (event) {
                     var event = event || event.window;

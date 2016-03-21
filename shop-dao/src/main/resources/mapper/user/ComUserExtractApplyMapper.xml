@@ -51,7 +51,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" useGeneratedKeys="true" keyProperty="id">
         insert into com_user_extract_apply (id, com_user_id, extract_fee, 
             extractway_info_id, apply_time, extract_way, 
             extract_time, audit_type, audit_cause, 

@@ -7,6 +7,7 @@ import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class ProductService {
         if (product != null && product.getName().length() > 40) {
             product.setName(product.getName().substring(0, 41) + "......");
         }
-        if (product != null && product.getSlogan()!=null&& product.getSlogan().length() > 50) {
+        if (product != null && product.getSlogan() != null && product.getSlogan().length() > 50) {
 
             product.setSlogan(product.getSlogan().substring(0, 51) + "......");
         }
@@ -71,7 +72,7 @@ public class ProductService {
         List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
         if (comAgentLevels != null && comAgentLevels.size() > 0) {
             DecimalFormat myFormat = new DecimalFormat("0.00");
-            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount()))+ "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
+            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount())) + "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
         }
         return discountLevel;
     }
@@ -113,37 +114,37 @@ public class ProductService {
     public ProductSimple getSkuSimple(Integer skuId) throws Exception {
         return productSimpleMapper.selectBySkuId(skuId);
     }
-    
-    /**
-      * @Author 贾晶豪
-      * @Date 2016/3/16 0016 上午 10:31
-      * 个人中心商品列表
-      */
-     public List<Product> productListByUser(Integer userId) throws Exception{
-         List<Product> userProducts = productMapper.getProductsByUser(userId);
-         String productImgValue = PropertiesUtils.getStringValue("index_product_220_220_url");
-         if (userProducts != null) {
-             for (Product product : userProducts) {
-                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
-                 product.setComSkuImage(comSkuImage);
-                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
-             }
-         }
-         return userProducts;
-     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/16 0016 下午 7:38
-      *  更新库存
-      */
-     public void updateStock(Integer stock,Integer id) throws Exception{
-         Map<String, Object> param = new HashMap<>();
-         Product product = productMapper.getProductStock(id);
-         if(product!=null && (product.getStock()-stock>=0)){
-             param.put("stock",product.getStock()-stock);
-             param.put("id",id);
-             productMapper.updateStock(param);
-         }
-     }
+     * @Author 贾晶豪
+     * @Date 2016/3/16 0016 上午 10:31
+     * 个人中心商品列表
+     */
+    public List<Product> productListByUser(Integer userId) throws Exception {
+        List<Product> userProducts = productMapper.getProductsByUser(userId);
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        if (userProducts != null) {
+            for (Product product : userProducts) {
+                ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
+                product.setComSkuImage(comSkuImage);
+                product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
+            }
+        }
+        return userProducts;
+    }
+
+    /**
+     * @Author 贾晶豪
+     * @Date 2016/3/16 0016 下午 7:38
+     * 更新库存
+     */
+    public void updateStock(Integer stock, Integer id) throws Exception {
+        Map<String, Object> param = new HashMap<>();
+        Product product = productMapper.getProductStock(id);
+        if (product != null && (product.getStock() - stock >= 0)) {
+            param.put("stock", product.getStock() - stock);
+            param.put("id", id);
+            productMapper.updateStock(param);
+        }
+    }
 }

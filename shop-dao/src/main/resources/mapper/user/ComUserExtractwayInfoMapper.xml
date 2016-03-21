@@ -78,4 +78,11 @@
         WHERE com_user_id = #{comUserId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectDefault" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT id, bank_card, bank_name, deposit_bank_name, card_owner_name, com_user_id,
+        extract_way, card_img, is_default, is_enable, created_time, changed_time, changed_by
+        FROM com_user_extractway_info
+        WHERE is_default = 0 and com_user_id = #{userid,jdbcType=BIGINT}
+    </select>
+
 </mapper>

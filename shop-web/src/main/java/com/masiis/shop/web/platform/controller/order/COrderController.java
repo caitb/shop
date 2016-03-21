@@ -106,7 +106,7 @@ public class COrderController extends BaseController {
             skuId = 1;
         }
         Product productDetails = productService.applyTrialToPageService(skuId);
-        String skuImg = PropertiesUtils.getStringValue("index_product_220_220_url");
+        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         model.addAttribute("skuName", productDetails.getName());
         if (productDetails.getComSkuImages() != null && productDetails.getComSkuImages().size() > 0) {
             model.addAttribute("skuDefaultImg", skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
@@ -118,6 +118,7 @@ public class COrderController extends BaseController {
 
     /**
      * 试用申请支付
+     *
      * @author hanzengzhi
      * @date 2016/3/5 13:46
      */
@@ -127,7 +128,7 @@ public class COrderController extends BaseController {
             HttpServletResponse response,
             @RequestParam(value = "skuId", required = true) Integer skuId,
             @RequestParam(value = "addressId", required = true) Long addressId,
-            @RequestParam(value = "reason",required = false) String reason,
+            @RequestParam(value = "reason", required = false) String reason,
             RedirectAttributes attrs) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         WxPaySysParamReq wpspr = null;
@@ -144,7 +145,7 @@ public class COrderController extends BaseController {
             //获得产品信息
             Product product = cOrderService.getProductDetail(skuId);
             //订单
-            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product,reason);
+            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product, reason);
             //订单日志
             PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
             //收获地址
@@ -167,7 +168,7 @@ public class COrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/15 10:47
      */
-    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product,String reason) {
+    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product, String reason) {
         SfUserRelation sfUserRelation = trialService.findPidById(userId);
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
@@ -256,6 +257,7 @@ public class COrderController extends BaseController {
 
     /**
      * 微信支付成功回调
+     *
      * @author hanzengzhi
      * @date 2016/3/17 16:45
      */
@@ -265,7 +267,7 @@ public class COrderController extends BaseController {
                                         @RequestParam(value = "addressId", required = true) Long addressId,
                                         Model model) {
         try {
-            model = getOrderInfo(request,model,skuId,addressId);
+            model = getOrderInfo(request, model, skuId, addressId);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -274,16 +276,17 @@ public class COrderController extends BaseController {
 
     /**
      * 微信支付失败回调
+     *
      * @author hanzengzhi
      * @date 2016/3/17 16:45
      */
     @RequestMapping(value = "/weChatCallBackFail.shtml")
     public String weChatCallBackFail(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestParam(value = "skuId", required = true) Integer skuId,
-                                        @RequestParam(value = "addressId", required = true) Long addressId,
-                                        Model model) {
+                                     @RequestParam(value = "skuId", required = true) Integer skuId,
+                                     @RequestParam(value = "addressId", required = true) Long addressId,
+                                     Model model) {
         try {
-            model = getOrderInfo(request,model,skuId,addressId);
+            model = getOrderInfo(request, model, skuId, addressId);
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -302,15 +305,17 @@ public class COrderController extends BaseController {
                                @RequestParam(value = "skuId", required = false) Integer skuId,
                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                Model model) {
-        model = getOrderInfo(request,model,skuId,selectedAddressId);
+        model = getOrderInfo(request, model, skuId, selectedAddressId);
         return "platform/order/zhifushiyong";
     }
+
     /**
      * 获得试用订单信息
+     *
      * @author hanzengzhi
      * @date 2016/3/19 15:06
      */
-    private Model getOrderInfo(HttpServletRequest request,Model model,Integer skuId ,Long selectedAddressId){
+    private Model getOrderInfo(HttpServletRequest request, Model model, Integer skuId, Long selectedAddressId) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         Long userId = null;
         if (comUser != null) {
@@ -332,6 +337,6 @@ public class COrderController extends BaseController {
         }
         model.addAttribute("product", product);
         model.addAttribute("comUserAddress", comUserAddress);
-        return model ;
+        return model;
     }
 }

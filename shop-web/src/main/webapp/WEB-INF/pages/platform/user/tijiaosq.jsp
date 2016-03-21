@@ -84,7 +84,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="lingquzhengshu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>授权书申请 </p>
         </header>
         <div class="xinxi">

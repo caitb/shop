@@ -109,7 +109,7 @@
 <!-- 身份证复印件 -->
 <div class="modal fade" id="cardModal" tabindex="-1" role="dialog"
      aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: auto">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close"
@@ -122,7 +122,6 @@
             </div>
             <div class="modal-body" >
                 <div id="bodyimg"></div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"

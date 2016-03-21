@@ -131,7 +131,7 @@ public class MyTeamService {
         ComUser comUser = comUserMapper.selectByPrimaryKey(comUserId);
         ComSku comSku = comSkuMapper.selectById(skuId);
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(agentLevelId);
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserId(comUserId);
+        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("comUserId", comUser.getId());

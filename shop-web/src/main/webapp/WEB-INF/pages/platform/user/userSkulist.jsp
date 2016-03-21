@@ -23,7 +23,7 @@
 <div class="wrap">
     <main>
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
         <div id="box">
@@ -141,10 +141,15 @@
             url: '<%=basePath%>product/user/stock',
             type: 'post',
             data: {stock:i,id:pfuId},
+            dataType: 'json',
             success: function (data) {
-                $(".back").css("display","none");
-                $(".back_que").css("display","none");
-                location.reload(true);
+               $(".back").css("display","none");
+               $(".back_que").css("display","none");
+               if(data['isError'] == false){
+                   location.reload(true);
+                }else{
+                   alert(data['message']);
+               }
             }
         });
     });

@@ -100,6 +100,28 @@
             'openCard'
         ]
     });
+
+    var shareData = {
+        title: '${shareMap.shareTitle}',
+        desc: '${shareMap.shareDesc}',
+        link: '<%=basePath%>${shareMap.shareLink}',
+        imgUrl: '${shareMap.shareImg}',
+        trigger: function (res) {
+            alert('用户点击分享到QQ');
+        },
+        complete: function (res) {
+            alert(JSON.stringify(res));
+        },
+        success: function (res) {
+            alert('已分享');
+        },
+        cancel: function (res) {
+            alert('已取消');
+        },
+        fail: function (res) {
+            alert(JSON.stringify(res));
+        }
+    };
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>

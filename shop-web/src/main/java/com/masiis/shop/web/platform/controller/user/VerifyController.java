@@ -9,6 +9,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.constants.WxResCodeCons;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,8 @@ public class VerifyController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private ComUserAccountService accountService;
 
     @RequestMapping("/actk")
     public String getCode(HttpServletRequest request, HttpServletResponse response,
@@ -111,6 +114,7 @@ public class VerifyController extends BaseController {
                 if(user.getId() == null){
                     userService.insertComUser(user);
                     user = userService.getUserByOpenid(user.getOpenid());
+                    accountService.createAccountByUser(user);
                 } else {
                     userService.updateComUser(user);
                 }

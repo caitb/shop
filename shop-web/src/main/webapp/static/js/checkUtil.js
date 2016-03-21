@@ -56,3 +56,18 @@ function isWordAndNum(str) {
     var patern = /[^0-9a-zA-Z]/;
     return patern.test(str);
 }
+//得到字符串的长度
+function getStrLen(str){
+    var len = 0;
+    if (str!=null && str!=""){
+        for (var i = 0 ; i < str.length; i++){
+            var  c = str.charCodeAt(i);
+            if (c>127||c==94){
+                len += 2;
+            }else{
+                len++;
+            }
+        }
+    }
+    return len;
+}

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/zhifushiyong.css">
 </head>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/checkUtil.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -66,7 +67,7 @@
     </section>
     <section class="sec3">
         <p>运费<span>${product.shipAmount}</span></p>
-        <p>试用理由：<input type="text"></p>
+        <p><em>试用理由：</em><input type="text" id="trialReasonId" ></p>
         <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
     </section>
     <section class="sec4">
@@ -84,8 +85,13 @@
             alert("请填写收获地址");
             return;
         }
+        if(getStrLen($("#trialReasonId").val())>100){
+            alert("试用理由不能超过100字");
+            return;
+        }
         if (!isTrial(skuId)){
-            window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId;
+            var trialReason = $("#trialReasonId").val();
+            window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
         }else{
             alert("已试用过不能再试用");
         }

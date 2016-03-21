@@ -68,11 +68,11 @@ public class LoginFilter implements Filter{
                 return;
             }
 
-            if(!checkUriIsValid(uri)){
+            /*if(!checkUriIsValid(uri)){
                 // 404处理
                 log.info("访问的uri不存在,uri:" + uri);
                 return;
-            }
+            }*/
 
             log.info("uri:" + uri);
 

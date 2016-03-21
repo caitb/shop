@@ -30,4 +30,11 @@ public interface PfCorderMapper {
 
     List<PfCorder> trialCorder(PfCorder pfCorder);
 
+    /**
+     * 查询试用未支付的订单
+     * @author hanzengzhi
+     * @date 2016/3/21 16:01
+     */
+    List<PfCorder> queryTrialNoPayOrder(PfCorder pfCorder);
+
 }

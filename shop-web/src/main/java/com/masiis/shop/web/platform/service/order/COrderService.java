@@ -49,23 +49,7 @@ public class COrderService {
     @Resource
     private PfCorderConsigneeService pfCorderConsigneeService;
 
-    /**
-     * 试用申请
-     *
-     * @author hanzengzhi
-     * @date 2016/3/5 15:14
-     */
-    public void trialApplyService(ComUser comUser, PfUserTrial pfUserTrial) {
-        try {
-            //插入试用表
-            //userService.insertUserTrial(pfUserTrial);
-            //更新试用用户信息
-            // userService.updateComUser(comUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    List<PfCorder> existTrilPfCorder = null;
     /**
      * 确认订单
      *
@@ -137,7 +121,30 @@ public class COrderService {
         }
         return null;
     }
-
+    /**
+     * 判断是否存在未支付的试用订单
+     * @author hanzengzhi
+     * @date 2016/3/21 16:21
+     */
+    public Boolean isExistNotPayTrialOrder(Long userId,Integer skuId){
+        existTrilPfCorder = pfCorderService.queryTrialNoPayOrder(userId,skuId);
+        if (existTrilPfCorder==null||existTrilPfCorder.size()==0){
+            return false;
+        }
+        return true;
+    }
+    /**
+     * 获得未支付的订单
+     * @author hanzengzhi
+     * @date 2016/3/21 16:24
+     */
+    public List<PfCorder> getNoPayTrialOrder(){
+        if (existTrilPfCorder==null||existTrilPfCorder.size()==0||existTrilPfCorder.size()>1){
+            throw new BusinessException("用户一件商品的未支付订单超过一个");
+        }else {
+            return existTrilPfCorder;
+        }
+    }
     /**
      * 根据订单编号查询试用订单
      *

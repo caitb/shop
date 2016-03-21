@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.utils;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
@@ -68,7 +69,8 @@ public class WXBeanUtils {
                 if (aJF != null) {
                     key = aJF.name();
                 }
-                if("sign".equals(key) || "paySign".equals(key)){
+                SignField sf = f.getAnnotation(SignField.class);
+                if(sf == null){
                     continue;
                 }
                 String value = (String) f.get(obj);

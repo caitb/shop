@@ -44,7 +44,7 @@ public class IndexController extends BaseController {
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
         ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         if (user == null) {
-            user = userService.getUserById(1l);
+            user = userService.getUserById(8l);
             request.getSession().setAttribute("comUser", user);
         }
 //        HttpSession session = request.getSession();

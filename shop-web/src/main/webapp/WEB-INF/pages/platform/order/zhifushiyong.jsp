@@ -107,10 +107,10 @@
                 if (dataObj!=null&&dataObj!="") {
                     if (dataObj[0].payStatus==1){
                         alert("订单已支付无需再次支付");
+                        bl = true;
                     }
-                    bl = true;
                 }
-            },
+            }
         });
         return bl;
     }

@@ -140,7 +140,7 @@ public class COrderService {
      */
     public List<PfCorder> getNoPayTrialOrder(){
         if (existTrilPfCorder==null||existTrilPfCorder.size()==0||existTrilPfCorder.size()>1){
-            throw new BusinessException("用户一件商品的未支付订单超过一个");
+            throw new BusinessException("用户同一件试用商品的未支付订单超过一个,逻辑出错");
         }else {
             return existTrilPfCorder;
         }

@@ -41,7 +41,7 @@
             <p onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><span><img src="<%=basePath%>static/images/icon_48.png" alt="">发展合伙人</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><span><img src="<%=basePath%>static/images/icon_50.png" alt="">我的团队</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
             <p onclick="javascript:window.location.replace('<%=basePath%>account/home');"><span><img src="<%=basePath%>static/images/icon_51.png" alt="">我的资产</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
-            <p><span><img src="<%=basePath%>static/images/icon_52.png" alt="">个人信息</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>user/getPersonalInfo.do');"><span><img src="<%=basePath%>static/images/icon_52.png" alt="">个人信息</span><span><img src="<%=basePath%>static/images/right.png" alt=""></span></p>
         </div>
     </div>
 </div>

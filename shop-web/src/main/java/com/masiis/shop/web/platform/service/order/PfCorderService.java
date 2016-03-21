@@ -34,4 +34,22 @@ public class PfCorderService {
         }
         return  pfCorders;
     }
+
+    /**
+     * 查询试用未支付的订单
+     * @author hanzengzhi
+     * @date 2016/3/21 16:08
+     */
+    List<PfCorder> queryTrialNoPayOrder(Long userId,Integer skuId){
+        List<PfCorder> pfCorders = null;
+        try{
+            PfCorder pfCorder = new PfCorder();
+            pfCorder.setUserId(userId);
+            pfCorder.setSkuId(skuId);
+            pfCorders = pfCorderMapper.queryTrialNoPayOrder(pfCorder);
+        }catch (Exception e){
+            throw  new BusinessException(e.getMessage());
+        }
+        return pfCorders;
+    }
 }

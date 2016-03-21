@@ -127,6 +127,7 @@ public class PfUserSkuController extends BaseController {
     }
 
     @RequestMapping("/partner.do")
+    @ResponseBody
     public Object partner(HttpServletRequest request, HttpServletResponse response,
                                 String sort,
                                 String order,

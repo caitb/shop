@@ -101,7 +101,6 @@
                 validateCodeJS.s--;
                 $("#validateNumberId").html("剩余" + validateCodeJS.s + "s");
                 $("#validateNumberId").unbind("click");
-                //$("#validateNumberId").attr("disabled", true);
                 validateCodeJS.t = setTimeout(function () {
                     validateCodeJS.times();
                 }, 1000);
@@ -116,6 +115,7 @@
             },
             toNextPage: function () {
                 //validateCodeJS.bindPhone();
+                //validateCodeJS.skipPage();
                 validateCodeJS.checkPhone() ? (validateCodeJS.isValidateNumber() ? (validateCodeJS.bindPhone() ? "" : "") : false) : false;
             },
             isValidateNumber: function () {

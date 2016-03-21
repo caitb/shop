@@ -270,7 +270,7 @@ public class UserCertificateController {
      */
     @ResponseBody
     @RequestMapping("/update.do")
-    public ModelAndView userCertificateUpdate(HttpServletRequest request,
+    public String userCertificateUpdate(HttpServletRequest request,
                                      @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
                                      @RequestParam(value = "name", required = true) String name,
                                      @RequestParam(value = "wxh", required = true) String wxh,
@@ -322,8 +322,7 @@ public class UserCertificateController {
             object.put("isError", true);
             object.put("message", ex.getMessage());
         }
-        ModelAndView mav = new ModelAndView("/platform/user/cready");
-        return mav;
+        return object.toJSONString();
     }
 
     /**

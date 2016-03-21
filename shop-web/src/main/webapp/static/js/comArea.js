@@ -1,61 +1,120 @@
-﻿/**
- *
- */
-(function() {
+﻿(function() {
 	window.comAreaJS = window.comAreaJS || {
-			queryComArea: function () {
-				alert("aaaaa");
-				alert(${comAreas});
-				var categories = window.eval('(' + '${comAreas}' + ')');
-				var c1 = {};//一级类别
-				var c2 = {};//二级类别
-				var c3 = {};//三级类别
-				alert("aaaa");
-				c1['sub'+0] = [];
-				for(var i in categories){
-					if(categories[i].level == 1){
-
-						c1['sub'+0].push(categories[i]);
-
-						c2['sub'+categories[i].id] = [];
-						for(var sub in categories){
-							if(categories[sub].pid == categories[i].id) c2['sub'+categories[i].id].push(categories[sub]);
-						}
-
-						for(var sub in c2['sub'+categories[i].id]){
-							c3['sub'+c2['sub'+categories[i].id][sub].id] = [];
-							for(var ss in categories){
-								if(categories[ss].pid == c2['sub'+categories[i].id][sub].id) c3['sub'+c2['sub'+categories[i].id][sub].id].push(categories[ss]);
-							}
-						}
-
-					}
+			isAdd:true,
+			isEdit:false,
+			init:function(addOrEdit){
+				switch(addOrEdit){
+					case "add":
+						comAreaJS.isAdd=true;
+						comAreaJS.isEdit=false;
+						break;
+					case "edit":
+						comAreaJS.isAdd=false;
+						comAreaJS.isEdit=true;
+						break;
+					default:
+						break;
 				}
-				var $skuC1 = $('#s_province');
-				var $skuC2 = $('#s_city');
-				var $skuC3 = $('#s_county');
-
-				$skuC1.html('<option value="-1">请选择</option>');
-				for(var sub in c1['sub'+0]){
-					$skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+				comAreaJS.bindChangeEvent();
+				if (comAreaJS.isAdd){
+					comAreaJS.getAllProvinces();
+				}else if (comAreaJS.isEdit){
+					comAreaJS.getAllProvinces()?(comAreaJS.getCity()?(comAreaJS.getCounty()?true:false):false) :false;
 				}
+			},
+			getAllProvinces:function(){
+				var bl =true;
+				$.ajax({
+					type: "POST",
+					url: "/comArea/queryAllProvince.do",
+					async:false,
+					dataType: "Json",
+					success: function (result) {
+						var jsonData = eval(result);
+						var oldProvinceId = $("#oldProvinceId").val();
+						if (jsonData!=null){
+							var appendString ="<option value='-1'>--省份--</option>";
+							$.each(jsonData,function(i,item){
+								if(oldProvinceId!=null&&oldProvinceId!=""&&oldProvinceId==jsonData[i].id){
+									appendString +='<option selected value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}else{
+									appendString +='<option value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}
 
-				$skuC1.change(function(){
-					$skuC2.empty().html('<option value="-1">请选择</option>');
-					$skuC3.empty().html('<option value="-1">请选择</option>');
-
-					for(var sub in c2['sub'+$(this).val()]){
-						$skuC2.append('<option value="'+ c2['sub'+$(this).val()][sub].id +'">'+ c2['sub'+$(this).val()][sub].name+'</option>');
+							})
+							$("#s_province").empty();
+							$("#s_province").html(appendString);
+						}
+					},
+					error:function(){
+						bl = false;
 					}
-				});
-
-				$skuC2.change(function(){
-					$skuC3.empty().html('<option value="-1">请选择</option>');
-
-					for(var sub in c3['sub'+$(this).val()]){
-						$skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
+				})
+				return bl;
+			},
+			bindChangeEvent:function(){
+				$("#s_province").bind("change",function(){
+					comAreaJS.getCity();
+					$("#s_county").empty();
+					$("#s_county").html("<option value='-1'>--县/区--</option>");
+				})
+				$("#s_city").bind("change",function(){
+					comAreaJS.getCounty();
+				})
+			},
+			getCity:function(){
+				var bl=true;
+				var oldCityId = $("#oldCityId").val();
+				$.ajax({
+					type: "POST",
+					async:false,
+					url: "/comArea/queryCityByProviceId.do",
+					data:"proviceId="+ $("#s_province").val(),
+					dataType: "Json",
+					success: function (result) {
+						var jsonData = eval(result);
+						if (jsonData!=null){
+							var appendString ="<option value='-1'>--地级市--</option>";
+							$.each(jsonData,function(i,item){
+								if(oldCityId!=null&&oldCityId!=""&&oldCityId==jsonData[i].id){
+									appendString +='<option selected value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}else{
+									appendString +='<option value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}
+							})
+							$("#s_city").empty();
+							$("#s_city").html(appendString);
+						}
+					},
+					error:function(){
+						bl = false;
 					}
-				});
+				})
+				return bl;
+			},
+			getCounty:function(){
+				var oldConntyId = $("#oldConntyId").val();
+				$.ajax({
+					type: "POST",
+					url: "/comArea/queryCountyByCityId.do",
+					data:"cityId="+ $("#s_city").val(),
+					dataType: "Json",
+					success: function (result) {
+						var jsonData = eval(result);
+						if (jsonData!=null){
+							var appendString ="<option value='-1'>--县/区--</option>";
+							$.each(jsonData,function(i,item){
+								if(oldConntyId!=null&&oldConntyId!=""&&oldConntyId==jsonData[i].id){
+									appendString +='<option selected value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}else{
+									appendString +='<option value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
+								}
+							})
+							$("#s_county").empty();
+							$("#s_county").html(appendString);
+						}
+					}
+				})
 			}
 		}
 })();

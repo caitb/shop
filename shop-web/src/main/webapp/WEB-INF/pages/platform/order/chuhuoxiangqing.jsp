@@ -21,7 +21,7 @@
 <body>
        <div class="wrap">
           <header class="xq_header">
-                   <a href="<%=basePath%>border/deliveryBorder"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>订单详情</p>  
                 </header>
            <main>
@@ -41,7 +41,7 @@
                        <p><span>支付类型：</span><span>微信支付</span></p>
                        <p><span>物流状态：</span><c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}"><span>已完成</span></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==5}"><span>已发货</span></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==0}"><span>未发货</span><a class="fah">发货</a></c:if></p>
                        <p><span>配送方式：</span><span>物流配送</span></p>
-                       <p><span>发货时间：</span><span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p><c:forEach items="${borderDetail.pfBorderFreights}" var="bpf"><c:if test="${bpf.freight!=null}">
+                       <p><span>发货时间：</span><span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p><c:forEach items="${borderDetail.pfBorderFreights}" var="bpf"><c:if test="${not empty bpf.freight}">
                        <p><span>发货单号：</span><span>${bpf.freight}</span></p></c:if></c:forEach>
                    </div>
                    <div class="sec3">

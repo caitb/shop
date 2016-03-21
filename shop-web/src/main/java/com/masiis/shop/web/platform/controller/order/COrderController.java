@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
@@ -133,6 +134,7 @@ public class COrderController extends BaseController {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         WxPaySysParamReq wpspr = null;
         Long userId = null;
+        PfCorder  pfCorder = null;
         try {
             if (StringUtils.isEmpty(skuId)) {
                 skuId = 111;
@@ -142,17 +144,13 @@ public class COrderController extends BaseController {
             } else {
                 userId = 1L;
             }
-            //获得产品信息
-            Product product = cOrderService.getProductDetail(skuId);
-            //订单
-            PfCorder pfCorder = initPfCorderParamData(userId, skuId, product, reason);
-            //订单日志
-            PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
-            //收获地址
-            ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
-            PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
-            //生成订单
-            Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
+            //判断订单是否存在
+            if (isExistNotPayTrialOrder(userId,skuId)){
+                //生成订单
+                pfCorder = cOrderService.getNoPayTrialOrder().get(0);
+            }else{
+                pfCorder = generateOrder(skuId,userId,reason,comUser,addressId);
+            }
             //调用微信支付
             wpspr = toTrialOrderPay(wpspr, pfCorder, request, addressId);
         } catch (Exception e) {
@@ -160,6 +158,34 @@ public class COrderController extends BaseController {
         }
         attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
         return "redirect:/wxpay/wtpay";
+    }
+
+    /**
+     * 判断是否有未支付的订单
+     * @author hanzengzhi
+     * @date 2016/3/21 15:43
+     */
+    private Boolean isExistNotPayTrialOrder(Long userId,Integer skuId){
+        return cOrderService.isExistNotPayTrialOrder(userId,skuId);
+    }
+    /**
+     * 生成订单
+     * @author hanzengzhi
+     * @date 2016/3/21 15:41
+     */
+    private PfCorder generateOrder(Integer skuId,Long userId,String reason,ComUser comUser,Long addressId)throws Exception{
+        //获得产品信息
+        Product product = cOrderService.getProductDetail(skuId);
+        //订单
+        PfCorder pfCorder = initPfCorderParamData(userId, skuId, product, reason);
+        //订单日志
+        PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
+        //收获地址
+        ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
+        PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
+        //生成订单
+        Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
+        return pfCorder;
     }
 
     /**
@@ -175,6 +201,7 @@ public class COrderController extends BaseController {
         pfCorder.setCreateTime(new Date());
         pfCorder.setOrderCode(OrderMakeUtils.makeOrder("C"));
         pfCorder.setOrderType(0);
+        pfCorder.setOrderStatus(0);//未付款
         pfCorder.setSkuId(skuId);
         pfCorder.setUserId(userId);
         pfCorder.setProductAmount(new BigDecimal(0));
@@ -182,6 +209,7 @@ public class COrderController extends BaseController {
         pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
         pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
         pfCorder.setPayAmount(new BigDecimal(0));
+        pfCorder.setPayStatus(0);//未支付
         pfCorder.setUserMassage(reason);
         if (sfUserRelation != null) {
             pfCorder.setUserPid(sfUserRelation.getParentUserId());
@@ -232,7 +260,7 @@ public class COrderController extends BaseController {
                 pfCorderConsignee.setZip(comUserAddress.getZip());
             }
         } catch (Exception e) {
-            throw new Exception("生成订单获取用户地址错误");
+            throw new BusinessException("生成订单获取用户地址错误");
         }
         return pfCorderConsignee;
     }

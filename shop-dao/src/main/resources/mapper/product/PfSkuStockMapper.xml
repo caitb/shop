@@ -110,7 +110,7 @@
                 frozen_stock = #{frozenStock,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="version != null">
                 version = #{version,jdbcType=INTEGER}
@@ -152,7 +152,7 @@
                 frozen_stock = #{frozenStock,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="version != null">
                 version = #{version,jdbcType=INTEGER}+1

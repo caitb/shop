@@ -1,13 +1,17 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
+import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUserAddress;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,7 +20,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class UserAddressService {
+public class UserAddressService  {
 
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
@@ -143,4 +147,6 @@ public class UserAddressService {
             return false;
         }
     }
+
+
 }

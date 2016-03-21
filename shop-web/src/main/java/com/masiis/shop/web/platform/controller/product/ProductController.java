@@ -1,21 +1,23 @@
 package com.masiis.shop.web.platform.controller.product;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @autor JingHao
@@ -27,6 +29,9 @@ public class ProductController extends BaseController {
     @Resource
     private ProductService productService;
 
+    @Resource
+    private UserSkuService userSkuService;
+
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/product");
@@ -37,7 +42,9 @@ public class ProductController extends BaseController {
             productDetails.setIsPartner(true);
             productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
         }
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
         mav.addObject("productDetails",productDetails);
+        mav.addObject("pfUserSku",pfUserSku);//是否代理过
         return mav;
     }
 
@@ -50,9 +57,22 @@ public class ProductController extends BaseController {
     }
 
     @RequestMapping(value = "/user/stock")
-    public void updateProductStock(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(required = true) Integer stock,
-                                   @RequestParam(required = true) Integer id) throws Exception {
-        productService.updateStock(stock, id);
+    @ResponseBody
+    public Map<String, Object> updateProductStock(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(required = true) Integer stock,
+                                     @RequestParam(required = true) Integer id) {
+        Map<String, Object> obj = new HashMap<>();
+        try {
+            Integer userStock = productService.getStockByUser(id);
+            if (userStock - stock < 0) {
+                throw new BusinessException("当前库存不足！");
+            }
+            productService.updateStock(stock, id);
+            obj.put("isError", false);
+        } catch (Exception ex) {
+            obj.put("isError", true);
+            obj.put("message", ex.getMessage());
+        }
+        return obj;
     }
 }

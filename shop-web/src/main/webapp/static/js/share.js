@@ -12,7 +12,7 @@
 wx.ready(function () {
 
 
-    var shareData = {
+    var shareData1 = {
         title: '微信JS-SDK Demo',
         desc: '微信JS-SDK,帮助第三方为用户提供更优质的移动web服务',
         link: 'http://demo.open.weixin.qq.com/jssdk/',
@@ -63,11 +63,12 @@ wx.ready(function () {
         }
     };
 
+    window.console.log('shareData: ' + shareData);
     wx.onMenuShareAppMessage(shareData);
     wx.onMenuShareTimeline(shareData);
-    wx.onMenuShareQQ(shareData3);
-    wx.onMenuShareQZone(shareData2);
-    wx.onMenuShareWeibo(shareData2);
+    wx.onMenuShareQQ(shareData);
+    wx.onMenuShareQZone(shareData);
+    wx.onMenuShareWeibo(shareData);
 
     function decryptCode(code, callback) {
         $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {

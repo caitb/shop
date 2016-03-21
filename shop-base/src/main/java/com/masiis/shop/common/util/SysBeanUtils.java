@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -72,7 +73,13 @@ public class SysBeanUtils {
      * @return
      */
     public static boolean isNumeric(String str){
-        String[] strArr = str.split(".");
+        if(str.charAt(0) == '.'){
+            return false;
+        }
+        if(str.charAt(str.length() - 1) == '.'){
+            return false;
+        }
+        String[] strArr = str.split("\\.");
         if(strArr.length > 2){
             return false;
         }
@@ -83,6 +90,6 @@ public class SysBeanUtils {
     }
 
     public static void main(String[] aa) {
-        System.out.println(isNumeric("23.45"));
+        System.out.println(isNumeric("234.5"));
     }
 }

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/zhifushiyong.css">
 </head>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/checkUtil.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -66,7 +67,7 @@
     </section>
     <section class="sec3">
         <p>运费<span>${product.shipAmount}</span></p>
-        <p>试用理由：<input type="text"></p>
+        <p><em>试用理由：</em><input type="text" id="trialReasonId" ></p>
         <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
     </section>
     <section class="sec4">
@@ -84,7 +85,34 @@
             alert("请填写收获地址");
             return;
         }
-        window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId;
+        if(getStrLen($("#trialReasonId").val())>100){
+            alert("试用理由不能超过100字");
+            return;
+        }
+
+        if (!isTrial(skuId)){
+            var trialReason = $("#trialReasonId").val();
+            window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
+        }
+    }
+    function isTrial(skuId){
+        var bl = false;
+        $.ajax({
+            url: '/corder/isApplyTrial.do',
+            type: 'post',
+            async: false,
+            data: {"skuId": skuId},
+            success: function (data) {
+                var dataObj = eval("(" + data + ")");//转换为json对象
+                if (dataObj!=null&&dataObj!="") {
+                    if (dataObj[0].payStatus==1){
+                        alert("订单已支付无需再次支付");
+                    }
+                    bl = true;
+                }
+            },
+        });
+        return bl;
     }
 </script>
 </html>

@@ -98,20 +98,26 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back" style="display: none">
-
-
+        <div class="back" style="display: none"/>
     </div>
 </div>
 <footer>
     <section class="sec3">
         <input id="skipPageId" value="trial" style="display: none" />
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <p >
-            <a id="applyTrial"  onclick="validateCodeJS.applyTrial()">申请试用</a>
-            <a id="trialed" style="display: none">已试用</a>
-        </p>
-        <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a></p>
+        <c:if test="${pfUserSku==null}">
+            <p>
+                <a id="applyTrial" onclick="validateCodeJS.applyTrial()">申请试用</a>
+                <a id="trialed" style="display: none">已试用</a>
+            </p>
+
+            <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
+            </p>
+        </c:if>
+        <c:if test="${pfUserSku!=null}">
+            <p style="background: #DA3600;"><a
+                    href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">补货</a></p>
+        </c:if>
     </section>
 </footer>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>

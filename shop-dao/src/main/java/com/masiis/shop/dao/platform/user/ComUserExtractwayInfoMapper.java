@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
+@Repository
 public interface ComUserExtractwayInfoMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -24,4 +27,6 @@ public interface ComUserExtractwayInfoMapper {
     ComUserExtractwayInfo selectByBankcardAndCardownername(ComUserExtractwayInfo record);
 
     List<ComUserExtractwayInfo> selectByUserId(Long userId);
+
+    List<ComUserExtractwayInfo> selectDefault(Long userid);
 }

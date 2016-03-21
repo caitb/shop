@@ -225,6 +225,42 @@ public class BOrderService {
 
     }
 
+
+    /**
+     * 更新出货库存
+     * @author muchaofeng
+     * @date 2016/3/21 14:35
+     */
+    public void updateStock(PfBorder pfBorder){
+        PfUserSkuStock pfUserSkuStock = null;
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+            if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
+                throw new BusinessException("当前库存不足！");
+            }else{
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                    throw new BusinessException("并发修改库存失败");
+                }
+            }
+        }
+    }
+
+    /**
+     * 更新进货库存
+     * @author muchaofeng
+     * @date 2016/3/21 16:22
+     */
+    public void updateGetStock(PfBorder pfBorder){
+        PfUserSkuStock pfUserSkuStock = null;
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+            pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
+            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                throw new BusinessException("并发修改库存失败");
+            }
+        }
+    }
     /**
      * 获取订单
      *

@@ -46,12 +46,6 @@ public class LoginFilter implements Filter{
 
         String uri = request.getRequestURI();
 
-        if(!checkUriIsValid(uri)){
-            // 404处理
-            log.info("访问的uri不存在,uri:" + uri);
-            return;
-        }
-
         if(StringUtils.isBlank(enviromentkey)
                 || enviromentkey.equals("0")){
             // 开发阶段可以先跳过
@@ -71,6 +65,12 @@ public class LoginFilter implements Filter{
                     || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
                 // 放行
                 chain.doFilter(request, response);
+                return;
+            }
+
+            if(!checkUriIsValid(uri)){
+                // 404处理
+                log.info("访问的uri不存在,uri:" + uri);
                 return;
             }
 

@@ -26,7 +26,10 @@ public class JsapiAccessTokenTask {
                                    + "?grant_type=" + WxConstants.JSSDK_GRANT_TYPE
                                    + "&appid=" + WxConstants.APPID
                                    + "&secret=" + WxConstants.APPSECRET;
+            log.info("开始请求获取jssapi令牌中.....");
             jsonResult     = HttpClientUtils.httpGet(accessTokenUrl);
+            log.info("请求获取jssapi令牌返回的[jsonResult="+jsonResult+"]");
+
             Map<String, Object> resultMap = new JSONParser(jsonResult).parseMap();
 
             if (resultMap.get("access_token") != null){

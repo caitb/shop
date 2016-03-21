@@ -85,7 +85,7 @@
     <input id="skuId" value="${skuId}" style="display: none"/>
     <input id="pUserId" value="${pUserId}" style="display: none"/>
     <input id="skipPageId" value="register" style="display: none"/>
-
+    <input id="type" value="${type}" style="display: none"/>
 </main>
 <div class="back_j">
     <p class="biao">绑定账号</p>

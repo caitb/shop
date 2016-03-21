@@ -142,6 +142,8 @@ public class COrderController extends BaseController {
             } else {
                 userId = 1L;
             }
+            //判断订单是否存在
+
             //获得产品信息
             Product product = cOrderService.getProductDetail(skuId);
             //订单

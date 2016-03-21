@@ -30,7 +30,7 @@
         </div>
         <main>
             <p>选择您需要发展合伙人的商品</p>
-            <c:forEach items="agentMaps" var="agentMap">
+            <c:forEach items="${agentMaps}" var="agentMap">
             <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');">
                 <img src="${agentMap.brandLogo}" alt="">
                 <div>

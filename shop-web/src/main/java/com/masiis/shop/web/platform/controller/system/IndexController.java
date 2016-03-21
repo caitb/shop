@@ -2,12 +2,10 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSpu;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
@@ -39,16 +37,16 @@ public class IndexController extends BaseController {
     private UserService userService;
     @Resource
     private SpuService spuService;
+    @Resource
+    private BOrderService bOrderService;
 
     @RequestMapping("/index")
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
         ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         if (user == null) {
-            user = userService.getUserById(8l);
+            user = userService.getUserById(1l);
             request.getSession().setAttribute("comUser", user);
         }
-//        HttpSession session = request.getSession();
-//        ComUser comUser =(ComUser)session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");
         //获取轮播图片
@@ -69,8 +67,7 @@ public class IndexController extends BaseController {
         List<IndexComSku> indexComS = indexShowService.findIndexComSku();
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
-            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());
-            if(comSpu.getIsSale()==1){
+//            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());
                 //获取商品图片地址
                 String url = skuValue + indexCom.getImgUrl();
                 //重新封装商品图片地址
@@ -83,8 +80,12 @@ public class IndexController extends BaseController {
                 }else{
                     indexCom.setDiscountLevel("成为合伙人可查看");
                 }
+                PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
+                if (pfUserSku !=null){
+                    indexCom.setIspay(pfUserSku.getIsPay());
+                }
                 ComS.add(indexCom);
-            }
+
         }
         //封装展示商品信息集合
         modelAndView.addObject("indexComS",ComS);

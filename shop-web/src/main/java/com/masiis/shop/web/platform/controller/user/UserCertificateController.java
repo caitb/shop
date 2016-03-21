@@ -237,6 +237,7 @@ public class UserCertificateController {
       * 等待申请
       */
     @RequestMapping(value = "/ready/{skuName}")
+    @ResponseBody
     public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
                                               @PathVariable("skuName") String skuName) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cready");

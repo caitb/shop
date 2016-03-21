@@ -63,7 +63,7 @@ wx.ready(function () {
         }
     };
 
-    alert('shareData: ' + shareData);
+    window.console.log('shareData: ' + shareData);
     wx.onMenuShareAppMessage(shareData);
     wx.onMenuShareTimeline(shareData);
     wx.onMenuShareQQ(shareData);

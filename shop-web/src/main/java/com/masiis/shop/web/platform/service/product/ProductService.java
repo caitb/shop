@@ -147,4 +147,17 @@ public class ProductService {
             productMapper.updateStock(param);
         }
     }
+    /**
+      * @Author 贾晶豪
+      * @Date 2016/3/21 0021 上午 10:13
+      * 查看库存
+      */
+    public Integer getStockByUser(Integer id) throws Exception {
+        Integer skuStock = 0;
+        Product product = productMapper.getProductStock(id);
+        if(product!=null){
+            skuStock = product.getStock();
+        }
+        return skuStock;
+    }
 }

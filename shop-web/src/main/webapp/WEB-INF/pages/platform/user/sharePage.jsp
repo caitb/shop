@@ -37,7 +37,7 @@
             <p>方法二</p>
             <h1>宣传海报，将海报发到您的朋友圈</h1>
             <img src="<%=basePath%>static/images/asd.JPG" alt="">
-            <h3 id="downloadImage2">下载海报</h3>
+            <h3 id="downloadImage2">请长按图片保存海报</h3>
         </div>
     </div>
 </div>

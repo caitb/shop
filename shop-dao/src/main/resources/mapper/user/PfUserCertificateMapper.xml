@@ -74,52 +74,53 @@
         from pf_user_certificate
     </select>
 
-    <select id="selectByCode" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByCode" parameterType="String" resultMap="BaseResultMap">
         select
-        id,
-        create_time,
-        code,
-        pf_user_sku_id,
-        user_id,
-        spu_id,
-        sku_id,
-        id_card,
-        mobile,
-        wx_id,
-        begin_time,
-        end_time,
-        agent_level_id,
-        img_url,
-        status,
-        remark,
-        reason
+                id,
+                create_time,
+                code,
+                pf_user_sku_id,
+                user_id,
+                spu_id,
+                sku_id,
+                id_card,
+                mobile,
+                wx_id,
+                begin_time,
+                end_time,
+                agent_level_id,
+                img_url,
+                status,
+                remark,
+                reason
         from
-        pf_user_certificate
+                pf_user_certificate
         where
-        user_id = #{userId,jdbcType=BIGINT}
+                code = #{code}
     </select>
-    <select id="selectByUserSkuId" parameterType="int" resultMap="BaseResultMap">
+
+    <select id="selectByUserSkuId" parameterType="Integer" resultMap="BaseResultMap">
         select
-        id,
-        create_time,
-        code,
-        pf_user_sku_id,
-        user_id,
-        spu_id,
-        sku_id,
-        id_card,
-        mobile,
-        wx_id,
-        begin_time,
-        end_time,
-        agent_level_id,
-        img_url,
-        status,
-        remark,
-        reason
+                id,
+                create_time,
+                code,
+                pf_user_sku_id,
+                user_id,
+                spu_id,
+                sku_id,
+                id_card,
+                mobile,
+                wx_id,
+                begin_time,
+                end_time,
+                agent_level_id,
+                img_url,
+                status,
+                remark,
+                reason
         from
-        pf_user_certificate
+                pf_user_certificate
         where
-        pf_user_sku_id = #{pfuId}
+                pf_user_sku_id = #{userSkuId}
     </select>
 </mapper>

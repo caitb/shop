@@ -102,5 +102,18 @@ public class UserController {
             return "platform/user/bangdingshibai";
         }
     }
+    /**
+     * 获得个人信息
+     * @author hanzengzhi
+     * @date 2016/3/21 10:23
+     */
+    @RequestMapping(value = "getPersonalInfo.do")
+    public String getPersonalInfo(HttpServletRequest request,HttpServletResponse response,
+                                Model model){
+
+       ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        model.addAttribute("comUser",comUser);
+        return "platform/user/gerenxinxi";
+    }
 }
 

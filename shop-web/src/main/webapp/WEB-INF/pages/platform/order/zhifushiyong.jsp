@@ -84,7 +84,27 @@
             alert("请填写收获地址");
             return;
         }
-        window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId;
+        if (!isTrial(skuId)){
+            window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId;
+        }else{
+            alert("已试用过不能再试用");
+        }
+    }
+    function isTrial(skuId){
+        var bl = false;
+        $.ajax({
+            url: '/corder/isApplyTrial.do',
+            type: 'post',
+            async: false,
+            data: {"skuId": skuId},
+            success: function (data) {
+                var dataObj = eval("(" + data + ")");//转换为json对象
+                if (dataObj!=null&&dataObj!="") {
+                    bl = true;
+                }
+            },
+        });
+        return bl;
     }
 </script>
 </html>

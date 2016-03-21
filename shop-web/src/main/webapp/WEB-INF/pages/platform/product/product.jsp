@@ -21,7 +21,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>我要成为合伙人</p>
         </header>
         <div class="banner">

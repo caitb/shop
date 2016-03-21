@@ -351,10 +351,8 @@
                             }
 
                             function operateFormatter(value, row, index) {
-                                alert(row.userId);
+                                //alert(row.userId);
                                 var sArr = [];
-                                //alert(row.id);
-
                                 sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
                                 sArr.push( '&nbsp;|<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
                                 sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.userId+')" title="Edit">更改上级</a>');

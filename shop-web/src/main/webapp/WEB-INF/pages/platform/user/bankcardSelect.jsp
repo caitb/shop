@@ -20,7 +20,7 @@
 <input type="hidden" id="selectId" name="selectId" value = ""/>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="<%=basePath%>extractapply/toapply" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">

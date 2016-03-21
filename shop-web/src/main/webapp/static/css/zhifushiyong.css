@@ -113,12 +113,23 @@ main .sec3 p {
   font-size: 12px;
   border-bottom: 1px solid #f6f6f6;
   color: #666666;
+  display: -webkit-box;
+}
+main .sec3 p em {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  line-height: 40px;
+  margin-top: 0;
+}
+main .sec3 p em + input {
+  margin-top: 10px;
 }
 main .sec3 p input {
   border: none;
   color: #999999;
-  width: 80%;
-  display: inline-block;
+  -webkit-box-flex: 1;
+  display: block;
 }
 main .sec3 p span,
 main .sec3 p b {
@@ -165,21 +176,13 @@ main .sec4 span {
 main .sec4 b {
   font-size: 12px;
 }
-main .weixin,
-main .xianxia {
+main .weixin {
   display: block;
-  background: #45A5CF;
+  background: #0fc420;
   border-radius: 5px;
   padding: 5px 0 5px 0;
   color: white;
   text-align: center;
   font-size: 16px;
   margin: 20px 10px 0 10px;
-}
-main .weixin {
-  margin-top: 3rem;
-}
-main .xianxia {
-  background: #F74A11;
-  margin-bottom: 3rem;
 }

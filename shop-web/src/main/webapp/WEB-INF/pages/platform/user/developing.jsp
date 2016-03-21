@@ -30,24 +30,17 @@
         </div>
         <main>
             <p>选择您需要发展合伙人的商品</p>
-            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink');">
-                <img src="<%=basePath%>static/images/icon_59.png" alt="">
+            <c:forEach items="${agentMaps}" var="agentMap">
+            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');">
+                <img src="${agentMap.brandLogo}" alt="">
                 <div>
-                    <p><span>合伙产品</span><b>抗引力-瘦脸精华</b></p>
-                    <h1>合伙人等级<span>高级合伙人</span></h1>
-                    <h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>
+                    <p><span>合伙产品</span><b>${agentMap.skuName}</b></p>
+                    <h1>合伙人等级:<span>${agentMap.levelName}</span></h1>
+                    <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
                 </div>
                 <botton>我要推广</botton>
             </div>
-            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink');">
-                <img src="<%=basePath%>static/images/icon_61.png" alt="">
-                <div>
-                    <p><span>合伙产品</span><b>抗引力-瘦脸精华</b></p>
-                    <h1>合伙人等级<span>高级合伙人</span></h1>
-                    <h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>
-                </div>
-                <botton>我要推广</botton>
-            </div>
+            </c:forEach>
         </main>
     </div>
 </div>

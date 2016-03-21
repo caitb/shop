@@ -122,10 +122,20 @@ public class UserExtractApplyController extends BaseController {
 
             // 开始提现业务
             applyService.applyExtract(account, exMoney, user, info);
-
+            res.put("resCode", "success");
+            res.put("resMsg", "");
+            res.put("resUrl", "extractapply/success");
         } catch (Exception e) {
-            log.error("提现申请错误:" + e.getMessage());
+            log.error("提现申请错误:" + e.getMessage(), e);
+            res.put("resCode", "fail");
+            res.put("resMsg", e.getMessage());
         }
-        return "";
+        return res.toJSONString();
+    }
+
+    @RequestMapping("/success")
+    public String applySuccess(HttpServletRequest request){
+
+        return "platform/user/extract_success";
     }
 }

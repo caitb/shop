@@ -55,57 +55,6 @@
         <td> <a href="javascript:void(0)" class="button button-glow button-rounded button-raised detail-icon" id="reject">拒绝</a></td>
     </tr>--%>
 </table>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    更改上级合伙人
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right">用户</label>
-                    <div class="col-sm-10">
-                        王平
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label no-padding-right">当前上级</label>
-                    <div class="col-sm-10">
-                        王平
-                    </div>
-                </div>
-                <form class="form-horizontal" id="reasonForm" >
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right">更换上级</label>
-                        <div class="col-sm-10">
-                            <input type="hidden" id="trialId" name="id" />
-                            <select class="form-control">
-                                <option>1</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                        data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary" id="btnSubmit">
-                    提交
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
-
-
 <!-- 身份证复印件 -->
 <div class="modal fade" id="cardModal" tabindex="-1" role="dialog"
      aria-labelledby="orderModalLabel" aria-hidden="true">

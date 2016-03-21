@@ -100,7 +100,6 @@
                 validateCodeJS.s--;
                 $("#validateNumberId").html("剩余" + validateCodeJS.s + "s");
                 $("#validateNumberId").unbind("click");
-                //$("#validateNumberId").attr("disabled", true);
                 validateCodeJS.t = setTimeout(function () {
                     validateCodeJS.times();
                 }, 1000);

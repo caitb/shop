@@ -98,9 +98,7 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back" style="display: none">
-
-
+        <div class="back" style="display: none"/>
     </div>
 </div>
 <footer>

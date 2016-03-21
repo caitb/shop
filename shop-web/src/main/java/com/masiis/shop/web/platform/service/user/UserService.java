@@ -146,7 +146,9 @@ public class UserService {
      */
     public void insertUserCertificate(ComUser comUser, PfUserCertificate pfUserCertificate) throws Exception {
         comUserMapper.updateByPrimaryKey(comUser);
-        pfUserCertificateMapper.insert(pfUserCertificate);
+        if (pfUserCertificateMapper.selectByUserSkuId(pfUserCertificate.getPfUserSkuId()) == null) {
+            pfUserCertificateMapper.insert(pfUserCertificate);
+        }
     }
 
     /**
@@ -207,12 +209,12 @@ public class UserService {
         }
         return comUser;
     }
-    
+
     /**
-      * @Author Jing Hao
-      * @Date 2016/3/18 0018 下午 3:44
-      *  更新授权书，用户信息
-      */
+     * @Author Jing Hao
+     * @Date 2016/3/18 0018 下午 3:44
+     * 更新授权书，用户信息
+     */
     public void updateUserCertificate(ComUser comUser, PfUserCertificate pfUserCertificate) throws Exception {
         comUserMapper.updateByPrimaryKey(comUser);
         pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);

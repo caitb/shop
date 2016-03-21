@@ -56,6 +56,7 @@ public class UserApplyController {
     public ModelAndView partnersApply(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "skuId", required = true) Integer skuId,
+                                      @RequestParam(value = "type", required = false) Integer type,
                                       @RequestParam(value = "pUserId", required = false) Long pUserId) {
         ModelAndView mv = new ModelAndView();
         try {
@@ -66,6 +67,11 @@ public class UserApplyController {
             mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
             mv.addObject("slogan", productSimple.getSlogan());
             mv.addObject("pUserId", pUserId);
+            if (type != null && type == 1) {
+                mv.addObject("type", 1);
+            } else {
+                mv.addObject("type", 0);
+            }
             mv.setViewName("platform/order/shenqing");
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -76,14 +82,17 @@ public class UserApplyController {
     /**
      * 合伙人注册一
      *
-     * @author ZhaoLiang
+     * @param type 0 用户通过平台入口代理 1 用户通过分享链接代理
+     * @author ZhaoLiang再次
      * @date 2016/3/5 14:27
      */
     @RequestMapping("/register.shtml")
     public ModelAndView partnersRegister(HttpServletRequest request,
                                          HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
+                                         @RequestParam(value = "type", required = false) Integer type,
                                          @RequestParam(value = "pUserId", required = false) Long pUserId
+
     ) {
         ModelAndView mv = new ModelAndView();
         try {
@@ -91,30 +100,37 @@ public class UserApplyController {
             //获取商品信息
             ComSku comSku = skuService.getSkuById(skuId);
             //获取商品代理信息
-            List<PfSkuAgent> pfSkuAgents = null;
-            if (pUserId == null || pUserId == 0) {
-                pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
-            } else {
-                //do
-                pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+            List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+            int levelID = 0;
+            if (type != null && type == 1) {
+                PfUserSku pfUserSku = pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+                if (pfUserSku == null) {
+                    throw new BusinessException("推荐人还未代理过此产品");
+                }
+                levelID = pfUserSku.getAgentLevelId();
             }
             //获取代理信息
             List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
             StringBuffer sb = new StringBuffer();
             for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-                if (pfSkuAgent.getAgentLevelId() == 1) {
-                    sb.append("<p class='on' levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                } else {
-                    sb.append("<p levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                }
-                for (ComAgentLevel comAgentLevel : comAgentLevels) {
-                    if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
-                        sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
+                if (pfSkuAgent.getAgentLevelId() > levelID) {
+                    if (pfSkuAgent.getAgentLevelId() == 1) {
+                        sb.append("<p class='on' levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
+                    } else {
+                        sb.append("<p levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
                     }
+                    for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                        if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                            sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
+                        }
+                    }
+                    sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
+                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                    sb.append("</p>");
                 }
-                sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
-                sb.append("</p>");
+            }
+            if (StringUtils.isBlank(sb.toString())) {
+                throw new BusinessException("您的推荐人还不能发展下级代理");
             }
             mv.addObject("agentInfo", sb.toString());
             mv.addObject("skuId", comSku.getId());
@@ -123,8 +139,17 @@ public class UserApplyController {
                 mv.addObject("name", comUser.getRealName());
                 mv.addObject("weixinId", comUser.getWxId());
                 mv.addObject("mobile", comUser.getMobile());
+            } else {
+                mv.addObject("name", "");
+                mv.addObject("weixinId", "");
+                mv.addObject("mobile", "");
             }
             mv.addObject("pUserId", pUserId);
+            if (type != null && type == 1 && pUserId != null && pUserId > 0) {
+                mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
+            } else {
+                mv.addObject("pWxNkName", "");
+            }
             mv.setViewName("platform/order/zhuce");
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -247,7 +272,7 @@ public class UserApplyController {
                         throw new BusinessException("您的推荐人还未代理此款商品");
                     }
                 }
-            }else{
+            } else {
                 throw new BusinessException("手机号为空");
             }
             jsonObject.put("isError", false);

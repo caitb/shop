@@ -34,10 +34,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @autor jipengkun
@@ -283,15 +280,43 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
             bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
-            req = new WxPaySysParamReq();
-            req.setOrderId(pfBorder.getOrderCode());
-            req.setSignType("MD5");
-            req.setNonceStr(WXBeanUtils.createGenerateStr());
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
-            req.setSign(WXBeanUtils.toSignString(req));
+            //切换开发模式和测试模式
+            String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
+            if (StringUtils.isBlank(enviromentkey)
+                    || enviromentkey.equals("0")) {
+                String uuid = UUID.randomUUID().toString();
+                PfBorderPayment payment = new PfBorderPayment();
+                payment.setPfBorderId(bOrderId);
+                payment.setAmount(pfBorder.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+                payment.setCreateTime(new Date());
+                payment.setIsEnabled(0);
+                // 给外部支付使用支付流水号
+                payment.setPaySerialNum(uuid);
+                payment.setPayTypeId(0);
+                payment.setPayTypeName("微信支付");
+                bOrderService.addBOrderPayment(payment);
+
+                PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
+                if (pfBorderPayment == null) {
+                    throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
+                }
+                if (pfBorderPayment.getIsEnabled() == 0) {
+                    // 调用borderService的方法处理
+                    bOrderService.payBOrder(pfBorderPayment, UUID.randomUUID().toString());
+                }
+                attrs.addAttribute("bOrderId", bOrderId);
+                return "redirect:/border/payBOrdersSuccess.shtml";
+            } else if (enviromentkey.equals("1")) {
+                req = new WxPaySysParamReq();
+                req.setOrderId(pfBorder.getOrderCode());
+                req.setSignType("MD5");
+                req.setNonceStr(WXBeanUtils.createGenerateStr());
+                String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+                req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+                req.setSign(WXBeanUtils.toSignString(req));
+            }
         } catch (Exception ex) {
-            //DO ERROR
+            throw new BusinessException(ex);
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";

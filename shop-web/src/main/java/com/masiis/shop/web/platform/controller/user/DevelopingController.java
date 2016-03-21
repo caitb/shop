@@ -127,7 +127,7 @@ public class DevelopingController extends BaseController {
                 "&noncestr=" + nonce_str +
                 "&timestamp=" + timestamp +
                 "&url=" + url;
-        System.out.println(string1);
+        log.info("jsapi将要进行签名的[string1="+string1+"]");
 
         try
         {
@@ -150,6 +150,8 @@ public class DevelopingController extends BaseController {
         ret.put("nonceStr", nonce_str);
         ret.put("timestamp", timestamp);
         ret.put("signature", signature);
+
+        log.info("jsapi签名后的结果[ret="+ret+"]");
 
         return ret;
     }

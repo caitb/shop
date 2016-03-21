@@ -145,7 +145,8 @@ public class UserExtractwayInfoController extends BaseController {
             jsonobject.put("isTrue","true");
         }catch (Exception e){
             jsonobject.put("isTrue","false");
-            jsonobject.put("message",e.getMessage());
+            jsonobject.put("message","服务忙请稍后。。。");
+//            jsonobject.put("message",e.getMessage());
             e.printStackTrace();
         }
         log.info(jsonobject.toJSONString());

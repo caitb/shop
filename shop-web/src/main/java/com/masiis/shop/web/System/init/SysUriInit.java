@@ -59,7 +59,8 @@ public class SysUriInit implements ApplicationListener<ContextRefreshedEvent> {
                     }
                 }
             }
-
+            // 增加域名访问
+            pathList.add("/");
             // 保存路径集合
             uriLists = pathList;
         }

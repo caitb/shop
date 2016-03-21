@@ -70,7 +70,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.isError == false) {
-                        window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                        window.location.href = "<%=basePath%>userCertificate/ready/${comSku.name}";
                     }
                     else {
                         alert(data.message);
@@ -98,13 +98,13 @@
                 <p>申请等级：<span>
                     <c:choose>
                     <c:when test="${ctfaildetail.agentLevelId==1}">
-                        <em>初级合伙人</em>
+                        <b style="margin-left: -5px;">初级合伙人</b>
                     </c:when>
                     <c:when test="${ctfaildetail.agentLevelId==2}">
-                        <em>中级合伙人</em>
+                        <b>中级合伙人</b>
                     </c:when>
                     <c:when test="${ctfaildetail.agentLevelId==3}">
-                        <em>高级合伙人</em>
+                        <b>高级合伙人</b>
                     </c:when>
                 </c:choose></span></p>
                 <p>付款状态：<span>已付款</span></p>

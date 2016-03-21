@@ -22,10 +22,5 @@
         where pf_border_id = #{pfBorderId}
     </select>
 
-    <select id="selectPfUserSkuBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, pid, agent_level_id,is_pay
-        from pf_user_sku
-        where sku_id = #{skuId}
-    </select>
 
 </mapper>

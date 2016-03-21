@@ -39,7 +39,7 @@
         <div class="xinxi">
             <p>注册信息</p>
             <p>支付订单</p>
-            <p>支付订单</p>
+            <p>提交资料</p>
         </div>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>

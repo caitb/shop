@@ -136,9 +136,9 @@ public class UserApplyController {
             mv.addObject("skuId", comSku.getId());
             mv.addObject("skuName", comSku.getName());
             if (comUser != null) {
-                mv.addObject("name", comUser.getRealName());
-                mv.addObject("weixinId", comUser.getWxId());
-                mv.addObject("mobile", comUser.getMobile());
+                mv.addObject("name", StringUtils.isBlank(comUser.getRealName()) ? "" : comUser.getRealName());
+                mv.addObject("weixinId", StringUtils.isBlank(comUser.getWxId()) ? "" : comUser.getWxId());
+                mv.addObject("mobile", StringUtils.isBlank(comUser.getMobile()) ? "" : comUser.getMobile());
             } else {
                 mv.addObject("name", "");
                 mv.addObject("weixinId", "");

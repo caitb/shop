@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -30,6 +32,8 @@ import java.util.*;
 @Controller
 @RequestMapping("/developing")
 public class DevelopingController extends BaseController {
+
+    private final static Log log = LogFactory.getLog(DevelopingController.class);
 
     @Resource
     private ComUserMapper comUserMapper;
@@ -87,6 +91,7 @@ public class DevelopingController extends BaseController {
         String curUrl = request.getRequestURL().toString();
         String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
         if(jsapi_ticket == null){
+            log.info("从redis获取的jsapi_ticket=null");
             jsapi_ticket = new JsapiTicketTask().requestTicket();
         }
 
@@ -100,7 +105,7 @@ public class DevelopingController extends BaseController {
         resultMap.put("appId", WxConstants.APPID);
         resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
         resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
-        resultMap.put("shareLink", "userApply/apply.shtml?skuId="+skuId+"&pUserId="+comUser.getId());
+        resultMap.put("shareLink", "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId());
         resultMap.put("shareImg", comBrand.getLogoUrl());
 
         //TODO
@@ -109,6 +114,8 @@ public class DevelopingController extends BaseController {
 
         return mav;
     }
+
+
 
     public static Map<String, String> sign(String jsapi_ticket, String url) {
         Map<String, String> ret = new HashMap<String, String>();
@@ -122,7 +129,7 @@ public class DevelopingController extends BaseController {
                 "&noncestr=" + nonce_str +
                 "&timestamp=" + timestamp +
                 "&url=" + url;
-        System.out.println(string1);
+        log.info("jsapi将要进行签名的[string1="+string1+"]");
 
         try
         {
@@ -145,6 +152,8 @@ public class DevelopingController extends BaseController {
         ret.put("nonceStr", nonce_str);
         ret.put("timestamp", timestamp);
         ret.put("signature", signature);
+
+        log.info("jsapi签名结果[ret="+ret+"]");
 
         return ret;
     }

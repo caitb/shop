@@ -90,15 +90,10 @@
             return;
         }
 
-        var trialReason = $("#trialReasonId").val();
-        window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
-
-/*        if (!isTrial(skuId)){
+        if (!isTrial(skuId)){
             var trialReason = $("#trialReasonId").val();
             window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
-        }else{
-            alert("已试用过不能再试用");
-        }*/
+        }
     }
     function isTrial(skuId){
         var bl = false;
@@ -110,9 +105,12 @@
             success: function (data) {
                 var dataObj = eval("(" + data + ")");//转换为json对象
                 if (dataObj!=null&&dataObj!="") {
-                    bl = true;
+                    if (dataObj[0].payStatus==1){
+                        alert("订单已支付无需再次支付");
+                        bl = true;
+                    }
                 }
-            },
+            }
         });
         return bl;
     }

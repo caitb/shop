@@ -144,11 +144,15 @@ public class COrderController extends BaseController {
             } else {
                 userId = 1L;
             }
+            System.out.println("-------------userId---");
             //判断订单是否存在
             if (isExistNotPayTrialOrder(userId,skuId)){
-                //生成订单
+                System.out.println("-------------获得未支付的订单");
+                //获得未支付的订单
                 pfCorder = cOrderService.getNoPayTrialOrder().get(0);
             }else{
+                //生成订单
+                System.out.println("-------------生成新的订单");
                 pfCorder = generateOrder(skuId,userId,reason,comUser,addressId);
             }
             //调用微信支付

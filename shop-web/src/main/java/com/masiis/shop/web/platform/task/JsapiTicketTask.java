@@ -24,12 +24,18 @@ public class JsapiTicketTask {
         try {
             String accessTocken = SpringRedisUtil.get("jsapi_access_tocken", String.class);
             if(accessTocken == null){
+                log.info("从redis获取的jsapi_access_tocken=null");
                 accessTocken = new JsapiAccessTokenTask().requestToken();
             }
+            log.info("[jsapi_access_tocken="+accessTocken+"]");
+
             jsapiTicketUrl = WxConstants.URL_JSSDK_JSAPI_TICKET
                             + "?access_token=" + accessTocken
                             + "&type=jsapi";
+            log.info("开始请求jsapi票据jsapi_ticket中......");
             jsonResult = HttpClientUtils.httpGet(jsapiTicketUrl);
+            log.info("请求jsapi票据jsapi_ticket返回的结果[jsonResult="+jsonResult+"]");
+
             Map<String, Object> resultMap = new JSONParser(jsonResult).parseMap();
 
             if("0".equals(resultMap.get("errcode").toString()) && "ok".equals(resultMap.get("errmsg").toString())){

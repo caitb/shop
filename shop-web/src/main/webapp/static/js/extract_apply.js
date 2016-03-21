@@ -23,7 +23,11 @@ $(function(){
             dataType:"JSON",
             data:{money : money},
             success:function(response){
-                alert(response.response);
+                if(response.resCode == "success"){
+                    window.location.href = basepath + response.resUrl;
+                } else if (response.resCode == "fail") {
+                    alert(response.resMsg);
+                }
             },
             error:function(response){
                 alert(response);

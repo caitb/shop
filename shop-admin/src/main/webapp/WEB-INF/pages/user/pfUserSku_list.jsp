@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-table.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/bootstrap-editable.css">
     <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/buttons.css">
-    <link rel="stylesheet" href="<%=basePath%>static/class/bootstrap-3.3.5-dist/css/examples.css">
 
 
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
@@ -352,12 +351,13 @@
                             }
 
                             function operateFormatter(value, row, index) {
+                                alert(row.userId);
                                 var sArr = [];
                                 //alert(row.id);
 
                                 sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
                                 sArr.push( '&nbsp;|<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
-                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
+                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.userId+')" title="Edit">更改上级</a>');
 
                                 return sArr;
                             }
@@ -455,13 +455,6 @@
                                 return undefined;
                             }
 
-                            $('#add').on('click', function () {
-                                $('#addModalLabel').html('添加管理员');
-                                $('#addModal').modal({
-                                    show: true,
-                                    backdrop: true
-                                });
-                            });
                         </script>
 
 
@@ -554,8 +547,9 @@
             location.reload();
         })*/
         //更改上级
-        function changeLeader(){
-            var approveId = $("#approveId").val();
+        function changeLeader(approveId){
+            //alert(approveId);
+            //var approveId = $("#approveId").val();
             $.ajax({
                 type: "GET",
                 url: '<%=basePath%>certificate/listUpper.do',
@@ -580,7 +574,8 @@
                     }
                     $('#myModal').modal({
                         show: true,
-                        backdrop: true
+                        backdrop: true,
+                        upperList:data
                     });
                 }
             });
@@ -596,7 +591,7 @@
                 data: {id:id,pid:pid},
                 success: function (data) {
                     $('#myModal').modal('hide');
-                    alert(data);
+                    //alert(data);
                 }
             });
         });

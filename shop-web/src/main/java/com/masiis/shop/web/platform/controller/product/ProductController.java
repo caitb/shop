@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.product;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
@@ -43,8 +44,10 @@ public class ProductController extends BaseController {
             productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
         }
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
+        List<CertificateInfo> pfUser = userSkuService.getUserSkuByUserId(comUser.getId());
         mav.addObject("productDetails",productDetails);
-        mav.addObject("pfUserSku",pfUserSku);//是否代理过
+        mav.addObject("pfUserSku",pfUserSku);//是否代理过该商品
+        mav.addObject("userAgentInfo",pfUserSku);//是否代理过商品
         return mav;
     }
 

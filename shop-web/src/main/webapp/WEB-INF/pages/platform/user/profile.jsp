@@ -24,13 +24,12 @@
     <div class="main">
         <header>
             <div>
-                <p><img src="<%=basePath%>static/images/icon_01.png" alt=""></p>
+                <p><img src="${user.wxHeadImg}" alt=""></p>
                 <h1>
-                    <b>用户名</b>
-                    <span>您的推荐人是王平</span>
+                    <b>${user.wxNkName}</b>
+                    <%--<span>您的推荐人是王平</span>--%>
                 </h1>
             </div>
-            <p>退出</p>
         </header>
         <div id="box">
 

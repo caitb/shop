@@ -58,7 +58,7 @@ public class UserExtractApplyController extends BaseController {
         }
         List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserId(user.getId());
         boolean hasCard = false;
-        ComUserExtractwayInfo extractwayInfo = null;
+        ComUserExtractwayInfo extractwayInfo = new ComUserExtractwayInfo();
         String extractWay = null;
         if(extractwayInfos != null && extractwayInfos.size() > 0){
             hasCard = true;

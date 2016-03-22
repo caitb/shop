@@ -21,7 +21,7 @@
 <input type="hidden" id="selectId" name="selectId" value = ""/>
    <div class="wrap">
         <header class="xq_header">
-            <a href="<%=basePath%>extractapply/toapply" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="#" onClick="backLastPage();"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">
@@ -79,6 +79,11 @@
                 }
             });
         })
+
+         function backLastPage(){
+             fullShow();//跳转页面钱展示全屏遮罩loading...
+             window.location.href="<%=basePath%>extractapply/toapply";
+         }
     </script>
 </body>
 </html>

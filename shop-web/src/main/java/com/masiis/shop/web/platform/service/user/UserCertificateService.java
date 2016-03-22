@@ -44,7 +44,7 @@ public class UserCertificateService {
       * 个人中心授权书
       */
     public List<CertificateInfo> CertificateByUser(Integer userId){
-        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId);
+        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
         if(certificateInfoList!=null){
            for(CertificateInfo certificateInfo :certificateInfoList){
               if(certificateInfo!=null && certificateInfo.getIsCertificate()!=0){ //授权书已经生成

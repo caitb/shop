@@ -21,7 +21,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>我要成为合伙人</p>
         </header>
         <div class="banner">
@@ -105,16 +105,19 @@
     <section class="sec3">
         <input id="skipPageId" value="trial" style="display: none" />
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <c:if test="${pfUserSku==null}">
+        <c:if test="${empty userAgentInfo && empty pfUserSku}">
             <p>
                 <a id="applyTrial" onclick="validateCodeJS.applyTrial()">申请试用</a>
                 <a id="trialed" style="display: none">已试用</a>
             </p>
-
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
             </p>
         </c:if>
-        <c:if test="${pfUserSku!=null}">
+        <%--<c:if test="${not empty userAgentInfo && empty pfUserSku}">--%>
+            <%--<p style="background: #DA3600;"><a href="#">代理过</a>--%>
+            <%--</p>--%>
+        <%--</c:if>--%>
+        <c:if test="${not empty pfUserSku}">
             <p style="background: #DA3600;"><a
                     href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">补货</a></p>
         </c:if>

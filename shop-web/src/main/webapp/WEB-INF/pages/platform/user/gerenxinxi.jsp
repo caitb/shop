@@ -25,7 +25,7 @@
     <main>
         <div class="sec1">
             <p>头像</p>
-            <span><img src="${user.wxHeadImg}" alt=""></span>
+            <span><img src="${comUser.wxHeadImg}" alt=""></span>
         </div>
         <div class="sec1">
             <p>昵称</p>

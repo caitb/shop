@@ -6,10 +6,10 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.beans.wxauth.RedirectParam;
 import com.masiis.shop.web.platform.constants.RedirectCons;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.masiis.shop.web.System.init.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -19,12 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by lzh on 2016/2/23.
  */
 public class LoginFilter implements Filter{
     private Logger log = Logger.getLogger(this.getClass());
+    private String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
+    private List<String> uris = null;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,10 +39,13 @@ public class LoginFilter implements Filter{
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession();
+        if(uris == null){
+            SysUriInit sys = (SysUriInit) ApplicationContextUtil.getBean("sysUriInit");
+            uris = sys.getUriLists();
+        }
 
         String uri = request.getRequestURI();
 
-        String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
         if(StringUtils.isBlank(enviromentkey)
                 || enviromentkey.equals("0")){
             // 开发阶段可以先跳过
@@ -59,6 +65,12 @@ public class LoginFilter implements Filter{
                     || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
                 // 放行
                 chain.doFilter(request, response);
+                return;
+            }
+
+            if(!checkUriIsValid(uri)){
+                // 404处理
+                log.info("访问的uri不存在,uri:" + uri);
                 return;
             }
 
@@ -91,8 +103,25 @@ public class LoginFilter implements Filter{
         }
     }
 
+    private boolean checkUriIsValid(String uri) {
+        for (String str:uris) {
+            if(uri.matches(str)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void destroy() {
 
+    }
+
+    public static void main(String[] args) {
+        String aa = "/";
+        String cc = aa.replaceAll("\\{.*\\}", "(.*)");
+        String bb = "/";
+        System.out.println(bb.matches(cc));
     }
 }

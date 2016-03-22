@@ -44,11 +44,12 @@
         select id,name ,img_url  from pb_banner
     </select>
     <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Integer">
-        SELECT  sku_image.img_name,sku_image.img_url,sku.id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id
+        SELECT sku_image.img_name,sku_image.img_url,sku.id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id
         FROM com_sku sku
-        LEFT JOIN com_sku_image sku_image ON  sku.id = sku_image.sku_id
-        RIGHT JOIN pf_sku_statistic sku_statistic on sku.id = sku_statistic.sku_id
-        WHERE sku_image.is_default = 1
+        INNER JOIN com_spu spu ON sku.spu_id=spu.id
+        INNER JOIN pf_sku_statistic sku_statistic ON sku.id = sku_statistic.sku_id
+        LEFT  JOIN com_sku_image sku_image ON sku.id = sku_image.sku_id AND sku_image.is_default = 1
+        WHERE spu.is_sale=1 AND spu.is_delete=0
     </select>
 
 </mapper>

@@ -44,7 +44,7 @@ public class IndexController extends BaseController {
     public ModelAndView indexList(HttpServletRequest request)throws Exception{
         ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
         if (user == null) {
-            user = userService.getUserById(8l);
+            user = userService.getUserById(1l);
             request.getSession().setAttribute("comUser", user);
         }
         //获取图片地址常量
@@ -67,24 +67,24 @@ public class IndexController extends BaseController {
         List<IndexComSku> indexComS = indexShowService.findIndexComSku();
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
-            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());
-            if(comSpu.getIsSale()==1){
-                //获取商品图片地址
-                String url = skuValue + indexCom.getImgUrl();
-                //重新封装商品图片地址
-                indexCom.setImgUrl(url);
-                if(user!=null && user.getIsAgent()==1){
-                    //判断会员权限
-                    indexCom.setIsPartner(true);
-                    //确定代理权限，显示优惠区间
-                    indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
-                }else{
-                    indexCom.setDiscountLevel("成为合伙人可查看");
-                }
-                PfUserSku pfUserSku = bOrderService.findPfUserSku(indexCom.getSkuId());
-                indexCom.setIspay(pfUserSku.getIsPay());
-                ComS.add(indexCom);
+//            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());
+            //获取商品图片地址
+            String url = skuValue + indexCom.getImgUrl();
+            //重新封装商品图片地址
+            indexCom.setImgUrl(url);
+            if(user!=null && user.getIsAgent()==1){
+                //判断会员权限
+                indexCom.setIsPartner(1);
+                //确定代理权限，显示优惠区间
+                indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
+            }else{
+                indexCom.setDiscountLevel("成为合伙人可查看");
             }
+            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
+            if (pfUserSku !=null){
+                indexCom.setIspay(pfUserSku.getIsPay());
+            }
+            ComS.add(indexCom);
         }
         //封装展示商品信息集合
         modelAndView.addObject("indexComS",ComS);

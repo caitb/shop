@@ -28,17 +28,17 @@ public class IndexComSku {
     private ComSku comSku;//商品属性
     private Integer isSalt;//是否下架
     private Integer agentNum;//代理人数
-    private Boolean isPartner = false;//是否为合伙人
+    private Integer isPartner ;//是否为合伙人
 
 
     public void setIspay(Integer ispay) {this.ispay = ispay;}
     public Integer getIspay() {return ispay;}
     public void setIsSalt(Integer isSalt) {this.isSalt = isSalt;}
     public Integer getIsSalt() {return isSalt;}
-    public Boolean getIsPartner() {
+    public Integer getIsPartner() {
         return isPartner;
     }
-    public void setIsPartner(Boolean isPartner) {this.isPartner = isPartner;}
+    public void setIsPartner(Integer isPartner) {this.isPartner = isPartner;}
     public void setAgentNum(Integer agentNum) {this.agentNum = agentNum;}
     public Integer getAgentNum() {return agentNum;}
     public Integer getId() {

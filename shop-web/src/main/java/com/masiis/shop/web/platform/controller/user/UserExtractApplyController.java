@@ -58,7 +58,8 @@ public class UserExtractApplyController extends BaseController {
         }
         List<ComUserExtractwayInfo> extractwayInfos = extractwayInfoService.findByUserId(user.getId());
         boolean hasCard = false;
-        ComUserExtractwayInfo extractwayInfo = null;
+        ComUserExtractwayInfo extractwayInfo = new ComUserExtractwayInfo();
+        String extractWay = null;
         if(extractwayInfos != null && extractwayInfos.size() > 0){
             hasCard = true;
             for(ComUserExtractwayInfo info:extractwayInfos){
@@ -69,14 +70,14 @@ public class UserExtractApplyController extends BaseController {
             if(extractwayInfo == null){
                 extractwayInfo = extractwayInfos.get(0);
             }
+            ComDictionary cd = dictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY", extractwayInfo.getExtractWay().intValue());
+            if(cd == null){
+                log.error("系统错误,字典表没查到提现方式!");
+            }
+            extractWay = cd.getValue();
         }
 
         String extractMoney = account.getExtractableFee().toString();
-        ComDictionary cd = dictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY", extractwayInfo.getExtractWay().intValue());
-        if(cd == null){
-            log.error("系统错误,字典表没查到提现方式!");
-        }
-        String extractWay = cd.getValue();
 
         model.addAttribute("extractMoney", extractMoney);
         model.addAttribute("extractwayInfo", extractwayInfo);

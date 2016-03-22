@@ -144,7 +144,7 @@
        select img_url from pf_user_certificate where pf_user_sku_id = #{id}
     </select>
     <select id="getCertificatesByUser" parameterType="Long" resultMap="CertificateResultMap">
-        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid
+        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid,pfku.sku_id
         FROM pf_user_sku pfku
         LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
         WHERE pfku.user_id = #{userId}

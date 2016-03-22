@@ -217,6 +217,6 @@ public class UserService {
      */
     public void updateUserCertificate(ComUser comUser, PfUserCertificate pfUserCertificate) throws Exception {
         comUserMapper.updateByPrimaryKey(comUser);
-        pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);
+        pfUserCertificateMapper.updateById(pfUserCertificate);
     }
 }

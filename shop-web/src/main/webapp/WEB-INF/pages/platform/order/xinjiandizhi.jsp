@@ -13,18 +13,37 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
 </head>
 <script>
     function saveAddress() {
         var paramJson = addressJS.getJsonParam();
         if (addressJS.validateAddressInfo(paramJson)) {
-            $.post("/userAddress/addOrUpdateAddress.do",
+            $.ajax({
+                url: '/userAddress/addOrUpdateAddress.do',
+                type: 'post',
+                async: false,
+                data: paramJson,
+                success: function (data) {
+                    if (data=="false"){
+                        alert("新增地址失败");
+                    }else{
+                        window.location.href = data;
+                    }
+                }
+            })
+/*            $.post("/userAddress/addOrUpdateAddress.do",
                     paramJson,
                     function (data) {
+                        if (data=="false"){
+                            alert("新增地址失败");
+                        }else{
                             window.location.href = data;
-                    });
+                        }
+                    });*/
         }
     }
 </script>
@@ -77,6 +96,7 @@
             </div>
         </div>
         <input type="text" id="operateTypeId" style="display: none" value="save"/>
+        <input type="text" id="jumpTypeId" style="display: none" value="jumpToOrder"/>
         <a onclick="saveAddress()" class="baocun">
             保存
         </a>
@@ -88,52 +108,5 @@
     comAreaJS.init("add");
     addressJS.init();
 </script>
-<%--<script>
-    var categories = window.eval('(' + '${comAreas}' + ')');
-    var c1 = {};//一级类别
-    var c2 = {};//二级类别
-    var c3 = {};//三级类别
-    c1['sub' + 0] = [];
-    for (var i in categories) {
-        if (categories[i].level == 0) {
-            if (categories[i].pid == 1) {
-                c1['sub' + 0].push(categories[i]);
-            }
-           c2['sub' + categories[i].id] = [];
-            for (var sub in categories) {
-                if (categories[sub].pid == categories[i].id) c2['sub' + categories[i].id].push(categories[sub]);
-            }
-            for (var sub in c2['sub' + categories[i].id]) {
-                c3['sub' + c2['sub' + categories[i].id][sub].id] = [];
-                for (var ss in categories) {
-                    if (categories[ss].pid == c2['sub' + categories[i].id][sub].id) c3['sub' + c2['sub' + categories[i].id][sub].id].push(categories[ss]);
-                }
-            }
-        }
-    }
-    var $skuC1 = $('#s_province');
-    var $skuC2 = $('#s_city');
-    var $skuC3 = $('#s_county');
-    $skuC1.html("<option value=\'-1\'>省份</option>");
-    $skuC2.html('<option value="-1">地级市</option>');
-    $skuC3.html('<option value="-1">县/区</option>');
-    for (var sub in c1['sub' + 0]) {
-        $skuC1.append('<option value="' + c1['sub' + 0][sub].id + '">' + c1['sub' + 0][sub].name + '</option>');
-    }
-    $skuC1.change(function () {
-        $skuC2.empty().html('<option value="-1">地级市</option>');
-        $skuC3.empty().html('<option value="-1">县/区</option>');
-
-        for (var sub in c2['sub' + $(this).val()]) {
-            $skuC2.append('<option value="' + c2['sub' + $(this).val()][sub].id + '">' + c2['sub' + $(this).val()][sub].name + '</option>');
-        }
-    });
-    $skuC2.change(function () {
-        $skuC3.empty().html('<option value="-1">县/区</option>');
-        for (var sub in c3['sub' + $(this).val()]) {
-            $skuC3.append('<option value="' + c3['sub' + $(this).val()][sub].id + '">' + c3['sub' + $(this).val()][sub].name + '</option>');
-        }
-    });
-</script>--%>
 </body>
 </html>

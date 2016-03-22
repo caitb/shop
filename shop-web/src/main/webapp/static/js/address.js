@@ -83,6 +83,7 @@
                 var detailAddress = $("#detailAddress").val();
                 var isDefault = $("#isDefaultId").val();
                 var operateType = $("#operateTypeId").val();
+                var jumpType = $("#jumpTypeId").val();
 
                 var paramJson = {
                     "id": addressId,
@@ -97,7 +98,8 @@
                     "countyName": countyName,
                     "detailAddress": detailAddress,
                     "isDefault": isDefault,
-                    "operateType": operateType
+                    "operateType": operateType,
+                    "jumpType":jumpType
                 }
                 return paramJson;
             },

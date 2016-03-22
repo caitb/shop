@@ -3,20 +3,16 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.COrderService;
-import com.masiis.shop.web.platform.service.order.PfUserTrialService;
 import com.masiis.shop.web.platform.service.product.ProductService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,8 +25,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,14 +39,10 @@ public class COrderController extends BaseController {
     private COrderService cOrderService;
     @Resource
     private ProductService productService;
-    @Resource
-    private UserService userService;
-    @Resource
-    private PfUserTrialService trialService;
-    @Resource
-    private UserAddressService userAddressService;
+
 
     private Logger log = Logger.getLogger(this.getClass());
+
     /**
      * 跳转到使用申请成功界面
      *
@@ -134,173 +124,22 @@ public class COrderController extends BaseController {
             @RequestParam(value = "reason", required = false) String reason,
             RedirectAttributes attrs) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        log.info("试用申请---从session里获得comUser---"+comUser.toString());
-        WxPaySysParamReq wpspr = null;
+        log.info("试用申请---从session里获得comUser---" + comUser.toString());
         Long userId = null;
-        PfCorder  pfCorder = null;
-        try {
-            if (StringUtils.isEmpty(skuId)) {
-                skuId = 111;
-            }
-            if (comUser != null) {
-                userId = comUser.getId();
-            } else {
-                userId = 1L;
-            }
-            log.info("试用申请---userId---"+userId);
-            log.info("试用申请---skuId---"+skuId);
-            //判断订单是否存在
-            if (isExistNotPayTrialOrder(userId,skuId)){
-                log.info("试用申请---存在未支付的订单获得未支付的订单---start");
-                //获得未支付的订单
-                pfCorder = cOrderService.getNoPayTrialOrder().get(0);
-                log.info("试用申请controller---成功获得未支付的订单---end");
-            }else{
-                //生成订单
-                log.info("试用申请---不存在未支付的订单创建新的订单---start");
-                pfCorder = generateOrder(skuId,userId,reason,comUser,addressId);
-                log.info("试用申请---不存在未支付的订单创建新的订单---end");
-            }
-            //调用微信支付
-            log.info("试用申请-----组织调用微信支付的数据--start");
-            wpspr = toTrialOrderPay(wpspr, pfCorder, request, addressId);
-            log.info("试用申请-----组织调用微信支付的数据--end");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (StringUtils.isEmpty(skuId)) {
+            skuId = 111;
         }
+        if (comUser != null) {
+            userId = comUser.getId();
+        } else {
+            userId = 1L;
+        }
+        log.info("试用申请---userId---" + userId);
+        log.info("试用申请---skuId---" + skuId);
+        WxPaySysParamReq wpspr = cOrderService.trialApplyPay(request, userId, comUser, skuId, addressId, reason);
         attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
         log.info("试用申请-----开始调用微信支付");
         return "redirect:/wxpay/wtpay";
-    }
-
-    /**
-     * 判断是否有未支付的订单
-     * @author hanzengzhi
-     * @date 2016/3/21 15:43
-     */
-    private Boolean isExistNotPayTrialOrder(Long userId,Integer skuId){
-        return cOrderService.isExistNotPayTrialOrder(userId,skuId);
-    }
-    /**
-     * 生成订单
-     * @author hanzengzhi
-     * @date 2016/3/21 15:41
-     */
-    private PfCorder generateOrder(Integer skuId,Long userId,String reason,ComUser comUser,Long addressId)throws Exception{
-        //获得产品信息
-        log.info("试用申请-----获得商品详情信息---start ---商品skuId---"+skuId);
-        Product product = cOrderService.getProductDetail(skuId);
-        log.info("试用申请-----获得商品详情信息---end ---商品skuId---"+skuId);
-        //订单
-        PfCorder pfCorder = initPfCorderParamData(userId, skuId, product, reason);
-        //订单日志
-        PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
-        //收获地址
-        log.info("试用申请-----获得获得收获地址---start---地址id---"+addressId);
-        ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
-        log.info("试用申请-----获得获得收获地址---end---地址id---"+addressId);
-        //生成订单
-        log.info("试用申请------生成新的订单----start");
-        PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
-        Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
-        log.info("试用申请------生成新的订单----end");
-        return pfCorder;
-    }
-
-    /**
-     * 初始化订单参数数据
-     *
-     * @author hanzengzhi
-     * @date 2016/3/15 10:47
-     */
-    private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product, String reason) {
-        SfUserRelation sfUserRelation = trialService.findPidById(userId);
-        //生成试用订单
-        PfCorder pfCorder = new PfCorder();
-        pfCorder.setCreateTime(new Date());
-        pfCorder.setOrderCode(OrderMakeUtils.makeOrder("C"));
-        pfCorder.setOrderType(0);
-        pfCorder.setOrderStatus(0);//未付款
-        pfCorder.setShipStatus(0);//未发货
-        pfCorder.setSkuId(skuId);
-        pfCorder.setUserId(userId);
-        pfCorder.setProductAmount(new BigDecimal(0));
-        pfCorder.setShipAmount(product.getShipAmount());
-        pfCorder.setOrderAmount(pfCorder.getProductAmount().add(pfCorder.getShipAmount()));
-        pfCorder.setReceivableAmount(pfCorder.getOrderAmount());
-        pfCorder.setPayAmount(new BigDecimal(0));
-        pfCorder.setPayStatus(0);//未支付
-        pfCorder.setUserMassage(reason);
-        if (sfUserRelation != null) {
-            pfCorder.setUserPid(sfUserRelation.getParentUserId());
-        }
-        pfCorder.setUserMassage("");
-        pfCorder.setSupplierId(0);
-        pfCorder.setCreateMan(userId);
-        return pfCorder;
-    }
-
-    /**
-     * 初始化pfcorderOperation日志表
-     *
-     * @author hanzengzhi
-     * @date 2016/3/15 10:38
-     */
-    private PfCorderOperationLog initPfCorderOperationLog(ComUser comUser) {
-        //生成试用日志
-        PfCorderOperationLog pcol = new PfCorderOperationLog();
-        pcol.setCreateTime(new Date());
-        pcol.setCreateMan(comUser.getId());
-        pcol.setPfCorderStatus(0);
-        return pcol;
-    }
-
-    /**
-     * 订单收获人信息
-     *
-     * @author hanzengzhi
-     * @date 2016/3/17 13:45
-     */
-    private PfCorderConsignee initPfCorderConsigneeParamData(Long cOrderId, ComUserAddress comUserAddress) throws Exception {
-        PfCorderConsignee pfCorderConsignee = new PfCorderConsignee();
-        try {
-            if (comUserAddress != null) {
-                pfCorderConsignee.setPfCorderId(cOrderId);
-                pfCorderConsignee.setCreateTime(new Date());
-                pfCorderConsignee.setUserId(comUserAddress.getUserId());
-                pfCorderConsignee.setConsignee(comUserAddress.getName());
-                pfCorderConsignee.setMobile(comUserAddress.getMobile());
-                pfCorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-                pfCorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-                pfCorderConsignee.setCityId(comUserAddress.getCityId());
-                pfCorderConsignee.setCityName(comUserAddress.getCityName());
-                pfCorderConsignee.setRegionId(comUserAddress.getRegionId());
-                pfCorderConsignee.setRegionName(comUserAddress.getRegionName());
-                pfCorderConsignee.setAddress(comUserAddress.getAddress());
-                pfCorderConsignee.setZip(comUserAddress.getZip());
-            }
-        } catch (Exception e) {
-            throw new BusinessException("生成订单获取用户地址错误");
-        }
-        return pfCorderConsignee;
-    }
-
-    /**
-     * 调用微信支付
-     *
-     * @author hanzengzhi
-     * @date 2016/3/17 16:34
-     */
-    private WxPaySysParamReq toTrialOrderPay(WxPaySysParamReq wpspr, PfCorder pfCorder, HttpServletRequest request, Long addressId) {
-        wpspr = new WxPaySysParamReq();
-        wpspr.setOrderId(pfCorder.getOrderCode());
-        wpspr.setSignType("MD5");
-        wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
-        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
-        wpspr.setSign(WXBeanUtils.toSignString(wpspr));
-        return wpspr;
     }
 
     /**

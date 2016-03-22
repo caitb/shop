@@ -71,6 +71,7 @@ public class ProductListController {
         ModelAndView modelAndView = new ModelAndView();
         //封装展示商品信息集合
         modelAndView.addObject("indexComSkus",Com);
+        modelAndView.addObject("ComSize",Com.size());
         modelAndView.setViewName("platform/system/liebiao");
         return modelAndView;
     }

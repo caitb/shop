@@ -26,9 +26,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                 <p>所有商品</p>            
                 </header>
-                <main>
+                <main><c:forEach begin="0" end="${ComSize}" step="2" var="i">
                      <section class="sec1">
-                         <c:forEach items="${indexComSkus}" begin="0" end="1" var="indexComSkus">
+                         <c:forEach items="${indexComSkus}"  begin="${i}" end="${i+1}" var="indexComSkus">
                         <div>
                            <a href="/product/${indexComSkus.id}"><img src="${indexComSkus.imgUrl}" alt=""></a>
                             <h2>${indexComSkus.comSku.name}</h2>
@@ -39,17 +39,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             </h3>
                         </div>
                          </c:forEach>
-                        <!--<div>-->
-                            <!--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>-->
-                            <!--<h2>抗引力—快速瘦脸精华</h2>-->
-                            <!--<h1>￥328 <span>成为合伙人可查看</span></h1>-->
-                            <!--<h3>-->
-                                <!--<p>超过<span>9999</span>人代理</p>-->
-                                <!--<a href="shenqing.html" class="he">我要合伙</a>-->
-                                <!--<a href="javascript:;" class="ok">您已合伙</a>-->
-                            <!--</h3>-->
-                        <!--</div>-->
                     </section>
+                </c:forEach>
                        <!--<section class="sec1">-->
                         <!--<div>-->
                             <!--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>-->

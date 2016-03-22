@@ -308,6 +308,13 @@
             <artifactId>xstream</artifactId>
             <version>1.4.7</version>
         </dependency>
+
+        <!-- 二维码 -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>

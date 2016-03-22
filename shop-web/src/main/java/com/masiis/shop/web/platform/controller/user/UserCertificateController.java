@@ -236,12 +236,13 @@ public class UserCertificateController {
       * @Date 2016/3/18 0018 下午 1:50
       * 等待申请
       */
-    @RequestMapping(value = "/ready/{skuName}")
+    @RequestMapping(value = "/ready/{skuId}")
     @ResponseBody
     public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable("skuName") String skuName) throws Exception {
+                                              @PathVariable("skuId") Integer skuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cready");
-        mav.addObject("skuName",skuName);
+        ComSku comSku = skuService.getSkuById(skuId);
+        mav.addObject("skuName",comSku.getName());
         return mav;
     }
     /**

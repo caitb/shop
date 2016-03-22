@@ -82,6 +82,7 @@
             </div>
         </div>
         <input type="text" id="operateTypeId" style="display: none" value="update"/>
+        <input type="text" id="jumpTypeId" style="display: none" value="jumpToOrder"/>
         <a onclick="updateAddress()" class="baocun">
             保存
         </a>

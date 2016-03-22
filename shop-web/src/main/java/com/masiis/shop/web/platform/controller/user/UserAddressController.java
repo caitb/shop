@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.controller.user;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -71,6 +70,7 @@ public class UserAddressController {
                                      @RequestParam(value = "operateType", required = true) String operateType,
                                      @RequestParam(value = "addressId", required = false) Integer selectedAddressId,
                                      @RequestParam(value = "pfCorderId", required = false) Integer pfCorderId,
+                                     @RequestParam(value = "jumpType",required = false)String jumpType,
                                      Model model) throws JsonProcessingException {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         ComUserAddress comUserAddress = new ComUserAddress();
@@ -93,15 +93,23 @@ public class UserAddressController {
 
         model.addAttribute("addressId", selectedAddressId);
         model.addAttribute("pfCorderId", pfCorderId);
-
-        int i = 0;
         if (operateType.equals("save")) {
-            //重定向到订单地址
-            JSONObject obj = new JSONObject();
-            i = userAddressService.addComUserAddress(comUserAddress);
-            String addressPath = toOrderAddress(request,comUserAddress.getId());
-            return addressPath;
+            userAddressService.addComUserAddress(comUserAddress);
+            String path = "";
+            if (!StringUtils.isEmpty(comUserAddress.getId())){
+                switch (jumpType){
+                    case "jumpToOrder":
+                        path = getOrderPagePath(request,comUserAddress.getId());
+                        break;
+                    default:
+                        break;
+                }
+            }else{
+                return "false";
+            }
+            return path;
         } else {
+            int i = 0;
             comUserAddress.setIsDefault(isDefault);
             comUserAddress.setId(id);
             i = userAddressService.updateComUserAddress(comUserAddress);
@@ -112,7 +120,6 @@ public class UserAddressController {
             }
         }
 }
-
     /**
      * 选择地址点击某个地址或者返回
      *
@@ -123,20 +130,16 @@ public class UserAddressController {
     public String clickAddressOrReturnToPage(HttpServletRequest request,
                                              HttpServletResponse response,
                                              @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId) {
-        String redirectBody = toOrderAddress(request,selectedAddressId);
+        String redirectHead = "redirect:";
+        String redirectBody = getOrderPagePath(request,selectedAddressId);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-        String redirectHead = "redirect:";
         return redirectHead+redirectBody;
     }
 
-
-    private String toOrderAddress(HttpServletRequest request,Long selectedAddressId){
-        return getOrderParamData(request,selectedAddressId);
-    }
-    private String getOrderParamData(HttpServletRequest request,Long selectedAddressId){
+    private String getOrderPagePath(HttpServletRequest request,Long selectedAddressId){
         String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
         Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
         Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
@@ -149,28 +152,49 @@ public class UserAddressController {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType ,Long orderId ,Integer skuId ,Long selectedAddressId) {
+    private String getOrderAddress(String type ,Long orderId ,Integer skuId ,Long selectedAddressId) {
         StringBuffer sb = new StringBuffer();
-        if (orderType.equals(SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE)) {
-            //跳转到支付使用界面
-            sb.append("/corder/confirmOrder.do?");
-            if (!StringUtils.isEmpty(skuId)) {
-                sb.append("skuId=").append(skuId).append("&");
-            }
-            if (!StringUtils.isEmpty(selectedAddressId)) {
-                sb.append("&selectedAddressId=").append(selectedAddressId);
-            }
-        } else if (orderType.equals(SysConstants.SESSION_PAY_ORDER_TYPE_VALUE)) {
-            //跳转到支付界面
-            sb.append("/border/payBOrder.shtml?");
-            if (!StringUtils.isEmpty(orderId)) {
-                sb.append("bOrderId=").append(orderId).append("&");
-            }
-            if (!StringUtils.isEmpty(selectedAddressId)) {
-                sb.append("userAddressId=").append(selectedAddressId);
-            }
+        switch (type){
+            case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE :
+                getTrialOrderAddress(sb,skuId,selectedAddressId);
+                break;
+            case SysConstants.SESSION_PAY_ORDER_TYPE_VALUE :
+                getPayBorderAddress(sb,orderId,selectedAddressId);
+                break;
+            default:
+                break;
         }
         return sb.toString();
+    }
+    /**
+     * 试用支付的地址
+     * @author hanzengzhi
+     * @date 2016/3/22 13:41
+     */
+    private void getTrialOrderAddress(StringBuffer sb,Integer skuId,Long selectedAddressId){
+        //跳转到支付使用界面
+        sb.append("/corder/confirmOrder.do?");
+        if (!StringUtils.isEmpty(skuId)) {
+            sb.append("skuId=").append(skuId).append("&");
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("&selectedAddressId=").append(selectedAddressId);
+        }
+    }
+    /**
+     * border支付地址
+     * @author hanzengzhi
+     * @date 2016/3/22 13:41
+     */
+    private void getPayBorderAddress(StringBuffer sb,Long orderId,Long selectedAddressId){
+        //跳转到支付界面
+        sb.append("/border/payBOrder.shtml?");
+        if (!StringUtils.isEmpty(orderId)) {
+            sb.append("bOrderId=").append(orderId).append("&");
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("userAddressId=").append(selectedAddressId);
+        }
     }
     /**
      * 跳转到编辑地址界面

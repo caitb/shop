@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
 <input type="hidden" id="selectId" name="selectId" value = ""/>
@@ -44,6 +45,7 @@
         </main>
      </div>
      <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+     <script src="<%=path%>/static/js/commonAjax.js"></script>
      <script>
         $(".sec1").on("click",function(){
             $(this).addClass("on").siblings().removeClass("on")
@@ -55,9 +57,9 @@
                 url : "<%=path%>/extractwayinfo/setbankdefault.do",
                 data:{id:id},
                 dataType:"Json",
-                beforeSend:function(){
-
-                },
+//                beforeSend:function(){
+//
+//                },
                 success:function(data){
                     if(data.isTrue == "false"){
                         alert(data.message);
@@ -66,10 +68,10 @@
                     }
                 },
                 //调用执行后调用的函数
-                complete: function(XMLHttpRequest, textStatus){
-//                alert(XMLHttpRequest.responseText);
-//                alert(textStatus);
-                },
+//                complete: function(XMLHttpRequest, textStatus){
+////                alert(XMLHttpRequest.responseText);
+////                alert(textStatus);
+//                },
                 error: function(){
                     //请求出错处理
                     alert("请求出错，请稍后再试");

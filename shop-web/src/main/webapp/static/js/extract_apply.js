@@ -46,3 +46,8 @@ $(function(){
 function choiceBank(){
     window.location.href = basepath + "extractwayinfo/findByUserId.do";
 }
+
+function backLastPage(){
+    fullShow();//跳转页面钱展示全屏遮罩loading...
+    window.location.href= basepath + "account/home";
+}

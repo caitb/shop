@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/jinhuoxiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
@@ -23,8 +25,9 @@
     <div class="wrap">
        <main>
             <header class="xq_header">
-                <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                    <p>订单详情</p>            
+                <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                    <p>订单详情</p>
+                <%--javascript:window.history.go(-1);--%>
             </header>
             <div class="tai"><c:if test="${borderDetail.pfBorder.orderStatus==0}">
                            <h1>未付款</h1>

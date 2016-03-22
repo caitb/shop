@@ -35,15 +35,6 @@
                     }
                 }
             })
-/*            $.post("/userAddress/addOrUpdateAddress.do",
-                    paramJson,
-                    function (data) {
-                        if (data=="false"){
-                            alert("新增地址失败");
-                        }else{
-                            window.location.href = data;
-                        }
-                    });*/
         }
     }
 </script>

@@ -127,7 +127,6 @@ public class DevelopingController extends BaseController {
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
                 if(pfUserCertificate.getPoster() == null){
-                    Date date = new Date();
                     String posterName = pfUserCertificate.getCode()+".png";
                     String posterPath = request.getServletContext().getRealPath("/")+"static"+File.separator+posterName;
                     //生成二维码

@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UserCertificateController
@@ -334,13 +335,16 @@ public class UserCertificateController {
      */
     @RequestMapping(value = "/add/{pfuId}")
     public ModelAndView addCertificate(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
+                                       @PathVariable("pfuId") Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cready");
-       try {
-           userCertificateService.receiveCertificate(pfuId);
-       }catch (Exception e){
-          e.printStackTrace();
-       }
-      return mav;
+        try {
+            Map<String, Object> obj = userCertificateService.receiveCertificate(pfuId);
+            if (obj.get("success") == true) {
+                mav.addObject("skuName", obj.get("skuName"));
+            }
+        } catch (Exception ex) {
+            throw new BusinessException("领取证书失败!");
+        }
+        return mav;
     }
 }

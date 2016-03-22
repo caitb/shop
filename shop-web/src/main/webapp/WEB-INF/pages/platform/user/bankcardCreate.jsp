@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjianka.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
 <input type="hidden" id="userId" name="userId" value="${userId}"/>
@@ -40,6 +41,7 @@
     </main>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
     function submitClick() {
         var bankcard = $("#bankcard").val();
@@ -79,6 +81,7 @@
                 if(data.isTrue == "false"){
                     alert(data.message);
                 }else {
+                    fullShow();//跳转页面钱展示全屏遮罩loading...
                     window.location.href="<%=basePath%>extractwayinfo/findByUserId.do";
                 }
             },

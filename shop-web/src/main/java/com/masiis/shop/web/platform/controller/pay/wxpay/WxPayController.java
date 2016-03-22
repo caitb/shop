@@ -104,8 +104,10 @@ public class WxPayController extends BaseController{
             // 创建支付记录
             wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
         } catch (Exception e) {
-            log.error("wxpayPage:下预付单失败," + e.getMessage());
+            log.error("wxpayPage:下预付单失败," + e.getMessage(), e);
+            request.setAttribute("url", req.getErrorUrl());
             // 预付单下单失败处理
+            return "pay/wxpay/wx_redirect_page";
         }
 
         // 组织微信支付请求参数,并形成签名

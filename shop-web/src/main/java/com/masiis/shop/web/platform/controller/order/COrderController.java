@@ -17,6 +17,7 @@ import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,7 @@ public class COrderController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
 
+    private Logger log = Logger.getLogger(this.getClass());
     /**
      * 跳转到使用申请成功界面
      *
@@ -132,6 +134,7 @@ public class COrderController extends BaseController {
             @RequestParam(value = "reason", required = false) String reason,
             RedirectAttributes attrs) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        log.info("试用申请---从session里获得comUser---"+comUser.toString());
         WxPaySysParamReq wpspr = null;
         Long userId = null;
         PfCorder  pfCorder = null;
@@ -144,23 +147,29 @@ public class COrderController extends BaseController {
             } else {
                 userId = 1L;
             }
-            System.out.println("-------------userId---");
+            log.info("试用申请---userId---"+userId);
+            log.info("试用申请---skuId---"+skuId);
             //判断订单是否存在
             if (isExistNotPayTrialOrder(userId,skuId)){
-                System.out.println("-------------获得未支付的订单");
+                log.info("试用申请---存在未支付的订单获得未支付的订单---start");
                 //获得未支付的订单
                 pfCorder = cOrderService.getNoPayTrialOrder().get(0);
+                log.info("试用申请controller---成功获得未支付的订单---end");
             }else{
                 //生成订单
-                System.out.println("-------------生成新的订单");
+                log.info("试用申请---不存在未支付的订单创建新的订单---start");
                 pfCorder = generateOrder(skuId,userId,reason,comUser,addressId);
+                log.info("试用申请---不存在未支付的订单创建新的订单---end");
             }
             //调用微信支付
+            log.info("试用申请-----组织调用微信支付的数据--start");
             wpspr = toTrialOrderPay(wpspr, pfCorder, request, addressId);
+            log.info("试用申请-----组织调用微信支付的数据--end");
         } catch (Exception e) {
             e.printStackTrace();
         }
         attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
+        log.info("试用申请-----开始调用微信支付");
         return "redirect:/wxpay/wtpay";
     }
 
@@ -179,16 +188,22 @@ public class COrderController extends BaseController {
      */
     private PfCorder generateOrder(Integer skuId,Long userId,String reason,ComUser comUser,Long addressId)throws Exception{
         //获得产品信息
+        log.info("试用申请-----获得商品详情信息---start ---商品skuId---"+skuId);
         Product product = cOrderService.getProductDetail(skuId);
+        log.info("试用申请-----获得商品详情信息---end ---商品skuId---"+skuId);
         //订单
         PfCorder pfCorder = initPfCorderParamData(userId, skuId, product, reason);
         //订单日志
         PfCorderOperationLog pfCorderOperationLog = initPfCorderOperationLog(comUser);
         //收获地址
+        log.info("试用申请-----获得获得收获地址---start---地址id---"+addressId);
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(addressId);
-        PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
+        log.info("试用申请-----获得获得收获地址---end---地址id---"+addressId);
         //生成订单
+        log.info("试用申请------生成新的订单----start");
+        PfCorderConsignee pfCorderConsignee = initPfCorderConsigneeParamData(null, comUserAddress);
         Long orderId = cOrderService.trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
+        log.info("试用申请------生成新的订单----end");
         return pfCorder;
     }
 

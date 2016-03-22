@@ -108,7 +108,7 @@
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
                     if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "<%=basePath%>" + data.imgPath);
+                        $("#idCardFront").attr("src", "<%=path%>" + data.imgPath);
                     } else {
                         $("#idCardBack").attr("src", "<%=path%>" + data.imgPath);
                     }

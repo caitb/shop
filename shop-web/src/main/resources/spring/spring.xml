@@ -35,7 +35,7 @@
 	<bean id="jsapiAccessTokenTask" class="com.masiis.shop.web.platform.task.JsapiAccessTokenTask" />
 
 	<task:scheduled-tasks>
-		<task:scheduled ref="jsapiTicketTask" method="requestTicket" cron="00 59 0/1 * * ?" />
+		<task:scheduled ref="jsapiTicketTask" method="requestTicket" cron="30 59 0/1 * * ?" />
 	</task:scheduled-tasks>
 	<task:scheduled-tasks>
 		<task:scheduled ref="jsapiAccessTokenTask" method="requestToken" cron="00 59 0/1 * * ?" />

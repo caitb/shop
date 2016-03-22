@@ -59,8 +59,6 @@ public class BOrderController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
     @Resource
-    private PfBorderConsigneeService pfBorderConsigneeService;
-    @Resource
     private ComDictionaryService comDictionaryService;
     @Resource
     private BorderFreightService borderFreightService;
@@ -159,9 +157,10 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            PfUserSku userSku = new PfUserSku();
+            PfUserSku userSku = null;
             PfUserSku checkUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
             if (checkUserSku == null) {
+                userSku = new PfUserSku();
                 userSku.setCreateTime(new Date());
                 if (pfUserSku == null) {
                     userSku.setPid(0);
@@ -321,6 +320,11 @@ public class BOrderController extends BaseController {
                 req.setSign(WXBeanUtils.toSignString(req));
             }
         } catch (Exception ex) {
+            log.error(ex.getMessage());
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("isError", true);
+//            jsonObject.put("message", ex.getMessage());
+//            return jsonObject.toJSONString();
             throw new BusinessException(ex);
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
@@ -392,8 +396,9 @@ public class BOrderController extends BaseController {
             bOrderService.updateGetStock(pfBorder);
             bOrderService.updateBOrder(pfBorder);
             json.put("mesg", "交易成功");
-        } catch (Exception e) {
-            json.put("message", e.getMessage());
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            json.put("message", ex.getMessage());
         }
         return json.toString();
     }

@@ -201,4 +201,29 @@
             </if>
         </where>
     </select>
+    <select id="selectByUser" parameterType="Long" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        code,
+        pf_user_sku_id,
+        user_id,
+        spu_id,
+        sku_id,
+        id_card,
+        mobile,
+        wx_id,
+        begin_time,
+        end_time,
+        agent_level_id,
+        img_url,
+        status,
+        remark,
+        reason,
+        poster
+        from
+        pf_user_certificate
+        where
+        user_id = #{userId}
+    </select>
 </mapper>

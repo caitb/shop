@@ -83,10 +83,10 @@
         </div>
         <div class="back_que">
             <p>确认减库存?</p>
-            <h4>商品:<span id="sku3"></span></h4>
-            <h4>当前库存:<span id="stock1"></span></h4>
-            <h4>减库存:<span id="stock2"></span></h4>
-            <h4>剩余库存:<span id="stock3"></span></h4>
+            <h4><b>商品:</b><span id="sku3"></span></h4>
+            <h4><b>当前库存:</b><span id="stock1"></span></h4>
+            <h4><b>减库存:</b><span id="stock2"></span></h4>
+            <h4><b>剩余库存:</b><span id="stock3"></span></h4>
             <h3>
                 <span class="que_qu">取消</span>
                 <span class="que_que">确认</span>

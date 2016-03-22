@@ -110,7 +110,9 @@
         WHERE id = #{id}
     </update>
     <select id="get" parameterType="int" resultMap="CertificateResultMap">
-        SELECT * FROM pf_user_sku WHERE id = #{id}
+        SELECT *,pf_user_sku.id AS pfid
+        FROM pf_user_sku
+        WHERE id = #{id}
     </select>
     <select id="getApproveInfo" parameterType="int" resultMap="CertificateResultMap">
         SELECT  u.wx_nk_name,u.real_name,u.id_card,u.id_card_front_url,u.id_card_back_url,

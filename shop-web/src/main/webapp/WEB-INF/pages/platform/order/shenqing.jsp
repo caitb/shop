@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shenqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
 <header class="xq_header">
@@ -103,11 +102,14 @@
 <div class="back" style="display: none">
 
 </div>
+</body>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/iscroll.js"></script>
 <script src="<%=path%>/static/js/validateCode.js"></script>
 <script>
     $(document).ready(function () {
         validateCodeJS.initPage();
     })
 </script>
-</body>
 </html>

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -178,7 +179,7 @@ public class BOrderController extends BaseController {
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             obj.put("isError", true);
             obj.put("message", ex.getMessage());
         }
@@ -249,13 +250,13 @@ public class BOrderController extends BaseController {
      * @author ZhaoLiang
      * @date 2016/3/17 14:32
      */
+    @ResponseBody
     @RequestMapping("/payBOrderSubmit.do")
     public String payBOrderSubmit(HttpServletRequest request,
                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                   @RequestParam(value = "userMessage", required = true) String userMessage,
-                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId,
-                                  RedirectAttributes attrs) {
-        WxPaySysParamReq req = null;
+                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId) {
+        JSONObject jsonObject = new JSONObject();
         try {
             if (userAddressId <= 0) {
                 throw new BusinessException("收货地址不能为空");
@@ -284,6 +285,22 @@ public class BOrderController extends BaseController {
             pfBorderConsignee.setAddress(comUserAddress.getAddress());
             pfBorderConsignee.setZip(comUserAddress.getZip());
             bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
+            jsonObject.put("isError", false);
+        } catch (Exception ex) {
+            log.error(ex);
+            jsonObject.put("isError", true);
+            jsonObject.put("message", ex.getMessage());
+        }
+        return jsonObject.toJSONString();
+    }
+
+    @RequestMapping("/payBOrderReady.shtml")
+    public String payBOrderReady(HttpServletRequest request,
+                                 RedirectAttributes attrs,
+                                 @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+        WxPaySysParamReq req = null;
+        try {
+            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
             //切换开发模式和测试模式
             String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
             if (StringUtils.isBlank(enviromentkey)
@@ -319,12 +336,9 @@ public class BOrderController extends BaseController {
                 req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
                 req.setSign(WXBeanUtils.toSignString(req));
             }
+
         } catch (Exception ex) {
-            log.error(ex.getMessage());
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("isError", true);
-//            jsonObject.put("message", ex.getMessage());
-//            return jsonObject.toJSONString();
+            //错误页面
             throw new BusinessException(ex);
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));

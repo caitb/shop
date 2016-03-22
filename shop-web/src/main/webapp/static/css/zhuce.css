@@ -41,23 +41,25 @@
 .wrap #box main .sec1 div p .onc {
   float: right;
   margin: 10px 28px 0 0;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   display: none;
   background: url("../images/no.png") no-repeat;
+  background-size: 100% 100%;
 }
 .wrap #box main .sec1 div p .gao {
   position: absolute;
   right: 13px;
-  top: 28px;
+  top: 32px;
   background: url("../images/icon_33.png") no-repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   color: white;
-  padding: 10px 20px;
+  padding: 4px 20px;
   text-indent: 0;
   z-index: 100;
   display: none;
-  padding-left: 14px;
+  border-radius: 5px;
+  overflow: hidden;
 }
 .wrap #box main .sec1 div p b {
   font-size: 12px;
@@ -226,6 +228,7 @@
   display: -moz-box;
   -moz-box-pack: center;
   -moz-box-align: center;
+  margin-top: 15px;
 }
 .wrap #box main .sec3 label {
   font-size: 12px;
@@ -275,8 +278,10 @@
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
-  line-height: 30px;
-  margin-bottom: 10px;
+  line-height: 50px;
+  margin-bottom: 15px;
+  text-indent: 10px;
+  font-size: 15px;
 }
 .wrap .back_que h4 {
   margin: 0 10px;
@@ -285,32 +290,45 @@
 }
 .wrap .back_que h4 b {
   display: block;
-  text-align: right;
+  text-align: left;
   -webkit-box-flex: 1;
   width: 1px;
-  margin-left: -10px;
+  line-height: 21px;
+  text-indent: 10px;
+  font-weight: 600;
+  color: #555555;
 }
 .wrap .back_que h4 span {
   width: 1px;
   display: block;
   -webkit-box-flex: 1;
   margin-left: 10px;
+  line-height: 21px;
 }
 .wrap .back_que h3 {
   margin-top: 10px;
-  -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-align: center;
-  border-top: 1px solid #999999;
+  margin: 15px 10px;
+  border-top: 1px solid #999;
 }
 .wrap .back_que h3 span {
   display: block;
   -webkit-box-flex: 1;
   text-align: center;
   line-height: 33px;
+  background: #d6d6d6;
+  margin-left: 10%;
+  color: white;
+  width: 1px;
+  border-radius: 5px;
+  color: #333;
+  margin-top: 15px;
 }
-.wrap .back_que h3 span:nth-child(1) {
-  border-right: 1px solid #999;
+.wrap .back_que h3 span:nth-child(2) {
+  margin-right: 10%;
+  background: #0fc420;
+  color: white;
 }
 .wrap .back {
   width: 100%;
@@ -321,5 +339,4 @@
   top: 0;
   left: 0;
   display: none;
-  z-index:9;
 }

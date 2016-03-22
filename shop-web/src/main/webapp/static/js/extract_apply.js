@@ -12,7 +12,8 @@ $(function(){
         }
         // 可以提现
         $("#ex_money").html(money + " 元");
-        $(".back").css("display", "-webkit-box");
+        $(".back").show();
+        $(".back_que").css("display", "-webkit-box");
     });
 
     $("#exBtnOk").on("click", function(){
@@ -38,6 +39,7 @@ $(function(){
 
     $("#exBtnCancel").on("click", function(){
         $(".back").css("display", "none");
+        $(".back_que").css("display", "none");
     });
 });
 

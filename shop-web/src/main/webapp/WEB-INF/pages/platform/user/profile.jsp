@@ -27,7 +27,6 @@
                 <p><img src="${user.wxHeadImg}" alt=""></p>
                 <h1>
                     <b>${user.wxNkName}</b>
-                    <%--<span>您的推荐人是王平</span>--%>
                 </h1>
             </div>
         </header>

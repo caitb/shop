@@ -23,7 +23,11 @@
             $.post("/userAddress/addOrUpdateAddress.do",
                     paramJson,
                     function (data) {
+                        if (data=="false"){
+                            alert("新增地址失败");
+                        }else{
                             window.location.href = data;
+                        }
                     });
         }
     }
@@ -77,6 +81,7 @@
             </div>
         </div>
         <input type="text" id="operateTypeId" style="display: none" value="save"/>
+        <input type="text" id="jumpTypeId" style="display: none" value="jumpToOrder"/>
         <a onclick="saveAddress()" class="baocun">
             保存
         </a>

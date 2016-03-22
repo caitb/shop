@@ -104,8 +104,10 @@ public class WxPayController extends BaseController{
             // 创建支付记录
             wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
         } catch (Exception e) {
-            log.error("wxpayPage:下预付单失败," + e.getMessage());
+            log.error("wxpayPage:下预付单失败," + e.getMessage(), e);
+            request.setAttribute("url", req.getErrorUrl());
             // 预付单下单失败处理
+            return "pay/wxpay/wx_redirect_page";
         }
 
         // 组织微信支付请求参数,并形成签名
@@ -114,8 +116,8 @@ public class WxPayController extends BaseController{
         // 获取成功支付后的跳转页面url
         request.setAttribute("req", payReq);
         request.setAttribute("successUrl", req.getSuccessUrl());
-        request.setAttribute("cancelUrl", "");
-        request.setAttribute("errUrl", "");
+        request.setAttribute("cancelUrl", req.getCancelUrl());
+        request.setAttribute("errUrl", req.getErrorUrl());
         /*////// 检查jsapi_ticket和access_token有效性,次access_token不是微信网页授权access_token
         ////// 组织页面wx.config参数,并形成签名
         发现可以不用这种方式实现*/

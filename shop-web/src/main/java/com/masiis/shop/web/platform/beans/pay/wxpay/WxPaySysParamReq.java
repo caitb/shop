@@ -15,6 +15,7 @@ public class WxPaySysParamReq {
     private String signType;
     private String successUrl;
     private String errorUrl;
+    private String cancelUrl;
 
     public String getOrderId() {
         return orderId;
@@ -62,5 +63,13 @@ public class WxPaySysParamReq {
 
     public void setErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
+    }
+
+    public String getCancelUrl() {
+        return cancelUrl;
+    }
+
+    public void setCancelUrl(String cancelUrl) {
+        this.cancelUrl = cancelUrl;
     }
 }

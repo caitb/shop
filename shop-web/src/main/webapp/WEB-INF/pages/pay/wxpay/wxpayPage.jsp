@@ -60,7 +60,7 @@
                             window.history.go(-1);
                         } else {
                             // 跳转失败或者取消页面
-                            alert("fail:" + res.err_code + "||" + res.err_desc + "||" + res.err_msg);
+                            window.location.href = "${errUrl}";
                         }
                     }
             );

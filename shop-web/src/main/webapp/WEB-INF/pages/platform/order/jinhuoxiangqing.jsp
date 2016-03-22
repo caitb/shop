@@ -25,7 +25,7 @@
     <div class="wrap">
        <main>
             <header class="xq_header">
-                <a href="<%=path%>/profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>订单详情</p>
                 <%--javascript:window.history.go(-1);--%>
             </header>

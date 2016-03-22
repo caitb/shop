@@ -24,7 +24,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                    <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                    <a href="<%=path%>/profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>
 
                 </header>

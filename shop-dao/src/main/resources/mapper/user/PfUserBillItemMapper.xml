@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserBillItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserBillItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="pf_user_bill_id" property="pfUserBillId" jdbcType="BIGINT" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="order_create_date" property="orderCreateDate" jdbcType="TIMESTAMP" />
+        <result column="order_pay_amount" property="orderPayAmount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_bill_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBillItem" >
+        insert into pf_user_bill_item (id, create_date, pf_user_bill_id, 
+            pf_border_id, order_create_date, order_pay_amount, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{pfUserBillId,jdbcType=BIGINT}, 
+            #{pfBorderId,jdbcType=BIGINT}, #{orderCreateDate,jdbcType=TIMESTAMP}, #{orderPayAmount,jdbcType=DECIMAL}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserBillItem" >
+        update pf_user_bill_item
+        set create_date = #{createDate,jdbcType=TIMESTAMP},
+            pf_user_bill_id = #{pfUserBillId,jdbcType=BIGINT},
+            pf_border_id = #{pfBorderId,jdbcType=BIGINT},
+            order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
+            order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_date, pf_user_bill_id, pf_border_id, order_create_date, order_pay_amount, 
+        remark
+        from pf_user_bill_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_date, pf_user_bill_id, pf_border_id, order_create_date, order_pay_amount, 
+        remark
+        from pf_user_bill_item
+    </select>
+
+</mapper>

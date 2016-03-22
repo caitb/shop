@@ -126,7 +126,7 @@ public class VerifyController extends BaseController {
                 // 保存Cookie
                 String openidkey = getEncryptByOpenid(res.getOpenid());
                 CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
-                        openidkey, 3600 * 24 * 7);
+                        openidkey, 3600 * 24 * 7, true);
                 // 保存redis
                 SpringRedisUtil.save(openidkey, res.getOpenid());
                 SpringRedisUtil.save(res.getOpenid() + "_token", res.getAccess_token());
@@ -262,7 +262,7 @@ public class VerifyController extends BaseController {
                     // 保存Cookie
                     String openidkey = getEncryptByOpenid(rfResBean.getOpenid());
                     CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
-                            openidkey, 3600 * 24 * 7);
+                            openidkey, 3600 * 24 * 7, true);
                     // 保存redis
                     SpringRedisUtil.save(openidkey, rfResBean.getOpenid());
                     SpringRedisUtil.save(rfResBean.getOpenid() + "_token", rfResBean.getAccess_token());

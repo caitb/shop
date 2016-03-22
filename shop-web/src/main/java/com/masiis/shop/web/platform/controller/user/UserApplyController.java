@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -124,8 +125,10 @@ public class UserApplyController {
                             sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
                         }
                     }
+                    BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+                    amount = amount.setScale(2, RoundingMode.HALF_DOWN);
                     sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount()) + "</span>");
+                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + amount + "</span>");
                     sb.append("</p>");
                 }
             }

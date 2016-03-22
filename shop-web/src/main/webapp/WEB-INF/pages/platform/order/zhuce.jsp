@@ -15,19 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/zhuce.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
-    <script>
-        var path = "<%=basePath%>";
-        var skuId = "${skuId}";
-        var skuName = "${skuName}";
-        var mobile = "${mobile}";
-        var pUserId = "${pUserId}";
-        var pMobile = "${pMobile}";
-    </script>
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/commonAjax.js"/>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
-    <%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
-    <script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </head>
 <body>
 
@@ -128,4 +115,16 @@
     </div>
 </div>
 </body>
+<script>
+    var path = "<%=basePath%>";
+    var skuId = "${skuId}";
+    var skuName = "${skuName}";
+    var mobile = "${mobile}";
+    var pUserId = "${pUserId}";
+    var pMobile = "${pMobile}";
+</script>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/iscroll.js"></script>
+<script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </html>

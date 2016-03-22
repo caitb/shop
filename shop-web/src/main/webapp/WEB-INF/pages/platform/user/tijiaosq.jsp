@@ -17,68 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tijiaosq.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
-    <script src="<%=path%>/static/js/ajaxfileupload.js"></script>
-    <script>
-        var checkImg = 0;
-        function F_Open_dialog(data) {
-            if (data == 0) {
-                checkImg = 0;
-            } else {
-                checkImg = 1;
-            }
-            document.getElementById("idCardImg").click();
-        }
-        function uploadIdCardImg() {
-            $.ajaxFileUpload({
-                url: "<%=basePath%>userCertificate/idCardImgUpload.do",
-                data: "",
-                type: "POST",
-                secureuri: false,
-                fileElementId: ['idCardImg'],
-                dataType: "json",
-                success: function (rdata) {
-                    var data = JSON.parse(rdata);
-                    if (data.code == 1) {
-                        if (checkImg == 0) {
-                            $("#idCardFront").attr("src", "<%=basePath%>" + data.imgPath);
-                        } else {
-                            $("#idCardBack").attr("src", "<%=path%>" + data.imgPath);
-                        }
-                    } else {
-                        alert(data.msg);
-                    }
-                }
-            });
-        }
-        function submit() {
-            var fCardUrl = $("#idCardFront").attr("src");
-            var bCardUrl = $("#idCardBack").attr("src");
-            fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
-            bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
-            var paraData = {};
-            paraData.userSkuId = "${userSkuId}";
-            paraData.name = "${name}";
-            paraData.idCard = $("#idCard").val();
-            paraData.idCardFrontUrl = fCardUrl;
-            paraData.idCardBackUrl = bCardUrl;
-            $.ajax({
-                url: "<%=basePath%>userCertificate/add.do",
-                type: "post",
-                data: paraData,
-                dataType: "json",
-                success: function (data) {
-                    if (data.isError == false) {
-                        window.location.href = "<%=basePath%>userApply/applyOK.shtml";
-                    }
-                    else {
-                        alert(data.message);
-                    }
-                }
-            });
-        }
-    </script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
 <div class="wrap">
@@ -143,4 +82,67 @@
     </div>
 </div>
 </body>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/iscroll.js"></script>
+<script src="<%=path%>/static/js/ajaxfileupload.js"></script>
+<script>
+    var checkImg = 0;
+    function F_Open_dialog(data) {
+        if (data == 0) {
+            checkImg = 0;
+        } else {
+            checkImg = 1;
+        }
+        document.getElementById("idCardImg").click();
+    }
+    function uploadIdCardImg() {
+        $.ajaxFileUpload({
+            url: "<%=basePath%>userCertificate/idCardImgUpload.do",
+            data: "",
+            type: "POST",
+            secureuri: false,
+            fileElementId: ['idCardImg'],
+            dataType: "json",
+            success: function (rdata) {
+                var data = JSON.parse(rdata);
+                if (data.code == 1) {
+                    if (checkImg == 0) {
+                        $("#idCardFront").attr("src", "<%=basePath%>" + data.imgPath);
+                    } else {
+                        $("#idCardBack").attr("src", "<%=path%>" + data.imgPath);
+                    }
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+    function submit() {
+        var fCardUrl = $("#idCardFront").attr("src");
+        var bCardUrl = $("#idCardBack").attr("src");
+        fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
+        bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
+        var paraData = {};
+        paraData.userSkuId = "${userSkuId}";
+        paraData.name = "${name}";
+        paraData.idCard = $("#idCard").val();
+        paraData.idCardFrontUrl = fCardUrl;
+        paraData.idCardBackUrl = bCardUrl;
+        $.ajax({
+            url: "<%=basePath%>userCertificate/add.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
 </html>

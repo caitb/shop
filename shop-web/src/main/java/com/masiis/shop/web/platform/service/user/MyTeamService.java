@@ -4,7 +4,6 @@ import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -200,7 +199,7 @@ public class MyTeamService {
         pfUserSku.setId(userSkuId);
         pfUserSku.setIsCertificate(pfUserCertificate.getStatus());
 
-        pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);
+        pfUserCertificateMapper.updateById(pfUserCertificate);
         pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
 
     }

@@ -2,28 +2,38 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
+import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.List;
 
 /**
  * 发展合伙人
@@ -47,6 +57,8 @@ public class DevelopingController extends BaseController {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
+    @Resource
+    private PfUserCertificateMapper pfUserCertificateMapper;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -106,15 +118,42 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = getComUser(request);
+            ComUser comUser = comUserMapper.selectByPrimaryKey(13L); //getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            String shareLink = basePath + "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId();
+
+            PfUserCertificate puc = new PfUserCertificate();
+            puc.setUserId(comUser.getId());
+            puc.setSkuId(comSku.getId());
+            List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
+            if(pfUserCertificates != null && pfUserCertificates.size() > 0){
+                PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
+                if(pfUserCertificate.getPoster() == null){
+                    String posterName = pfUserCertificate.getCode()+".png";
+                    String posterPath = request.getServletContext().getRealPath("/")+"static"+File.separator+posterName;
+                    //生成二维码
+                    CreateParseCode.createCode(200,200, shareLink, posterPath);
+                    //上传二维码到OSS
+                    File posterFile = new File(posterPath);
+                    //OSSObjectUtils.uploadFile("mmshop", posterFile, "static/user/poster/");
+                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"poster.jpg", posterPath, posterName);
+                    //删除本地二维码图片
+                    posterFile.delete();
+                    //保存二维码图片地址
+                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+posterName);
+                    pfUserCertificateMapper.updateById(pfUserCertificate);
+                }
+                resultMap.put("poster", pfUserCertificate.getPoster());
+            }
+
 
             resultMap.put("appId", WxConstants.APPID);
             resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
             resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
-            resultMap.put("shareLink", "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId());
+            resultMap.put("shareLink", shareLink);
             resultMap.put("shareImg", comBrand.getLogoUrl());
 
             //TODO
@@ -128,6 +167,39 @@ public class DevelopingController extends BaseController {
         }
 
         return null;
+    }
+
+    /**
+     * 画海报
+     * @param bPath        海报背景图路径
+     * @param qrcodePath   二维码背景图路径
+     * @param saveFileName 保存名字
+     */
+    public void drawPost(String bPath, String qrcodePath, String saveFileName) {
+        ImageIcon bImgIcon = new ImageIcon(bPath);
+        ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
+        Image bImage = bImgIcon.getImage();
+        Image qrcodeImage = qrcodeImgIcon.getImage();
+
+        int width = bImage.getWidth(null) == -1 ? 427 : bImage.getWidth(null);
+        int height = bImage.getHeight(null) == -1 ? 600 : bImage.getHeight(null);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(bImage, 0, 0, null);
+        g.drawImage(qrcodeImage, 0, 0, null);
+        g.dispose();
+
+        try {
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(bufferedImage, "png", imOut);
+            InputStream is = new ByteArrayInputStream(bs.toByteArray());
+            OSSObjectUtils.uploadFile("mmshop", "static/user/poster/" + saveFileName, is);
+        } catch (Exception e) {
+            log.error("画海报出错了!");
+            e.printStackTrace();
+            return;
+        }
     }
 
 

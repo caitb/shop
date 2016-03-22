@@ -21,7 +21,7 @@
 <body>
        <div class="wrap">
           <header class="xq_header">
-              <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>订单详情</p>  
                 </header>
            <main>
@@ -77,6 +77,8 @@
            </div>
         </div>
         <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+        <script src="<%=path%>/static/js/commonAjax.js"></script>
+        <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
         <script>
         var myScroll = new IScroll("main",{
                  preventDefault: false
@@ -115,7 +117,7 @@
             $(".back").on("click",function(){
                 $(".back_que").hide();
                 $(".back").hide();
-            })
+             })
     </script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.controller.order;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.COrderService;
 import com.masiis.shop.dao.po.PfCorder;
@@ -22,6 +24,8 @@ import java.util.Map;
 @RequestMapping("/order/corder")
 public class PfCorderController {
 
+    private final static Log log = LogFactory.getLog(PfCorderController.class);
+
     @Resource
     private COrderService cOrderService;
 
@@ -37,21 +41,35 @@ public class PfCorderController {
                        Integer pageSize,
                        PfCorder pfCorder){
 
-        Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
+        try {
+            Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
 
-        return pageMap;
+            return pageMap;
+        } catch (Exception e) {
+            log.error("查询试用订单列表出错![pageNumber="+pageNumber+"][pageSize="+pageSize+"][pfCorder="+pfCorder+"]");
+            e.printStackTrace();
+
+            return "查询试用订单列表出错!";
+        }
     }
 
     @RequestMapping("/detail.shtml")
     public ModelAndView detail(HttpServletRequest request, HttpServletResponse response, Long corderId){
 
-        ModelAndView mav = new ModelAndView("order/corder/detail");
+        try {
+            ModelAndView mav = new ModelAndView("order/corder/detail");
 
-        Order order = cOrderService.find(corderId);
+            Order order = cOrderService.find(corderId);
 
-        mav.addObject("order", order);
+            mav.addObject("order", order);
 
-        return mav;
+            return mav;
+        } catch (Exception e) {
+            log.error("获取试用订单明细出错![corderId="+corderId+"]");
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
     @RequestMapping("/delivery.do")
@@ -59,15 +77,22 @@ public class PfCorderController {
     public Object delivery(HttpServletRequest request, HttpServletResponse response,
                            PfCorderFreight pfCorderFreight){
 
-        if (pfCorderFreight.getShipManId() == null){
-            return "请选择一个快递";
-        }
-        if(StringUtils.isBlank(pfCorderFreight.getFreight())){
-            return "请填写运单号";
-        }
+        try {
+            if (pfCorderFreight.getShipManId() == null){
+                return "请选择一个快递";
+            }
+            if(StringUtils.isBlank(pfCorderFreight.getFreight())){
+                return "请填写运单号";
+            }
 
-        cOrderService.delivery(pfCorderFreight);
+            cOrderService.delivery(pfCorderFreight);
 
-        return "success";
+            return "success";
+        } catch (Exception e) {
+            log.error("发货出错![pfCorderFreight="+pfCorderFreight+"]");
+            e.printStackTrace();
+
+            return null;
+        }
     }
 }

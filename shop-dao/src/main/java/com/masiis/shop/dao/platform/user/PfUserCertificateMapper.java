@@ -21,11 +21,13 @@ public interface PfUserCertificateMapper {
 
     List<PfUserCertificate> selectAll();
 
-    int updateByPrimaryKey(PfUserCertificate record);
+    int updateById(PfUserCertificate record);
 
     PfUserCertificate selectByUserId(Long userId);
 
     List<PfUserCertificate> selectByCode(Long userId);
 
     PfUserCertificate selectByUserSkuId(Integer pfuId);
+
+    List<PfUserCertificate> selectByCondition(PfUserCertificate pfUserCertificate);
 }

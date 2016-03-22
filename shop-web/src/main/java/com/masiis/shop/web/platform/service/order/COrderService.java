@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,8 @@ public class COrderService {
     @Resource
     private PfCorderConsigneeService pfCorderConsigneeService;
 
+    private Logger log = Logger.getLogger(this.getClass());
+
     List<PfCorder> existTrilPfCorder = null;
     /**
      * 确认订单
@@ -83,10 +86,14 @@ public class COrderService {
     public Long trialApplyGenerateOrderService(PfCorder pc ,PfCorderOperationLog pcol ,ComUserAddress cua ,PfCorderConsignee pcc )throws Exception{
         try{
             //插入订单和订单日志
+            log.info("试用申请service------插入订单---start");
             Long orderId = trialService.insert(pc,pcol);
+            log.info("试用申请service------插入订单---end---订单id----"+orderId);
             pcc.setPfCorderId(orderId);
             //收获地址
+            log.info("试用申请service------插入收获地址---start");
             pfCorderConsigneeService.insertPfCC(pcc);
+            log.info("试用申请service------插入收获地址---end");
             return orderId;
         }catch (Exception e){
             throw  new BusinessException(e.getMessage());
@@ -140,8 +147,10 @@ public class COrderService {
      */
     public List<PfCorder> getNoPayTrialOrder(){
         if (existTrilPfCorder==null||existTrilPfCorder.size()==0||existTrilPfCorder.size()>1){
+            log.info("用户同一件试用商品的未支付订单超过一个,逻辑出错");
             throw new BusinessException("用户同一件试用商品的未支付订单超过一个,逻辑出错");
         }else {
+            log.info("试用申请service---成功获得存在未支付的订单");
             return existTrilPfCorder;
         }
     }
@@ -164,34 +173,49 @@ public class COrderService {
      */
     @Transactional
     public void payCOrder(PfCorderPayment pfCorderPayment, String outOrderId) throws Exception {
-        //<1>修改订单支付信息
-        pfCorderPayment.setOutOrderId(outOrderId);
-        pfCorderPayment.setIsEnabled(1);//设置为有效
-        pfCorderPaymentMapper.updateById(pfCorderPayment);
-        BigDecimal payAmount = pfCorderPayment.getAmount();
-        Long cOrderId = pfCorderPayment.getPfCorderId();
-        //<2>修改订单数据
-        PfCorder pfCorder = pfCorderMapper.selectById(cOrderId);
-        if (payAmount!=null&&!payAmount.equals(new BigDecimal(0))){
-            pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
-            pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
+        log.info("试用申请--微信支付成功--回调---start");
+        try{
+            //<1>修改订单支付信息
+            log.info("修改订单的支付状态pfcorderPayment---start-");
+            pfCorderPayment.setOutOrderId(outOrderId);
+            pfCorderPayment.setIsEnabled(1);//设置为有效
+            pfCorderPaymentMapper.updateById(pfCorderPayment);
+            log.info("修改订单的支付状态pfcorderPayment---end-");
+            BigDecimal payAmount = pfCorderPayment.getAmount();
+            Long cOrderId = pfCorderPayment.getPfCorderId();
+            //<2>修改订单数据
+            log.info("修改订单表的金额和状态pfcorder---start-");
+            PfCorder pfCorder = pfCorderMapper.selectById(cOrderId);
+            if (payAmount!=null&&!payAmount.equals(new BigDecimal(0))){
+                pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
+                pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
+            }
+            pfCorder.setPayTime(new Date());
+            pfCorder.setPayStatus(1);//已付款
+            pfCorder.setOrderStatus(1);//已付款
+            pfCorderMapper.updateById(pfCorder);
+            log.info("修改订单表的金额和状态pfcorder---end--");
+            //<3>添加订单日志
+            log.info("添加订单表的log信息 pfcorderOperationLog---start--");
+            PfCorderOperationLog pfCorderOperationLog = new PfCorderOperationLog();
+            pfCorderOperationLog.setCreateMan(pfCorder.getUserId());
+            pfCorderOperationLog.setCreateTime(new Date());
+            pfCorderOperationLog.setPfCorderStatus(1);
+            pfCorderOperationLog.setPfCorderId(cOrderId);
+            pfCorderOperationLog.setRemark("订单已支付");
+            pfCorderOperationLogMapper.insert(pfCorderOperationLog);
+            log.info("添加订单表的log信息 pfcorderOperationLog---end--");
+            //<4>修改sku试用人数
+            log.info("修改sku试用人数 pfskustatistic---start--");
+            PfSkuStatistic pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfCorder.getSkuId());
+            pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
+            pfSkuStatisticMapper.updateById(pfSkuStatistic);
+            log.info("修改sku试用人数 pfskustatistic---end--");
+        }catch (Exception e){
+            log.info("试用申请--微信支付成功--回调失败---"+e.getMessage());
+            throw new BusinessException("试用订单微信支付回调失败-----"+e.getMessage());
         }
-        pfCorder.setPayTime(new Date());
-        pfCorder.setPayStatus(1);//已付款
-        pfCorder.setOrderStatus(1);//已付款
-        pfCorderMapper.updateById(pfCorder);
-        //<3>添加订单日志
-        PfCorderOperationLog pfCorderOperationLog = new PfCorderOperationLog();
-        pfCorderOperationLog.setCreateMan(pfCorder.getUserId());
-        pfCorderOperationLog.setCreateTime(new Date());
-        pfCorderOperationLog.setPfCorderStatus(1);
-        pfCorderOperationLog.setPfCorderId(cOrderId);
-        pfCorderOperationLog.setRemark("订单已支付");
-        pfCorderOperationLogMapper.insert(pfCorderOperationLog);
-        //<4>修改sku试用人数
-        PfSkuStatistic pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfCorder.getSkuId());
-        pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
-        pfSkuStatisticMapper.updateById(pfSkuStatistic);
+        log.info("试用申请--微信支付成功--回调---end");
     }
 
     /**

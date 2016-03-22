@@ -19,6 +19,8 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
     <script src="<%=path%>/static/js/ajaxfileupload.js"></script>
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script>
         var checkImg = 0;
         function F_Open_dialog(data) {
@@ -70,7 +72,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (data.isError == false) {
-                        window.location.href = "<%=basePath%>userCertificate/ready/${comSku.name}";
+                        window.location.href = "<%=basePath%>userCertificate/ready/${comSku.id}";
                     }
                     else {
                         alert(data.message);
@@ -83,7 +85,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>证书详情</p>
     </header>
     <main>

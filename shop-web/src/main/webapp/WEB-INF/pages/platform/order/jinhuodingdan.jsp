@@ -16,14 +16,17 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/jinhuodingdan.css">
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                    <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>我的订单</p>  
+                    <a href="<%=path%>/profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                        <p>我的订单</p>
+
                 </header>
                 <nav>
                     <ul>

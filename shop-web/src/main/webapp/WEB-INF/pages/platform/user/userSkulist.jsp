@@ -17,13 +17,15 @@
     <link rel="stylesheet" href="<%=path%>/static/css/shangpin.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
 
 <div class="wrap">
     <main>
     <header class="xq_header">
-        <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
         <div id="box">
@@ -39,6 +41,7 @@
                             <h3>零售价：<span>${sku.priceRetail}</span></h3>
                             <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.stock}</span></p>
                             <input type="hidden" id="pfuId" value="${sku.pfuId}">
+                            <input type="hidden" id="skuId" value="${sku.id}">
                         </div>
                     </section>
                     <section class="sec3">
@@ -75,7 +78,7 @@
             </h4>
             <div>
                 <h1 class="b_qu">取消</h1>
-                <h1 class="b_que"><a href="buhuodingdan.html">确定</a></h1>
+                <h1 class="b_que">确定</h1>
             </div>
         </div>
         <div class="back_que">
@@ -161,6 +164,22 @@
     $(".b_qu").on("click",function(){
         $(".back").css("display","none");
         $(".back_b").hide();
+    })
+    $(".b_que").on("click",function(){
+        var skuId = $("#skuId").val();
+        $.ajax({
+            url: '<%=basePath%>product/user/addStock',
+            type: 'post',
+            data: {stock:i,skuId:skuId},
+            dataType: 'json',
+            success: function (data) {
+                if(data['isError'] == false){
+                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
+                }else{
+                    alert(data['message']);
+                }
+            }
+        });
     })
 </script>
 </body>

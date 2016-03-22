@@ -17,13 +17,15 @@
     <link rel="stylesheet" href="<%=path%>/static/css/shangpin.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
 
 <div class="wrap">
     <main>
     <header class="xq_header">
-        <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品管理</p>
     </header>
         <div id="box">

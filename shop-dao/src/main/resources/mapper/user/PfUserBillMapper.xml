@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserBillMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserBill" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="balance_date" property="balanceDate" jdbcType="TIMESTAMP" />
+        <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pf_user_bill
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBill" >
+        insert into pf_user_bill (id, user_id, create_date, 
+            create_man, balance_date, bill_amount, 
+            status, remark)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, 
+            #{createMan,jdbcType=BIGINT}, #{balanceDate,jdbcType=TIMESTAMP}, #{billAmount,jdbcType=DECIMAL}, 
+            #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserBill" >
+        update pf_user_bill
+        set user_id = #{userId,jdbcType=BIGINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            balance_date = #{balanceDate,jdbcType=TIMESTAMP},
+            bill_amount = #{billAmount,jdbcType=DECIMAL},
+            status = #{status,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, user_id, create_date, create_man, balance_date, bill_amount, status, remark
+        from pf_user_bill
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, user_id, create_date, create_man, balance_date, bill_amount, status, remark
+        from pf_user_bill
+    </select>
+
+</mapper>

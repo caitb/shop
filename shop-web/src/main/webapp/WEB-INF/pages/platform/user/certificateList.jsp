@@ -34,14 +34,14 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <<a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>我的证书</p>
     </header>
     <main>
         <div id="box">
             <c:forEach items="${pfUserCertificates}" var="cet">
                 <div id="levelColor">
-                    <p><span>合伙产品</span><b>${cet.skuName}</b></p>
+                    <p><span>合伙产品</span><b id="skuname">${cet.skuName}</b></p>
                     <p><span>合伙人等级：
                         <c:choose>
                             <c:when test="${cet.agentLevelId==1}">
@@ -81,7 +81,7 @@
                             <a href="<%=path%>/userCertificate/add/${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
-                            <a href="<%=path%>/userCertificate/ready/${cet.skuName}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                            <a href="<%=path%>/userCertificate/ready/${cet.skuId}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==1}">
                             <a href="<%=path%>/userCertificate/userct/${cet.id}"><img src="<%=path%>/static/images/rightgo.png" alt=""></a>

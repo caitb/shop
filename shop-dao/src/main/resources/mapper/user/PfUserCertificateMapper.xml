@@ -19,6 +19,7 @@
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="poster" property="poster" jdbcType="VARCHAR"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -32,13 +33,13 @@
             sku_id, id_card, mobile, 
             wx_id, begin_time, end_time, 
             agent_level_id, img_url, status, 
-            remark,reason)
+            remark,reason,poster)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, 
             #{pfUserSkuId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, 
             #{skuId,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
             #{wxId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
             #{agentLevelId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-            #{remark,jdbcType=VARCHAR},#{reason,jdbcType=VARCHAR})
+            #{remark,jdbcType=VARCHAR},#{reason,jdbcType=VARCHAR},#{poster,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserCertificate">
@@ -57,20 +58,21 @@
         agent_level_id = #{agentLevelId,jdbcType=INTEGER},
         img_url = #{imgUrl,jdbcType=VARCHAR},
         status = #{status,jdbcType=INTEGER},
-        remark = #{remark,jdbcType=VARCHAR}
+        remark = #{remark,jdbcType=VARCHAR},
+        poster = #{poster,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile,
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason,poster
         from pf_user_certificate
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pf_user_sku_id, user_id, spu_id, sku_id, id_card, mobile,
-        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason
+        wx_id, begin_time, end_time, agent_level_id, img_url, status, remark,reason,poster
         from pf_user_certificate
     </select>
 
@@ -92,7 +94,8 @@
                 img_url,
                 status,
                 remark,
-                reason
+                reason,
+                poster
         from
                 pf_user_certificate
         where
@@ -117,10 +120,49 @@
                 img_url,
                 status,
                 remark,
-                reason
+                reason,
+                poster
         from
                 pf_user_certificate
         where
                 pf_user_sku_id = #{userSkuId}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserCertificate" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        code,
+        pf_user_sku_id,
+        user_id,
+        spu_id,
+        sku_id,
+        id_card,
+        mobile,
+        wx_id,
+        begin_time,
+        end_time,
+        agent_level_id,
+        img_url,
+        status,
+        remark,
+        reason,
+        poster
+        from
+        pf_user_certificate
+        <where>
+            <if test="code != null">
+                AND code = #{code}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="spuId != null">
+                AND spu_id = #{spuId}
+            </if>
+        </where>
     </select>
 </mapper>

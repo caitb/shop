@@ -1,13 +1,13 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * 个人中心
@@ -20,9 +20,8 @@ public class ProfileController {
     @RequestMapping("/profile")
     public ModelAndView profile(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/user/profile");
-        HttpSession session = request.getSession();
-        ComUser comUser = (ComUser) session.getAttribute("comUser");
-        mav.addObject("comUser",comUser);
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        mav.addObject("user",user);
         return mav;
     }
 }

@@ -80,9 +80,9 @@ public class IndexController extends BaseController {
             }else{
                 indexCom.setDiscountLevel("成为合伙人可查看");
             }
-            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
+            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getId());
             if (pfUserSku !=null){
-                indexCom.setIspay(pfUserSku.getIsPay());
+                indexCom.setIsPay(pfUserSku.getIsPay());
             }
             ComS.add(indexCom);
         }

@@ -15,7 +15,7 @@ public class IndexComSku {
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
     private Integer skuId;//sku主键id
-    private Integer ispay;//是否付款
+    private Integer isPay;//是否付款
     private String imgName;//图片名称
     private String imgUrl;//图片地址
     private Date modifyTime;//修改日期
@@ -31,8 +31,8 @@ public class IndexComSku {
     private Integer isPartner ;//是否为合伙人
 
 
-    public void setIspay(Integer ispay) {this.ispay = ispay;}
-    public Integer getIspay() {return ispay;}
+    public void setIsPay(Integer isPay) {this.isPay = isPay;}
+    public Integer getIsPay() {return isPay;}
     public void setIsSalt(Integer isSalt) {this.isSalt = isSalt;}
     public Integer getIsSalt() {return isSalt;}
     public Integer getIsPartner() {

@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <h2>${indexComSkus.comSku.name}</h2>
                             <h1>￥${indexComSkus.comSku.priceRetail} <span>${indexComSkus.discountLevel}</span></h1>
                             <h3>
-                                <p>超过<span>${indexComSkus.agentNum}</span>人代理</p><c:choose><c:when test="${indexComSkus.isPartner==1 && indexComSkus.ispay==1}"><a href="javascript:;" >您已合伙</a></c:when>
+                                <p>超过<span>${indexComSkus.agentNum}</span>人代理</p><c:choose><c:when test="${indexComSkus.isPartner==1 && indexComSkus.isPay==1}"><a href="javascript:;" >您已合伙</a></c:when>
                                 <c:otherwise><a href="shenqing.html" class="he">我要合伙</a></c:otherwise></c:choose>
                             </h3>
                         </div>

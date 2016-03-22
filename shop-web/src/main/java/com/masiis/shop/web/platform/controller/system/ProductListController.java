@@ -50,15 +50,13 @@ public class ProductListController {
         List<IndexComSku> indexComSk = indexShowService.findIndexComSku();
         List<IndexComSku> Com =new ArrayList<IndexComSku>();
         for (IndexComSku indexComSku:indexComSk) {
-//            ComSpu comSpu = spuService.getSpuById(indexComSku.getComSku().getSpuId());
-//            if(comSpu.getIsSale()==1) {
             //获取商品图片地址
             String url = value + indexComSku.getImgUrl();
             //重新封装商品图片地址
             indexComSku.setImgUrl(url);
-            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexComSku.getSkuId());
+            PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexComSku.getId());
             if (pfUserSku !=null){
-                indexComSku.setIspay(pfUserSku.getIsPay());
+                indexComSku.setIsPay(pfUserSku.getIsPay());
             }
             if (user != null && user.getIsAgent() == 1) {
                 //确定代理权限

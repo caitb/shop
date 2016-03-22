@@ -47,14 +47,14 @@ public class COrderService extends BaseService {
         List<Order> orders = new ArrayList<>();
         for(PfCorder pc : pfCorders){
             ComUser comUser = comUserMapper.selectByPrimaryKey(pc.getUserId());
-            PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(pc.getId());
+            //PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(pc.getId());
             PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(pc.getId());
             List<PfCorderFreight> pfCorderFreights = pfCorderFreightMapper.selectByCorderId(pc.getId());
 
             Order order = new Order();
             order.setComUser(comUser);
             order.setPfCorder(pc);
-            order.setPfCorderPayment(pfCorderPayment);
+            //order.setPfCorderPayment(pfCorderPayment);
             order.setPfCorderConsignee(pfCorderConsignee);
             order.setPfCorderFreights(pfCorderFreights);
 

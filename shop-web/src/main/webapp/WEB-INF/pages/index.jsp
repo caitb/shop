@@ -17,9 +17,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -106,9 +103,11 @@
                         <h2>${Sku.comSku.name}</h2>
                         <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>
                         <h3>
-                            <p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner==1 && Sku.isPay==1}">
+                            <p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when
+                                test="${Sku.isPartner==1 && Sku.isPay==1}">
                             <a href="javascript:;">您已合伙</a></c:when>
-                            <c:otherwise><a href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
+                            <c:otherwise><a
+                                    href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>
                         </h3>
                     </div>
                 </c:forEach>
@@ -159,6 +158,10 @@
         </div>
     </footer>
 </div>
+</body>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
+<script src="<%=path%>/static/js/iscroll.js"></script>
 <script>
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
@@ -173,5 +176,4 @@
     })
 
 </script>
-</body>
 </html>

@@ -91,14 +91,13 @@ public class UserExtractwayInfoController extends BaseController {
                 return jsonobject.toJSONString();
             }
             if (user == null){
-//                jsonobject.put("isTrue","false");
-//                jsonobject.put("message","新增用户提现方式信息【腥增前请登陆】");
-//                log.info(jsonobject.toJSONString());
-//                return jsonobject.toJSONString();
-//                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+                jsonobject.put("isTrue","false");
+                jsonobject.put("message","新增用户提现方式信息【腥增前请登陆】");
+                log.info(jsonobject.toJSONString());
+                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
             }
-//            Long userId = user.getId();
-            Long userId = Long.valueOf(1);
+            Long userId = user.getId();
+//            Long userId = Long.valueOf(1);
             //根据id查询字典表数据
             ComDictionary comDictionary = comDictionaryService.findById(35);
             //根据银行id查询银行基础信息表
@@ -164,11 +163,11 @@ public class UserExtractwayInfoController extends BaseController {
 
         ComUser user = getComUser(request);
         ModelAndView mv = new ModelAndView();
-//        if (user == null){
-//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-//        }
-//        Long userId = user.getId();
-        Long userId = Long.valueOf(1);
+        if (user == null){
+            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+        }
+        Long userId = user.getId();
+//        Long userId = Long.valueOf(1);
         List<ComUserExtractwayInfo> list;
         try{
             list = userExtractwayInfoService.findByUserId(userId);
@@ -191,12 +190,12 @@ public class UserExtractwayInfoController extends BaseController {
 
         log.info("准备跳转至新增银行卡页面");
         ComUser user = getComUser(request);
-//        if (user == null){
-//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-//        }
-//        Long userId = user.getId();
-//        log.info("userId="+userId);
-        Long userId = Long.valueOf(1);
+        if (user == null){
+            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+        }
+        Long userId = user.getId();
+        log.info("userId="+userId);
+//        Long userId = Long.valueOf(1);
         ModelAndView mv = new ModelAndView();
         List<ComBank> list = null;
         try{
@@ -221,12 +220,12 @@ public class UserExtractwayInfoController extends BaseController {
                                  HttpServletRequest request){
 
         ComUser user = getComUser(request);
-//        if (user == null){
-//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-//        }
-//        Long userId = user.getId();
-//        log.info("userId="+userId);
-        Long userId = Long.valueOf(1);
+        if (user == null){
+            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+        }
+        Long userId = user.getId();
+        log.info("userId="+userId);
+//        Long userId = Long.valueOf(1);
         log.info("userId:"+userId);
         log.info("id:"+id);
         List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);

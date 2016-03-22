@@ -21,21 +21,37 @@
 <script>
     function saveAddress() {
         var paramJson = addressJS.getJsonParam();
-        if (addressJS.validateAddressInfo(paramJson)) {
-            $.ajax({
-                url: '/userAddress/addOrUpdateAddress.do',
-                type: 'post',
-                async: false,
-                data: paramJson,
-                success: function (data) {
-                    if (data=="false"){
-                        alert("新增地址失败");
-                    }else{
-                        window.location.href = data;
-                    }
+        $.ajax({
+            url: '/userAddress/addOrUpdateAddress.do',
+            type: 'post',
+            async: false,
+            data: paramJson,
+            success: function (data) {
+                if (data == "false") {
+                    alert("新增地址失败");
+                } else {
+                    window.location.href = data;
                 }
-            })
-        }
+            }
+        })
+
+        /*
+         if (addressJS.validateAddressInfo(paramJson)) {
+         alert(paramJson);
+         $.ajax({
+         url: '/userAddress/addOrUpdateAddress.do',
+         type: 'post',
+         async: false,
+         data: paramJson,
+         success: function (data) {
+         if (data=="false"){
+         alert("新增地址失败");
+         }else{
+         window.location.href = data;
+         }
+         }
+         })
+         }*/
     }
 </script>
 <body>
@@ -43,8 +59,9 @@
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
-                <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                       alt=""></a>
+                <a href="javascript:;" onClick="javascript:history.back(-1);"><img
+                        src="<%=path%>/static/images/xq_rt.png"
+                        alt=""></a>
                 <p>新建收货地址</p>
             </header>
             <div id="d_box">

@@ -93,33 +93,10 @@ public class UserAddressController {
 
         model.addAttribute("addressId", selectedAddressId);
         model.addAttribute("pfCorderId", pfCorderId);
-        if (operateType.equals("save")) {
-            userAddressService.addComUserAddress(comUserAddress);
-            String path = "";
-            if (!StringUtils.isEmpty(comUserAddress.getId())){
-                switch (jumpType){
-                    case "jumpToOrder":
-                        path = getOrderPagePath(request,comUserAddress.getId());
-                        break;
-                    default:
-                        break;
-                }
-            }else{
-                return "false";
-            }
-            return path;
-        } else {
-            int i = 0;
-            comUserAddress.setIsDefault(isDefault);
-            comUserAddress.setId(id);
-            i = userAddressService.updateComUserAddress(comUserAddress);
-            if (i == 1) {
-                return "success";
-            } else {
-                return "false";
-            }
-        }
+        String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,jumpType);
+        return s;
 }
+
     /**
      * 选择地址点击某个地址或者返回
      *
@@ -131,7 +108,7 @@ public class UserAddressController {
                                              HttpServletResponse response,
                                              @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId) {
         String redirectHead = "redirect:";
-        String redirectBody = getOrderPagePath(request,selectedAddressId);
+        String redirectBody = userAddressService.getOrderPagePath(request,selectedAddressId);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
@@ -139,63 +116,7 @@ public class UserAddressController {
         return redirectHead+redirectBody;
     }
 
-    private String getOrderPagePath(HttpServletRequest request,Long selectedAddressId){
-        String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
-        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
-        Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-        return  getOrderAddress(orderType,orderId,skuId,selectedAddressId);
-    }
-    /**
-     * 获得跳转到的订单地址
-     * 1:支付试用订单地址
-     * 2：合伙人支付订单地址
-     * @author hanzengzhi
-     * @date 2016/3/22 12:13
-     */
-    private String getOrderAddress(String type ,Long orderId ,Integer skuId ,Long selectedAddressId) {
-        StringBuffer sb = new StringBuffer();
-        switch (type){
-            case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE :
-                getTrialOrderAddress(sb,skuId,selectedAddressId);
-                break;
-            case SysConstants.SESSION_PAY_ORDER_TYPE_VALUE :
-                getPayBorderAddress(sb,orderId,selectedAddressId);
-                break;
-            default:
-                break;
-        }
-        return sb.toString();
-    }
-    /**
-     * 试用支付的地址
-     * @author hanzengzhi
-     * @date 2016/3/22 13:41
-     */
-    private void getTrialOrderAddress(StringBuffer sb,Integer skuId,Long selectedAddressId){
-        //跳转到支付使用界面
-        sb.append("/corder/confirmOrder.do?");
-        if (!StringUtils.isEmpty(skuId)) {
-            sb.append("skuId=").append(skuId).append("&");
-        }
-        if (!StringUtils.isEmpty(selectedAddressId)) {
-            sb.append("&selectedAddressId=").append(selectedAddressId);
-        }
-    }
-    /**
-     * border支付地址
-     * @author hanzengzhi
-     * @date 2016/3/22 13:41
-     */
-    private void getPayBorderAddress(StringBuffer sb,Long orderId,Long selectedAddressId){
-        //跳转到支付界面
-        sb.append("/border/payBOrder.shtml?");
-        if (!StringUtils.isEmpty(orderId)) {
-            sb.append("bOrderId=").append(orderId).append("&");
-        }
-        if (!StringUtils.isEmpty(selectedAddressId)) {
-            sb.append("userAddressId=").append(selectedAddressId);
-        }
-    }
+
     /**
      * 跳转到编辑地址界面
      *

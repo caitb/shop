@@ -66,10 +66,11 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a onclick="returnPage()" style="position: absolute;top: 9px;left: 10px;"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
-                        <a href="<%=path%>/userAddress/toManageAddressPage.html"><h2 class="gl">管理</h2></a>
+                        <a href="<%=path%>/userAddress/toManageAddressPage.html" style="position: absolute;right: 10px;
+                        display: block;width: 50px;height: 100%;"><h2 class="gl">管理</h2></a>
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>

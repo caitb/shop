@@ -50,8 +50,8 @@ public class PfUserSkuService {
         return pfUserSkuMapper.getUserSkuListById(id);
     }
 
-    public Integer findCertificateBySkuId(Integer skuId) {
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(skuId);
+    public Integer findCertificateBySkuId(Integer userSkuId) {
+        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
         Integer status = null;
         if (pfUserCertificate!=null){
             status = pfUserCertificate.setStatus(pfUserCertificate.getStatus());

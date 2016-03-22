@@ -118,7 +118,7 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = getComUser(request);
+            ComUser comUser = comUserMapper.selectByPrimaryKey(13L); //getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
@@ -139,7 +139,7 @@ public class DevelopingController extends BaseController {
                     //上传二维码到OSS
                     File posterFile = new File(posterPath);
                     //OSSObjectUtils.uploadFile("mmshop", posterFile, "static/user/poster/");
-                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"poster.png", posterPath, posterName);
+                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"poster.jpg", posterPath, posterName);
                     //删除本地二维码图片
                     posterFile.delete();
                     //保存二维码图片地址
@@ -194,7 +194,7 @@ public class DevelopingController extends BaseController {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write(bufferedImage, "png", imOut);
             InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("masiis", "static/user/poster/" + saveFileName + ".png", is);
+            OSSObjectUtils.uploadFile("mmshop", "static/user/poster/" + saveFileName, is);
         } catch (Exception e) {
             log.error("画海报出错了!");
             e.printStackTrace();

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script type="application/javascript">
         var path = "<%=path%>";
         var basepath = "<%=basePath%>";
@@ -24,7 +25,7 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="#" onclick="backLastPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>申请提现 </p>            
         </header>
         <main>
@@ -78,4 +79,5 @@
 </body>
 <script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="application/javascript" src="<%=path%>/static/js/extract_apply.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/commonAjax.js"></script>
 </html>

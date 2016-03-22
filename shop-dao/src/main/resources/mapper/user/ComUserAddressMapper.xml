@@ -24,7 +24,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAddress" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAddress"  useGeneratedKeys="true" keyProperty="id" >
         insert into com_user_address (id, create_time, user_id, 
             name, zip, province_id, 
             province_name, city_id, city_name, 

@@ -23,9 +23,7 @@
             $.post("/userAddress/addOrUpdateAddress.do",
                     paramJson,
                     function (data) {
-                        if (data == "success") {
-                            window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
-                        }
+                            window.location.href = data;
                     });
         }
     }

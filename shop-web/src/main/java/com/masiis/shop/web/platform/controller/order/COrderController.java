@@ -206,6 +206,7 @@ public class COrderController extends BaseController {
         pfCorder.setOrderCode(OrderMakeUtils.makeOrder("C"));
         pfCorder.setOrderType(0);
         pfCorder.setOrderStatus(0);//未付款
+        pfCorder.setShipStatus(0);//未发货
         pfCorder.setSkuId(skuId);
         pfCorder.setUserId(userId);
         pfCorder.setProductAmount(new BigDecimal(0));

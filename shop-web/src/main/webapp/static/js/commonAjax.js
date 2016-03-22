@@ -8,26 +8,26 @@
         //备份opt中error和success方法
         var fn = {
             beforeSend:function(){},
+            dataFilter: function (){},
             error:function(XMLHttpRequest, textStatus, errorThrown){},
             success:function(data, textStatus){},
-            complete: function(XMLHttpRequest, textStatus){
-
-            }
+            complete: function(XMLHttpRequest, textStatus){}
         }
         if(opt.beforeSend){
             fn.beforeSend=opt.beforeSend;
         }
+        if(opt.dataFilter){
+            fn.dataFilter=opt.dataFilter;
+            setTimeout("fullHide()",2500);
+        }
         if(opt.error){
             fn.error=opt.error;
-            setTimeout("fullHide()",2500);
         }
         if(opt.success){
             fn.success=opt.success;
-            setTimeout("fullHide()",2500);
         }
         if(opt.complete){
             fn.complete=opt.complete;
-            setTimeout("fullHide()",2500);
         }
         //扩展增强处理
         var _opt = $.extend(opt,{

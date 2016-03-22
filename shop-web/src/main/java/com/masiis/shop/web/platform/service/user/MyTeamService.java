@@ -127,10 +127,15 @@ public class MyTeamService {
      * @return
      */
     public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId, Integer userSkuId){
+        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
+        if(pfUserCertificate == null){//合伙人未填写证书申请
+            return null;
+        }
+
         ComUser comUser = comUserMapper.selectByPrimaryKey(comUserId);
         ComSku comSku = comSkuMapper.selectById(skuId);
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(agentLevelId);
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
+
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("comUserId", comUser.getId());

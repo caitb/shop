@@ -88,6 +88,8 @@
 
 
 <div>
+
+
     <script src="<%=basePath%>static/js/jquery-2.2.0.min.js"></script>
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -96,6 +98,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/ga.js"></script>
     <!-- Latest compiled and minified Locales -->
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
+
 </div>
 <script>
     //身份证

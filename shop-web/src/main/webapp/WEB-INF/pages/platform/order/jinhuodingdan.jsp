@@ -306,26 +306,27 @@
                     <%--</div>--%>
                 </main>
            </div>
+           <div class="back_shouhuo">
+               <p>确认收到货品?</p>
+               <h4>亲，请您核对商品后在操作确认收货</h4>
+
+               <h3>
+                   <span class="que_qu">取消</span>
+                   <span class="que_que">确认</span>
+               </h3>
+           </div>
+
+           <div class="back_que">
+               <p>确认取消订单？</p>
+               <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
+
+               <h3>
+                   <span class="que_qu">取消</span>
+                   <span class="que_que">确认</span>
+               </h3>
+           </div>
             <div class="back">
-                <div class="back_shouhuo">
-                    <p>确认收到货品?</p>
-                    <h4>亲，请您核对商品后在操作确认收货</h4>
 
-                    <h3>
-                        <span class="que_qu">取消</span>
-                        <span class="que_que">确认</span>
-                    </h3>
-                </div>
-                
-                <div class="back_que">
-                    <p>确认取消订单？</p>
-                    <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
-
-                    <h3>
-                        <span class="que_qu">取消</span>
-                        <span class="que_que">确认</span>
-                    </h3>
-                </div>
             </div>
        </div>
        <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>

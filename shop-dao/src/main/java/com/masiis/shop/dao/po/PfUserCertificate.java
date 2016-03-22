@@ -80,9 +80,7 @@ public class PfUserCertificate {
     private String sjName;
 
     private String reason;//拒绝理由
-    /**
-     * 海报
-     */
+
     private String poster;
 
     public Long getId() {
@@ -201,8 +199,9 @@ public class PfUserCertificate {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public Integer setStatus(Integer status) {
         this.status = status;
+        return status;
     }
 
     public String getRemark() {

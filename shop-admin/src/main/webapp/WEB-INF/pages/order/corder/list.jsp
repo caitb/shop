@@ -128,7 +128,9 @@
                                             sortable: true,
                                             footerFormatter: totalTextFormatter,
                                             formatter: function(value, row, index){
-                                                return row.pfCorder.id;
+                                                if(row.pfCorder && row.pfCorder.id){
+                                                    return row.pfCorder.id;
+                                                }
                                             }
                                         }, {
                                             title: '详情',
@@ -145,7 +147,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.pfCorder.orderCode;
+                                                    if(row.pfCorder && row.pfCorder.orderCode){
+                                                        return row.pfCorder.orderCode;
+                                                    }
                                                 }
                                             },
                                             {
@@ -176,7 +180,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.comUser.realName;
+                                                    if(row.comUser && row.comUser.realName){
+                                                        return row.comUser.realName;
+                                                    }
                                                 }
                                             },
                                             {
@@ -186,7 +192,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.pfCorder.orderAmount;
+                                                    if(row.pfCorder && row.pfCorder.orderAmount){
+                                                        return row.pfCorder.orderAmount;
+                                                    }
                                                 }
                                             },
                                             {
@@ -196,7 +204,9 @@
                                                 footerFormatter: totalNameFormatter,
                                                 align: 'center',
                                                 formatter: function(value, row, index){
-                                                    return row.pfCorder.payAmount;
+                                                    if(row.pfCorder && row.pfCorder.payAmount){
+                                                        return row.pfCorder.payAmount;
+                                                    }
                                                 }
                                             },
                                             {

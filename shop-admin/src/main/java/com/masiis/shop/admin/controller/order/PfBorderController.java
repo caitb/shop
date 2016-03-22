@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.controller.order;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.dao.po.PfBorder;
@@ -21,6 +23,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/order/border")
 public class PfBorderController {
+
+    private final static Log log = LogFactory.getLog(PfBorderController.class);
 
     @Resource
     private BOrderService bOrderService;

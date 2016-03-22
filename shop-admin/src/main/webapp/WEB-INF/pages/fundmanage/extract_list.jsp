@@ -31,6 +31,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
     <script src="<%=basePath%>static/js/date-util.js"></script>
 
+
 </head>
 
 <body>

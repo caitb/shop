@@ -246,4 +246,6 @@ public class CertificateService {
         String idCardImg = PropertiesUtils.getStringValue("index_user_certificate_url");
         return idCardImg+imgUrl;
     }
+
+
 }

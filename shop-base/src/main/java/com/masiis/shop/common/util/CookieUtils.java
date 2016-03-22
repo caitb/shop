@@ -53,10 +53,11 @@ public class CookieUtils {
      * @param response
      * @param name
      * @param value
+     * @param isHttpOnly
      */
     public static void setCookie(HttpServletResponse response, String name,
-                                 String value) {
-        setCookie(response, name, value, COOKIE_MAX_AGE);
+                                 String value, boolean isHttpOnly) {
+        setCookie(response, name, value, COOKIE_MAX_AGE, isHttpOnly);
     }
 
     /**
@@ -66,9 +67,10 @@ public class CookieUtils {
      * @param name
      * @param value
      * @param maxValue
+     * @param isHttpOnly
      */
     public static void setCookie(HttpServletResponse response, String name,
-                                 String value, int maxValue) {
+                                 String value, int maxValue, boolean isHttpOnly) {
         if (null == name) {
             return;
         }
@@ -77,6 +79,7 @@ public class CookieUtils {
         }
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
+        if(isHttpOnly) cookie.setHttpOnly(isHttpOnly);
         if (maxValue != 0) {
             cookie.setMaxAge(maxValue);
         } else {

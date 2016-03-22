@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -125,7 +126,11 @@ public class BOrderController extends BaseController {
             order.setOrderCode(orderCode);
             order.setUserMessage("");
             order.setUserId(comUser.getId());
-            order.setUserPid(0l);
+            if (pUserId != null && pUserId > 0) {
+                order.setUserPid(pUserId);
+            } else {
+                order.setUserPid(0l);
+            }
             order.setSupplierId(0);
             order.setReceivableAmount(totalPrice);
             order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
@@ -192,7 +197,7 @@ public class BOrderController extends BaseController {
                                   HttpServletResponse response,
                                   @RequestParam(value = "userAddressId", required = false) Long userAddressId,
                                   @RequestParam(value = "userMessage", required = false) String userMessage,
-                                  @RequestParam(value = "bOrderId", required = false) Long bOrderId
+                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId
     ) {
         ModelAndView mv = new ModelAndView();
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -388,7 +393,7 @@ public class BOrderController extends BaseController {
             bOrderService.updateBOrder(pfBorder);
             json.put("mesg", "交易成功");
         } catch (Exception e) {
-            json.put("message",e.getMessage());
+            json.put("message", e.getMessage());
         }
         return json.toString();
     }

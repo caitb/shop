@@ -35,7 +35,7 @@
         //扩展增强处理
         var _opt = $.extend(opt, {
             beforeSend: function (XMLHttpRequest) {
-                CommonPerson.Base.LoadingPic.FullScreenShow();
+                fullShow();
                 this;
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -157,4 +157,8 @@ CommonPerson.Base.LoadingPic = {
 }
 function fullHide() {
     CommonPerson.Base.LoadingPic.FullScreenHide();
+}
+
+function fullShow() {
+    CommonPerson.Base.LoadingPic.FullScreenShow();
 }

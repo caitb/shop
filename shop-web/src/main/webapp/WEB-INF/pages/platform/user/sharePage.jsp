@@ -36,7 +36,7 @@
         <div class="sec2">
             <p>方法二</p>
             <h1>宣传海报，将海报发到您的朋友圈</h1>
-            <img src="<%=basePath%>static/images/asd.JPG" alt="">
+            <img src="${shareMap.poster}" alt="">
             <h3 id="downloadImage2">请长按图片保存海报</h3>
         </div>
     </div>
@@ -104,7 +104,7 @@
     var shareData = {
         title: '${shareMap.shareTitle}',
         desc: '${shareMap.shareDesc}',
-        link: '<%=basePath%>${shareMap.shareLink}',
+        link: '${shareMap.shareLink}',
         imgUrl: '${shareMap.shareImg}',
         trigger: function (res) {
             alert('用户点击分享到QQ: ' + "这是最新的masiis产品数据");

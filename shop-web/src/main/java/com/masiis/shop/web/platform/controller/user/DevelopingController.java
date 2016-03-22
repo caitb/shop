@@ -118,7 +118,7 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = comUserMapper.selectByPrimaryKey(13L); //getComUser(request);
+            ComUser comUser = getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());

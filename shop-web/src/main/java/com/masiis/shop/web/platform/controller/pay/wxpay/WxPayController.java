@@ -114,8 +114,8 @@ public class WxPayController extends BaseController{
         // 获取成功支付后的跳转页面url
         request.setAttribute("req", payReq);
         request.setAttribute("successUrl", req.getSuccessUrl());
-        request.setAttribute("cancelUrl", "");
-        request.setAttribute("errUrl", "");
+        request.setAttribute("cancelUrl", req.getCancelUrl());
+        request.setAttribute("errUrl", req.getErrorUrl());
         /*////// 检查jsapi_ticket和access_token有效性,次access_token不是微信网页授权access_token
         ////// 组织页面wx.config参数,并形成签名
         发现可以不用这种方式实现*/

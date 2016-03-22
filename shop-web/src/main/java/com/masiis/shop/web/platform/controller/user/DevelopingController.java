@@ -139,7 +139,7 @@ public class DevelopingController extends BaseController {
                     posterFile.delete();
                     //保存二维码图片地址
                     pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+posterName);
-                    pfUserCertificateMapper.updateByPrimaryKey(pfUserCertificate);
+                    pfUserCertificateMapper.updateById(pfUserCertificate);
                 }
                 resultMap.put("poster", pfUserCertificate.getPoster());
             }

@@ -1,11 +1,13 @@
 package com.masiis.shop.web.platform.controller.product;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,9 @@ public class ProductController extends BaseController {
 
     @Resource
     private UserSkuService userSkuService;
+
+    @Resource
+    private BOrderService bOrderService;
 
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
@@ -77,5 +82,31 @@ public class ProductController extends BaseController {
             obj.put("message", ex.getMessage());
         }
         return obj;
+    }
+    /**
+      * @Author Jing Hao
+      * @Date 2016/3/22 0022 下午 4:02
+      * 补货
+      */
+    @RequestMapping(value = "/user/addStock")
+    @ResponseBody
+    public String addProductStock(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(required = true) Integer stock,
+                                        @RequestParam(required = true) Integer skuId){
+        JSONObject object = new JSONObject();
+        try {
+            HttpSession session = request.getSession();
+            ComUser comUser = (ComUser) session.getAttribute("comUser");
+            Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(),skuId,stock);
+            object.put("isError", false);
+            object.put("orderCode", orderCode);
+            if (orderCode==null) {
+                throw new BusinessException("补货失败!");
+            }
+        }catch (Exception ex){
+            object.put("isError", true);
+            object.put("message", ex.getMessage());
+        }
+        return object.toJSONString();
     }
 }

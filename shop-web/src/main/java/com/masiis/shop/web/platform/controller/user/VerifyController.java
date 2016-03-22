@@ -105,7 +105,7 @@ public class VerifyController extends BaseController {
                 user.setRefreshToken(res.getRefresh_token());
                 Long atoken_ex = res.getExpires_in();
                 if(res.getExpires_in() == null || res.getExpires_in() <= 0){
-                    atoken_ex = 7200L;
+                    atoken_ex = 7200L * 1000;
                 }
                 user.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
                 user.setWxHeadImg(userRes.getHeadimgurl());
@@ -248,7 +248,7 @@ public class VerifyController extends BaseController {
                     user.setRefreshToken(rfResBean.getRefresh_token());
                     Long atoken_ex = new Long(rfResBean.getExpires_in());
                     if(rfResBean.getExpires_in() == null || atoken_ex <= 0){
-                        atoken_ex = 7200L;
+                        atoken_ex = 7200L * 1000;
                     }
                     user.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
                     user.setWxHeadImg(userRes.getHeadimgurl());

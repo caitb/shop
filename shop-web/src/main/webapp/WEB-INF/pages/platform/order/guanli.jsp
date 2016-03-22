@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/guanli.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
     $(document).ready(function () {
         $.post("/userAddress/getUserAddressByUserId.do",

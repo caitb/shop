@@ -4,7 +4,6 @@
 
     //重写jquery的ajax方法
     $.ajax = function (opt) {
-        CommonPerson.Base.LoadingPic.FullScreenShow();
         //备份opt中error和success方法
         var fn = {
             beforeSend: function () {
@@ -35,9 +34,12 @@
         }
         //扩展增强处理
         var _opt = $.extend(opt, {
+            beforeSend: function (XMLHttpRequest) {
+                CommonPerson.Base.LoadingPic.FullScreenShow();
+                this;
+            },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 fullHide();
-                ;
                 //错误方法增强处理
                 fn.error(XMLHttpRequest, textStatus, errorThrown);
             },

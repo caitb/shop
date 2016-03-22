@@ -13,6 +13,15 @@ public class PfUserSkuCertificate extends PfUserSku {
     private ComAgentLevel comAgentLevel;
     private String pRealName;
     private Integer lowerCount;
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getSkuName() {
         return skuName;
@@ -61,4 +70,6 @@ public class PfUserSkuCertificate extends PfUserSku {
     public void setpRealName(String pRealName) {
         this.pRealName = pRealName;
     }
+
+
 }

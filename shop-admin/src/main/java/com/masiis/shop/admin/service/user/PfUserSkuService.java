@@ -1,7 +1,9 @@
 package com.masiis.shop.admin.service.user;
 
 import com.masiis.shop.dao.beans.user.PfUserSkuCertificate;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +19,8 @@ public class PfUserSkuService {
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
 
+    @Resource
+    private PfUserCertificateMapper pfUserCertificateMapper;
 
     /**
      * 查询合伙人列表
@@ -44,5 +48,14 @@ public class PfUserSkuService {
      */
     public List<PfUserSkuCertificate> getUserSkuById(Integer id) {
         return pfUserSkuMapper.getUserSkuListById(id);
+    }
+
+    public Integer findCertificateBySkuId(Integer userSkuId) {
+        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
+        Integer status = null;
+        if (pfUserCertificate!=null){
+            status = pfUserCertificate.setStatus(pfUserCertificate.getStatus());
+        }
+        return status;
     }
 }

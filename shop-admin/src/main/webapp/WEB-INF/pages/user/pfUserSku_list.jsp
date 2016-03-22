@@ -140,7 +140,7 @@
                                             },
                                             {
                                             title: '详情',
-                                            colspan: 10,
+                                            colspan: 11,
                                             align: 'center'
                                             }
                                         ],
@@ -276,6 +276,23 @@
                                                         return "否";
                                                     }else if(row.isCertificate==1){
                                                         return "是";
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                field: 'status',
+                                                title: '证书状态',
+                                                sortable: true,
+                                                //editable: true,
+                                                footerFormatter: totalNameFormatter,
+                                                align: 'center',
+                                                formatter: function(value, row, index){
+                                                    if(row.status==0){
+                                                        return "未申请";
+                                                    }else if(row.status==1){
+                                                        return "申请通过";
+                                                    }else if(row.status==2){
+                                                        return "申请未通过";
                                                     }
                                                 }
                                             },

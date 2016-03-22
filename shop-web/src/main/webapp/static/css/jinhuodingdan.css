@@ -195,17 +195,17 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
   display: none;
 }
-.wrap .back .back_que,
-.wrap .back .back_shouhuo {
-  width: 80%;
+.wrap .back_que,
+.wrap .back_shouhuo {
+  width: 90%;
+  position: fixed;
+  left:5%;
+  top:30%;
   background: white;
   border-radius: 5px;
   z-index: 10;
@@ -213,36 +213,36 @@
   -webkit-box-orient: vertical;
   display: none;
 }
-.wrap .back .back_que p,
-.wrap .back .back_shouhuo p {
+.wrap .back_que p,
+.wrap .back_shouhuo p {
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
   line-height: 30px;
   margin-bottom: 10px;
 }
-.wrap .back .back_que h4,
-.wrap .back .back_shouhuo h4 {
+.wrap .back_que h4,
+.wrap .back_shouhuo h4 {
   margin: 0 15px;
   text-indent: 10px;
   letter-spacing: 1px;
 }
-.wrap .back .back_que h3,
-.wrap .back .back_shouhuo h3 {
+.wrap .back_que h3,
+.wrap .back_shouhuo h3 {
   margin-top: 10px;
   -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-align: center;
   border-top: 1px solid #999999;
 }
-.wrap .back .back_que h3 span,
-.wrap .back .back_shouhuo h3 span {
+.wrap .back_que h3 span,
+.wrap .back_shouhuo h3 span {
   display: block;
   -webkit-box-flex: 1;
   text-align: center;
   line-height: 33px;
 }
-.wrap .back .back_que h3 span:nth-child(1),
-.wrap .back .back_shouhuo h3 span:nth-child(1) {
+.wrap .back_que h3 span:nth-child(1),
+.wrap .back_shouhuo h3 span:nth-child(1) {
   border-right: 1px solid #999;
 }

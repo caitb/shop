@@ -70,7 +70,7 @@ public class WXBeanUtils {
                     key = aJF.name();
                 }
                 SignField sf = f.getAnnotation(SignField.class);
-                if(sf == null){
+                if(sf != null){
                     continue;
                 }
                 String value = (String) f.get(obj);

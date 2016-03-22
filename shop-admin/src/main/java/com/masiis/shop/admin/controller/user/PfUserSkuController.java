@@ -1,8 +1,11 @@
 package com.masiis.shop.admin.controller.user;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.controller.base.BaseController;
+import com.masiis.shop.admin.service.certificate.CertificateService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.service.user.PfUserSkuService;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -29,10 +32,14 @@ import java.util.Map;
 @RequestMapping("/userSku")
 public class PfUserSkuController extends BaseController {
 
+    private final static Log log = LogFactory.getLog(PfUserSkuController.class);
+
     @Resource
     private PfUserSkuService pfUserSkuService;
     @Resource
     private ComUserService comUserService;
+    @Resource
+    private CertificateService certificateService;
 
     /**
      * 合伙人列表
@@ -61,34 +68,44 @@ public class PfUserSkuController extends BaseController {
                        String order,
                        Integer offset,
                        Integer limit
-    )throws Exception {
-        offset = offset==null ? 0 : offset;
-        limit  = limit ==null ? 10 : limit;
-        Integer pageNo = offset/limit + 1;
-        PageHelper.startPage(pageNo, limit);
-        Map<String, Object> searchParam = new HashMap<>();//组合搜索
-        searchParam.put("pid", pid);
-        searchParam.put("beginTime",beginTime);
-        searchParam.put("endTime",endTime);
-        searchParam.put("mobile",mobile);
-        List<PfUserSkuCertificate> pfUserSkuList = pfUserSkuService.getUserSkuList(searchParam);
-        if (pfUserSkuList!=null&&pfUserSkuList.size()!=0){
-            for (PfUserSkuCertificate pfUserSkuCertificate:pfUserSkuList) {
-                if(pfUserSkuCertificate != null && pfUserSkuCertificate.getComUser()!=null&& pfUserSkuCertificate.getComUser().getId() != null){
-                    Integer parentId = pfUserSkuCertificate.getComUser().getId().intValue();
-                    Integer lowerCount = pfUserSkuService.findLowerCount(parentId);
-                    String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
+    ){
+        Integer parentId = null;
+        try {
+            offset = offset == null ? 0 : offset;
+            limit = limit == null ? 10 : limit;
+            Integer pageNo = offset / limit + 1;
+            PageHelper.startPage(pageNo, limit);
+            Map<String, Object> searchParam = new HashMap<>();//组合搜索
+            searchParam.put("pid", pid);
+            searchParam.put("beginTime", beginTime);
+            searchParam.put("endTime", endTime);
+            searchParam.put("mobile", mobile);
+            List<PfUserSkuCertificate> pfUserSkuList = pfUserSkuService.getUserSkuList(searchParam);
+            if (pfUserSkuList != null && pfUserSkuList.size() != 0) {
+                for (PfUserSkuCertificate pfUserSkuCertificate : pfUserSkuList) {
+                    if (pfUserSkuCertificate != null && pfUserSkuCertificate.getComUser() != null && pfUserSkuCertificate.getComUser().getId() != null) {
+                        log.info("获取的合伙人信息是:[PfUserSkuCertificate"+pfUserSkuCertificate+"]");
+                        parentId = pfUserSkuCertificate.getComUser().getId().intValue();
+                        Integer lowerCount = pfUserSkuService.findLowerCount(parentId);
+                        String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
+                        Integer status = pfUserSkuService.findCertificateBySkuId(pfUserSkuCertificate.getId());
 
-                    pfUserSkuCertificate.setLowerCount(lowerCount);
-                    pfUserSkuCertificate.setpRealName(pRealName);
+                        pfUserSkuCertificate.setLowerCount(lowerCount);
+                        pfUserSkuCertificate.setpRealName(pRealName);
+                        pfUserSkuCertificate.setStatus(status);
+                    }
                 }
             }
+            PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
+            Map<String, Object> pageMap = new HashMap<>();
+            pageMap.put("total", pageInfo.getTotal());
+            pageMap.put("rows", pfUserSkuList);
+            return pageMap;
+        }catch (Exception e){
+            log.error("合伙人父id是:[parentId"+parentId+"]");
+            e.printStackTrace();
         }
-        PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
-        Map<String, Object> pageMap = new HashMap<>();
-        pageMap.put("total", pageInfo.getTotal());
-        pageMap.put("rows", pfUserSkuList);
-        return pageMap;
+        return "";
     }
 
 
@@ -97,19 +114,26 @@ public class PfUserSkuController extends BaseController {
         ModelAndView mav = new ModelAndView("user/person");
 
         ComUser comUser = null;
-        if(id != null){
-            comUser = comUserService.findById(id);
-            if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
-                String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
-                comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
-                comUser.setIdCardBackUrl(cardImg + comUser.getIdCardBackUrl());
+
+        try {
+            if(id != null){
+                comUser = comUserService.findById(id);
+                if (comUser!=null&&comUser.getIdCardFrontUrl()!=null||comUser.getIdCardBackUrl()!=null){
+                    String cardImg = PropertiesUtils.getStringValue("index_user_idCard_url");
+                    comUser.setIdCardFrontUrl(cardImg + comUser.getIdCardFrontUrl());
+                    comUser.setIdCardBackUrl(cardImg + comUser.getIdCardBackUrl());
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String format = sdf.format(comUser.getCreateTime());
+                mav.addObject("date",format);
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String format = sdf.format(comUser.getCreateTime());
-            mav.addObject("date",format);
+            mav.addObject("comUser", comUser);
+            return mav;
+        }catch (Exception e){
+            log.error("获取个人信息失败！[comUser+"+comUser+"]");
+            e.printStackTrace();
         }
-        mav.addObject("comUser", comUser);
-        return mav;
+        return null;
     }
 
     /**
@@ -140,23 +164,30 @@ public class PfUserSkuController extends BaseController {
         Integer pageNo = offset/limit + 1;
         PageHelper.startPage(pageNo, limit);
         List<PfUserSkuCertificate> pfUserSkuList = null;
-        if(id != null){
-            pfUserSkuList = pfUserSkuService.getUserSkuById(id);
-            if (pfUserSkuList.size()!=0){
-                for (PfUserSkuCertificate pfUserSkuCertificate:pfUserSkuList) {
-                    if (pfUserSkuCertificate!=null){
-                        ComUser comUser = pfUserSkuCertificate.getComUser();
-                        String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
-                        pfUserSkuCertificate.setpRealName(pRealName);
+        ComUser comUser = null;
+        try{
+            if(id != null){
+                pfUserSkuList = pfUserSkuService.getUserSkuById(id);
+                if (pfUserSkuList.size()!=0){
+                    for (PfUserSkuCertificate pfUserSkuCertificate:pfUserSkuList) {
+                        if (pfUserSkuCertificate!=null){
+                            comUser = pfUserSkuCertificate.getComUser();
+                            String pRealName = comUserService.findByPid(pfUserSkuCertificate.getPid());
+                            pfUserSkuCertificate.setpRealName(pRealName);
+                        }
                     }
                 }
             }
+            PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
+            Map<String, Object> pageMap = new HashMap<>();
+            pageMap.put("total", pageInfo.getTotal());
+            pageMap.put("rows", pfUserSkuList);
+            return pageMap;
+        }catch (Exception e){
+            log.error("获取个人信息失败！[comUser+"+comUser+"]");
+            e.printStackTrace();
         }
-        PageInfo<PfUserSkuCertificate> pageInfo = new PageInfo<>(pfUserSkuList);
-        Map<String, Object> pageMap = new HashMap<>();
-        pageMap.put("total", pageInfo.getTotal());
-        pageMap.put("rows", pfUserSkuList);
-        return pageMap;
+        return "";
     }
 
 }

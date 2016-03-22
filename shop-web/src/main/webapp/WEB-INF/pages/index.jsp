@@ -96,8 +96,9 @@
             <%--</c:forEach>--%>
             <%--</section>--%>
             <%--</c:forEach>--%>
+                <c:forEach begin="0" end="${ComSize}" step="2" var="i">
             <section class="sec1">
-                <c:forEach items="${indexComS}" begin="0" end="1" var="Sku">
+                <c:forEach items="${indexComS}"  begin="${i}" end="${i+1}" var="Sku">
                     <div>
                         <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
                         <h2>${Sku.comSku.name}</h2>
@@ -112,6 +113,7 @@
                     </div>
                 </c:forEach>
             </section>
+                </c:forEach>
             <%--<section class="sec1">--%>
             <%--<div>--%>
             <%--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>--%>

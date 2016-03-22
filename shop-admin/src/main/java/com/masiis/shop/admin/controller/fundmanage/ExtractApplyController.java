@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.controller.fundmanage;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.dao.beans.extract.ExtractApply;
@@ -27,6 +29,7 @@ import java.util.Map;
 @RequestMapping("/fundmanage/extract")
 public class ExtractApplyController extends BaseController {
 
+    private final static Log log = LogFactory.getLog(ExtractApplyController.class);
     @Resource
     private ComUserExtractApplyService comUserExtractApplyService;
 
@@ -47,7 +50,7 @@ public class ExtractApplyController extends BaseController {
                        String order,
                        Integer offset,
                        Integer limit
-    )throws Exception {
+    ) {
         offset = offset==null ? 0 : offset;
         limit  = limit ==null ? 10 : limit;
         Integer pageNo = offset/limit + 1;
@@ -57,33 +60,47 @@ public class ExtractApplyController extends BaseController {
         searchParam.put("beginTime",beginTime);
         searchParam.put("endTime",endTime);
         searchParam.put("mobile",mobile);*/
-        List<ExtractApply> extractApplyList = comUserExtractApplyService.getExtractApplyList();
-        if (extractApplyList!=null&&extractApplyList.size()!=0){
-            for (ExtractApply extractApply:extractApplyList) {
-                if(extractApply != null && extractApply.getComUserId()!=null){
-                    ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
-                    extractApply.setComUserAccount(comUserAccount);
+        ComUserAccount comUserAccount = null;
+        try{
+            List<ExtractApply> extractApplyList = comUserExtractApplyService.getExtractApplyList();
+            if (extractApplyList!=null&&extractApplyList.size()!=0){
+                for (ExtractApply extractApply:extractApplyList) {
+                    if(extractApply != null && extractApply.getComUserId()!=null){
+                        comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+                        extractApply.setComUserAccount(comUserAccount);
+                    }
                 }
             }
+            PageInfo<ExtractApply> pageInfo = new PageInfo<>(extractApplyList);
+            Map<String, Object> pageMap = new HashMap<>();
+            pageMap.put("total", pageInfo.getTotal());
+            pageMap.put("rows", extractApplyList);
+            return pageMap;
+        }catch (Exception e){
+            log.error("提现失败！[comUserAccount="+comUserAccount+"]");
+            e.printStackTrace();
         }
-        PageInfo<ExtractApply> pageInfo = new PageInfo<>(extractApplyList);
-        Map<String, Object> pageMap = new HashMap<>();
-        pageMap.put("total", pageInfo.getTotal());
-        pageMap.put("rows", extractApplyList);
-        return pageMap;
+        return "";
     }
 
     @RequestMapping("/toaudit.do")
     public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long id){
 
         ModelAndView mav = new ModelAndView("fundmanage/toAudit");
-        ExtractApply extractApply = comUserExtractApplyService.findById(id);
-        if (extractApply!=null){
-            ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
-            extractApply.setComUserAccount(comUserAccount);
+        ExtractApply extractApply = null;
+        try{
+            extractApply = comUserExtractApplyService.findById(id);
+            if (extractApply!=null){
+                ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+                extractApply.setComUserAccount(comUserAccount);
+            }
+            mav.addObject(extractApply);
+            return mav;
+        }catch (Exception e){
+            log.error("查看提现信息失败！[comUserAccount="+extractApply+"]");
+            e.printStackTrace();
         }
-        mav.addObject(extractApply);
-        return mav;
+        return null;
     }
 
     /**
@@ -94,7 +111,12 @@ public class ExtractApplyController extends BaseController {
     @RequestMapping("pass.do")
     @ResponseBody
     public Object pass(Long id){
-        comUserExtractApplyService.pass(id);
+        try {
+            comUserExtractApplyService.pass(id);
+        }catch (Exception e){
+            log.error("提现通过审核失败！[id="+id+"]");
+            e.printStackTrace();
+        }
         return "1";
     }
 
@@ -106,7 +128,12 @@ public class ExtractApplyController extends BaseController {
     @RequestMapping("refuse.do")
     @ResponseBody
     public Object refuse(Long id){
-        comUserExtractApplyService.refuse(id);
+        try {
+            comUserExtractApplyService.refuse(id);
+        }catch (Exception e){
+            log.error("提现拒绝审核失败！[id="+id+"]");
+            e.printStackTrace();
+        }
         return "2";
     }
 
@@ -118,7 +145,13 @@ public class ExtractApplyController extends BaseController {
     @RequestMapping("pay.do")
     @ResponseBody
     public Object pay(Long id){
-        comUserExtractApplyService.pay(id);
+
+        try {
+            comUserExtractApplyService.pay(id);
+        }catch (Exception e){
+            log.error("提现拒绝审核失败！[id="+id+"]");
+            e.printStackTrace();
+        }
         return "3";
     }
 

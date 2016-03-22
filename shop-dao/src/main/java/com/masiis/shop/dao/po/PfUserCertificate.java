@@ -80,9 +80,7 @@ public class PfUserCertificate {
     private String sjName;
 
     private String reason;//拒绝理由
-    /**
-     * 海报
-     */
+
     private String poster;
 
     public Long getId() {

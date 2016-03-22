@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.controller.order;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.COrderService;
 import com.masiis.shop.dao.po.PfCorder;
@@ -22,6 +24,8 @@ import java.util.Map;
 @RequestMapping("/order/corder")
 public class PfCorderController {
 
+    private final static Log log = LogFactory.getLog(PfCorderController.class);
+
     @Resource
     private COrderService cOrderService;
 
@@ -37,9 +41,16 @@ public class PfCorderController {
                        Integer pageSize,
                        PfCorder pfCorder){
 
-        Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
+        try {
+            Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
 
-        return pageMap;
+            return pageMap;
+        } catch (Exception e) {
+            log.error("查询试用订单列表出错![pageNumber="+pageNumber+"][pageSize="+pageSize+"][pfCorder="+pfCorder+"]");
+            e.printStackTrace();
+
+            return "查询试用订单列表出错!";
+        }
     }
 
     @RequestMapping("/detail.shtml")

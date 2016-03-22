@@ -119,6 +119,8 @@ public class VerifyController extends BaseController {
                     userService.updateComUser(user);
                 }
                 log.info("userid:" + user.getId());
+                session.invalidate();
+                session = request.getSession();
                 // 登录
                 session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 // 保存Cookie
@@ -204,6 +206,8 @@ public class VerifyController extends BaseController {
                 if (resBean != null && "0".equals(resBean.getErrcode())) {
                     // token仍有效,进行登录操作,并跳转目标链接
                     log.info("token仍有效,跳转目标链接!");
+                    session.invalidate();
+                    session = request.getSession();
                     session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                 } else if (resBean != null
                         && (WxResCodeCons.ACCESS_TOKEN_INVALID.equals(resBean.getErrcode())
@@ -252,6 +256,8 @@ public class VerifyController extends BaseController {
                     user.setSex(new Integer(userRes.getSex()));
                     userService.updateComUser(user);
                     // 登录
+                    session.invalidate();
+                    session = request.getSession();
                     session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
                     // 保存Cookie
                     String openidkey = getEncryptByOpenid(rfResBean.getOpenid());

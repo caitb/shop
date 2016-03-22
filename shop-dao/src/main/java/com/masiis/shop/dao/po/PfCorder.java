@@ -389,4 +389,41 @@ public class PfCorder {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    @Override
+    public String toString() {
+        return "PfCorder{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", orderCode='" + orderCode + '\'' +
+                ", orderType=" + orderType +
+                ", userId=" + userId +
+                ", userPid=" + userPid +
+                ", userMassage='" + userMassage + '\'' +
+                ", supplierId=" + supplierId +
+                ", modifyTime=" + modifyTime +
+                ", modifyMan=" + modifyMan +
+                ", receivableAmount=" + receivableAmount +
+                ", orderAmount=" + orderAmount +
+                ", productAmount=" + productAmount +
+                ", shipAmount=" + shipAmount +
+                ", payAmount=" + payAmount +
+                ", payTime=" + payTime +
+                ", shipManId=" + shipManId +
+                ", shipManName='" + shipManName + '\'' +
+                ", deliveryTime=" + deliveryTime +
+                ", shipRemark='" + shipRemark + '\'' +
+                ", replaceOrderId=" + replaceOrderId +
+                ", orderStatus=" + orderStatus +
+                ", shipStatus=" + shipStatus +
+                ", payStatus=" + payStatus +
+                ", isShip=" + isShip +
+                ", isReplace=" + isReplace +
+                ", isReceipt=" + isReceipt +
+                ", receiptTime=" + receiptTime +
+                ", remark='" + remark + '\'' +
+                ", skuId=" + skuId +
+                '}';
+    }
 }

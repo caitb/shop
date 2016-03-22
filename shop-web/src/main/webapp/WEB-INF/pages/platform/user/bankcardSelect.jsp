@@ -21,7 +21,7 @@
 <input type="hidden" id="selectId" name="selectId" value = ""/>
    <div class="wrap">
         <header class="xq_header">
-            <a href="<%=basePath%>extractapply/toapply" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="#" onClick="backLastPage();"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">
@@ -64,13 +64,14 @@
                     if(data.isTrue == "false"){
                         alert(data.message);
                     }else {
+                        fullShow();//跳转页面钱展示全屏遮罩loading...
                         window.location.href="<%=basePath%>extractapply/toapply";
                     }
                 },
                 //调用执行后调用的函数
 //                complete: function(XMLHttpRequest, textStatus){
-////                alert(XMLHttpRequest.responseText);
-////                alert(textStatus);
+//                    alert(XMLHttpRequest.responseText);
+//                    alert(textStatus);
 //                },
                 error: function(){
                     //请求出错处理
@@ -78,6 +79,11 @@
                 }
             });
         })
+
+         function backLastPage(){
+             fullShow();//跳转页面钱展示全屏遮罩loading...
+             window.location.href="<%=basePath%>extractapply/toapply";
+         }
     </script>
 </body>
 </html>

@@ -1,41 +1,51 @@
-(function($){
+(function ($) {
     //备份jquery的ajax方法
-    var _ajax=$.ajax;
+    var _ajax = $.ajax;
 
     //重写jquery的ajax方法
-    $.ajax=function(opt){
+    $.ajax = function (opt) {
         CommonPerson.Base.LoadingPic.FullScreenShow();
         //备份opt中error和success方法
         var fn = {
-            beforeSend:function(){},
-            dataFilter: function (){},
-            error:function(XMLHttpRequest, textStatus, errorThrown){},
-            success:function(data, textStatus){},
-            complete: function(XMLHttpRequest, textStatus){}
+            beforeSend: function () {
+            },
+            dataFilter: function () {
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            },
+            success: function (data, textStatus) {
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+            }
         }
-        if(opt.beforeSend){
-            fn.beforeSend=opt.beforeSend;
+        if (opt.beforeSend) {
+            fn.beforeSend = opt.beforeSend;
         }
-        if(opt.dataFilter){
-            fn.dataFilter=opt.dataFilter;
-            setTimeout("fullHide()",2500);
+        if (opt.dataFilter) {
+            fn.dataFilter = opt.dataFilter;
         }
-        if(opt.error){
-            fn.error=opt.error;
+        if (opt.error) {
+            fn.error = opt.error;
         }
-        if(opt.success){
-            fn.success=opt.success;
+        if (opt.success) {
+            fn.success = opt.success;
         }
-        if(opt.complete){
-            fn.complete=opt.complete;
+        if (opt.complete) {
+            fn.complete = opt.complete;
         }
         //扩展增强处理
-        var _opt = $.extend(opt,{
-            error:function(XMLHttpRequest, textStatus, errorThrown){
+        var _opt = $.extend(opt, {
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                fullHide();
+                ;
                 //错误方法增强处理
                 fn.error(XMLHttpRequest, textStatus, errorThrown);
             },
-            success:function(data, textStatus){
+            dataFilter: function (data) {
+                fullHide();
+                return data;
+            },
+            success: function (data, textStatus) {
                 //成功回调方法增强处理
                 fn.success(data, textStatus);
             }

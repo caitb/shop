@@ -19,7 +19,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%=path%>/profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>个人信息</p>
     </header>
     <main>

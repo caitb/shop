@@ -1,8 +1,8 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -43,9 +43,6 @@ public class UserAddressController {
     @RequestMapping("/toAddAddressPage.html")
     public String toAddAddressPage(HttpServletRequest request,
                                    HttpServletResponse response, Model model) throws JsonProcessingException {
-/*        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
-        ObjectMapper objectMapper = new ObjectMapper();
-        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));*/
         return "platform/order/xinjiandizhi";
     }
 
@@ -93,23 +90,88 @@ public class UserAddressController {
         comUserAddress.setRegionName(countyName);
         comUserAddress.setAddress(detailAddress);
         comUserAddress.setCreateTime(new Date());
+
+        model.addAttribute("addressId", selectedAddressId);
+        model.addAttribute("pfCorderId", pfCorderId);
+
         int i = 0;
         if (operateType.equals("save")) {
+            //重定向到订单地址
+            JSONObject obj = new JSONObject();
             i = userAddressService.addComUserAddress(comUserAddress);
+            String addressPath = toOrderAddress(request,comUserAddress.getId());
+            return addressPath;
         } else {
             comUserAddress.setIsDefault(isDefault);
             comUserAddress.setId(id);
             i = userAddressService.updateComUserAddress(comUserAddress);
+            if (i == 1) {
+                return "success";
+            } else {
+                return "false";
+            }
         }
-        model.addAttribute("addressId", selectedAddressId);
-        model.addAttribute("pfCorderId", pfCorderId);
-        if (i == 1) {
-            return "success";
-        } else {
-            return "false";
-        }
+}
+
+    /**
+     * 选择地址点击某个地址或者返回
+     *
+     * @author hanzengzhi
+     * @date 2016/3/12 11:56
+     */
+    @RequestMapping("/clickAddressOrReturnToPage.do")
+    public String clickAddressOrReturnToPage(HttpServletRequest request,
+                                             HttpServletResponse response,
+                                             @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId) {
+        String redirectBody = toOrderAddress(request,selectedAddressId);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
+        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
+        String redirectHead = "redirect:";
+        return redirectHead+redirectBody;
     }
 
+
+    private String toOrderAddress(HttpServletRequest request,Long selectedAddressId){
+        return getOrderParamData(request,selectedAddressId);
+    }
+    private String getOrderParamData(HttpServletRequest request,Long selectedAddressId){
+        String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
+        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
+        Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
+        return  getOrderAddress(orderType,orderId,skuId,selectedAddressId);
+    }
+    /**
+     * 获得跳转到的订单地址
+     * 1:支付试用订单地址
+     * 2：合伙人支付订单地址
+     * @author hanzengzhi
+     * @date 2016/3/22 12:13
+     */
+    private String getOrderAddress(String orderType ,Long orderId ,Integer skuId ,Long selectedAddressId) {
+        StringBuffer sb = new StringBuffer();
+        if (orderType.equals(SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE)) {
+            //跳转到支付使用界面
+            sb.append("/corder/confirmOrder.do?");
+            if (!StringUtils.isEmpty(skuId)) {
+                sb.append("skuId=").append(skuId).append("&");
+            }
+            if (!StringUtils.isEmpty(selectedAddressId)) {
+                sb.append("&selectedAddressId=").append(selectedAddressId);
+            }
+        } else if (orderType.equals(SysConstants.SESSION_PAY_ORDER_TYPE_VALUE)) {
+            //跳转到支付界面
+            sb.append("/border/payBOrder.shtml?");
+            if (!StringUtils.isEmpty(orderId)) {
+                sb.append("bOrderId=").append(orderId).append("&");
+            }
+            if (!StringUtils.isEmpty(selectedAddressId)) {
+                sb.append("userAddressId=").append(selectedAddressId);
+            }
+        }
+        return sb.toString();
+    }
     /**
      * 跳转到编辑地址界面
      *
@@ -133,10 +195,6 @@ public class UserAddressController {
             model.addAttribute("countyId", comUserAddress.getRegionId());
             model.addAttribute("comUserAddress", comUserAddress);
         }
-        //获得省市区
-/*        List<ComArea> comAreas = comAreaService.queryComAreasByParams(new ComArea());
-        ObjectMapper objectMapper = new ObjectMapper();
-        model.addAttribute("comAreas", objectMapper.writeValueAsString(comAreas));*/
         return "platform/order/editAddress";
     }
 
@@ -178,46 +236,7 @@ public class UserAddressController {
         return "platform/order/xuanze";
     }
 
-    /**
-     * 选择地址点击某个地址或者返回
-     *
-     * @author hanzengzhi
-     * @date 2016/3/12 11:56
-     */
-    @RequestMapping("/clickAddressOrReturnToPage.do")
-    public String clickAddressOrReturnToPage(HttpServletRequest request,
-                                             HttpServletResponse response,
-                                             @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId) {
 
-        String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
-        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
-        Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-        StringBuffer sb = new StringBuffer();
-        if (orderType.equals(SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE)) {
-            //跳转到支付使用界面
-            sb.append("redirect:/corder/confirmOrder.do?");
-            if (!StringUtils.isEmpty(skuId)) {
-                sb.append("skuId=").append(skuId).append("&");
-            }
-            if (!StringUtils.isEmpty(selectedAddressId)) {
-                sb.append("&selectedAddressId=").append(selectedAddressId);
-            }
-        } else if (orderType.equals(SysConstants.SESSION_PAY_ORDER_TYPE_VALUE)) {
-            //跳转到支付界面
-            sb.append("redirect:/border/payBOrder.shtml?");
-            if (!StringUtils.isEmpty(orderId)) {
-                sb.append("bOrderId=").append(orderId).append("&");
-            }
-            if (!StringUtils.isEmpty(selectedAddressId)) {
-                sb.append("userAddressId=").append(selectedAddressId);
-            }
-        }
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
-        request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-        return sb.toString();
-    }
 
     /**
      * 跳转到管理地址界面

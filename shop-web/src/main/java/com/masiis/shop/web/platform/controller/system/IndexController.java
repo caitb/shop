@@ -78,7 +78,7 @@ public class IndexController extends BaseController {
                 //确定代理权限，显示优惠区间
                 indexCom.setDiscountLevel(productService.getDiscountByAgentLevel(indexCom.getComSku().getPriceRetail()));
             }else{
-                indexCom.setDiscountLevel("成为合伙人可查看利润");
+                indexCom.setDiscountLevel("成为合伙人可查看");
             }
             PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getId());
             if (pfUserSku !=null){

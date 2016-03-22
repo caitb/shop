@@ -125,7 +125,7 @@ public class UserApplyController {
                         }
                     }
                     sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())) + "</span>");
+                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount()) + "</span>");
                     sb.append("</p>");
                 }
             }

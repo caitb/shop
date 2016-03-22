@@ -1,7 +1,10 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.platform.order.*;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -9,7 +12,9 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +59,8 @@ public class BOrderService {
     private SkuService skuService;
     @Resource
     private ComUserAccountMapper comUserAccountMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
     /**
      * 添加订单
@@ -95,6 +102,72 @@ public class BOrderService {
         pfBorderOperationLog.setRemark("新增订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         return pfBorder.getId();
+    }
+
+
+    /**
+     * 添加补货订单
+     * @author ZhaoLiang
+     * @date 2016/3/22 15:44
+     * @return 订单id
+     */
+    @Transactional
+    public Long addReplenishmentOrders(Long userId, Integer skuId, int quantity) throws Exception {
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
+        if (pfUserSku == null) {
+            throw new BusinessException("您还没有代理过此商品，不能补货。");
+        }
+        Integer levelId = pfUserSku.getAgentLevelId();//代理等级
+        Long pUserId = 0l;//上级代理用户id
+        BigDecimal amount = BigDecimal.ZERO;//订单总金额
+        Long rBOrderId = 0l;//返回生成的订单id
+        //获取上级代理
+        PfUserSku paremtUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSku.getPid());
+        if (paremtUserSku != null) {
+            pUserId = paremtUserSku.getUserId();
+        }
+        PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
+        ComSku comSku = skuService.getSkuById(skuId);
+        amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(quantity)).multiply(pfSkuAgent.getDiscount());
+        //处理订单数据
+        PfBorder order = new PfBorder();
+        order.setCreateTime(new Date());
+        order.setCreateMan(userId);
+        String orderCode = OrderMakeUtils.makeOrder("B");
+        order.setOrderCode(orderCode);
+        order.setUserMessage("");
+        order.setUserId(userId);
+        order.setUserPid(pUserId);
+        order.setSupplierId(0);
+        order.setReceivableAmount(amount);
+        order.setOrderAmount(amount);//运费到付，商品总价即订单总金额
+        order.setProductAmount(amount);
+        order.setShipAmount(BigDecimal.ZERO);
+        order.setPayAmount(BigDecimal.ZERO);
+        order.setShipType(0);
+        order.setOrderStatus(0);
+        order.setShipStatus(0);
+        order.setPayStatus(0);
+        order.setIsShip(0);
+        order.setIsReplace(0);
+        order.setIsReceipt(0);
+        order.setRemark("补货订单");
+        pfBorderMapper.insert(order);
+        rBOrderId = order.getId();
+        PfBorderItem pfBorderItem = new PfBorderItem();
+        pfBorderItem.setCreateTime(new Date());
+        pfBorderItem.setPfBorderId(rBOrderId);
+        pfBorderItem.setSpuId(comSku.getSpuId());
+        pfBorderItem.setSkuId(comSku.getId());
+        pfBorderItem.setSkuName(comSku.getName());
+        pfBorderItem.setQuantity(quantity);
+        pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
+        pfBorderItem.setUnitPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()));
+        pfBorderItem.setTotalPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(quantity)));
+        pfBorderItem.setIsComment(0);
+        pfBorderItem.setIsReturn(0);
+        pfBorderItemMapper.insert(pfBorderItem);
+        return rBOrderId;
     }
 
     /**
@@ -228,16 +301,17 @@ public class BOrderService {
 
     /**
      * 更新出货库存
+     *
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
-    public void updateStock(PfBorder pfBorder){
+    public void updateStock(PfBorder pfBorder) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
             if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
                 throw new BusinessException("当前库存不足！");
-            }else{
+            } else {
                 pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
                 if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
                     throw new BusinessException("并发修改库存失败");
@@ -248,10 +322,11 @@ public class BOrderService {
 
     /**
      * 更新进货库存
+     *
      * @author muchaofeng
      * @date 2016/3/21 16:22
      */
-    public void updateGetStock(PfBorder pfBorder){
+    public void updateGetStock(PfBorder pfBorder) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
@@ -261,6 +336,7 @@ public class BOrderService {
             }
         }
     }
+
     /**
      * 获取订单
      *
@@ -365,12 +441,14 @@ public class BOrderService {
 
     /**
      * 根据userId获取关系
+     *
      * @author muchaofeng
      * @date 2016/3/21 17:37
      */
-    public PfUserSku findPfUserSku(long userId,Integer id) {
-        return pfUserSkuMapper.selectByUserIdAndSkuId(userId,id);
+    public PfUserSku findPfUserSku(long userId, Integer id) {
+        return pfUserSkuMapper.selectByUserIdAndSkuId(userId, id);
     }
+
     /**
      * 判断订单库存是否充足
      *

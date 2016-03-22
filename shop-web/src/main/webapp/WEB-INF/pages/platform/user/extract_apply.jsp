@@ -30,27 +30,27 @@
         </header>
         <main>
             <p>提现到银行卡</p>
-            <div class="sec2" onclick="choiceBank()">
                 <c:choose>
                     <c:when test="${hasCard == true}">
-                        <span><img src="<%=path%>${extractwayInfo.cardImg}" alt=""></span>
-                        <p>
-                            <span><em>${extractwayInfo.bankName}</em></span>
-                            <span>
-                                持卡人:
-                                <b>${extractwayInfo.cardOwnerName}</b>
-                                卡号:
-                                <b>${extractwayInfo.bankCard}</b>
-                            </span>
-                        </p>
+                        <div class="sec2" onclick="choiceBank()">
+                            <span><img src="<%=path%>${extractwayInfo.cardImg}" alt=""></span>
+                            <p>
+                                <span><em>${extractwayInfo.bankName}</em></span>
+                                <span>
+                                    持卡人:
+                                    <b>${extractwayInfo.cardOwnerName}</b>
+                                    卡号:
+                                    <b>${extractwayInfo.bankCard}</b>
+                                </span>
+                            </p>
+                        </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="xinz" style="margin-bottom:5px;">
+                        <div class="xinz" style="margin-bottom:5px;" onclick="choiceBank()">
                             <p><a href="../html/xinjianka.html" style="color:#333;">新增银行卡</a></p>
                         </div>
                     </c:otherwise>
                 </c:choose>
-            </div>
             <h1>
                 转出金额<input id="extractMoneyId" type="text" placeholder="输入金额" style="font-size:14px;">
             </h1>

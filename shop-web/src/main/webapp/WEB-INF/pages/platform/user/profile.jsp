@@ -48,7 +48,7 @@
 <div class="bottom">
     <footer>
         <div class="btm">
-            <a href="javascript:window.location.replace('<%=basePath%>/index');">
+            <a href="javascript:window.location.replace('<%=basePath%>index');">
                 <span><img src="<%=basePath%>static/images/shouye_footer.png" alt=""></span>
                 <span>首页</span>
             </a>

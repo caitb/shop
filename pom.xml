@@ -421,6 +421,7 @@
         <module>shop-dao</module>
         <module>shop-base</module>
         <module>shop-web</module>
+        <module>shop-scheduler</module>
     </modules>
 
 </project>

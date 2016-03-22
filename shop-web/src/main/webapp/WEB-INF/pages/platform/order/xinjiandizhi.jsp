@@ -13,45 +13,27 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/commonAjax.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
 </head>
 <script>
     function saveAddress() {
         var paramJson = addressJS.getJsonParam();
-        $.ajax({
-            url: '/userAddress/addOrUpdateAddress.do',
-            type: 'post',
-            async: false,
-            data: paramJson,
-            success: function (data) {
-                if (data == "false") {
-                    alert("新增地址失败");
-                } else {
-                    window.location.href = data;
+        if (addressJS.validateAddressInfo(paramJson)) {
+            $.ajax({
+                url: '/userAddress/addOrUpdateAddress.do',
+                type: 'post',
+                async: false,
+                data: paramJson,
+                success: function (data) {
+                    if (data == "false") {
+                        alert("新增地址失败");
+                    } else {
+                        window.location.href = data;
+                    }
                 }
-            }
-        })
-
-        /*
-         if (addressJS.validateAddressInfo(paramJson)) {
-         alert(paramJson);
-         $.ajax({
-         url: '/userAddress/addOrUpdateAddress.do',
-         type: 'post',
-         async: false,
-         data: paramJson,
-         success: function (data) {
-         if (data=="false"){
-         alert("新增地址失败");
-         }else{
-         window.location.href = data;
-         }
-         }
-         })
-         }*/
+            })
+        }
     }
 </script>
 <body>

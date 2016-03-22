@@ -67,7 +67,11 @@ public class UserAddressService {
             return null;
         }
     }
-
+    /**
+     * 增加或更新地址
+     * @author hanzengzhi
+     * @date 2016/3/22 20:30
+     */
     public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, String jumpType) {
         try {
             if (operateType.equals("save")) {
@@ -102,10 +106,14 @@ public class UserAddressService {
     }
 
     public String getOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
-        String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
-        Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
-        Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-        return getOrderAddress(orderType, orderId, skuId, selectedAddressId);
+        try{
+            String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
+            Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
+            Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
+            return getOrderAddress(orderType, orderId, skuId, selectedAddressId);
+        }catch (Exception e){
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     /**

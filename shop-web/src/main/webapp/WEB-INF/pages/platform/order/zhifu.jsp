@@ -89,7 +89,7 @@
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                 <div onclick="toChooseAddressPage()">
                     <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.id}</span></h2></a>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span><img
                                  src="<%=path%>/static/images/next.png" alt=""></p></a>

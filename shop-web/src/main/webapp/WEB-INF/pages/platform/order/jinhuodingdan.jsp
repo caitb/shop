@@ -306,7 +306,7 @@
                     <%--</div>--%>
                 </main>
            </div>
-           <div class="back_shouhuo">
+           <div class="back_shouhuo" style="display: none">
                <p>确认收到货品?</p>
                <h4>亲，请您核对商品后在操作确认收货</h4>
 
@@ -316,7 +316,7 @@
                </h3>
            </div>
 
-           <div class="back_que">
+           <div class="back_que" style="display: none">
                <p>确认取消订单？</p>
                <h4>亲，是否确认删除商品抗引力-收敛精华乳液订单？</h4>
 
@@ -325,7 +325,7 @@
                    <span class="que_que">确认</span>
                </h3>
            </div>
-            <div class="back">
+            <div class="back" style="display: none">
 
             </div>
        </div>

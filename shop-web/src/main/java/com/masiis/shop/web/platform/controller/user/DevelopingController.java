@@ -22,13 +22,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.List;
 
 /**
  * 发展合伙人
@@ -113,7 +118,7 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = getComUser(request);
+            ComUser comUser = comUserMapper.selectByPrimaryKey(13L); //getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
@@ -130,10 +135,11 @@ public class DevelopingController extends BaseController {
                     String posterName = pfUserCertificate.getCode()+".png";
                     String posterPath = request.getServletContext().getRealPath("/")+"static"+File.separator+posterName;
                     //生成二维码
-                    CreateParseCode.createCode(300,300, shareLink, posterPath);
+                    CreateParseCode.createCode(200,200, shareLink, posterPath);
                     //上传二维码到OSS
                     File posterFile = new File(posterPath);
-                    OSSObjectUtils.uploadFile("mmshop", posterFile, "static/user/poster/");
+                    //OSSObjectUtils.uploadFile("mmshop", posterFile, "static/user/poster/");
+                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"poster.jpg", posterPath, posterName);
                     //删除本地二维码图片
                     posterFile.delete();
                     //保存二维码图片地址
@@ -161,6 +167,39 @@ public class DevelopingController extends BaseController {
         }
 
         return null;
+    }
+
+    /**
+     * 画海报
+     * @param bPath        海报背景图路径
+     * @param qrcodePath   二维码背景图路径
+     * @param saveFileName 保存名字
+     */
+    public void drawPost(String bPath, String qrcodePath, String saveFileName) {
+        ImageIcon bImgIcon = new ImageIcon(bPath);
+        ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
+        Image bImage = bImgIcon.getImage();
+        Image qrcodeImage = qrcodeImgIcon.getImage();
+
+        int width = bImage.getWidth(null) == -1 ? 427 : bImage.getWidth(null);
+        int height = bImage.getHeight(null) == -1 ? 600 : bImage.getHeight(null);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(bImage, 0, 0, null);
+        g.drawImage(qrcodeImage, 0, 0, null);
+        g.dispose();
+
+        try {
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(bufferedImage, "png", imOut);
+            InputStream is = new ByteArrayInputStream(bs.toByteArray());
+            OSSObjectUtils.uploadFile("mmshop", "static/user/poster/" + saveFileName, is);
+        } catch (Exception e) {
+            log.error("画海报出错了!");
+            e.printStackTrace();
+            return;
+        }
     }
 
 

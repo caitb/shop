@@ -39,10 +39,15 @@
             checkDetailAddress: function (paramJson) {
                 if (paramJson.detailAddress == "") {
                     $(".dizhi").next().show()
-                    /*.html("手机号不能为空")*/
                     $(".dizhi").focus();
+                    $(".onc").eq(3).next().html("详细地址不能为空");
                     return false;
-                } else {
+                } else if(addressJS.getStrLen(paramJson.detailAddress)>40){
+                    $(".dizhi").next().show()
+                    $(".dizhi").focus();
+                    $(".onc").eq(3).next().html("详细地址不能超过20个字");
+                    return false;
+                }else {
                     $(".onc").hide();
                     return true;
                 }
@@ -51,22 +56,22 @@
                 $(".onc").eq(0).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(0).next().show().html("姓名格式不正确");
+                    $(".onc").eq(0).next().show();
                 })
                 $(".onc").eq(1).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(1).next().show().html("手机号格式不正确");
+                    $(".onc").eq(1).next().show();
                 })
                 $(".onc").eq(2).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(2).next().show().html("邮政编码格式不正确");
+                    $(".onc").eq(2).next().show();
                 })
                 $(".onc").eq(3).on("click", function (event) {
                     var event = event || event.window;
                     event.stopPropagation();
-                    $(".onc").eq(3).next().show().html("详细地址不能为空");
+                    $(".onc").eq(3).next().show();
                 })
             },
             getJsonParam: function () {
@@ -99,7 +104,7 @@
                     "detailAddress": detailAddress,
                     "isDefault": isDefault,
                     "operateType": operateType,
-                    "jumpType":jumpType
+                    "jumpType": jumpType
                 }
                 return paramJson;
             },
@@ -107,49 +112,30 @@
                 if (paramJson.name == "") {
                     $(".name").next().show()
                     $(".name").focus();
+                    $(".onc").eq(0).next().html("姓名不能为空");
                     return false;
                 }
-                if (!isCardName(paramJson.name)) {
+                if (addressJS.getStrLen(paramJson.name)>20) {
                     $(".name").next().show()
-                    /*.html("姓名格式错误")*/
                     $(".name").focus()
-                    /*.css("color","red");*/
+                    $(".onc").eq(0).next().html("姓名不能超过10个字");
                     return false;
                 } else {
                     $(".onc").hide();
-                    return true;
-                }
-                //检验汉字
-                function isChinese(s) {
-                    var patrn = /^\s*[\u4e00-\u9fa5]{1,15}\s*$/;
-                    if (!patrn.exec(s)) {
-                        return false;
-                    }
-                    return true;
-                }
-
-                //检验姓名：姓名是2-15字的汉字
-                function isCardName(s) {
-                    var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
-                    if (!patrn.exec(s)) {
-                        return false;
-                    }
                     return true;
                 }
             },
             checkPhone: function (paramJson) {
                 if (paramJson.phone == "") {
                     $(".tel").next().show()
-                    /*.html("手机号不能为空")*/
                     $(".tel").focus();
+                    $(".onc").eq(1).next().html("手机号不能为空");
                     return false;
                 }
                 if (!isMobile(paramJson.phone)) {
                     $(".tel").next().show();
-                    /*.html("手机号输入有误")*/
                     $(".tel").focus();
-                    $(".name").focus()
-                    /*.css("color","red");*/
+                    $(".onc").eq(1).next().html("手机号格式不正确");
                     return false;
                 } else {
                     $(".onc").hide();
@@ -160,6 +146,7 @@
                     if (!patrn.exec(s)) {
                         $(".tel").next().show();
                         $(".tel").focus();
+                        $(".onc").eq(1).next().html("手机号格式不正确");
                         return false;
                     }
                     return true;
@@ -169,16 +156,32 @@
                 if (paramJson.postcode == "") {
                     $(".postcode").next().show();
                     $(".postcode").focus();
+                    $(".onc").eq(2).next().html("邮政编码不能为空");
                     return false;
                 } else {
                     if (!/^[0-9][0-9]{5}$/.test(paramJson.postcode)) {
                         $(".postcode").next().show()
                         $(".postcode").focus();
+                        $(".onc").eq(2).next().html("邮政编码格式不正确");
                         return false;
                     }
                     $(".onc").hide();
                     return true;
                 }
+            },
+            getStrLen: function (str) {
+                var len = 0;
+                if (str != null && str != "") {
+                    for (var i = 0; i < str.length; i++) {
+                        var c = str.charCodeAt(i);
+                        if (c > 127 || c == 94) {
+                            len += 2;
+                        } else {
+                            len++;
+                        }
+                    }
+                }
+                return len;
             },
             validateAddressInfo: function (paramJson) {
                 return addressJS.checkName(paramJson) ? ( addressJS.checkPhone(paramJson) ? (addressJS.checkPostCode(paramJson) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson) : false) : false) : false ) : false;

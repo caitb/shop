@@ -73,6 +73,10 @@ public class SysBeanUtils {
      * @return
      */
     public static boolean isNumeric(String str){
+        if((str.lastIndexOf("-") == 0 && str.lastIndexOf("+") < 0)
+                ||(str.lastIndexOf("-") <= 0 && str.lastIndexOf("+") == 0)){
+            return isNumeric(str.substring(1, str.length()));
+        }
         if(str.charAt(0) == '.'){
             return false;
         }
@@ -90,6 +94,6 @@ public class SysBeanUtils {
     }
 
     public static void main(String[] aa) {
-        System.out.println(isNumeric("234.5"));
+        System.out.println(new BigDecimal("+234.5"));
     }
 }

@@ -10,6 +10,8 @@ package com.masiis.shop.dao.platform.order;
 import com.masiis.shop.dao.po.PfBorder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -32,4 +34,7 @@ public interface PfBorderMapper {
 
     void updateByPrimaryKey(PfBorder pfBorder);
 
+    List<PfBorder> selectByUserAndDate( @Param("userid") Long userid,
+                                        @Param("start") Date countStartDay,
+                                        @Param("end") Date countEndDay);
 }

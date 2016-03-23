@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifuchenggong.css">
-    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -62,4 +61,5 @@
     </div>
 </div>
 </body>
+<script src="<%=path%>/static/js/iscroll.js"></script>
 </html>

@@ -20,7 +20,7 @@ public class PfCorderConsigneeService {
         try {
             pfCorderConsigneeMapper.insert(pfCorderConsignee);
         }catch (Exception e){
-            throw new Exception("试用申请订单插入收获地址失败");
+            throw new Exception("试用申请订单插入收获地址失败"+e);
         }
     }
 }

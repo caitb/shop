@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/commonAjax.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
 </head>
 <script>
@@ -28,9 +26,9 @@
                 async: false,
                 data: paramJson,
                 success: function (data) {
-                    if (data=="false"){
+                    if (data == "false") {
                         alert("新增地址失败");
-                    }else{
+                    } else {
                         window.location.href = data;
                     }
                 }
@@ -43,8 +41,9 @@
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
-                <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                       alt=""></a>
+                <a href="javascript:;" onClick="javascript:history.back(-1);"><img
+                        src="<%=path%>/static/images/xq_rt.png"
+                        alt=""></a>
                 <p>新建收货地址</p>
             </header>
             <div id="d_box">

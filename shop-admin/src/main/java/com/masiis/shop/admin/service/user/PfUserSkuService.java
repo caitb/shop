@@ -52,7 +52,7 @@ public class PfUserSkuService {
 
     public Integer findCertificateBySkuId(Integer userSkuId) {
         PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
-        Integer status = null;
+        Integer status=null;
         if (pfUserCertificate!=null){
             status = pfUserCertificate.setStatus(pfUserCertificate.getStatus());
         }

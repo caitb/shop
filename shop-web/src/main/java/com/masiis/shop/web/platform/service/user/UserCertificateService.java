@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
@@ -7,13 +8,16 @@ import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * UserCertificateService
@@ -82,19 +86,29 @@ public class UserCertificateService {
       * @Date 2016/3/19 0019 下午 3:58
       * 领取证书
       */
-    public void receiveCertificate(Integer pfuId){
-        CertificateInfo ctInfo = certificateMapper.get(pfuId);
-        List<PfUserCertificate> uct = pfUserCertificateMapper.selectByCode(ctInfo.getUserId());
-        if(uct!=null){
-            PfUserCertificate pfc = uct.get(0);
-            pfc.setCreateTime(new Date());
-            pfc.setId(null);
-            pfc.setPfUserSkuId(pfuId);
-            pfc.setReason(null);
-            pfc.setSkuId(ctInfo.getSkuId());
-            pfc.setStatus(1);//审核成功状态
-            pfUserCertificateMapper.insert(pfc);
+    public Map<String,Object> receiveCertificate(Integer pfuId){
+        Map<String,Object> obj = new HashMap<>();
+        try{
+            CertificateInfo ctInfo = certificateMapper.get(pfuId);
+            ComSku comSku= comSkuMapper.selectByPrimaryKey(ctInfo.getId());
+            List<PfUserCertificate> uct = pfUserCertificateMapper.selectByUser(ctInfo.getUserId());
+            if(uct!=null){
+                PfUserCertificate pfc = uct.get(0);
+                pfc.setCreateTime(new Date());
+                pfc.setId(null);
+                pfc.setPfUserSkuId(pfuId);
+                pfc.setReason(null);
+                pfc.setSkuId(ctInfo.getSkuId());
+                pfc.setStatus(1);//审核成功状态
+                pfUserCertificateMapper.insert(pfc);
+                obj.put("skuName",comSku.getName());
+                obj.put("success",true);
+            }
+        }catch (Exception ex){
+            obj.put("success",false);
+            throw new BusinessException("添加证书失败!");
         }
+       return obj;
     }
 
     /**

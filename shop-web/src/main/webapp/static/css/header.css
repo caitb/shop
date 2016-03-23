@@ -7,13 +7,18 @@
   position: relative;
   margin-bottom: 5px;
 }
-.xq_header img {
+.xq_header a:nth-child(1) {
+  display: block;
+  width: 50px;
+  height: 100%;
   position: absolute;
   left: 10px;
+  top: 9px;
+}
+.xq_header a img {
   display: block;
   width: 10px;
   height: 20px;
-  top: 9px;
 }
 .xq_header p {
   -webkit-box-flex: 1;

@@ -5,6 +5,7 @@
                 addressJS.initInput();
                 addressJS.initDetailAddress();
                 addressJS.initError();
+                addressJS.bindChange();
             },
             initBody: function () {
                 $("body").on("click", function () {
@@ -36,16 +37,16 @@
                     addressJS.checkAddress();
                 })
             },
-            checkDetailAddress: function (paramJson) {
-                if (paramJson.detailAddress == "") {
+            checkDetailAddress: function (detailAddress) {
+                if (detailAddress == "") {
                     $(".dizhi").next().show()
                     $(".dizhi").focus();
                     $(".onc").eq(3).next().html("详细地址不能为空");
                     return false;
-                } else if(addressJS.getStrLen(paramJson.detailAddress)>40){
+                } else if(addressJS.getStrLen(detailAddress)>60){
                     $(".dizhi").next().show()
                     $(".dizhi").focus();
-                    $(".onc").eq(3).next().html("详细地址不能超过20个字");
+                    $(".onc").eq(3).next().html("详细地址不能超过30个字");
                     return false;
                 }else {
                     $(".onc").hide();
@@ -73,6 +74,20 @@
                     event.stopPropagation();
                     $(".onc").eq(3).next().show();
                 })
+            },
+            bindChange: function () {
+                $("#name").bind("change",function(){
+                    addressJS.checkName($("#name").val());
+                });
+                $("#phone").bind("change",function(){
+                    addressJS.checkPhone($("#phone").val());
+                });
+                $("#postcode").bind("change",function(){
+                    addressJS.checkPostCode($("#postcode").val());
+                });
+                $("#detailAddress").bind("change",function(){
+                   addressJS.checkDetailAddress($("#detailAddress").val());
+                });
             },
             getJsonParam: function () {
                 var addressId = $("#addressId").val();
@@ -108,16 +123,16 @@
                 }
                 return paramJson;
             },
-            checkName: function (paramJson) {
-                if (paramJson.name == "") {
+            checkName: function (name) {
+                if (name == "") {
                     $(".name").next().show()
                     $(".name").focus();
                     $(".onc").eq(0).next().html("姓名不能为空");
                     return false;
                 }
-                if (addressJS.getStrLen(paramJson.name)>20) {
-                    $(".name").next().show()
-                    $(".name").focus()
+                if (addressJS.getStrLen(name)>20) {
+                    $(".name").next().show();
+                    $(".name").focus();
                     $(".onc").eq(0).next().html("姓名不能超过10个字");
                     return false;
                 } else {
@@ -125,14 +140,14 @@
                     return true;
                 }
             },
-            checkPhone: function (paramJson) {
-                if (paramJson.phone == "") {
+            checkPhone: function (phone) {
+                if (phone == "") {
                     $(".tel").next().show()
                     $(".tel").focus();
                     $(".onc").eq(1).next().html("手机号不能为空");
                     return false;
                 }
-                if (!isMobile(paramJson.phone)) {
+                if (!isMobile(phone)) {
                     $(".tel").next().show();
                     $(".tel").focus();
                     $(".onc").eq(1).next().html("手机号格式不正确");
@@ -152,14 +167,14 @@
                     return true;
                 }
             },
-            checkPostCode: function (paramJson) {
-                if (paramJson.postcode == "") {
+            checkPostCode: function (postcode) {
+                if (postcode == "") {
                     $(".postcode").next().show();
                     $(".postcode").focus();
                     $(".onc").eq(2).next().html("邮政编码不能为空");
                     return false;
                 } else {
-                    if (!/^[0-9][0-9]{5}$/.test(paramJson.postcode)) {
+                    if (!/^[0-9][0-9]{5}$/.test(postcode)) {
                         $(".postcode").next().show()
                         $(".postcode").focus();
                         $(".onc").eq(2).next().html("邮政编码格式不正确");
@@ -184,7 +199,7 @@
                 return len;
             },
             validateAddressInfo: function (paramJson) {
-                return addressJS.checkName(paramJson) ? ( addressJS.checkPhone(paramJson) ? (addressJS.checkPostCode(paramJson) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson) : false) : false) : false ) : false;
+                return addressJS.checkName(paramJson.name) ? ( addressJS.checkPhone(paramJson.phone) ? (addressJS.checkPostCode(paramJson.postcode) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson.detailAddress) : false) : false) : false ) : false;
             }
         }
 })();

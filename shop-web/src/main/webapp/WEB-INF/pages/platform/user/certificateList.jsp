@@ -57,16 +57,16 @@
                         </span><span>授权书状态：
                     <c:choose>
                         <c:when test="${cet.isCertificate==0}">
-                            <em>未生成证书</em>
+                            <em>待申请</em>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.receivect==0}">
-                            <em>领取证书</em>
+                            <em>待领取</em>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==0}">
-                            <em>未审核</em>
+                            <em>待审核</em>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==1}">
-                            <em>审核成功</em>
+                            <em>审核通过</em>
                         </c:when>
                         <c:when test="${cet.isCertificate==1 && cet.pfUserCertificateInfo.status==2}">
                             <em>审核失败</em>

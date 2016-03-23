@@ -199,8 +199,9 @@ public class PfUserCertificate {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public Integer setStatus(Integer status) {
         this.status = status;
+        return status;
     }
 
     public String getRemark() {

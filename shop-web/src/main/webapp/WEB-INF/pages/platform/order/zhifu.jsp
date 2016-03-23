@@ -15,54 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhifu.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
-    <script>
-        $(document).ready(function () {
-            var addressId = $("#addressId").val();
-            if (addressId == "") {
-                $(".xinz").show();
-                $(".sec1").hide();
-            } else {
-                $(".xinz").hide();
-                $(".sec1").attr("style", "display:-webkit-box;");
-            }
-        })
-        var myScroll = new IScroll(".wrap", {
-            preventDefault: false
-        })
-
-        function toChooseAddressPage() {
-            var selectedAddressId = $("#addressId").val();
-            window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId=" + selectedAddressId + "&orderId=${bOrderId}";
-        }
-
-        function submit() {
-            var paraData = "?";
-            paraData += "bOrderId=${bOrderId}";
-            paraData += "&userMessage=" + $("#userMessage").val();
-            paraData += "&userAddressId=" + $("#addressId").val();
-            if($("#addressId").val()==null||$("#addressId").val()==""){
-                alert("请填写收获地址");
-                return;
-            }
-            window.location.href = "<%=basePath%>border/payBOrderSubmit.do" + paraData;
-            <%--$.ajax({--%>
-            <%--url: "<%=basePath%>border/payBOrderSubmit.do",--%>
-            <%--type: "post",--%>
-            <%--data: paraData,--%>
-            <%--dataType: "json",--%>
-            <%--success: function (data) {--%>
-            <%--if (data.isError == false) {--%>
-            <%--alert("OK");--%>
-            <%--}--%>
-            <%--else {--%>
-            <%--alert(data.message);--%>
-            <%--}--%>
-            <%--}--%>
-            <%--});--%>
-        }
-    </script>
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
 <div class="wrap">
@@ -92,7 +45,7 @@
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span><img
-                                 src="<%=path%>/static/images/next.png" alt=""></p></a>
+                                src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
             </section>
             ${productInfo}
@@ -114,4 +67,52 @@
     </div>
 </div>
 </body>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/iscroll.js"></script>
+<script>
+    $(document).ready(function () {
+        var addressId = $("#addressId").val();
+        if (addressId == "") {
+            $(".xinz").show();
+            $(".sec1").hide();
+        } else {
+            $(".xinz").hide();
+            $(".sec1").attr("style", "display:-webkit-box;");
+        }
+    })
+    var myScroll = new IScroll(".wrap", {
+        preventDefault: false
+    })
+
+    function toChooseAddressPage() {
+        var selectedAddressId = $("#addressId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId=" + selectedAddressId + "&orderId=${bOrderId}";
+    }
+
+    function submit() {
+        if ($("#addressId").val() == null || $("#addressId").val() == "") {
+            alert("请填写收获地址");
+            return;
+        }
+        var paraData = {};
+        paraData.bOrderId = "${bOrderId}";
+        paraData.userMessage = $("#userMessage").val();
+        paraData.userAddressId = $("#addressId").val();
+        $.ajax({
+            url: "<%=basePath%>border/payBOrderSubmit.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>border/payBOrderReady.shtml?bOrderId=" + paraData.bOrderId;
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
 </html>

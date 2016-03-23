@@ -9,6 +9,7 @@
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
         <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
         <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
         <result column="audit_type" property="auditType" jdbcType="INTEGER" />
         <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
         <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
@@ -25,6 +26,7 @@
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
         <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
         <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
         <result column="audit_type" property="auditType" jdbcType="INTEGER" />
         <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
         <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
@@ -54,12 +56,12 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" useGeneratedKeys="true" keyProperty="id">
         insert into com_user_extract_apply (id, com_user_id, extract_fee, 
             extractway_info_id, apply_time, extract_way, 
-            extract_time, audit_type, audit_cause, 
+            extract_time, pay_time, audit_type, audit_cause,
             bank_card, bank_name, card_owner_name, 
             deposit_bank_name, remark)
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL}, 
             #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=BIGINT}, 
-            #{extractTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR}, 
+            #{extractTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR},
             #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, 
             #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -72,6 +74,7 @@
             apply_time = #{applyTime,jdbcType=TIMESTAMP},
             extract_way = #{extractWay,jdbcType=BIGINT},
             extract_time = #{extractTime,jdbcType=TIMESTAMP},
+            pay_time = #{payTime,jdbcType=TIMESTAMP},
             audit_type = #{auditType,jdbcType=INTEGER},
             audit_cause = #{auditCause,jdbcType=VARCHAR},
             bank_card = #{bankCard,jdbcType=VARCHAR},
@@ -84,7 +87,7 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
-        extract_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name, 
+        extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
         from com_user_extract_apply
         where id = #{id,jdbcType=BIGINT}
@@ -92,7 +95,7 @@
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
-        extract_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name, 
+        extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
         from com_user_extract_apply
     </select>
@@ -103,6 +106,7 @@
           cuea.com_user_id,cu.real_name,
           cuea.extract_fee,
           cuea.apply_time,
+          cuea.pay_time,
           cuea.extract_way,
           cuea.audit_type,
           cuea.remark
@@ -118,6 +122,7 @@
             cuea.extract_fee,
             cuea.apply_time,
             cuea.bank_card,
+            cuea.pay_time,
             cuea.bank_name,
             cuea.deposit_bank_name,
             cuea.card_owner_name,

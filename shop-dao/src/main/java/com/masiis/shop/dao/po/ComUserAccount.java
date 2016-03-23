@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-23 Created
+ * 2016-03-17 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -49,12 +49,15 @@ public class ComUserAccount {
     public void setComUserId(Long comUserId) {
         this.comUserId = comUserId;
     }
+
     public BigDecimal getTotalIncomeFee() {
         return totalIncomeFee;
     }
+
     public void setTotalIncomeFee(BigDecimal totalIncomeFee) {
         this.totalIncomeFee = totalIncomeFee;
     }
+
     public BigDecimal getExtractableFee() {
         return extractableFee;
     }

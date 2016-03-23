@@ -22,7 +22,8 @@
 <main>
     <div class="wrap">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                               alt=""></a>
             <p>申请合伙人</p>
         </header>
         <div class="xinxi">
@@ -52,9 +53,31 @@
                 <p>${orderUserSku.superiorName}</p>
             </div>
         </div>
-        <a href="<%=basePath%>userCertificate/setUserCertificate.shtml?userSkuId=${userSkuId}" class="lingqu">领取证书</a>
+        ${opStr}
         <p class="ll">领取证书后可以获得更多特权哦</p>
     </div>
 </main>
 </body>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"/>
+<script>
+    function submit() {
+        var para = {};
+        para.pfuId = "${userSkuId}";
+        $.ajax({
+            url: "<%=basePath%>userCertificate/add",
+            type: "post",
+            data: para,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+</script>
 </html>

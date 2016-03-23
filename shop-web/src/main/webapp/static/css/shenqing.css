@@ -22,6 +22,7 @@ body .kang a {
 body .kang a .photo {
   width: 62px;
   margin-left: 10px;
+  border: 1px solid #999;
 }
 body .kang a .photo img {
   display: block;
@@ -145,7 +146,6 @@ body main .sec2 p a {
   text-align: center;
 }
 body .back_j {
-  display: none;
   width: 90%;
   position: fixed;
   top: 30%;
@@ -153,13 +153,13 @@ body .back_j {
   background: #fff;
   z-index: 10;
   border-radius: 5px;
+  display: none;
 }
 body .back_j .biao {
   margin: 0 5px;
   border-bottom: 1px solid #F74A11;
   text-indent: 10px;
   line-height: 50px;
-  font-weight: 600;
   margin-bottom: 5px;
   color: #FF5200;
   letter-spacing: 1px;
@@ -172,7 +172,6 @@ body .back_j div {
 body .back_j div p {
   border-radius: 5px;
   line-height: 44px;
-  font-size: 12px;
   text-indent: 10px;
 }
 body .back_j div p input {
@@ -201,6 +200,10 @@ body .back_j .d p button {
   float: right;
   margin-top: 8px;
 }
+body .back_j .d p .on {
+  background: #ccc;
+  color: #ccc;
+}
 body .back_j .tishi {
   position: absolute;
   bottom: 60px;
@@ -225,5 +228,4 @@ body .back {
   position: fixed;
   top: 0;
   left: 0;
-  display: none;
 }

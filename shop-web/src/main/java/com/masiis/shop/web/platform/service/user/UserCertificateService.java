@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
@@ -8,7 +7,7 @@ import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,18 +48,25 @@ public class UserCertificateService {
       */
     public List<CertificateInfo> CertificateByUser(Integer userId){
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
-        if(certificateInfoList!=null){
-           for(CertificateInfo certificateInfo :certificateInfoList){
-              if(certificateInfo!=null && certificateInfo.getIsCertificate()!=0){ //授权书已经生成
-                  PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
-                  if(pfUserCertificate!=null){
-                      certificateInfo.setPfUserCertificateInfo(pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId()));
-                      certificateInfo.setReceivect(1);
-                  }else{
-                      certificateInfo.setReceivect(0);//证书已经生成，未领取
-                  }
-              }
-           }
+        if (certificateInfoList != null) {
+            for (CertificateInfo certificateInfo : certificateInfoList) {
+                if (certificateInfo != null) {
+                    //获取代理状态
+                    ComUser comUser = comUserMapper.selectByPrimaryKey(certificateInfo.getUserId());
+                    PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
+                    certificateInfo.setPfUserCertificateInfo(pfUserCertificate);
+                    if (comUser != null && comUser.getIsAgent() == 0) {//未代理
+                        if (pfUserCertificate != null) {
+                            certificateInfo.setReceivect(1);//领取
+                        } else {
+                            certificateInfo.setIsApply(0);//流程中断，未申请
+                        }
+                    } else {
+                        //已经代理过商品
+                        certificateInfo.setReceivect(0);//证书已经生成，未领取
+                    }
+                }
+            }
         }
        return certificateInfoList;
     }
@@ -86,29 +92,23 @@ public class UserCertificateService {
       * @Date 2016/3/19 0019 下午 3:58
       * 领取证书
       */
-    public Map<String,Object> receiveCertificate(Integer pfuId){
-        Map<String,Object> obj = new HashMap<>();
-        try{
-            CertificateInfo ctInfo = certificateMapper.get(pfuId);
-            ComSku comSku= comSkuMapper.selectByPrimaryKey(ctInfo.getId());
-            List<PfUserCertificate> uct = pfUserCertificateMapper.selectByUser(ctInfo.getUserId());
-            if(uct!=null){
-                PfUserCertificate pfc = uct.get(0);
-                pfc.setCreateTime(new Date());
-                pfc.setId(null);
-                pfc.setPfUserSkuId(pfuId);
-                pfc.setReason(null);
-                pfc.setSkuId(ctInfo.getSkuId());
-                pfc.setStatus(1);//审核成功状态
-                pfUserCertificateMapper.insert(pfc);
-                obj.put("skuName",comSku.getName());
-                obj.put("success",true);
-            }
-        }catch (Exception ex){
-            obj.put("success",false);
-            throw new BusinessException("添加证书失败!");
+    public void receiveCertificate(Integer pfuId) {
+        CertificateInfo ctInfo = certificateMapper.get(pfuId);
+        List<PfUserCertificate> uct = pfUserCertificateMapper.selectByUser(ctInfo.getUserId());
+        if (uct != null) {
+            PfUserCertificate pfc = uct.get(0);
+            pfc.setCreateTime(new Date());
+            pfc.setId(null);
+            pfc.setPfUserSkuId(pfuId);
+            pfc.setReason(null);
+            pfc.setSkuId(ctInfo.getSkuId());
+            pfc.setStatus(1);//审核成功状态
+            pfUserCertificateMapper.insert(pfc);
+            Map<String, Object> param = new HashMap<>();
+            param.put("id", pfuId);
+            param.put("code", pfc.getCode());//证书编号
+            certificateMapper.updateCertificateFlag(param);//更新证书审核状态
         }
-       return obj;
     }
 
     /**

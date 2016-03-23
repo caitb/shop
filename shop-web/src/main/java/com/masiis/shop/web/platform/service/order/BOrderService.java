@@ -107,9 +107,10 @@ public class BOrderService {
 
     /**
      * 添加补货订单
+     *
+     * @return 订单id
      * @author ZhaoLiang
      * @date 2016/3/22 15:44
-     * @return 订单id
      */
     @Transactional
     public Long addReplenishmentOrders(Long userId, Integer skuId, int quantity) throws Exception {
@@ -152,6 +153,7 @@ public class BOrderService {
         order.setIsReplace(0);
         order.setIsReceipt(0);
         order.setRemark("补货订单");
+        order.setOrderType(1);
         pfBorderMapper.insert(order);
         rBOrderId = order.getId();
         PfBorderItem pfBorderItem = new PfBorderItem();
@@ -205,7 +207,7 @@ public class BOrderService {
      * <6>修改sku代理量
      * <7>冻结sku库存
      * <8>初始化个人库存信息
-     * <9>更新用户资产
+     * <9>更新上级用户资产 (暂不更新)
      */
     @Transactional
     public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
@@ -287,13 +289,13 @@ public class BOrderService {
                 defaultUserSkuStock.setVersion(0);
                 pfUserSkuStockMapper.insert(defaultUserSkuStock);
             }
-            //<9>更新上级用户资产
-            if (pfBorder.getUserPid() != 0) {
-                int i = comUserAccountMapper.payBOrderToUpdateUserAccount(pfBorder.getUserPid(), pfBorder.getPayAmount());
-                if (i == 0) {
-                    throw new BusinessException("更新用户资产失败");
-                }
-            }
+            //<9>更新上级用户资产 (暂不更新)
+//            if (pfBorder.getUserPid() != 0) {
+//                int i = comUserAccountMapper.payBOrderToUpdateUserAccount(pfBorder.getUserPid(), pfBorder.getPayAmount());
+//                if (i == 0) {
+//                    throw new BusinessException("更新用户资产失败");
+//                }
+//            }
         }
 
     }
@@ -398,6 +400,14 @@ public class BOrderService {
         return pfBorderMapper.selectByUserId(UserId, orderStatus, shipStatus);
     }
 
+    /**
+     * 根据用户id获取出货订单
+     * @author muchaofeng
+     * @date 2016/3/23 14:36
+     */
+    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
+        return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
+    }
     /**
      * 添加订单支付记录
      *

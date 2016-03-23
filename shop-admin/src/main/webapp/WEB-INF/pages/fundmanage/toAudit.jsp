@@ -104,6 +104,19 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="meta-attributes__attr-name">审核通过日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.extractTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="meta-attributes__attr-name">付款日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    </td>
+                </tr>
+
                 </tbody>
             </table>
         </c:if>
@@ -155,6 +168,18 @@
                     <td class="meta-attributes__attr-name">支付宝账号</td>
                     <td class="meta-attributes__attr-detail">
                             ${extractApply.bankCard}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="meta-attributes__attr-name">审核通过日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.extractTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="meta-attributes__attr-name">付款日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                     </td>
                 </tr>
 
@@ -230,6 +255,18 @@
                     <td class="meta-attributes__attr-name">持卡人姓名</td>
                     <td class="meta-attributes__attr-detail">
                             ${extractApply.cardOwnerName}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="meta-attributes__attr-name">审核通过日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.extractTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="meta-attributes__attr-name">付款日期</td>
+                    <td class="meta-attributes__attr-detail">
+                        <fmt:formatDate value="${extractApply.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                     </td>
                 </tr>
 

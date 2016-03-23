@@ -398,10 +398,13 @@ public class COrderService {
      * @date 2016/3/23 15:09
      */
     public String querUserMessage(Long id){
+        log.info("------订单pfcorder----id-----"+id);
         PfCorder pfCorder = pfCorderService.getPfCorderById(id);
         if (pfCorder!=null){
+            log.info("------订单留言信息----message-----"+pfCorder.getUserMassage());
             return pfCorder.getUserMassage();
         }
+        log.info("------订单留言信息----pfcorder为null-----");
         return null;
     }
 }

@@ -7,7 +7,13 @@
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="create_man" property="createMan" jdbcType="BIGINT" />
         <result column="balance_date" property="balanceDate" jdbcType="TIMESTAMP" />
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
         <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
+        <result column="return_amount" property="returnAmount" jdbcType="DECIMAL" />
+        <result column="pf_brokerage" property="pfBrokerage" jdbcType="VARCHAR" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="count_start_time" property="countStartTime" jdbcType="TIMESTAMP" />
+        <result column="count_end_time" property="countEndTime" jdbcType="TIMESTAMP" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
@@ -19,10 +25,14 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBill" >
         insert into pf_user_bill (id, user_id, create_date, 
-            create_man, balance_date, bill_amount, 
+            create_man, balance_date, total_amount, 
+            bill_amount, return_amount, pf_brokerage, 
+            supplier_id, count_start_time, count_end_time, 
             status, remark)
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, 
-            #{createMan,jdbcType=BIGINT}, #{balanceDate,jdbcType=TIMESTAMP}, #{billAmount,jdbcType=DECIMAL}, 
+            #{createMan,jdbcType=BIGINT}, #{balanceDate,jdbcType=TIMESTAMP}, #{totalAmount,jdbcType=DECIMAL}, 
+            #{billAmount,jdbcType=DECIMAL}, #{returnAmount,jdbcType=DECIMAL}, #{pfBrokerage,jdbcType=VARCHAR}, 
+            #{supplierId,jdbcType=BIGINT}, #{countStartTime,jdbcType=TIMESTAMP}, #{countEndTime,jdbcType=TIMESTAMP}, 
             #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
 
@@ -32,20 +42,30 @@
             create_date = #{createDate,jdbcType=TIMESTAMP},
             create_man = #{createMan,jdbcType=BIGINT},
             balance_date = #{balanceDate,jdbcType=TIMESTAMP},
+            total_amount = #{totalAmount,jdbcType=DECIMAL},
             bill_amount = #{billAmount,jdbcType=DECIMAL},
+            return_amount = #{returnAmount,jdbcType=DECIMAL},
+            pf_brokerage = #{pfBrokerage,jdbcType=VARCHAR},
+            supplier_id = #{supplierId,jdbcType=BIGINT},
+            count_start_time = #{countStartTime,jdbcType=TIMESTAMP},
+            count_end_time = #{countEndTime,jdbcType=TIMESTAMP},
             status = #{status,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, user_id, create_date, create_man, balance_date, bill_amount, status, remark
+        select id, user_id, create_date, create_man, balance_date, total_amount, bill_amount, 
+        return_amount, pf_brokerage, supplier_id, count_start_time, count_end_time, status, 
+        remark
         from pf_user_bill
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, user_id, create_date, create_man, balance_date, bill_amount, status, remark
+        select id, user_id, create_date, create_man, balance_date, total_amount, bill_amount, 
+        return_amount, pf_brokerage, supplier_id, count_start_time, count_end_time, status, 
+        remark
         from pf_user_bill
     </select>
 

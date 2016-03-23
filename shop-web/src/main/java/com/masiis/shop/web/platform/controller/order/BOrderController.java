@@ -457,6 +457,11 @@ public class BOrderController extends BaseController {
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight) {
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            request.getSession().setAttribute("comUser", user);
+        }
         JSONObject json = new JSONObject();
         if (freight == null || freight == "") {
             json.put("msgs", false);
@@ -470,7 +475,7 @@ public class BOrderController extends BaseController {
             pfBorderFreight.setFreight(freight);
             pfBorderFreight.setShipManName(shipManName);
             try {
-                bOrderService.updateStock(pfBorder);
+                bOrderService.updateStock(pfBorder,user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
                 json.put("msgs", true);

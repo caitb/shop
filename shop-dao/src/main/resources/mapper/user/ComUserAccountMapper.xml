@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.user.ComUserAccountMapper">
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAccount">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="com_user_id" property="comUserId" jdbcType="BIGINT"/>
-        <result column="transaction_fee" property="transactionFee" jdbcType="DECIMAL"/>
-        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL"/>
-        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL"/>
-        <result column="now_total_fee" property="nowTotalFee" jdbcType="DECIMAL"/>
-        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
-        <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP"/>
-        <result column="changed_by" property="changedBy" jdbcType="VARCHAR"/>
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserAccountMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAccount" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="total_income_fee" property="totalIncomeFee" jdbcType="DECIMAL" />
+        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL" />
+        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL" />
+        <result column="now_total_fee" property="nowTotalFee" jdbcType="DECIMAL" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
+        <result column="changed_by" property="changedBy" jdbcType="VARCHAR" />
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount"  useGeneratedKeys="true" keyProperty="id">
-        insert into com_user_account (id, com_user_id, transaction_fee, 
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount" >
+        insert into com_user_account (id, com_user_id, total_income_fee, 
             extractable_fee, counting_fee, now_total_fee, 
             created_time, changed_time, changed_by
             )
-        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{transactionFee,jdbcType=DECIMAL}, 
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL}, 
             #{extractableFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{nowTotalFee,jdbcType=DECIMAL}, 
             #{createdTime,jdbcType=TIMESTAMP}, #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}
             )
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserAccount">
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserAccount" >
         update com_user_account
         set com_user_id = #{comUserId,jdbcType=BIGINT},
-            transaction_fee = #{transactionFee,jdbcType=DECIMAL},
+            total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
             now_total_fee = #{nowTotalFee,jdbcType=DECIMAL},
@@ -42,31 +42,24 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee, 
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee, 
         created_time, changed_time, changed_by
         from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee,
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee, 
         created_time, changed_time, changed_by
         from com_user_account
     </select>
-    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT id, com_user_id, transaction_fee, extractable_fee, counting_fee, now_total_fee,
-        created_time, changed_time, changed_by
-        FROM com_user_account
-        where com_user_id = #{comUserId}
-    </select>
 
-    <update id="payBOrderToUpdateUserAccount">
-        update com_user_account
-        set transaction_fee = transaction_fee+#{orderPayAmount},
-        counting_fee = counting_fee+#{orderPayAmount},
-        now_total_fee = now_total_fee+#{orderPayAmount}
-        where com_user_id = #{comUserId}
-    </update>
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee,
+        created_time, changed_time, changed_by
+        from com_user_account
+        where com_user_id = #{comUserId,jdbcType=BIGINT}
+    </select>
 
 </mapper>

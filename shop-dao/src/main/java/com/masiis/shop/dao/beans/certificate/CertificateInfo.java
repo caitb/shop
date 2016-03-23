@@ -34,6 +34,8 @@ public class CertificateInfo extends PfUserSku {
 
     private Integer receivect=0;//是否领取证书:0未领取，1已经领取
 
+    private Integer isApply=1;//是否申请:0未申请，1已经申请
+
     public String getCtName() {
         return ctName;
     }
@@ -120,5 +122,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setReceivect(Integer receivect) {
         this.receivect = receivect;
+    }
+
+    public Integer getIsApply() {
+        return isApply;
+    }
+
+    public void setIsApply(Integer isApply) {
+        this.isApply = isApply;
     }
 }

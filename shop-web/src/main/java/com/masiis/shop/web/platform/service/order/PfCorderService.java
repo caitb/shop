@@ -20,6 +20,11 @@ public class PfCorderService {
     @Resource
     private PfCorderMapper pfCorderMapper;
 
+
+    public PfCorder getPfCorderById(Long id){
+        return pfCorderMapper.selectById(id);
+    }
+
     /**
      * 根据用户的id和skuId查询用户试用过的产品
      * @param pfCorder

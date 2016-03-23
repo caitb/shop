@@ -423,15 +423,22 @@ public class BOrderController extends BaseController {
                             @RequestParam(required = true) Integer shipStatus,
                             Integer stock) {
         JSONObject json = new JSONObject();
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            request.getSession().setAttribute("comUser", user);
+        }
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
         pfBorder.setShipStatus(shipStatus);
         try {
-            bOrderService.updateGetStock(pfBorder);
+            bOrderService.updateGetStock(pfBorder,user);
             bOrderService.updateBOrder(pfBorder);
-            json.put("mesg", "交易成功");
+            json.put("msgs", true);
+//            json.put("mesg", "交易成功");
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+//            log.error(ex.getMessage());
+            json.put("msgs", false);
             json.put("message", ex.getMessage());
         }
         return json.toString();

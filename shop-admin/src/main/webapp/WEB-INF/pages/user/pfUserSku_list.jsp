@@ -290,9 +290,9 @@
                                                     if(row.status==0){
                                                         return "未审核";
                                                     }else if(row.status==1){
-                                                        return "申请通过";
+                                                        return "申核通过";
                                                     }else if(row.status==2){
-                                                        return "申请失败";
+                                                        return "申核失败";
                                                     }
                                                 }
                                             },

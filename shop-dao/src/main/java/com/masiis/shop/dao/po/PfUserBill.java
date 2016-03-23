@@ -44,7 +44,7 @@ public class PfUserBill {
     /**
      * 平台佣金
      */
-    private String pfBrokerage;
+    private BigDecimal pfBrokerage;
     /**
      * 供应商id
      */
@@ -111,11 +111,11 @@ public class PfUserBill {
     public void setReturnAmount(BigDecimal returnAmount) {
         this.returnAmount = returnAmount;
     }
-    public String getPfBrokerage() {
+    public BigDecimal getPfBrokerage() {
         return pfBrokerage;
     }
-    public void setPfBrokerage(String pfBrokerage) {
-        this.pfBrokerage = pfBrokerage == null ? null : pfBrokerage.trim();
+    public void setPfBrokerage(BigDecimal pfBrokerage) {
+        this.pfBrokerage = pfBrokerage;
     }
     public Long getSupplierId() {
         return supplierId;

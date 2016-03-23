@@ -243,6 +243,7 @@ public class BOrderController extends BaseController {
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
+        mv.addObject("orderType", pfBorder.getOrderType());
         mv.setViewName("platform/order/zhifu");
         return mv;
     }

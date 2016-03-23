@@ -22,19 +22,17 @@
     <div class="box">
         <header class="xq_header">
             <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                               alt=""></a>
+                                                                              alt=""></a>
             <p>支付订单</p>
         </header>
         <main>
-            <div class="drap">
-                <h2><img src="<%=path%>/static/images/yes.png" alt=""></h2>
-                <p>您已经成功注册麦链合伙人，需要您完成订单支付</p>
-            </div>
-            <div class="xinxi">
-                <p>注册信息</p>
-                <p>支付订单</p>
-                <p>提交资料</p>
-            </div>
+            <c:if test="${orderType==0}">
+                <div class="xinxi">
+                    <p>注册信息</p>
+                    <p>支付订单</p>
+                    <p>提交资料</p>
+                </div>
+            </c:if>
             <div class="xinz" onclick="toChooseAddressPage()">
                 <p><a>选择收货地址</a></p>
             </div>

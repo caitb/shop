@@ -316,7 +316,7 @@
                                                 },
                                                 formatter: function(value, row, index){
                                                     return ['<a class="view" href="javascript:void(0);">查看</a>',
-                                                        '&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="pay()" href="javascript:void(0);">确认收款</a>'
+                                                        '&nbsp;&nbsp;&nbsp;&nbsp;<!--if(row.auditType==2)--><a onclick="pay()" href="javascript:void(0);">确认付款</a>'
                                                     ].join('');
                                                 }
                                             }

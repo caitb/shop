@@ -238,14 +238,12 @@ public class BOrderController extends BaseController {
             request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
         mv.addObject("comUserAddress", comUserAddress);
-
         mv.addObject("bOrderId", bOrderId);
         mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
         mv.setViewName("platform/order/zhifu");
-
         return mv;
     }
 
@@ -400,6 +398,7 @@ public class BOrderController extends BaseController {
             orderUserSku.setAgentLevel(comAgentLevel.getName());
             mav.addObject("orderUserSku", orderUserSku);
             mav.addObject("userSkuId", pfUserSku.getId());
+            mav.addObject("opStr", opStr);
             mav.setViewName("platform/order/lingquzhengshu");
 
         } catch (Exception ex) {

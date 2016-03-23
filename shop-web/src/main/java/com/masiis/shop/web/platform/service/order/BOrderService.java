@@ -153,6 +153,7 @@ public class BOrderService {
         order.setIsReplace(0);
         order.setIsReceipt(0);
         order.setRemark("补货订单");
+        order.setOrderType(1);
         pfBorderMapper.insert(order);
         rBOrderId = order.getId();
         PfBorderItem pfBorderItem = new PfBorderItem();

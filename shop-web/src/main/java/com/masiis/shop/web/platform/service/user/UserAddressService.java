@@ -8,6 +8,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,23 +49,28 @@ public class UserAddressService {
      * @param request
      * @return
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public ComUserAddress getOrderAddress(HttpServletRequest request, Long selectedAddressId, Long userId) {
-        //获得用户的默认地址
-        ComUserAddress comUserAddress = new ComUserAddress();
-        comUserAddress.setUserId(userId);
-        if (StringUtils.isEmpty(selectedAddressId)) {
-            //如果没有选中地址选择默认地址
-            comUserAddress.setIsDefault(1);
-        } else {
-            //选中的地址
-            comUserAddress.setId(selectedAddressId);
-        }
-        List<ComUserAddress> comuserAddressList = queryComUserAddressesByParam(comUserAddress);
-        //地址
-        if (comuserAddressList != null && comuserAddressList.size() > 0) {
-            return comuserAddressList.get(0);
-        } else {
-            return null;
+        try {
+            //获得用户的默认地址
+            ComUserAddress comUserAddress = new ComUserAddress();
+            comUserAddress.setUserId(userId);
+            if (StringUtils.isEmpty(selectedAddressId)) {
+                //如果没有选中地址选择默认地址
+                comUserAddress.setIsDefault(1);
+            } else {
+                //选中的地址
+                comUserAddress.setId(selectedAddressId);
+            }
+            List<ComUserAddress> comuserAddressList = queryComUserAddressesByParam(comUserAddress);
+            //地址
+            if (comuserAddressList != null && comuserAddressList.size() > 0) {
+                return comuserAddressList.get(0);
+            } else {
+                return null;
+            }
+        }catch (Exception e){
+            throw new BusinessException("获得订单选择的地址失败----"+e);
         }
     }
     /**
@@ -72,6 +78,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 20:30
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, String jumpType) {
         try {
             if (operateType.equals("save")) {
@@ -221,29 +228,34 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/9 15:23
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Long deleteUserAddressById(Long id, Long userId, Long defaultAddressId) {
-        int i = comUserAddressMapper.deleteByPrimaryKey(id);
-        int ii = 0;
-        ComUserAddress comUserAddress = new ComUserAddress();
-        if (id.equals(defaultAddressId)) {
-            //如果删除的是默认地址，把最新的地址设置为默认地址
-            comUserAddress.setUserId(userId);
-            List<ComUserAddress> comUserAddressList = comUserAddressMapper.queryComUserAddressesByParam(comUserAddress);
-            if (comUserAddressList != null && comUserAddressList.size() > 0) {
-                comUserAddress = comUserAddressList.get(0);
-                comUserAddress.setIsDefault(1);
-                ii = comUserAddressMapper.updateByPrimaryKey(comUserAddress);
+        try{
+            int i = comUserAddressMapper.deleteByPrimaryKey(id);
+            int ii = 0;
+            ComUserAddress comUserAddress = new ComUserAddress();
+            if (id.equals(defaultAddressId)) {
+                //如果删除的是默认地址，把最新的地址设置为默认地址
+                comUserAddress.setUserId(userId);
+                List<ComUserAddress> comUserAddressList = comUserAddressMapper.queryComUserAddressesByParam(comUserAddress);
+                if (comUserAddressList != null && comUserAddressList.size() > 0) {
+                    comUserAddress = comUserAddressList.get(0);
+                    comUserAddress.setIsDefault(1);
+                    ii = comUserAddressMapper.updateByPrimaryKey(comUserAddress);
+                }
             }
-        }
-        if (i == 1 && ii == 1) {
-            //删除成功，设置默认地址的id值
-            return comUserAddress.getId();
-        } else if (i == 1) {
-            //删除成功
-            return -1L;
-        } else {
-            //删除失败
-            return 0L;
+            if (i == 1 && ii == 1) {
+                //删除成功，设置默认地址的id值
+                return comUserAddress.getId();
+            } else if (i == 1) {
+                //删除成功
+                return -1L;
+            } else {
+                //删除失败
+                return 0L;
+            }
+        }catch (Exception e){
+            throw new BusinessException("删除地址失败----"+e);
         }
     }
 
@@ -253,15 +265,20 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/9 16:24
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Boolean settingDefaultAddress(Long id, Long userId) {
-        //取消之前的默认地址
-        int ii = comUserAddressMapper.cancelDefaultAddress(userId);
-        //设置新的默认地址
-        int i = comUserAddressMapper.settingDefaultAddress(id);
-        if (i == 1) {
-            return true;
-        } else {
-            return false;
+        try{
+            //取消之前的默认地址
+            int ii = comUserAddressMapper.cancelDefaultAddress(userId);
+            //设置新的默认地址
+            int i = comUserAddressMapper.settingDefaultAddress(id);
+            if (i == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){
+            throw new BusinessException("设置默认地址失败-----"+e);
         }
     }
 

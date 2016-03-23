@@ -150,11 +150,13 @@ public class COrderController extends BaseController {
      */
     @RequestMapping(value = "/weChatCallBackSuccess.shtml")
     public String weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
                                         @RequestParam(value = "addressId", required = true) Long addressId,
                                         Model model) {
         try {
             model = getOrderInfo(request, model, skuId, addressId);
+            model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -169,11 +171,13 @@ public class COrderController extends BaseController {
      */
     @RequestMapping(value = "/weChatCallBackFail.shtml")
     public String weChatCallBackFail(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
                                      @RequestParam(value = "skuId", required = true) Integer skuId,
                                      @RequestParam(value = "addressId", required = true) Long addressId,
                                      Model model) {
         try {
             model = getOrderInfo(request, model, skuId, addressId);
+            model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
         } catch (Exception e) {
             e.getStackTrace();
         }

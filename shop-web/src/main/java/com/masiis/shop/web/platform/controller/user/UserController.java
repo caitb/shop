@@ -63,6 +63,12 @@ public class UserController {
                             @RequestParam(value = "phone",required = true)String phone){
         JSONObject obj = new JSONObject();
         try {
+            ComUser _comUseru=userService.getUserByMobile(phone);
+            if (_comUseru!=null){
+                obj.put("isError",true);
+                obj.put("msg","手机号已经被绑定请更换手机号");
+                return obj.toJSONString();
+            }
             ComUser comUser =  userService.bindPhone(request,phone);
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
                 obj.put("isError",false);

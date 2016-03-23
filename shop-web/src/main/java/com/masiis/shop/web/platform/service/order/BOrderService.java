@@ -401,6 +401,14 @@ public class BOrderService {
     }
 
     /**
+     * 根据用户id获取出货订单
+     * @author muchaofeng
+     * @date 2016/3/23 14:36
+     */
+    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
+        return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
+    }
+    /**
      * 添加订单支付记录
      *
      * @author ZhaoLiang

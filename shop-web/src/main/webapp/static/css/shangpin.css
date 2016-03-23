@@ -132,6 +132,9 @@
 .wrap .back_j h4 div .number,
 .wrap .back_b h4 div .number {
     color: #F74A11;
+    float:left;
+    width: 25px;
+    text-align: center;
 }
 .wrap .back_j h4 div span,
 .wrap .back_b h4 div span {

@@ -31,5 +31,7 @@ public interface PfBorderMapper {
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 
     void updateByPrimaryKey(PfBorder pfBorder);
+    List<PfBorder> selectByUserPid(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
+
 
 }

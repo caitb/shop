@@ -31,6 +31,7 @@ public class UserAddressService {
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
 
+    private static final String indexPath="/index";
     /**
      * 根据条件查询用户地址
      *
@@ -117,7 +118,11 @@ public class UserAddressService {
             String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-            return getOrderAddress(orderType, orderId, skuId, selectedAddressId);
+            if (StringUtils.isEmpty(orderType)){
+                return indexPath;
+            }else{
+                return getOrderAddress(orderType, orderId, skuId, selectedAddressId);
+            }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
         }

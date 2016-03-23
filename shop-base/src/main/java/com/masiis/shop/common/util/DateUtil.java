@@ -714,7 +714,7 @@ public class DateUtil {
      * @return
      */
     public static Date getDateNextdays(int days) {
-    	return new Date(System.currentTimeMillis() + HOUR_MICRO_SECONDS);
+    	return new Date(System.currentTimeMillis() + HOUR_MICRO_SECONDS * 24l*days);
     }
     
     /**

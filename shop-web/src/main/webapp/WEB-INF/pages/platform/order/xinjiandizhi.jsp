@@ -20,34 +20,25 @@
 <script>
     function saveAddress() {
         var paramJson = addressJS.getJsonParam();
-        var isMaySendAjax = true;
         if (addressJS.validateAddressInfo(paramJson)) {
-            if (isMaySendAjax){
-                isMaySendAjax=false;
-                $.ajax({
-                    url: '/userAddress/addOrUpdateAddress.do',
-                    type: 'post',
-                    async: false,
-                    data: paramJson,
-                    success: function (data) {
-                        if (data == "false") {
-                            isMaySendAjax = true;
-                            alert("新增地址失败");
-                        } else {
-                            window.location.href = data;
-                        }
-                    },
-                    error:function(){
-                        isMaySendAjax = true;
+            $.ajax({
+                url: '/userAddress/addOrUpdateAddress.do',
+                type: 'post',
+                async: false,
+                data: paramJson,
+                success: function (data) {
+                    if (data == "false") {
+                        alert("新增地址失败");
+                    } else {
+                        window.location.href = data;
                     }
-                })
-            }
+                },
+                error: function () {
+                }
+            })
         }
     }
 
-    function ajaxRequest(){
-
-    }
 
 </script>
 <body>

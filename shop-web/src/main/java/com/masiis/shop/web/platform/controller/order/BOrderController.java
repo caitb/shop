@@ -660,4 +660,15 @@ public class BOrderController extends BaseController {
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }
+
+    @RequestMapping("/payReplenishmentOrder.shtml")
+    public ModelAndView payReplenishmentOrder() {
+        ModelAndView mv = new ModelAndView();
+        try {
+
+        }catch (Exception ex){
+
+        }
+        return mv;
+    }
 }

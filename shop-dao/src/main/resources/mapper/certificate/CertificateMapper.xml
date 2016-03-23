@@ -36,6 +36,7 @@
             <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
             <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
             <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
+            <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
         </association>
 
     </resultMap>
@@ -146,7 +147,7 @@
        select img_url from pf_user_certificate where pf_user_sku_id = #{id}
     </select>
     <select id="getCertificatesByUser" parameterType="Long" resultMap="CertificateResultMap">
-        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid,pfku.sku_id
+        SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid,pfku.sku_id,pfku.user_id
         FROM pf_user_sku pfku
         LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
         WHERE pfku.user_id = #{userId}

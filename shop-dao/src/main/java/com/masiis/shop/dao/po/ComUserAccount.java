@@ -18,9 +18,9 @@ public class ComUserAccount {
      */
     private Long comUserId;
     /**
-     * 交易额
+     * 总收入
      */
-    private BigDecimal transactionFee;
+    private BigDecimal totalIncomeFee;
     /**
      * 可提现额度
      */
@@ -49,12 +49,15 @@ public class ComUserAccount {
     public void setComUserId(Long comUserId) {
         this.comUserId = comUserId;
     }
-    public BigDecimal getTransactionFee() {
-        return transactionFee;
+
+    public BigDecimal getTotalIncomeFee() {
+        return totalIncomeFee;
     }
-    public void setTransactionFee(BigDecimal transactionFee) {
-        this.transactionFee = transactionFee;
+
+    public void setTotalIncomeFee(BigDecimal totalIncomeFee) {
+        this.totalIncomeFee = totalIncomeFee;
     }
+
     public BigDecimal getExtractableFee() {
         return extractableFee;
     }

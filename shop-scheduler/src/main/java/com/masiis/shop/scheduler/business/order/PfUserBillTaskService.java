@@ -9,4 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class PfUserBillTaskService {
     private Logger log = Logger.getLogger(this.getClass());
+
+    /**
+     *
+     */
+    public void createPfUserBillByDaily() {
+    }
 }

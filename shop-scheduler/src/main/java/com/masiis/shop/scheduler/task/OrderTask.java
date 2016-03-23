@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.task;
 
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.scheduler.business.order.PfUserBillTaskService;
@@ -7,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * Created by lzh on 2016/3/23.
@@ -20,7 +22,9 @@ public class OrderTask {
     /**
      * 创建每日结算账单
      */
-    public void createPfUserBillByDaily(){
-
+    public void billCountJob(){
+        log.info("创建每日结算账单定时任务开始,开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        billService.createPfUserBillByDaily();
+        log.info("创建每日结算账单定时任务结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
 }

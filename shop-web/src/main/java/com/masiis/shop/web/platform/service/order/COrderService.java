@@ -14,6 +14,7 @@ import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -72,6 +73,7 @@ public class COrderService {
      * @author  hanzengzhi
      * @date  2016/3/22 23:59
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public WxPaySysParamReq trialApplyPay (HttpServletRequest request,Long userId,ComUser comUser,Integer skuId, Long addressId,String reason) {
         try{
             PfCorder  pfCorder = null;
@@ -94,7 +96,7 @@ public class COrderService {
             log.info("试用申请-----组织调用微信支付的数据--end");
             return wpspr;
         }catch (Exception e){
-            throw new BusinessException(e.getMessage());
+            throw new BusinessException(e);
         }
     }
     /**
@@ -152,7 +154,7 @@ public class COrderService {
             Long orderId = trialApplyGenerateOrderService(pfCorder, pfCorderOperationLog, comUserAddress, pfCorderConsignee);
             log.info("试用申请------生成新的订单----end");
         }catch (Exception e){
-            throw new BusinessException("试用申请---生成新订单失败---"+e.getMessage());
+            throw new BusinessException("试用申请---生成新订单失败---"+e);
         }
 
         return pfCorder;
@@ -163,7 +165,7 @@ public class COrderService {
      * @author hanzengzhi
      * @date 2016/3/17 16:10
      */
-    @Transactional
+    @Transactional(propagation =Propagation.REQUIRED,readOnly = false)
     public Long trialApplyGenerateOrderService(PfCorder pc, PfCorderOperationLog pcol, ComUserAddress cua, PfCorderConsignee pcc) throws BusinessException {
         try {
             //插入订单和订单日志
@@ -177,7 +179,7 @@ public class COrderService {
             log.info("试用申请service------插入收获地址---end");
             return orderId;
         } catch (Exception e) {
-            throw new BusinessException(e.getMessage());
+            throw new BusinessException(e);
         }
     }
 

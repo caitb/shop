@@ -359,4 +359,47 @@ public class PfBorder {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "PfBorder{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", orderCode='" + orderCode + '\'' +
+                ", userId=" + userId +
+                ", userPid=" + userPid +
+                ", userMessage='" + userMessage + '\'' +
+                ", supplierId=" + supplierId +
+                ", modifyTime=" + modifyTime +
+                ", modifyMan=" + modifyMan +
+                ", receivableAmount=" + receivableAmount +
+                ", orderAmount=" + orderAmount +
+                ", productAmount=" + productAmount +
+                ", shipAmount=" + shipAmount +
+                ", payAmount=" + payAmount +
+                ", payTime=" + payTime +
+                ", shipManId=" + shipManId +
+                ", shipManName='" + shipManName + '\'' +
+                ", shipType=" + shipType +
+                ", shipTime=" + shipTime +
+                ", shipRemark='" + shipRemark + '\'' +
+                ", orderType=" + orderType +
+                ", orderStatus=" + orderStatus +
+                ", shipStatus=" + shipStatus +
+                ", payStatus=" + payStatus +
+                ", isCounting=" + isCounting +
+                ", isShip=" + isShip +
+                ", isReplace=" + isReplace +
+                ", isReceipt=" + isReceipt +
+                ", receiptTime=" + receiptTime +
+                ", replaceOrderId=" + replaceOrderId +
+                ", remark='" + remark + '\'' +
+                ", orderSkuStatus='" + orderSkuStatus + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", totalQuantity=" + totalQuantity +
+                ", pfBorderItems=" + pfBorderItems +
+                ", pfBorderConsignee=" + pfBorderConsignee +
+                '}';
+    }
 }

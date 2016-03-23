@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-22 Created
+ * 2016-03-23 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -24,6 +24,14 @@ public class PfUserBillItem {
      * 代理订单id
      */
     private Long pfBorderId;
+    /**
+     * 订单类型: 0,代理订单; 1,分销订单;
+     */
+    private Byte orderType;
+    /**
+     * 订单子类型:0,销售; 1,退货
+     */
+    private Byte orderSubType;
     /**
      * 订单创建时间
      */
@@ -57,6 +65,18 @@ public class PfUserBillItem {
     }
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
+    }
+    public Byte getOrderType() {
+        return orderType;
+    }
+    public void setOrderType(Byte orderType) {
+        this.orderType = orderType;
+    }
+    public Byte getOrderSubType() {
+        return orderSubType;
+    }
+    public void setOrderSubType(Byte orderSubType) {
+        this.orderSubType = orderSubType;
     }
     public Date getOrderCreateDate() {
         return orderCreateDate;

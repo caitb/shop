@@ -3,12 +3,12 @@ package com.masiis.shop.scheduler.service.order;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfUserBill;
-import com.masiis.shop.dao.po.PfUserBillItem;
+import com.masiis.shop.dao.po.*;
+import org.apache.ibatis.builder.BuilderException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +31,10 @@ public class PfUserBillService {
     private PfUserBillMapper billMapper;
     @Resource
     private PfUserBillItemMapper itemMapper;
+    @Resource
+    private ComUserAccountMapper accountMapper;
+    @Resource
+    private ComUserAccountRecordMapper recordMapper;
 
     @Transactional
     public void createBillByUserAndDate(ComUser user, Date start, Date end, Date balanceDate) {
@@ -38,7 +42,8 @@ public class PfUserBillService {
             // 组织账单对象
             PfUserBill bill = createBillBean(user, start, end, balanceDate);
             billMapper.insert(bill);
-            log.info("");
+
+            log.info("日账单记录创建成功,日账单id:" + bill.getId());
 
             // 根据用户来查询订单(已完成且未结算状态订单)
             List<PfBorder> orders = orderMapper.selectByUserAndDate(user.getId(), start, end);
@@ -48,9 +53,13 @@ public class PfUserBillService {
                 item.setPfUserBillId(bill.getId());
                 itemMapper.insert(item);
 
+                log.info("创建日账单子项记录成功,子项id:" + item.getId());
+
                 // 修改订单状态
                 order.setIsCounting(1);
                 orderMapper.updateByPrimaryKey(order);
+
+                log.info("修改订单为已结算状态,订单code:" + order.getOrderCode());
 
                 // 统计销售总额,结算总额,佣金总额
                 if(item.getOrderSubType() == 0){
@@ -64,12 +73,40 @@ public class PfUserBillService {
                 }
             }
             // 修改account账户总收入和可提现额
+            ComUserAccount account = accountMapper.findByUserId(user.getId());
+            int result = accountMapper.addIncomeByCounting(bill.getBillAmount(), user.getId());
+            if(result <= 0){
+                throw new BusinessException("资产账户总收入和可提现额更新失败,更新0条记录,用户id" + user.getId());
+            } else if (result != 1) {
+                throw new BuilderException("资产账户总收入和可提现额更新失败,资产账户记录数超过1条,用户id:" + user.getId());
+            }
+
+            log.info("修改用户资产账户总收入和可提现额成功!");
+
             // 添加账户操作记录
+            ComUserAccountRecord record = createAccountRecord(bill, 0);
+            record.setUserAccountId(account.getId());
+            recordMapper.insert(record);
+
+            record = createAccountRecord(bill, 1);
+            recordMapper.insert(record);
+            log.info("添加资产账户操作记录成功!");
         } catch (Exception e) {
-            log.error("创建日账单失败," + e.getMessage());
+            log.error("创建日账单失败," + e.getMessage(), e);
             throw new BusinessException(e);
         }
+    }
 
+    private ComUserAccountRecord createAccountRecord(PfUserBill bill, int type) {
+        ComUserAccountRecord record = new ComUserAccountRecord();
+
+        record.setBillId(bill.getId());
+        record.setComUserId(bill.getUserId());
+        record.setFeeType(type);
+        record.setHandleFee(bill.getBillAmount());
+        record.setHandlerTime(new Date());
+
+        return record;
     }
 
     private PfUserBillItem createBillItemByOrder(PfBorder order) {

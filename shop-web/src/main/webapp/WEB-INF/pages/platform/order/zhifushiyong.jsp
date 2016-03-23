@@ -35,6 +35,7 @@
 </script>
 <body>
 <header class="xq_header">
+    <a onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>确认订单</p>
 </header>
 <main>
@@ -80,6 +81,9 @@
 </main>
 </body>
 <script>
+    function returnPage(){
+        window.location.href="/product/"+$("#skuId").val();
+    }
     function weChatPay() {
         var addressId = $("#addressId").val();
         var skuId = $("#skuId").val();

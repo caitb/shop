@@ -111,8 +111,22 @@ public class ExtractApplyController extends BaseController {
     @RequestMapping("pass.do")
     @ResponseBody
     public Object pass(Long id){
+        ExtractApply extractApply = null;
         try {
-            comUserExtractApplyService.pass(id);
+            extractApply = comUserExtractApplyService.findById(id);
+            if (extractApply!=null){
+                ComUserAccount comUserAccount = comUserExtractApplyService.findByUserId(extractApply.getComUserId());
+                if(comUserAccount!=null){
+                    int a = extractApply.getExtractFee().compareTo(comUserAccount.getExtractableFee());
+                    if (a==-1||a==0){
+                        comUserExtractApplyService.pass(id);
+                    }else {
+                        return "0";
+                    }
+
+                 }
+            }
+
         }catch (Exception e){
             log.error("提现通过审核失败！[id="+id+"]");
             e.printStackTrace();

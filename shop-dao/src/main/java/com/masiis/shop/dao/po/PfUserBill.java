@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-22 Created
+ * 2016-03-23 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -30,9 +30,33 @@ public class PfUserBill {
      */
     private Date balanceDate;
     /**
-     * 账单金额
+     * 销售总金额
+     */
+    private BigDecimal totalAmount;
+    /**
+     * 账单结算总金额
      */
     private BigDecimal billAmount;
+    /**
+     * 退货总金额
+     */
+    private BigDecimal returnAmount;
+    /**
+     * 平台佣金
+     */
+    private String pfBrokerage;
+    /**
+     * 供应商id
+     */
+    private Long supplierId;
+    /**
+     * 结算开始日期
+     */
+    private Date countStartTime;
+    /**
+     * 结算结束日期
+     */
+    private Date countEndTime;
     /**
      * 账单状态0未结算1已结算
      */
@@ -69,11 +93,47 @@ public class PfUserBill {
     public void setBalanceDate(Date balanceDate) {
         this.balanceDate = balanceDate;
     }
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
     public BigDecimal getBillAmount() {
         return billAmount;
     }
     public void setBillAmount(BigDecimal billAmount) {
         this.billAmount = billAmount;
+    }
+    public BigDecimal getReturnAmount() {
+        return returnAmount;
+    }
+    public void setReturnAmount(BigDecimal returnAmount) {
+        this.returnAmount = returnAmount;
+    }
+    public String getPfBrokerage() {
+        return pfBrokerage;
+    }
+    public void setPfBrokerage(String pfBrokerage) {
+        this.pfBrokerage = pfBrokerage == null ? null : pfBrokerage.trim();
+    }
+    public Long getSupplierId() {
+        return supplierId;
+    }
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+    public Date getCountStartTime() {
+        return countStartTime;
+    }
+    public void setCountStartTime(Date countStartTime) {
+        this.countStartTime = countStartTime;
+    }
+    public Date getCountEndTime() {
+        return countEndTime;
+    }
+    public void setCountEndTime(Date countEndTime) {
+        this.countEndTime = countEndTime;
     }
     public Integer getStatus() {
         return status;

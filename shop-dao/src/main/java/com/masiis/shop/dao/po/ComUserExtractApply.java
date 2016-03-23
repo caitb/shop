@@ -29,11 +29,18 @@ public class ComUserExtractApply {
      * 提现申请时间
      */
     private Date applyTime;
+    /**
+     * 提现方式
+     */
     private Long extractWay;
     /**
      * 审核通过时间
      */
     private Date extractTime;
+    /**
+     * 打款日期
+     */
+    private Date payTime;
     /**
      * 审核状态:0,待审核; 1,已拒绝; 2, 待打款;3,已付款
      */
@@ -102,6 +109,15 @@ public class ComUserExtractApply {
     public void setExtractTime(Date extractTime) {
         this.extractTime = extractTime;
     }
+
+    public Date getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
+    }
+
     public Integer getAuditType() {
         return auditType;
     }

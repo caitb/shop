@@ -794,8 +794,12 @@
                 data: {id: extractApplyId},
                 dataType: "json",
                 success:function(data){
-                    alert("审核通过成功");
-                    document.location.reload();
+                    if(data==1){
+                        alert("审核通过成功！");
+                        document.location.reload();
+                    }else {
+                        alert("申请金额大于账户余额，审核失败！");
+                    }
                 }
             })
         })

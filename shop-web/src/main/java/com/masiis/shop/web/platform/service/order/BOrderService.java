@@ -153,6 +153,7 @@ public class BOrderService {
         order.setIsReplace(0);
         order.setIsReceipt(0);
         order.setRemark("补货订单");
+        order.setOrderType(1);
         pfBorderMapper.insert(order);
         rBOrderId = order.getId();
         PfBorderItem pfBorderItem = new PfBorderItem();
@@ -399,6 +400,14 @@ public class BOrderService {
         return pfBorderMapper.selectByUserId(UserId, orderStatus, shipStatus);
     }
 
+    /**
+     * 根据用户id获取出货订单
+     * @author muchaofeng
+     * @date 2016/3/23 14:36
+     */
+    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
+        return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
+    }
     /**
      * 添加订单支付记录
      *

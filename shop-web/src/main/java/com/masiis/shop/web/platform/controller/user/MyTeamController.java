@@ -152,7 +152,7 @@ public class MyTeamController extends BaseController {
             myTeamService.audit(userSkuId, pfUserCertificateId, status, reason, request.getServletContext().getRealPath("/"));
             return "success";
         } catch (Exception e) {
-            log.error("审核失败![userSkuId="+userSkuId+"][pfUserCertificateId="+pfUserCertificateId+"]");
+            log.error("审核失败![userSkuId="+userSkuId+"][pfUserCertificateId="+pfUserCertificateId+"][status="+status+"][reason="+reason+"]");
             e.printStackTrace();
             return "error";
         }

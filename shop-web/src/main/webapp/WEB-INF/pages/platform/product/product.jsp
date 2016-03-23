@@ -98,7 +98,21 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back" style="display: none"/>
+        <div class="back_b">
+            <p>增加库存</p>
+            <h4>商品:　　<span id="addsku"></span></h4>
+            <h4>数量:　　<div>
+                <span class="jian">-</span>
+                <input type="tel" class="number" value="1"/>
+                <span class="jia">+</span>
+            </div>
+            </h4>
+            <div>
+                <h1 class="b_qu">取消</h1>
+                <h1 class="b_que">确定</h1>
+            </div>
+        </div>
+        <div class="back"></div>
     </div>
 </div>
 <footer>
@@ -113,13 +127,9 @@
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
             </p>
         </c:if>
-        <%--<c:if test="${not empty userAgentInfo && empty pfUserSku}">--%>
-            <%--<p style="background: #DA3600;"><a href="#">代理过</a>--%>
-            <%--</p>--%>
-        <%--</c:if>--%>
         <c:if test="${not empty pfUserSku}">
-            <p style="background: #DA3600;"><a
-                    href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">补货</a></p>
+            <p style="background: #DA3600;"><a onclick="buhuokucun('${productDetails.name}')"
+                    href="javascript:;">补货</a></p>
         </c:if>
     </section>
 </footer>
@@ -137,6 +147,43 @@
         autoplay: 3000,
         // 如果需要分页器
         pagination: '.swiper-pagination'
+    })
+    var i=1;
+    $(".jia").on("click",function(){
+        i++;
+        $(".number").val(i)
+    })
+    $(".jian").on("click",function(){
+        if(i==1){
+            return false;
+        }
+        i--;
+        $(".number").val(i)
+    })
+    function buhuokucun(a){
+        $("#addsku").html(a);
+        $(".back").css("display","-webkit-box");
+        $(".back_b").show();
+    }
+    $(".b_qu").on("click",function(){
+        $(".back").css("display","none");
+        $(".back_b").hide();
+    })
+    $(".b_que").on("click",function(){
+        var skuId = $("#skuId").val();
+        $.ajax({
+            url: '<%=basePath%>product/user/addStock',
+            type: 'post',
+            data: {stock:i,skuId:skuId},
+            dataType: 'json',
+            success: function (data) {
+                if(data['isError'] == false){
+                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
+                }else{
+                    alert(data['message']);
+                }
+            }
+        });
     })
 </script>
 </body>

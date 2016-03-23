@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
+    <script src="<%=path%>/static/js/commonjs.js"></script>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
 </head>
@@ -31,10 +32,14 @@
                     } else {
                         window.location.href = data;
                     }
+                },
+                error: function () {
                 }
             })
         }
     }
+
+
 </script>
 <body>
 <main>

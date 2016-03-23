@@ -238,14 +238,13 @@ public class BOrderController extends BaseController {
             request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
         mv.addObject("comUserAddress", comUserAddress);
-
         mv.addObject("bOrderId", bOrderId);
         mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
+        mv.addObject("orderType", pfBorder.getOrderType());
         mv.setViewName("platform/order/zhifu");
-
         return mv;
     }
 
@@ -400,6 +399,7 @@ public class BOrderController extends BaseController {
             orderUserSku.setAgentLevel(comAgentLevel.getName());
             mav.addObject("orderUserSku", orderUserSku);
             mav.addObject("userSkuId", pfUserSku.getId());
+            mav.addObject("opStr", opStr);
             mav.setViewName("platform/order/lingquzhengshu");
 
         } catch (Exception ex) {
@@ -618,11 +618,11 @@ public class BOrderController extends BaseController {
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
-        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
-        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
-        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(), 1, 5);//待收货
-        List<PfBorder> pfBorders3 = bOrderService.findByUserId(comUser.getId(), 3, shipStatus);//已完成
+        List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
+        List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
+        List<PfBorder> pfBorders10 = bOrderService.findByUserPid(comUser.getId(), 1, 0);//代发货
+        List<PfBorder> pfBorders15 = bOrderService.findByUserPid(comUser.getId(), 1, 5);//待收货
+        List<PfBorder> pfBorders3 = bOrderService.findByUserPid(comUser.getId(), 3, shipStatus);//已完成
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
@@ -659,5 +659,16 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("pfBorders", pfBorderss);
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
+    }
+
+    @RequestMapping("/payReplenishmentOrder.shtml")
+    public ModelAndView payReplenishmentOrder() {
+        ModelAndView mv = new ModelAndView();
+        try {
+
+        }catch (Exception ex){
+
+        }
+        return mv;
     }
 }

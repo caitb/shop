@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,8 @@ public class ProductController extends BaseController {
 
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SkuService skuService;
 
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
@@ -97,6 +100,11 @@ public class ProductController extends BaseController {
         try {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),skuId);//代理关系
+            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getPid().longValue());
+            if(usableStock<0){
+                throw new BusinessException("可用库存不足!");
+            }
             Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(),skuId,stock);
             object.put("isError", false);
             object.put("orderCode", orderCode);

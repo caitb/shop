@@ -58,7 +58,7 @@
             <h4>当前库存:　　<span id="skuStock"></span></h4>
             <h4>数　　量:　　<div>
                 <span class="jian">-</span>
-                <span class="number">1</span>
+                <input type="tel" class="number" value="1"/>
                 <span class="jia">+</span>
             </div>
             </h4>
@@ -72,7 +72,7 @@
             <h4>商品:　　<span id="addsku"></span></h4>
             <h4>数量:　　<div>
                 <span class="jian">-</span>
-                <span class="number">1</span>
+                <input type="tel" class="number" value="1"/>
                 <span class="jia">+</span>
             </div>
             </h4>
@@ -104,14 +104,14 @@
     var i=1;
     $(".jia").on("click",function(){
         i++;
-        $(".number").html(i)
+        $(".number").val(i)
     })
     $(".jian").on("click",function(){
         if(i==1){
             return false;
         }
         i--;
-        $(".number").html(i)
+        $(".number").val(i)
     })
     function jiankucun(a,b){
         $("#skuName").html(a);

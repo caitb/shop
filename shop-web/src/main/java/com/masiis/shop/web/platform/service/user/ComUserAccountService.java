@@ -41,7 +41,7 @@ public class ComUserAccountService {
         account.setCountingFee(new BigDecimal(0));
         account.setExtractableFee(new BigDecimal(0));
         account.setNowTotalFee(new BigDecimal(0));
-        account.setTransactionFee(new BigDecimal(0));
+        account.setTotalIncomeFee(new BigDecimal(0));
         account.setCreatedTime(new Date());
         accountMapper.insert(account);
     }

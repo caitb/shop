@@ -315,9 +315,14 @@
                                                     }
                                                 },
                                                 formatter: function(value, row, index){
-                                                    return ['<a class="view" href="javascript:void(0);">查看</a>',
-                                                        '&nbsp;&nbsp;&nbsp;&nbsp;<!--if(row.auditType==2)--><a onclick="pay()" href="javascript:void(0);">确认付款</a>'
-                                                    ].join('');
+                                                    var sHtm = '<a class="view" href="javascript:void(0);">查看</a>';
+                                                    if(row.auditType==2){
+                                                        sHtm += '&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="pay('+row.id+')" href="javascript:void(0);">确认付款</a>';
+                                                    }
+                                                    return sHtm;
+                                                    /*return ['<a class="view" href="javascript:void(0);">查看</a>',
+                                                        'if()'
+                                                    ].join('');*/
                                                 }
                                             }
                                         ]
@@ -384,7 +389,7 @@
                                 return html.join('');
                             }
 
-                            function operateFormatter(value, row, index) {
+                            /*function operateFormatter(value, row, index) {
                                 var sArr = [];
                                 //alert(row.id);
 
@@ -395,7 +400,7 @@
                                 //sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')" title="Edit">更改上级</a>');
 
                                 return sArr;
-                            }
+                            }*/
 
                             function totalTextFormatter(data) {
                                 return 'Total';
@@ -819,8 +824,8 @@
             })
         })
         //确认付款
-        function pay(){
-            var extractApplyId = $('#extractApplyId').val();
+        function pay(extractApplyId){
+            //var extractApplyId = $('#extractApplyId').val();
             //alert('extractApplyId: ' + extractApplyId);
             $.ajax({
                 type: "GET",

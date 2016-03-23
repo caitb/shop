@@ -15,12 +15,14 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -63,6 +65,8 @@ public class DevelopingController extends BaseController {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private UserCertificateService userCertificateService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -91,6 +95,7 @@ public class DevelopingController extends BaseController {
                     agentMap.put("skuName", comSku.getName());
                     agentMap.put("skuId", comSku.getId());
                     agentMap.put("brandLogo", comBrand.getLogoUrl());
+                    agentMap.put("userSkuId", pus.getId());
 
                     agentMaps.add(agentMap);
                 }
@@ -105,6 +110,17 @@ public class DevelopingController extends BaseController {
         }
 
         return mav;
+    }
+
+    @RequestMapping("/isAudit")
+    @ResponseBody
+    public Object isAudit(HttpServletRequest request, HttpServletResponse response, Integer userSkuId){
+        PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(userSkuId);
+        if(pfUserCertificate != null && pfUserCertificate.getStatus().intValue() == 1){
+            return "yes";
+        }else{
+            return "no";
+        }
     }
 
     @RequestMapping("/sharelink")

@@ -13,6 +13,8 @@
     <!-- 定时任务配置 -->
     <task:scheduled-tasks>
         <task:scheduled ref="testTask" method="testJob" cron="0/5 * * * * ?"/>
+        <!-- 订单相关job -->
+        <task:scheduled ref="orderTask" method="createPfUserBillByDaily" cron="0 30 0 * * ?" />
     </task:scheduled-tasks>
 
 </beans>

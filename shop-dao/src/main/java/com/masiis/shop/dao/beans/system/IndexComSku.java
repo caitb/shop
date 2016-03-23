@@ -10,11 +10,10 @@ import java.util.Date;
  * Created by muchaofeng on 2016/3/4.
  */
 public class IndexComSku {
-    private Integer id;
+    private Integer id;//sku主键id
     private Date createTime;//创建日期
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
-    private Integer skuId;//sku主键id
     private Integer isPay;//是否付款
     private String imgName;//图片名称
     private String imgUrl;//图片地址
@@ -64,12 +63,6 @@ public class IndexComSku {
     }
     public void setSpuId(Integer spuId) {
         this.spuId = spuId;
-    }
-    public Integer getSkuId() {
-        return skuId;
-    }
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
     }
     public String getImgName() {
         return imgName;

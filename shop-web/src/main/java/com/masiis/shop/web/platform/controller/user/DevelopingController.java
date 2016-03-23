@@ -15,6 +15,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
+import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
@@ -118,7 +119,7 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = getComUser(request);
+            ComUser comUser = comUserMapper.selectByPrimaryKey(32L); //getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
@@ -131,19 +132,22 @@ public class DevelopingController extends BaseController {
             List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
-                if(pfUserCertificate.getPoster() == null){
-                    String posterName = pfUserCertificate.getCode()+".png";
-                    String posterPath = request.getServletContext().getRealPath("/")+"static"+File.separator+posterName;
+                if(pfUserCertificate.getPoster() == null || true){
+                    String headImgName = "headimg.png";
+                    String headImgPath = request.getServletContext().getRealPath("/")+"static";
+                    String qrcodeName = pfUserCertificate.getCode()+".png";
+                    String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
+                    //下载用户微信头像
+                    String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
+                    DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
                     //生成二维码
-                    CreateParseCode.createCode(200,200, shareLink, posterPath);
-                    //上传二维码到OSS
-                    File posterFile = new File(posterPath);
-                    //OSSObjectUtils.uploadFile("mmshop", posterFile, "static/user/poster/");
-                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"poster.jpg", posterPath, posterName);
+                    CreateParseCode.createCode(220,220, shareLink, qrcodePath);
+                    //生成海报并上传到OSS
+                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"kangyinli.png", qrcodePath, headImgPath+File.separator+headImgName, qrcodeName);
                     //删除本地二维码图片
-                    posterFile.delete();
-                    //保存二维码图片地址
-                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+posterName);
+                    new File(qrcodePath).delete();
+                    //保存二维码海报图片地址
+                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+qrcodeName);
                     pfUserCertificateMapper.updateById(pfUserCertificate);
                 }
                 resultMap.put("poster", pfUserCertificate.getPoster());
@@ -175,18 +179,29 @@ public class DevelopingController extends BaseController {
      * @param qrcodePath   二维码背景图路径
      * @param saveFileName 保存名字
      */
-    public void drawPost(String bPath, String qrcodePath, String saveFileName) {
+    public void drawPost(String bPath, String qrcodePath, String headImgPath, String saveFileName) {
         ImageIcon bImgIcon = new ImageIcon(bPath);
         ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
+        ImageIcon headImgIcon = new ImageIcon(headImgPath);
         Image bImage = bImgIcon.getImage();
         Image qrcodeImage = qrcodeImgIcon.getImage();
+        Image headImage = headImgIcon.getImage();
 
-        int width = bImage.getWidth(null) == -1 ? 427 : bImage.getWidth(null);
-        int height = bImage.getHeight(null) == -1 ? 600 : bImage.getHeight(null);
+        int width = bImage.getWidth(null) == -1 ? 904 : bImage.getWidth(null);
+        int height = bImage.getHeight(null) == -1 ? 1200 : bImage.getHeight(null);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
         g.drawImage(bImage, 0, 0, null);
-        g.drawImage(qrcodeImage, 0, 0, null);
+        g.drawImage(headImage, 80, 604, null);
+        g.drawRoundRect(80, 604, 132, 132, 66, 66);
+        g.drawImage(qrcodeImage, 566, 776, null);
+
+        g.setFont(new Font("宋体", Font.ITALIC, 32));
+        g.setColor(Color.BLACK);
+        g.drawString("Hi,我是张三丰", 80, 788);
+        g.drawString("我在麦链商城合伙抗引力,", 80, 820);
+        g.drawString("通过这个合伙人计划我赚了", 80, 872);
+        g.drawString("不少钱,真诚邀请你加入.", 80, 924);
         g.dispose();
 
         try {

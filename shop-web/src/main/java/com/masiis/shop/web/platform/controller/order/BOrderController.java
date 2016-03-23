@@ -17,12 +17,16 @@ import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.or.ThreadGroupRenderer;
+import org.omg.CORBA.PRIVATE_MEMBER;
+import org.springframework.context.annotation.Primary;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -353,38 +357,53 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/payBOrdersSuccess.shtml")
     public ModelAndView payBOrdersSuccess(HttpServletRequest request,
-                                          @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        OrderUserSku orderUserSku = new OrderUserSku();
-        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderId);
-        List<String> skuNames = new ArrayList<>();
-        Integer skuId = 0;
-        for (PfBorderItem pforderItem : pfBorderItem) {
-            skuNames.add(pforderItem.getSkuName());
-            skuId = pforderItem.getSkuId();
-        }
-        ComUser userpId = userService.getUserById(pfBorder.getUserPid());
-        ;
-        if (userpId == null) {
-            //上级姓名
-            orderUserSku.setSuperiorName("");
-        } else {
-            //上级姓名
-            orderUserSku.setSuperiorName(userpId.getRealName());
-        }
-        orderUserSku.setUserName(comUser.getRealName());
-        //商品名字集合
-        orderUserSku.setSkuName(skuNames);
-        //获取用户商品信息
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-        //获取用户代理等级
-        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
-        orderUserSku.setAgentLevel(comAgentLevel.getName());
+                                          @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("orderUserSku", orderUserSku);
-        mav.addObject("userSkuId", pfUserSku.getId());
-        mav.setViewName("platform/order/lingquzhengshu");
+        try {
+            ComUser comUser = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            OrderUserSku orderUserSku = new OrderUserSku();
+            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderId);
+            List<String> skuNames = new ArrayList<>();
+            Integer skuId = 0;
+            for (PfBorderItem pforderItem : pfBorderItem) {
+                skuNames.add(pforderItem.getSkuName());
+                skuId = pforderItem.getSkuId();
+            }
+            ComUser userpId = userService.getUserById(pfBorder.getUserPid());
+            if (userpId == null) {
+                //上级姓名
+                orderUserSku.setSuperiorName("平台");
+            } else {
+                //上级姓名
+                orderUserSku.setSuperiorName(userpId.getRealName());
+            }
+            orderUserSku.setUserName(comUser.getRealName());
+            //商品名字集合
+            orderUserSku.setSkuName(skuNames);
+            //获取用户商品信息
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
+            String opStr = "";
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            if (pfUserSku.getIsCertificate() == 1) {
+                opStr = "<a href = \"" + basePath + "userCertificate/userct/" + pfUserSku.getId() + "\" class=\"lingqu\" > 查看证书 </a > ";
+            } else {
+                if (comUser.getIsAgent() == 1) {
+                    opStr = "<a href=\"javascript:;\" class=\"lingqu\" onclick=\"submit();\">领取证书</a>";
+                } else {
+                    opStr = "<a href=\"" + basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId + "\" class=\"lingqu\">领取证书</a>";
+                }
+            }
+            //获取用户代理等级
+            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
+            orderUserSku.setAgentLevel(comAgentLevel.getName());
+            mav.addObject("orderUserSku", orderUserSku);
+            mav.addObject("userSkuId", pfUserSku.getId());
+            mav.setViewName("platform/order/lingquzhengshu");
+
+        } catch (Exception ex) {
+
+        }
         return mav;
     }
 

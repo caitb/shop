@@ -2,6 +2,7 @@ package com.masiis.shop.dao.platform.certificate;
 
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.po.ComUser;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 /**
  * Created by JingHao on 2016/3/7 0007.
  */
+@Repository
 public interface CertificateMapper {
 
     List<CertificateInfo> getCertificateInfo(Map<String, Object> paramsMap);

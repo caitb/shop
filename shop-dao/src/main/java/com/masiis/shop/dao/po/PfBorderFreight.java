@@ -86,4 +86,16 @@ public class PfBorderFreight {
     public void setFreight(String freight) {
         this.freight = freight;
     }
+
+    @Override
+    public String toString() {
+        return "PfBorderFreight{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", pfBorderId=" + pfBorderId +
+                ", shipManId=" + shipManId +
+                ", shipManName='" + shipManName + '\'' +
+                ", freight='" + freight + '\'' +
+                '}';
+    }
 }

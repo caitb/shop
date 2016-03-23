@@ -23,7 +23,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBill" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBill" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_bill (id, user_id, create_date, 
             create_man, balance_date, total_amount, 
             bill_amount, return_amount, pf_brokerage, 

@@ -42,21 +42,34 @@ public class PfBorderController {
                        String sortOrder,
                        PfBorder pfBorder){
 
-        Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, pfBorder);
+        try {
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, pfBorder);
 
-        return pageMap;
+            return pageMap;
+        } catch (Exception e) {
+            log.error("查询合伙人列表失败![pfBorder="+pfBorder+"]");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @RequestMapping("detail.shtml")
     public ModelAndView detail(HttpServletRequest request, HttpServletResponse response, Long borderId){
+        try {
+            ModelAndView mav = new ModelAndView("order/border/detail");
 
-        ModelAndView mav = new ModelAndView("order/border/detail");
+            Order order = bOrderService.find(borderId);
 
-        Order order = bOrderService.find(borderId);
+            mav.addObject("order", order);
 
-        mav.addObject("order", order);
+            return mav;
+        } catch (Exception e) {
+            log.error("查看合伙人订单明细失败![borderId="+borderId+"]");
+            e.printStackTrace();
+        }
 
-        return mav;
+        return null;
     }
 
     @RequestMapping("/delivery.do")
@@ -64,15 +77,22 @@ public class PfBorderController {
     public Object delivery(HttpServletRequest request, HttpServletResponse response,
                            PfBorderFreight pfBorderFreight){
 
-        if (pfBorderFreight.getShipManId() == null){
-            return "请选择一个快递";
-        }
-        if(StringUtils.isBlank(pfBorderFreight.getFreight())){
-            return "请填写运单号";
+        try {
+            if (pfBorderFreight.getShipManId() == null){
+                return "请选择一个快递";
+            }
+            if(StringUtils.isBlank(pfBorderFreight.getFreight())){
+                return "请填写运单号";
+            }
+
+            bOrderService.delivery(pfBorderFreight);
+
+            return "success";
+        } catch (Exception e) {
+            log.error("合伙人订单发货失败![pfBorderFreight="+pfBorderFreight+"]");
+            e.printStackTrace();
         }
 
-        bOrderService.delivery(pfBorderFreight);
-
-        return "success";
+        return null;
     }
 }

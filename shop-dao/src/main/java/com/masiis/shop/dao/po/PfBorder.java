@@ -107,6 +107,10 @@ public class PfBorder {
      */
     private Integer payStatus;
     /**
+     * 是否结算: 0,未结算; 1,已结算
+     */
+    private Integer isCounting;
+    /**
      * 发货标志位(0未发货1已发货)
      */
     private Integer isShip;
@@ -301,6 +305,14 @@ public class PfBorder {
 
     public void setShipManName(String shipManName) {
         this.shipManName = shipManName == null ? null : shipManName.trim();
+    }
+
+    public Integer getIsCounting() {
+        return isCounting;
+    }
+
+    public void setIsCounting(Integer isCounting) {
+        this.isCounting = isCounting;
     }
 
     public Integer getShipType() {

@@ -26,6 +26,7 @@
         <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
         <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
         <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+        <result column="is_counting" property="isCounting" jdbcType="INTEGER" />
         <result column="is_ship" property="isShip" jdbcType="INTEGER" />
         <result column="is_replace" property="isReplace" jdbcType="INTEGER" />
         <result column="is_receipt" property="isReceipt" jdbcType="INTEGER" />
@@ -50,7 +51,7 @@
         product_amount, ship_amount, pay_amount,
         pay_time, ship_man_id, ship_man_name,
         ship_type, ship_time, ship_remark,
-        order_status, ship_status, pay_status,
+        order_status, ship_status, pay_status,is_counting,
         is_ship, is_replace, is_receipt,
         receipt_time, replace_order_id, remark
         )
@@ -62,7 +63,7 @@
         #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR},
         #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR},
         #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER},
-        #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER},
+        #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER},
         #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
         )
     </insert>
@@ -140,6 +141,9 @@
             <if test="payStatus != null">
                 pay_status = #{payStatus,jdbcType=INTEGER},
             </if>
+            <if test="isCounting != null" >
+                is_counting = #{isCounting,jdbcType=INTEGER},
+            </if>
             <if test="isShip != null">
                 is_ship = #{isShip,jdbcType=INTEGER},
             </if>
@@ -167,7 +171,7 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
         receipt_time, replace_order_id, remark
         from pf_border
         where id = #{id,jdbcType=BIGINT}
@@ -177,7 +181,7 @@
         select id, create_time, create_man, order_code, user_pid, user_message,user_id,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_time, ship_remark,
-        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        replace_order_id, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
         receipt_time, remark
         from pf_border
         where user_id = #{userId,jdbcType=BIGINT}
@@ -193,7 +197,7 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
         receipt_time, replace_order_id, remark
         from pf_border
     </select>
@@ -225,6 +229,7 @@
                order_status,
                ship_status,
                pay_status,
+               is_counting,
                is_ship,
                is_replace,
                is_receipt,
@@ -243,7 +248,7 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
         receipt_time, replace_order_id, remark
         from pf_border
         where order_code = #{orderId,jdbcType=BIGINT}

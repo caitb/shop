@@ -97,7 +97,7 @@ public class ExtractApplyController extends BaseController {
             mav.addObject(extractApply);
             return mav;
         }catch (Exception e){
-            log.error("查看提现信息失败！[comUserAccount="+extractApply+"]");
+            log.error("查看提现信息失败！[id="+id+"]");
             e.printStackTrace();
         }
         return null;

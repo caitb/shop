@@ -121,6 +121,7 @@
             cu.openid,
             cuea.extract_fee,
             cuea.apply_time,
+            extract_time,
             cuea.bank_card,
             cuea.pay_time,
             cuea.bank_name,

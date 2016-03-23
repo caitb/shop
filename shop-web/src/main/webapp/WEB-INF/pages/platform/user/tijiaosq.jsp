@@ -23,7 +23,8 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                              alt=""></a>
             <p>授权书申请 </p>
         </header>
         <div class="xinxi">
@@ -40,7 +41,7 @@
                     style="font-size:14px;">${name}</span></p>
             <div class="sf">
                 身份证号：
-                <input type="tel" id="idCard" name="idCard" value="${idCard}">
+                <input type="text" id="idCard" name="idCard" value="${idCard}">
             </div>
             <div class="sf" style="border-bottom:none;">
                 身份证照片：
@@ -119,6 +120,14 @@
         });
     }
     function submit() {
+        var cd = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;//定义身份证匹配算法
+        var legalIdCard = $("#idCard").val();//获取前台界面字段值
+        if (legalIdCard != null && legalIdCard != "") {//运用匹配方法直接判断
+            if (cd.test(legalIdCard) == false) {
+                alert("身份证号不合法!");
+                return;
+            }
+        }
         var fCardUrl = $("#idCardFront").attr("src");
         var bCardUrl = $("#idCardBack").attr("src");
         fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
@@ -126,7 +135,7 @@
         var paraData = {};
         paraData.userSkuId = "${userSkuId}";
         paraData.name = "${name}";
-        paraData.idCard = $("#idCard").val();
+        paraData.idCard = legalIdCard;
         paraData.idCardFrontUrl = fCardUrl;
         paraData.idCardBackUrl = bCardUrl;
         $.ajax({

@@ -10,7 +10,7 @@
         <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
         <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
         <result column="return_amount" property="returnAmount" jdbcType="DECIMAL" />
-        <result column="pf_brokerage" property="pfBrokerage" jdbcType="VARCHAR" />
+        <result column="pf_brokerage" property="pfBrokerage" jdbcType="DECIMAL" />
         <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
         <result column="count_start_time" property="countStartTime" jdbcType="TIMESTAMP" />
         <result column="count_end_time" property="countEndTime" jdbcType="TIMESTAMP" />
@@ -31,7 +31,7 @@
             status, remark)
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, 
             #{createMan,jdbcType=BIGINT}, #{balanceDate,jdbcType=TIMESTAMP}, #{totalAmount,jdbcType=DECIMAL}, 
-            #{billAmount,jdbcType=DECIMAL}, #{returnAmount,jdbcType=DECIMAL}, #{pfBrokerage,jdbcType=VARCHAR}, 
+            #{billAmount,jdbcType=DECIMAL}, #{returnAmount,jdbcType=DECIMAL}, #{pfBrokerage,jdbcType=DECIMAL},
             #{supplierId,jdbcType=BIGINT}, #{countStartTime,jdbcType=TIMESTAMP}, #{countEndTime,jdbcType=TIMESTAMP}, 
             #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
@@ -45,7 +45,7 @@
             total_amount = #{totalAmount,jdbcType=DECIMAL},
             bill_amount = #{billAmount,jdbcType=DECIMAL},
             return_amount = #{returnAmount,jdbcType=DECIMAL},
-            pf_brokerage = #{pfBrokerage,jdbcType=VARCHAR},
+            pf_brokerage = #{pfBrokerage,jdbcType=DECIMAL},
             supplier_id = #{supplierId,jdbcType=BIGINT},
             count_start_time = #{countStartTime,jdbcType=TIMESTAMP},
             count_end_time = #{countEndTime,jdbcType=TIMESTAMP},

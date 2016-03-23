@@ -11,6 +11,8 @@ public interface ComSkuExtensionMapper {
 
     ComSkuExtension selectById(Integer id);
 
+    ComSkuExtension selectBySkuId(Integer skuId);
+
     List<ComSkuExtension> selectByCondition(ComSkuExtension comSkuExtension);
 
     void insert(ComSkuExtension comSkuExtension);

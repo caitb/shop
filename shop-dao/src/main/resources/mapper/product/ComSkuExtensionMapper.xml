@@ -12,6 +12,10 @@
         SELECT id, sku_id, poster FROM com_sku_extension WHERE id = #{id}
     </select>
 
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT id, sku_id, poster FROM com_sku_extension WHERE sku_id = #{skuId}
+    </select>
+
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComSkuExtension" resultMap="BaseResultMap">
         SELECT
                id,

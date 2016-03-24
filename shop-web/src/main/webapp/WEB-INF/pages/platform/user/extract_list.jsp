@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -22,61 +21,35 @@
     <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
 </head>
 <body>
-    <div class="wrap">
-        <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>提现申请</p>
-        </header>
-        <main>
-            <div class="sec1" id="sec1">
-                <p>收入记录：<label for="beginTime" ><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
-                <div id="Ldivall">
+<div class="wrap">
+    <header class="xq_header">
+        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <p>提现申请</p>
+    </header>
+    <main>
+
+        <div class="sec1" id="sec1">
+            <p style="font-size:14px">提现记录：<label for="beginTime"  style="font-size:14px"><b style="font-size:14px">2016</b>年<b style="font-size:14px">1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+            <div id="Ldivall">
+                <c:forEach items="${exList}" var="ex">
                     <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                        <p><span class="sd">${ex.applyTimeView}</span><span>-${ex.extractFee}</span></p>
+                        <h1><span>银行卡号</span><span>${ex.bankCardView}</span><b>${ex.auditTypeView}</b></h1>
                     </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                    <div>
-                        <p><span class="sd">03-16</span><span>+980.00</span></p>
-                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
-                    </div>
-                </div>
+                </c:forEach>
             </div>
-        </main>
-    </div>
-    <div class="back">
-        <div class="back_j">
-            <h1>什么事结算中</h1>
-            <p>
-                为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
-            </p>
-            <botton>我知道了</botton>
         </div>
+    </main>
+</div>
+<div class="back">
+    <div class="back_j">
+        <h1>什么事结算中</h1>
+        <p>
+            为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+        </p>
+        <botton>我知道了</botton>
     </div>
-    <div id="datePlugin"></div>
+</div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
@@ -85,25 +58,34 @@
     $(function(){
         $('#beginTime').date();
         $('#endTime').date({theme:"datetime"});
-    });
-    $('#divall').dropload({
-        scrollArea : window,
-        loadDownFn : function(me){
-            $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
-                dataType: 'json',
-                success: function(data){
-                    alert(data);
-                    // 代码执行后必须重置
-                    me.resetload();
-                },
-                error: function(xhr, type){
-                    alert('Ajax error!');
-                    me.resetload();
-                }
-            });
-        }
+
+        $('body').dropload({
+            scrollArea : window,
+
+            domDown : {
+                domClass   : 'dropload-down',
+                domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+                domUpdate  : '<div class="dropload-update">↓释放加载</div>',
+                domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+            },
+            loadDownFn : function(me){
+                //$(".dropload-down").show();
+                $.ajax({
+                    type: 'GET',
+                    url: 'json/more.json',
+                    dataType: 'json',
+                    success: function(data){
+                        alert(data);
+                    },
+                    error: function(xhr, type){
+                        //alert('Ajax error!');
+                    },
+                    complete:function(){
+                        me.resetload();
+                    }
+                });
+            }
+        });
     });
 </script>
 </body>

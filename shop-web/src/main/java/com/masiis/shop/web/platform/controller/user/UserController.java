@@ -37,7 +37,7 @@ public class UserController {
     private final static com.alibaba.druid.support.logging.Log log = LogFactory.getLog(UserController.class);
 
     /**
-     * 判断是否绑定了手机号
+     * 判断用户是否绑定了手机号
      * @author hanzengzhi
      * @date 2016/3/16 15:51
      */
@@ -51,7 +51,32 @@ public class UserController {
             return "false";
         }
     }
-
+    /**
+     * 判断手机号是否已经被其他人绑定使用过
+     * @author hanzengzhi
+     * @date 2016/3/24 10:43
+     */
+    @RequestMapping(value = "/isBindedPhone.do")
+    @ResponseBody
+    public String isBindedPhone(HttpServletRequest request,HttpServletResponse response,
+                                @RequestParam(value = "phone",required = true)String phone){
+        JSONObject obj = new JSONObject();
+        try {
+            ComUser comUser=userService.getUserByMobile(phone);
+            if (comUser!=null){
+                obj.put("isError",true);
+                obj.put("msg","手机号已经被绑定请更换手机号");
+                return obj.toJSONString();
+            }else{
+                obj.put("isError",false);
+                return obj.toJSONString();
+            }
+        }catch (Exception e){
+            obj.put("isError",true);
+            obj.put("msg","手机号查询是否被绑定失败:"+e.getMessage());
+            return obj.toJSONString();
+        }
+    }
     /**
      * 用户绑定手机号
      * @author hanzengzhi
@@ -63,12 +88,6 @@ public class UserController {
                             @RequestParam(value = "phone",required = true)String phone){
         JSONObject obj = new JSONObject();
         try {
-            ComUser _comUseru=userService.getUserByMobile(phone);
-            if (_comUseru!=null){
-                obj.put("isError",true);
-                obj.put("msg","手机号已经被绑定请更换手机号");
-                return obj.toJSONString();
-            }
             ComUser comUser =  userService.bindPhone(request,phone);
             if (comUser!=null&& !StringUtils.isEmpty(comUser.getMobile())){
                 obj.put("isError",false);

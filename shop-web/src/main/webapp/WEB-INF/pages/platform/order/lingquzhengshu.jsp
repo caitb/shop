@@ -38,22 +38,22 @@
         <div class="main">
             <div>
                 <p>姓名：</p>
-                <p>${orderUserSku.userName}</p>
+                <p>${realName}</p>
             </div>
             <div>
                 <p>合作产品：</p>
-                <p><c:forEach items="${orderUserSku.skuName}" var="name">${name}</c:forEach></p>
+                <p>${skuName}</p>
             </div>
             <div>
                 <p>合伙人等级：</p>
-                <p>${orderUserSku.agentLevel}</p>
+                <p>${levelName}</p>
             </div>
             <div>
                 <p>上级合伙人：</p>
-                <p>${orderUserSku.superiorName}</p>
+                <p>${pRealName}</p>
             </div>
         </div>
-        <a href="javascript:;" class="lingqu" onclick="submit(this);" url="${opStr}">领取证书</a>
+        <a href="javascript:;" class="lingqu" onclick="submit();">领取证书</a>
         <p class="ll">领取证书后可以获得更多特权哦</p>
     </div>
 </main>
@@ -61,28 +61,24 @@
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
-    function submit(data) {
-        if($(data).attr("url")!=""){
-            window.location.href = $(data).attr("url");
-        }
-        else {
-            var para = {};
-            para.pfuId = "${userSkuId}";
-            $.ajax({
-                url: "<%=basePath%>userCertificate/updatect.do",
-                type: "post",
-                data: para,
-                dataType: "json",
-                success: function (data) {
-                    if (data.isError == false) {
-                        window.location.href = "<%=basePath%>userApply/applyOK.shtml";
-                    }
-                    else {
-                        alert(data.message);
-                    }
-                }
-            });
-        }
+    function submit() {
+        window.location.href = "<%=basePath%>userCertificate/setUserCertificate.shtml?userSkuId=${userSkuId}";
+        <%--var para = {};--%>
+        <%--para.pfuId = "${userSkuId}";--%>
+        <%--$.ajax({--%>
+        <%--url: "<%=basePath%>userCertificate/updatect.do",--%>
+        <%--type: "post",--%>
+        <%--data: para,--%>
+        <%--dataType: "json",--%>
+        <%--success: function (data) {--%>
+        <%--if (data.isError == false) {--%>
+        <%--window.location.href = "<%=basePath%>userApply/applyOK.shtml";--%>
+        <%--}--%>
+        <%--else {--%>
+        <%--alert(data.message);--%>
+        <%--}--%>
+        <%--}--%>
+        <%--});--%>
     }
 </script>
 </html>

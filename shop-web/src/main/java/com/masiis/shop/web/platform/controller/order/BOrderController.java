@@ -386,12 +386,8 @@ public class BOrderController extends BaseController {
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
             String opStr = "";
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            if (pfUserSku.getIsCertificate() == 1) {
-                opStr = basePath + "userCertificate/userct/" + pfUserSku.getId();
-            } else {
-                if (comUser.getIsAgent() == 0) {
-                    opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId;
-                }
+            if (pfUserSku.getIsCertificate() == 0) {
+                opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId;
             }
             //获取用户代理等级
             ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());

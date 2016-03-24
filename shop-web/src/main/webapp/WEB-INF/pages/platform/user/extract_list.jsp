@@ -16,38 +16,30 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/zichan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
     <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/tixianjilu.css">
 </head>
 <body>
 <div class="wrap">
-    <header class="xq_header">
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>提现申请</p>
-    </header>
-    <main>
-
-        <div class="sec1" id="sec1">
-            <p style="font-size:14px">提现记录：<label for="beginTime"  style="font-size:14px"><b style="font-size:14px">2016</b>年<b style="font-size:14px">1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
-            <div id="Ldivall">
-                <c:forEach items="${exList}" var="ex">
-                    <div>
-                        <p><span class="sd">${ex.applyTimeView}</span><span>-${ex.extractFee}</span></p>
-                        <h1><span>银行卡号</span><span>${ex.bankCardView}</span><b>${ex.auditTypeView}</b></h1>
-                    </div>
-                </c:forEach>
+    <div class="box">
+        <header class="xq_header">
+            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>提现申请</p>
+        </header>
+        <main>
+            <div class="sec1" id="sec1">
+                <p>提现记录：<label for="beginTime"><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <div id="divall">
+                    <c:forEach items="${exList}" var="ex">
+                        <div>
+                            <p><span class="sd">${ex.applyTimeView}</span><span>-${ex.extractFee}</span></p>
+                            <h1><span>银行卡号</span><span>${ex.bankCardView}</span><b>${ex.auditTypeView}</b></h1>
+                        </div>
+                    </c:forEach>
+                </div>
             </div>
-        </div>
-    </main>
-</div>
-<div class="back">
-    <div class="back_j">
-        <h1>什么事结算中</h1>
-        <p>
-            为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
-        </p>
-        <botton>我知道了</botton>
+        </main>
     </div>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
@@ -59,17 +51,17 @@
         $('#beginTime').date();
         $('#endTime').date({theme:"datetime"});
 
-        $('body').dropload({
+        $('main').dropload({
             scrollArea : window,
 
             domDown : {
                 domClass   : 'dropload-down',
                 domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
                 domUpdate  : '<div class="dropload-update">↓释放加载</div>',
-                domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+                domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+                domNoData  : '<div class="dropload-noData">没东西了</div>'
             },
             loadDownFn : function(me){
-                //$(".dropload-down").show();
                 $.ajax({
                     type: 'GET',
                     url: 'json/more.json',

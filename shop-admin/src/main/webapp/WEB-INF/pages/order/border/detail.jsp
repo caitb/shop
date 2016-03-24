@@ -117,7 +117,9 @@
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorderPayment.payTypeId == 1}">微信</c:if>
+                    <c:forEach items="${order.pfBorderPayments}" var="borderPayment">
+                        <c:if test="${borderPayment.payTypeId == 1}">微信<br/></c:if>
+                    </c:forEach>
                 </td>
             </tr>
 

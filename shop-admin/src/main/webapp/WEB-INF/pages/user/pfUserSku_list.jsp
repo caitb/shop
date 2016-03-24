@@ -80,6 +80,7 @@
                                     //height: getHeight(),
                                     locale: 'zh-CN',
                                     striped: true,
+                                    queryParamsType: '-',
                                     queryParams: function(params){
                                         var pid = '${pid}';
                                         if(pid){
@@ -107,36 +108,13 @@
                                     },
                                     columns: [
                                         [
-                                            /* {
-                                                checkbox: true,
-                                                rowspan: 2,
-                                                align: 'center',
-                                                valign: 'middle'
-                                            },
-                                            {
-                                            title: '序号',
-                                            rowspan: 2,
-                                            align: 'center',
-                                            valign: 'middle',
-                                            footerFormatter: totalTextFormatter,
-                                            formatter: function(value, row, index){
-                                                return index + 1;
-                                            }
-                                            },*/
                                             {
                                                 title: '合伙证书编号',
                                                 field: 'code',
                                                 rowspan: 2,
                                                 align: 'center',
                                                 valign: 'middle',
-                                                //sortable: true,
                                                 footerFormatter: totalTextFormatter,
-                                                /*formatter: function(value, row, index){
-                                                    if(code){
-                                                        return row.code;
-                                                    }
-                                                    return '-';
-                                                }*/
                                             },
                                             {
                                             title: '详情',
@@ -370,11 +348,11 @@
                             function operateFormatter(value, row, index) {
                                 //alert(row.userId);
                                 var sArr = [];
-                                sArr.push( '&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
-                                sArr.push( '&nbsp;|<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
-                                sArr.push( '&nbsp;|<a href="javascript:void(0)" onclick="changeLeader('+row.id+')">更改上级</a>');
+                                sArr.push( '&nbsp;&nbsp;<a href="javascript:void(0)" class="detail-icon" title="Edit">查看个人信息</a>');
+                                sArr.push( '&nbsp;&nbsp;<a href="/userSku/partner.shtml?id='+ row.id +'">查看合伙信息</a>');
+                                sArr.push( '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="changeLeader('+row.id+')">更改上级</a>');
 
-                                return sArr;
+                                return sArr.join('');
                             }
 
                             function totalTextFormatter(data) {

@@ -20,7 +20,7 @@ public interface PfBorderPaymentMapper {
 
     PfBorderPayment selectById(Long id);
 
-    PfBorderPayment selectByBorderId(Long borderId);
+    List<PfBorderPayment> selectByBorderId(Long borderId);
 
     List<PfBorderPayment> selectByCondition(PfBorderPayment pfBorderPayment);
 

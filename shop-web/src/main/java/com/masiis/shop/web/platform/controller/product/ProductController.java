@@ -109,11 +109,11 @@ public class ProductController extends BaseController {
             object.put("isError", false);
             object.put("orderCode", orderCode);
             if (orderCode==null) {
-                throw new BusinessException("补货失败!");
+                throw new BusinessException("订单号生成失败，补货失败!");
             }
         }catch (Exception ex){
             object.put("isError", true);
-            object.put("message", "补货失败");
+            object.put("message", ex.getMessage());
         }
         return object.toJSONString();
     }

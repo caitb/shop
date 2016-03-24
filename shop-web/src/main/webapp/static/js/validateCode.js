@@ -52,7 +52,7 @@
             },
             getValidateNumber: function () {
                 validateCodeJS.phone = $("#phoneId").val();
-                if (validateCodeJS.checkPhone(validateCodeJS.phone)) {
+                if (validateCodeJS.checkPhone(validateCodeJS.phone)&&validateCodeJS.isBindedPhone()) {
                     $.ajax({
                         type: "POST",
                         url: "/binding/securityCode.do",
@@ -68,6 +68,27 @@
                         }
                     });
                 }
+            },
+            isBindedPhone:function(){
+                validateCodeJS.phone = $("#phoneId").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/user/isBindedPhone.do",
+                    data: "phone=" + validateCodeJS.phone,
+                    dataType: "Json",
+                    success: function (result) {
+                        if (result && result.isError == true) {
+                            alert(result.msg);
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    },
+                    error:function(){
+                        alert("error");
+                        return false;
+                    }
+                });
             },
             checkPhone: function () {
                 validateCodeJS.phone = $("#phoneId").val();
@@ -160,6 +181,7 @@
                             validateCodeJS.skipPage();
                         } else {
                             alert(result.msg);
+                            return false;
                         }
                     }
                 })

@@ -107,7 +107,9 @@
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorderPayment.payTypeName}
+                    <c:forEach items="${order.pfCorderPayments}" var="corderPayment">
+                        <c:if test="${corderPayment.payTypeId == 1}">微信<br/></c:if>
+                    </c:forEach>
                 </td>
             </tr>
             

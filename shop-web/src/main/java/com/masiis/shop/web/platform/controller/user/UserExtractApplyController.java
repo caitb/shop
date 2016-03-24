@@ -31,7 +31,7 @@ import java.util.List;
  * Created by lzh on 2016/3/19.
  */
 @Controller
-@RequestMapping("/extractapply")
+@RequestMapping("/extract")
 public class UserExtractApplyController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
 
@@ -125,7 +125,7 @@ public class UserExtractApplyController extends BaseController {
             applyService.applyExtract(account, exMoney, user, info);
             res.put("resCode", "success");
             res.put("resMsg", "");
-            res.put("resUrl", "extractapply/success");
+            res.put("resUrl", "extract/success");
         } catch (Exception e) {
             log.error("提现申请错误:" + e.getMessage(), e);
             res.put("resCode", "fail");

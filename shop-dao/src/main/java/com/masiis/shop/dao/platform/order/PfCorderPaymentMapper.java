@@ -13,7 +13,7 @@ public interface PfCorderPaymentMapper {
 
     PfCorderPayment selectById(Long id);
 
-    PfCorderPayment selectByCorderId(Long corderId);
+    List<PfCorderPayment> selectByCorderId(Long corderId);
 
     List<PfCorderPayment> selectByCondition(PfCorderPayment pfCorderPayment);
 

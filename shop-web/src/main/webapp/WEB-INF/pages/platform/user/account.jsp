@@ -35,7 +35,7 @@
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span><a href="<%=basePath%>extractapply/toapply">申请提现</a></span></p>
+                    <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
                     <h1>￥<span>${account.extractableFee}</span></h1>
                 </li>
                 <li>

@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/kangyinli.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
+
+    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=basePath%>static/js/iscroll.js"></script>
 </head>
 <body>
@@ -37,12 +39,17 @@
             <h1><img src="${memberMap.idCardFrontImg}" alt="">正面</h1>
             <h1><img src="${memberMap.idCardBackImg}" alt="">反面</h1>
         </div>
-        <div class="sec1"><p>证书：<a href="">点击查看</a></p> </div>
-        <div class="sec2">
+        <div class="sec1"><p>证书：<a href="javascript:void(0);" id="view">点击查看</a></p> </div>
+        <div class="sec2" id="ceri" style="display:none;">
             <h1><img src="${memberMap.certificateImg}" alt=""></h1>
         </div>
         <div class="sec1"><p>加入时间：<span><fmt:formatDate value="${memberMap.joinTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span></p> </div>
     </main>
 </div>
 </body>
+<script>
+    $('#view').on('click', function(){
+       $('#ceri').toggle(300, 'linear');
+    });
+</script>
 </html>

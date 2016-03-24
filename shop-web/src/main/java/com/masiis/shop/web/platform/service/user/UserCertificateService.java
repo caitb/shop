@@ -42,11 +42,11 @@ public class UserCertificateService {
     }
 
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/17 0017 下午 4:30
-      * 个人中心授权书
-      */
-    public List<CertificateInfo> CertificateByUser(Integer userId){
+     * @Author 贾晶豪
+     * @Date 2016/3/17 0017 下午 4:30
+     * 个人中心授权书
+     */
+    public List<CertificateInfo> CertificateByUser(Integer userId) {
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
         if (certificateInfoList != null) {
             for (CertificateInfo certificateInfo : certificateInfoList) {
@@ -68,17 +68,18 @@ public class UserCertificateService {
                 }
             }
         }
-       return certificateInfoList;
+        return certificateInfoList;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/17 0017 下午 6:40
-      * 商品证书详情
-      */
-    public PfUserCertificate CertificateDetailsByUser(Integer pfuId){
+     * @Author 贾晶豪
+     * @Date 2016/3/17 0017 下午 6:40
+     * 商品证书详情
+     */
+    public PfUserCertificate CertificateDetailsByUser(Integer pfuId) {
         PfUserCertificate pfc = pfUserCertificateMapper.selectByUserSkuId(pfuId);
         CertificateInfo certificateInfo = certificateMapper.get(pfuId);
-        if(certificateInfo!=null){
+        if (certificateInfo != null) {
             pfc.setSjName(comUserMapper.findByPid(certificateInfo.getPid()));
         }
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
@@ -87,11 +88,12 @@ public class UserCertificateService {
         pfc.setTjDate(beginTime);
         return pfc;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/19 0019 下午 3:58
-      * 领取证书
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/19 0019 下午 3:58
+     * 领取证书
+     */
     public void receiveCertificate(Integer pfuId) {
         CertificateInfo ctInfo = certificateMapper.get(pfuId);
         List<PfUserCertificate> uct = pfUserCertificateMapper.selectByUser(ctInfo.getUserId());
@@ -102,6 +104,7 @@ public class UserCertificateService {
             pfc.setPfUserSkuId(pfuId);
             pfc.setReason(null);
             pfc.setSkuId(ctInfo.getSkuId());
+            pfc.setAgentLevelId(ctInfo.getAgentLevelId());
             pfc.setStatus(1);//审核成功状态
             pfUserCertificateMapper.insert(pfc);
             Map<String, Object> param = new HashMap<>();
@@ -112,11 +115,11 @@ public class UserCertificateService {
     }
 
     /**
-     *  证书
-     * @param pfuId
-     * Jing Hao
+     * 证书
+     *
+     * @param pfuId Jing Hao
      */
-    public PfUserCertificate getCertificateBypfuId(Integer pfuId){
+    public PfUserCertificate getCertificateBypfuId(Integer pfuId) {
         return pfUserCertificateMapper.selectByUserSkuId(pfuId);
     }
 }

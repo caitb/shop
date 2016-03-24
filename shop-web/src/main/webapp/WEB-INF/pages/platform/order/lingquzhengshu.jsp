@@ -53,31 +53,36 @@
                 <p>${orderUserSku.superiorName}</p>
             </div>
         </div>
-        ${opStr}
+        <a href="javascript:;" class="lingqu" onclick="submit(this);" url="${opStr}">领取证书</a>
         <p class="ll">领取证书后可以获得更多特权哦</p>
     </div>
 </main>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
-    function submit() {
-        var para = {};
-        para.pfuId = "${userSkuId}";
-        $.ajax({
-            url: "<%=basePath%>userCertificate/updatect.do",
-            type: "post",
-            data: para,
-            dataType: "json",
-            success: function (data) {
-                if (data.isError == false) {
-                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
-                }
-                else {
-                    alert(data.message);
-                }
-            }
-        });
+    function submit(data) {
+        if($(data).attr("url")!=""){
+            window.location.href = $(data).attr("url");
+        }
+        <%--else{--%>
+            <%--var para = {};--%>
+            <%--para.pfuId = "${userSkuId}";--%>
+            <%--$.ajax({--%>
+                <%--url: "<%=basePath%>userCertificate/updatect.do",--%>
+                <%--type: "post",--%>
+                <%--data: para,--%>
+                <%--dataType: "json",--%>
+                <%--success: function (data) {--%>
+                    <%--if (data.isError == false) {--%>
+                        <%--window.location.href = "<%=basePath%>userApply/applyOK.shtml";--%>
+                    <%--}--%>
+                    <%--else {--%>
+                        <%--alert(data.message);--%>
+                    <%--}--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}--%>
     }
 </script>
 </html>

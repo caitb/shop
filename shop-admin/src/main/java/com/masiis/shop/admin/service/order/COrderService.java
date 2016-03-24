@@ -75,7 +75,6 @@ public class COrderService extends BaseService {
      */
     public Order find(Long id){
         PfCorder pfCorder = pfCorderMapper.selectById(id);
-        //PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(id);
         PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(id);
         List<PfCorderFreight> pfCorderFreights = pfCorderFreightMapper.selectByCorderId(id);
 
@@ -88,12 +87,18 @@ public class COrderService extends BaseService {
         productInfo.setComSpu(comSpu);
 
         Order order = new Order();
+        order.setComUser(comUser);
         order.setPfCorder(pfCorder);
-        //order.setPfCorderPayment(pfCorderPayment);
         order.setPfCorderConsignee(pfCorderConsignee);
         order.setPfCorderFreights(pfCorderFreights);
 
-        order.setComUser(comUser);
+        if(pfCorder.getPayStatus().intValue() == 1){
+            PfCorderPayment corderPaymentC = new PfCorderPayment();
+            corderPaymentC.setPfCorderId(pfCorder.getId());
+            corderPaymentC.setIsEnabled(1);
+            List<PfCorderPayment> pfCorderPayments = pfCorderPaymentMapper.selectByCondition(corderPaymentC);
+            order.setPfCorderPayments(pfCorderPayments);
+        }
 
         List<ProductInfo> productInfos = new ArrayList<>();
         productInfos.add(productInfo);

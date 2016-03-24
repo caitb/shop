@@ -117,7 +117,9 @@
             <tr>
                 <td class="meta-attributes__attr-name">支付方式</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfBorderPayment.payTypeId == 1}">微信</c:if>
+                    <c:forEach items="${order.pfBorderPayments}" var="borderPayment">
+                        <c:if test="${borderPayment.payTypeId == 1}">微信<br/></c:if>
+                    </c:forEach>
                 </td>
             </tr>
 
@@ -247,7 +249,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.deliveryTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>

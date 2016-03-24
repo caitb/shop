@@ -82,13 +82,22 @@
     -webkit-box-flex: 1;
     text-align: center;
     margin: 5px 0;
-    background: url("../images/icon_35.png") no-repeat 42px;
-    background-size: 15px 15px;
+    font-size: 12px;
+    width: 1px;
+}
+.wrap main #box .main .d_box .sec3 p b {
+    background: url("../images/icon_35.png") no-repeat 0;
+    background-size: 14px 14px;
+    font-size: 12px;
+    padding-left: 20px;
 }
 .wrap main #box .main .d_box .sec3 p:nth-child(1) {
-    background: url("../images/icon_34.png") no-repeat 42px;
-    background-size: 15px 15px;
     border-right: 1px solid #999999;
+}
+.wrap main #box .main .d_box .sec3 p:nth-child(1) b {
+    background: url("../images/icon_34.png") no-repeat 0;
+    background-size: 14px 14px;
+    padding-left: 18px;
 }
 .wrap main #box .main .d_box:nth-child(1) {
     margin: 0;
@@ -105,10 +114,11 @@
 }
 .wrap .back_j p,
 .wrap .back_b p {
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #F6F6F6;
     text-indent: 10px;
-    line-height: 28px;
-    margin-bottom: 5px;
+    line-height: 32px;
+    margin-bottom: 9px;
+    font-size: 12px;
 }
 .wrap .back_j h4,
 .wrap .back_b h4 {
@@ -116,10 +126,12 @@
     text-indent: 10px;
     display: -webkit-box;
     line-height: 30px;
+    font-size: 12px;
 }
 .wrap .back_j h4 div,
 .wrap .back_b h4 div {
     margin-top: 5px;
+    font-size: 12px;
 }
 .wrap .back_j h4 div .jian,
 .wrap .back_b h4 div .jian {
@@ -132,20 +144,22 @@
 .wrap .back_j h4 div .number,
 .wrap .back_b h4 div .number {
     color: #F74A11;
-    float:left;
-    width: 25px;
+    float: left;
+    width: 30px;
+    height: 28px;
     text-align: center;
 }
 .wrap .back_j h4 div span,
 .wrap .back_b h4 div span {
     display: block;
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border: 1px solid #E5E5E5;
     text-align: center;
-    line-height: 20px;
+    line-height: 30px;
     text-indent: 0;
+    font-size: 12px;
 }
 .wrap .back_j h4 div span:nth-child(2),
 .wrap .back_b h4 div span:nth-child(2) {
@@ -154,7 +168,7 @@
 .wrap .back_j > div,
 .wrap .back_b > div {
     display: -webkit-box;
-    margin: 10px 30px;
+    margin: 20px 30px 30px 30px;
 }
 .wrap .back_j > div h1,
 .wrap .back_b > div h1 {

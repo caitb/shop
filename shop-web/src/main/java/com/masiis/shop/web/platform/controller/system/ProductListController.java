@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.ComSpu;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/productList")
-public class ProductListController {
+public class ProductListController extends BaseController{
 
     @Resource
     private SpuService spuService;
@@ -41,7 +42,7 @@ public class ProductListController {
     public ModelAndView showProductList(HttpServletRequest request) throws Exception{
         HttpSession session = request.getSession();
         //获取用户信息
-        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        ComUser user = getComUser(request);
         if (user == null) {
             user = (ComUser)session.getAttribute("comUser");
         }

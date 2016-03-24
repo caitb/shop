@@ -61,7 +61,7 @@ public class WxPayController extends BaseController{
             req = checkRequestParma(req, param);
             log.info("参数校验通过");
             // 获取当前登录用户
-            user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            user = getComUser(request);
             if(user == null){
                 // 未知原因错误
                 log.error("未知原因错误");

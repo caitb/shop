@@ -126,7 +126,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">物流状态</td>
                 <td class="meta-attributes__attr-detail">
-                    <c:if test="${order.pfCorder.shipStatus == 0}">
+                    <c:if test="${order.pfBorder.shipStatus == 0}">
                         未发货&nbsp;&nbsp;&nbsp;&nbsp;
                         <button type="button" class="btn btn-info" id="fahuo" data-toggle="collapse" >
                             发货
@@ -148,7 +148,7 @@
                                 <div class="form-group" style="margin-left: -81px;">
                                     <label for="freight" class="col-sm-4 control-label">快递单号</label>
                                     <div class="col-sm-4">
-                                        <input type="hidden" name="pfCorderId" value="${order.pfBorder.id}" />
+                                        <input type="hidden" name="pfBorderId" value="${order.pfBorder.id}" />
                                         <input type="hidden" id="shipManName" name="shipManName" value="" />
                                         <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
                                     </div>
@@ -218,8 +218,8 @@
                                             // Use Ajax to submit form data
                                             $.ajax({
                                                 url: '<%=basePath%>order/border/delivery.do',
-                                                type: 'post',
-                                                data: $('#deliForm').serialize(),
+                                                type: 'get',
+                                                data: $form.serialize(),
                                                 success: function(msg){
                                                     if(msg == 'success'){
                                                         $('#delivery').collapse('hide');
@@ -273,7 +273,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">收获地址</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfBorderConsignee.provinceName}+${order.pfBorderConsignee.cityName}+${order.pfBorderConsignee.regionName}+${order.pfBorderConsignee.address}
+                    ${order.pfBorderConsignee.provinceName}${order.pfBorderConsignee.cityName}${order.pfBorderConsignee.regionName}${order.pfBorderConsignee.address}
                 </td>
             </tr>
 
@@ -320,7 +320,7 @@
                     <td>${product.comSku.priceMarket}</td>
                     <td>${product.comSku.priceRetail}</td>
                     <td>1</td>
-                    <td>${order.pfCorder.productAmount}</td>
+                    <td>${order.pfBorder.productAmount}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -332,7 +332,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">运费</td>
                 <td class="meta-attributes__attr-detail">
-                    ${order.pfCorder.orderCode}
+                    ${order.pfBorder.orderCode}
                 </td>
             </tr>
             <tr>
@@ -364,11 +364,11 @@
         </table>
         <hr/>
 
-        <div style="align-content: center; width: 200px; margin: 0 auto;">
-            <button class="btn btn-info">确认收货</button>
-            <button class="btn btn-detault">取消订单</button>
-        </div>
-        <hr/>
+        <%--<div style="align-content: center; width: 200px; margin: 0 auto;">--%>
+            <%--<button class="btn btn-info">确认收货</button>--%>
+            <%--<button class="btn btn-detault">取消订单</button>--%>
+        <%--</div>--%>
+        <%--<hr/>--%>
 
         <table class="table table-bordered my-table">
             <thead>

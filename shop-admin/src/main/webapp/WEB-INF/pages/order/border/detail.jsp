@@ -249,7 +249,7 @@
             <tr>
                 <td class="meta-attributes__attr-name">发货时间</td>
                 <td class="meta-attributes__attr-detail">
-                    <fmt:formatDate value="${order.pfBorder.deliveryTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
+                    <fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" />
                 </td>
             </tr>
             <tr>

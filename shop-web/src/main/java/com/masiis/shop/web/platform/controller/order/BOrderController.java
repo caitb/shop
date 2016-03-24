@@ -387,12 +387,10 @@ public class BOrderController extends BaseController {
             String opStr = "";
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
             if (pfUserSku.getIsCertificate() == 1) {
-                opStr = "<a href = \"" + basePath + "userCertificate/userct/" + pfUserSku.getId() + "\" class=\"lingqu\" > 查看证书 </a > ";
+                opStr = basePath + "userCertificate/userct/" + pfUserSku.getId();
             } else {
-                if (comUser.getIsAgent() == 1) {
-                    opStr = "<a href=\"javascript:;\" class=\"lingqu\" onclick=\"submit();\">领取证书</a>";
-                } else {
-                    opStr = "<a href=\"" + basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId + "\" class=\"lingqu\">领取证书</a>";
+                if (comUser.getIsAgent() == 0) {
+                    opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId;
                 }
             }
             //获取用户代理等级
@@ -433,7 +431,7 @@ public class BOrderController extends BaseController {
         pfBorder.setOrderStatus(orderStatus);
         pfBorder.setShipStatus(shipStatus);
         try {
-            bOrderService.updateGetStock(pfBorder,user);
+            bOrderService.updateGetStock(pfBorder, user);
             bOrderService.updateBOrder(pfBorder);
             json.put("msgs", true);
 //            json.put("mesg", "交易成功");
@@ -476,7 +474,7 @@ public class BOrderController extends BaseController {
             pfBorderFreight.setFreight(freight);
             pfBorderFreight.setShipManName(shipManName);
             try {
-                bOrderService.updateStock(pfBorder,user);
+                bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
                 json.put("msgs", true);
@@ -679,7 +677,7 @@ public class BOrderController extends BaseController {
         ModelAndView mv = new ModelAndView();
         try {
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
         return mv;

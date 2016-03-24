@@ -34,4 +34,14 @@ public interface ComUserAccountMapper {
      */
     int payBOrderToUpdateUserAccount(@Param("comUserId") Long comUserId,
                                      @Param("orderPayAmount") BigDecimal orderPayAmount);
+
+    /**
+     * 根据用户id和金额来更新用户总收入和可提现金额
+     *
+     * @param billAmount
+     * @param id
+     * @return
+     */
+    int addIncomeByCounting(@Param("billAmount") BigDecimal billAmount,
+                            @Param("userid") Long id);
 }

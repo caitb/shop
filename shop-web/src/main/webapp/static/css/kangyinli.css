@@ -26,20 +26,20 @@
   text-decoration: underline;
   margin-left: 20px;
 }
-.wrap main div:nth-child(8) {
+.wrap main .sec2 {
   display: -webkit-box;
   margin: 0 10px;
 }
-.wrap main div:nth-child(8) h1 {
+.wrap main .sec2 h1 {
   -webkit-box-flex: 1;
   width: 1px;
   text-align: center;
 }
-.wrap main div:nth-child(8) h1 img {
+.wrap main .sec2 h1 img {
   display: block;
   width: 100%;
 }
-.wrap main div:nth-child(8) h1:first-child {
+.wrap main .sec2 h1:first-child {
   margin-right: 10px;
   border-radius: 5px;
   overflow: hidden;
@@ -50,7 +50,7 @@
   display: -webkit-box;
   -webkit-box-pack: center;
 }
-.wrap main footer button {
+.wrap main footer botton {
   display: block;
   padding: 5px 30px;
   background: #E7E7E7;
@@ -63,42 +63,35 @@
   background: #F74A11;
   color: white;
 }
-.wrap .back {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
+.wrap .back_j {
   display: none;
-}
-.wrap .back .back_j {
-  -webkit-box-flex: 1;
-  margin: 0 10%;
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  z-index: 10;
   background: white;
+  border-radius: 5px;
 }
-.wrap .back .back_j p {
+.wrap .back_j p {
   margin: 0 5px;
   border-bottom: 1px solid #F74A11;
   text-indent: 10px;
-  line-height: 28px;
+  line-height: 50px;
   margin-bottom: 5px;
   color: #FF5200;
 }
-.wrap .back .back_j textarea {
+.wrap .back_j textarea {
   display: block;
   width: 90%;
   height: 70px;
-  margin: 0 auto;
+  margin: 15px auto;
 }
-.wrap .back .back_j div {
+.wrap .back_j div {
   display: -webkit-box;
   margin: 10px 20% 10px 20%;
 }
-.wrap .back .back_j div h1 {
+.wrap .back_j div h1 {
   -webkit-box-flex: 1;
   width: 1px;
   background: #E7E7E7;
@@ -106,10 +99,19 @@
   padding: 3px;
   border-radius: 5px;
 }
-.wrap .back .back_j div .j_qu {
+.wrap .back_j div .j_qu {
   margin-right: 10px;
 }
-.wrap .back .back_j div .j_que {
+.wrap .back_j div .j_que {
   background: #FF5200;
   color: white;
+}
+.wrap .back {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 }

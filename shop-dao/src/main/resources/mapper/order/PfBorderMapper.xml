@@ -248,4 +248,15 @@
         where order_code = #{orderId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserAndDate" resultMap="BaseResultMap" >
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
+        receipt_time, replace_order_id, remark
+        from pf_border
+        where receipt_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+              and receipt_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+              and user_pid = #{userid,jdbcType=BIGINT}
+    </select>
 </mapper>

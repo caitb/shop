@@ -75,4 +75,16 @@ public class PfCorderFreight {
     public void setFreight(String freight) {
         this.freight = freight == null ? null : freight.trim();
     }
+
+    @Override
+    public String toString() {
+        return "PfCorderFreight{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", pfCorderId=" + pfCorderId +
+                ", shipManId=" + shipManId +
+                ", shipManName='" + shipManName + '\'' +
+                ", freight='" + freight + '\'' +
+                '}';
+    }
 }

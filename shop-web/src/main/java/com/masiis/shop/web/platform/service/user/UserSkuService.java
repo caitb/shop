@@ -44,13 +44,23 @@ public class UserSkuService {
     public PfUserSku getUserSkuById(Integer id) {
         return pfUserSkuMapper.selectByPrimaryKey(id);
     }
-    
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/21 0021 下午 6:33
-      * 获取用户代理信息
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/21 0021 下午 6:33
+     * 获取用户代理信息
+     */
     public List<CertificateInfo> getUserSkuByUserId(Long userId) throws Exception {
         return certificateMapper.getCertificatesByUser(userId);
     }
+
+    /**
+     * 获取数据集
+     * @author ZhaoLiang
+     * @date 2016/3/24 17:04
+     */
+    public List<PfUserSku> getAllByCondition(PfUserSku pfUserSku) {
+        return pfUserSkuMapper.selectByCondition(pfUserSku);
+    }
+
 }

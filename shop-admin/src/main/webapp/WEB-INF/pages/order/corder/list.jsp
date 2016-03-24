@@ -46,12 +46,12 @@
                     <div class="table-responsive">
                         <div id="toolbar">
                             <form class="form-inline">
-                                <button id="remove" class="btn btn-danger" disabled>
-                                    <i class="glyphicon glyphicon-remove"></i> 删除
-                                </button>
-                                <a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">
-                                    <i class="glyphicon glyphicon-add"></i> 添加
-                                </a>
+                                <%--<button id="remove" class="btn btn-danger" disabled>--%>
+                                    <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
+                                <%--</button>--%>
+                                <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
+                                    <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
+                                <%--</a>--%>
                                 <div class="form-group">
                                     <label for="skuName">商品名称</label>
                                     <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">

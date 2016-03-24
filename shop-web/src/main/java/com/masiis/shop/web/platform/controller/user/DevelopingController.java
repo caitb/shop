@@ -222,7 +222,7 @@ public class DevelopingController extends BaseController {
         g.drawImage(bImage, 0, 0, null);
         g.drawImage(qrcodeImage, 566, 776, null);
 
-        g.setFont(new Font("华文行楷", Font.PLAIN, 32));
+        g.setFont(new Font("思源黑体", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
         g.drawString(userName, 225, 810);
         g.dispose();

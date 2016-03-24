@@ -5,6 +5,9 @@
   font-size: 14px;
   font-family: "Microsoft YaHei", Arial, "Helvetica";
 }
+* a {
+  text-decoration: none;
+}
 * b {
   font-weight: normal;
   font-size: 14px;
@@ -16,6 +19,7 @@
   position: relative;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  overflow-x: hidden;
 }
 .wrap main {
   -webkit-box-flex: 1;
@@ -85,6 +89,8 @@
   font-size: 12px;
   border: 1px solid #FA570B;
   margin-right: 10px;
+}
+.wrap main nav ul li p span a {
   color: #FB5F09;
 }
 .wrap main nav ul li p b {
@@ -148,7 +154,8 @@
 }
 .wrap main .sec1 #divall div {
   display: -webkit-box;
-  margin: 5px 15px;
+  margin: 0 15px;
+  padding: 5px 0;
   border-bottom: 1px dashed #999999;
   -webkit-box-pack: justify;
   -webkit-box-align: center;
@@ -167,6 +174,38 @@
 }
 .wrap main .sec1 #divall div h1 {
   font-weight: normal;
+}
+.wrap main .sec1 #Ldivall div {
+  display: -webkit-box;
+  margin: 0 15px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #999999;
+  -webkit-box-orient: vertical;
+}
+.wrap main .sec1 #Ldivall div p {
+  width: 100%;
+  padding: 2px 0;
+  display: -webkit-box;
+  -webkit-box-pack: justify;
+}
+.wrap main .sec1 #Ldivall div p span {
+  display: block;
+  font-size: 14px;
+}
+.wrap main .sec1 #Ldivall div p .sd {
+  color: #999999;
+  font-size: 12px;
+  display: block;
+}
+.wrap main .sec1 #Ldivall div h1 {
+  font-weight: normal;
+}
+.wrap main .sec1 #Ldivall div h1 span {
+  font-size: 12px;
+  margin-right: 10px;
+}
+.wrap main .sec1 #Ldivall div h1 b {
+  float: right;
 }
 .back_j {
   width: 90%;

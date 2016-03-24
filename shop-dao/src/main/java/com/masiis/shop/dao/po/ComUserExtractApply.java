@@ -160,4 +160,15 @@ public class ComUserExtractApply {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    /**************************************以下为视图属性**************************************/
+    private String auditTypeView;
+
+    public String getAuditTypeView() {
+        return auditTypeView;
+    }
+
+    public void setAuditTypeView(String auditTypeView) {
+        this.auditTypeView = auditTypeView;
+    }
 }

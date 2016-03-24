@@ -26,11 +26,11 @@
                 </header>
            <main>
                <div id="box">
-                   <div class="sec1"><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==0}">
+                   <div class="sec1"><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==0}"><img src="<%=path%>/static/images/icon_40.png" alt="">
                        <h1>未发货</h1>
-                       <p>亲，请及时发货~~</p></c:if><c:if test="${borderDetail.pfBorder.payStatus==0 }"> <h1>未付款</h1>
-                       <p>亲，订单还未处理~~</p></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==5}"> <h1>未收货</h1>
-                       <p>亲，订单还未完结~~</p></c:if><c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}"> <h1>已完成</h1>
+                       <p>亲，请及时发货~~</p></c:if><c:if test="${borderDetail.pfBorder.payStatus==0 }"> <img src="<%=path%>/static/images/icon_65.png" alt=""><h1>未付款</h1>
+                       <p>亲，订单还未处理~~</p></c:if><c:if test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==5}"><img src="<%=path%>/static/images/icon_68.png" alt=""><h1>未收货</h1>
+                       <p>亲，订单还未完结~~</p></c:if><c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}"><img src="<%=path%>/static/images/icon_64.png" alt=""><h1>已完成</h1>
                        <p>亲，交易成功~~</p></c:if>
                    </div>
                    <div class="sec2">

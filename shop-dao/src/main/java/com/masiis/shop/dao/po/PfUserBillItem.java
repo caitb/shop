@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PfUserBillItem {
@@ -27,11 +28,11 @@ public class PfUserBillItem {
     /**
      * 订单类型: 0,代理订单; 1,分销订单;
      */
-    private Byte orderType;
+    private Integer orderType;
     /**
      * 订单子类型:0,销售; 1,退货
      */
-    private Byte orderSubType;
+    private Integer orderSubType;
     /**
      * 订单创建时间
      */
@@ -39,7 +40,7 @@ public class PfUserBillItem {
     /**
      * 订单支付金额
      */
-    private Long orderPayAmount;
+    private BigDecimal orderPayAmount;
     private String remark;
 
     public Long getId() {
@@ -66,16 +67,16 @@ public class PfUserBillItem {
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
     }
-    public Byte getOrderType() {
+    public Integer getOrderType() {
         return orderType;
     }
-    public void setOrderType(Byte orderType) {
+    public void setOrderType(Integer orderType) {
         this.orderType = orderType;
     }
-    public Byte getOrderSubType() {
+    public Integer getOrderSubType() {
         return orderSubType;
     }
-    public void setOrderSubType(Byte orderSubType) {
+    public void setOrderSubType(Integer orderSubType) {
         this.orderSubType = orderSubType;
     }
     public Date getOrderCreateDate() {
@@ -84,10 +85,10 @@ public class PfUserBillItem {
     public void setOrderCreateDate(Date orderCreateDate) {
         this.orderCreateDate = orderCreateDate;
     }
-    public Long getOrderPayAmount() {
+    public BigDecimal getOrderPayAmount() {
         return orderPayAmount;
     }
-    public void setOrderPayAmount(Long orderPayAmount) {
+    public void setOrderPayAmount(BigDecimal orderPayAmount) {
         this.orderPayAmount = orderPayAmount;
     }
     public String getRemark() {

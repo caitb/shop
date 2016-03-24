@@ -23,6 +23,7 @@
         <result column="ship_type" property="shipType" jdbcType="INTEGER" />
         <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
         <result column="ship_remark" property="shipRemark" jdbcType="VARCHAR" />
+        <result column="order_type" property="orderType" jdbcType="INTEGER" />
         <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
         <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
         <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
@@ -40,10 +41,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder">
-        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
-            SELECT LAST_INSERT_ID() AS id
-        </selectKey>
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorder" useGeneratedKeys="true" keyProperty="id">
         insert into pf_border (id, create_time, create_man,
         order_code, user_id, user_pid,
         user_message, supplier_id, modify_time,
@@ -51,10 +49,10 @@
         product_amount, ship_amount, pay_amount,
         pay_time, ship_man_id, ship_man_name,
         ship_type, ship_time, ship_remark,
-        order_status, ship_status, pay_status,is_counting,
-        is_ship, is_replace, is_receipt,
-        receipt_time, replace_order_id, remark
-        )
+        order_type, order_status, ship_status,
+        pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time,
+        replace_order_id, remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
         #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
         #{userMessage,jdbcType=VARCHAR}, #{supplierId,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP},
@@ -62,10 +60,10 @@
         #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
         #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, #{shipManName,jdbcType=VARCHAR},
         #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, #{shipRemark,jdbcType=VARCHAR},
-        #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER},
-        #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER},
-        #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
-        )
+        #{orderType,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER},
+        #{payStatus,jdbcType=INTEGER}, #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER},
+        #{isReplace,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP},
+        #{replaceOrderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorder" >
@@ -132,6 +130,9 @@
             <if test="shipRemark != null">
                 ship_remark = #{shipRemark,jdbcType=VARCHAR},
             </if>
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=INTEGER},
+            </if>
             <if test="orderStatus != null">
                 order_status = #{orderStatus,jdbcType=INTEGER},
             </if>
@@ -171,20 +172,23 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
-        receipt_time, replace_order_id, remark
+        ship_remark, order_type, order_status, ship_status, pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, create_man, order_code, user_pid, user_message,user_id,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
-        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_time, ship_remark,
-        replace_order_id, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
-        receipt_time, remark
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_type, order_status, ship_status, pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
-        where user_id = #{userId,jdbcType=BIGINT}
+        where
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT}
+            </if>
             <if test="orderStatus != null">
                AND order_status = #{orderStatus,jdbcType=INTEGER}
             </if>
@@ -192,51 +196,41 @@
                 AND  ship_status = #{shipStatus,jdbcType=INTEGER}
             </if>
     </select>
+    <select id="selectByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, order_code, user_pid, user_message,user_id,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_time, ship_remark,
+        replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
+        receipt_time, remark
+        from pf_border
+        where
+        <if test="userId != null">
+            user_pid = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="shipStatus != null">
+            AND  ship_status = #{shipStatus,jdbcType=INTEGER}
+        </if>
+    </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
-        receipt_time, replace_order_id, remark
+        ship_remark, order_type, order_status, ship_status, pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorder" resultMap="BaseResultMap">
-        select
-               id,
-               create_time,
-               create_man,
-               order_code,
-               user_id,
-               user_pid,
-               user_message,
-               supplier_id,
-               modify_time,
-               modify_man,
-               receivable_amount,
-               order_amount,
-               product_amount,
-               ship_amount,
-               pay_amount,
-               pay_time,
-               ship_man_id,
-               ship_man_name,
-               ship_type,
-               ship_time,
-               ship_remark,
-               replace_order_id,
-               order_status,
-               ship_status,
-               pay_status,
-               is_counting,
-               is_ship,
-               is_replace,
-               is_receipt,
-               receipt_time,
-               remark
-        from
-               pf_border
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_type, order_status, ship_status, pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time, replace_order_id, remark
+        from pf_border
         <where>
             <if test="id != null">
                 id = #{id,jdbcType=BIGINT}
@@ -248,10 +242,21 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
-        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
-        receipt_time, replace_order_id, remark
+        ship_remark, order_type, order_status, ship_status, pay_status, is_counting, is_ship,
+        is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
         where order_code = #{orderId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectByUserAndDate" resultMap="BaseResultMap" >
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
+        ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type, ship_time,
+        ship_remark, order_status, ship_status, pay_status, is_counting, is_ship, is_replace, is_receipt,
+        receipt_time, replace_order_id, remark
+        from pf_border
+        where receipt_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+              and receipt_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+              and user_pid = #{userid,jdbcType=BIGINT}
+    </select>
 </mapper>

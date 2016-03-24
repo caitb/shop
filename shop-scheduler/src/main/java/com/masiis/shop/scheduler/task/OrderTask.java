@@ -27,7 +27,7 @@ public class OrderTask {
         try{
             billService.createPfUserBillByDaily();
         } catch (Exception e) {
-            log.error("创建每日结算账单定时任务错误,{}" + e.getMessage(), e);
+            log.error("创建每日结算账单定时任务错误,{}" + e.getMessage());
         }
         log.info("创建每日结算账单定时任务结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }

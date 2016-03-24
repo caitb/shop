@@ -53,7 +53,7 @@
                 <p>${orderUserSku.superiorName}</p>
             </div>
         </div>
-        <a href="<%=basePath%>userCertificate/setUserCertificate.shtml?userSkuId=${userSkuId}" class="lingqu">领取证书</a>
+        ${opStr}
         <p class="ll">领取证书后可以获得更多特权哦</p>
     </div>
 </main>
@@ -65,7 +65,7 @@
         var para = {};
         para.pfuId = "${userSkuId}";
         $.ajax({
-            url: "<%=basePath%>userCertificate/add",
+            url: "<%=basePath%>userCertificate/updatect.do",
             type: "post",
             data: para,
             dataType: "json",

@@ -14,12 +14,15 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -53,6 +56,8 @@ public class DevelopingController extends BaseController {
     @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
+    private SkuService skuService;
+    @Resource
     private ComBrandMapper comBrandMapper;
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
@@ -60,6 +65,8 @@ public class DevelopingController extends BaseController {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private UserCertificateService userCertificateService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -88,6 +95,7 @@ public class DevelopingController extends BaseController {
                     agentMap.put("skuName", comSku.getName());
                     agentMap.put("skuId", comSku.getId());
                     agentMap.put("brandLogo", comBrand.getLogoUrl());
+                    agentMap.put("userSkuId", pus.getId());
 
                     agentMaps.add(agentMap);
                 }
@@ -102,6 +110,17 @@ public class DevelopingController extends BaseController {
         }
 
         return mav;
+    }
+
+    @RequestMapping("/isAudit")
+    @ResponseBody
+    public Object isAudit(HttpServletRequest request, HttpServletResponse response, Integer userSkuId){
+        PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(userSkuId);
+        if(pfUserCertificate != null && pfUserCertificate.getStatus().intValue() == 1){
+            return "yes";
+        }else{
+            return "no";
+        }
     }
 
     @RequestMapping("/sharelink")
@@ -119,8 +138,9 @@ public class DevelopingController extends BaseController {
 
             Map<String, String> resultMap = sign(jsapi_ticket, curUrl);
 
-            ComUser comUser = comUserMapper.selectByPrimaryKey(32L); //getComUser(request);
+            ComUser comUser = getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);
+            ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
@@ -132,22 +152,28 @@ public class DevelopingController extends BaseController {
             List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
-                if(pfUserCertificate.getPoster() == null || true){
+                if(pfUserCertificate.getPoster() == null){
                     String headImgName = "headimg.png";
-                    String headImgPath = request.getServletContext().getRealPath("/")+"static";
-                    String qrcodeName = pfUserCertificate.getCode()+".png";
+                    String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
+                    String qrcodeName = "qrcode.png";
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
                     //下载用户微信头像
-                    String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
-                    DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
+                    if(comUser.getWxHeadImg() != null){
+                        String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
+                        DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
+                        headImgPath += File.separator+headImgName;
+                    }else{//没有微信头像,用默认头像
+                        headImgPath += File.separator+"default.png";
+                    }
                     //生成二维码
                     CreateParseCode.createCode(220,220, shareLink, qrcodePath);
                     //生成海报并上传到OSS
-                    drawPost(request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+"kangyinli.png", qrcodePath, headImgPath+File.separator+headImgName, qrcodeName);
+                    String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
+                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName());
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
                     //保存二维码海报图片地址
-                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+qrcodeName);
+                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
                     pfUserCertificateMapper.updateById(pfUserCertificate);
                 }
                 resultMap.put("poster", pfUserCertificate.getPoster());
@@ -179,7 +205,7 @@ public class DevelopingController extends BaseController {
      * @param qrcodePath   二维码背景图路径
      * @param saveFileName 保存名字
      */
-    public void drawPost(String bPath, String qrcodePath, String headImgPath, String saveFileName) {
+    public void drawPost(String bPath, String qrcodePath, String headImgPath, String saveFileName, String userName) {
         ImageIcon bImgIcon = new ImageIcon(bPath);
         ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
         ImageIcon headImgIcon = new ImageIcon(headImgPath);
@@ -191,17 +217,14 @@ public class DevelopingController extends BaseController {
         int height = bImage.getHeight(null) == -1 ? 1200 : bImage.getHeight(null);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
+
+        g.drawImage(headImage, 88, 619, null);
         g.drawImage(bImage, 0, 0, null);
-        g.drawImage(headImage, 80, 604, null);
-        g.drawRoundRect(80, 604, 132, 132, 66, 66);
         g.drawImage(qrcodeImage, 566, 776, null);
 
-        g.setFont(new Font("宋体", Font.ITALIC, 32));
-        g.setColor(Color.BLACK);
-        g.drawString("Hi,我是张三丰", 80, 788);
-        g.drawString("我在麦链商城合伙抗引力,", 80, 820);
-        g.drawString("通过这个合伙人计划我赚了", 80, 872);
-        g.drawString("不少钱,真诚邀请你加入.", 80, 924);
+        g.setFont(new Font("华文行楷", Font.PLAIN, 32));
+        g.setColor(new Color(51,51,51));
+        g.drawString(userName, 225, 810);
         g.dispose();
 
         try {

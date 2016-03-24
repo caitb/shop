@@ -58,7 +58,7 @@
             </a>
         </div>
         <div class="btm" style="background: #DA3600;">
-            <a href="<%=basePath%>static/html/xiaodianguanli.html">
+            <a href="javascript:;">
                 <span><img src="<%=basePath%>static/images/shouye_footer3.png" alt=""></span>
                 <span>个人中心</span>
             </a>

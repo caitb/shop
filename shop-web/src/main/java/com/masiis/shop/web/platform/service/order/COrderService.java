@@ -283,8 +283,8 @@ public class COrderService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
-        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }
@@ -391,5 +391,20 @@ public class COrderService {
 
     public PfCorderPayment findOrderPaymentBySerialNum(String paySerialNum) {
         return pfCorderPaymentMapper.selectBySerialNum(paySerialNum);
+    }
+    /**
+     * 通过订单id查询买家留言
+     * @author hanzengzhi
+     * @date 2016/3/23 15:09
+     */
+    public String querUserMessage(Long id){
+        log.info("------订单pfcorder----id-----"+id);
+        PfCorder pfCorder = pfCorderService.getPfCorderById(id);
+        if (pfCorder!=null){
+            log.info("------订单留言信息----message-----"+pfCorder.getUserMassage());
+            return pfCorder.getUserMassage();
+        }
+        log.info("------订单留言信息----pfcorder为null-----");
+        return null;
     }
 }

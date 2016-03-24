@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/fazhanhehuo.css">
+    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -31,7 +32,7 @@
         <main>
             <p>选择您需要发展合伙人的商品</p>
             <c:forEach items="${agentMaps}" var="agentMap">
-            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');">
+            <div class="sec1" id="toShare">
                 <img src="${agentMap.brandLogo}" alt="">
                 <div>
                     <p><span>合伙产品</span><b>${agentMap.skuName}</b></p>
@@ -44,6 +45,20 @@
         </main>
     </div>
 </div>
-
 </body>
+<script>
+    $('#toShare').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>developing/isAudit',
+            data: {userSkuId: '${agentMap.userSkuId}'},
+            success: function(msg){
+                if(msg == 'yes'){
+                    window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');
+                }else{
+                    alert('此产品的代理证书未审核!');
+                }
+            }
+        })
+    });
+</script>
 </html>

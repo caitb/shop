@@ -1,13 +1,11 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.masiis.shop.dao.platform.product.ComSkuExtensionMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.PfSkuStock;
-import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.dao.po.*;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import com.sun.org.apache.xpath.internal.Expression;
 import org.springframework.expression.ExpressionException;
@@ -31,6 +29,8 @@ public class SkuService {
     @Resource
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
+    private ComSkuExtensionMapper comSkuExtensionMapper;
+    @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
@@ -53,5 +53,14 @@ public class SkuService {
             n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
         return n - quantity;
+    }
+
+    /**
+     * 根据skuId查找skuExtension
+     * @param skuId
+     * @return
+     */
+    public ComSkuExtension findSkuExteBySkuId(Integer skuId){
+        return comSkuExtensionMapper.selectBySkuId(skuId);
     }
 }

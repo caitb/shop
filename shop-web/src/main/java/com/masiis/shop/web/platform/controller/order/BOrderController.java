@@ -147,6 +147,8 @@ public class BOrderController extends BaseController {
             order.setIsShip(0);
             order.setIsReplace(0);
             order.setIsReceipt(0);
+            order.setIsCounting(0);
+            order.setOrderType(0);
             //处理订单商品数据
             List<PfBorderItem> orderItems = new ArrayList<>();
             PfBorderItem pfBorderItem = new PfBorderItem();
@@ -237,14 +239,13 @@ public class BOrderController extends BaseController {
             request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
         mv.addObject("comUserAddress", comUserAddress);
-
         mv.addObject("bOrderId", bOrderId);
         mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
         mv.addObject("orderAmount", pfBorder.getOrderAmount());
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
+        mv.addObject("orderType", pfBorder.getOrderType());
         mv.setViewName("platform/order/zhifu");
-
         return mv;
     }
 
@@ -399,6 +400,7 @@ public class BOrderController extends BaseController {
             orderUserSku.setAgentLevel(comAgentLevel.getName());
             mav.addObject("orderUserSku", orderUserSku);
             mav.addObject("userSkuId", pfUserSku.getId());
+            mav.addObject("opStr", opStr);
             mav.setViewName("platform/order/lingquzhengshu");
 
         } catch (Exception ex) {
@@ -422,15 +424,22 @@ public class BOrderController extends BaseController {
                             @RequestParam(required = true) Integer shipStatus,
                             Integer stock) {
         JSONObject json = new JSONObject();
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            request.getSession().setAttribute("comUser", user);
+        }
         PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
         pfBorder.setOrderStatus(orderStatus);
         pfBorder.setShipStatus(shipStatus);
         try {
-            bOrderService.updateGetStock(pfBorder);
+            bOrderService.updateGetStock(pfBorder,user);
             bOrderService.updateBOrder(pfBorder);
-            json.put("mesg", "交易成功");
+            json.put("msgs", true);
+//            json.put("mesg", "交易成功");
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+//            log.error(ex.getMessage());
+            json.put("msgs", false);
             json.put("message", ex.getMessage());
         }
         return json.toString();
@@ -449,6 +458,11 @@ public class BOrderController extends BaseController {
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight) {
+        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            request.getSession().setAttribute("comUser", user);
+        }
         JSONObject json = new JSONObject();
         if (freight == null || freight == "") {
             json.put("msgs", false);
@@ -462,7 +476,7 @@ public class BOrderController extends BaseController {
             pfBorderFreight.setFreight(freight);
             pfBorderFreight.setShipManName(shipManName);
             try {
-                bOrderService.updateStock(pfBorder);
+                bOrderService.updateStock(pfBorder,user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
                 json.put("msgs", true);
@@ -617,11 +631,11 @@ public class BOrderController extends BaseController {
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
-        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
-        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
-        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(), 1, 5);//待收货
-        List<PfBorder> pfBorders3 = bOrderService.findByUserId(comUser.getId(), 3, shipStatus);//已完成
+        List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
+        List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
+        List<PfBorder> pfBorders10 = bOrderService.findByUserPid(comUser.getId(), 1, 0);//代发货
+        List<PfBorder> pfBorders15 = bOrderService.findByUserPid(comUser.getId(), 1, 5);//待收货
+        List<PfBorder> pfBorders3 = bOrderService.findByUserPid(comUser.getId(), 3, shipStatus);//已完成
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
@@ -658,5 +672,16 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("pfBorders", pfBorderss);
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
+    }
+
+    @RequestMapping("/payReplenishmentOrder.shtml")
+    public ModelAndView payReplenishmentOrder() {
+        ModelAndView mv = new ModelAndView();
+        try {
+
+        }catch (Exception ex){
+
+        }
+        return mv;
     }
 }

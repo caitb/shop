@@ -6,8 +6,8 @@
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="pf_user_bill_id" property="pfUserBillId" jdbcType="BIGINT" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="order_type" property="orderType" jdbcType="TINYINT" />
-        <result column="order_sub_type" property="orderSubType" jdbcType="TINYINT" />
+        <result column="order_type" property="orderType" jdbcType="INTEGER" />
+        <result column="order_sub_type" property="orderSubType" jdbcType="INTEGER" />
         <result column="order_create_date" property="orderCreateDate" jdbcType="TIMESTAMP" />
         <result column="order_pay_amount" property="orderPayAmount" jdbcType="DECIMAL" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
@@ -18,13 +18,13 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBillItem" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBillItem" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_bill_item (id, create_date, pf_user_bill_id, 
             pf_border_id, order_type, order_sub_type, 
             order_create_date, order_pay_amount, remark
             )
         values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{pfUserBillId,jdbcType=BIGINT}, 
-            #{pfBorderId,jdbcType=BIGINT}, #{orderType,jdbcType=TINYINT}, #{orderSubType,jdbcType=TINYINT}, 
+            #{pfBorderId,jdbcType=BIGINT}, #{orderType,jdbcType=INTEGER}, #{orderSubType,jdbcType=INTEGER},
             #{orderCreateDate,jdbcType=TIMESTAMP}, #{orderPayAmount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
             )
     </insert>
@@ -34,8 +34,8 @@
         set create_date = #{createDate,jdbcType=TIMESTAMP},
             pf_user_bill_id = #{pfUserBillId,jdbcType=BIGINT},
             pf_border_id = #{pfBorderId,jdbcType=BIGINT},
-            order_type = #{orderType,jdbcType=TINYINT},
-            order_sub_type = #{orderSubType,jdbcType=TINYINT},
+            order_type = #{orderType,jdbcType=INTEGER},
+            order_sub_type = #{orderSubType,jdbcType=INTEGER},
             order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
             order_pay_amount = #{orderPayAmount,jdbcType=DECIMAL},
             remark = #{remark,jdbcType=VARCHAR}

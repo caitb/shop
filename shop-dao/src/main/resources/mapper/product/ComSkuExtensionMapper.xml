@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComSkuExtensionMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSkuExtension" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="poster" property="poster" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT id, sku_id, poster FROM com_sku_extension WHERE id = #{id}
+    </select>
+
+    <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT id, sku_id, poster FROM com_sku_extension WHERE sku_id = #{skuId}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComSkuExtension" resultMap="BaseResultMap">
+        SELECT
+               id,
+               sku_id,
+               poster
+        FROM
+               com_sku_extension
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="poster != null">
+                AND poster = #{poster}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComSkuExtension" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO com_sku_extension
+                    (
+                    id,
+                    sku_id,
+                    poster
+                    )
+        VALUES
+                    (
+                    #{id},
+                    #{skuId},
+                    #{poster}
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.ComSkuExtension">
+        UPDATE
+               com_sku_extension
+        <set>
+            <if test="skuId != null">
+                sku_id = #{skuId},
+            </if>
+            <if test="poster != null">
+                poster = #{poster}
+            </if>
+        </set>
+        WHERE
+              id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM com_sku_extension WHERE id = #{id}
+    </delete>
+
+</mapper>

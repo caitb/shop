@@ -41,7 +41,7 @@
         <div class="sec1"><p>微信号：<span>${memberMap.weixin}</span></p></div>
         <div class="sec1"><p>身份证号：<span>${memberMap.idCard}</span></p> </div>
         <div class="sec1" style="border:none;"><p>身份证扫描件：</p></div>
-        <div>
+        <div class="sec2">
             <h1><img src="${memberMap.idCardFrontImg}" alt="">正面</h1>
             <h1><img src="${memberMap.idCardBackImg}" alt="">反面</h1>
         </div>
@@ -55,7 +55,7 @@
         <div class="back_j">
             <p>请填写拒绝原因</p>
             <input type="hidden" id="userSkuId" name="userSkuId" value="${memberMap.userSkuId}">
-            <input type="hidden" id="pfUserCertificateId" name="id" value="${memberMap.pfUserCertificateId}" >
+            <input type="hidden" id="pfUserCertificateId" name="pfUserCertificateId" value="${memberMap.pfUserCertificateId}" >
             <input type="hidden" id="status" name="status" value="1" >
             <textarea name="reason"></textarea>
             <div>

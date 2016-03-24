@@ -81,7 +81,7 @@ public class UserApplyController {
     }
 
     /**
-     * 合伙人注册一
+     * 合伙人注册
      *
      * @param type 0 用户通过平台入口代理 1 用户通过分享链接代理
      * @author ZhaoLiang再次
@@ -208,39 +208,6 @@ public class UserApplyController {
             object.put("message", ex.getMessage());
         }
         return object.toJSONString();
-    }
-
-    /**
-     * 合伙人注册确认
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/5 14:27
-     */
-    @RequestMapping("/registerConfirm.shtml")
-    public ModelAndView partnersRegisterConfirm(HttpServletRequest request,
-                                                HttpServletResponse response,
-                                                @RequestParam(value = "name", required = true) String name,
-                                                @RequestParam(value = "weixinId", required = true) String weixinId,
-                                                @RequestParam(value = "skuId", required = true) Long skuId,
-                                                @RequestParam(value = "skuName", required = true) String skuName,
-                                                @RequestParam(value = "levelId", required = true) Long levelId,
-                                                @RequestParam(value = "levelName", required = true) String levelName,
-                                                @RequestParam(value = "amount", required = true) BigDecimal amount,
-                                                @RequestParam(value = "pUserId", required = true) Long pUserId,
-                                                @RequestParam(value = "pMobile", required = true) String pMobile) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("platform/order/zhuce2");
-        modelAndView.addObject("name", name);
-        modelAndView.addObject("weixinId", weixinId);
-        modelAndView.addObject("pUserId", pUserId);
-        modelAndView.addObject("pMobile", pMobile);
-        modelAndView.addObject("skuId", skuId);
-        modelAndView.addObject("skuName", skuName);
-        modelAndView.addObject("levelId", levelId);
-        modelAndView.addObject("levelName", levelName);
-        modelAndView.addObject("amount", amount);
-
-        return modelAndView;
     }
 
     /**

@@ -12,6 +12,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -153,6 +154,7 @@ public class BOrderService {
         order.setIsReplace(0);
         order.setIsReceipt(0);
         order.setRemark("补货订单");
+        order.setOrderType(1);
         pfBorderMapper.insert(order);
         rBOrderId = order.getId();
         PfBorderItem pfBorderItem = new PfBorderItem();
@@ -306,16 +308,18 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
-    public void updateStock(PfBorder pfBorder) {
+    public void updateStock(PfBorder pfBorder,ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-            if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
-                throw new BusinessException("当前库存不足！");
-            } else {
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                    throw new BusinessException("并发修改库存失败");
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
+            if(pfUserSkuStock!=null) {
+                if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
+                    throw new BusinessException("当前库存不足！");
+                } else {
+                    pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
+                    if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                        throw new BusinessException("并发修改库存失败");
+                    }
                 }
             }
         }
@@ -327,13 +331,15 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/21 16:22
      */
-    public void updateGetStock(PfBorder pfBorder) {
+    public void updateGetStock(PfBorder pfBorder,ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-            pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
-            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                throw new BusinessException("并发修改库存失败");
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
+            if(pfUserSkuStock!=null) {
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                    throw new BusinessException("并发修改库存失败");
+                }
             }
         }
     }
@@ -400,6 +406,14 @@ public class BOrderService {
     }
 
     /**
+     * 根据用户id获取出货订单
+     * @author muchaofeng
+     * @date 2016/3/23 14:36
+     */
+    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
+        return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
+    }
+    /**
      * 添加订单支付记录
      *
      * @author ZhaoLiang
@@ -446,8 +460,8 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/21 17:37
      */
-    public PfUserSku findPfUserSku(long userId, Integer id) {
-        return pfUserSkuMapper.selectByUserIdAndSkuId(userId, id);
+    public PfUserSku findPfUserSku(long userId, Integer skuId) {
+        return pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
     /**

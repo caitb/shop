@@ -18,79 +18,50 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/zichan.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/common.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/dropload.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
+<input type="hidden" id="account" name="account" value = "1"/>
 <div class="wrap">
-    <header class="xq_header">
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-        <p>我的资产</p>
-    </header>
-    <main>
-        <div class="ban">
-            <img src="<%=basePath%>static/images/icon_55.png" alt="">
-            <h1>￥<b>${account.totalIncomeFee}</b></h1>
-            <p>累计收入</p>
-            <h2>(截止到<span>${year}-${month}-${day}}</span>)</h2>
-        </div>
-        <nav>
-            <ul>
-                <li>
-                    <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
-                    <h1><span>￥</span>${account.extractableFee}</h1>
-                    <h2>提现记录</h2>
-                </li>
-                <li>
-                    <p>结算中：</p>
-                    <h1><span>￥</span>${account.countingFee}</h1>
-                    <h2>查看说明</h2>
-                </li>
-            </ul>
-        </nav>
-        <div class="sec1" id="sec1">
-            <p>收入记录：<label for="beginTime" ><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
-            <div id="divall">
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
+    <div class="box">
+        <header class="xq_header">
+            <a href="#" onClick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <p>我的资产</p>
+        </header>
+        <main>
+            <div class="ban">
+                <img src="<%=basePath%>static/images/icon_55.png" alt="">
+                <h1>￥<b>${account.totalIncomeFee}</b></h1>
+                <p>累计收入</p>
+                <h2>(截止到<span>${year}-${month}-${day}}</span>)</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
+                        <h1><span>￥</span>${account.extractableFee}</h1>
+                        <h2>提现记录</h2>
+                    </li>
+                    <li>
+                        <p>结算中：</p>
+                        <h1><span>￥</span>${account.countingFee}</h1>
+                        <h2>查看说明</h2>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sec1" id="sec1">
+                <p>收入记录：<label id="lable" for="beginTime" ><b>${year}</b>年<b>  ${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <div id="divall">
+                    <c:forEach var="userBill" items="${userBills}">
+                        <div>
+                            <p><span class="sd">${month}-${day}</span><span>${year}</span></p>
+                            <h1>+${userBill.pfIncome}</h1>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
 <div class="back">
     <div class="back_j">
@@ -106,30 +77,39 @@
 <script type="text/javascript" src="<%=basePath%>static/js/date.js" ></script>
 <script type="text/javascript" src="<%=basePath%>static/js/iscroll.js" ></script>
 <script type="text/javascript" src="<%=basePath%>static/js/dropload.min.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script type="text/javascript">
     $(function(){
         $('#beginTime').date();
         $('#endTime').date({theme:"datetime"});
     });
-    $('#divall').dropload({
-        scrollArea : window,
-        loadDownFn : function(me){
-            $.ajax({
-                type: 'GET',
-                url: 'json/more.json',
-                dataType: 'json',
-                success: function(data){
-                    alert(data);
-                    // 代码执行后必须重置
-                    me.resetload();
-                },
-                error: function(xhr, type){
-                    alert('Ajax error!');
-                    me.resetload();
+
+    function getUserBill(year,month){
+        $.ajax({
+            type:"POST",
+            async:false,
+            url : "<%=path%>/account/getMoreUserBill",
+            data:{year:year,month:month,paging:'N',pageTotalCount:'0'},
+            dataType:"Json",
+            success:function(data){
+                $("#divall").empty();
+                $("#lable").html("<b>"+year+"</b>年<b>  "+month+"</b>月");
+                var arr=eval(data);
+                for(var i=0;i<arr.length;i++)
+                {
+                    $("#divall").append("<div><p><span class='sd'>"+month+"-"+arr[i].date+"</span><span>"+year+"</span></p><h1>+"+arr[i].incom+"</h1></div>")
                 }
-            });
-        }
-    });
+            },
+            error: function(){
+                //请求出错处理
+                alert("请求出错，请稍后再试");
+            }
+        });
+    }
+    function backLastPage(){
+        fullShow();//跳转页面钱展示全屏遮罩loading...
+        window.location.href="<%=basePath%>profile/profile";
+    }
 </script>
 </body>
 </html>

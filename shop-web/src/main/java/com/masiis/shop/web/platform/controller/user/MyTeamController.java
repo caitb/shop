@@ -90,12 +90,13 @@ public class MyTeamController extends BaseController {
     public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response,
                                    Long comUserId,
                                    Integer skuId,
-                                   Integer agentLevelId){
+                                   Integer agentLevelId,
+                                   Integer userSkuId){
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/memberInfo");
 
-            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, null);
+            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
             mav.addObject("memberMap", memberMap);
 
             return mav;

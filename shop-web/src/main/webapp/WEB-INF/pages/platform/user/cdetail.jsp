@@ -36,13 +36,13 @@
                 <p>合伙人等级：<span>
                     <c:choose>
                     <c:when test="${cdetail.agentLevelId==1}">
-                        <em>初级合伙人</em>
+                        <em>高级合伙人</em>
                     </c:when>
                     <c:when test="${cdetail.agentLevelId==2}">
                         <em>中级合伙人</em>
                     </c:when>
                     <c:when test="${cdetail.agentLevelId==3}">
-                        <em>高级合伙人</em>
+                        <em>初级合伙人</em>
                     </c:when>
                 </c:choose></span></p>
                 <p>上级合伙人：<span>${cdetail.sjName}</span></p>

@@ -69,4 +69,11 @@
         where com_user_id = #{comUserId}
     </update>
 
+    <update id="addIncomeByCounting">
+        update com_user_account
+        set total_income_fee = total_income_fee + #{billAmount,jdbcType=DECIMAL},
+            extractable_fee = extractable_fee + #{billAmount,jdbcType=DECIMAL}
+        WHERE com_user_id = #{userid,jdbcType=DECIMAL}
+    </update>
+
 </mapper>

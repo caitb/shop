@@ -66,15 +66,12 @@ public class PfUserSkuController extends BaseController {
                        @RequestParam(value="pid", required = false) Long pid,
                        String sort,
                        String order,
-                       Integer offset,
-                       Integer limit
+                       Integer pageNumber,
+                       Integer pageSize
     ){
         Integer parentId = null;
         try {
-            offset = offset == null ? 0 : offset;
-            limit = limit == null ? 10 : limit;
-            Integer pageNo = offset / limit + 1;
-            PageHelper.startPage(pageNo, limit);
+            PageHelper.startPage(pageNumber, pageSize);
             Map<String, Object> searchParam = new HashMap<>();//组合搜索
             searchParam.put("pid", pid);
             searchParam.put("beginTime", beginTime);

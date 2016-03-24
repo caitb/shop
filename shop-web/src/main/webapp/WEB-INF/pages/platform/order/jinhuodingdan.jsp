@@ -360,9 +360,13 @@
                         data:{orderStatus:3,shipStatus:9,orderId:id},
                         dataType:"Json",
                         success:function(date){
-                            $("span[name="+aa+"]").attr("style","display:none");
-                            $("b."+aa+"").html("交易成功");
-                            location.reload(true);
+                            if(date.msgs){
+                                $("span[name="+aa+"]").attr("style","display:none");
+                                $("b."+aa+"").html("交易成功");
+                                location.reload(true);
+                            }else{
+                                alert(date.message);
+                            }
                         }
                     })
                 })

@@ -57,4 +57,8 @@ public class PfCorderService {
         }
         return pfCorders;
     }
+
+    public int updateUserMessageById(PfCorder pfCorder){
+        return pfCorderMapper.updateUserMessageById(pfCorder);
+    }
 }

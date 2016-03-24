@@ -13,15 +13,17 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
     <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/zichan.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/common.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/dropload.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/zichan.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
 <input type="hidden" id="account" name="account" value = "1"/>
+<input type="hidden" id="year" name="year" value = "${year}"/>
+<input type="hidden" id="month" name="month" value = "${month}"/>
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
@@ -45,7 +47,7 @@
                     <li>
                         <p>结算中：</p>
                         <h1><span>￥</span>${account.countingFee}</h1>
-                        <h2>查看说明</h2>
+                        <h2><a onclick="showDetail()">查看说明</a></h2>
                     </li>
                 </ul>
             </nav>
@@ -63,20 +65,20 @@
         </main>
     </div>
 </div>
-<div class="back">
+<div class="back" id="detail">
     <div class="back_j">
-        <h1>什么事结算中</h1>
+        <h1>什么是结算中</h1>
         <p>
             为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
         </p>
-        <botton>我知道了</botton>
+        <botton onClick="hideDetail()">我知道了</botton>
     </div>
 </div>
 <div id="datePlugin"></div>
-<script type="text/javascript" src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>static/js/date.js" ></script>
-<script type="text/javascript" src="<%=basePath%>static/js/iscroll.js" ></script>
-<script type="text/javascript" src="<%=basePath%>static/js/dropload.min.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/dropload.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script type="text/javascript">
     $(function(){
@@ -85,9 +87,16 @@
     });
 
     function getUserBill(year,month){
+        var yearLast = $("#year").val();
+        var monthLast = $("#month").val();
+        if(yearLast==year && monthLast==month){
+            return;
+        }
+        $("#year").val(year);
+        $("#month").val(month);
         $.ajax({
             type:"POST",
-            async:false,
+            async:true,
             url : "<%=path%>/account/getMoreUserBill",
             data:{year:year,month:month,paging:'N',pageTotalCount:'0'},
             dataType:"Json",
@@ -109,6 +118,12 @@
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>profile/profile";
+    }
+    function showDetail(){
+        $("#detail").show();
+    }
+    function hideDetail(){
+        $("#detail").hide();
     }
 </script>
 </body>

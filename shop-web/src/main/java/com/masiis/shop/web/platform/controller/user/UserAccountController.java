@@ -70,7 +70,7 @@ public class UserAccountController extends BaseController{
         model.addAttribute("currentPage",1);
         model.addAttribute("pageSize",10);
         model.addAttribute("year",year);
-        model.addAttribute("month",month);
+        model.addAttribute("month",monthString);
         model.addAttribute("day",day);
         model.addAttribute("account", account);
         model.addAttribute("userBills",userBills);

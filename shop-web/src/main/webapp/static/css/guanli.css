@@ -15,12 +15,6 @@ body main .wrap .box {
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-body main .wrap .box .xq_header h2 {
-  position: absolute;
-  right: 10px;
-  top: 9px;
-  color: #F74A11;
-}
 body main .wrap .box .pp {
   -webkit-box-flex: 1;
   display: -webkit-box;

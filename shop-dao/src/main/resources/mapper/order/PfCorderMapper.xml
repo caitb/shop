@@ -328,6 +328,16 @@
               id = #{id,jdbcType=BIGINT}
     </update>
 
+    <update id="updateUserMessageById" parameterType="com.masiis.shop.dao.po.PfCorder"  >
+        update pf_corder
+        <set>
+            user_massage = #{userMassage,jdbcType=VARCHAR}
+        </set>
+        where
+        id = #{id,jdbcType=BIGINT}
+    </update>
+
+
     <delete id="deleteById" parameterType="java.lang.Long" >
         delete from pf_corder where id = #{id,jdbcType=BIGINT}
     </delete>

@@ -83,6 +83,13 @@ public class COrderService {
                 log.info("试用申请---存在未支付的订单获得未支付的订单---start");
                 //获得未支付的订单
                 pfCorder = getNoPayTrialOrder().get(0);
+                if (!reason.equals(pfCorder.getUserMassage())){
+                    //试用理由有变化更新订单表
+                    log.info("试用申请---更新试用理由---start");
+                    pfCorder.setUserMassage(reason);
+                    int i = updatePfCorderUserMessage(pfCorder);
+                    log.info("试用申请---更新试用理由---end---更新条数---i-----"+i);
+                }
                 log.info("试用申请---成功获得未支付的订单---end");
             } else {
                 //生成订单
@@ -98,6 +105,14 @@ public class COrderService {
         }catch (Exception e){
             throw new BusinessException(e);
         }
+    }
+    /**
+     * 更新用户留言
+     * @author hanzengzhi
+     * @date 2016/3/24 12:37
+     */
+    private int updatePfCorderUserMessage(PfCorder pfCorder){
+        return pfCorderService.updateUserMessageById(pfCorder);
     }
     /**
      * 判断是否存在未支付的试用订单

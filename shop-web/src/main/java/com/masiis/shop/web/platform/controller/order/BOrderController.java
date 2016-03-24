@@ -148,6 +148,7 @@ public class BOrderController extends BaseController {
             order.setIsReplace(0);
             order.setIsReceipt(0);
             order.setIsCounting(0);
+            order.setOrderType(0);
             //处理订单商品数据
             List<PfBorderItem> orderItems = new ArrayList<>();
             PfBorderItem pfBorderItem = new PfBorderItem();

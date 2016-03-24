@@ -65,7 +65,7 @@
         var para = {};
         para.pfuId = "${userSkuId}";
         $.ajax({
-            url: "<%=basePath%>userCertificate/add",
+            url: "<%=basePath%>userCertificate/updatect.do",
             type: "post",
             data: para,
             dataType: "json",

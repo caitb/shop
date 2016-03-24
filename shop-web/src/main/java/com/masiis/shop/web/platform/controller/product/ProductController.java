@@ -113,7 +113,7 @@ public class ProductController extends BaseController {
             }
         }catch (Exception ex){
             object.put("isError", true);
-            object.put("message", ex.getMessage());
+            object.put("message", "补货失败");
         }
         return object.toJSONString();
     }

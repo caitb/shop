@@ -122,7 +122,7 @@ public class VerifyController extends BaseController {
                 session.invalidate();
                 session = request.getSession();
                 // 登录
-                session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
+                setComUser(request,user);
                 // 保存Cookie
                 String openidkey = getEncryptByOpenid(res.getOpenid());
                 CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
@@ -208,7 +208,7 @@ public class VerifyController extends BaseController {
                     log.info("token仍有效,跳转目标链接!");
                     session.invalidate();
                     session = request.getSession();
-                    session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
+                    setComUser(request,user);
                 } else if (resBean != null
                         && (WxResCodeCons.ACCESS_TOKEN_INVALID.equals(resBean.getErrcode())
                             || WxResCodeCons.ACCESS_TOKEN_TIMEOUT.equals(resBean.getErrcode()))) {
@@ -258,7 +258,7 @@ public class VerifyController extends BaseController {
                     // 登录
                     session.invalidate();
                     session = request.getSession();
-                    session.setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
+                    setComUser(request,user);
                     // 保存Cookie
                     String openidkey = getEncryptByOpenid(rfResBean.getOpenid());
                     CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,

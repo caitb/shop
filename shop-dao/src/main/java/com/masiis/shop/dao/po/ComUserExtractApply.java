@@ -7,6 +7,8 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.common.util.DateUtil;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -96,6 +98,9 @@ public class ComUserExtractApply {
     }
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+        if(applyTime != null){
+            applyTimeView = DateUtil.Date2String(applyTime, "MM-dd");
+        }
     }
     public Long getExtractWay() {
         return extractWay;
@@ -135,6 +140,11 @@ public class ComUserExtractApply {
     }
     public void setBankCard(String bankCard) {
         this.bankCard = bankCard == null ? null : bankCard.trim();
+        if(bankCard != null && bankCard.length() > 8){
+            this.bankCardView = bankCard.substring(0, 4)
+                    + " **** **** "
+                    + bankCard.substring(bankCard.length() - 4, bankCard.length());
+        }
     }
     public String getBankName() {
         return bankName;
@@ -163,6 +173,8 @@ public class ComUserExtractApply {
 
     /**************************************以下为视图属性**************************************/
     private String auditTypeView;
+    private String bankCardView;
+    private String applyTimeView;
 
     public String getAuditTypeView() {
         return auditTypeView;
@@ -170,5 +182,21 @@ public class ComUserExtractApply {
 
     public void setAuditTypeView(String auditTypeView) {
         this.auditTypeView = auditTypeView;
+    }
+
+    public String getBankCardView() {
+        return bankCardView;
+    }
+
+    public void setBankCardView(String bankCardView) {
+        this.bankCardView = bankCardView;
+    }
+
+    public String getApplyTimeView() {
+        return applyTimeView;
+    }
+
+    public void setApplyTimeView(String applyTimeView) {
+        this.applyTimeView = applyTimeView;
     }
 }

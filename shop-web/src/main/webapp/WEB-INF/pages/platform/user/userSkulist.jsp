@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shangpin.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <script src="<%=path%>/static/js/iscroll.js"></script>
-    <script src="<%=path%>/static/js/commonAjax.js"></script>
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
@@ -96,11 +94,13 @@
         </div>
     </main>
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
+<%--<script src="<%=path%>/static/js/iscroll.js"></script>--%>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
-    var myScroll = new IScroll("main",{
-        preventDefault: false
-    })
+//    var myScroll = new IScroll("main",{
+//        preventDefault: false
+//    })
     var i=1;
     $(".jia").on("click",function(){
         i++;
@@ -135,7 +135,7 @@
     })
     $(".que_qu").on("click",function(){
         $(".back").css("display","none");
-        $(".back_que").css("display","none");
+        $(".back_que").hide();
     })
     //ajax
     $('.que_que').on('click', function () {

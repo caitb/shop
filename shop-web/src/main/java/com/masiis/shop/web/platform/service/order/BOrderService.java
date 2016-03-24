@@ -153,6 +153,7 @@ public class BOrderService {
         order.setIsShip(0);
         order.setIsReplace(0);
         order.setIsReceipt(0);
+        order.setIsCounting(0);
         order.setRemark("补货订单");
         order.setOrderType(1);
         pfBorderMapper.insert(order);

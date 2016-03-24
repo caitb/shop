@@ -111,10 +111,10 @@ public class BOrderController extends BaseController {
                 }
             }
             //处理用户数据
-            ComUser comUser = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            ComUser comUser = getComUser(request);
             comUser.setRealName(realName);
             comUser.setWxId(weixinId);
-            request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, comUser);
+            setComUser(request, comUser);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
             //折扣后单价
@@ -361,7 +361,7 @@ public class BOrderController extends BaseController {
                                           @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
         ModelAndView mav = new ModelAndView();
         try {
-            ComUser comUser = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            ComUser comUser = getComUser(request);
             OrderUserSku orderUserSku = new OrderUserSku();
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
             List<PfBorderItem> pfBorderItem = bOrderService.getPfBorderItemByOrderId(bOrderId);
@@ -418,7 +418,8 @@ public class BOrderController extends BaseController {
                             @RequestParam(required = true) Integer shipStatus,
                             Integer stock) {
         JSONObject json = new JSONObject();
-        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        ComUser user = getComUser(request);
+        ;
         if (user == null) {
             user = userService.getUserById(1l);
             request.getSession().setAttribute("comUser", user);
@@ -432,7 +433,7 @@ public class BOrderController extends BaseController {
             json.put("msgs", true);
 //            json.put("mesg", "交易成功");
         } catch (Exception ex) {
-//            log.error(ex.getMessage());
+            setErrorLog("确认收货异常", ex);
             json.put("msgs", false);
             json.put("message", ex.getMessage());
         }
@@ -452,7 +453,8 @@ public class BOrderController extends BaseController {
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight) {
-        ComUser user = (ComUser) request.getSession().getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+        ComUser user = getComUser(request);
+        ;
         if (user == null) {
             user = userService.getUserById(1l);
             request.getSession().setAttribute("comUser", user);

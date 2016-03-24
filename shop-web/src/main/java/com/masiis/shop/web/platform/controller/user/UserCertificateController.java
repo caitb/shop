@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -42,7 +43,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/userCertificate")
-public class UserCertificateController {
+public class UserCertificateController extends BaseController {
 
     @Resource
     private UserSkuService userSkuService;
@@ -180,6 +181,7 @@ public class UserCertificateController {
             pfUserCertificate.setAgentLevelId(pfUserSku.getAgentLevelId());
             pfUserCertificate.setStatus(0);
             userService.insertUserCertificate(comUser, pfUserCertificate);
+            setComUser(request, comUser);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
@@ -199,70 +201,73 @@ public class UserCertificateController {
         OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
         return frontFile.getName();
     }
-   
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/17 0017 下午 5:12
-      * 个人的授权书列表
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/17 0017 下午 5:12
+     * 个人的授权书列表
+     */
     @RequestMapping(value = "/userList/{userId}")
     public ModelAndView userCertificate(HttpServletRequest request, HttpServletResponse response,
-                                                   @PathVariable("userId") Integer userId) throws Exception {
+                                        @PathVariable("userId") Integer userId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/certificateList");
         List<CertificateInfo> pfUserCertificates = userCertificateService.CertificateByUser(userId);
-        mav.addObject("pfUserCertificates",pfUserCertificates);
+        mav.addObject("pfUserCertificates", pfUserCertificates);
         return mav;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/17 0017 下午 6:37
-      * 个人商品证书详情
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/17 0017 下午 6:37
+     * 个人商品证书详情
+     */
     @RequestMapping(value = "/userct/{pfuId}")
     public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable("pfuId") Integer pfuId) throws Exception {
+                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cdetail");
         HttpSession session = request.getSession();
         ComUser comUser = (ComUser) session.getAttribute("comUser");
-        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(pfuId);
+        PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
         ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
-        mav.addObject("cdetail",cdetail);
-        mav.addObject("comUser",comUser);
-        mav.addObject("comSku",comSku);
+        mav.addObject("cdetail", cdetail);
+        mav.addObject("comUser", comUser);
+        mav.addObject("comSku", comSku);
         return mav;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/18 0018 下午 1:50
-      * 等待申请
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/18 0018 下午 1:50
+     * 等待申请
+     */
     @RequestMapping(value = "/ready/{skuId}")
     @ResponseBody
     public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable("skuId") Integer skuId) throws Exception {
+                              @PathVariable("skuId") Integer skuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cready");
         ComSku comSku = skuService.getSkuById(skuId);
-        mav.addObject("skuName",comSku.getName());
+        mav.addObject("skuName", comSku.getName());
         return mav;
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/18 0018 下午 2:19
-      * 审核失败详情
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/18 0018 下午 2:19
+     * 审核失败详情
+     */
     @RequestMapping(value = "/fail/{pfuId}")
     public ModelAndView userCertificateFailDetail(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
+                                                  @PathVariable("pfuId") Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/ctfail");
-        PfUserCertificate cdetail= userCertificateService.CertificateDetailsByUser(pfuId);
+        PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
         ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
         ComUser comuser = userService.getUserById(cdetail.getUserId());
         String ctValue = PropertiesUtils.getStringValue("index_user_idCard_url");
         comuser.setIdCardFrontUrl(ctValue + comuser.getIdCardFrontUrl());
         comuser.setIdCardBackUrl(ctValue + comuser.getIdCardBackUrl());
-        mav.addObject("ctfaildetail",cdetail);
-        mav.addObject("comUser",comuser);
-        mav.addObject("comSku",comSku);
+        mav.addObject("ctfaildetail", cdetail);
+        mav.addObject("comUser", comuser);
+        mav.addObject("comSku", comSku);
         return mav;
     }
 
@@ -273,12 +278,12 @@ public class UserCertificateController {
     @ResponseBody
     @RequestMapping("/update.do")
     public String userCertificateUpdate(HttpServletRequest request,
-                                     @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
-                                     @RequestParam(value = "name", required = true) String name,
-                                     @RequestParam(value = "wxh", required = true) String wxh,
-                                     @RequestParam(value = "idCard", required = true) String idCard,
-                                     @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
-                                     @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
+                                        @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
+                                        @RequestParam(value = "name", required = true) String name,
+                                        @RequestParam(value = "wxh", required = true) String wxh,
+                                        @RequestParam(value = "idCard", required = true) String idCard,
+                                        @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
+                                        @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
     ) {
         JSONObject object = new JSONObject();
         try {
@@ -312,7 +317,7 @@ public class UserCertificateController {
             comUser.setIdCardFrontUrl(frontFillFullName);
             comUser.setIdCardBackUrl(backFillFullName);
             //更新证书申请数据
-            PfUserCertificate pfUserCertificate =userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
             pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
             pfUserCertificate.setIdCard(idCard);
             pfUserCertificate.setMobile(comUser.getMobile());
@@ -338,11 +343,11 @@ public class UserCertificateController {
                                  @RequestParam(value = "pfuId", required = true) Integer pfuId) throws Exception {
         JSONObject object = new JSONObject();
         try {
-            userCertificateService.receiveCertificate(pfuId);
+            userCertificateService.receiveCertificate(request,pfuId);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
-            throw new BusinessException("领取证书失败!");
+            object.put("message", "领取证书失败!");
         }
         return object.toJSONString();
     }

@@ -182,19 +182,22 @@ body .wrap .box main .sec2 p {
     z-index: 11;
 }
 .wrap .back_b p {
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #F6F6F6;
     text-indent: 10px;
-    line-height: 28px;
-    margin-bottom: 5px;
+    line-height: 32px;
+    margin-bottom: 9px;
+    font-size: 12px;
 }
 .wrap .back_b h4 {
     margin: 0 10px;
     text-indent: 10px;
     display: -webkit-box;
     line-height: 30px;
+    font-size: 12px;
 }
 .wrap .back_b h4 div {
     margin-top: 5px;
+    font-size: 12px;
 }
 .wrap .back_b h4 div .jian {
     border-right: none;
@@ -205,25 +208,27 @@ body .wrap .box main .sec2 p {
 .wrap .back_b h4 div .number {
     color: #F74A11;
     float: left;
-    width: 25px;
+    width: 30px;
+    height: 26px;
     text-align: center;
 }
 .wrap .back_b h4 div span {
     display: block;
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border: 1px solid #E5E5E5;
     text-align: center;
-    line-height: 20px;
+    line-height: 30px;
     text-indent: 0;
+    font-size: 12px;
 }
 .wrap .back_b h4 div span:nth-child(2) {
     width: 30px;
 }
 .wrap .back_b > div {
     display: -webkit-box;
-    margin: 10px 30px;
+    margin: 20px 30px 30px 30px;
 }
 .wrap .back_b > div h1 {
     -webkit-box-flex: 1;
@@ -246,6 +251,7 @@ body .wrap .box main .sec2 p {
     background: #0FC420;
     color: white;
 }
+
 body .back_j {
   width: 90%;
   position: fixed;

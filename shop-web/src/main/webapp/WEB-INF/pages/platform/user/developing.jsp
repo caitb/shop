@@ -32,7 +32,7 @@
         <main>
             <p>选择您需要发展合伙人的商品</p>
             <c:forEach items="${agentMaps}" var="agentMap">
-            <div class="sec1" id="toShare" userSkuId="${agentMap.userSkuId}" skuId="${agentMap.skuId}">
+            <div class="sec1 toShare" userSkuId="${agentMap.userSkuId}" skuId="${agentMap.skuId}">
                 <img src="${agentMap.brandLogo}" alt="">
                 <div>
                     <p><span>合伙产品</span><b>${agentMap.skuName}</b></p>
@@ -47,7 +47,7 @@
 </div>
 </body>
 <script>
-    $('#toShare').on('click', function(){
+    $('.toShare').on('click', function(){
         var userSkuId = $(this).attr('userSkuId');
         var skuId = $(this).attr('skuId');
         $.ajax({

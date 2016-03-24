@@ -35,8 +35,11 @@
         out_order_id, pay_serial_num, remark
         from pf_corder_payment
         <where>
-            <if test="pf_corder_id != null">
-                pf_corder_id = #{pfCorderId}
+            <if test="pfCorderId != null">
+                AND pf_corder_id = #{pfCorderId}
+            </if>
+            <if test="isEnabled != null">
+                AND is_enabled = #{isEnabled}
             </if>
         </where>
     </select>

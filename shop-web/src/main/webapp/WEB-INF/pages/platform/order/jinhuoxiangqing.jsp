@@ -30,13 +30,13 @@
                 <%--javascript:window.history.go(-1);--%>
             </header>
             <div class="tai"><c:if test="${borderDetail.pfBorder.orderStatus==0}">
-                <img src="<%=path%>/static/images/icon_65.png" alt=""><h1>未付款</h1>
+                <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>未付款</h1>
                            <p>亲，未付款的订单可以保留7天~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==0}"> <img src="<%=path%>/static/images/icon_40.png" alt=""><h1>待发货</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==0}"> <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 50px;height: 36px;"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.payStatus==1 && borderDetail.pfBorder.shipStatus==5}"> <img src="<%=path%>/static/images/icon_68.png" alt=""><h1>待收货</h1>
+                <c:if test="${borderDetail.pfBorder.payStatus==1 && borderDetail.pfBorder.shipStatus==5}"> <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;"><h1>待收货</h1>
                     <p>亲，卖家已发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==3}"><img src="<%=path%>/static/images/icon_64.png" alt=""><h1>已完成</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==3}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p></c:if>
             </div>
             <div class="kuaidi"> <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">

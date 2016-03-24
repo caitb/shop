@@ -18,6 +18,25 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="InComeResultMap" type="com.masiis.shop.dao.po.PfUserBill" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="balance_date" property="balanceDate" jdbcType="TIMESTAMP" />
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+        <result column="bill_amount" property="billAmount" jdbcType="DECIMAL" />
+        <result column="return_amount" property="returnAmount" jdbcType="DECIMAL" />
+        <result column="pf_brokerage" property="pfBrokerage" jdbcType="DECIMAL" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="count_start_time" property="countStartTime" jdbcType="TIMESTAMP" />
+        <result column="count_end_time" property="countEndTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="pfIncome" property="pfIncome" jdbcType="DECIMAL" />
+        <result column="queryDate" property="queryDate" jdbcType="VARCHAR" />
+    </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from pf_user_bill
         where id = #{id,jdbcType=BIGINT}
@@ -69,4 +88,12 @@
         from pf_user_bill
     </select>
 
+    <select id="selectByUserIdLimitPage" resultMap="InComeResultMap">
+        select id, user_id, create_date, create_man, balance_date, total_amount, bill_amount,
+        return_amount, pf_brokerage, supplier_id, count_start_time, count_end_time, status,
+        remark,total_amount-bill_amount-return_amount-pf_brokerage as pfIncome,DATE_FORMAT(balance_date,'%d') as queryDate
+        from pf_user_bill
+        where user_id = #{0} and DATE_FORMAT(balance_date,'%Y%m')=#{1}
+        order by balance_date desc
+    </select>
 </mapper>

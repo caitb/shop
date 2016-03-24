@@ -20,4 +20,8 @@ public interface PfUserBillMapper {
     List<PfUserBill> selectAll();
 
     int updateByPrimaryKey(PfUserBill record);
+
+    List<PfUserBill> selectByUserId(Long userId);
+
+    List<PfUserBill> selectByUserIdLimitPage(Long userId,String balanceDate);
 }

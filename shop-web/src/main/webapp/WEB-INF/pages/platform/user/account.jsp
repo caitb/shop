@@ -1,25 +1,23 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/zichan.css">
-    <script type="application/javascript">
-        var path = "<%=path%>";
-        var basepath = "<%=basePath%>";
-    </script>
+    <link rel="stylesheet" href="<%=basePath%>static/css/common.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/dropload.css">
 </head>
 <body>
 <div class="wrap">
@@ -29,59 +27,109 @@
     </header>
     <main>
         <div class="ban">
-            <h1>￥<b>${account.transactionFee}</b></h1>
+            <img src="<%=basePath%>static/images/icon_55.png" alt="">
+            <h1>￥<b>${account.totalIncomeFee}</b></h1>
             <p>累计收入</p>
+            <h2>(截止到<span>${year}-${month}-${day}}</span>)</h2>
         </div>
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
-                    <h1>￥<span>${account.extractableFee}</span></h1>
+                    <p>可提现<span><a href="<%=basePath%>extractapply/toapply">申请提现</a></span></p>
+                    <h1><span>￥</span>${account.extractableFee}</h1>
+                    <h2>提现记录</h2>
                 </li>
                 <li>
-                    <p>结算中<b id="countExplainId">?</b></p>
-                    <h1>￥<span>${account.countingFee}</span></h1>
+                    <p>结算中：</p>
+                    <h1><span>￥</span>${account.countingFee}</h1>
+                    <h2>查看说明</h2>
                 </li>
             </ul>
         </nav>
-        <div class="sec1">
-            <p>本月：<span>查看月账单</span></p>
-            <div>
-                <p><span>昨天</span><span class="sd">03-16</span></p>
-                <p><span>-865.00</span><span>抗应力-瘦脸精华</span></p>
-                <h1>进货</h1>
-            </div>
+        <div class="sec1" id="sec1">
+            <p>收入记录：<label for="beginTime" ><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+            <div id="divall">
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
 
-            <div>
-                <p><span>昨天</span><span class="sd">03-16</span></p>
-                <p><span>-865.00</span><span>抗应力-瘦脸精华</span></p>
-                <h1>进货</h1>
-            </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
 
-            <div>
-                <p><span>昨天</span><span class="sd">03-16</span></p>
-                <p><span>-865.00</span><span>抗应力-瘦脸精华</span></p>
-                <h1>进货</h1>
-            </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
 
-            <div>
-                <p><span>昨天</span><span class="sd">03-16</span></p>
-                <p><span>-865.00</span><span>抗应力-瘦脸精华</span></p>
-                <h1>进货</h1>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
+                <div>
+                    <p><span class="sd">03-16</span><span>2016</span></p>
+                    <h1>+980.00</h1>
+                </div>
             </div>
         </div>
     </main>
 </div>
 <div class="back">
     <div class="back_j">
-        <h1>什么是结算中</h1>
+        <h1>什么事结算中</h1>
         <p>
             为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
         </p>
-        <botton id="countExplainCloseId">我知道了</botton>
+        <botton>我知道了</botton>
     </div>
 </div>
+<div id="datePlugin"></div>
+<script type="text/javascript" src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>static/js/date.js" ></script>
+<script type="text/javascript" src="<%=basePath%>static/js/iscroll.js" ></script>
+<script type="text/javascript" src="<%=basePath%>static/js/dropload.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#beginTime').date();
+        $('#endTime').date({theme:"datetime"});
+    });
+    $('#divall').dropload({
+        scrollArea : window,
+        loadDownFn : function(me){
+            $.ajax({
+                type: 'GET',
+                url: 'json/more.json',
+                dataType: 'json',
+                success: function(data){
+                    alert(data);
+                    // 代码执行后必须重置
+                    me.resetload();
+                },
+                error: function(xhr, type){
+                    alert('Ajax error!');
+                    me.resetload();
+                }
+            });
+        }
+    });
+</script>
 </body>
-<script type="application/javascript" src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
-<script type="application/javascript" src="<%=basePath%>static/js/account.js"></script>
 </html>

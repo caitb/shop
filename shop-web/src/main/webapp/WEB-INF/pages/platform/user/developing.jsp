@@ -32,7 +32,7 @@
         <main>
             <p>选择您需要发展合伙人的商品</p>
             <c:forEach items="${agentMaps}" var="agentMap">
-            <div class="sec1" id="toShare">
+            <div class="sec1 toShare" userSkuId="${agentMap.userSkuId}" skuId="${agentMap.skuId}">
                 <img src="${agentMap.brandLogo}" alt="">
                 <div>
                     <p><span>合伙产品</span><b>${agentMap.skuName}</b></p>
@@ -47,13 +47,15 @@
 </div>
 </body>
 <script>
-    $('#toShare').on('click', function(){
+    $('.toShare').on('click', function(){
+        var userSkuId = $(this).attr('userSkuId');
+        var skuId = $(this).attr('skuId');
         $.ajax({
             url: '<%=basePath%>developing/isAudit',
-            data: {userSkuId: '${agentMap.userSkuId}'},
+            data: {userSkuId: userSkuId},
             success: function(msg){
                 if(msg == 'yes'){
-                    window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');
+                    window.location.replace('<%=basePath%>developing/sharelink?skuId='+skuId);
                 }else{
                     alert('此产品的代理证书未审核!');
                 }

@@ -24,7 +24,9 @@ public interface PfCorderMapper {
      */
     void insert(PfCorder pfCorder);
 
-    void updateById(PfCorder pfCorder);
+    int updateById(PfCorder pfCorder);
+
+    int updateUserMessageById(PfCorder pfCorder);
 
     void deleteById(Long id);
 

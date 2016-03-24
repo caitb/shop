@@ -17,6 +17,7 @@
         <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
         <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="auditTypeView" property="auditTypeView" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="ExtractApplyMap" type="com.masiis.shop.dao.beans.extract.ExtractApply" >
         <id column="id" property="id" jdbcType="BIGINT" />
@@ -145,5 +146,15 @@
     <update id="pay">
           update com_user_extract_apply set audit_type = 3 where id = #{id}
     </update>
+
+    <select id="selectByUserAndDate" resultMap="BaseResultMap" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
+               extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
+               remark, (SELECT `value` from com_dictionary where code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and `key` = ea.audit_type) as auditTypeView
+        from com_user_extract_apply ea
+        where com_user_id = #{userid,jdbcType=BIGINT}
+              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+    </select>
 
 </mapper>

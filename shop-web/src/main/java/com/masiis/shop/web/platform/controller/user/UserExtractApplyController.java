@@ -2,11 +2,9 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
-import com.masiis.shop.dao.po.ComDictionary;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.ComUserExtractwayInfo;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -25,6 +23,7 @@ import org.springframework.web.servlet.tags.Param;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,5 +137,25 @@ public class UserExtractApplyController extends BaseController {
     public String applySuccess(HttpServletRequest request){
 
         return "platform/user/extract_success";
+    }
+
+    @RequestMapping("/list")
+    public String extractList(HttpServletRequest request, Model model){
+        ComUser user = null;
+        try {
+            user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("该用户未登录");
+            }
+            // 展示提现申请记录的时间区间
+            Date start = DateUtil.getFirstTimeInMonth(new Date());
+            Date end = DateUtil.getLastTimeInMonth(new Date());
+            // 根据用户id查询提现记录,查询当前月的提现记录
+            List<ComUserExtractApply> list = applyService.findListByUserAndDate(user, start, end);
+            model.addAttribute("exList", list);
+        } catch (Exception e) {
+            log.error("查询用户提现记录失败:" + e.getMessage());
+        }
+        return "platform/user/extract_list";
     }
 }

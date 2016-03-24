@@ -15,16 +15,16 @@ public class Order {
     private PfBorder pfBorder;
     private PfCorder pfCorder;
 
+    private List<PfBorderItem> pfBorderItems;
+
     private PfBorderConsignee pfBorderConsignee;
     private PfCorderConsignee pfCorderConsignee;
 
     private List<PfBorderFreight> pfBorderFreights;
     private List<PfCorderFreight> pfCorderFreights;
 
-    private List<PfBorderItem> pfBorderItems;
-
-    private PfBorderPayment pfBorderPayment;
-    private PfCorderPayment pfCorderPayment;
+    private List<PfBorderPayment> pfBorderPayments;
+    private List<PfCorderPayment> pfCorderPayments;
 
     private List<ProductInfo> productInfos;
 
@@ -50,6 +50,14 @@ public class Order {
 
     public void setPfCorder(PfCorder pfCorder) {
         this.pfCorder = pfCorder;
+    }
+
+    public List<PfBorderItem> getPfBorderItems() {
+        return pfBorderItems;
+    }
+
+    public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
+        this.pfBorderItems = pfBorderItems;
     }
 
     public PfBorderConsignee getPfBorderConsignee() {
@@ -84,28 +92,20 @@ public class Order {
         this.pfCorderFreights = pfCorderFreights;
     }
 
-    public List<PfBorderItem> getPfBorderItems() {
-        return pfBorderItems;
+    public List<PfBorderPayment> getPfBorderPayments() {
+        return pfBorderPayments;
     }
 
-    public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
-        this.pfBorderItems = pfBorderItems;
+    public void setPfBorderPayments(List<PfBorderPayment> pfBorderPayments) {
+        this.pfBorderPayments = pfBorderPayments;
     }
 
-    public PfBorderPayment getPfBorderPayment() {
-        return pfBorderPayment;
+    public List<PfCorderPayment> getPfCorderPayments() {
+        return pfCorderPayments;
     }
 
-    public void setPfBorderPayment(PfBorderPayment pfBorderPayment) {
-        this.pfBorderPayment = pfBorderPayment;
-    }
-
-    public PfCorderPayment getPfCorderPayment() {
-        return pfCorderPayment;
-    }
-
-    public void setPfCorderPayment(PfCorderPayment pfCorderPayment) {
-        this.pfCorderPayment = pfCorderPayment;
+    public void setPfCorderPayments(List<PfCorderPayment> pfCorderPayments) {
+        this.pfCorderPayments = pfCorderPayments;
     }
 
     public List<ProductInfo> getProductInfos() {
@@ -114,5 +114,22 @@ public class Order {
 
     public void setProductInfos(List<ProductInfo> productInfos) {
         this.productInfos = productInfos;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "comUser=" + comUser +
+                ", pfBorder=" + pfBorder +
+                ", pfCorder=" + pfCorder +
+                ", pfBorderItems=" + pfBorderItems +
+                ", pfBorderConsignee=" + pfBorderConsignee +
+                ", pfCorderConsignee=" + pfCorderConsignee +
+                ", pfBorderFreights=" + pfBorderFreights +
+                ", pfCorderFreights=" + pfCorderFreights +
+                ", pfBorderPayments=" + pfBorderPayments +
+                ", pfCorderPayments=" + pfCorderPayments +
+                ", productInfos=" + productInfos +
+                '}';
     }
 }

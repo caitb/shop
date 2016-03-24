@@ -19,7 +19,7 @@ $(function(){
     $("#exBtnOk").on("click", function(){
         var money = $("#extractMoneyId").val();
         var options = {
-            url:basepath + "extractapply/apply",
+            url:basepath + "extract/apply",
             type:"POST",
             dataType:"JSON",
             data:{money : money},

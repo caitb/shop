@@ -77,7 +77,6 @@ public class BOrderService {
     public Order find(Long id){
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(id);
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        //PfBorderPayment pfBorderPayment = pfBorderPaymentMapper.selectByBorderId(id);
         PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(id);
         List<PfBorderFreight> pfBorderFreights = pfBorderFreightMapper.selectByBorderId(id);
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(id);
@@ -97,12 +96,18 @@ public class BOrderService {
         Order order = new Order();
         order.setPfBorder(pfBorder);
         order.setComUser(comUser);
-        //order.setPfBorderPayment(pfBorderPayment);
         order.setPfBorderConsignee(pfBorderConsignee);
         order.setPfBorderFreights(pfBorderFreights);
         order.setPfBorderItems(pfBorderItems);
-
         order.setProductInfos(productInfos);
+
+        if(pfBorder.getPayStatus().intValue() == 1){
+            PfBorderPayment borderPaymentC = new PfBorderPayment();
+            borderPaymentC.setPfBorderId(pfBorder.getId());
+            borderPaymentC.setIsEnabled(1);
+            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByCondition(borderPaymentC);
+            order.setPfBorderPayments(pfBorderPayments);
+        }
 
         return order;
     }

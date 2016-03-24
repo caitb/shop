@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lzh on 2016/3/20.
@@ -46,5 +47,9 @@ public class UserExtractApplyService {
             log.error("提现申请业务操作失败," + e.getMessage());
             throw new BusinessException(e.getMessage());
         }
+    }
+
+    public List<ComUserExtractApply> findListByUserAndDate(ComUser user, Date start, Date end) {
+        return applyMapper.selectByUserAndDate(user.getId(), start, end);
     }
 }

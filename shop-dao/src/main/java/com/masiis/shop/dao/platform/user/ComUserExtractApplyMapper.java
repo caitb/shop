@@ -10,8 +10,11 @@ package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.beans.extract.ExtractApply;
 import com.masiis.shop.dao.po.ComUserExtractApply;
+import com.sun.tracing.dtrace.ProviderAttributes;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public interface ComUserExtractApplyMapper {
@@ -34,4 +37,8 @@ public interface ComUserExtractApplyMapper {
     void refuse(Long id);
 
     void pay(Long id);
+
+    List<ComUserExtractApply> selectByUserAndDate(@Param("userid") Long userid,
+                                                  @Param("start") Date start,
+                                                  @Param("end") Date end);
 }

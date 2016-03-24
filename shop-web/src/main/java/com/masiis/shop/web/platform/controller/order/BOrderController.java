@@ -387,7 +387,7 @@ public class BOrderController extends BaseController {
             String opStr = "";
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
             if (pfUserSku.getIsCertificate() == 0) {
-                opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + skuId;
+                opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + pfUserSku.getId();
             }
             //获取用户代理等级
             ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());

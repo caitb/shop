@@ -65,7 +65,7 @@
                         alert(data.message);
                     }else {
                         fullShow();//跳转页面钱展示全屏遮罩loading...
-                        window.location.href="<%=basePath%>extractapply/toapply";
+                        window.location.href="<%=basePath%>extract/toapply";
                     }
                 },
                 //调用执行后调用的函数
@@ -82,7 +82,7 @@
 
          function backLastPage(){
              fullShow();//跳转页面钱展示全屏遮罩loading...
-             window.location.href="<%=basePath%>extractapply/toapply";
+             window.location.href="<%=basePath%>extract/toapply";
          }
     </script>
 </body>

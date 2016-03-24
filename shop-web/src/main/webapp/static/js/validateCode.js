@@ -52,12 +52,13 @@
             },
             getValidateNumber: function () {
                 validateCodeJS.phone = $("#phoneId").val();
-                if (validateCodeJS.checkPhone(validateCodeJS.phone)&&validateCodeJS.isBindedPhone()) {
+                if (validateCodeJS.checkPhone(validateCodeJS.phone)&&validateCodeJS.isBindedPhone()){
                     $.ajax({
                         type: "POST",
                         url: "/binding/securityCode.do",
                         data: "phone=" + validateCodeJS.phone,
-                        dataType: "Json",
+                        async:false,
+                        dataType: "text",
                         success: function (result) {
                             if (result) {
                                 alert("短信发送成功,请注意查收!");
@@ -67,28 +68,33 @@
                             }
                         }
                     });
+                }else {
+                    alert("未进入发送手机号");
                 }
             },
             isBindedPhone:function(){
                 validateCodeJS.phone = $("#phoneId").val();
+                var bl = true;
                 $.ajax({
                     type: "POST",
                     url: "/user/isBindedPhone.do",
                     data: "phone=" + validateCodeJS.phone,
+                    async:false,
                     dataType: "Json",
                     success: function (result) {
                         if (result && result.isError == true) {
                             alert(result.msg);
-                            return false;
+                            bl = false;
                         }else{
-                            return true;
+                            bl = true;
                         }
                     },
                     error:function(){
                         alert("error");
-                        return false;
+                        bl = false;
                     }
                 });
+                return bl;
             },
             checkPhone: function () {
                 validateCodeJS.phone = $("#phoneId").val();

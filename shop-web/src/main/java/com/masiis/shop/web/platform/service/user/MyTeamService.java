@@ -151,7 +151,7 @@ public class MyTeamService {
         memberMap.put("skuName", comSku.getName());
         memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
-        memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
+        memberMap.put("certificateImg", PropertiesUtils.getStringValue("index_user_certificate_url") + pfUserCertificate.getImgUrl());
         memberMap.put("pfUserCertificateId", pfUserCertificate.getId());
         memberMap.put("joinTime", pfUserCertificate.getBeginTime());
         memberMap.put("applyTime", pfUserCertificate.getCreateTime());

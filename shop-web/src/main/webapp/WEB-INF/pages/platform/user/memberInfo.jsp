@@ -38,6 +38,9 @@
             <h1><img src="${memberMap.idCardBackImg}" alt="">反面</h1>
         </div>
         <div class="sec1"><p>证书：<a href="">点击查看</a></p> </div>
+        <div class="sec2">
+            <h1><img src="${memberMap.certificateImg}" alt=""></h1>
+        </div>
         <div class="sec1"><p>加入时间：<span><fmt:formatDate value="${memberMap.joinTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span></p> </div>
     </main>
 </div>

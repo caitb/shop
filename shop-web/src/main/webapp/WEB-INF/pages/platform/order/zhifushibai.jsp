@@ -51,7 +51,7 @@
             </div>
         </section>
         <section class="sec3">
-            <p>留言： <input type="text">${userMessage}</p>
+            <p>试用理由： ${userMessage}</p>
         </section>
         <section class="sec4">
             <p>商品合计：<span>￥0</span></p>

@@ -75,7 +75,7 @@ public class COrderService extends BaseService {
      */
     public Order find(Long id){
         PfCorder pfCorder = pfCorderMapper.selectById(id);
-        PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(id);
+        //PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(id);
         PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(id);
         List<PfCorderFreight> pfCorderFreights = pfCorderFreightMapper.selectByCorderId(id);
 
@@ -89,7 +89,7 @@ public class COrderService extends BaseService {
 
         Order order = new Order();
         order.setPfCorder(pfCorder);
-        order.setPfCorderPayment(pfCorderPayment);
+        //order.setPfCorderPayment(pfCorderPayment);
         order.setPfCorderConsignee(pfCorderConsignee);
         order.setPfCorderFreights(pfCorderFreights);
 

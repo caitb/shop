@@ -65,24 +65,24 @@
         if($(data).attr("url")!=""){
             window.location.href = $(data).attr("url");
         }
-        <%--else{--%>
-            <%--var para = {};--%>
-            <%--para.pfuId = "${userSkuId}";--%>
-            <%--$.ajax({--%>
-                <%--url: "<%=basePath%>userCertificate/updatect.do",--%>
-                <%--type: "post",--%>
-                <%--data: para,--%>
-                <%--dataType: "json",--%>
-                <%--success: function (data) {--%>
-                    <%--if (data.isError == false) {--%>
-                        <%--window.location.href = "<%=basePath%>userApply/applyOK.shtml";--%>
-                    <%--}--%>
-                    <%--else {--%>
-                        <%--alert(data.message);--%>
-                    <%--}--%>
-                <%--}--%>
-            <%--});--%>
-        <%--}--%>
+        else {
+            var para = {};
+            para.pfuId = "${userSkuId}";
+            $.ajax({
+                url: "<%=basePath%>userCertificate/updatect.do",
+                type: "post",
+                data: para,
+                dataType: "json",
+                success: function (data) {
+                    if (data.isError == false) {
+                        window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
     }
 </script>
 </html>

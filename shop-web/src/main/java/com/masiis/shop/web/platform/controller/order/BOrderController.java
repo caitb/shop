@@ -227,7 +227,7 @@ public class BOrderController extends BaseController {
         }
 
         //获得地址
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         Long userId = null;
         if (comUser != null) {
             userId = comUser.getId();
@@ -264,14 +264,20 @@ public class BOrderController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         try {
             if (userAddressId <= 0) {
-                throw new BusinessException("收货地址不能为空");
+                jsonObject.put("isError", true);
+                jsonObject.put("message", "收货地址不能为空");
+                return jsonObject.toJSONString();
             }
             if (bOrderId <= 0) {
-                throw new BusinessException("订单号错误");
+                jsonObject.put("isError", true);
+                jsonObject.put("message", "订单号错误");
+                return jsonObject.toJSONString();
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
             if (!bOrderService.checkBOrderStock(pfBorder)) {
-                throw new BusinessException("订单商品库存不足");
+                jsonObject.put("isError", true);
+                jsonObject.put("message", "订单商品库存不足");
+                return jsonObject.toJSONString();
             }
             pfBorder.setUserMessage(userMessage);
             ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
@@ -293,8 +299,6 @@ public class BOrderController extends BaseController {
             jsonObject.put("isError", false);
         } catch (Exception ex) {
             log.error(ex);
-            jsonObject.put("isError", true);
-            jsonObject.put("message", ex.getMessage());
         }
         return jsonObject.toJSONString();
     }

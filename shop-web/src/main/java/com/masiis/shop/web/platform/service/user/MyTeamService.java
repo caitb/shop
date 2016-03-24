@@ -151,7 +151,7 @@ public class MyTeamService {
         memberMap.put("skuName", comSku.getName());
         memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
-        memberMap.put("certificateImg", pfUserCertificate.getImgUrl());
+        memberMap.put("certificateImg", PropertiesUtils.getStringValue("index_user_certificate_url") + pfUserCertificate.getImgUrl());
         memberMap.put("pfUserCertificateId", pfUserCertificate.getId());
         memberMap.put("joinTime", pfUserCertificate.getBeginTime());
         memberMap.put("applyTime", pfUserCertificate.getCreateTime());
@@ -251,7 +251,7 @@ public class MyTeamService {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write(bimage, "png", imOut);
             InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("masiis", "user/certificate/" + pname + ".jpg", is);
+            OSSObjectUtils.uploadFile("mmshop", "static/user/certificate/" + pname + ".jpg", is);
 //            FileOutputStream out = new FileOutputStream(outPath); //先用一个特定的输出文件名
 //            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
 //            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);

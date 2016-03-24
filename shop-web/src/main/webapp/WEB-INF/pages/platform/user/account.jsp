@@ -13,11 +13,11 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
     <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/zichan.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/common.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/dropload.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/zichan.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
 </head>
 <body>
@@ -73,10 +73,10 @@
     </div>
 </div>
 <div id="datePlugin"></div>
-<script type="text/javascript" src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>static/js/date.js" ></script>
-<script type="text/javascript" src="<%=basePath%>static/js/iscroll.js" ></script>
-<script type="text/javascript" src="<%=basePath%>static/js/dropload.min.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/dropload.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script type="text/javascript">
     $(function(){
@@ -87,7 +87,7 @@
     function getUserBill(year,month){
         $.ajax({
             type:"POST",
-            async:false,
+            async:true,
             url : "<%=path%>/account/getMoreUserBill",
             data:{year:year,month:month,paging:'N',pageTotalCount:'0'},
             dataType:"Json",

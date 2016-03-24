@@ -338,11 +338,11 @@ public class UserCertificateController {
                                  @RequestParam(value = "pfuId", required = true) Integer pfuId) throws Exception {
         JSONObject object = new JSONObject();
         try {
-            userCertificateService.receiveCertificate(pfuId);
+            userCertificateService.receiveCertificate(request,pfuId);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
-            throw new BusinessException("领取证书失败!");
+            object.put("message", "领取证书失败!");
         }
         return object.toJSONString();
     }

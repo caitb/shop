@@ -32,7 +32,7 @@ public class CertificateInfo extends PfUserSku {
 
     private String beginTime;//加入时间
 
-    private Integer receivect=0;//是否领取证书:0未领取，1已经领取
+    private Integer receivect;//是否领取证书:0未领取，1已经领取
 
     private Integer isApply=1;//是否申请:0未申请，1已经申请
 

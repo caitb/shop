@@ -32,6 +32,7 @@
     <script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-zh-CN.min.js"></script>
     <script src="<%=basePath%>static/js/date-util.js"></script>
 
+    <script type="text/javascript" charset="utf-8" src="<%=basePath%>static/class/bootstrap-validator/js/bootstrapValidator.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -218,7 +219,7 @@
                                             // Use Ajax to submit form data
                                             $.ajax({
                                                 url: '<%=basePath%>order/border/delivery.do',
-                                                type: 'get',
+                                                type: 'POST',
                                                 data: $form.serialize(),
                                                 success: function(msg){
                                                     if(msg == 'success'){

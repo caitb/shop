@@ -22,6 +22,8 @@
 </head>
 <body>
 <input type="hidden" id="account" name="account" value = "1"/>
+<input type="hidden" id="year" name="year" value = "${year}"/>
+<input type="hidden" id="month" name="month" value = "${month}"/>
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
@@ -85,6 +87,13 @@
     });
 
     function getUserBill(year,month){
+        var yearLast = $("#year").val();
+        var monthLast = $("#month").val();
+        if(yearLast==year && monthLast==month){
+            return;
+        }
+        $("#year").val(year);
+        $("#month").val(month);
         $.ajax({
             type:"POST",
             async:true,

@@ -22,64 +22,61 @@
     <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
 </head>
 <body>
-<div class="wrap">
-    <header class="xq_header">
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/images/xq_rt.png" alt=""></a>
-        <p>提现申请</p>
-    </header>
-    <main>
-
-        <div class="sec1" id="sec1">
-            <p>收入记录：<label for="beginTime" ><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
-            <div id="divall">
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
+    <div class="wrap">
+        <header class="xq_header">
+            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>提现申请</p>
+        </header>
+        <main>
+            <div class="sec1" id="sec1">
+                <p>收入记录：<label for="beginTime" ><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <div id="Ldivall">
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
+                    <div>
+                        <p><span class="sd">03-16</span><span>+980.00</span></p>
+                        <h1><span>银行卡号</span><span>1233****1111</span><b>审核中</b></h1>
+                    </div>
                 </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div>
-
-                <div>
-                    <p><span class="sd">03-16</span><span>2016</span></p>
-                    <h1>+980.00</h1>
-                </div><div>
-                <p><span class="sd">03-16</span><span>2016</span></p>
-                <h1>+980.00</h1>
-            </div><div>
-                <p><span class="sd">03-16</span><span>2016</span></p>
-                <h1>+980.00</h1>
-            </div><div>
-                <p><span class="sd">03-16</span><span>2016</span></p>
-                <h1>+980.00</h1>
-            </div><div>
-                <p><span class="sd">03-16</span><span>2016</span></p>
-                <h1>+980.00</h1>
-            </div><div>
-                <p><span class="sd">03-16</span><span>2016</span></p>
-                <h1>+980.00</h1>
             </div>
-            </div>
-        </div>
-    </main>
-</div>
-<div class="back">
-    <div class="back_j">
-        <h1>什么事结算中</h1>
-        <p>
-            为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
-        </p>
-        <botton>我知道了</botton>
+        </main>
     </div>
-</div>
-<div id="datePlugin"></div>
+    <div class="back">
+        <div class="back_j">
+            <h1>什么事结算中</h1>
+            <p>
+                为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+            </p>
+            <botton>我知道了</botton>
+        </div>
+    </div>
+    <div id="datePlugin"></div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>

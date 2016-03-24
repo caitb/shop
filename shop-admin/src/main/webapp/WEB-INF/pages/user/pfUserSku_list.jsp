@@ -44,12 +44,12 @@
 
                     <div class="table-responsive">
                         <div id="toolbar">
-                            <button id="remove" class="btn btn-danger" disabled>
-                                <i class="glyphicon glyphicon-remove"></i> 删除
-                            </button>
-                            <button id="add" class="btn btn-primary" id="add">
-                                <i class="glyphicon glyphicon-add"></i> 添加
-                            </button>
+                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
+                                <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
+                            <%--</button>--%>
+                            <%--<button id="add" class="btn btn-primary" id="add">--%>
+                                <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
+                            <%--</button>--%>
                         </div>
                         <table id="table"
                                data-toolbar="#toolbar"

@@ -26,8 +26,8 @@
     </header>
     <nav>
         <ul>
-            <li class="s on">已审核</li>
-            <li class="d">待审核</li>
+            <li class="s">已审核</li>
+            <li class="d on">待审核</li>
         </ul>
     </nav>
     <main>

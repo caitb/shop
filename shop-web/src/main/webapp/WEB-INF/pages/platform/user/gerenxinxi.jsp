@@ -31,6 +31,10 @@
             <p>昵称</p>
             <b>${comUser.wxNkName}</b>
         </div>
+        <div class="sec1">
+            <p>姓名</p>
+            <b>${comUser.realName}</b>
+        </div>
         <div class="sec1" style="margin-top:10px;">
             <p>微信号</p>
             <b>${comUser.wxId}</b>

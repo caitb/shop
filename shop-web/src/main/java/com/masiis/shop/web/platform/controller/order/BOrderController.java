@@ -388,10 +388,20 @@ public class BOrderController extends BaseController {
             orderUserSku.setSkuName(skuNames);
             //获取用户商品信息
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            String opStr = "";
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            if (pfUserSku.getIsCertificate() == 0) {
-                opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + pfUserSku.getId();
+            String opStr = basePath + "userCertificate/setUserCertificate.shtml?userSkuId=" + pfUserSku.getId();
+
+            PfUserSku param = new PfUserSku();
+            param.setUserId(comUser.getId());
+            param.setIsCertificate(1);
+            List<PfUserSku> pfUserSkus = userSkuService.getAllByCondition(param);
+            if (pfUserSkus != null && pfUserSkus.size() > 0) {
+                for (PfUserSku pus : pfUserSkus) {
+                    if (pus.getIsCertificate() == 1) {
+                        opStr = "";
+                        break;
+                    }
+                }
             }
             //获取用户代理等级
             ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());

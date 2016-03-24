@@ -25,7 +25,7 @@
         <div class="tai">
             <img src="<%=path%>/static/images/icon_64.png" alt="">
             <h1>支付成功</h1>
-            <p>您的订单支付成功，请耐心等待收获</p>
+            <p>您的订单支付成功，请耐心等待收货</p>
         </div>
         <section class="sec1">
 

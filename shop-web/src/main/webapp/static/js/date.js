@@ -192,7 +192,7 @@
             CreateDateUI();
             $("#yearwrapper ul").html(createYEAR_UL());
             $("#monthwrapper ul").html(createMONTH_UL());
-            $("#daywrapper ul").html(createDAY_UL());
+           
         }
         function CreateDateUI(){
             var str = ''+

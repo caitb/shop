@@ -96,8 +96,11 @@
             resetIndex();
             $("#dateconfirm").on("click",function () {	
                 var datestr = $("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1)+"-"+
-                          $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1)+"-"+
-			  $("#daywrapper ul li:eq("+Math.round(indexD)+")").html().substr(0,$("#daywrapper ul li:eq("+Math.round(indexD)+")").html().length-1);
+                          $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
+                var year=$("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1);
+                var mouth= $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
+                $("label b").eq(0).html(year)
+        $("label b").eq(1).html(mouth)
                if(datetime){
                      if(Math.round(indexS)===1){//下午
                         $("#Hourwrapper ul li:eq("+indexH+")").html(parseInt($("#Hourwrapper ul li:eq("+indexH+")").html().substr(0,$("#Hourwrapper ul li:eq("+indexH+")").html().length-1))+12)
@@ -192,7 +195,7 @@
             CreateDateUI();
             $("#yearwrapper ul").html(createYEAR_UL());
             $("#monthwrapper ul").html(createMONTH_UL());
-            //$("#daywrapper ul").html(createDAY_UL());
+            $("#daywrapper ul").html(createDAY_UL());
         }
         function CreateDateUI(){
             var str = ''+

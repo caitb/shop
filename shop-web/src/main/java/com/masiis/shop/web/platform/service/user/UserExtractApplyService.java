@@ -52,4 +52,12 @@ public class UserExtractApplyService {
     public List<ComUserExtractApply> findListByUserAndDate(ComUser user, Date start, Date end) {
         return applyMapper.selectByUserAndDate(user.getId(), start, end);
     }
+
+    public Integer findNumsByUserAndDate(ComUser user, Date start, Date end) {
+        return applyMapper.selectNumsByUserAndDate(user.getId(), start, end);
+    }
+
+    public List<ComUserExtractApply> findListByUserAndDateAndPageNum(ComUser user, Date start, Date end, Integer startNum, Integer qSize) {
+        return applyMapper.selectByUserAndDateAndPageNum(user.getId(), start, end, startNum, qSize);
+    }
 }

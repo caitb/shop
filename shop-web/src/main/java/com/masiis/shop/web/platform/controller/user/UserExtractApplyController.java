@@ -158,4 +158,57 @@ public class UserExtractApplyController extends BaseController {
         }
         return "platform/user/extract_list";
     }
+
+    @RequestMapping("/listmore")
+    @ResponseBody
+    public String ajaxListMore(HttpServletRequest request,
+                                  String time, Integer cur){
+        Integer pageSize = 20;
+        JSONObject res = new JSONObject();
+        ComUser user = null;
+        try{
+            user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("该用户未登录");
+            }
+            if(StringUtils.isBlank(time)
+                    || cur == null || cur <= 0){
+                throw new BusinessException();
+            }
+            Date curtime = null;
+            try{
+                curtime = DateUtil.String2Date(time, "yyyy-MM");
+            } catch (Exception e) {
+                log.error("时间格式化错误,原时间字符串为:" + time);
+                throw new BusinessException("时间格式化错误,原时间字符串为:" + time);
+            }
+            // 展示提现申请记录的时间区间
+            Date start = DateUtil.getFirstTimeInMonth(curtime);
+            Date end = DateUtil.getLastTimeInMonth(curtime);
+            // 获取时间区间内的总提现数
+            Integer count = applyService.findNumsByUserAndDate(user, start, end);
+            // 获取总页数
+            Integer pageNums = count%pageSize == 0 ? count/pageSize : count/pageSize + 1;
+            Integer startNum = cur*pageSize;
+            Integer qSize = pageSize;
+            if(cur > pageNums){
+                throw new BusinessException("所传页码超过总页数,无效!");
+            }
+            if(cur == pageNums){
+                throw new BusinessException("所传页码已是最后一页!");
+            }
+            if(cur + 1 == pageNums){
+                qSize = count - startNum + 1;
+            }
+
+            List<ComUserExtractApply> list = applyService.findListByUserAndDateAndPageNum(user, start, end, startNum, qSize);
+            res.put("resCode", "success");
+        } catch (Exception e) {
+            log.error("" + e.getMessage());
+            res.put("resCode", "fail");
+            res.put("resMsg", e.getMessage());
+        }
+
+        return res.toJSONString();
+    }
 }

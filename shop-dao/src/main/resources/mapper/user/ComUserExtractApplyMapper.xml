@@ -157,4 +157,23 @@
               and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectNumsByUserAndDate" resultType="java.lang.Integer">
+        select count(id)
+        from com_user_extract_apply ea
+        where com_user_id = #{userid,jdbcType=BIGINT}
+              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectByUserAndDateAndPageNum" resultMap="BaseResultMap" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
+               extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
+               remark, (SELECT `value` from com_dictionary where code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and `key` = ea.audit_type) as auditTypeView
+        from com_user_extract_apply ea
+        where com_user_id = #{userid,jdbcType=BIGINT}
+              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+              and apply_time <![CDATA[>=]]> (select apply_time from com_user_extract_apply order by apply_time limit #{startNum,jdbcType=INTEGER}, 1)
+              order by apply_time limit #{qSize,jdbcType=INTEGER}
+    </select>
 </mapper>

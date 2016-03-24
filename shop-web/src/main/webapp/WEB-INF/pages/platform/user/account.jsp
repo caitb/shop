@@ -45,7 +45,7 @@
                     <li>
                         <p>结算中：</p>
                         <h1><span>￥</span>${account.countingFee}</h1>
-                        <h2>查看说明</h2>
+                        <h2><a onclick="showDetail()">查看说明</a></h2>
                     </li>
                 </ul>
             </nav>
@@ -63,13 +63,13 @@
         </main>
     </div>
 </div>
-<div class="back">
+<div class="back" id="detail">
     <div class="back_j">
         <h1>什么事结算中</h1>
         <p>
             为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
         </p>
-        <botton>我知道了</botton>
+        <botton onClick="hideDetail()">我知道了</botton>
     </div>
 </div>
 <div id="datePlugin"></div>
@@ -109,6 +109,12 @@
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>profile/profile";
+    }
+    function showDetail(){
+        $("#detail").show();
+    }
+    function hideDetail(){
+        $("#detail").hide();
     }
 </script>
 </body>

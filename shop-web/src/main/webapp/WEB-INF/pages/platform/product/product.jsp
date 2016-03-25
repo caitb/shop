@@ -15,9 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
-    <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 </head>
-<body>
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
@@ -119,7 +117,7 @@
     <section class="sec3">
         <input id="skipPageId" value="trial" style="display: none" />
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <c:if test="${empty userAgentInfo && empty pfUserSku}">
+        <c:if test="${empty pfUserSku || pfUserSku.isPay==0}">
             <p>
                 <a id="applyTrial" onclick="validateCodeJS.applyTrial()">申请试用</a>
                 <a id="trialed" style="display: none">已试用</a>
@@ -127,14 +125,15 @@
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
             </p>
         </c:if>
-        <c:if test="${not empty pfUserSku}">
+        <c:if test="${not empty pfUserSku && pfUserSku.isPay==1}">
             <p style="background: #DA3600;"><a onclick="buhuokucun('${productDetails.name}')"
                     href="javascript:;">补货</a></p>
         </c:if>
     </section>
 </footer>
-<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
+<script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/product.js"></script>
+<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/validateCode.js"></script>
 <script>
     $(document).ready(function () {

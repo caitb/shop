@@ -53,7 +53,7 @@
             $("#selectId").val(id);
             $.ajax({
                 type:"POST",
-                async:false,
+                async:true,
                 url : "<%=path%>/extractwayinfo/setbankdefault.do",
                 data:{id:id},
                 dataType:"Json",

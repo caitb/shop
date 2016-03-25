@@ -7,7 +7,7 @@
   position: relative;
   margin-bottom: 5px;
 }
-.xq_header a {
+.xq_header a:first-child {
   display: block;
   width: 50px;
   height: 100%;
@@ -15,10 +15,25 @@
   left: 10px;
   top: 9px;
 }
-.xq_header a img {
+.xq_header a:first-child img {
   display: block;
   width: 10px;
   height: 20px;
+}
+.xq_header a:last-child {
+  display: block;
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  right: 10px;
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  -webkit-box-align: center;
+}
+.xq_header a:last-child h2 {
+  text-align: right;
+  color: red;
+  font-size: 14px;
 }
 .xq_header p {
   -webkit-box-flex: 1;

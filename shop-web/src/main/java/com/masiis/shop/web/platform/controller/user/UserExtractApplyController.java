@@ -33,6 +33,7 @@ import java.util.List;
 @RequestMapping("/extract")
 public class UserExtractApplyController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
+    private final Integer pageSize = 20;
 
     @Resource
     private UserService userService;
@@ -142,6 +143,9 @@ public class UserExtractApplyController extends BaseController {
     @RequestMapping("/list")
     public String extractList(HttpServletRequest request, Model model){
         ComUser user = null;
+        Integer cur = 0;
+        /*List<ComUserExtractApply> list = null;
+        boolean hasData = true;
         try {
             user = getComUser(request);
             if (user == null) {
@@ -151,11 +155,27 @@ public class UserExtractApplyController extends BaseController {
             Date start = DateUtil.getFirstTimeInMonth(new Date());
             Date end = DateUtil.getLastTimeInMonth(new Date());
             // 根据用户id查询提现记录,查询当前月的提现记录
-            List<ComUserExtractApply> list = applyService.findListByUserAndDate(user, start, end);
-            model.addAttribute("exList", list);
+            Integer count = applyService.findNumsByUserAndDate(user, start, end);
+            if(count == null || count <= 0){
+                hasData = false;
+                throw new BusinessException("暂无数据");
+            }
+            // 获取总页数
+            Integer pageNums = count%pageSize == 0 ? count/pageSize : count/pageSize + 1;
+            Integer startNum = (cur - 1) * pageSize;
+            Integer qSize = pageSize;
+            if(cur == pageNums){
+                qSize = count - startNum;
+            }
+
+            list = applyService.findListByUserAndDateAndPageNum(user, start, end, startNum, qSize);
         } catch (Exception e) {
             log.error("查询用户提现记录失败:" + e.getMessage());
         }
+
+        model.addAttribute("hasData", hasData);
+        model.addAttribute("exList", list);*/
+        model.addAttribute("cur", cur);
         return "platform/user/extract_list";
     }
 
@@ -163,7 +183,6 @@ public class UserExtractApplyController extends BaseController {
     @ResponseBody
     public String ajaxListMore(HttpServletRequest request,
                                   String time, Integer cur){
-        Integer pageSize = 20;
         JSONObject res = new JSONObject();
         ComUser user = null;
         try{
@@ -187,22 +206,28 @@ public class UserExtractApplyController extends BaseController {
             Date end = DateUtil.getLastTimeInMonth(curtime);
             // 获取时间区间内的总提现数
             Integer count = applyService.findNumsByUserAndDate(user, start, end);
+            if(count == null || count <= 0){
+                log.error("当前时间区间内没有数据");
+                throw new BusinessException("暂无数据");
+            }
+            log.info("获取时间区间内的总提现数,总记录数:" + count);
             // 获取总页数
             Integer pageNums = count%pageSize == 0 ? count/pageSize : count/pageSize + 1;
-            Integer startNum = cur*pageSize;
+            Integer startNum = (cur - 1) * pageSize;
             Integer qSize = pageSize;
             if(cur > pageNums){
+                log.error("当前所传页码超过总页码数,总页数:" + pageNums + ",所传页码数:" + cur);
+                res.put("isLast", true);
                 throw new BusinessException("所传页码超过总页数,无效!");
             }
             if(cur == pageNums){
-                throw new BusinessException("所传页码已是最后一页!");
-            }
-            if(cur + 1 == pageNums){
-                qSize = count - startNum + 1;
+                qSize = count - startNum;
+                res.put("isLast", true);
             }
 
             List<ComUserExtractApply> list = applyService.findListByUserAndDateAndPageNum(user, start, end, startNum, qSize);
             res.put("resCode", "success");
+            res.put("resData", list);
         } catch (Exception e) {
             log.error("" + e.getMessage());
             res.put("resCode", "fail");

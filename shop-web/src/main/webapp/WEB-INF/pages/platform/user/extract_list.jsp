@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
     <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixianjilu.css">
+    <script type="application/javascript">
+        var path = "<%=path%>";
+        var basepath = "<%=basePath%>";
+        var cur = "${cur}";
+    </script>
 </head>
 <body>
 <div class="wrap">
@@ -30,7 +35,7 @@
         </header>
         <main>
             <div class="sec1" id="sec1">
-                <p>提现记录：<label id="timeShow" for="beginTime"><b><%=DateUtil.Date2String(new Date(), "yyyy")%></b>年<b><%=DateUtil.Date2String(new Date(), "MM")%></b>月</label><input id="beginTime" value="<%=DateUtil.Date2String(new Date(), "yyyy-MM")%>" class="kbtn" style="display:none;"/></p>
+                <p>提现记录：<label id="timeShow" for="beginTime"><b><%=DateUtil.Date2String(new Date(), "yyyy")%></b>年<b><%=DateUtil.Date2String(new Date(), "MM")%></b>月</label><input id="beginTime" onInput="OnInput(event)" onPropertychange="OnPropChanged(event)" value="<%=DateUtil.Date2String(new Date(), "yyyy-MM")%>" class="kbtn" style="display:none;"/></p>
                 <div id="divall">
                     <c:forEach items="${exList}" var="ex">
                         <div>
@@ -48,32 +53,6 @@
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
 <script src="<%=path%>/static/js/dropload.min.js"></script>
-<script type="text/javascript">
-    $(function(){
-        $('#beginTime').date();
-        $('#endTime').date({theme:"datetime"});
-
-        $('body').dropload({
-            scrollArea : window,
-            loadDownFn : function(me){
-                $.ajax({
-                    type: 'GET',
-                    url: 'json/more.json',
-                    dataType: 'json',
-                    success: function(data){
-                        alert(data);
-                    },
-                    error: function(xhr, type){
-                        //alert('Ajax error!');
-                    },
-                    complete:function(){
-                        me.resetload();
-                        me.noData();
-                    }
-                });
-            }
-        });
-    });
-</script>
+<script type="application/javascript" src="<%=path%>/static/js/extract_list.js"></script>
 </body>
 </html>

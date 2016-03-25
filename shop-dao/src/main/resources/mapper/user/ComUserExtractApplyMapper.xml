@@ -148,13 +148,16 @@
     </update>
 
     <select id="selectByUserAndDate" resultMap="BaseResultMap" >
-        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
-               extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
-               remark, (SELECT `value` from com_dictionary where code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and `key` = ea.audit_type) as auditTypeView
+        select ea.id, ea.com_user_id, ea.extract_fee, ea.extractway_info_id, ea.apply_time, ea.extract_way,
+               ea.extract_time, ea.pay_time, ea.audit_type, ea.audit_cause, ea.bank_card, ea.bank_name,
+               ea.card_owner_name, ea.deposit_bank_name, ea.remark, d.value as auditTypeView
         from com_user_extract_apply ea
-        where com_user_id = #{userid,jdbcType=BIGINT}
-              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
-              and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        inner JOIN com_dictionary d
+              on d.code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and d.key = ea.audit_type
+        where ea.com_user_id = #{userid,jdbcType=BIGINT}
+              and ea.apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and ea.apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+              order by ea.apply_time DESC
     </select>
 
     <select id="selectNumsByUserAndDate" resultType="java.lang.Integer">
@@ -166,14 +169,21 @@
     </select>
 
     <select id="selectByUserAndDateAndPageNum" resultMap="BaseResultMap" >
-        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
-               extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
-               remark, (SELECT `value` from com_dictionary where code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and `key` = ea.audit_type) as auditTypeView
+        select ea.id, ea.com_user_id, ea.extract_fee, ea.extractway_info_id, ea.apply_time, ea.extract_way,
+               ea.extract_time, ea.pay_time, ea.audit_type, ea.audit_cause, ea.bank_card, ea.bank_name,
+               ea.card_owner_name, ea.deposit_bank_name, ea.remark, d.value as auditTypeView
         from com_user_extract_apply ea
-        where com_user_id = #{userid,jdbcType=BIGINT}
-              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
-              and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
-              and apply_time <![CDATA[>=]]> (select apply_time from com_user_extract_apply order by apply_time limit #{startNum,jdbcType=INTEGER}, 1)
-              order by apply_time limit #{qSize,jdbcType=INTEGER}
+        inner JOIN com_dictionary d
+              on d.code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and d.key = ea.audit_type
+        where ea.com_user_id = #{userid,jdbcType=BIGINT}
+              and ea.apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and ea.apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+              and ea.apply_time <![CDATA[<=]]> (select apply_time
+                                            from com_user_extract_apply
+                                            where com_user_id = #{userid,jdbcType=BIGINT}
+                                                  and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+                                                  and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+                                                  order by apply_time DESC limit #{startNum,jdbcType=INTEGER}, 1)
+              order by ea.apply_time DESC limit #{qSize,jdbcType=INTEGER}
     </select>
 </mapper>

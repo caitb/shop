@@ -4,7 +4,7 @@
  * V1.1
  */
 (function ($) {      
-    $.fn.date = function (options,Ycallback,Ncallback) {   
+    $.fn.date = function (options,Ycallback,Ncallback,ChangeFn) {
         //插件默认选项
         var that = $(this);
         var docType = $(this).is('input');
@@ -37,9 +37,12 @@
             event:"click",                    //打开日期插件默认方式为点击后后弹出日期 
             show:true
         }
-        //用户选项覆盖插件默认选项   
+        //用户选项覆盖插件默认选项
         var opts = $.extend( true, {}, $.fn.date.defaultOptions, options );
         if(opts.theme === "datetime"){datetime = true;}
+        if(ChangeFn != undefined){
+            $.fn.date.changeEvent = ChangeFn;
+        }
         if(!opts.show){
             that.unbind('click');
         }
@@ -101,6 +104,7 @@
                 var mouth= $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
                 $("label b").eq(0).html(year)
         $("label b").eq(1).html(mouth)
+                $.fn.date.changeEvent(year, mouth);
                if(datetime){
                      if(Math.round(indexS)===1){//下午
                         $("#Hourwrapper ul li:eq("+indexH+")").html(parseInt($("#Hourwrapper ul li:eq("+indexH+")").html().substr(0,$("#Hourwrapper ul li:eq("+indexH+")").html().length-1))+12)

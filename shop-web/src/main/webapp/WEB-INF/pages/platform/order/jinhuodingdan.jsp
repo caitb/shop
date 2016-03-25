@@ -331,9 +331,6 @@
        </div>
        <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
        <script>
-            var myScroll = new IScroll("main",{
-                 preventDefault: false
-            })
             $("li").on("click",function(){
                 var index=$(this).index();
                 $("li").children("a").removeClass("on")
@@ -360,13 +357,13 @@
                         data:{orderStatus:3,shipStatus:9,orderId:id},
                         dataType:"Json",
                         success:function(date){
-                            if(date.msgs){
+//                            if(date.msgs){
                                 $("span[name="+aa+"]").attr("style","display:none");
                                 $("b."+aa+"").html("交易成功");
                                 location.reload(true);
-                            }else{
-                                alert(date.message);
-                            }
+//                            }else{
+//                                alert(date.message);
+//                            }
                         }
                     })
                 })

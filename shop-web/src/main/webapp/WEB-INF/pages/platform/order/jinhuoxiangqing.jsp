@@ -97,9 +97,10 @@
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script>
-        var myScroll = new IScroll("main",{
-            preventDefault: false
-        })
+//        var myScroll = new IScroll("main",{
+//            preventDefault: false
+//        })
+
 
 //        $(".btn").on("click",function(){
 //            $(".back").css("display","-webkit-box");

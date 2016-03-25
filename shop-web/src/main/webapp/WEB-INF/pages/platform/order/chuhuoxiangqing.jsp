@@ -83,9 +83,9 @@
         <script src="<%=path%>/static/js/commonAjax.js"></script>
         <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
         <script>
-        var myScroll = new IScroll("main",{
-                 preventDefault: false
-            })
+//        var myScroll = new IScroll("main",{
+//                 preventDefault: false
+//            })
 
             $(".fah").on("click",function(){
                 $(".back").show();
@@ -104,12 +104,12 @@
                     data:{shipManName:shipManName,freight:freight,orderId:borderId},
                     dataType:"Json",
                     success:function(date){
-                        if(!date.msgs){
-                            alert(date.msg);
-                        }else{
+//                        if(!date.msgs){
+//                            alert(date.msg);
+//                        }else{
                             $(".fah").html("");
                             location.reload(true);
-                        }
+//                        }
                     }
                 })
             })

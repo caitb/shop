@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ page import="com.masiis.shop.common.util.DateUtil" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
@@ -19,6 +20,11 @@
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
     <link rel="stylesheet" href="<%=path%>/static/css/dropload.css">
     <link rel="stylesheet" href="<%=path%>/static/css/tixianjilu.css">
+    <script type="application/javascript">
+        var path = "<%=path%>";
+        var basepath = "<%=basePath%>";
+        var cur = "${cur}";
+    </script>
 </head>
 <body>
 <div class="wrap">
@@ -29,7 +35,7 @@
         </header>
         <main>
             <div class="sec1" id="sec1">
-                <p>提现记录：<label for="beginTime"><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <p>提现记录：<label id="timeShow" for="beginTime"><b><%=DateUtil.Date2String(new Date(), "yyyy")%></b>年<b><%=DateUtil.Date2String(new Date(), "MM")%></b>月</label><input id="beginTime" onInput="OnInput(event)" onPropertychange="OnPropChanged(event)" value="<%=DateUtil.Date2String(new Date(), "yyyy-MM")%>" class="kbtn" style="display:none;"/></p>
                 <div id="divall">
                     <c:forEach items="${exList}" var="ex">
                         <div>
@@ -42,43 +48,11 @@
         </main>
     </div>
 </div>
+<div id="datePlugin"></div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
 <script src="<%=path%>/static/js/dropload.min.js"></script>
-<script type="text/javascript">
-    $(function(){
-        $('#beginTime').date();
-        $('#endTime').date({theme:"datetime"});
-
-        $('main').dropload({
-            scrollArea : window,
-
-            domDown : {
-                domClass   : 'dropload-down',
-                domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
-                domUpdate  : '<div class="dropload-update">↓释放加载</div>',
-                domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
-                domNoData  : '<div class="dropload-noData">没东西了</div>'
-            },
-            loadDownFn : function(me){
-                $.ajax({
-                    type: 'GET',
-                    url: 'json/more.json',
-                    dataType: 'json',
-                    success: function(data){
-                        alert(data);
-                    },
-                    error: function(xhr, type){
-                        //alert('Ajax error!');
-                    },
-                    complete:function(){
-                        me.resetload();
-                    }
-                });
-            }
-        });
-    });
-</script>
+<script type="application/javascript" src="<%=path%>/static/js/extract_list.js"></script>
 </body>
 </html>

@@ -41,4 +41,22 @@ public interface ComUserExtractApplyMapper {
     List<ComUserExtractApply> selectByUserAndDate(@Param("userid") Long userid,
                                                   @Param("start") Date start,
                                                   @Param("end") Date end);
+
+    /**
+     * 根据用户id和时间区间查询提现记录数
+     *
+     * @param userid
+     * @param start
+     * @param end
+     * @return
+     */
+    Integer selectNumsByUserAndDate(@Param("userid") Long userid,
+                                    @Param("start") Date start,
+                                    @Param("end") Date end);
+
+    List<ComUserExtractApply> selectByUserAndDateAndPageNum(@Param("userid") Long userid,
+                                                            @Param("start") Date start,
+                                                            @Param("end") Date end,
+                                                            @Param("startNum") Integer startNum,
+                                                            @Param("qSize") Integer qSize);
 }

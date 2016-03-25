@@ -168,8 +168,6 @@ public class UserApplyController {
 
         JSONObject object = new JSONObject();
         try {
-            if(true)
-                throw new BusinessException("xasdas");
             if (StringUtils.isBlank(name)) {
                 throw new BusinessException("名称不能为空");
             }
@@ -199,7 +197,7 @@ public class UserApplyController {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
             } else {
-                throw new BusinessException("数据有误请核对", ex);
+                throw new BusinessException("网络错误", ex);
             }
         }
         return object.toJSONString();
@@ -247,7 +245,7 @@ public class UserApplyController {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
             } else {
-                throw new BusinessException("数据有误请核对", ex);
+                throw new BusinessException("网络错误", ex);
             }
         }
         return jsonObject.toJSONString();

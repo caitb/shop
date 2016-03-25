@@ -185,9 +185,11 @@ public class BOrderController extends BaseController {
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {
-            log.error(ex);
-            obj.put("isError", true);
-            obj.put("message", ex.getMessage());
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
         return obj.toJSONString();
     }
@@ -203,8 +205,7 @@ public class BOrderController extends BaseController {
                                   HttpServletResponse response,
                                   @RequestParam(value = "userAddressId", required = false) Long userAddressId,
                                   @RequestParam(value = "userMessage", required = false) String userMessage,
-                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId
-    ) {
+                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ModelAndView mv = new ModelAndView();
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
@@ -264,20 +265,14 @@ public class BOrderController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         try {
             if (userAddressId <= 0) {
-                jsonObject.put("isError", true);
-                jsonObject.put("message", "收货地址不能为空");
-                return jsonObject.toJSONString();
+                throw new BusinessException("收货地址不能为空");
             }
             if (bOrderId <= 0) {
-                jsonObject.put("isError", true);
-                jsonObject.put("message", "订单号错误");
-                return jsonObject.toJSONString();
+                throw new BusinessException("订单号错误");
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
             if (!bOrderService.checkBOrderStock(pfBorder)) {
-                jsonObject.put("isError", true);
-                jsonObject.put("message", "订单商品库存不足");
-                return jsonObject.toJSONString();
+                throw new BusinessException("订单商品库存不足");
             }
             pfBorder.setUserMessage(userMessage);
             ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
@@ -298,7 +293,11 @@ public class BOrderController extends BaseController {
             bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
             jsonObject.put("isError", false);
         } catch (Exception ex) {
-            log.error(ex);
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
         return jsonObject.toJSONString();
     }
@@ -306,49 +305,43 @@ public class BOrderController extends BaseController {
     @RequestMapping("/payBOrderReady.shtml")
     public String payBOrderReady(HttpServletRequest request,
                                  RedirectAttributes attrs,
-                                 @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+                                 @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         WxPaySysParamReq req = null;
-        try {
-            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            //切换开发模式和测试模式
-            String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
-            if (StringUtils.isBlank(enviromentkey)
-                    || enviromentkey.equals("0")) {
-                String uuid = UUID.randomUUID().toString();
-                PfBorderPayment payment = new PfBorderPayment();
-                payment.setPfBorderId(bOrderId);
-                payment.setAmount(pfBorder.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
-                payment.setCreateTime(new Date());
-                payment.setIsEnabled(0);
-                // 给外部支付使用支付流水号
-                payment.setPaySerialNum(uuid);
-                payment.setPayTypeId(0);
-                payment.setPayTypeName("微信支付");
-                bOrderService.addBOrderPayment(payment);
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        //切换开发模式和测试模式
+        String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
+        if (StringUtils.isBlank(enviromentkey)
+                || enviromentkey.equals("0")) {
+            String uuid = UUID.randomUUID().toString();
+            PfBorderPayment payment = new PfBorderPayment();
+            payment.setPfBorderId(bOrderId);
+            payment.setAmount(pfBorder.getReceivableAmount()); //new BigDecimal(p.getTotal_fee()).divide(new BigDecimal(100)));
+            payment.setCreateTime(new Date());
+            payment.setIsEnabled(0);
+            // 给外部支付使用支付流水号
+            payment.setPaySerialNum(uuid);
+            payment.setPayTypeId(0);
+            payment.setPayTypeName("微信支付");
+            bOrderService.addBOrderPayment(payment);
 
-                PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
-                if (pfBorderPayment == null) {
-                    throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
-                }
-                if (pfBorderPayment.getIsEnabled() == 0) {
-                    // 调用borderService的方法处理
-                    bOrderService.payBOrder(pfBorderPayment, UUID.randomUUID().toString());
-                }
-                attrs.addAttribute("bOrderId", bOrderId);
-                return "redirect:/border/payBOrdersSuccess.shtml";
-            } else if (enviromentkey.equals("1")) {
-                req = new WxPaySysParamReq();
-                req.setOrderId(pfBorder.getOrderCode());
-                req.setSignType("MD5");
-                req.setNonceStr(WXBeanUtils.createGenerateStr());
-                String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-                req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
-                req.setSign(WXBeanUtils.toSignString(req));
+            PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
+            if (pfBorderPayment == null) {
+                throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
             }
-
-        } catch (Exception ex) {
-            //错误页面
-            throw new BusinessException(ex);
+            if (pfBorderPayment.getIsEnabled() == 0) {
+                // 调用borderService的方法处理
+                bOrderService.payBOrder(pfBorderPayment, UUID.randomUUID().toString());
+            }
+            attrs.addAttribute("bOrderId", bOrderId);
+            return "redirect:/border/payBOrdersSuccess.shtml";
+        } else if (enviromentkey.equals("1")) {
+            req = new WxPaySysParamReq();
+            req.setOrderId(pfBorder.getOrderCode());
+            req.setSignType("MD5");
+            req.setNonceStr(WXBeanUtils.createGenerateStr());
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSign(WXBeanUtils.toSignString(req));
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
@@ -362,48 +355,43 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/payBOrdersSuccess.shtml")
     public ModelAndView payBOrdersSuccess(HttpServletRequest request,
-                                          @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+                                          @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ModelAndView mav = new ModelAndView();
-        try {
-            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            //首次代理订单
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        //首次代理订单
 //            if (pfBorder.getOrderType() == 0) {
-            String realName = "";//姓名
-            String skuName = "";//合作产品
-            String levelName = "";//合伙人等级
-            String pRealName = "";//上级合伙人
-            ComUser comUser = getComUser(request);
-            realName = comUser.getRealName();
-            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
-            skuName = pfBorderItems.get(0).getSkuName();
-            //获取用户商品信息
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItems.get(0).getSkuId());
-            //获取用户代理等级
-            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
-            levelName = comAgentLevel.getName();
-            //获取上级合伙人
-            if (pfBorder.getUserPid() == 0) {
-                pRealName = "平台";
-            }else{
-                ComUser pComuser = userService.getUserById(pfBorder.getUserPid());
-                //判断是否已经
-                pRealName = pComuser.getRealName();
-            }
-            mav.addObject("realName", realName);
-            mav.addObject("skuName", skuName);
-            mav.addObject("levelName", levelName);
-            mav.addObject("pRealName", pRealName);
-            mav.addObject("userSkuId", pfUserSku.getId());
-            mav.setViewName("platform/order/lingquzhengshu");
+        String realName = "";//姓名
+        String skuName = "";//合作产品
+        String levelName = "";//合伙人等级
+        String pRealName = "";//上级合伙人
+        ComUser comUser = getComUser(request);
+        realName = comUser.getRealName();
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
+        skuName = pfBorderItems.get(0).getSkuName();
+        //获取用户商品信息
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItems.get(0).getSkuId());
+        //获取用户代理等级
+        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
+        levelName = comAgentLevel.getName();
+        //获取上级合伙人
+        if (pfBorder.getUserPid() == 0) {
+            pRealName = "平台";
+        } else {
+            ComUser pComuser = userService.getUserById(pfBorder.getUserPid());
+            //判断是否已经
+            pRealName = pComuser.getRealName();
+        }
+        mav.addObject("realName", realName);
+        mav.addObject("skuName", skuName);
+        mav.addObject("levelName", levelName);
+        mav.addObject("pRealName", pRealName);
+        mav.addObject("userSkuId", pfUserSku.getId());
+        mav.setViewName("platform/order/lingquzhengshu");
 //            }
 //            //补货订单
 //            else {
 //
 //            }
-
-        } catch (Exception ex) {
-
-        }
         return mav;
     }
 
@@ -422,24 +410,23 @@ public class BOrderController extends BaseController {
                             @RequestParam(required = true) Integer shipStatus,
                             Integer stock) {
         JSONObject json = new JSONObject();
-        ComUser user = getComUser(request);
-        ;
-        if (user == null) {
-            user = userService.getUserById(1l);
-            request.getSession().setAttribute("comUser", user);
-        }
-        PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-        pfBorder.setOrderStatus(orderStatus);
-        pfBorder.setShipStatus(shipStatus);
         try {
+            ComUser user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("用户session丢失");
+            }
+            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            pfBorder.setOrderStatus(orderStatus);
+            pfBorder.setShipStatus(shipStatus);
             bOrderService.updateGetStock(pfBorder, user);
             bOrderService.updateBOrder(pfBorder);
             json.put("msgs", true);
-//            json.put("mesg", "交易成功");
         } catch (Exception ex) {
-            setErrorLog("确认收货异常", ex);
-            json.put("msgs", false);
-            json.put("message", ex.getMessage());
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
         return json.toString();
     }
@@ -457,32 +444,36 @@ public class BOrderController extends BaseController {
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight) {
-        ComUser user = getComUser(request);
-        ;
-        if (user == null) {
-            user = userService.getUserById(1l);
-            request.getSession().setAttribute("comUser", user);
-        }
         JSONObject json = new JSONObject();
-        if (freight == null || freight == "") {
-            json.put("msgs", false);
-            json.put("msg", "请重新输入快递单号");
-        } else {
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            pfBorder.setShipStatus(5);
-            PfBorderFreight pfBorderFreight = new PfBorderFreight();
-            pfBorderFreight.setCreateTime(new Date());
-            pfBorderFreight.setPfBorderId(orderId);
-            pfBorderFreight.setFreight(freight);
-            pfBorderFreight.setShipManName(shipManName);
-            try {
+        try {
+            ComUser user = getComUser(request);
+            if (user == null) {
+                user = userService.getUserById(1l);
+                request.getSession().setAttribute("comUser", user);
+            }
+
+            if (freight == null || freight == "") {
+                json.put("msgs", false);
+                json.put("msg", "请重新输入快递单号");
+            } else {
+                PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+                pfBorder.setShipStatus(5);
+                PfBorderFreight pfBorderFreight = new PfBorderFreight();
+                pfBorderFreight.setCreateTime(new Date());
+                pfBorderFreight.setPfBorderId(orderId);
+                pfBorderFreight.setFreight(freight);
+                pfBorderFreight.setShipManName(shipManName);
+
                 bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
                 json.put("msgs", true);
-            } catch (Exception e) {
-                json.put("msgs", false);
-                json.put("msg", e.getMessage());
+            }
+        } catch (Exception ex) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
             }
         }
         return json.toString();
@@ -495,7 +486,7 @@ public class BOrderController extends BaseController {
      * @date 2016/3/16 11:37
      */
     @RequestMapping("/stockBorder")
-    public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
+    public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
@@ -561,7 +552,7 @@ public class BOrderController extends BaseController {
      * @date 2016/3/16 15:00
      */
     @RequestMapping("/borderDetils.html")
-    public ModelAndView borderDetils(HttpServletRequest request, Long id) {
+    public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
         BorderDetail borderDetail = new BorderDetail();
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
@@ -594,7 +585,7 @@ public class BOrderController extends BaseController {
      * @date 2016/3/16 15:00
      */
     @RequestMapping("/deliveryBorderDetils.html")
-    public ModelAndView deliveryBorderDetils(HttpServletRequest request, Long id) {
+    public ModelAndView deliveryBorderDetils(HttpServletRequest request, Long id) throws Exception {
         BorderDetail borderDetail = new BorderDetail();
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
@@ -629,7 +620,7 @@ public class BOrderController extends BaseController {
      * @date 2016/3/16 11:37
      */
     @RequestMapping("/deliveryBorder")
-    public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) {
+    public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
@@ -675,7 +666,7 @@ public class BOrderController extends BaseController {
     }
 
     @RequestMapping("/payReplenishmentOrder.shtml")
-    public ModelAndView payReplenishmentOrder() {
+    public ModelAndView payReplenishmentOrder() throws Exception {
         ModelAndView mv = new ModelAndView();
         try {
 

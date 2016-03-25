@@ -68,8 +68,6 @@
                             }
                         }
                     });
-                }else {
-                    alert("未进入发送手机号");
                 }
             },
             isBindedPhone:function(){

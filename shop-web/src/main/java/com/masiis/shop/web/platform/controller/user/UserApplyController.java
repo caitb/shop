@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.rmi.server.ExportException;
 import java.util.List;
 
 /**
@@ -35,7 +36,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/userApply")
 public class UserApplyController {
-    private Logger log = Logger.getLogger(this.getClass());
     @Resource
     private ProductService productService;
     @Resource
@@ -58,25 +58,21 @@ public class UserApplyController {
                                       HttpServletResponse response,
                                       @RequestParam(value = "skuId", required = true) Integer skuId,
                                       @RequestParam(value = "type", required = false) Integer type,
-                                      @RequestParam(value = "pUserId", required = false) Long pUserId) {
+                                      @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
-        try {
-            String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-            ProductSimple productSimple = productService.getSkuSimple(skuId);
-            mv.addObject("skuId", skuId);
-            mv.addObject("skuName", productSimple.getSkuName());
-            mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
-            mv.addObject("slogan", productSimple.getSlogan());
-            mv.addObject("pUserId", pUserId);
-            if (type != null && type == 1) {
-                mv.addObject("type", 1);
-            } else {
-                mv.addObject("type", 0);
-            }
-            mv.setViewName("platform/order/shenqing");
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
+        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        ProductSimple productSimple = productService.getSkuSimple(skuId);
+        mv.addObject("skuId", skuId);
+        mv.addObject("skuName", productSimple.getSkuName());
+        mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
+        mv.addObject("slogan", productSimple.getSlogan());
+        mv.addObject("pUserId", pUserId);
+        if (type != null && type == 1) {
+            mv.addObject("type", 1);
+        } else {
+            mv.addObject("type", 0);
         }
+        mv.setViewName("platform/order/shenqing");
         return mv;
     }
 
@@ -92,71 +88,65 @@ public class UserApplyController {
                                          HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
                                          @RequestParam(value = "type", required = false) Integer type,
-                                         @RequestParam(value = "pUserId", required = false) Long pUserId
-
-    ) {
+                                         @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
-        try {
-            ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-            //获取商品信息
-            ComSku comSku = skuService.getSkuById(skuId);
-            //获取商品代理信息
-            List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
-            int levelID = 0;
-            if (type != null && type == 1) {
-                PfUserSku pfUserSku = pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-                if (pfUserSku == null) {
-                    throw new BusinessException("推荐人还未代理过此产品");
-                }
-                levelID = pfUserSku.getAgentLevelId();
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        //获取商品信息
+        ComSku comSku = skuService.getSkuById(skuId);
+        //获取商品代理信息
+        List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+        int levelID = 0;
+        if (type != null && type == 1) {
+            PfUserSku pfUserSku = pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+            if (pfUserSku == null) {
+                throw new BusinessException("推荐人还未代理过此产品");
             }
-            //获取代理信息
-            List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
-            StringBuffer sb = new StringBuffer();
-            for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-                if (pfSkuAgent.getAgentLevelId() > levelID) {
-                    if (pfSkuAgent.getAgentLevelId() == 1) {
-                        sb.append("<p class='on' levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                    } else {
-                        sb.append("<p levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                    }
-                    for (ComAgentLevel comAgentLevel : comAgentLevels) {
-                        if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
-                            sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
-                        }
-                    }
-                    BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
-                    amount = amount.setScale(2, RoundingMode.HALF_DOWN);
-                    sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                    sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + amount + "</span>");
-                    sb.append("</p>");
-                }
-            }
-            if (StringUtils.isBlank(sb.toString())) {
-                throw new BusinessException("您的推荐人还不能发展下级代理");
-            }
-            mv.addObject("agentInfo", sb.toString());
-            mv.addObject("skuId", comSku.getId());
-            mv.addObject("skuName", comSku.getName());
-            if (comUser != null) {
-                mv.addObject("name", StringUtils.isBlank(comUser.getRealName()) ? "" : comUser.getRealName());
-                mv.addObject("weixinId", StringUtils.isBlank(comUser.getWxId()) ? "" : comUser.getWxId());
-                mv.addObject("mobile", StringUtils.isBlank(comUser.getMobile()) ? "" : comUser.getMobile());
-            } else {
-                mv.addObject("name", "");
-                mv.addObject("weixinId", "");
-                mv.addObject("mobile", "");
-            }
-            mv.addObject("pUserId", pUserId);
-            if (type != null && type == 1 && pUserId != null && pUserId > 0) {
-                mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
-            } else {
-                mv.addObject("pWxNkName", "");
-            }
-            mv.setViewName("platform/order/zhuce");
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
+            levelID = pfUserSku.getAgentLevelId();
         }
+        //获取代理信息
+        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
+        StringBuffer sb = new StringBuffer();
+        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+            if (pfSkuAgent.getAgentLevelId() > levelID) {
+                if (pfSkuAgent.getAgentLevelId() == 1) {
+                    sb.append("<p class='on' levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
+                } else {
+                    sb.append("<p levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
+                }
+                for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                    if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                        sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
+                    }
+                }
+                BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+                amount = amount.setScale(2, RoundingMode.HALF_DOWN);
+                sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
+                sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + amount + "</span>");
+                sb.append("</p>");
+            }
+        }
+        if (StringUtils.isBlank(sb.toString())) {
+            throw new BusinessException("您的推荐人还不能发展下级代理");
+        }
+        mv.addObject("agentInfo", sb.toString());
+        mv.addObject("skuId", comSku.getId());
+        mv.addObject("skuName", comSku.getName());
+        if (comUser != null) {
+            mv.addObject("name", StringUtils.isBlank(comUser.getRealName()) ? "" : comUser.getRealName());
+            mv.addObject("weixinId", StringUtils.isBlank(comUser.getWxId()) ? "" : comUser.getWxId());
+            mv.addObject("mobile", StringUtils.isBlank(comUser.getMobile()) ? "" : comUser.getMobile());
+        } else {
+            mv.addObject("name", "");
+            mv.addObject("weixinId", "");
+            mv.addObject("mobile", "");
+        }
+        mv.addObject("pUserId", pUserId);
+        if (type != null && type == 1 && pUserId != null && pUserId > 0) {
+            mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
+        } else {
+            mv.addObject("pWxNkName", "");
+        }
+        mv.setViewName("platform/order/zhuce");
         return mv;
     }
 
@@ -204,8 +194,11 @@ public class UserApplyController {
             }
             object.put("isError", false);
         } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
         return object.toJSONString();
     }
@@ -217,7 +210,7 @@ public class UserApplyController {
      * @date 2016/3/15 17:03
      */
     @RequestMapping("/applyOK.shtml")
-    public ModelAndView applyOK() {
+    public ModelAndView applyOK() throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/shenqingok");
         return modelAndView;
@@ -249,8 +242,11 @@ public class UserApplyController {
             jsonObject.put("pUserId", pUser.getId());
             jsonObject.put("levelId", pfUserSku.getAgentLevelId());
         } catch (Exception ex) {
-            jsonObject.put("isError", true);
-            jsonObject.put("message", ex.getMessage());
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
         return jsonObject.toJSONString();
     }

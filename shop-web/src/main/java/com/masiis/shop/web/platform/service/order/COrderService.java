@@ -208,6 +208,7 @@ public class COrderService {
         Product product = productService.applyTrialToPageService(skuId);
         return product;
     }
+
     /**
      * 初始化订单参数数据
      *

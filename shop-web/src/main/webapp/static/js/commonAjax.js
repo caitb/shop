@@ -11,6 +11,7 @@
             dataFilter: function () {
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.responseText);
             },
             success: function (data, textStatus) {
             },
@@ -43,10 +44,6 @@
                 //错误方法增强处理
                 fn.error(XMLHttpRequest, textStatus, errorThrown);
             },
-            //dataFilter: function (data) {
-            //    fullHide();
-            //    return data;
-            //},
             success: function (data, textStatus) {
                 //成功回调方法增强处理
                 fn.success(data, textStatus);

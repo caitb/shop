@@ -68,11 +68,6 @@
             <p>消费者分享商品可获得佣金，佣金来自于平台的补助</p>
         </div>
     </section>
-    <section class="sec1 sec1_2">
-        <div>
-            <p>采购的商品可以选择厂家直接发货，或自己发货由厂家统一提供售后服务</p>
-        </div>
-    </section>
 </main>
 </body>
 </html>

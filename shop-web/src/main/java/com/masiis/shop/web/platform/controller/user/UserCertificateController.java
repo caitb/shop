@@ -340,7 +340,7 @@ public class UserCertificateController extends BaseController {
     @RequestMapping(value = "/updatect.do")
     @ResponseBody
     public String addCertificate(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam(value = "pfuId", required = true) Integer pfuId) throws Exception {
+                                 @RequestParam(value = "pfuId", required = true) Integer pfuId){
         JSONObject object = new JSONObject();
         try {
             userCertificateService.receiveCertificate(request,pfuId);

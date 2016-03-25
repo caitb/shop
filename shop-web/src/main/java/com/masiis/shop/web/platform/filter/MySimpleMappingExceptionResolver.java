@@ -26,6 +26,7 @@ public class MySimpleMappingExceptionResolver extends SimpleMappingExceptionReso
                                               HttpServletResponse response,
                                               Object handler,
                                               Exception ex) {
+        ex.printStackTrace();
         log.error(ex.getMessage(), ex);
         String viewName = determineViewName(ex, request);
         if (viewName != null) {//JSP格式返回

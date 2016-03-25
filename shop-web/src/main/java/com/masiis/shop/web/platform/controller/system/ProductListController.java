@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/productList")
-public class ProductListController extends BaseController{
+public class ProductListController extends BaseController {
 
     @Resource
     private SpuService spuService;

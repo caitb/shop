@@ -136,7 +136,7 @@ public class UserAddressController extends BaseController {
     @RequestMapping("/toEditAddress.html")
     public String toEditAddress(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = "id", required = true) Long id,
+                                @RequestParam(value = " ", required = true) Long id,
                                 Model model) throws Exception {
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
         if (comUserAddress != null) {

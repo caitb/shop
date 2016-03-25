@@ -209,19 +209,21 @@
         });
     });
     // 拒绝
-    $('#rejectSubmit').on('click', function(){
+    $('#rejectSubmit').on('click', function () {
         var approveId = $("#approveId").val();
         var reason = $("#reason").val();
-        if(reason==null || reason==""){
+        if (reason == null || reason == "") {
             alert("请填写拒绝理由");
-        }else{
+        } else {
             var reasonCode = encodeURI(reason);
             $.ajax({
                 url: '<%=basePath%>certificate/update.do',
-                data: {status: 2,
+                data: {
+                    status: 2,
                     id: approveId,
-                    reason: reasonCode},
-                success: function(data){
+                    reason: reasonCode
+                },
+                success: function (data) {
                     $('#rejectModal').modal("hide");
                     alert(data);
                     location.reload(true);
@@ -231,14 +233,14 @@
 
     });
     //拒绝理由
-    $('#reject').on('click', function(){
+    $('#reject').on('click', function () {
         $('#rejectModal').modal({
             show: true,
             backdrop: true
         });
     });
     //更改上级
-    function changeLeader(){
+    function changeLeader() {
         var approveId = $("#approveId").val();
         $.ajax({
             type: "GET",
@@ -246,18 +248,18 @@
             data: {id: approveId},
             dataType: "json",
             success: function (data) {
-                $("#userInfo").html("用户 : " +data["certificateInfo"].comUser.realName);
-                $("#skuName").html("合伙商品 :  "+data["certificateInfo"].skuName);
+                $("#userInfo").html("用户 : " + data["certificateInfo"].comUser.realName);
+                $("#skuName").html("合伙商品 :  " + data["certificateInfo"].skuName);
                 $("#userSkuId").val(data["certificateInfo"].id);
                 //option属性
-                if(data["certificateInfo"].comUserList !=null && data["certificateInfo"].comUserList[0]!=null){
-                    $("#upperName").html("当前上级 :  "+data["certificateInfo"].upperName);
-                    var comUserList = {upperList:data["certificateInfo"].comUserList};
+                if (data["certificateInfo"].comUserList != null && data["certificateInfo"].comUserList[0] != null) {
+                    $("#upperName").html("当前上级 :  " + data["certificateInfo"].upperName);
+                    var comUserList = {upperList: data["certificateInfo"].comUserList};
                     $("#userList").val(comUserList);
-                    $.each(data["certificateInfo"].comUserList,function(index,value){
-                        $('#userList').append("<option value='"+ value.id+"'>"+ value.realName +"</option>");
+                    $.each(data["certificateInfo"].comUserList, function (index, value) {
+                        $('#userList').append("<option value='" + value.id + "'>" + value.realName + "</option>");
                     });
-                }else{
+                } else {
                     $("#upperName").html("当前上级 :  -");
                     $("#userSubmit").attr("disabled", true);
                 }
@@ -268,37 +270,13 @@
             }
         });
     }
-    //订单列表
-    //    function orderList(id){
-    //        $('#trialId').val(id);
-    //        $('#orderModal').modal({
-    //            show: true,
-    //            backdrop: true
-    //        });
-    //    }
-
-    <%--$('#btnSubmit').on('click', function () {--%>
-    <%--var id = $("#userSkuId").val;--%>
-    <%--//        var pid = $("#userList option:selected").attr("id");--%>
-    <%--alert(id);--%>
-    <%--$.ajax({--%>
-    <%--url: '<%=basePath%>certificate/updateUpper.do',--%>
-    <%--data: {id:id,pid:2},--%>
-    <%--success: function (data) {--%>
-    <%--alert(data);--%>
-    <%--$('#myModal').modal('hide');--%>
-    <%--}--%>
-    <%--});--%>
-    <%--location.reload();--%>
-    <%--})--%>
-
     $('#userSubmit').on('click', function () {
         var id = $('#userSkuId').val();
         var pid = $("#userList").val();
         $.ajax({
             url: '<%=basePath%>certificate/updateUpper.do',
             type: 'post',
-            data: {id:id,pid:pid},
+            data: {id: id, pid: pid},
             success: function (data) {
                 $('#myModal').modal('hide');
                 alert(data);

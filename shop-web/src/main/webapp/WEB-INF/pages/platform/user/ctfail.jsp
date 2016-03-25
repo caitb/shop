@@ -54,6 +54,14 @@
             });
         }
         function submit() {
+            var cd = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;//定义身份证匹配算法
+            var legalIdCard = $("#idCard").val();//获取前台界面字段值
+            if (legalIdCard != null && legalIdCard != "") {//运用匹配方法直接判断
+                if (cd.test(legalIdCard) == false) {
+                    alert("身份证号不合法!");
+                    return;
+                }
+            }
             var fCardUrl = $("#idCardFront").attr("src");
             var bCardUrl = $("#idCardBack").attr("src");
             fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);

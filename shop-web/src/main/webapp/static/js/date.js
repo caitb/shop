@@ -103,8 +103,10 @@
                 var year=$("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1);
                 var mouth= $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
                 $("label b").eq(0).html(year)
-        $("label b").eq(1).html(mouth)
-                $.fn.date.changeEvent(year, mouth);
+                $("label b").eq(1).html(mouth)
+                if(ChangeFn != undefined) {
+                    $.fn.date.changeEvent(year, mouth);
+                }
                if(datetime){
                      if(Math.round(indexS)===1){//下午
                         $("#Hourwrapper ul li:eq("+indexH+")").html(parseInt($("#Hourwrapper ul li:eq("+indexH+")").html().substr(0,$("#Hourwrapper ul li:eq("+indexH+")").html().length-1))+12)
@@ -119,15 +121,17 @@
                 if(Ycallback===undefined){
                      if(docType){that.val(datestr);}else{that.html(datestr);}
                 }else{
-                                    Ycallback(datestr);
+                     Ycallback(datestr);
                 }
                 $("#datePage").hide(); 
                 $("#dateshadow").hide();
             });
             $("#datecancle").click(function () {
-                $("#datePage").hide(); 
-		$("#dateshadow").hide();
-                Ncallback(false);
+                $("#datePage").hide();
+		        $("#dateshadow").hide();
+                if(Ncallback != undefined){
+                    Ncallback(false);
+                }
             });
         }		
         function extendOptions(){

@@ -86,6 +86,9 @@ public class ComUserExtractApply {
     }
     public void setExtractFee(BigDecimal extractFee) {
         this.extractFee = extractFee;
+        if(extractFee != null){
+            this.extractFeeView = String.format("%.2f", extractFee).toString();
+        }
     }
     public Long getExtractwayInfoId() {
         return extractwayInfoId;
@@ -175,6 +178,7 @@ public class ComUserExtractApply {
     private String auditTypeView;
     private String bankCardView;
     private String applyTimeView;
+    private String extractFeeView;
 
     public String getAuditTypeView() {
         return auditTypeView;
@@ -198,5 +202,13 @@ public class ComUserExtractApply {
 
     public void setApplyTimeView(String applyTimeView) {
         this.applyTimeView = applyTimeView;
+    }
+
+    public String getExtractFeeView() {
+        return extractFeeView;
+    }
+
+    public void setExtractFeeView(String extractFeeView) {
+        this.extractFeeView = extractFeeView;
     }
 }

@@ -141,14 +141,17 @@ public class CertificateService {
      */
     public CertificateInfo getUpperPartner(Integer id) {
         CertificateInfo certificateInfo = certificateMapper.getApproveInfo(id);
-        //上级合伙人列表
-        if (certificateInfo != null) {
-            certificateInfo.setUpperName(comUserMapper.findByPid(certificateInfo.getPid()));
-            if (certificateInfo.getPid() != 0) {
-                List<ComUser> comUsers = certificateMapper.getUpperPartnerByUserId(certificateInfo.getPid());
-                certificateInfo.setComUserList(comUsers);
+        ComUser currentUser = comUserMapper.selectByPrimaryKey(certificateMapper.get(certificateInfo.getPid()).getUserId());
+        List<ComUser> comUsers = new ArrayList<>();
+        String[] pidArray = getUpperInfoListById(id).split(",");
+        for (int i = 0; i < pidArray.length; i++) {
+            ComUser comUser = comUserMapper.selectByPrimaryKey(Long.valueOf(pidArray[i]).longValue());
+            if (comUser.getId() != certificateInfo.getUserId()) {
+                comUsers.add(comUser);
             }
         }
+        certificateInfo.setComUserList(comUsers);
+        certificateInfo.setUpperName(currentUser.getRealName());
         return certificateInfo;
     }
 
@@ -247,5 +250,18 @@ public class CertificateService {
         return idCardImg+imgUrl;
     }
 
-
+    /**
+     * 递归
+     *  Jing Hao
+     */
+    public String getUpperInfoListById(Integer id) {
+        CertificateInfo certificateInfo = certificateMapper.get(id);
+        if (certificateInfo != null && certificateInfo.getPid() != 0) {
+            String currentId = certificateInfo.getUserId().toString() + ",";
+            String pid = getUpperInfoListById(certificateInfo.getPid());//上级
+            return currentId + pid;
+        } else {
+            return certificateInfo.getUserId().toString();
+        }
+    }
 }

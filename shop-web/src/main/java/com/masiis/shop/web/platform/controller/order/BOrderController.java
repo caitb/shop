@@ -407,7 +407,6 @@ public class BOrderController extends BaseController {
             pfBorder.setShipStatus(shipStatus);
             bOrderService.updateGetStock(pfBorder, user);
             bOrderService.updateBOrder(pfBorder);
-            json.put("msgs", true);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -440,8 +439,7 @@ public class BOrderController extends BaseController {
             }
 
             if (freight == null || freight == "") {
-                json.put("msgs", false);
-                json.put("msg", "请重新输入快递单号");
+                throw new BusinessException("请重新输入快递单号");
             } else {
                 PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
                 pfBorder.setShipStatus(5);
@@ -454,7 +452,6 @@ public class BOrderController extends BaseController {
                 bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
-                json.put("msgs", true);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

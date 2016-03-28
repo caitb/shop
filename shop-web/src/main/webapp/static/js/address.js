@@ -124,6 +124,7 @@
                 return paramJson;
             },
             checkName: function (name) {
+
                 if (name == "") {
                     $(".name").next().show()
                     $(".name").focus();

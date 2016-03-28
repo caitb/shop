@@ -512,13 +512,9 @@
                            data:{shipManName:shipManName,freight:freight,orderId:id},
                            dataType:"Json",
                            success:function(date){
-                               if(!date.msgs){
-                                   alert(date.msg);
-                               }else {
                                    $("span[name=" + aa + "]").attr("style", "display:none");
                                    $("b." + aa + "").html("待收货");
                                    location.reload(true);
-                               }
                            }
                        })
                    })

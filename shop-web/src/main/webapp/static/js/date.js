@@ -4,7 +4,7 @@
  * V1.1
  */
 (function ($) {      
-    $.fn.date = function (options,Ycallback,Ncallback) {   
+    $.fn.date = function (options,Ycallback,Ncallback,ChangeFn) {
         //插件默认选项
         var that = $(this);
         var docType = $(this).is('input');
@@ -37,9 +37,12 @@
             event:"click",                    //打开日期插件默认方式为点击后后弹出日期 
             show:true
         }
-        //用户选项覆盖插件默认选项   
+        //用户选项覆盖插件默认选项
         var opts = $.extend( true, {}, $.fn.date.defaultOptions, options );
         if(opts.theme === "datetime"){datetime = true;}
+        if(ChangeFn != undefined){
+            $.fn.date.changeEvent = ChangeFn;
+        }
         if(!opts.show){
             that.unbind('click');
         }
@@ -96,13 +99,13 @@
             resetIndex();
             $("#dateconfirm").on("click",function () {	
                 var datestr = $("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1)+"-"+
-                          $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1)+"-"+
-			  $("#daywrapper ul li:eq("+Math.round(indexD)+")").html().substr(0,$("#daywrapper ul li:eq("+Math.round(indexD)+")").html().length-1);
-                var account = $("#account").val();
-                if(account == 1){
-                    var year = $("#yearwrapper ul li:eq(" + indexY + ")").html().substr(0, $("#yearwrapper ul li:eq(" + indexY + ")").html().length - 1);
-                    var month = $("#monthwrapper ul li:eq(" + indexM + ")").html().substr(0, $("#monthwrapper ul li:eq(" + indexM + ")").html().length - 1);
-                    getUserBill(year,month)
+                          $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
+                var year=$("#yearwrapper ul li:eq("+indexY+")").html().substr(0,$("#yearwrapper ul li:eq("+indexY+")").html().length-1);
+                var mouth= $("#monthwrapper ul li:eq("+indexM+")").html().substr(0,$("#monthwrapper ul li:eq("+indexM+")").html().length-1);
+                $("label b").eq(0).html(year)
+                $("label b").eq(1).html(mouth)
+                if(ChangeFn != undefined) {
+                    $.fn.date.changeEvent(year, mouth);
                 }
                if(datetime){
                      if(Math.round(indexS)===1){//下午
@@ -118,15 +121,17 @@
                 if(Ycallback===undefined){
                      if(docType){that.val(datestr);}else{that.html(datestr);}
                 }else{
-                                    Ycallback(datestr);
+                     Ycallback(datestr);
                 }
                 $("#datePage").hide(); 
                 $("#dateshadow").hide();
             });
             $("#datecancle").click(function () {
-                $("#datePage").hide(); 
-		$("#dateshadow").hide();
-                Ncallback(false);
+                $("#datePage").hide();
+		        $("#dateshadow").hide();
+                if(Ncallback != undefined){
+                    Ncallback(false);
+                }
             });
         }		
         function extendOptions(){
@@ -198,7 +203,7 @@
             CreateDateUI();
             $("#yearwrapper ul").html(createYEAR_UL());
             $("#monthwrapper ul").html(createMONTH_UL());
-            //$("#daywrapper ul").html(createDAY_UL());
+            $("#daywrapper ul").html(createDAY_UL());
         }
         function CreateDateUI(){
             var str = ''+

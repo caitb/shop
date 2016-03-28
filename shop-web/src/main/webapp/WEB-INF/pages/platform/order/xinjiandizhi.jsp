@@ -16,8 +16,35 @@
     <script src="<%=path%>/static/js/commonjs.js"></script>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
+    <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+    <link rel="stylesheet" href="<%=path%>/static/css/alert.css">
+
 </head>
 <script>
+    /*    var promise =  $.Deferred().promise();
+     function saveAddress() {
+     var paramJson = addressJS.getJsonParam();
+     if (promise.state()=="pending"){
+     promise = $.ajax({
+     url: '/userAddress/addOrUpdateAddress.do',
+     type: 'post',
+     async: false,
+     data: paramJson,
+     success: function (data) {
+     if (data == "false") {
+     alert("新增地址失败");
+     } else {
+     window.location.href = data;
+     }
+     },
+     error: function () {
+     }
+     });
+     }
+     promise.then()
+     }*/
+
+
     function saveAddress() {
         var paramJson = addressJS.getJsonParam();
         if (addressJS.validateAddressInfo(paramJson)) {
@@ -100,6 +127,7 @@
 <script src="<%=path%>/static/js/comArea.js"></script>
 <script src="<%=path%>/static/js/address.js"></script>
 <script>
+    $.definedAlertWindow.Alert("姓名不能为空","<%=basePath%>");
     comAreaJS.init("add");
     addressJS.init();
 </script>

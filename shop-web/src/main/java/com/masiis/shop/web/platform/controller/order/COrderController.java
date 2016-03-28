@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.ComUser;
@@ -50,7 +51,7 @@ public class COrderController extends BaseController {
      * @date 2016/3/7 19:34
      */
     @RequestMapping("/continueStroll")
-    public String toContinueStroll(HttpServletRequest request, HttpServletResponse response) {
+    public String toContinueStroll(HttpServletRequest request, HttpServletResponse response)throws Exception {
         return "platform/order/jixuguangguang";
     }
 
@@ -64,24 +65,32 @@ public class COrderController extends BaseController {
     @ResponseBody
     public String isApplyTrial(HttpServletRequest request,
                                HttpServletResponse response,
-                               @RequestParam(value = "skuId", required = true) Integer skuId) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        Long userId = null;
-        if (comUser != null) {
-            userId = comUser.getId();
-        } else {
-            userId = 1L;
+                               @RequestParam(value = "skuId", required = true) Integer skuId) {
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            ComUser comUser = getComUser(request);
+            Long userId = null;
+            if (comUser != null) {
+                userId = comUser.getId();
+            } else {
+                throw new BusinessException("请重新登录");
+            }
+            if (StringUtils.isEmpty(userId)) {
+                throw new BusinessException("请重新登录");
+            }
+            if (StringUtils.isEmpty(skuId)) {
+                throw new BusinessException("商品不存在");
+            }
+            List<PfCorder> pfCorders = cOrderService.isApplyTrial(userId, skuId);
+            String returnJson = objectMapper.writeValueAsString(pfCorders);
+            return returnJson;
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("数据有误请核对", ex);
+            }
         }
-        if (StringUtils.isEmpty(userId)) {
-            userId = 1L;
-        }
-        if (StringUtils.isEmpty(skuId)) {
-            skuId = 1;
-        }
-        List<PfCorder> pfCorders = cOrderService.isApplyTrial(userId, skuId);
-        String returnJson = objectMapper.writeValueAsString(pfCorders);
-        return returnJson;
     }
 
     /**
@@ -95,9 +104,6 @@ public class COrderController extends BaseController {
                                    HttpServletResponse response,
                                    @RequestParam(value = "skuId", required = true) Integer skuId,
                                    Model model) throws Exception {
-        if (StringUtils.isEmpty(skuId)) {
-            skuId = 1;
-        }
         Product productDetails = productService.applyTrialToPageService(skuId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         model.addAttribute("skuName", productDetails.getName());
@@ -122,17 +128,12 @@ public class COrderController extends BaseController {
             @RequestParam(value = "skuId", required = true) Integer skuId,
             @RequestParam(value = "addressId", required = true) Long addressId,
             @RequestParam(value = "reason", required = false) String reason,
-            RedirectAttributes attrs) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+            RedirectAttributes attrs)throws Exception {
+        ComUser comUser = getComUser(request);
         log.info("试用申请---从session里获得comUser---" + comUser.toString());
         Long userId = null;
-        if (StringUtils.isEmpty(skuId)) {
-            skuId = 111;
-        }
         if (comUser != null) {
             userId = comUser.getId();
-        } else {
-            userId = 1L;
         }
         log.info("试用申请---userId---" + userId);
         log.info("试用申请---skuId---" + skuId);
@@ -153,7 +154,7 @@ public class COrderController extends BaseController {
                                         @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
                                         @RequestParam(value = "addressId", required = true) Long addressId,
-                                        Model model) {
+                                        Model model)throws Exception {
         try {
             model = getOrderInfo(request, model, skuId, addressId);
             model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
@@ -174,13 +175,9 @@ public class COrderController extends BaseController {
                                      @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
                                      @RequestParam(value = "skuId", required = true) Integer skuId,
                                      @RequestParam(value = "addressId", required = true) Long addressId,
-                                     Model model) {
-        try {
-            model = getOrderInfo(request, model, skuId, addressId);
-            model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
+                                     Model model)throws Exception {
+        model = getOrderInfo(request, model, skuId, addressId);
+        model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
         return "platform/order/zhifushibai";
     }
 
@@ -195,7 +192,7 @@ public class COrderController extends BaseController {
                                HttpServletResponse response,
                                @RequestParam(value = "skuId", required = false) Integer skuId,
                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-                               Model model) {
+                               Model model)throws Exception {
         model = getOrderInfo(request, model, skuId, selectedAddressId);
         return "platform/order/zhifushiyong";
     }
@@ -211,8 +208,6 @@ public class COrderController extends BaseController {
         Long userId = null;
         if (comUser != null) {
             userId = comUser.getId();
-        } else {
-            userId = 1L;
         }
         Map<String, Object> pfCorderMap = cOrderService.confirmOrder(request, skuId, userId, selectedAddressId);
         ComUserAddress comUserAddress = (ComUserAddress) pfCorderMap.get("comUserAddress");

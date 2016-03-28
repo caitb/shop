@@ -2,9 +2,11 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComAreaService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/userAddress")
-public class UserAddressController {
+public class UserAddressController extends BaseController {
 
     @Resource
     private UserAddressService userAddressService;
@@ -41,7 +43,7 @@ public class UserAddressController {
      */
     @RequestMapping("/toAddAddressPage.html")
     public String toAddAddressPage(HttpServletRequest request,
-                                   HttpServletResponse response, Model model) throws JsonProcessingException {
+                                   HttpServletResponse response, Model model) throws Exception {
         return "platform/order/xinjiandizhi";
     }
 
@@ -72,29 +74,37 @@ public class UserAddressController {
                                      @RequestParam(value = "pfCorderId", required = false) Integer pfCorderId,
                                      @RequestParam(value = "jumpType",required = false)String jumpType,
                                      Model model) throws JsonProcessingException {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        ComUserAddress comUserAddress = new ComUserAddress();
-        if (comUser != null) {
-            comUserAddress.setUserId(comUser.getId());
-        } else {
-            comUserAddress.setUserId(1L);
-        }
-        comUserAddress.setName(name);
-        comUserAddress.setMobile(phone);
-        comUserAddress.setZip(postcode);
-        comUserAddress.setProvinceId(provinceId);
-        comUserAddress.setProvinceName(provinceName);
-        comUserAddress.setCityId(cityId);
-        comUserAddress.setCityName(cityName);
-        comUserAddress.setRegionId(countyId);
-        comUserAddress.setRegionName(countyName);
-        comUserAddress.setAddress(detailAddress);
-        comUserAddress.setCreateTime(new Date());
+        try{
+            ComUser comUser = getComUser(request);
+            ComUserAddress comUserAddress = new ComUserAddress();
+            if (comUser != null) {
+                comUserAddress.setUserId(comUser.getId());
+            } else {
+                throw new BusinessException("请重新登录");
+            }
+            comUserAddress.setName(name);
+            comUserAddress.setMobile(phone);
+            comUserAddress.setZip(postcode);
+            comUserAddress.setProvinceId(provinceId);
+            comUserAddress.setProvinceName(provinceName);
+            comUserAddress.setCityId(cityId);
+            comUserAddress.setCityName(cityName);
+            comUserAddress.setRegionId(countyId);
+            comUserAddress.setRegionName(countyName);
+            comUserAddress.setAddress(detailAddress);
+            comUserAddress.setCreateTime(new Date());
 
-        model.addAttribute("addressId", selectedAddressId);
-        model.addAttribute("pfCorderId", pfCorderId);
-        String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,jumpType);
-        return s;
+            model.addAttribute("addressId", selectedAddressId);
+            model.addAttribute("pfCorderId", pfCorderId);
+            String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,jumpType);
+            return s;
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
+        }
 }
 
     /**
@@ -106,7 +116,7 @@ public class UserAddressController {
     @RequestMapping("/clickAddressOrReturnToPage.do")
     public String clickAddressOrReturnToPage(HttpServletRequest request,
                                              HttpServletResponse response,
-                                             @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId) {
+                                             @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId)throws Exception {
         String redirectHead = "redirect:";
         String redirectBody = userAddressService.getOrderPagePath(request,selectedAddressId);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
@@ -126,15 +136,10 @@ public class UserAddressController {
     @RequestMapping("/toEditAddress.html")
     public String toEditAddress(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = "id", required = true) Long id,
+                                @RequestParam(value = " ", required = true) Long id,
                                 Model model) throws Exception {
-        //获得用户地址
-        if (StringUtils.isEmpty(id)) {
-            id = 1L;
-        }
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
-        if (comUserAddress == null) {
-        } else {
+        if (comUserAddress != null) {
             model.addAttribute("provinceId", comUserAddress.getProvinceId());
             model.addAttribute("cityId", comUserAddress.getCityId());
             model.addAttribute("countyId", comUserAddress.getRegionId());
@@ -152,7 +157,7 @@ public class UserAddressController {
     @RequestMapping("/manageAddressPageToChooseAddressPage.html")
     public String manageAddressPageToChooseAddressPage(HttpServletRequest request,
                                                        HttpServletResponse response,
-                                                       Model model) {
+                                                       Model model)throws Exception {
 
         Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
         model.addAttribute("addressId", selectedAddressId);
@@ -172,7 +177,7 @@ public class UserAddressController {
                                       @RequestParam(value = "orderId", required = false) Long orderId,
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
-                                      Model model) {
+                                      Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, orderId);
@@ -191,7 +196,7 @@ public class UserAddressController {
      */
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
-                                      HttpServletResponse response) {
+                                      HttpServletResponse response)throws Exception {
         return "platform/order/guanli";
     }
 
@@ -205,18 +210,26 @@ public class UserAddressController {
     @ResponseBody
     public String getUserAddressByUserId(HttpServletRequest request,
                                          HttpServletResponse response,
-                                         Model model) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        ComUserAddress comUserAddress = new ComUserAddress();
-        if (comUser != null) {
-            comUserAddress.setUserId(comUser.getId());
-        } else {
-            comUserAddress.setUserId(1L);
+                                         Model model) {
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            ComUser comUser = getComUser(request);
+            ComUserAddress comUserAddress = new ComUserAddress();
+            if (comUser != null) {
+                comUserAddress.setUserId(comUser.getId());
+            } else {
+                comUserAddress.setUserId(1L);
+            }
+            List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
+            String returnJson = objectMapper.writeValueAsString(comUserAddressList);
+            return returnJson;
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("获得地址失败", ex);
+            }
         }
-        List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
-        String returnJson = objectMapper.writeValueAsString(comUserAddressList);
-        return returnJson;
     }
 
     /**
@@ -230,28 +243,35 @@ public class UserAddressController {
     public Long deleteUserAddressById(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "id", required = true) Long id,
-                                      @RequestParam(value = "defaultAddressId", required = false) Long defaultAddressId) throws Exception {
-        if (StringUtils.isEmpty(id)) {
-            id = 1L;
-        } else {
+                                      @RequestParam(value = "defaultAddressId", required = false) Long defaultAddressId)  {
+        try{
 
-        }
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        Long userId = null;
-        if (comUser != null) {
-            userId = comUser.getId();
-        } else {
-            userId = 1L;
-        }
-        Long i = userAddressService.deleteUserAddressById(id, userId, defaultAddressId);
-        if (i == 0) {
-            return 0L;
-        } else {
-            Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
-            if (id.equals(selectedAddressId)) {
-                request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+            if (StringUtils.isEmpty(id)) {
+                throw new BusinessException("删除地址失败");
             }
-            return i;
+            ComUser comUser = getComUser(request);
+            Long userId = null;
+            if (comUser != null) {
+                userId = comUser.getId();
+            } else {
+                throw new BusinessException("请重新登录");
+            }
+            Long i = userAddressService.deleteUserAddressById(id, userId, defaultAddressId);
+            if (i == 0) {
+                return 0L;
+            } else {
+                Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+                if (id.equals(selectedAddressId)) {
+                    request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+                }
+                return i;
+            }
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
     }
 
@@ -266,18 +286,22 @@ public class UserAddressController {
     public Boolean settingDefaultAddress(HttpServletRequest request,
                                          HttpServletResponse response,
                                          @RequestParam(value = "id", required = true) Long id) {
-        if (StringUtils.isEmpty(id)) {
-            id = 1L;
-        } else {
+        try{
+            ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+            Long userId = null;
+            if (comUser != null) {
+                userId = comUser.getId();
+            } else {
+                throw new BusinessException("请重新登录");
+            }
+            Boolean bl = userAddressService.settingDefaultAddress(id, userId);
+            return bl;
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("设置默认地址失败", ex);
+            }
         }
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
-        Long userId = null;
-        if (comUser != null) {
-            userId = comUser.getId();
-        } else {
-            userId = 1L;
-        }
-        Boolean bl = userAddressService.settingDefaultAddress(id, userId);
-        return bl;
     }
 }

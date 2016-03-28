@@ -22,7 +22,7 @@
         var tabControl_tabFind_form = jQuery('div.tab-control div.tab-find form');
         var tabControl_tabFind_ul   = jQuery('div.tab-control div.tab-find ul');
         var tabControl_tabFind_text = jQuery('div.tab-control div.tab-find input.text');
-        var tabControl_main         = jQuery('div.tab-control div.main');
+        var tabControl_main         = jQuery('div.tab-control div.tab-content');
 
       }
 
@@ -162,10 +162,13 @@
 
           } else if(t) {
 
-            jQuery(tabControl_tab_ul)    .append('<li index="' + i + '" tab="' + t + '" class="hover">' + t + '<a href="javascript:;">关闭</a></li>');
-            jQuery(tabControl_tabFind_ul).append('<li index="' + i + '" tab="' + t + '">' + t + '<a href="javascript:;">关闭</a></li>');
-            jQuery(tabControl_main)      .append('<iframe src="' + h + '" scrolling="auto" frameborder="0" reload="' + r + '"></iframe>');
+            //jQuery(tabControl_tab_ul)    .append('<li index="' + i + '" tab="' + t + '" class="hover">' + t + '<a href="javascript:;">关闭</a></li>');
+            //jQuery(tabControl_tabFind_ul).append('<li index="' + i + '" tab="' + t + '">' + t + '<a href="javascript:;">关闭</a></li>');
+            //jQuery(tabControl_main)      .append('<iframe src="' + h + '" scrolling="auto" frameborder="0" reload="' + r + '"></iframe>');
 
+            jQuery(tabControl_tab_ul).append('<li class="active" index="' + i + '" tab="' + t + '" ><a data-toggle="tab" href="#' + i + '"><i class="green ace-icon fa fa-home bigger-120"></i>' + t + '</a></li>');
+            jQuery(tabControl_tabFind_ul).append('<li index="' + i + '" tab="' + t + '">' + t + '<a href="javascript:;">关闭</a></li>');
+            jQuery(tabControl_main)      .append('<div id="' + i + '" class="tab-pane fade in active"><iframe src="' + h + '" scrolling="auto" frameborder="0" reload="' + r + '"></iframe></div>');
           }
 
           change();
@@ -254,6 +257,8 @@
 
           //改变尺寸
           jQuery(tabControl_main).css('height', (jQuery(document).height() - 160) + 'px');
+          jQuery(tabControl_main).find('iframe').css('width', (jQuery('.tab-content').width()) + 'px');
+          jQuery(tabControl_main).find('iframe').css('height', (jQuery('.tab-content').height() - 160) + 'px');
 
         };
 

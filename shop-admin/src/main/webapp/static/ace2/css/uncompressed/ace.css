@@ -8953,7 +8953,7 @@ input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::before {
 }
 .tab-content {
   border: 1px solid #c5d0dc;
-  padding: 16px 12px;
+  /*padding: 16px 12px;*/
   position: relative;
 }
 .tab-content.no-padding {

@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/tab.css" />
+    <%--<link rel="stylesheet" href="<%=basePath%>static/ace2/css/tab.css" />--%>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css" />
 
@@ -913,49 +913,87 @@
 
         <!-- /section:basics/content.breadcrumbs -->
         <div class="page-content">
-            <!-- 选项卡 -->
-            <div class="tab-control">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- 选项卡 -->
+                    <div class="tab-control">
 
-                <!-- 标签 -->
-                <div class="tab simple">
+                        <!-- 标签 -->
+                        <div class="tab simple">
 
-                    <form>
-                        <input class="prev" type="button" />
-                        <input class="next" type="button" />
-                        <input class="find" type="button" />
-                    </form>
+                            <form hidden>
+                                <input class="prev" type="button" />
+                                <input class="next" type="button" />
+                                <input class="find" type="button" />
+                            </form>
 
-                    <ul>
+                            <!-- #section:elements.tab -->
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <%--<li class="active">--%>
+                                        <%--<a data-toggle="tab" href="#home">--%>
+                                            <%--<i class="green ace-icon fa fa-home bigger-120"></i>--%>
+                                            <%--Home--%>
+                                        <%--</a>--%>
+                                    <%--</li>--%>
 
-                        <!-- <li>标签<a href="javascript:;">关闭</a></li> -->
+                                    <%--<li>--%>
+                                        <%--<a data-toggle="tab" href="#messages">--%>
+                                            <%--Messages--%>
+                                            <%--<span class="badge badge-danger">4</span>--%>
+                                        <%--</a>--%>
+                                    <%--</li>--%>
 
-                    </ul>
+                                </ul>
 
-                </div>
+                                <div class="tab-content">
+                                    <%--<div id="home" class="tab-pane fade in active">--%>
+                                        <%--<p>Raw denim you probably haven't heard of them jean shorts Austin.</p>--%>
+                                    <%--</div>--%>
 
-                <!-- 标签查找 -->
-                <div class="tab-find hidden">
+                                    <%--<div id="messages" class="tab-pane fade">--%>
+                                        <%--<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>--%>
+                                    <%--</div>--%>
 
-                    <form>
-                        <input class="text" type="text" />
-                    </form>
+                                    <%--<div id="dropdown1" class="tab-pane fade">--%>
+                                        <%--<p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.</p>--%>
+                                    <%--</div>--%>
 
-                    <ul>
+                                    <%--<div id="dropdown2" class="tab-pane fade">--%>
+                                        <%--<p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>--%>
+                                    <%--</div>--%>
+                                </div>
+                            </div>
 
-                        <!-- <li>标签<a href="javascript:;">关闭</a></li> -->
+                        </div>
 
-                    </ul>
+                        <!-- 标签查找 -->
+                        <div class="tab-find hidden">
 
-                </div>
+                            <form>
+                                <input class="text" type="text" />
+                            </form>
 
-                <!-- 主体 -->
+                            <ul>
 
-                <div class="main">
+                                <!-- <li>标签<a href="javascript:;">关闭</a></li> -->
 
-                    <!-- <iframe scrolling="auto" frameborder="0"></iframe> -->
+                            </ul>
 
-                </div>
+                        </div>
 
+                        <!-- 主体 -->
+
+                        <div class="main">
+
+                            <!-- <iframe scrolling="auto" frameborder="0"></iframe> -->
+
+                        </div>
+
+                    </div>
+
+                    <!-- /section:elements.tab -->
+                </div><!-- /.col -->
             </div>
 
             <!-- #section:settings.box -->
@@ -3311,7 +3349,7 @@
             var hasChildren = data[i].children && data[i].children.length > 0 || false;
 
             sMenu +=               '<li>';
-            sMenu += hasChildren ?   '<a class="dropdown-toggle" href="javascript:void(0);" data-url="' + data[i].url + '" index="'+(curLevel+"-"+i)+'">' : '<a href="javascript:void(0);" data-url="' + data[i].url + '" index="'+(curLevel+"-"+i)+'">';
+            sMenu += hasChildren ?   '<a class="dropdown-toggle" href="javascript:void(0);" data-url="' + data[i].url + '" index="tab'+(curLevel+"-"+i)+'">' : '<a href="javascript:void(0);" data-url="' + data[i].url + '" index="tab'+(curLevel+"-"+i)+'">';
             sMenu += curLevel==1 ?      '<i class="' + data[i].icon + '"></i>' : '<i class="menu-icon fa fa-caret-right"></i>';
             sMenu +=                   '<span class="menu-text">' + data[i].name + '</span>';
             sMenu += hasChildren ?     '<b class="arrow fa fa-angle-down"></b>' : '';

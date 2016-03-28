@@ -5,35 +5,25 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
-import com.masiis.shop.dao.beans.order.OrderUserSku;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BorderFreightService;
-import com.masiis.shop.web.platform.service.order.PfBorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.log4j.or.ThreadGroupRenderer;
-import org.omg.CORBA.PRIVATE_MEMBER;
-import org.springframework.context.annotation.Primary;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -48,9 +38,6 @@ import java.util.*;
 @Controller
 @RequestMapping("/border")
 public class BOrderController extends BaseController {
-
-    private Logger log = Logger.getLogger(this.getClass());
-
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -487,7 +474,7 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/stockBorder")
     public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
         List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
@@ -589,7 +576,8 @@ public class BOrderController extends BaseController {
         BorderDetail borderDetail = new BorderDetail();
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
+        ;
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
@@ -621,7 +609,8 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
+        ;
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
         List<PfBorder> pfBorders10 = bOrderService.findByUserPid(comUser.getId(), 1, 0);//代发货

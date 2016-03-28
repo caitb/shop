@@ -158,7 +158,7 @@ public class UserExtractwayInfoController extends BaseController {
      */
     @RequestMapping(value = "/findByUserId.do")
     @ResponseBody
-    public ModelAndView findByUserId(HttpServletRequest request){
+    public ModelAndView findByUserId(HttpServletRequest request) throws Exception{
         log.info("通过userId查询已绑定卡片信息");
 
         ComUser user = getComUser(request);
@@ -186,7 +186,7 @@ public class UserExtractwayInfoController extends BaseController {
      */
     @RequestMapping(value = "/toCreateBankcard.do")
     @ResponseBody
-    public ModelAndView toBankCardCreate(HttpServletRequest request){
+    public ModelAndView toBankCardCreate(HttpServletRequest request) throws Exception{
 
         log.info("准备跳转至新增银行卡页面");
         ComUser user = getComUser(request);

@@ -82,9 +82,12 @@
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script type="text/javascript">
     $(function(){
-        $('#beginTime').date();
+        $('#beginTime').date(undefined,undefined,undefined,function(year, month){
+            getUserBill(year, month);
+        });
         $('#endTime').date({theme:"datetime"});
     });
+
 
     function getUserBill(year,month){
         var yearLast = $("#year").val();
@@ -102,7 +105,6 @@
             dataType:"Json",
             success:function(data){
                 $("#divall").empty();
-                $("#lable").html("<b>"+year+"</b>年<b>  "+month+"</b>月");
                 var arr=eval(data);
                 for(var i=0;i<arr.length;i++)
                 {

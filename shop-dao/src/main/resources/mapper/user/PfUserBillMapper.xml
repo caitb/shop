@@ -91,7 +91,7 @@
     <select id="selectByUserIdLimitPage" resultMap="InComeResultMap">
         select id, user_id, create_date, create_man, balance_date, total_amount, bill_amount,
         return_amount, pf_brokerage, supplier_id, count_start_time, count_end_time, status,
-        remark,total_amount-bill_amount-return_amount-pf_brokerage as pfIncome,DATE_FORMAT(balance_date,'%d') as queryDate
+        remark
         from pf_user_bill
         where user_id = #{0} and DATE_FORMAT(balance_date,'%Y%m')=#{1}
         order by balance_date desc

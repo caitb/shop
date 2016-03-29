@@ -473,16 +473,31 @@ public class BOrderController extends BaseController {
     public ModelAndView stockBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = getComUser(request);
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
-        List<PfBorder> pfBorders0 = bOrderService.findByUserId(comUser.getId(), 0, shipStatus);//待付款
-        List<PfBorder> pfBorders10 = bOrderService.findByUserId(comUser.getId(), 1, 0);//代发货
-        List<PfBorder> pfBorders15 = bOrderService.findByUserId(comUser.getId(), 1, 5);//待收货
-        List<PfBorder> pfBorders3 = bOrderService.findByUserId(comUser.getId(), 3, shipStatus);//已完成
+        List<PfBorder> pfBorders0 =new ArrayList<>();
+        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorders15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorders3 =  new ArrayList<>();//已完成
+        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
+        for (PfBorder pfBord:pfBorders) {
+            if(pfBord.getOrderStatus()==0){
+                pfBorders0.add(pfBord);//待付款
+            }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==0){
+                pfBorders10.add(pfBord);//代发货
+            }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==5){
+                pfBorders15.add(pfBord);//待收货
+            }else if (pfBord.getOrderStatus()==6) {
+                pfBorders6.add(pfBord);//已完成
+            }else if (pfBord.getOrderStatus()==3) {
+                pfBorders3.add(pfBord);//排单中
+            }
+        }
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
         pfBorderss.add(2, pfBorders10);
         pfBorderss.add(3, pfBorders15);
         pfBorderss.add(4, pfBorders3);
+        pfBorderss.add(5, pfBorders6);
         for (List<PfBorder> pfBorderw : pfBorderss) {
             Iterator<PfBorder> chk_itw = pfBorderw.iterator();
             while (chk_itw.hasNext()) {
@@ -492,17 +507,6 @@ public class BOrderController extends BaseController {
                 }
             }
         }
-//        Iterator<List<PfBorder>> chk_it = pfBorderss.iterator();
-//        while(chk_it.hasNext()){
-//            List<PfBorder> checkWork = chk_it.next();
-//            Iterator<PfBorder> chk_itw = checkWork.iterator();
-//            while(chk_itw.hasNext()) {
-//                PfBorder pfBorder =chk_itw.next();
-//                if (pfBorder.getUserId()!=comUser.getId()){//进货订单
-//                    chk_itw.remove();
-//                }
-//            }
-//        }
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (List<PfBorder> pfsBorder : pfBorderss) {
             if (pfsBorder != null && pfsBorder.size() != 0) {
@@ -555,8 +559,8 @@ public class BOrderController extends BaseController {
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("borderDetail", borderDetail);
-        modelAndView.setViewName("platform/user/jinhuoxiangqing");
+//        modelAndView.addObject("borderDetail", borderDetail);
+//        modelAndView.setViewName("platform/user/jinhuoxiangqing");
         modelAndView.addObject("borderDetail", borderDetail);
         modelAndView.setViewName("platform/order/jinhuoxiangqing");
         return modelAndView;
@@ -607,18 +611,32 @@ public class BOrderController extends BaseController {
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = getComUser(request);
-        ;
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
-        List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
-        List<PfBorder> pfBorders10 = bOrderService.findByUserPid(comUser.getId(), 1, 0);//代发货
-        List<PfBorder> pfBorders15 = bOrderService.findByUserPid(comUser.getId(), 1, 5);//待收货
-        List<PfBorder> pfBorders3 = bOrderService.findByUserPid(comUser.getId(), 3, shipStatus);//已完成
+        List<PfBorder> pfBorders0 =new ArrayList<>();
+        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorders15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorders3 =  new ArrayList<>();//已完成
+        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
+        for (PfBorder pfBord:pfBorders) {
+            if(pfBord.getOrderStatus()==0){
+                pfBorders0.add(pfBord);//待付款
+            }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==0){
+                pfBorders10.add(pfBord);//代发货
+            }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==5){
+                pfBorders15.add(pfBord);//待收货
+            }else if (pfBord.getOrderStatus()==3) {
+                pfBorders3.add(pfBord);//已完成
+            }else if (pfBord.getOrderStatus()==6) {
+                pfBorders6.add(pfBord);//排单中
+            }
+        }
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
         pfBorderss.add(2, pfBorders10);
         pfBorderss.add(3, pfBorders15);
         pfBorderss.add(4, pfBorders3);
+        pfBorderss.add(5, pfBorders6);
         for (List<PfBorder> pfBorderw : pfBorderss) {
             Iterator<PfBorder> chk_itw = pfBorderw.iterator();
             while (chk_itw.hasNext()) {

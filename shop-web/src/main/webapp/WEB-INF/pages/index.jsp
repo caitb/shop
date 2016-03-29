@@ -21,11 +21,15 @@
 <body>
 <div class="wrap">
     <div class="box">
-        <div class="admin">
-            <img src="${user.wxHeadImg}" alt="">
-            <h3>${user.wxNkName}—欢迎您登入</h3>
-            <%--<span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>--%>
-        </div>
+        <header class="xq_header" style="margin-bottom:0;">
+            <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>进货市场</p>
+        </header>
+        <%--<div class="admin">--%>
+            <%--<img src="${user.wxHeadImg}" alt="">--%>
+            <%--<h3>${user.wxNkName}—欢迎您登入</h3>--%>
+            <%--&lt;%&ndash;<span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>&ndash;%&gt;--%>
+        <%--</div>--%>
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
@@ -40,62 +44,19 @@
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-        <div class="sing">
-            <img src="<%=path%>/static/images/shouye_sing.png" alt="">
-            <h2>麦链推出全新扶持计划！ ！ ！</h2>
-        </div>
+        <%--<div class="sing">--%>
+            <%--<img src="<%=path%>/static/images/shouye_sing.png" alt="">--%>
+            <%--<h2>麦链推出全新扶持计划！ ！ ！</h2>--%>
+        <%--</div>--%>
         <div class="sing all" style="margin-top:5px;">
             <a href="<%=path%>/productList/showProduct">
                 <img src="<%=path%>/static/images/all.png" alt="">
-                <h3>查看所有商品</h3>
+                <h3>所有商品</h3>
                 <img src="<%=path%>/static/images/next.png" alt="" class="next">
             </a>
         </div>
-        <!--<nav>
-            <ul>
-                <li>
-                    <a href="javascript:;">
-                        <h1><img src="../images/shouye_nav.png" alt=""></h1>
-                        <span>男士</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <h1><img src="../images/shouye_nav2.png" alt=""></h1>
-                        <span>女士</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <h1><img src="../images/shouye_nav3.png" alt=""></h1>
-                        <span>美食</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;">
-                        <h1><img src="../images/shouye_nav4.png" alt=""></h1>
-                        <span>美妆</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>-->
         <h1 class="tuij">推荐产品</h1>
         <main>
-            <%--<c:forEach begin="0" end="${ComSize}" step="2" var="i">--%>
-            <%--<section class="sec1">--%>
-            <%--<c:forEach items="${indexComS}" begin="${i}" end="${i+1}" var="Sku">--%>
-            <%--<div>--%>
-            <%--<a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>--%>
-            <%--<h2>${Sku.comSku.name}</h2>--%>
-            <%--<h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>--%>
-            <%--<h3>--%>
-            <%--<p>超过<span>${Sku.agentNum}</span>人代理</p><c:choose><c:when test="${Sku.isPartner}"><a href="javascript:;" >您已合伙</a></c:when>--%>
-            <%--<c:otherwise><a href="<%=path%>/lo/quote">我要合伙</a></c:otherwise></c:choose>--%>
-            <%--</h3>--%>
-            <%--</div>--%>
-            <%--</c:forEach>--%>
-            <%--</section>--%>
-            <%--</c:forEach>--%>
                 <c:forEach begin="0" end="${ComSize}" step="2" var="i">
             <section class="sec1">
                 <c:forEach items="${indexComS}"  begin="${i}" end="${i+1}" var="Sku">
@@ -117,52 +78,25 @@
                 </c:forEach>
             </section>
                 </c:forEach>
-            <%--<section class="sec1">--%>
-            <%--<div>--%>
-            <%--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>--%>
-            <%--<h2>抗引力—快速瘦脸精华</h2>--%>
-            <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
-            <%--<h3>--%>
-            <%--<p>超过<span>9999</span>人代理</p>--%>
-            <%--<a href="shenqing.html">我要合伙</a>--%>
-            <%--</h3>--%>
-            <%--</div>--%>
-            <%--<div>--%>
-            <%--<a href="xiangqing.html"><img src="<%=path%>/static/images/cp_1.png" alt=""></a>--%>
-            <%--<h2>抗引力—快速瘦脸精华</h2>--%>
-            <%--<h1>￥328 <span>成为合伙人可查看</span></h1>--%>
-            <%--<h3>--%>
-            <%--<p>超过<span>9999</span>人代理</p>--%>
-            <%--<a href="shenqing.html">我要合伙</a>--%>
-            <%--</h3>--%>
-            <%--</div>--%>
-            <%--</section>--%>
         </main>
-        <section class="sec2">
-            <h2 style="color:#F74A11;">麦链合伙人提供技术支持</h2>
-            <p>Copyright2005-2016 iimai.com 版权所有</p>
-            <p>京ICP证080047号[京ICP备08010314号-6]</p>
-            <p>文网文[2009]024号 新出网证（京）字069号</p>
-            <p>京公网安备 11000002000006号</p>
-        </section>
     </div>
 </div>
-<div class="bottom">
-    <footer>
-        <div class="btm">
-            <span><img src="<%=path%>/static/images/shouye_footer.png" alt=""></span>
-            <span>首页</span>
-        </div>
-        <div class="btm">
-            <span><img src="<%=path%>/static/images/shouye_footer2.png" alt=""></span>
-            <span>我的店铺</span>
-        </div>
-        <div class="btm" onclick="javascript:window.location.replace('<%=basePath%>profile/profile');">
-            <span><img src="<%=path%>/static/images/shouye_footer3.png" alt=""></span>
-            <span>个人中心</span>
-        </div>
-    </footer>
-</div>
+<%--<div class="bottom">--%>
+    <%--<footer>--%>
+        <%--<div class="btm">--%>
+            <%--<span><img src="<%=path%>/static/images/shouye_footer.png" alt=""></span>--%>
+            <%--<span>首页</span>--%>
+        <%--</div>--%>
+        <%--<div class="btm">--%>
+            <%--<span><img src="<%=path%>/static/images/shouye_footer2.png" alt=""></span>--%>
+            <%--<span>我的店铺</span>--%>
+        <%--</div>--%>
+        <%--<div class="btm" onclick="javascript:window.location.replace('<%=basePath%>profile/profile');">--%>
+            <%--<span><img src="<%=path%>/static/images/shouye_footer3.png" alt=""></span>--%>
+            <%--<span>个人中心</span>--%>
+        <%--</div>--%>
+    <%--</footer>--%>
+<%--</div>--%>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>

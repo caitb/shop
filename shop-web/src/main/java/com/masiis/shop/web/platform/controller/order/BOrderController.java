@@ -481,14 +481,16 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord:pfBorders) {
             if(pfBord.getOrderStatus()==0){
                 pfBorders0.add(pfBord);//待付款
+//            }else if(pfBord.getSendType()==1 && pfBord.getPayStatus()==1){
+//                    pfBorders6.add(pfBord);//已完成
             }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==0){
                 pfBorders10.add(pfBord);//代发货
             }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==5){
                 pfBorders15.add(pfBord);//待收货
             }else if (pfBord.getOrderStatus()==6) {
-                pfBorders6.add(pfBord);//已完成
+                pfBorders6.add(pfBord);//排单中
             }else if (pfBord.getOrderStatus()==3) {
-                pfBorders3.add(pfBord);//排单中
+                pfBorders3.add(pfBord);//已完成
             }
         }
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
@@ -524,8 +526,8 @@ public class BOrderController extends BaseController {
             }
         }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("pfBorders", pfBorderss);
-        modelAndView.setViewName("platform/user/jinhuodingdan");
+//        modelAndView.addObject("pfBorders", pfBorderss);
+//        modelAndView.setViewName("platform/user/jinhuodingdan");
         modelAndView.addObject("pfBorders", pfBorderss);
         modelAndView.setViewName("platform/order/jinhuodingdan");
         return modelAndView;

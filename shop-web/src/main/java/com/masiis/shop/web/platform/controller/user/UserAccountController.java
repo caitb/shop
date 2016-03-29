@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
@@ -39,7 +40,7 @@ public class UserAccountController extends BaseController{
     private PfUserBillService pfUserBillService;
 
     @RequestMapping("/home")
-    public String accountHome(HttpServletRequest request, Model model){
+    public String accountHome(HttpServletRequest request, Model model) throws Exception{
         ComUser user = getComUser(request);
         log.info("进入我的资产首页");
         if(user == null){
@@ -95,31 +96,37 @@ public class UserAccountController extends BaseController{
                                   HttpServletRequest request){
         ComUser user = getComUser(request);
         log.info("获取更多用户账单信息");
-        if(user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-        }
-        List<PfUserBill> userBills;
-        //使用分页方式查询
-        if (paging.equals("Y")){
-            //当pageTotalCount等于0时，说明为查询其他月份数据
-            if(pageTotalCount.equals("0")){
-                userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,1,10);
-            }else {
-                int pageSize = 5; //ajax请求时默认每页显示条数为5条
-                int currentPage = Integer.valueOf(pageTotalCount)/pageSize == 0?Integer.valueOf(pageTotalCount)/pageSize + 1:Integer.valueOf(pageTotalCount)/pageSize + 2;
-                userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,currentPage,pageSize);
+        JSONArray jsonArray = null;
+        try{
+            if(user == null){
+                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
             }
-        }else {
-            userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,0,0);
+            List<PfUserBill> userBills;
+            //使用分页方式查询
+            if (paging.equals("Y")){
+                //当pageTotalCount等于0时，说明为查询其他月份数据
+                if(pageTotalCount.equals("0")){
+                    userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,1,10);
+                }else {
+                    int pageSize = 5; //ajax请求时默认每页显示条数为5条
+                    int currentPage = Integer.valueOf(pageTotalCount)/pageSize == 0?Integer.valueOf(pageTotalCount)/pageSize + 1:Integer.valueOf(pageTotalCount)/pageSize + 2;
+                    userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,currentPage,pageSize);
+                }
+            }else {
+                userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,0,0);
+            }
+            jsonArray = new JSONArray();
+            for(PfUserBill pfUserBill:userBills){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("date",pfUserBill.getQueryDate());
+                jsonObject.put("incom",pfUserBill.getPfIncome());
+                jsonArray.put(jsonObject);
+            }
+            log.info("jsonArray:"+jsonArray.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new BusinessException("网络错误", e);
         }
-        JSONArray jsonArray = new JSONArray();
-        for(PfUserBill pfUserBill:userBills){
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("date",pfUserBill.getQueryDate());
-            jsonObject.put("incom",pfUserBill.getPfIncome());
-            jsonArray.put(jsonObject);
-        }
-        log.info("jsonArray:"+jsonArray.toString());
         return jsonArray.toString();
     }
 

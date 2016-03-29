@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.platform.order.*;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
@@ -12,16 +11,12 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -309,11 +304,11 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
-    public void updateStock(PfBorder pfBorder,ComUser user) {
+    public void updateStock(PfBorder pfBorder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-            if(pfUserSkuStock!=null) {
+            if (pfUserSkuStock != null) {
                 if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() < 0) {
                     throw new BusinessException("当前库存不足！");
                 } else {
@@ -332,11 +327,11 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/21 16:22
      */
-    public void updateGetStock(PfBorder pfBorder,ComUser user) {
+    public void updateGetStock(PfBorder pfBorder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-            if(pfUserSkuStock!=null) {
+            if (pfUserSkuStock != null) {
                 pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
                 if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
                     throw new BusinessException("并发修改库存失败");
@@ -408,12 +403,14 @@ public class BOrderService {
 
     /**
      * 根据用户id获取出货订单
+     *
      * @author muchaofeng
      * @date 2016/3/23 14:36
      */
     public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
         return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
     }
+
     /**
      * 添加订单支付记录
      *

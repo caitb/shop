@@ -574,7 +574,6 @@ public class BOrderController extends BaseController {
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         ComUser comUser = getComUser(request);
-        ;
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
@@ -607,7 +606,6 @@ public class BOrderController extends BaseController {
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = getComUser(request);
-        ;
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = bOrderService.findByUserPid(comUser.getId(), 0, shipStatus);//待付款
         List<PfBorder> pfBorders10 = bOrderService.findByUserPid(comUser.getId(), 1, 0);//代发货

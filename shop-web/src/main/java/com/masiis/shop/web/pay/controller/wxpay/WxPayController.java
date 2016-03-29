@@ -1,41 +1,28 @@
-package com.masiis.shop.web.platform.controller.pay.wxpay;
+package com.masiis.shop.web.pay.controller.wxpay;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.COrderService;
-import com.masiis.shop.web.platform.service.pay.wxpay.WxPayService;
+import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.HttpsRequest;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.util.Date;
 
 /**

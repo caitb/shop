@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.service.pay.wxpay;
+package com.masiis.shop.web.pay.service.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;

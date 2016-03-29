@@ -205,9 +205,13 @@
         <div class="form-group">
             <label for="advanced" class="col-sm-4 control-label">高级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
             <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
                 <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
@@ -216,9 +220,13 @@
         <div class="form-group">
             <label for="intermediate" class="col-sm-4 control-label">中级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
             <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
                 <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
@@ -227,9 +235,13 @@
         <div class="form-group">
             <label for="primary" class="col-sm-4 control-label">初级</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
             <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
             <div class="col-sm-2">
                 <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
@@ -247,24 +259,36 @@
 
         <div class="form-group">
             <label for="reciprocal1" class="col-sm-4 control-label">倒数第一</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
         </div>
         <div class="form-group">
             <label for="reciprocal2" class="col-sm-4 control-label">倒数第二</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
         </div>
         <div class="form-group">
             <label for="reciprocal3" class="col-sm-4 control-label">倒数第三</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
         </div>
 
         <hr/>

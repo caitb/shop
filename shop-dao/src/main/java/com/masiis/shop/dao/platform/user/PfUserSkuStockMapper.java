@@ -29,4 +29,6 @@ public interface PfUserSkuStockMapper {
     PfUserSkuStock selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 
     int updateByIdAndVersion(PfUserSkuStock pfUserSkuStock);
+
+    List<PfUserSkuStock> selectByUserId(Long userId);
 }

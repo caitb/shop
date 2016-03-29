@@ -18,9 +18,11 @@ public class ComUserAccount {
      */
     private Long comUserId;
     /**
-     * 总收入
+     * 总销售额
      */
     private BigDecimal totalIncomeFee;
+    private BigDecimal costFee;
+    private BigDecimal bailFee;
     /**
      * 可提现额度
      */
@@ -29,13 +31,10 @@ public class ComUserAccount {
      * 结算中
      */
     private BigDecimal countingFee;
-    /**
-     * 当前资产总额
-     */
-    private BigDecimal nowTotalFee;
     private Date createdTime;
     private Date changedTime;
     private String changedBy;
+    private Long version;
 
     public Long getId() {
         return id;
@@ -70,12 +69,6 @@ public class ComUserAccount {
     public void setCountingFee(BigDecimal countingFee) {
         this.countingFee = countingFee;
     }
-    public BigDecimal getNowTotalFee() {
-        return nowTotalFee;
-    }
-    public void setNowTotalFee(BigDecimal nowTotalFee) {
-        this.nowTotalFee = nowTotalFee;
-    }
     public Date getCreatedTime() {
         return createdTime;
     }
@@ -93,5 +86,29 @@ public class ComUserAccount {
     }
     public void setChangedBy(String changedBy) {
         this.changedBy = changedBy == null ? null : changedBy.trim();
+    }
+
+    public BigDecimal getCostFee() {
+        return costFee;
+    }
+
+    public void setCostFee(BigDecimal costFee) {
+        this.costFee = costFee;
+    }
+
+    public BigDecimal getBailFee() {
+        return bailFee;
+    }
+
+    public void setBailFee(BigDecimal bailFee) {
+        this.bailFee = bailFee;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

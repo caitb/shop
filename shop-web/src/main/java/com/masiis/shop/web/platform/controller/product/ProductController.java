@@ -48,7 +48,7 @@ public class ProductController extends BaseController {
         Product productDetails = productService.getSkuDetails(skuId);
         if(comUser !=null && comUser.getIsAgent()==1){
             productDetails.setIsPartner(true);
-            productDetails.setDiscountLevel(productService.getDiscountByAgentLevel(productDetails.getPriceRetail()));
+            productDetails.setMaxDiscount(productService.getMaxDiscount());
         }
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
         mav.addObject("pfUserSku",pfUserSku);//是否代理过该商品
@@ -57,7 +57,7 @@ public class ProductController extends BaseController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Integer userId) throws Exception{
+    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/userSkulist");
         List<Product> userProducts = productService.productListByUser(userId);
         mav.addObject("userProducts",userProducts);

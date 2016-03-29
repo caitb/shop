@@ -41,19 +41,19 @@
     <form class="form-horizontal" id="skuForm">
         <div class="form-group">
             <label for="name" class="col-sm-4 control-label">商品名称</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
             </div>
         </div>
         <div class="form-group">
             <label for="artNo" class="col-sm-4 control-label">商品货号</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="artNo" name="artNo" placeholder="商品货号">
             </div>
         </div>
         <div class="form-group">
             <label for="barCode" class="col-sm-4 control-label">商品条码</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="barCode" name="barCode" placeholder="商品条码">
             </div>
         </div>
@@ -133,7 +133,7 @@
         </div>
         <div class="form-group">
             <label for="brandId" class="col-sm-4 control-label">商品品牌</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <select class="form-control" id="brandId" name="brandId">
                     <c:forEach items="${brands}" var="brand">
                     <option value="${brand.id}">${brand.cname}</option>
@@ -144,7 +144,7 @@
 
         <div class="form-group">
             <div class="col-sm-3"></div>
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <div class="alert alert-success" role="alert">
                     <strong>价格设置</strong>
                 </div>
@@ -153,25 +153,25 @@
 
         <div class="form-group">
             <label for="priceCost" class="col-sm-4 control-label">成本价</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="priceCost" name="priceCost" placeholder="成本价">
             </div>
         </div>
         <div class="form-group">
-            <label for="priceMarket" class="col-sm-4 control-label">市场价</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场价">
+            <label for="priceMarket" class="col-sm-4 control-label">市场零售价</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场零售价">
             </div>
         </div>
         <div class="form-group">
-            <label for="priceRetail" class="col-sm-4 control-label">零售价</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="零售价">
+            <label for="priceRetail" class="col-sm-4 control-label">微信零售价</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="微信零售价">
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-4 control-label">是否允许试用</label>
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <div class="radio">
                     <label>
                         <input type="radio" name="isTrial" id="isTrial1" value="1" checked>
@@ -188,14 +188,14 @@
         </div>
         <div class="form-group">
             <label for="shipAmount" class="col-sm-4 control-label">运费设置</label>
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <input type="text" class="form-control" id="shipAmount" name="shipAmount" placeholder="运费设置">
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-3"></div>
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <div class="alert alert-success" role="alert">
                     <strong>合伙人设置</strong>
                 </div>
@@ -203,36 +203,145 @@
         </div>
 
         <div class="form-group">
-            <label for="advanced" class="col-sm-4 control-label">高级</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-            <label for="advancedCount" class="col-sm-1 control-label">拿货数量</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="intermediate" class="col-sm-4 control-label">中级</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-            <label for="intermediateCount" class="col-sm-1 control-label">拿货数量</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="primary" class="col-sm-4 control-label">初级</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-            <label for="primaryCount" class="col-sm-1 control-label">拿货数量</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-xs-12 col-sm-4 text-success">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        高级&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="advanced" name="discounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    每件商品<small class="text-info dfenrun"></small>元
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="advancedCount">
+                                        拿货数量&nbsp;
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
+                                    </div>
+                                    金额门槛<small class="text-info threshold"></small>元
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="advancedBail">
+                                        保证金
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="advancedBail" name="bails" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 text-warning">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        中级&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="intermediate" name="discounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    每件商品<small class="text-info dfenrun"></small>元
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="advancedCount">
+                                        拿货数量&nbsp;
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
+                                    </div>
+                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="intermediateBail">
+                                        保证金
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="intermediateBail" name="bails" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        初级&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="primary" name="discounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    每件商品<small class="text-info dfenrun"></small>元
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="advancedCount">
+                                        拿货数量&nbsp;
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
+                                    </div>
+                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
+                                </div>
+
+                                <hr>
+
+                                <div>
+                                    <label for="primaryBail">
+                                        保证金
+                                    </label>
+                                    <div>
+                                        <input type="text" class="form-control" id="primaryBail" name="bails" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -246,25 +355,77 @@
         </div>
 
         <div class="form-group">
-            <label for="reciprocal1" class="col-sm-4 control-label">倒数第一</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-xs-12 col-sm-4 text-success">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        倒数第一&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="reciprocal1" name="distributionDiscounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    返利<small class="text-info ffenrun"></small>元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 text-warning">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        倒数第二&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    返利<small class="text-info ffenrun"></small>元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div>
+                                    <label for="advanced">
+                                        倒数第三&nbsp;
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
+                                        <span class="input-group-addon">
+                                            %
+                                        </span>
+                                    </div>
+                                    返利<small class="text-info ffenrun"></small>元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <label class="col-sm-2">每件商品100元</label>
-        </div>
-        <div class="form-group">
-            <label for="reciprocal2" class="col-sm-4 control-label">倒数第二</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal2" name="distributionDiscounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
-        </div>
-        <div class="form-group">
-            <label for="reciprocal3" class="col-sm-4 control-label">倒数第三</label>
-            <div class="col-sm-2">
-                <input type="text" class="form-control" id="reciprocal3" name="distributionDiscounts" placeholder="">
-            </div>
-            <label class="col-sm-2">每件商品100元</label>
         </div>
 
         <hr/>
@@ -415,17 +576,19 @@
                 <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
             </div>
             <script>
-                <%--$('#skuSave').on('click', function(){--%>
-                    <%--$('#content').val(UE.getEditor('editor').getAllHtml());--%>
-                    <%--$.ajax({--%>
-                        <%--url: '<%=basePath%>product/add.do',--%>
-                        <%--type: 'post',--%>
-                        <%--data: $('#skuForm').serialize(),--%>
-                        <%--success: function(msg){--%>
-                            <%--alert(msg);--%>
-                        <%--}--%>
-                    <%--});--%>
-                <%--});--%>
+
+                $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
+                    var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
+                    $('input[name="quantitys"]').each(function(i,o){
+                        var discount = $($('input[name="discounts"]').get(i)).val();
+                        var quantity = $(o).val() ? $(o).val() : 0;
+                        var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
+                        $($('.dfenrun').get(i)).html(priceRetail*discount);
+                        $($('.threshold').get(i)).html(priceRetail*discount*quantity);
+                        $($('.ffenrun').get(i)).html(priceRetail*distributionDiscount);
+                    });
+                });
+
 
                 $(document).ready(function() {
                     $('#skuForm').bootstrapValidator({

@@ -156,7 +156,7 @@ public class UserExtractwayInfoController extends BaseController {
      * 通过userId查询已绑定卡片信息
      * @return
      */
-    @RequestMapping(value = "/findByUserId.do")
+    @RequestMapping(value = "/findExtractwayInfo")
     @ResponseBody
     public ModelAndView findByUserId(HttpServletRequest request) throws Exception{
         log.info("通过userId查询已绑定卡片信息");

@@ -63,7 +63,8 @@ public class ProductListController extends BaseController {
                 //确定代理权限
                 indexComSku.setIsPartner(1);
                 //显示优惠区间
-                indexComSku.setDiscountLevel(productService.getDiscountByAgentLevel(indexComSku.getComSku().getPriceRetail()));
+                indexComSku.setMaxDiscount(productService.getMaxDiscount());
+                indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
             } else {
                 indexComSku.setDiscountLevel("成为合伙人可查看");
             }

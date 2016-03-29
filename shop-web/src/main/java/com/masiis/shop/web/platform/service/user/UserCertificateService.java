@@ -9,10 +9,8 @@ import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.po.ComAgentLevel;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +49,8 @@ public class UserCertificateService {
     private ComUserMapper comUserMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
+    @Resource
+    private PfUserSkuMapper userSkuMapper;
 
     public void addUserCertificate(PfUserCertificate pfUserCertificate) {
         pfUserCertificateMapper.insert(pfUserCertificate);
@@ -64,32 +64,13 @@ public class UserCertificateService {
     public List<CertificateInfo> CertificateByUser(Integer userId){
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
         if (certificateInfoList != null) {
-            //先找该用户的证书是否生成过
-            Boolean applyFlag = false;//没生成证书
             for (CertificateInfo certificateInfo : certificateInfoList) {
-                if (certificateInfo.getIsCertificate() == 1) {
-                    applyFlag = true;//该用户已经生成过授权书，跳出循环
-                    break;
+                if (certificateInfo.getPid() != 0) {
+                    certificateInfo.setUpperName(comUserMapper.selectByPrimaryKey(userSkuMapper.selectByPrimaryKey(certificateInfo.getPid()).getUserId()).getRealName());
                 }
-            }
-            if (applyFlag) {
-                for (CertificateInfo certificateInfo : certificateInfoList) {
-                    PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
-                    if (pfUserCertificate == null) {
-                        certificateInfo.setReceivect(0);//证书已经生成，未领取
-                    } else {
-                        certificateInfo.setPfUserCertificateInfo(pfUserCertificate);//走完流程,证书生成
-                    }
-                }
-            } else {
-                //第一次
-                for (CertificateInfo certificateInfo : certificateInfoList) {
-                    PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
-                    if (pfUserCertificate == null) { //流程中断，未申请
-                        certificateInfo.setIsApply(0);
-                    } else {
-                        certificateInfo.setPfUserCertificateInfo(pfUserCertificate);//走完流程,证书生成
-                    }
+                PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
+                if (pfUserCertificate == null) {
+                    certificateInfo.setPfUserCertificateInfo(pfUserCertificate);
                 }
             }
         }
@@ -103,8 +84,9 @@ public class UserCertificateService {
     public PfUserCertificate CertificateDetailsByUser(Integer pfuId){
         PfUserCertificate pfc = pfUserCertificateMapper.selectByUserSkuId(pfuId);
         CertificateInfo certificateInfo = certificateMapper.get(pfuId);
-        if(certificateInfo!=null){
-            pfc.setSjName(comUserMapper.findByPid(certificateInfo.getPid()));
+        if(certificateInfo!=null && certificateInfo.getPid()!=0){
+            ComUser comUser = comUserMapper.selectByPrimaryKey(certificateMapper.get(certificateInfo.getPid()).getUserId());
+            pfc.setSjName(comUser.getRealName());
         }
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
         pfc.setImgUrl(ctValue + pfc.getImgUrl());

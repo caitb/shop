@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-23 Created
+ * 2016-03-29 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -22,6 +22,10 @@ public class ComUserAccountRecord {
      */
     private Long userAccountId;
     /**
+     * 流水号,重复的记录为回滚操作
+     */
+    private String handleSerialNum;
+    /**
      * 操作金额
      */
     private BigDecimal handleFee;
@@ -34,17 +38,21 @@ public class ComUserAccountRecord {
      */
     private BigDecimal nextFee;
     /**
-     * 操作资金类型: 0,总收入; 1,可提现; 
+     * 操作资金类型: 0,订单入账; 1,结算; 2,提现 
      */
     private Integer feeType;
     /**
-     * 账单id
+     * 来源单据id
      */
     private Long billId;
     /**
+     * 流水操作类型: 0,正向逻辑操作; 1,流水回滚操作
+     */
+    private Integer handleType;
+    /**
      * 此次记录的时间
      */
-    private Date handlerTime;
+    private Date handleTime;
     /**
      * 此次记录操作人
      */
@@ -67,6 +75,12 @@ public class ComUserAccountRecord {
     }
     public void setUserAccountId(Long userAccountId) {
         this.userAccountId = userAccountId;
+    }
+    public String getHandleSerialNum() {
+        return handleSerialNum;
+    }
+    public void setHandleSerialNum(String handleSerialNum) {
+        this.handleSerialNum = handleSerialNum == null ? null : handleSerialNum.trim();
     }
     public BigDecimal getHandleFee() {
         return handleFee;
@@ -98,11 +112,17 @@ public class ComUserAccountRecord {
     public void setBillId(Long billId) {
         this.billId = billId;
     }
-    public Date getHandlerTime() {
-        return handlerTime;
+    public Integer getHandleType() {
+        return handleType;
     }
-    public void setHandlerTime(Date handlerTime) {
-        this.handlerTime = handlerTime;
+    public void setHandleType(Integer handleType) {
+        this.handleType = handleType;
+    }
+    public Date getHandleTime() {
+        return handleTime;
+    }
+    public void setHandleTime(Date handleTime) {
+        this.handleTime = handleTime;
     }
     public String getHandler() {
         return handler;

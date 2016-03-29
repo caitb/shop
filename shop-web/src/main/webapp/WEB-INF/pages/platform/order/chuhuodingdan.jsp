@@ -41,7 +41,7 @@
                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==0}"> <b class="fahuo_${pb.id}">等待发货</b></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==5}"><b class="fahuo_${pb.id}">等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if><c:if test="${pb.orderStatus ==6}"><b class="fahuo_${pb.id}" >排单中</b ></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==0}"> <b class="fahuo_${pb.id}">等待发货</b></c:if><c:if test="${pb.orderStatus ==1&& pb.shipStatus==5}"><b class="fahuo_${pb.id}">等待收货</b></c:if><c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                             </h2>
                             <c:forEach items="${pb.pfBorderItems}" var="pbi">
                             <div class="shangpin">

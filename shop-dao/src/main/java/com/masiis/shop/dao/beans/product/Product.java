@@ -25,7 +25,7 @@ public class Product extends ComSku {
 
     private Integer agentLevel;//代理商级别
 
-    private String discountLevel;//代理商折扣区间
+    private Integer maxDiscount;//最高利润
 
     private BigDecimal shipAmount;//快递费用
 
@@ -34,6 +34,8 @@ public class Product extends ComSku {
     private ComSkuImage comSkuImage;
 
     private Integer pfuId;
+
+    private Integer sendType;//发货方式
 
     public String getSpuName() {
         return spuName;
@@ -91,12 +93,12 @@ public class Product extends ComSku {
         this.agentLevel = agentLevel;
     }
 
-    public String getDiscountLevel() {
-        return discountLevel;
+    public Integer getMaxDiscount() {
+        return maxDiscount;
     }
 
-    public void setDiscountLevel(String discountLevel) {
-        this.discountLevel = discountLevel;
+    public void setMaxDiscount(Integer maxDiscount) {
+        this.maxDiscount = maxDiscount;
     }
 
     public BigDecimal getShipAmount() {
@@ -129,5 +131,13 @@ public class Product extends ComSku {
 
     public void setPfuId(Integer pfuId) {
         this.pfuId = pfuId;
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
     }
 }

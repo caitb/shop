@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class PfUserSku {
@@ -52,6 +53,10 @@ public class PfUserSku {
      * 备注
      */
     private String remark;
+    /**
+     * 保证金
+     */
+    private BigDecimal bail;
 
     public Integer getId() {
         return id;
@@ -139,5 +144,13 @@ public class PfUserSku {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public BigDecimal getBail() {
+        return bail;
+    }
+
+    public void setBail(BigDecimal bail) {
+        this.bail = bail;
     }
 }

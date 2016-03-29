@@ -5,12 +5,14 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT"/>
         <result column="total_income_fee" property="totalIncomeFee" jdbcType="DECIMAL"/>
+        <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
         <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL"/>
         <result column="counting_fee" property="countingFee" jdbcType="DECIMAL"/>
-        <result column="now_total_fee" property="nowTotalFee" jdbcType="DECIMAL"/>
+        <result column="bail_fee" property="bailFee" jdbcType="DECIMAL"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP"/>
         <result column="changed_by" property="changedBy" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="BIGINT" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -19,12 +21,12 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount"  useGeneratedKeys="true" keyProperty="id">
-        insert into com_user_account (id, com_user_id, total_income_fee,
-            extractable_fee, counting_fee, now_total_fee, 
+        insert into com_user_account (id, com_user_id, total_income_fee,cost_fee,
+            extractable_fee, counting_fee, bail_fee,
             created_time, changed_time, changed_by
             )
-        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
-            #{extractableFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{nowTotalFee,jdbcType=DECIMAL}, 
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},#{costFee,jdbcType=DECIMAL},
+            #{extractableFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL},
             #{createdTime,jdbcType=TIMESTAMP}, #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}
             )
     </insert>
@@ -33,30 +35,32 @@
         update com_user_account
         set com_user_id = #{comUserId,jdbcType=BIGINT},
             total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
+            cost_fee = #{costFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
-            now_total_fee = #{nowTotalFee,jdbcType=DECIMAL},
+            bail_fee = #{bailFee,jdbcType=DECIMAL},
             created_time = #{createdTime,jdbcType=TIMESTAMP},
             changed_time = #{changedTime,jdbcType=TIMESTAMP},
-            changed_by = #{changedBy,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
+            changed_by = #{changedBy,jdbcType=VARCHAR},
+            version = #{version,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee,
-        created_time, changed_time, changed_by
+        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, counting_fee, bail_fee,
+        created_time, changed_time, changed_by, version
         from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee,
-        created_time, changed_time, changed_by
+        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, counting_fee, bail_fee,
+        created_time, changed_time, changed_by, version
         from com_user_account
     </select>
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT id, com_user_id, total_income_fee, extractable_fee, counting_fee, now_total_fee,
-        created_time, changed_time, changed_by
+        SELECT id, com_user_id, total_income_fee, cost_fee, extractable_fee, counting_fee, bail_fee,
+        created_time, changed_time, changed_by, version
         FROM com_user_account
         where com_user_id = #{comUserId}
     </select>
@@ -64,8 +68,7 @@
     <update id="payBOrderToUpdateUserAccount">
         update com_user_account
         set total_income_fee = totalIncomeFee+#{orderPayAmount},
-        counting_fee = counting_fee+#{orderPayAmount},
-        now_total_fee = now_total_fee+#{orderPayAmount}
+        counting_fee = counting_fee+#{orderPayAmount}
         where com_user_id = #{comUserId}
     </update>
 

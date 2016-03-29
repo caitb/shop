@@ -52,6 +52,7 @@ public class UserAccountController extends BaseController{
         ComUserAccount account = accountService.findAccountByUserid(user.getId());
         if (account == null){
             BigDecimal fee = new BigDecimal(0.00);
+            account = new ComUserAccount();
             account.setTotalIncomeFee(fee);
             account.setExtractableFee(fee);
             account.setCountingFee(fee);

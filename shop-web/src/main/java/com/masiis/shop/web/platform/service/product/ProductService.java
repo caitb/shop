@@ -3,17 +3,19 @@ package com.masiis.shop.web.platform.service.product;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
-import com.masiis.shop.dao.platform.product.*;
-import com.masiis.shop.dao.po.ComAgentLevel;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.ProductMapper;
+import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +37,7 @@ public class ProductService {
     @Resource
     private ProductSimpleMapper productSimpleMapper;
     @Resource
-    private ComSkuStockMapper comSkuStockMapper;
-
+    private ComUserMapper comUserMapper;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -63,20 +64,14 @@ public class ProductService {
     }
 
     /**
-     * @Author 贾晶豪
+     * @Author Jing Hao
      * @Date 2016/3/5 0005 下午 2:30
-     * 代理商折扣，基础数据
+     * 代理商利润
      */
-    public String getDiscountByAgentLevel(BigDecimal priceRetail) throws Exception {
-        String discountLevel = null;
-        List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
-        if (comAgentLevels != null && comAgentLevels.size() > 0) {
-            DecimalFormat myFormat = new DecimalFormat("0.00");
-            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount())) + "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
-        }
-        return discountLevel;
+    public Integer getMaxDiscount() throws Exception {
+        Integer MaxDiscount = productMapper.maxDiscount() * 100;
+        return MaxDiscount;
     }
-
     /**
      * 跳转到试用申请页
      *
@@ -120,11 +115,13 @@ public class ProductService {
      * @Date 2016/3/16 0016 上午 10:31
      * 个人中心商品列表
      */
-    public List<Product> productListByUser(Integer userId) throws Exception {
+    public List<Product> productListByUser(Long userId) throws Exception {
         List<Product> userProducts = productMapper.getProductsByUser(userId);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
+                product.setSendType(comUser.getSendType());
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

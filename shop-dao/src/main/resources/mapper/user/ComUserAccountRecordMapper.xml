@@ -5,12 +5,14 @@
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
         <result column="user_account_id" property="userAccountId" jdbcType="BIGINT" />
+        <result column="handle_serial_num" property="handleSerialNum" jdbcType="VARCHAR" />
         <result column="handle_fee" property="handleFee" jdbcType="DECIMAL" />
         <result column="prev_fee" property="prevFee" jdbcType="DECIMAL" />
         <result column="next_fee" property="nextFee" jdbcType="DECIMAL" />
         <result column="fee_type" property="feeType" jdbcType="INTEGER" />
         <result column="bill_id" property="billId" jdbcType="BIGINT" />
-        <result column="handler_time" property="handlerTime" jdbcType="TIMESTAMP" />
+        <result column="handle_type" property="handleType" jdbcType="INTEGER" />
+        <result column="handle_time" property="handleTime" jdbcType="TIMESTAMP" />
         <result column="handler" property="handler" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -21,39 +23,43 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccountRecord" >
         insert into com_user_account_record (id, com_user_id, user_account_id, 
-            handle_fee, prev_fee, next_fee, 
-            fee_type, bill_id, handler_time, 
-            handler)
+            handle_serial_num, handle_fee, prev_fee, 
+            next_fee, fee_type, bill_id, 
+            handle_type, handle_time, handler
+            )
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{userAccountId,jdbcType=BIGINT}, 
-            #{handleFee,jdbcType=DECIMAL}, #{prevFee,jdbcType=DECIMAL}, #{nextFee,jdbcType=DECIMAL}, 
-            #{feeType,jdbcType=INTEGER}, #{billId,jdbcType=BIGINT}, #{handlerTime,jdbcType=TIMESTAMP}, 
-            #{handler,jdbcType=VARCHAR})
+            #{handleSerialNum,jdbcType=VARCHAR}, #{handleFee,jdbcType=DECIMAL}, #{prevFee,jdbcType=DECIMAL}, 
+            #{nextFee,jdbcType=DECIMAL}, #{feeType,jdbcType=INTEGER}, #{billId,jdbcType=BIGINT}, 
+            #{handleType,jdbcType=INTEGER}, #{handleTime,jdbcType=TIMESTAMP}, #{handler,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserAccountRecord" >
         update com_user_account_record
         set com_user_id = #{comUserId,jdbcType=BIGINT},
             user_account_id = #{userAccountId,jdbcType=BIGINT},
+            handle_serial_num = #{handleSerialNum,jdbcType=VARCHAR},
             handle_fee = #{handleFee,jdbcType=DECIMAL},
             prev_fee = #{prevFee,jdbcType=DECIMAL},
             next_fee = #{nextFee,jdbcType=DECIMAL},
             fee_type = #{feeType,jdbcType=INTEGER},
             bill_id = #{billId,jdbcType=BIGINT},
-            handler_time = #{handlerTime,jdbcType=TIMESTAMP},
+            handle_type = #{handleType,jdbcType=INTEGER},
+            handle_time = #{handleTime,jdbcType=TIMESTAMP},
             handler = #{handler,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, com_user_id, user_account_id, handle_fee, prev_fee, next_fee, fee_type, 
-        bill_id, handler_time, handler
+        select id, com_user_id, user_account_id, handle_serial_num, handle_fee, prev_fee, 
+        next_fee, fee_type, bill_id, handle_type, handle_time, handler
         from com_user_account_record
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, com_user_id, user_account_id, handle_fee, prev_fee, next_fee, fee_type, 
-        bill_id, handler_time, handler
+        select id, com_user_id, user_account_id, handle_serial_num, handle_fee, prev_fee, 
+        next_fee, fee_type, bill_id, handle_type, handle_time, handler
         from com_user_account_record
     </select>
 

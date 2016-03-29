@@ -1,7 +1,6 @@
 package com.masiis.shop.dao.platform.certificate;
 
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
-import com.masiis.shop.dao.po.ComUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,8 +25,6 @@ public interface CertificateMapper {
     void updateCertificateImgUrl(Map<String, Object> paramsMap);
 
     void updateUpperPartnerById(Map<String, Object> paramsMap);
-
-    List<ComUser> getUpperPartnerByUserId(Integer pid);
 
     String findById(Integer id);
 

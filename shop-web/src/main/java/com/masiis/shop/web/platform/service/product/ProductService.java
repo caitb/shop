@@ -4,7 +4,6 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
-import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,20 +60,14 @@ public class ProductService {
     }
 
     /**
-     * @Author 贾晶豪
+     * @Author Jing Hao
      * @Date 2016/3/5 0005 下午 2:30
-     * 代理商折扣，基础数据
+     * 代理商利润
      */
-    public String getDiscountByAgentLevel(BigDecimal priceRetail) throws Exception {
-        String discountLevel = null;
-        List<ComAgentLevel> comAgentLevels = productMapper.agentLevelDiscount();
-        if (comAgentLevels != null && comAgentLevels.size() > 0) {
-            DecimalFormat myFormat = new DecimalFormat("0.00");
-            discountLevel = myFormat.format(priceRetail.multiply(comAgentLevels.get(0).getDiscount())) + "-" + myFormat.format(priceRetail.multiply(comAgentLevels.get(comAgentLevels.size() - 1).getDiscount()));
-        }
-        return discountLevel;
+    public Integer getMaxDiscount() throws Exception {
+        Integer MaxDiscount = productMapper.maxDiscount() * 100;
+        return MaxDiscount;
     }
-
     /**
      * 跳转到试用申请页
      *

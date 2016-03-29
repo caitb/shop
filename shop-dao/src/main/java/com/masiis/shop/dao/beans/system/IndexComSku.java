@@ -3,6 +3,7 @@ package com.masiis.shop.dao.beans.system;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -11,6 +12,8 @@ import java.util.Date;
  */
 public class IndexComSku {
     private Integer id;//sku主键id
+    private BigDecimal shipAmount;//试用费用
+    private BigDecimal bail;//保证金
     private Date createTime;//创建日期
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
@@ -24,12 +27,18 @@ public class IndexComSku {
     private String remark;//备注
     private String fullImgUrl;//完整的图片URL地址
     private  String discountLevel;//优惠区间
+    private Integer maxDiscount;//优惠%
     private ComSku comSku;//商品属性
     private Integer isSalt;//是否下架
     private Integer agentNum;//代理人数
     private Integer isPartner ;//是否为合伙人
 
-
+    public void setBail(BigDecimal bail) {this.bail = bail;}
+    public BigDecimal getBail() {return bail;}
+    public void setMaxDiscount(Integer maxDiscount) {this.maxDiscount = maxDiscount;}
+    public Integer getMaxDiscount() {return maxDiscount;}
+    public void setShipAmount(BigDecimal shipAmount) {this.shipAmount = shipAmount;}
+    public BigDecimal getShipAmount() {return shipAmount;}
     public void setIsPay(Integer isPay) {this.isPay = isPay;}
     public Integer getIsPay() {return isPay;}
     public void setIsSalt(Integer isSalt) {this.isSalt = isSalt;}

@@ -373,7 +373,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -396,7 +396,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -419,7 +419,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -577,13 +577,15 @@
             </div>
             <script>
 
-                $('#priceRetail, input[name="discounts"], input[name="quantitys"]').keyup(function(){
+                $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
                     var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
                     $('input[name="quantitys"]').each(function(i,o){
                         var discount = $($('input[name="discounts"]').get(i)).val();
                         var quantity = $(o).val() ? $(o).val() : 0;
+                        var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
                         $($('.dfenrun').get(i)).html(priceRetail*discount);
                         $($('.threshold').get(i)).html(priceRetail*discount*quantity);
+                        $($('.ffenrun').get(i)).html(priceRetail*distributionDiscount);
                     });
                 });
 

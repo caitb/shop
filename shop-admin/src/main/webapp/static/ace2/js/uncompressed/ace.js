@@ -457,19 +457,22 @@ ace.add_touch_drag = function($) {
  <b>Sidebar functions</b>. Collapsing/expanding, toggling mobile view menu and other sidebar functions.
 */
 ace.handle_side_menu = function($) {
-	var setting = {
-		data: {
-			simpleData: {
-				enable: true,
-				idKey: "id",
-				pIdKey: "parentId",
-				rootPId: 0
+
+	if(pbMenus){
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "parentId",
+					rootPId: 0
+				}
 			}
-		}
-	};
-	var zTree = $.fn.zTree.init($(".nav-list"), setting);
-	var nodes = zTree.transformTozTreeNodes(pbMenus);
-	$('.nav-list').replaceWith(createMenu('', 1, nodes));
+		};
+		var zTree = $.fn.zTree.init($(".nav-list"), setting);
+		var nodes = zTree.transformTozTreeNodes(pbMenus);
+		$('.nav-list').replaceWith(createMenu('', 1, nodes));
+	}
 
 	var sidebar = $('.sidebar').eq(0);
 

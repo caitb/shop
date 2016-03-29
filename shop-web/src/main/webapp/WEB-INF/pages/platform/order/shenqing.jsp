@@ -19,7 +19,7 @@
 <body>
 <header class="xq_header">
     <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-    <p>合伙人申请</p>
+    <p><a href="javascript:;" onclick="goVerified()">合伙人申请</p>
 </header>
 <div class="kang">
     <a href="<%=path%>/product/${skuId}">
@@ -106,6 +106,11 @@
 <script>
     $(document).ready(function () {
         validateCodeJS.initPage();
-    })
+    });
+    function goVerified() {
+        var para = "?";
+        para += "goToURL=<%=basePath%>userApply/apply.shtml?skuId=${skuId}&type=${type}&pUserId=${pUserId}";
+        window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
+    }
 </script>
 </html>

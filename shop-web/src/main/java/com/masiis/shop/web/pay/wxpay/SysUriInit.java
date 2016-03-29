@@ -1,4 +1,4 @@
-package com.masiis.shop.web.System.init;
+package com.masiis.shop.web.pay.wxpay;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;

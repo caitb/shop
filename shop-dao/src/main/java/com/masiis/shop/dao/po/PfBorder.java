@@ -157,14 +157,8 @@ public class PfBorder {
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
 
-    public void setSendType(Integer sendType) {
-        this.sendType = sendType;
-    }
-
-    public Integer getSendType() {
-        return sendType;
-    }
-
+    public void setSendType(Integer sendType) {this.sendType = sendType;}
+    public Integer getSendType() {return sendType;}
     public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {this.pfBorderConsignee = pfBorderConsignee;}
     public PfBorderConsignee getPfBorderConsignee() {return pfBorderConsignee;}
     public void setTotalQuantity(Integer totalQuantity) {this.totalQuantity = totalQuantity;}

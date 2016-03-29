@@ -9,7 +9,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
-import com.masiis.shop.web.System.init.*;
+import com.masiis.shop.web.system.init.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

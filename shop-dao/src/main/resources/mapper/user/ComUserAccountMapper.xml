@@ -42,7 +42,7 @@
             created_time = #{createdTime,jdbcType=TIMESTAMP},
             changed_time = #{changedTime,jdbcType=TIMESTAMP},
             changed_by = #{changedBy,jdbcType=VARCHAR},
-            version = #{version,jdbcType=BIGINT}
+            version = version + 1
         where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
     </update>
 

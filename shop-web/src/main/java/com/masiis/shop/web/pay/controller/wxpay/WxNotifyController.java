@@ -1,11 +1,11 @@
-package com.masiis.shop.web.platform.controller.pay.wxpay;
+package com.masiis.shop.web.pay.controller.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyRes;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.pay.wxpay.WxNotifyService;
-import com.masiis.shop.web.platform.service.pay.wxpay.WxPayService;
+import com.masiis.shop.web.pay.service.wxpay.WxNotifyService;
+import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -14,13 +14,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 /**
  * Created by lzh on 2016/3/10.

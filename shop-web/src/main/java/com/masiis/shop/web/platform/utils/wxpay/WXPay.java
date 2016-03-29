@@ -7,7 +7,7 @@ package com.masiis.shop.web.platform.utils.wxpay;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.constants.WxConstants;
-import com.masiis.shop.web.platform.service.pay.wxpay.UniOrderService;
+import com.masiis.shop.web.pay.service.wxpay.UniOrderService;
 
 /**
  * SDK总入口

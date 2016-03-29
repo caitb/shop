@@ -19,6 +19,7 @@
         <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
         <result column="ship_man_id" property="shipManId" jdbcType="INTEGER" />
+        <result column="send_type" property="sendType" jdbcType="INTEGER" />
         <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR" />
         <result column="ship_type" property="shipType" jdbcType="INTEGER" />
         <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
@@ -201,7 +202,7 @@
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, product_amount,
         ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_time, ship_remark,
         replace_order_id, order_status, ship_status, pay_status, is_ship, is_replace, is_receipt,
-        receipt_time, remark
+        receipt_time,send_type, remark
         from pf_border
         where
         <if test="userId != null">

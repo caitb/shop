@@ -123,6 +123,10 @@ public class PfBorder {
      */
     private Integer isReplace;
     /**
+     * 拿货方式(0未选择1平台代发2自己发货)
+     */
+    private Integer sendType;
+    /**
      * 收货标志位(0未收货1已收货)
      */
     private Integer isReceipt;
@@ -152,6 +156,14 @@ public class PfBorder {
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
+
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
 
     public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {this.pfBorderConsignee = pfBorderConsignee;}
     public PfBorderConsignee getPfBorderConsignee() {return pfBorderConsignee;}

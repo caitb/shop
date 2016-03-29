@@ -19,6 +19,7 @@
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/checkUtil.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -88,7 +89,7 @@
         var addressId = $("#addressId").val();
         var skuId = $("#skuId").val();
         if(addressId==null||addressId==""){
-            alert("请填写收获地址");
+            $.definedAlertWindow.alert("请填写收获地址");
             return;
         }
         if(getStrLen($("#trialReasonId").val())>100){

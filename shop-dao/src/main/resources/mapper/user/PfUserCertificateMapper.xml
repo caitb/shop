@@ -22,6 +22,24 @@
         <result column="poster" property="poster" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <!--个人信息-微信号信息查询  start-->
+    <resultMap id="skuWeChatInfoMap" type="com.masiis.shop.dao.po.PfUserCertificate">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER"/>
+        <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
+        <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku" resultMap="BaseResultMap">
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+    <select id="selectSkuWeChatInfo" parameterType="java.lang.Long" resultMap="skuWeChatInfoMap">
+        SELECT p.id, p.pf_user_sku_id, p.wx_id,c.name,c.id
+         FROM pf_user_certificate p ,com_sku c
+         WHERE p.user_id = #{userId,jdbcType=BIGINT}
+         AND p.pf_user_sku_id = c.id
+    </select>
+    <!--个人信息-微信号信息查询  end-->
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from pf_user_certificate
         where id = #{id,jdbcType=BIGINT}

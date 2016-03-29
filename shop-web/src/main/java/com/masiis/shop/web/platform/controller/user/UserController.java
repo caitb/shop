@@ -2,7 +2,10 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.ibatis.annotations.Param;
@@ -23,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
@@ -135,10 +138,10 @@ public class UserController {
     @RequestMapping(value = "getPersonalInfo.do")
     public String getPersonalInfo(HttpServletRequest request,HttpServletResponse response,
                                 Model model){
-
        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         model.addAttribute("comUser",comUser);
         return "platform/user/gerenxinxi";
     }
+
 }
 

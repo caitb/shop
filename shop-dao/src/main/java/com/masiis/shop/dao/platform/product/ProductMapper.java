@@ -2,7 +2,6 @@ package com.masiis.shop.dao.platform.product;
 
 
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComSkuImage;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface ProductMapper {
 
     List<ComSkuImage> getSkuImgById(String skuId);
 
-    List<ComAgentLevel> agentLevelDiscount();
+    Integer maxDiscount();
 
     List<Product> getProductsByUser(Integer userId);
 

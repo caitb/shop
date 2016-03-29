@@ -18,8 +18,6 @@ import java.util.Date;
  */
 public class ComUser implements Serializable {
 
-    private static final long serialVersionUID = -2543606660018018096L;
-
     private Long id;
     /**
      * 创建时间
@@ -113,8 +111,6 @@ public class ComUser implements Serializable {
      * 是否代理商(0否1是)
      */
     private Integer isAgent;
-    private Integer sendType;
-    private Integer isVerified;
     /**
      * 性别(0女1男)
      */
@@ -320,22 +316,6 @@ public class ComUser implements Serializable {
         this.sex = sex;
     }
 
-    public Integer getSendType() {
-        return sendType;
-    }
-
-    public void setSendType(Integer sendType) {
-        this.sendType = sendType;
-    }
-
-    public Integer getIsVerified() {
-        return isVerified;
-    }
-
-    public void setIsVerified(Integer isVerified) {
-        this.isVerified = isVerified;
-    }
-
     @Override
     public String toString() {
         return "ComUser{" +
@@ -351,7 +331,6 @@ public class ComUser implements Serializable {
                 ", rtokenExpire=" + rtokenExpire +
                 ", realName='" + realName + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
                 ", idCard='" + idCard + '\'' +
                 ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
                 ", idCardBackUrl='" + idCardBackUrl + '\'' +
@@ -363,8 +342,6 @@ public class ComUser implements Serializable {
                 ", regionName='" + regionName + '\'' +
                 ", address='" + address + '\'' +
                 ", isAgent=" + isAgent +
-                ", sendType=" + sendType +
-                ", isVerified=" + isVerified +
                 ", sex=" + sex +
                 '}';
     }

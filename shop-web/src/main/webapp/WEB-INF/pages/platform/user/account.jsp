@@ -57,7 +57,7 @@
                     <c:forEach var="userBill" items="${userBills}">
                         <div>
                             <p><span class="sd">${month}-${day}</span><span>${year}</span></p>
-                            <h1>+${userBill.pfIncome}</h1>
+                            <h1>+${userBill.billAmount}</h1>
                         </div>
                     </c:forEach>
                 </div>

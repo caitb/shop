@@ -25,11 +25,6 @@
             <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>进货市场</p>
         </header>
-        <%--<div class="admin">--%>
-            <%--<img src="${user.wxHeadImg}" alt="">--%>
-            <%--<h3>${user.wxNkName}—欢迎您登入</h3>--%>
-            <%--&lt;%&ndash;<span><a href="<%=path%>/binding/bindingList" style="color:white;">绑定账号</a></span>&ndash;%&gt;--%>
-        <%--</div>--%>
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">

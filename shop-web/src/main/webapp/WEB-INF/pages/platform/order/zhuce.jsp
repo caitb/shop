@@ -28,27 +28,27 @@
         <div class="xinxi">
             <p>注册信息</p>
             <p>支付订单</p>
-            <p>提交资料</p>
+            <p>选择拿货方式</p>
         </div>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
         </p>
         <main>
             <section class="sec1">
-                <div>
-                    <p>手机号　<b style="color:#999999;">${mobile}</b></p>
-                </div>
-                <div>
-                    <p>姓　名：
-                        <c:if test="${name==''}">
-                            <input type="text" class="name" id="name" name="name"/>
-                        </c:if>
-                        <c:if test="${name!=''}">
-                            <input type="text" class="name" id="name" name="name" value="${name}" readonly/>
-                        </c:if>
-                        <span class="onc"></span><b class="gao"></b>
-                    </p>
-                </div>
+                <%--<div>--%>
+                    <%--<p>手机号　<b style="color:#999999;">${mobile}</b></p>--%>
+                <%--</div>--%>
+                <%--<div>--%>
+                    <%--<p>姓　名：--%>
+                        <%--<c:if test="${name==''}">--%>
+                            <%--<input type="text" class="name" id="name" name="name"/>--%>
+                        <%--</c:if>--%>
+                        <%--<c:if test="${name!=''}">--%>
+                            <%--<input type="text" class="name" id="name" name="name" value="${name}" readonly/>--%>
+                        <%--</c:if>--%>
+                        <%--<span class="onc"></span><b class="gao"></b>--%>
+                    <%--</p>--%>
+                <%--</div>--%>
                 <div>
                     <p>微信号：
                         <c:if test="${weixinId==''}">
@@ -63,7 +63,7 @@
             <section class="sec2">
                 <c:if test="${pWxNkName==''}">
                     <h3>
-                        <span>是否有上级合伙人：</span>
+                        <span>是否有推荐人：</span>
                         <input type="radio" id="q" name="danx" class="shi" checked="checked">
                         <label for="q" style="margin-left:5px;">是</label>
                         <input type="radio" id="b" name="danx" class="fou"/>
@@ -81,7 +81,7 @@
                     </div>
                 </c:if>
 
-                <h2 style="text-indent:10px;font-weight:500">合伙人等级：</h2>
+                <h2 style="text-indent:10px;font-weight:500">选择合伙人等级：</h2>
                 <div class="dengji">
                     ${agentInfo}
                 </div>

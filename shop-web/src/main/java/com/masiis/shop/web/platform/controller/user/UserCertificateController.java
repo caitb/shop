@@ -27,7 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -219,14 +218,14 @@ public class UserCertificateController extends BaseController {
     /**
      * @Author 贾晶豪
      * @Date 2016/3/17 0017 下午 6:37
-     * 个人商品证书详情
+     * 个人证书详情
      */
     @RequestMapping(value = "/userct/{pfuId}")
     public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
                                               @PathVariable("pfuId") Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cdetail");
-        HttpSession session = request.getSession();
-        ComUser comUser = (ComUser) session.getAttribute("comUser");
+        PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
+        ComUser comUser = userService.getUserById(pfUserSku.getUserId());
         PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
         ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
         mav.addObject("cdetail", cdetail);
@@ -270,68 +269,6 @@ public class UserCertificateController extends BaseController {
         mav.addObject("comSku", comSku);
         return mav;
     }
-
-    /**
-     * 更新授权书信息
-     * Jing Hao
-     */
-    @ResponseBody
-    @RequestMapping("/update.do")
-    public String userCertificateUpdate(HttpServletRequest request,
-                                        @RequestParam(value = "userSkuId", required = true) Integer userSkuId,
-                                        @RequestParam(value = "name", required = true) String name,
-                                        @RequestParam(value = "wxh", required = true) String wxh,
-                                        @RequestParam(value = "idCard", required = true) String idCard,
-                                        @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
-                                        @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
-    ) {
-        JSONObject object = new JSONObject();
-        try {
-            if (StringUtils.isBlank(name)) {
-                throw new BusinessException("姓名不能为空");
-            }
-            if (StringUtils.isBlank(idCard)) {
-                throw new BusinessException("身份证号不能为空");
-            }
-            if (StringUtils.isBlank(idCard)) {
-                throw new BusinessException("微信号不能为空");
-            }
-            if (StringUtils.isBlank(idCardFrontUrl)) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            if (StringUtils.isBlank(idCardBackUrl)) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            PfUserSku pfUserSku = userSkuService.getUserSkuById(userSkuId);
-            if (pfUserSku == null) {
-                throw new BusinessException("代理信息有误");
-            }
-            String rootPath = request.getServletContext().getRealPath("/");
-            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardFrontUrl);
-            String backFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardBackUrl);
-            //修改用户数据
-            ComUser comUser = userService.getUserById(pfUserSku.getUserId());
-            comUser.setIdCard(idCard);
-            comUser.setWxId(wxh);
-            comUser.setIdCardFrontUrl(frontFillFullName);
-            comUser.setIdCardBackUrl(backFillFullName);
-            //更新证书申请数据
-            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
-            pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
-            pfUserCertificate.setIdCard(idCard);
-            pfUserCertificate.setMobile(comUser.getMobile());
-            pfUserCertificate.setWxId(comUser.getWxId());
-            pfUserCertificate.setStatus(0);
-            userService.updateUserCertificate(comUser, pfUserCertificate);
-            object.put("isError", false);
-        } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
-        }
-        return object.toJSONString();
-    }
-
     /**
      * 更新证书
      * Jing Hao

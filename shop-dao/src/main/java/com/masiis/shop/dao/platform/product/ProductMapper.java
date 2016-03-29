@@ -18,7 +18,7 @@ public interface ProductMapper {
 
     Integer maxDiscount();
 
-    List<Product> getProductsByUser(Integer userId);
+    List<Product> getProductsByUser(Long userId);
 
     void updateStock(Map<String, Object> paramsMap);
 

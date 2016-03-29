@@ -580,7 +580,6 @@ public class BOrderController extends BaseController {
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         ComUser comUser = getComUser(request);
-        ;
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());

@@ -158,15 +158,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="priceMarket" class="col-sm-4 control-label">市场价</label>
+            <label for="priceMarket" class="col-sm-4 control-label">市场零售价</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场价">
+                <input type="text" class="form-control" id="priceMarket" name="priceMarket" placeholder="市场零售价">
             </div>
         </div>
         <div class="form-group">
-            <label for="priceRetail" class="col-sm-4 control-label">零售价</label>
+            <label for="priceRetail" class="col-sm-4 control-label">微信零售价</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="零售价">
+                <input type="text" class="form-control" id="priceRetail" name="priceRetail" placeholder="微信零售价">
             </div>
         </div>
         <div class="form-group">
@@ -221,7 +221,7 @@
                                             %
                                         </span>
                                     </div>
-                                    每件商品<small class="text-info">a*-999-a999</small>元
+                                    每件商品<small class="text-info dfenrun"></small>元
                                 </div>
 
                                 <hr>
@@ -233,7 +233,7 @@
                                     <div>
                                         <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder="">
                                     </div>
-                                    金额门槛<small class="text-info">~9.99 ~9.99 999</small><small>元</small>
+                                    金额门槛<small class="text-info threshold"></small>元
                                 </div>
 
                                 <hr>
@@ -267,7 +267,7 @@
                                             %
                                         </span>
                                     </div>
-                                    每件商品<small class="text-info">a*-999-a999</small>元
+                                    每件商品<small class="text-info dfenrun"></small>元
                                 </div>
 
                                 <hr>
@@ -279,7 +279,7 @@
                                     <div>
                                         <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
                                     </div>
-                                    金额门槛<small class="text-info">~9.99 ~9.99 999</small><small>元</small>
+                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
                                 </div>
 
                                 <hr>
@@ -313,7 +313,7 @@
                                             %
                                         </span>
                                     </div>
-                                    每件商品<small class="text-info">a*-999-a999</small>元
+                                    每件商品<small class="text-info dfenrun"></small>元
                                 </div>
 
                                 <hr>
@@ -325,7 +325,7 @@
                                     <div>
                                         <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
                                     </div>
-                                    金额门槛<small class="text-info">~9.99 ~9.99 999</small><small>元</small>
+                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
                                 </div>
 
                                 <hr>
@@ -373,7 +373,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -396,7 +396,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -419,7 +419,7 @@
                                             %
                                         </span>
                                     </div>
-                                    返利<small class="text-info">a*-999-a999</small>元
+                                    返利<small class="text-info ffenrun"></small>元
                                 </div>
                             </div>
                         </div>
@@ -576,17 +576,19 @@
                 <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
             </div>
             <script>
-                <%--$('#skuSave').on('click', function(){--%>
-                    <%--$('#content').val(UE.getEditor('editor').getAllHtml());--%>
-                    <%--$.ajax({--%>
-                        <%--url: '<%=basePath%>product/add.do',--%>
-                        <%--type: 'post',--%>
-                        <%--data: $('#skuForm').serialize(),--%>
-                        <%--success: function(msg){--%>
-                            <%--alert(msg);--%>
-                        <%--}--%>
-                    <%--});--%>
-                <%--});--%>
+
+                $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
+                    var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
+                    $('input[name="quantitys"]').each(function(i,o){
+                        var discount = $($('input[name="discounts"]').get(i)).val();
+                        var quantity = $(o).val() ? $(o).val() : 0;
+                        var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
+                        $($('.dfenrun').get(i)).html(priceRetail*discount);
+                        $($('.threshold').get(i)).html(priceRetail*discount*quantity);
+                        $($('.ffenrun').get(i)).html(priceRetail*distributionDiscount);
+                    });
+                });
+
 
                 $(document).ready(function() {
                     $('#skuForm').bootstrapValidator({

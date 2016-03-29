@@ -116,7 +116,7 @@ public class BindingController {
 //        session.setAttribute("comUser",comUser1);
         ComUser comUser =(ComUser)session.getAttribute("comUser");
         comUser.setMobile(phone);
-        comUser.setPassword(KeysUtil.md5Encrypt(password));
+        //comUser.setPassword(KeysUtil.md5Encrypt(password));
         userService.updateComUser(comUser);
         session.setAttribute("comUser",comUser);
         ModelAndView mav = new ModelAndView();

@@ -67,7 +67,7 @@ public class UserApplyController {
         mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
         mv.addObject("slogan", productSimple.getSlogan());
         mv.addObject("pUserId", pUserId);
-        if (type != null && type == 1) {
+        if (type == 1) {
             mv.addObject("type", 1);
         } else {
             mv.addObject("type", 0);
@@ -96,8 +96,8 @@ public class UserApplyController {
         //获取商品代理信息
         List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
         int levelID = 0;
-        if (type != null && type == 1) {
-            PfUserSku pfUserSku = pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+        if (type == 1) {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
             if (pfUserSku == null) {
                 throw new BusinessException("推荐人还未代理过此产品");
             }

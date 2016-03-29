@@ -33,10 +33,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                            <a href="/product/${indexComSkus.id}"><img src="${indexComSkus.imgUrl}" alt=""></a>
                             <h2>${indexComSkus.comSku.name}</h2>
                             <h1>￥${indexComSkus.comSku.priceRetail} <span>${indexComSkus.discountLevel}</span></h1>
-                            <h3>
-                                <p>超过<span>${indexComSkus.agentNum}</span>人代理</p><c:choose><c:when test="${indexComSkus.isPartner==1 && indexComSkus.isPay==1}"><a href="javascript:;" >您已合伙</a></c:when>
-                                <c:otherwise><a href="shenqing.html" class="he">我要合伙</a></c:otherwise></c:choose>
-                            </h3>
+                            <h3>保证金：${indexComSkus.bail}元</h3>
+                            <h4>试用费用：${indexComSkus.shipAmount}元</h4>
+                            <h5>
+                                <p>超过<span>${indexComSkus.agentNum}</span>人代理</p>
+                                <%--<c:choose><c:when test="${indexComSkus.isPartner==1 && indexComSkus.isPay==1}"><a href="javascript:;" >您已合伙</a></c:when>--%>
+                                <%--<c:otherwise><a href="shenqing.html" class="he">我要合伙</a></c:otherwise></c:choose>--%>
+                            </h5>
                         </div>
                          </c:forEach>
                     </section>

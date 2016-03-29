@@ -13,6 +13,7 @@ import java.util.Date;
 public class IndexComSku {
     private Integer id;//sku主键id
     private BigDecimal shipAmount;//试用费用
+    private BigDecimal bail;//保证金
     private Date createTime;//创建日期
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
@@ -32,6 +33,8 @@ public class IndexComSku {
     private Integer agentNum;//代理人数
     private Integer isPartner ;//是否为合伙人
 
+    public void setBail(BigDecimal bail) {this.bail = bail;}
+    public BigDecimal getBail() {return bail;}
     public void setMaxDiscount(Integer maxDiscount) {this.maxDiscount = maxDiscount;}
     public Integer getMaxDiscount() {return maxDiscount;}
     public void setShipAmount(BigDecimal shipAmount) {this.shipAmount = shipAmount;}

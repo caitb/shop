@@ -104,7 +104,7 @@ public class PfUserBillService {
         record.setComUserId(bill.getUserId());
         record.setFeeType(type);
         record.setHandleFee(bill.getBillAmount());
-        record.setHandlerTime(new Date());
+        record.setHandleTime(new Date());
 
         return record;
     }

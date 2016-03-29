@@ -103,14 +103,16 @@
                         <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
                         <h2>${Sku.comSku.name}</h2>
                         <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>
-                        <h3>
+                        <h3>保证金：${Sku.bail}元</h3>
+                        <h4>试用费用：${Sku.shipAmount}元</h4>
+                        <h5>
                             <p>超过<span>${Sku.agentNum}</span>人合伙</p>
                             <%--<c:choose><c:when--%>
                                 <%--test="${Sku.isPartner==1 && Sku.isPay==1}">--%>
                             <%--<a href="javascript:;">您已合伙</a></c:when>--%>
                             <%--<c:otherwise><a--%>
                                     <%--href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>--%>
-                        </h3>
+                        </h5>
                     </div>
                 </c:forEach>
             </section>

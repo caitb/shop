@@ -38,6 +38,8 @@
                     <p>亲，卖家已发货~~</p></c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==3}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p></c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==6}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
+                    <p>亲，订单排单中~~</p></c:if>
             </div>
             <div class="kuaidi"> <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
                 <p>承运公司：<span>${bdpb.shipManName}</span></p>

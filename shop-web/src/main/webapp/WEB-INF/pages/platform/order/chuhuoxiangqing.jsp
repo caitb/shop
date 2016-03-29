@@ -34,7 +34,9 @@
                        <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;"><h1>未收货</h1>
                        <p>亲，订单还未完结~~</p></c:if><c:if test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}">
                        <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
-                       <p>亲，交易成功~~</p></c:if>
+                       <p>亲，交易成功~~</p></c:if><c:if test="${borderDetail.pfBorder.orderStatus==6}">
+                       <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
+                       <p>亲，订单排单中~~</p></c:if>
                    </div>
                    <div class="sec2">
                        <p><span>订单编号：</span><span>${borderDetail.pfBorder.orderCode}</span></p>

@@ -35,6 +35,8 @@ public class Product extends ComSku {
 
     private Integer pfuId;
 
+    private Integer sendType;//发货方式
+
     public String getSpuName() {
         return spuName;
     }
@@ -129,5 +131,13 @@ public class Product extends ComSku {
 
     public void setPfuId(Integer pfuId) {
         this.pfuId = pfuId;
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
     }
 }

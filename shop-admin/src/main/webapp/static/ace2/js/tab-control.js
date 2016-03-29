@@ -166,6 +166,8 @@
             //jQuery(tabControl_tabFind_ul).append('<li index="' + i + '" tab="' + t + '">' + t + '<a href="javascript:;">关闭</a></li>');
             //jQuery(tabControl_main)      .append('<iframe src="' + h + '" scrolling="auto" frameborder="0" reload="' + r + '"></iframe>');
 
+            jQuery(tabControl_tab_ul).children('li').attr('class', 'visited');
+            jQuery(tabControl_main).children('div').attr('class', 'tab-pane fade');
             jQuery(tabControl_tab_ul).append('<li class="active" index="' + i + '" tab="' + t + '" ><a data-toggle="tab" href="#' + i + '"><i class="green ace-icon fa fa-home bigger-120"></i>' + t + '</a></li>');
             jQuery(tabControl_tabFind_ul).append('<li index="' + i + '" tab="' + t + '">' + t + '<a href="javascript:;">关闭</a></li>');
             jQuery(tabControl_main)      .append('<div id="' + i + '" class="tab-pane fade in active"><iframe src="' + h + '" scrolling="auto" frameborder="0" reload="' + r + '"></iframe></div>');

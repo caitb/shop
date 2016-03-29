@@ -65,7 +65,7 @@
         SELECT  MAX(discount) From com_agent_level
     </select>
     <!-->用户商品列表<-->
-    <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="int">
+    <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="Long">
         SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id

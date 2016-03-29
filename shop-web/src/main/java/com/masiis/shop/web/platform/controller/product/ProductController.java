@@ -57,7 +57,7 @@ public class ProductController extends BaseController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Integer userId) throws Exception{
+    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/userSkulist");
         List<Product> userProducts = productService.productListByUser(userId);
         mav.addObject("userProducts",userProducts);

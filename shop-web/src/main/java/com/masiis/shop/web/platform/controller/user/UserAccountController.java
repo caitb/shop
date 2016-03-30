@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -117,10 +119,13 @@ public class UserAccountController extends BaseController{
                 userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),year+month,0,0);
             }
             jsonArray = new JSONArray();
+            SimpleDateFormat format = new SimpleDateFormat("dd");
+            String date;
             for(PfUserBill pfUserBill:userBills){
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("date",pfUserBill.getQueryDate());
-                jsonObject.put("incom",pfUserBill.getPfIncome());
+                date = format.format(pfUserBill.getBalanceDate());
+                jsonObject.put("date",date);
+                jsonObject.put("incom",pfUserBill.getBillAmount());
                 jsonArray.put(jsonObject);
             }
             log.info("jsonArray:"+jsonArray.toString());

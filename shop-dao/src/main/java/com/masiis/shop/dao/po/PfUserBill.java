@@ -46,10 +46,6 @@ public class PfUserBill {
      */
     private BigDecimal pfBrokerage;
     /**
-     * 计算后的纯收入
-     */
-    private BigDecimal pfIncome;
-    /**
      * 供应商id
      */
     private Long supplierId;
@@ -66,7 +62,6 @@ public class PfUserBill {
      */
     private Integer status;
     private String remark;
-    private String queryDate;
 
     public Long getId() {
         return id;
@@ -151,21 +146,5 @@ public class PfUserBill {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    public BigDecimal getPfIncome() {
-        return pfIncome;
-    }
-
-    public void setPfIncome(BigDecimal pfIncome) {
-        this.pfIncome = pfIncome;
-    }
-
-    public String getQueryDate() {
-        return queryDate;
-    }
-
-    public void setQueryDate(String queryDate) {
-        this.queryDate = queryDate;
     }
 }

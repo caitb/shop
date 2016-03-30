@@ -1,16 +1,14 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.platform.order.*;
-import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
+import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
+import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
+import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.zip.Inflater;
 
 /**
  * payBOrderService
@@ -51,7 +48,12 @@ public class payBOrderService {
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private ComUserAccountService comUserAccountService;
-
+    @Resource
+    ComUserAccountMapper accountMapper;
+    @Resource
+    PfUserBillItemMapper itemMapper;
+    @Resource
+    ComUserAccountRecordMapper recordMapper;
 
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
@@ -79,14 +81,13 @@ public class payBOrderService {
      * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void payBOrderI(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
-        //<1>修改订单支付信息
+        log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
         pfBorderPaymentMapper.updateById(pfBorderPayment);
         BigDecimal payAmount = pfBorderPayment.getAmount();
         Long bOrderId = pfBorderPayment.getPfBorderId();
-        log.info("<1>修改订单支付信息");
-        //<2>修改订单数据
+        log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder.getSendType() != 1) {
             throw new BusinessException("订单拿货类型错误：为" + pfBorder.getSendType() + ",应为1.");
@@ -97,8 +98,7 @@ public class payBOrderService {
         pfBorder.setPayStatus(1);//已付款
         pfBorder.setOrderStatus(1);//已付款
         pfBorderMapper.updateById(pfBorder);
-        log.info("<2>修改订单数据");
-        //<3>添加订单日志
+        log.info("<3>添加订单日志");
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
         pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
         pfBorderOperationLog.setCreateTime(new Date());
@@ -106,30 +106,25 @@ public class payBOrderService {
         pfBorderOperationLog.setPfBorderId(bOrderId);
         pfBorderOperationLog.setRemark("订单已支付");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        log.info("<3>添加订单日志");
-        //<4>修改合伙人商品关系状态
+        log.info("<4>修改合伙人商品关系状态");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {
             comUser.setIsAgent(1);
             comUserMapper.updateByPrimaryKey(comUser);
         }
-        log.info("<4>修改合伙人商品关系状态");
-        //<5>修改用户sku代理关系支付状态
+        log.info("<5>修改用户sku代理关系支付状态");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderId(bOrderId);
         if (pfUserSku != null) {
             pfUserSku.setIsPay(1);
             pfUserSku.setBail(pfBorder.getBailAmount());
             pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
         }
-        log.info("<5>修改用户sku代理关系支付状态");
-        //**************维护商品信息******************
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            //<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
+            log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
             if (pfBorder.getOrderType() == 0) {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
-            log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
-            //<7>减少发货方库存 如果用户id是0操作平台库存
+            log.info("<7>减少发货方库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
@@ -157,8 +152,7 @@ public class payBOrderService {
                     }
                 }
             }
-            log.info("<7>减少发货方库存 如果用户id是0操作平台库存");
-            //<8>增加收货方库存
+            log.info("<8>增加收货方库存");
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             //如果还没有库存信息直接初始化库存
             if (pfUserSkuStock == null) {
@@ -177,24 +171,21 @@ public class payBOrderService {
                     throw new BusinessException("增加用户平台库存失败");
                 }
             }
-            log.info("<8>增加收货方库存");
         }
-        //<9>增加保证金
-//        ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
-//        ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
-//        // 保存修改前的金额
-//        recordS.setPrevFee(accountS.getCostFee());
-//        accountS.setCostFee(accountS.getCostFee().add(orderPayment));
-//        // 保存修改后的金额
-//        recordS.setNextFee(accountS.getCostFee());
-//        recordMapper.insert(recordS);
-//        int typeS = accountMapper.updateByIdWithVersion(accountS);
-//        if(typeS == 0){
-//            throw new BusinessException("修改进货方成本账户失败!");
-//        }
-        //<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+        log.info("<9>增加保证金");
+        ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
+        ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
+        // 保存修改前的金额
+        recordS.setPrevFee(accountS.getBailFee());
+        accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
+        // 保存修改后的金额
+        recordS.setNextFee(accountS.getBailFee());
+        recordMapper.insert(recordS);
+        int typeS = accountMapper.updateByIdWithVersion(accountS);
+        if (typeS == 0) {
+            throw new BusinessException("修改进货方成本账户失败!");
+        }
+        log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
         comUserAccountService.countingByOrder(pfBorder);
-        log.info("<9>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
-
     }
 }

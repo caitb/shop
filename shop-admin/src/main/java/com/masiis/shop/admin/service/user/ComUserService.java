@@ -67,6 +67,26 @@ public class ComUserService {
         return pageMap;
     }
 
+    /**
+     * 获取待审核会员
+     *
+     * @param pageNumber 当前页码
+     * @param pageSize   每页记录数
+     * @param comUser    查询条件
+     * @return
+     */
+    public Map<String, Object> auditListByCondition(Integer pageNumber, Integer pageSize, ComUser comUser){
+        PageHelper.startPage(pageNumber, pageSize);
+        List<ComUser> comUsers = comUserMapper.auditList(comUser);
+        PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
+
+        Map<String, Object> pageMap = new HashMap<>();
+        pageMap.put("total", pageInfo.getTotal());
+        pageMap.put("rows", comUsers);
+
+        return pageMap;
+    }
+
     public String findByPid(Integer pid) {
         return comUserMapper.findByPid(pid);
     }

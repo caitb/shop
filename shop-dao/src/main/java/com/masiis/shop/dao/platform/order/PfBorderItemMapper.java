@@ -25,4 +25,6 @@ public interface PfBorderItemMapper {
     int updateById(PfBorderItem pfBorderItem);
 
     List<PfBorderItem> selectAllByOrderId(Long pfBorderId);
+
+    List<PfBorderItem> selectPfBorderItemGroupByspuId(Long pfBorderId);
 }

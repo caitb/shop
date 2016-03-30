@@ -485,6 +485,14 @@ public class BOrderService {
     }
 
     /**
+     * 通过spuId分组，根据id查询
+     * @param pfBorderId
+     * @return
+     */
+    public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
+        return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
+    }
+    /**
      * 查用户商品关系表
      *
      * @author muchaofeng

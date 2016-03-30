@@ -210,7 +210,7 @@ public class ComUserAccountService {
      * @param billId
      * @return
      */
-    private ComUserAccountRecord createAccountRecordByBail(BigDecimal bailAmount,
+    public ComUserAccountRecord createAccountRecordByBail(BigDecimal bailAmount,
                                                                ComUserAccount account, Long billId) {
         ComUserAccountRecord res = new ComUserAccountRecord();
 

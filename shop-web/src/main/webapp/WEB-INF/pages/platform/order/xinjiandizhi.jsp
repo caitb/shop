@@ -17,8 +17,6 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
     <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-    <link rel="stylesheet" href="<%=path%>/static/css/alert.css">
-
 </head>
 <script>
     /*    var promise =  $.Deferred().promise();
@@ -127,7 +125,6 @@
 <script src="<%=path%>/static/js/comArea.js"></script>
 <script src="<%=path%>/static/js/address.js"></script>
 <script>
-    $.definedAlertWindow.Alert("姓名不能为空","<%=basePath%>");
     comAreaJS.init("add");
     addressJS.init();
 </script>

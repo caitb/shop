@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.asm.Opcodes;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -60,6 +61,24 @@ public class UserIdentityAuthController extends BaseController {
         return jumpPage;
     }
 
+    /**
+     * 实时的获取审核状态
+     * @author hanzengzhi
+     * @date 2016/3/30 19:43
+     */
+    @RequestMapping(value = "getAuditStatusInfo.do")
+    public String getAuditStatusInfo(HttpServletRequest request,HttpServletResponse response){
+        ComUser comUser = getComUser(request);
+        if (comUser!=null){
+            return comUser.getAuditStatus()+"";
+        }
+        return "";
+    }
+    /**
+     * 提交身份认证审核
+     * @author hanzengzhi
+     * @date 2016/3/30 19:35
+     */
     @ResponseBody
     @RequestMapping("userVerified/save.do")
     public String userVerifiedAdd(HttpServletRequest request,

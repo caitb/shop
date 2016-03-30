@@ -102,7 +102,7 @@ public class ComUserAccountService {
 
             log.info("插入总销售额的变动流水!");
 
-            int type = accountMapper.updateByPrimaryKey(account);
+            int type = accountMapper.updateByIdWithVersion(account);
             if(type == 0){
                 throw new BusinessException("修改出货方结算金额和总销售额失败!");
             }
@@ -119,7 +119,7 @@ public class ComUserAccountService {
             // 保存修改后的金额
             recordS.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordS);
-            int typeS = accountMapper.updateByPrimaryKey(accountS);
+            int typeS = accountMapper.updateByIdWithVersion(accountS);
             if(typeS == 0){
                 throw new BusinessException("修改进货方成本账户失败!");
             }

@@ -107,6 +107,10 @@
     <p class="tishi" id="errorMessageId"></p>
     <h1 class="j_qu" id="nextPageId">下一步</h1>
 </div>
+<div class="back_login" style="display:none;">
+    <p>您还不是合伙人，先去好货市场看看把~</p>
+    <h1><span id="quxiao">取消</span><span id="goMark">去认证</span></h1>
+</div>
 <div class="back" style="display: none">
 
 </div>

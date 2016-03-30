@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-09 Created
+ * 2016-03-30 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -50,107 +50,84 @@ public class PfUserSku {
      */
     private Long pfBorderId;
     /**
-     * 备注
-     */
-    private String remark;
-    /**
      * 保证金
      */
     private BigDecimal bail;
+    /**
+     * 备注
+     */
+    private String remark;
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Date getCreateTime() {
         return createTime;
     }
-
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
     public String getCode() {
         return code;
     }
-
     public void setCode(String code) {
-        this.code = code;
+        this.code = code == null ? null : code.trim();
     }
-
     public Integer getPid() {
         return pid;
     }
-
     public void setPid(Integer pid) {
         this.pid = pid;
     }
-
     public Long getUserId() {
         return userId;
     }
-
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-
     public Integer getSkuId() {
         return skuId;
     }
-
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
-
     public Integer getAgentLevelId() {
         return agentLevelId;
     }
-
     public void setAgentLevelId(Integer agentLevelId) {
         this.agentLevelId = agentLevelId;
     }
-
     public Integer getIsPay() {
         return isPay;
     }
-
     public void setIsPay(Integer isPay) {
         this.isPay = isPay;
     }
-
     public Integer getIsCertificate() {
         return isCertificate;
     }
-
     public void setIsCertificate(Integer isCertificate) {
         this.isCertificate = isCertificate;
     }
-
     public Long getPfBorderId() {
         return pfBorderId;
     }
-
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
     }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public BigDecimal getBail() {
         return bail;
     }
-
     public void setBail(BigDecimal bail) {
         this.bail = bail;
+    }
+    public String getRemark() {
+        return remark;
+    }
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

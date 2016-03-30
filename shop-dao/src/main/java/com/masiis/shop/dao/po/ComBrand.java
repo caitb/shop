@@ -3,18 +3,12 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-03-30 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.util.Date;
 
-/**
- * 品牌表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class ComBrand {
 
     private Integer id;
@@ -31,6 +25,10 @@ public class ComBrand {
      * logo标记
      */
     private String logoUrl;
+    /**
+     * 品牌描述
+     */
+    private String content;
     private String remark;
 
     public Integer getId() {
@@ -62,6 +60,12 @@ public class ComBrand {
     }
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl == null ? null : logoUrl.trim();
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
     public String getRemark() {
         return remark;

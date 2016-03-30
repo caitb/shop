@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.product.ComUnitMeasureMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUnitMeasure" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+               id,
+               name,
+               createTime
+        FROM
+               com_unit_measure
+        WHERE
+               id = #{id}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComUnitMeasure" resultMap="BaseResultMap">
+        SELECT
+               id,
+               name,
+               createTime
+        FROM
+               com_unit_measure
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="createTime != null">
+                AND createTime = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUnitMeasure" useGeneratedKeys="true" keyProperty="id" >
+        insert into com_unit_measure
+                    (
+                    id,
+                    name,
+                    create_time,
+                    )
+        values
+                    (
+                    #{id,jdbcType=INTEGER},
+                    #{name,jdbcType=VARCHAR},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    )
+    </insert>
+
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.ComUnitMeasure" >
+        update com_unit_measure
+        <set>
+            <if test="name != null">
+                name          = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time   = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where
+        id            = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer" >
+        delete from com_unit_measure where id = #{id,jdbcType=INTEGER}
+    </delete>
+</mapper>

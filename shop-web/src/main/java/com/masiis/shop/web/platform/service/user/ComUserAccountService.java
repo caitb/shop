@@ -76,9 +76,10 @@ public class ComUserAccountService {
             PfUserBillItem item = createBillItemByBOrder(order);
             itemMapper.insert(item);
 
+            BigDecimal orderPayment = order.getPayAmount();
+
             // 获取对应的account记录
             ComUserAccount account = accountMapper.findByUserId(order.getUserId());
-            //account.setCostFee(account.getCostFee().add(order.));
         } catch (Exception e) {
             log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage());
             throw new BusinessException(e);

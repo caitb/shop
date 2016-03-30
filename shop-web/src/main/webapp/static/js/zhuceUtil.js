@@ -106,9 +106,9 @@ $(function () {
 
     $("#next").click(function () {
         var n = 0;
-        //if (!nameCheckFun($("#name"))) {
-        //    n++;
-        //}
+/*        if (!nameCheckFun($("#name"))) {
+            n++;
+        }*/
         if (!weixinCheckFun($("#weixin"))) {
             n++;
         }
@@ -119,7 +119,7 @@ $(function () {
             return;
         }
         var paraData = {};
-        //paraData.name = $("#name").val();
+        paraData.name = $("#name").val();
         paraData.weixinId = $("#weixin").val();
         paraData.skuId = skuId;
         paraData.levelId = $(".dengji .on").attr("levelId");
@@ -136,6 +136,8 @@ $(function () {
             success: function (data) {
                 if (data && data.isError == false) {
                     $("#q_skuName").html(skuName);
+                    $("#q_name").html($("#name").val());
+                    $("#q_mobile").html(mobile);
                     $("#q_weixinId").html($("#weixin").val());
                     if ($('input[name="danx"]:checked').attr("class") == "shi") {
                         $("#q_pMobile").html($("#pMobile").val());
@@ -146,6 +148,8 @@ $(function () {
                     $("#q_amount").html($(".dengji .on [name='amount']").html());
                     $(".back_que").show();
                     $(".back").show();
+                } else {
+                    alert(data.message);
                 }
             }
         });

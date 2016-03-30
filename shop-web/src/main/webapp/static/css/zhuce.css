@@ -125,7 +125,6 @@
 }
 .wrap #box main .sec2 {
   width: 100%;
-  background: white;
 }
 .wrap #box main .sec2 h2 {
   font-size: 13px;
@@ -133,11 +132,13 @@
   color: #333333;
   line-height: 30px;
   text-indent: 10px;
+  background: white;
 }
 .wrap #box main .sec2 > h3 {
-  margin: 0 10px;
+  padding: 0 10px;
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
+  background: white;
 }
 .wrap #box main .sec2 > h3 input {
   display: none;
@@ -146,20 +147,22 @@
   background: url("../images/icon_14.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
+
 }
 .wrap #box main .sec2 > h3 input:checked + label {
   background: url("../images/icon_11.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
 }
-.wrap #box main .sec2 div {
+.tui,#hehuo{
+    display: none;
+
+}
+.wrap #box main .sec2 #hehuo {
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
   background: white;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-orient: vertical;
+  margin-bottom: 5px;
 }
 .wrap #box main .sec2 div h3 {
   position: relative;
@@ -205,6 +208,9 @@
   line-height: 40px;
   color: #999999;
   display: none;
+}
+.wrap #box main .sec2 .dengji{
+  background: white;
 }
 .wrap #box main .sec2 .dengji p {
   display: block;

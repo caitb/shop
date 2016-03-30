@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hzz on 2016/3/29.
@@ -28,6 +29,24 @@ public class UserPersonalInfoController extends BaseController {
     @Resource
     private UserPersonalInfoService userPersonalInfoService;
 
+    /**
+     * 获取个人信息的首页信息
+     * @author hanzengzhi
+     * @date 2016/3/30 17:55
+     */
+    @RequestMapping(value = "personalHomePageInfo.html")
+    public String getPersonalHomePageInfo(HttpServletRequest request ,HttpServletResponse response,Model model){
+        ComUser comUser = getComUser(request);
+        Map<String,Object> map = null;
+        if (comUser!=null){
+            map = userPersonalInfoService.getPersonalHomePageInfo(comUser.getId());
+        }
+        if (map!=null){
+            model.addAttribute("pfskuAgents",map.get("pfskuAgents"));
+        }
+        model.addAttribute("comUser",comUser);
+        return null;
+    }
 
     /**
      * 个人信息--微信号查询

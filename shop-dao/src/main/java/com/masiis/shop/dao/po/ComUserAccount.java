@@ -48,67 +48,105 @@ public class ComUserAccount {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Long getComUserId() {
         return comUserId;
     }
+
     public void setComUserId(Long comUserId) {
         this.comUserId = comUserId;
     }
+
     public BigDecimal getTotalIncomeFee() {
         return totalIncomeFee;
     }
+
     public void setTotalIncomeFee(BigDecimal totalIncomeFee) {
         this.totalIncomeFee = totalIncomeFee;
     }
+
     public BigDecimal getCostFee() {
         return costFee;
     }
+
     public void setCostFee(BigDecimal costFee) {
         this.costFee = costFee;
     }
+
     public BigDecimal getExtractableFee() {
         return extractableFee;
     }
+
     public void setExtractableFee(BigDecimal extractableFee) {
         this.extractableFee = extractableFee;
     }
+
     public BigDecimal getCountingFee() {
         return countingFee;
     }
+
     public void setCountingFee(BigDecimal countingFee) {
         this.countingFee = countingFee;
     }
+
     public BigDecimal getBailFee() {
         return bailFee;
     }
+
     public void setBailFee(BigDecimal bailFee) {
         this.bailFee = bailFee;
     }
+
     public Date getCreatedTime() {
         return createdTime;
     }
+
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
     public Date getChangedTime() {
         return changedTime;
     }
+
     public void setChangedTime(Date changedTime) {
         this.changedTime = changedTime;
     }
+
     public String getChangedBy() {
         return changedBy;
     }
+
     public void setChangedBy(String changedBy) {
-        this.changedBy = changedBy == null ? null : changedBy.trim();
+        this.changedBy = changedBy;
     }
+
     public Long getVersion() {
         return version;
     }
+
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "ComUserAccount{" +
+                "id=" + id +
+                ", comUserId=" + comUserId +
+                ", totalIncomeFee=" + totalIncomeFee +
+                ", costFee=" + costFee +
+                ", extractableFee=" + extractableFee +
+                ", countingFee=" + countingFee +
+                ", bailFee=" + bailFee +
+                ", createdTime=" + createdTime +
+                ", changedTime=" + changedTime +
+                ", changedBy='" + changedBy + '\'' +
+                ", version=" + version +
+                '}';
     }
 }

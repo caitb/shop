@@ -48,4 +48,13 @@ public class SkuAgentService {
     public PfSkuAgent getBySkuIdAndLevelId(Integer skuId, Integer levelId) {
         return pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
     }
+    /**
+     * 获取用户商品等级标志
+     * @author hanzengzhi
+     * @date 2016/3/30 17:36
+     */
+    public List<PfSkuAgent> getSkuLevelIconByUserId(Long userId){
+        return pfSkuAgentMapper.getSkuLevelIconByUserId(userId);
+    }
+
 }

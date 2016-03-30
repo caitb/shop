@@ -103,7 +103,7 @@ public class PfBorder {
      */
     private Integer sendType;
     /**
-     * 订单类型(0代理1补货)
+     * 订单类型(0代理1补货2拿货)
      */
     private Integer orderType;
     /**
@@ -155,20 +155,23 @@ public class PfBorder {
      * 数量
      */
     private Integer totalQuantity = 0;
+    private String pidUserName;
     /**
      * 订单商品
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
 
+    public void setPidUserName(String pidUserName) {this.pidUserName = pidUserName;}
+
+    public String getPidUserName() {return pidUserName;}
+
     public BigDecimal getBailAmount() {
         return bailAmount;
     }
-
     public void setBailAmount(BigDecimal bailAmount) {
         this.bailAmount = bailAmount;
     }
-
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
     }

@@ -26,7 +26,6 @@
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="send_type" property="sendType" jdbcType="INTEGER" />
         <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
-        <result column="is_verified" property="isVerified" jdbcType="INTEGER" />
         <result column="sex" property="sex" jdbcType="INTEGER"/>
         <result column="auditStatus" property="audit_status" jdbcType="INTEGER"/>
         <result column="auditReason" property="audit_reason" jdbcType="VARCHAR"/>
@@ -54,7 +53,7 @@
         #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR}, #{idCardBackUrl,jdbcType=VARCHAR},
         #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
         #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
-        #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isVerified,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
+        #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
         #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}
         )
     </insert>
@@ -91,7 +90,6 @@
         address = #{address,jdbcType=VARCHAR},
         is_agent = #{isAgent,jdbcType=INTEGER},
         send_type = #{sendType,jdbcType=INTEGER},
-        is_verified = #{isVerified,jdbcType=INTEGER},
         sex = #{sex,jdbcType=INTEGER},
         audit_status = #{auditStatus,jdbcType=INTEGER},
         audit_reason = #{auditReason,jdbcType=VARCHAR}
@@ -102,7 +100,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified,audit_status,audit_reason
+        is_agent, sex, send_type, audit_status,audit_reason
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -112,7 +110,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified,audit_status,audit_reason
+        is_agent, sex, send_type, audit_status,audit_reason
         from com_user
     </select>
     <select id="findByPid" resultType="string">
@@ -125,7 +123,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified ,audit_status,audit_reason
+        is_agent, sex, send_type, audit_status,audit_reason
         from com_user
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
@@ -134,9 +132,65 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified ,audit_status,audit_reason
+        is_agent, sex, send_type, audit_status,audit_reason
         from com_user
         where openid = #{openid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComUser" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               openid,
+               wx_nk_name,
+               wx_id,
+               wx_head_img,
+               access_token,
+               refresh_token,
+               atoken_expire,
+               rtoken_expire,
+               real_name,
+               mobile,
+               id_card,
+               id_card_front_url,
+               id_card_back_url,
+               province_id,
+               province_name,
+               city_id,
+               city_name,
+               region_id,
+               region_name,
+               address,
+               is_agent,
+               sex,
+               send_type,
+               audit_status,
+               audit_reason
+        from
+               com_user
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+            <if test="wxNkName != null">
+                AND wx_nk_name = #{wxNkName}
+            </if>
+            <if test="wxId != null">
+                AND wx_id = #{wxId}
+            </if>
+            <if test="realName != null">
+                AND real_name = #{realName}
+            </if>
+            <if test="mobile != null">
+                AND mobile = #{mobile}
+            </if>
+            <if test="idCard != null">
+                AND id_card = #{idCard}
+            </if>
+        </where>
     </select>
 
 </mapper>

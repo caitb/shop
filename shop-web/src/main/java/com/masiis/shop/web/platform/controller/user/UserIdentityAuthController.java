@@ -7,12 +7,14 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by hzz on 2016/3/30.
@@ -25,6 +27,38 @@ public class UserIdentityAuthController extends BaseController {
 
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
+
+    private static final int NOAUDIT = 0;//未审核
+    private static final int AUDITING = 1;//审核中
+    private static final int AUDITSUCCESS = 2;//审核通过
+    private static final int AUDITFAIL = 3;//审核未通过
+
+    /**
+     * 跳转到身份认证界面
+     * @author hanzengzhi
+     * @date 2016/3/30 16:19
+     */
+    @RequestMapping(value = "toInentityAuthPage.html")
+    public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
+                                     Model model) {
+        ComUser comUser = getComUser(request);
+        model.addAttribute("comUser",comUser);
+        String jumpPage = "";
+        if (comUser!=null){
+            switch (auditStatus){
+                case AUDITING://审核中
+                    break;
+                case AUDITSUCCESS://审核通过
+                    break;
+                case AUDITFAIL://审核不通过
+                    break;
+                default:
+                    break;
+            }
+        }
+        return jumpPage;
+    }
 
     @ResponseBody
     @RequestMapping("userVerified/save.do")
@@ -41,7 +75,7 @@ public class UserIdentityAuthController extends BaseController {
                 throw new BusinessException("用户信息有误请重新登陆");
             } else if (comUser.getIsVerified() == 1) {
                 throw new BusinessException("用户已经实名认证");
-            }else if (comUser.getAuditStatus()==1){
+            }else if (comUser.getAuditStatus()==AUDITFAIL){
                 throw new BusinessException("已提交审核");
             }
             if (org.apache.commons.lang.StringUtils.isBlank(name)) {
@@ -73,6 +107,4 @@ public class UserIdentityAuthController extends BaseController {
         }
         return object.toJSONString();
     }
-
-
 }

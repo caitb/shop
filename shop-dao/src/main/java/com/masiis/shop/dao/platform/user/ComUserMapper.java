@@ -65,4 +65,6 @@ public interface ComUserMapper {
      * @return
      */
     ComUser selectByOpenid(String openid);
+
+    List<ComUser> selectByCondition(ComUser comUser);
 }

@@ -153,6 +153,8 @@
             $1[$].className = 'hover';
             $2[$].className = '';
 
+            $2[$].contentWindow.location.reload(true);
+
             if($2[$].getAttribute('reload') == '1') {
 			
 			  //重新加载

@@ -10,6 +10,20 @@
   height: 100%;
   overflow: auto;
 }
+.wrap #box>.paidan{
+  width:100%;
+}
+.wrap #box>.paidan>p{
+  margin:0 10px;
+  color: red;
+}
+.wrap #box>.paidan>h1{
+  margin:0 10px;
+  letter-spacing: 1px;
+}
+.wrap #box>.paidan>h1>span{
+  font-weight: 600;
+}
 .wrap #box main {
   width: 100%;
   padding-bottom: 20px;

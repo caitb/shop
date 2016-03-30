@@ -89,7 +89,7 @@
         var addressId = $("#addressId").val();
         var skuId = $("#skuId").val();
         if(addressId==null||addressId==""){
-            $.definedAlertWindow.alert("请填写收获地址");
+           alert("请填写收获地址");
             return;
         }
         if(getStrLen($("#trialReasonId").val())>100){

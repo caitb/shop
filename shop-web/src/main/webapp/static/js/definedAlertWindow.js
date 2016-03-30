@@ -1,20 +1,19 @@
 (function () {
-  $.definedAlertWindow = {
-    alert: function (msg) {
-      generateHtml(msg);
-      loadCssFile();
-    }
+  window.alert = function(msg){
+    generateHtml(msg);
+    loadCssFile();
+    $(".alert").show();
+    hideWindow();
   }
   //生成Html
   var generateHtml = function (msg) {
     var _html = "";
-    _html += '<div class="alert"><h1><img src="http://'+ window.location.host+'/static/images/alert.png" alt="">提示</h1>';
+    _html += '<div class="alert" style="display: none"><h1><img src="http://'+ window.location.host+'/static/images/alert.png" alt="">提示</h1>';
     _html += '<h2>' + msg + '</h2></div>';
     $("body").append(_html);
-      hideWindow();
   }
   var hideWindow = function(){
-        $('.alert').fadeIn("slow").delay(1000).fadeOut("slow");
+        $('.alert').fadeIn("slow").delay(2000).fadeOut("slow");
       }
   var loadCssFile = function(){
         $("<link>").attr({

@@ -28,6 +28,8 @@
         <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
         <result column="is_verified" property="isVerified" jdbcType="INTEGER" />
         <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="auditStatus" property="audit_status" jdbcType="INTEGER"/>
+        <result column="auditReason" property="audit_reason" jdbcType="VARCHAR"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -43,7 +45,7 @@
         id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id,
         city_name, region_id, region_name,
-        address,send_type, is_agent, is_verified, sex
+        address,send_type, is_agent, is_verified, sex,audit_status,audit_reason
         )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{openid,jdbcType=VARCHAR},
         #{wxNkName,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR},
@@ -52,7 +54,8 @@
         #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR}, #{idCardBackUrl,jdbcType=VARCHAR},
         #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
         #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
-        #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isVerified,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}
+        #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isVerified,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
+        #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}
         )
     </insert>
 
@@ -89,7 +92,9 @@
         is_agent = #{isAgent,jdbcType=INTEGER},
         send_type = #{sendType,jdbcType=INTEGER},
         is_verified = #{isVerified,jdbcType=INTEGER},
-        sex = #{sex,jdbcType=INTEGER}
+        sex = #{sex,jdbcType=INTEGER},
+        audit_status = #{auditStatus,jdbcType=INTEGER},
+        audit_reason = #{auditReason,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
@@ -97,7 +102,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified
+        is_agent, sex, send_type, is_verified,audit_status,audit_reason
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -107,7 +112,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified
+        is_agent, sex, send_type, is_verified,audit_status,audit_reason
         from com_user
     </select>
     <select id="findByPid" resultType="string">
@@ -120,7 +125,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified
+        is_agent, sex, send_type, is_verified ,audit_status,audit_reason
         from com_user
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
@@ -129,7 +134,7 @@
         select id, create_time, openid, wx_nk_name, wx_id, wx_head_img, access_token, refresh_token,
         atoken_expire, rtoken_expire, real_name, mobile, id_card, id_card_front_url, id_card_back_url,
         province_id, province_name, city_id, city_name, region_id, region_name, address,
-        is_agent, sex, send_type, is_verified
+        is_agent, sex, send_type, is_verified ,audit_status,audit_reason
         from com_user
         where openid = #{openid,jdbcType=VARCHAR}
     </select>

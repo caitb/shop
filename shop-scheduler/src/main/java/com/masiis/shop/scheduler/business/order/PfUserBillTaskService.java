@@ -1,5 +1,7 @@
 package com.masiis.shop.scheduler.business.order;
 
+import com.masiis.shop.common.interfaces.IParallelThread;
+import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -20,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by lzh on 2016/3/23.
@@ -44,30 +47,34 @@ public class PfUserBillTaskService {
         // 账单创建日期
         Date billCreateTime = new Date();
         // 获取结算日(当前时间前一天)
-        Date balanceDate = DateUtil.getDateNextdays(-1);
+        final Date balanceDate = DateUtil.getDateNextdays(-1);
         log.info("创建每日结算账单,账单结算时间:" + DateUtil.Date2String(balanceDate, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单开始时间
-        Date countStartDay = getCountDay(balanceDate);
+        final Date countStartDay = getCountDay(balanceDate);
         log.info("创建每日结算账单,订单开始时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单结束时间
-        Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
+        final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
         log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
         // 查询所有用户
         List<ComUser> users = userService.findAll();
-        for(ComUser user:users){
-            // 检查是否创建此结算日账单
-            try{
-                log.info("创建个人日结算单开始,用户id:" + user.getId());
-                // 创建结算日的日账单
-                billService.createBillByUserAndDate(user, countStartDay, countEndDay, balanceDate);
-                log.info("创建个人日结算单成功");
-            } catch (Exception e) {
-                log.error("创建个人日结算单失败," + e.getMessage());
-                continue;
+        // 多线程处理
+        CurrentThreadUtils.parallelJob(new IParallelThread() {
+            public Boolean doMyJob(Object obj) throws Exception {
+                long start = System.currentTimeMillis();
+                ComUser pa = (ComUser) obj;
+                try {
+                    log.info("创建个人日结算单开始,用户id:" + pa.getId());
+                    // 创建结算日的日账单
+                    billService.createBillByUserAndDate(pa, countStartDay, countEndDay, balanceDate);
+                    log.info("创建个人日结算单成功");
+                    return true;
+                } catch (Exception e) {
+                    log.error("创建个人日结算单失败," + e.getMessage());
+                    return false;
+                }
             }
-        }
+        }, new LinkedBlockingDeque<Object>(users), 0);
         // 结束
-
     }
 
     public static Date getCountDay(Date date){

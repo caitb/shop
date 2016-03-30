@@ -45,8 +45,8 @@ public class PfUserBillService {
 
             log.info("日账单记录创建成功,日账单id:" + bill.getId());
 
-            // 根据用户来查询订单(已完成且未结算状态订单)
-            List<PfBorder> orders = orderMapper.selectByUserAndDate(user.getId(), start, end);
+            // 根据用户来查询账单子项(已完成且未结算状态订单)
+            List<PfBorder> orders = orderMapper.selectUnCountingByUserAndDate(user.getId(), start, end);
             for(PfBorder order:orders){
                 // 创建日账单子项
                 PfUserBillItem item = createBillItemByOrder(order);
@@ -55,13 +55,11 @@ public class PfUserBillService {
 
                 log.info("创建日账单子项记录成功,子项id:" + item.getId());
 
-                // 修改订单状态
                 order.setIsCounting(1);
                 orderMapper.updateByPrimaryKey(order);
 
                 log.info("修改订单为已结算状态,订单code:" + order.getOrderCode());
 
-                // 统计销售总额,结算总额,佣金总额
                 if(item.getOrderSubType() == 0){
                     // 销售订单
                     bill.setTotalAmount(bill.getTotalAmount().add(item.getOrderPayAmount()));
@@ -72,6 +70,8 @@ public class PfUserBillService {
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getOrderPayAmount()));
                 }
             }
+            // 修改订单状态
+            // 统计销售总额,结算总额,佣金总额
             // 修改account账户总收入和可提现额
             ComUserAccount account = accountMapper.findByUserId(user.getId());
             int result = accountMapper.addIncomeByCounting(bill.getBillAmount(), user.getId());

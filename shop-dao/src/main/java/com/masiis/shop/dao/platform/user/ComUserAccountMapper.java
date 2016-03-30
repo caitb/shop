@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.platform.user;
 
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -44,4 +45,6 @@ public interface ComUserAccountMapper {
      */
     int addIncomeByCounting(@Param("billAmount") BigDecimal billAmount,
                             @Param("userid") Long id);
+
+    int updateByPrimaryKey(ComUserAccount account);
 }

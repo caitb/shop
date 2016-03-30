@@ -20,6 +20,8 @@ public class PfSkuAgent {
      * 代理等级表ID
      */
     private Integer agentLevelId;
+    /*等级标志*/
+    private String icon;
     /**
      * 折扣(例如0.35为35%也就是3.5折)
      */
@@ -75,5 +77,13 @@ public class PfSkuAgent {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

@@ -7,12 +7,14 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by hzz on 2016/3/30.
@@ -25,6 +27,33 @@ public class UserIdentityAuthController extends BaseController {
 
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
+
+
+    /**
+     * 跳转到身份认证界面
+     * @author hanzengzhi
+     * @date 2016/3/30 16:19
+     */
+    @RequestMapping(value = "toInentityAuthPage.html")
+    public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        ComUser comUser = getComUser(request);
+        model.addAttribute("comUser",comUser);
+        String jumpPage = "";
+        if (comUser!=null){
+            switch (comUser.getAuditStatus()){
+                case 1://审核中
+                    break;
+                case 2://审核通过
+                    break;
+                case 3://审核不通过
+                    break;
+                default:
+                    break;
+            }
+        }
+        return null;
+    }
 
     @ResponseBody
     @RequestMapping("userVerified/save.do")

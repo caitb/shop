@@ -452,6 +452,7 @@ public class BOrderController extends BaseController {
                 pfBorderFreight.setPfBorderId(orderId);
                 pfBorderFreight.setFreight(freight);
                 pfBorderFreight.setShipManName(shipManName);
+
                 bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);

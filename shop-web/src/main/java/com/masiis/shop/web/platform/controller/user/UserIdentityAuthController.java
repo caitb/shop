@@ -73,9 +73,7 @@ public class UserIdentityAuthController extends BaseController {
             ComUser comUser = getComUser(request);
             if (comUser == null) {
                 throw new BusinessException("用户信息有误请重新登陆");
-            } else if (comUser.getIsVerified() == 1) {
-                throw new BusinessException("用户已经实名认证");
-            }else if (comUser.getAuditStatus()==AUDITFAIL){
+            } else if (comUser.getAuditStatus()==AUDITFAIL){
                 throw new BusinessException("已提交审核");
             }
             if (org.apache.commons.lang.StringUtils.isBlank(name)) {

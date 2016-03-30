@@ -27,8 +27,8 @@
         <result column="send_type" property="sendType" jdbcType="INTEGER" />
         <result column="is_agent" property="isAgent" jdbcType="INTEGER"/>
         <result column="sex" property="sex" jdbcType="INTEGER"/>
-        <result column="auditStatus" property="audit_status" jdbcType="INTEGER"/>
-        <result column="auditReason" property="audit_reason" jdbcType="VARCHAR"/>
+        <result column="audit_status" property="auditStatus" jdbcType="INTEGER"/>
+        <result column="audit_reason" property="auditReason" jdbcType="VARCHAR"/>
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -190,6 +190,66 @@
             <if test="idCard != null">
                 AND id_card = #{idCard}
             </if>
+            <if test="auditStatus != null">
+                AND audit_status = #{auditStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="auditList" parameterType="com.masiis.shop.dao.po.ComUser" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        openid,
+        wx_nk_name,
+        wx_id,
+        wx_head_img,
+        access_token,
+        refresh_token,
+        atoken_expire,
+        rtoken_expire,
+        real_name,
+        mobile,
+        id_card,
+        id_card_front_url,
+        id_card_back_url,
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        region_id,
+        region_name,
+        address,
+        is_agent,
+        sex,
+        send_type,
+        audit_status,
+        audit_reason
+        from
+        com_user
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+            <if test="wxNkName != null">
+                AND wx_nk_name = #{wxNkName}
+            </if>
+            <if test="wxId != null">
+                AND wx_id = #{wxId}
+            </if>
+            <if test="realName != null">
+                AND real_name = #{realName}
+            </if>
+            <if test="mobile != null">
+                AND mobile = #{mobile}
+            </if>
+            <if test="idCard != null">
+                AND id_card = #{idCard}
+            </if>
+            AND audit_status IN (1,3)
         </where>
     </select>
 

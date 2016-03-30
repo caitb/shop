@@ -630,7 +630,7 @@
                                            data-page-list="[10, 25, 50, 100, ALL]"
                                            data-show-footer="false"
                                            data-side-pagination="server"
-                                           data-url="/comuser/list.do"
+                                           data-url="/comuser/auditlist.do"
                                            data-response-handler="responseHandler">
                                     </table>
 
@@ -829,8 +829,8 @@
                     sortable: true,
                     footerFormatter: totalTextFormatter,
                     formatter: function(value, row, index){
-                        if(row.comUser && row.comUser.id){
-                            return row.comUser.id;
+                        if(row && row.id){
+                            return row.id;
                         }
                     }
                 },
@@ -842,8 +842,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.realName){
-                                return row.comUser.realName;
+                            if(row && row.realName){
+                                return row.realName;
                             }
                         }
                     },
@@ -854,8 +854,8 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.mobile){
-                                return row.comUser.mobile;
+                            if(row && row.mobile){
+                                return row.mobile;
                             }
                         }
                     },
@@ -866,70 +866,38 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.idCard){
-                                return row.comUser.idCard;
-                            }
-                        }
-                    },
-                    {
-                        field: 'level',
-                        title: '会员级别',
-                        footerFormatter: totalNameFormatter,
-                        formatter: function (value, row, index) {
-                            if(row.comUser && row.comUser.level){
-                                return row.comUser.level;
-                            }
-                            return '普通';
-                        },
-                        align: 'center'
-                    },
-                    {
-                        field: 'accountBalance',
-                        title: '账户余额',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.extractableFee){
-                                return row.comUserAccount.extractableFee;
-                            }
-                        }
-                    },
-                    {
-                        align: 'center',
-                        field: 'settlementFund',
-                        title: '结算中资金',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.countingFee){
-                                return row.comUserAccount.countingFee;
+                            if(row && row.idCard){
+                                return row.idCard;
                             }
                         }
                     },
                     {
                         align: 'center',
                         field: 'createTime',
-                        title: '注册日期',
+                        title: '申请日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.createTime){
-                                return new Date(row.comUser.createTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.createTime){
+                                return new Date(row.createTime).pattern('yyyy-MM-dd HH:mm:ss');
                             }
                         }
                     },
                     {
-                        field: 'isVerified',
-                        title: '是否实名认证',
+                        field: 'auditStatus',
+                        title: '审核状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.isVerified == 1){
-                                return '<span class="label label-sm label-success">已认证</span>';
-                            }else if(row.comUser && row.comUser.isVerified == 2){
-                                return '<span class="label label-sm label-warning">未认证</span>';
+                            if(row && row.auditStatus == 0){
+                                return '<span class="label label-sm label-grey">未审核</span>';
+                            }else if(row && row.auditStatus == 1){
+                                return '<span class="label label-sm label-info">审核中</span>';
+                            }else if(row && row.auditStatus == 2){
+                                return '<span class="label label-sm label-success">审核通过</span>';
+                            }else if(row && row.auditStatus == 3){
+                                return '<span class="label label-sm label-danger">审核不通过</span>';
                             }
                         }
                     },

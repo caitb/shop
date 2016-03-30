@@ -920,15 +920,15 @@
                         }
                     },
                     {
-                        field: 'isVerified',
+                        field: 'auditStatus',
                         title: '是否实名认证',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUser && row.comUser.isVerified == 1){
+                            if(row.comUser && row.comUser.auditStatus == 2){
                                 return '<span class="label label-sm label-success">已认证</span>';
-                            }else if(row.comUser && row.comUser.isVerified == 2){
+                            }else{
                                 return '<span class="label label-sm label-warning">未认证</span>';
                             }
                         }

@@ -188,6 +188,10 @@ public class BOrderService {
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能补货。");
         }
+        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
+        if (!comUser.getSendType().equals("1")){
+            throw new BusinessException("发货方式不是平台代发，不能拿货");
+        }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级
         Long pUserId = 0l;//上级代理用户id
         BigDecimal amount = BigDecimal.ZERO;//订单总金额

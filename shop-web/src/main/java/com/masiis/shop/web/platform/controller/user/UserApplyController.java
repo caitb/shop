@@ -160,7 +160,6 @@ public class UserApplyController {
     @RequestMapping("/registerConfirm/check.do")
     public String partnersRegisterConfirmCheck(HttpServletRequest request,
                                                HttpServletResponse response,
-                                               @RequestParam(value = "name", required = true) String name,
                                                @RequestParam(value = "weixinId", required = true) String weixinId,
                                                @RequestParam(value = "skuId", required = true) Integer skuId,
                                                @RequestParam(value = "levelId", required = true) Long levelId,
@@ -168,9 +167,6 @@ public class UserApplyController {
 
         JSONObject object = new JSONObject();
         try {
-            if (StringUtils.isBlank(name)) {
-                throw new BusinessException("名称不能为空");
-            }
             if (StringUtils.isBlank(weixinId)) {
                 throw new BusinessException("微信号不能为空");
             }

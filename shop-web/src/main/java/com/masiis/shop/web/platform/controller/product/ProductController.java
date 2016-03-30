@@ -9,6 +9,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,8 @@ public class ProductController extends BaseController {
 
     @Resource
     private UserSkuService userSkuService;
-
+    @Resource
+    private UserService userService;
     @Resource
     private BOrderService bOrderService;
     @Resource
@@ -112,6 +114,48 @@ public class ProductController extends BaseController {
             object.put("isError", true);
             object.put("message", ex.getMessage());
         }
+        return object.toJSONString();
+    }
+
+    /**
+     * 申请拿货
+     * @param skuId     商品id
+     * @param quantity  拿货数量
+     * @param message   留言信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "user/addProductTake",method = RequestMethod.POST)
+    @ResponseBody
+    public String addProductTake(@RequestParam(value = "skuId",required = true) Integer skuId,
+                                 @RequestParam(value = "quantity",required = true) Integer quantity,
+                                 @RequestParam(value = "message",required = true) String message,
+                                 HttpServletRequest request){
+
+        HttpSession session = request.getSession();
+        ComUser comUser = (ComUser) session.getAttribute("comUser");
+        if (comUser == null){
+            comUser = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+        }
+        JSONObject object = new JSONObject();
+        try{
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),skuId);//代理关系
+            int usableStock = skuService.checkSkuStock(skuId,quantity,pfUserSku.getPid().longValue());
+            if(usableStock<0){
+                throw new BusinessException("可用库存不足!");
+            }
+            Long orderCode = bOrderService.addProductTake(comUser.getId(),skuId,quantity,message);
+            object.put("isError", false);
+            object.put("orderCode", orderCode);
+            if (orderCode==null) {
+                throw new BusinessException("订单号生成失败，补货失败!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            object.put("isError", true);
+            object.put("message", e.getMessage());
+        }
+
         return object.toJSONString();
     }
 }

@@ -62,6 +62,7 @@
 </div>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"/>
 <script src="<%=path%>/static/js/iscroll.js"></script>
 <script src="<%=path%>/static/js/ajaxfileupload.js"></script>
@@ -128,7 +129,8 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                    alert("提交成功！");
+                    window.location.href = "${goToURL}";
                 }
                 else {
                     alert(data.message);

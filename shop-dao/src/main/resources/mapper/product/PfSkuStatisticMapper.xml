@@ -62,4 +62,9 @@
         where sku_id = #{skuId,jdbcType=INTEGER}
     </select>
 
+    <update id="updateAgentNumBySkuId" parameterType="java.lang.Integer">
+        update pf_sku_statistic
+        set agent_num = agent_num+1
+        where sku_id = #{skuId}
+    </update>
 </mapper>

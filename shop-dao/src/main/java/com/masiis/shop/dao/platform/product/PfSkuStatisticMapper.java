@@ -45,4 +45,6 @@ public interface PfSkuStatisticMapper {
     void deleteById(Integer id);
 
     PfSkuStatistic selectBySkuId(Integer skuId);
+
+    void updateAgentNumBySkuId(Integer skuId);
 }

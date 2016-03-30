@@ -203,7 +203,7 @@ public class UserController extends BaseController {
             userService.updateComUser(comUser);
             object.put("isError", false);
         } catch (Exception ex) {
-            if (StringUtils.isBlank(ex.getMessage())) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
             } else {
                 throw new BusinessException("网络错误", ex);

@@ -102,15 +102,14 @@
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"/>
 <script src="<%=path%>/static/js/iscroll.js"></script>
-<script src="<%=path%>/static/js/validateCode.js"></script>
 <script>
-    $(document).ready(function () {
-        validateCodeJS.initPage();
-    });
     function goVerified() {
         var para = "?";
         para += "goToURL=<%=basePath%>userApply/apply.shtml?skuId=${skuId}&type=${type}&pUserId=${pUserId}";
         window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
     }
+    $("#nextPageId").bind("onclick", function () {
+        window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=${type}";
+    });
 </script>
 </html>

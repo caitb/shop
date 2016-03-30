@@ -103,7 +103,7 @@ public class PfBorder {
      */
     private Integer sendType;
     /**
-     * 订单类型(0代理1补货)
+     * 订单类型(0代理1补货2拿货)
      */
     private Integer orderType;
     /**

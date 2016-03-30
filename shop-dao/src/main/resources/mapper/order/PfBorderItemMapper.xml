@@ -17,6 +17,25 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="ExtendsResultMap" type="com.masiis.shop.dao.po.PfBorderItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="is_comment" property="isComment" jdbcType="INTEGER" />
+        <result column="is_return" property="isReturn" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="spuNmme" property="spuNmme" jdbcType="VARCHAR" />
+        <result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
+        <result column="spuCount" property="spuCount" jdbcType="BIGINT" />
+    </resultMap>
+
 
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
         select
@@ -82,6 +101,14 @@
                pf_border_item
         where
                pf_border_id = #{pfBorderId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectPfBorderItemGroupByspuId" resultMap="ExtendsResultMap" parameterType="java.lang.Long">
+        select p.*,c.name as spuNmme ,b.logo_url as logoUrl,count(1) as spuCount from pf_border_item p
+          LEFT JOIN com_spu c on p.spu_id = c.id
+          LEFT JOIN com_brand b on c.brand_id = b.id
+        where p.id = #{pfBorderId,jdbcType=BIGINT}
+        group by p.spu_id
     </select>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" useGeneratedKeys="true" keyProperty="id" >

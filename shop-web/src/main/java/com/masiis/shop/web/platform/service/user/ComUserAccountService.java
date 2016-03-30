@@ -179,7 +179,7 @@ public class ComUserAccountService {
     }
 
     /**
-     * 创建结算额变动流水
+     * 创建结算额增加变动流水
      *
      * @param orderPayment
      * @param account
@@ -203,7 +203,7 @@ public class ComUserAccountService {
     }
 
     /**
-     * 创建结算额变动流水
+     * 创建增加保证金变动流水
      *
      * @param bailAmount
      * @param account

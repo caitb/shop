@@ -41,12 +41,15 @@ body .wrap .box .price p {
 }
 body .wrap .box .price p b {
   color: #FF7D54;
-  font-size: 13px;
+  font-size: 14px;
+    float: right;
+    font-weight: 600;
+    margin-right: 10px;
+
 }
 body .wrap .box .price p span {
   color: #999;
   font-size: 12px;
-  padding-left: 20px;
 }
 body .wrap .box .dlpople {
   width: 100%;
@@ -70,7 +73,6 @@ body .wrap .box .dlpople p b {
   font-size: 12px;
 }
 body .wrap .box .dlpople p span {
-  color: #FF7D56;
   font-size: 12px;
 }
 body .wrap .box .dlpople p:nth-child(2) {

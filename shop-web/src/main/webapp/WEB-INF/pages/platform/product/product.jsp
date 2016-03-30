@@ -36,13 +36,14 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span></p>
+            <p><b>￥${productDetails.priceRetail}</b><%--<span>最高利润${productDetails.maxDiscount}%
+            </span>--%></p>
+            <p>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理<b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b></p>
         </div>
-        <div class="dlpople">
+<%--        <div class="dlpople">
             <p>快递：<span>到付</span></p>
             <p>代理人数：<b><span>${productDetails.agentNum}</span>人</b></p>
-        </div>
+        </div>--%>
         <div class="dlpople">
             <p>库存</p>
             <p><span>${productDetails.stock}</span></p>

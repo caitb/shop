@@ -195,7 +195,7 @@ public class UserCertificateService {
                 UrlParam.put("id", certificateInfo.getPfUserCertificateInfo().getId());
                 UrlParam.put("code", getCertificateCode(certificateInfo));
                 certificateMapper.updateCertificateImgUrl(UrlParam);//更新证书的URL
-                Map<String, Object> Param = new HashMap<>();
+                Map<String, Object> Param = new HashMap();
                 Param.put("id", id);
                 Param.put("code", getCertificateCode(certificateInfo));
                 certificateMapper.updateCertificateFlag(Param);//授权书生成的flag

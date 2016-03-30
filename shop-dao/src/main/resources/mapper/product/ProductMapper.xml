@@ -61,7 +61,7 @@
        ORDER BY sort ASC
     </select>
 
-    <select id="maxDiscount" resultMap="java.lang.Integer">
+    <select id="maxDiscount" resultType="java.lang.Integer">
         SELECT  MAX(discount) From com_agent_level
     </select>
     <!-->用户商品列表<-->

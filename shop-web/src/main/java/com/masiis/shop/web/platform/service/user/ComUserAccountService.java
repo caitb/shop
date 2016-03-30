@@ -113,8 +113,10 @@ public class ComUserAccountService {
 
             ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
             ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
+            // 保存修改前的金额
             recordS.setPrevFee(accountS.getCostFee());
             accountS.setCostFee(accountS.getCostFee().add(orderPayment));
+            // 保存修改后的金额
             recordS.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordS);
             int typeS = accountMapper.updateByPrimaryKey(account);
@@ -142,12 +144,12 @@ public class ComUserAccountService {
         ComUserAccountRecord res = new ComUserAccountRecord();
 
         res.setUserAccountId(account.getId());
-        res.setFeeType(6);
+        res.setFeeType(7);
         res.setHandleFee(orderPayment);
         res.setBillId(billId);
         res.setComUserId(account.getComUserId());
         res.setHandleType(0);
-        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(6));
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(7));
         res.setHandleTime(new Date());
 
         return res;
@@ -215,6 +217,7 @@ public class ComUserAccountService {
         item.setOrderSubType(0);
         item.setOrderType(0);
         item.setPfBorderId(order.getId());
+        item.setUserId(order.getUserPid());
 
         return item;
     }

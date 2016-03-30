@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserBillItem;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -23,4 +25,8 @@ public interface PfUserBillItemMapper {
     List<PfUserBillItem> selectAll();
 
     int updateByPrimaryKey(PfUserBillItem record);
+
+    List<PfUserBillItem> selectByUserAndDate(@Param("userid") Long userid,
+                                             @Param("start") Date start,
+                                             @Param("end") Date end);
 }

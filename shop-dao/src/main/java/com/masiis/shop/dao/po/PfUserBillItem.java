@@ -14,6 +14,10 @@ public class PfUserBillItem {
 
     private Long id;
     /**
+     * 用户id
+     */
+    private Long userId;
+    /**
      * 创建时间
      */
     private Date createDate;
@@ -49,6 +53,15 @@ public class PfUserBillItem {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }

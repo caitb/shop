@@ -155,7 +155,7 @@
         inner JOIN com_dictionary d
               on d.code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and d.key = ea.audit_type
         where ea.com_user_id = #{userid,jdbcType=BIGINT}
-              and ea.apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and ea.apply_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
               and ea.apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
               order by ea.apply_time DESC
     </select>
@@ -164,7 +164,7 @@
         select count(id)
         from com_user_extract_apply ea
         where com_user_id = #{userid,jdbcType=BIGINT}
-              and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and apply_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
               and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
     </select>
 
@@ -176,7 +176,7 @@
         inner JOIN com_dictionary d
               on d.code = <![CDATA['USER_EXTRACT_AUDIT_TYPE']]> and d.key = ea.audit_type
         where ea.com_user_id = #{userid,jdbcType=BIGINT}
-              and ea.apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+              and ea.apply_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
               and ea.apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
               and ea.apply_time <![CDATA[<=]]> (select apply_time
                                             from com_user_extract_apply

@@ -60,7 +60,6 @@ public class PfUserBillTaskService {
         // 多线程处理
         CurrentThreadUtils.parallelJob(new IParallelThread() {
             public Boolean doMyJob(Object obj) throws Exception {
-                long start = System.currentTimeMillis();
                 ComUser pa = (ComUser) obj;
                 try {
                     log.info("创建个人日结算单开始,用户id:" + pa.getId());

@@ -46,51 +46,51 @@ public class PfUserBillService {
             log.info("日账单记录创建成功,日账单id:" + bill.getId());
 
             // 根据用户来查询账单子项(已完成且未结算状态订单)
-            List<PfBorder> orders = orderMapper.selectUnCountingByUserAndDate(user.getId(), start, end);
-            for(PfBorder order:orders){
-                // 创建日账单子项
-                PfUserBillItem item = createBillItemByOrder(order);
+            List<PfUserBillItem> items = itemMapper.selectByUserAndDate(user.getId(), start, end);
+            for(PfUserBillItem item:items){
                 item.setPfUserBillId(bill.getId());
-                itemMapper.insert(item);
-
-                log.info("创建日账单子项记录成功,子项id:" + item.getId());
-
-                order.setIsCounting(1);
-                orderMapper.updateByPrimaryKey(order);
-
-                log.info("修改订单为已结算状态,订单code:" + order.getOrderCode());
-
+                log.info("计算账单子项,子项id:" + item.getId());
                 if(item.getOrderSubType() == 0){
                     // 销售订单
+                    log.info("此账单子项是销售订单,销售额是:" + item.getOrderPayAmount());
                     bill.setTotalAmount(bill.getTotalAmount().add(item.getOrderPayAmount()));
                     bill.setBillAmount(bill.getBillAmount().add(item.getOrderPayAmount()));
-                } else if (item.getOrderSubType() == 1) {
+                } else if(item.getOrderSubType() == 1){
                     // 退货订单
+                    log.info("此账单子项是退货订单,销售额是:" + item.getOrderPayAmount());
                     bill.setBillAmount(bill.getBillAmount().subtract(item.getOrderPayAmount()));
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getOrderPayAmount()));
                 }
             }
-            // 修改订单状态
-            // 统计销售总额,结算总额,佣金总额
-            // 修改account账户总收入和可提现额
+            // 修改账单状态
+            bill.setStatus(1);
+            // 修改account账户结算额和可提现额
             ComUserAccount account = accountMapper.findByUserId(user.getId());
-            int result = accountMapper.addIncomeByCounting(bill.getBillAmount(), user.getId());
-            if(result <= 0){
-                throw new BusinessException("资产账户总收入和可提现额更新失败,更新0条记录,用户id" + user.getId());
-            } else if (result != 1) {
-                throw new BuilderException("资产账户总收入和可提现额更新失败,资产账户记录数超过1条,用户id:" + user.getId());
-            }
-
-            log.info("修改用户资产账户总收入和可提现额成功!");
-
-            // 添加账户操作记录
-            ComUserAccountRecord record = createAccountRecord(bill, 0);
+            ComUserAccountRecord record = createAccountRecord(bill, 1);
             record.setUserAccountId(account.getId());
+            // 修改结算
+            log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
+            record.setPrevFee(account.getCountingFee());
+            account.setCountingFee(account.getCountingFee().subtract(bill.getBillAmount()));
+            log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
+            record.setNextFee(account.getCountingFee());
             recordMapper.insert(record);
-
-            record = createAccountRecord(bill, 1);
-            recordMapper.insert(record);
+            // 修改可提现
+            ComUserAccountRecord recordEx = createAccountRecord(bill, 4);
+            log.info("修改账户的可提现金额,之前可提现金额是:" + account.getExtractableFee());
+            recordEx.setPrevFee(account.getExtractableFee());
+            account.setExtractableFee(account.getExtractableFee().add(bill.getBillAmount()));
+            log.info("修改账户的可提现金额,之后可提现金额是:" + account.getExtractableFee());
+            recordEx.setNextFee(account.getExtractableFee());
+            recordMapper.insert(recordEx);
             log.info("添加资产账户操作记录成功!");
+
+            int changeSize = accountMapper.updateByIdWithVersion(account);
+            if(changeSize != 1){
+                throw new BusinessException("");
+            }
+            billMapper.updateByPrimaryKey(bill);
+            log.info("修改用户资产账户结算中和可提现额成功!");
         } catch (Exception e) {
             log.error("创建日账单失败," + e.getMessage(), e);
             throw new BusinessException(e);

@@ -3,6 +3,7 @@
 <mapper namespace="com.masiis.shop.dao.platform.user.PfUserBillItemMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserBillItem" >
         <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
         <result column="pf_user_bill_id" property="pfUserBillId" jdbcType="BIGINT" />
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
@@ -19,11 +20,11 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserBillItem" useGeneratedKeys="true" keyProperty="id">
-        insert into pf_user_bill_item (id, create_date, pf_user_bill_id, 
+        insert into pf_user_bill_item (id, user_id, create_date, pf_user_bill_id,
             pf_border_id, order_type, order_sub_type, 
             order_create_date, order_pay_amount, remark
             )
-        values (#{id,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{pfUserBillId,jdbcType=BIGINT}, 
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{pfUserBillId,jdbcType=BIGINT},
             #{pfBorderId,jdbcType=BIGINT}, #{orderType,jdbcType=INTEGER}, #{orderSubType,jdbcType=INTEGER},
             #{orderCreateDate,jdbcType=TIMESTAMP}, #{orderPayAmount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
             )
@@ -31,7 +32,8 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserBillItem" >
         update pf_user_bill_item
-        set create_date = #{createDate,jdbcType=TIMESTAMP},
+        set user_id = #{userId,jdbcType=BIGINT},
+            create_date = #{createDate,jdbcType=TIMESTAMP},
             pf_user_bill_id = #{pfUserBillId,jdbcType=BIGINT},
             pf_border_id = #{pfBorderId,jdbcType=BIGINT},
             order_type = #{orderType,jdbcType=INTEGER},
@@ -43,16 +45,24 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_date, pf_user_bill_id, pf_border_id, order_type, order_sub_type, 
+        select id, user_id, create_date, pf_user_bill_id, pf_border_id, order_type, order_sub_type,
         order_create_date, order_pay_amount, remark
         from pf_user_bill_item
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_date, pf_user_bill_id, pf_border_id, order_type, order_sub_type, 
+        select id, user_id, create_date, pf_user_bill_id, pf_border_id, order_type, order_sub_type,
         order_create_date, order_pay_amount, remark
         from pf_user_bill_item
     </select>
 
+    <select id="selectByUserAndDate" resultMap="BaseResultMap">
+        select id, user_id, create_date, pf_user_bill_id, pf_border_id, order_type, order_sub_type,
+        order_create_date, order_pay_amount, remark
+        from pf_user_bill_item
+        where user_id = #{userid,jdbcType=BIGINT}
+        and create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

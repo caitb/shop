@@ -12,6 +12,7 @@
         <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
         <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="bail" property="bail" jdbcType="DECIMAL"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -62,18 +63,20 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSku">
         insert into pf_user_sku (id, create_time, code,
-        pid, user_id, sku_id,
-        agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark)
+            pid, user_id, sku_id,
+            agent_level_id, is_pay, is_certificate,
+            pf_border_id, bail, remark
+            )
         values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR},
-        #{pid,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
-        #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER}, #{isCertificate,jdbcType=INTEGER},
-        #{pfBorderId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
+            #{pid,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER},
+            #{agentLevelId,jdbcType=INTEGER}, #{isPay,jdbcType=INTEGER}, #{isCertificate,jdbcType=INTEGER},
+            #{pfBorderId,jdbcType=BIGINT}, #{bail,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSku">
         update
-               pf_user_sku
+        pf_user_sku
         <set>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -103,41 +106,34 @@
                 pf_border_id = #{pfBorderId,jdbcType=BIGINT},
             </if>
             <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bail != null">
+                bail = #{bail,jdbcType=DECIMAL},
             </if>
         </set>
         where
-              id = #{id,jdbcType=INTEGER}
+        id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-               id,
-               create_time,
-               code,
-               pid,
-               user_id,
-               sku_id,
-               agent_level_id,
-               is_pay,
-               is_certificate,
-               pf_border_id,
-               remark
+        select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
+        pf_border_id, bail, remark
         from
-               pf_user_sku
+        pf_user_sku
         where
-               id = #{id,jdbcType=INTEGER}
+        id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark
+        pf_border_id, bail, remark
         from pf_user_sku
     </select>
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark
+        pf_border_id, bail, remark
         from pf_user_sku
         where user_id = #{userId}
         and sku_id = #{skuId}
@@ -182,26 +178,16 @@
 
     <select id="selectByOrderId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
-        pf_border_id, remark
+        pf_border_id, bail, remark
         from pf_user_sku
         where pf_border_id = #{bOrderId}
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">
-        SELECT
-                id,
-                create_time,
-                code,
-                pid,
-                user_id,
-                sku_id,
-                agent_level_id,
-                is_pay,
-                is_certificate,
-                pf_border_id,
-                remark
+        select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
+        pf_border_id, bail, remark
         FROM
-              pf_user_sku
+        pf_user_sku
         <where>
             <if test="id != null">
                 AND id = #{id}
@@ -232,6 +218,9 @@
             </if>
             <if test="remark != null">
                 AND remark = #{remark}
+            </if>
+            <if test="bail != null">
+                and bail = #{bail,jdbcType=DECIMAL}
             </if>
         </where>
     </select>

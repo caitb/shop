@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="wrap">
         <div class="box">
                 <header class="xq_header" style="margin-bottom:0;">
-              <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a href="<%=path%>/marketGood/market"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                 <p>所有商品</p>            
                 </header>
                 <main><c:forEach begin="0" end="${ComSize}" step="2" var="i">

@@ -42,6 +42,7 @@
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...

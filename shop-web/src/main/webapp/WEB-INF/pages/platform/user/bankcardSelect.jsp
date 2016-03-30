@@ -46,6 +46,7 @@
      </div>
      <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
      <script src="<%=path%>/static/js/commonAjax.js"></script>
+     <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
      <script>
         $(".sec1").on("click",function(){
             $(this).addClass("on").siblings().removeClass("on")

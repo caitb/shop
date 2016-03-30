@@ -30,7 +30,8 @@ public class UserService {
     private PfUserTrialMapper pfUserTrialMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
-
+    @Resource
+    private UserCertificateService userCertificateService;
     /**
      * 根据用户id获取用户
      *
@@ -182,13 +183,6 @@ public class UserService {
         JSONObject jsonObject = new JSONObject();
         try {
             comUser = (ComUser) request.getSession().getAttribute("comUser");
-            /**
-             * 测试用
-             */
-/*            if (comUser==null){
-                comUser = new ComUser();
-                comUser.setId(1L);
-            }*/
             if (comUser != null) {
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
@@ -220,4 +214,5 @@ public class UserService {
         comUserMapper.updateByPrimaryKey(comUser);
         pfUserCertificateMapper.updateById(pfUserCertificate);
     }
+
 }

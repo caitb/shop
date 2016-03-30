@@ -262,4 +262,13 @@ public class UserCertificateService {
 
         return rannum + str;// 当前时间
     }
+
+    /**
+     * 个人信息查询微信号信息
+     * @author hanzengzhi
+     * @date 2016/3/29 11:56
+     */
+    public PfUserCertificate selectSkuWeChatInfo(Long userId){
+        return pfUserCertificateMapper.selectSkuWeChatInfo(userId);
+    }
 }

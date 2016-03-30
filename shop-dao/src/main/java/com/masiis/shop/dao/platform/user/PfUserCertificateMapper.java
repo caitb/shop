@@ -25,6 +25,8 @@ public interface PfUserCertificateMapper {
 
     PfUserCertificate selectByUserId(Long userId);
 
+    PfUserCertificate selectSkuWeChatInfo(Long userId);
+
     List<PfUserCertificate> selectByCode(Long userId);
 
     PfUserCertificate selectByUserSkuId(Integer pfuId);

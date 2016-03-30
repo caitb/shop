@@ -251,4 +251,6 @@ public class PfUserCertificate {
     public void setPoster(String poster) {
         this.poster = poster;
     }
+
+
 }

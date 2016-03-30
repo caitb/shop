@@ -157,7 +157,7 @@ public class UserController extends BaseController {
     public ModelAndView userVerified(HttpServletRequest request,
                                      @RequestParam(value = "goToURL", required = true) String goToURL) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("shimingrenzheng");
+        modelAndView.setViewName("platform/user/shimingrenzheng");
         modelAndView.addObject("goToURL", goToURL);
         return modelAndView;
     }

@@ -2,7 +2,6 @@ package com.masiis.shop.web.platform.controller.order;
 
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
 import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -23,8 +22,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "payEnd")
-public class OrderPayEndControoller extends BaseController {
-    private final static Logger log = Logger.getLogger(OrderPayEndControoller.class);
+public class OrderPayEndController extends BaseController {
+    private final static Logger log = Logger.getLogger(OrderPayEndController.class);
 
     @Resource
     private BOrderService bOrderService;

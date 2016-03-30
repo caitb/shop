@@ -7,7 +7,6 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.user.ComAreaService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +31,11 @@ public class UserAddressController extends BaseController {
 
     @Resource
     private UserAddressService userAddressService;
-    @Resource
-    private ComAreaService comAreaService;
+
+    //管理地址跳转到个人中心界面
+    private static  final  int managePageToChooseAddressPageTag = 0;
+    //管理地址跳转到个人中心界面
+    private static  final  int managePageToPersonalInfoPageTag = 1;
 
     /**
      * 跳转到新增地址界面
@@ -149,7 +151,7 @@ public class UserAddressController extends BaseController {
     }
 
     /**
-     * 管理地址界面返回到选择地址界面
+     * 管理地址界面返回按钮，返回到具体界面
      *
      * @author hanzengzhi
      * @date 2016/3/14 14:25
@@ -158,10 +160,21 @@ public class UserAddressController extends BaseController {
     public String manageAddressPageToChooseAddressPage(HttpServletRequest request,
                                                        HttpServletResponse response,
                                                        Model model)throws Exception {
-
-        Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
-        model.addAttribute("addressId", selectedAddressId);
-        return "platform/order/xuanze";
+        int jumpType = (int) request.getSession().getAttribute("jumpType");
+        String returnPage = null;
+        switch (jumpType){
+            case managePageToChooseAddressPageTag: //返回到选择地址界面
+                returnPage = "platform/order/xuanze";
+                Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
+                model.addAttribute("addressId", selectedAddressId);
+                break;
+            case managePageToPersonalInfoPageTag:  //返回到到个人中心
+                break;
+            default://返回到选择地址界面
+                break;
+        }
+        request.getSession().removeAttribute("jumpType");
+        return returnPage;
     }
 
     /**
@@ -196,7 +209,9 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
-                                      HttpServletResponse response)throws Exception {
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "jumpType",required = false)int jumpType)throws Exception {
+        request.getSession().setAttribute("jumpType",jumpType);
         return "platform/order/guanli";
     }
 

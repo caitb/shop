@@ -119,7 +119,7 @@ public class ComUserAccountService {
             // 保存修改后的金额
             recordS.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordS);
-            int typeS = accountMapper.updateByPrimaryKey(account);
+            int typeS = accountMapper.updateByPrimaryKey(accountS);
             if(typeS == 0){
                 throw new BusinessException("修改进货方成本账户失败!");
             }
@@ -203,6 +203,30 @@ public class ComUserAccountService {
     }
 
     /**
+     * 创建结算额变动流水
+     *
+     * @param bailAmount
+     * @param account
+     * @param billId
+     * @return
+     */
+    private ComUserAccountRecord createAccountRecordByBail(BigDecimal bailAmount,
+                                                               ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(5);
+        res.setHandleFee(bailAmount);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(5));
+        res.setHandleTime(new Date());
+
+        return res;
+    }
+
+    /**
      * 创建结算账单子项
      *
      * @param order
@@ -221,4 +245,5 @@ public class ComUserAccountService {
 
         return item;
     }
+
 }

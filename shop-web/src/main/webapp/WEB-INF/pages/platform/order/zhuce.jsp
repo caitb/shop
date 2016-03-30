@@ -25,11 +25,11 @@
                                                                               alt=""></a>
             <p>申请合伙人</p>
         </header>
-<%--        <div class="xinxi">
-            <p>注册信息</p>
-            <p>支付订单</p>
-            <p>选择拿货方式</p>
-        </div>--%>
+        <%--        <div class="xinxi">
+                    <p>注册信息</p>
+                    <p>支付订单</p>
+                    <p>选择拿货方式</p>
+                </div>--%>
         <div class="paidan">
             <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
             <h1>在您前面还有<span>1233</span>人排单</h1>
@@ -40,18 +40,18 @@
         <main>
             <section class="sec1">
                 <%--<div>--%>
-                    <%--<p>手机号　<b style="color:#999999;">${mobile}</b></p>--%>
+                <%--<p>手机号　<b style="color:#999999;">${mobile}</b></p>--%>
                 <%--</div>--%>
                 <%--<div>--%>
-                    <%--<p>姓　名：--%>
-                        <%--<c:if test="${name==''}">--%>
-                            <%--<input type="text" class="name" id="name" name="name"/>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${name!=''}">--%>
-                            <%--<input type="text" class="name" id="name" name="name" value="${name}" readonly/>--%>
-                        <%--</c:if>--%>
-                        <%--<span class="onc"></span><b class="gao"></b>--%>
-                    <%--</p>--%>
+                <%--<p>姓　名：--%>
+                <%--<c:if test="${name==''}">--%>
+                <%--<input type="text" class="name" id="name" name="name"/>--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${name!=''}">--%>
+                <%--<input type="text" class="name" id="name" name="name" value="${name}" readonly/>--%>
+                <%--</c:if>--%>
+                <%--<span class="onc"></span><b class="gao"></b>--%>
+                <%--</p>--%>
                 <%--</div>--%>
                 <div>
                     <p>微信号：
@@ -104,8 +104,8 @@
     <div class="back_que">
         <p>数据确认</p>
         <h4><b>商品选择:</b><span id="q_skuName"></span></h4>
-        <h4><b>姓名:</b><span id="q_name"></span></h4>
-        <h4><b>手机号:</b><span id="q_mobile"></span></h4>
+        <h4><b>姓名:</b><span id="q_name">${name}</span></h4>
+        <h4><b>手机号:</b><span id="q_mobile">${mobile}</span></h4>
         <h4><b>微信:</b><span id="q_weixinId"></span></h4>
         <h4><b>推荐人电话:</b><span id="q_pMobile"></span></h4>
         <h4><b>合伙人等级:</b><span id="q_levelName"></span></h4>

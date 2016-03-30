@@ -406,11 +406,20 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("用户session丢失");
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            comUserAccountService.countingByOrder(pfBorder);
-            pfBorder.setOrderStatus(orderStatus);
-            pfBorder.setShipStatus(shipStatus);
-            bOrderService.updateGetStock(pfBorder,user);
-            bOrderService.updateBOrder(pfBorder);
+            if(pfBorder.getSendType()==1) {//平台代发
+                if (pfBorder.getOrderType() == 2) {//拿货
+                    pfBorder.setOrderStatus(orderStatus);
+                    pfBorder.setShipStatus(shipStatus);
+                    bOrderService.updateGetStock(pfBorder,user);
+                    bOrderService.updateBOrder(pfBorder);
+                    comUserAccountService.countingByOrder(pfBorder);
+                }
+            }else if(pfBorder.getSendType()==1) {//自己发货
+                pfBorder.setOrderStatus(orderStatus);
+                pfBorder.setShipStatus(shipStatus);
+                bOrderService.updateBOrder(pfBorder);
+                comUserAccountService.countingByOrder(pfBorder);
+            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -441,18 +450,30 @@ public class BOrderController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
-
-            if (freight == null || freight == "") {
-                throw new BusinessException("请重新输入快递单号");
-            } else {
-                PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            if(pfBorder.getSendType()==1){//平台代发
+                if(pfBorder.getOrderType()==2){//拿货
+                    if (freight == null || freight == "") {
+                        throw new BusinessException("请重新输入快递单号");
+                    } else {
+                        pfBorder.setShipStatus(5);
+                        PfBorderFreight pfBorderFreight = new PfBorderFreight();
+                        pfBorderFreight.setCreateTime(new Date());
+                        pfBorderFreight.setPfBorderId(orderId);
+                        pfBorderFreight.setFreight(freight);
+                        pfBorderFreight.setShipManName(shipManName);
+                        bOrderService.updateStock(pfBorder, user);
+                        bOrderService.updateBOrder(pfBorder);
+                        borderFreightService.addPfBorderFreight(pfBorderFreight);
+                    }
+                }
+            }else if(pfBorder.getSendType()==1){//自己发货
                 pfBorder.setShipStatus(5);
                 PfBorderFreight pfBorderFreight = new PfBorderFreight();
                 pfBorderFreight.setCreateTime(new Date());
                 pfBorderFreight.setPfBorderId(orderId);
                 pfBorderFreight.setFreight(freight);
                 pfBorderFreight.setShipManName(shipManName);
-                bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
             }

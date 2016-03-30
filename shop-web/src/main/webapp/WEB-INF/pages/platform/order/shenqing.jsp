@@ -39,9 +39,21 @@
 <div class="biao">
     <h1>申请条件：</h1>
     <table>
-    <tr><td>申请条件</td><td>是否完成</td><td>任务入口</td></tr>
-    <tr><td>申请阿萨德条件</td><td>是否完成</td><td>任务入口</td></tr>
-    <tr><td>申请条件</td><td>是否完成</td><td>任务入口</td></tr>
+        <tr>
+            <td>申请条件</td>
+            <td>是否完成</td>
+            <td>任务入口</td>
+        </tr>
+        <tr>
+            <td>申请阿萨德条件</td>
+            <td>是否完成</td>
+            <td>任务入口</td>
+        </tr>
+        <tr>
+            <td>申请条件</td>
+            <td>是否完成</td>
+            <td>任务入口</td>
+        </tr>
     </table>
 </div>
 <div class="he">
@@ -84,10 +96,10 @@
         </div>
     </section>
     <section class="sec2">
-        <%--
-                <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}">继续</a></p>
-        --%>
-        <p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>
+
+        <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=0">继续</a></p>
+
+        <%--<p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>--%>
     </section>
     <input id="skuId" value="${skuId}" style="display: none"/>
     <input id="pUserId" value="${pUserId}" style="display: none"/>

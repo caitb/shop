@@ -66,13 +66,14 @@
             </section>
             <section class="sec2">
                 <c:if test="${pWxNkName==''}">
-                    <h3>
+                    <h3 class="tui">
                         <span>是否有推荐人：</span>
                         <input type="radio" id="q" name="danx" class="shi" checked="checked">
                         <label for="q" style="margin-left:5px;">是</label>
                         <input type="radio" id="b" name="danx" class="fou"/>
                         <label for="b" style="margin-left:30px;">否</label>
                     </h3>
+                    <h3>您的推荐人：<span>校长</span></h3>
                     <div id="hehuo">
                         <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble"><span
                                 class="onc"></span><b

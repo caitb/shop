@@ -34,9 +34,16 @@ public class OrderTask {
 
 
     /**
-     * 下单后72小时未支付订单自动取消
+     * 下单后72小时未支付订单自动取消(目前做成半小时自动扫描取消)
      */
     public void unPayOrderCancelJob(){
+        log.info("72小时未支付订单自动取消job开始,开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        try{
 
+
+        } catch (Exception e) {
+            log.error("72小时未支付订单自动取消job失败," + e.getMessage());
+        }
+        log.info("72小时未支付订单自动取消job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
 }

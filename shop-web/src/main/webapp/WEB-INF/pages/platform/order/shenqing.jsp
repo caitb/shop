@@ -19,9 +19,9 @@
 <body>
 <header class="xq_header">
     <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-    <p><a href="javascript:;" onclick="goVerified()">合伙人申请</p>
+    <p>合伙人申请</p>
 </header>
-<div class="kang">
+<%--<div class="kang">
     <a href="<%=path%>/product/${skuId}">
         <p class="photo">
             <img src="${skuImg}">
@@ -31,6 +31,18 @@
             <p>${slogan}</p>
         </div>
     </a>
+</div>--%>
+<div class="paidan">
+    <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+    <h1>在您前面还有<span>1233</span>人排单</h1>
+</div>
+<div class="biao">
+    <h1>申请条件：</h1>
+    <table>
+    <tr><td>申请条件</td><td>是否完成</td><td>任务入口</td></tr>
+    <tr><td>申请阿萨德条件</td><td>是否完成</td><td>任务入口</td></tr>
+    <tr><td>申请条件</td><td>是否完成</td><td>任务入口</td></tr>
+    </table>
 </div>
 <div class="he">
     <h1>合伙人特权</h1>

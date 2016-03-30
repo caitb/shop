@@ -46,7 +46,7 @@
         </div>--%>
         <div class="dlpople">
             <p>库存</p>
-            <p><span>${productDetails.stock}</span></p>
+            <p><span>${productDetails.stock}件</span></p>
         </div>
         <nav>
             <ul>

@@ -19,7 +19,7 @@
 <body>
 <header class="xq_header">
     <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-    <p><a href="javascript:;" onclick="goVerified()">合伙人申请</p>
+    <p>合伙人申请</p>
 </header>
 <div class="kang">
     <a href="<%=path%>/product/${skuId}">

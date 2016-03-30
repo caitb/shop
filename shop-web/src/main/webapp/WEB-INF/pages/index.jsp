@@ -10,104 +10,133 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/index.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
+    <link rel="stylesheet" href="<%=path%>/static/class/swipwr/swiper.3.1.7.min.css">
+    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=path%>/static/class/swipwr/swiper.3.1.7.min.js"></script>
+    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
-<div class="wrap">
-    <div class="box">
-        <header class="xq_header" style="margin-bottom:0;">
-            <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>进货市场</p>
-        </header>
-        <div class="banner">
-            <div class="swiper-container">
-                <div class="swiper-wrapper">
-                    <c:forEach items="${urls}" var="url">
-                        <div class="swiper-slide"><img src="${url}" alt=""></div>
-                    </c:forEach>
-                    <!--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>-->
-                    <!--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>-->
-                    <!--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner3.png" alt=""></div>-->
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-        <%--<div class="sing">--%>
-            <%--<img src="<%=path%>/static/images/shouye_sing.png" alt="">--%>
-            <%--<h2>麦链推出全新扶持计划！ ！ ！</h2>--%>
-        <%--</div>--%>
-        <div class="sing all" style="margin-top:5px;">
-            <a href="<%=path%>/productList/showProduct">
-                <img src="<%=path%>/static/images/all.png" alt="">
-                <h3>所有商品</h3>
-                <img src="<%=path%>/static/images/next.png" alt="" class="next">
-            </a>
-        </div>
-        <h1 class="tuij">推荐产品</h1>
-        <main>
-                <c:forEach begin="0" end="${ComSize}" step="2" var="i">
-            <section class="sec1">
-                <c:forEach items="${indexComS}"  begin="${i}" end="${i+1}" var="Sku">
-                    <div>
-                        <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
-                        <h2>${Sku.comSku.name}</h2>
-                        <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>
-                        <h3>保证金：${Sku.bail}元</h3>
-                        <h4>试用费用：${Sku.shipAmount}元</h4>
-                        <h5>
-                            <p>超过<span>${Sku.agentNum}</span>人合伙</p>
-                            <%--<c:choose><c:when--%>
-                                <%--test="${Sku.isPartner==1 && Sku.isPay==1}">--%>
-                            <%--<a href="javascript:;">您已合伙</a></c:when>--%>
-                            <%--<c:otherwise><a--%>
-                                    <%--href="<%=basePath%>userApply/apply.shtml?skuId=${Sku.id}">我要合伙</a></c:otherwise></c:choose>--%>
-                        </h5>
-                    </div>
-                </c:forEach>
-            </section>
-                </c:forEach>
-        </main>
+    <div class="wrap">
+        <div class="box">
+                <div class="banner">
+                   <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <c:forEach items="${urls}" var="url">
+                                    <div class="swiper-slide"><img src="${url}" alt=""></div>
+                                </c:forEach>
+                                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>--%>
+                                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>--%>
+                                <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner3.png" alt=""></div>--%>
+                            </div>
+                                <!-- 如果需要分页器 -->
+                            <div class="swiper-pagination"></div>
     </div>
-</div>
-<%--<div class="bottom">--%>
-    <%--<footer>--%>
-        <%--<div class="btm">--%>
-            <%--<span><img src="<%=path%>/static/images/shouye_footer.png" alt=""></span>--%>
-            <%--<span>首页</span>--%>
-        <%--</div>--%>
-        <%--<div class="btm">--%>
-            <%--<span><img src="<%=path%>/static/images/shouye_footer2.png" alt=""></span>--%>
-            <%--<span>我的店铺</span>--%>
-        <%--</div>--%>
-        <%--<div class="btm" onclick="javascript:window.location.replace('<%=basePath%>profile/profile');">--%>
-            <%--<span><img src="<%=path%>/static/images/shouye_footer3.png" alt=""></span>--%>
-            <%--<span>个人中心</span>--%>
-        <%--</div>--%>
-    <%--</footer>--%>
-<%--</div>--%>
+                </div>
+                <div class="index_login">
+                    <div class="admin">
+                        <img src="${user.wxHeadImg}" alt="">
+                        <h3>${user.wxNkName}—欢迎您登入</h3>
+                    </div> <c:if test="${user.isAgent==1}">
+                    <p><b>1233</b><span>下级合伙人</span></p>
+                    <ul>
+                        <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span>.00</h1></li>
+                        <li><p>总利润</p><h1>￥<span>${comUserAccount.costFee}</span>.00</h1></li>
+                    </ul></c:if>
+                </div><c:if test="${user.isAgent==0}">
+                <div class="index_Nlogin">
+                   <span></span>
+                    <img src="<%=path%>/static/images/index_login.png" alt=""><p>您还不是合伙人，先去好货市场看看把~</p>
+                </div></c:if>
+                <nav>
+                 <ul>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
+                                <span>好货市场</span>
+                        </li>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(4).png" alt=""></h1>
+                                <span>商品管理</span>
+                        </li>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""></h1>
+                                <span>订单管理</span>
+                        </li>
+                </ul>
+            </nav>
+                <nav>
+                     <ul>
+                            <li>
+                                    <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""></h1>
+                                    <span>我的下级</span>
+                            </li>
+                            <li>
+                                    <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
+                                    <span>发展合伙人</span>
+                            </li>
+                            <li>
+                                    <h1><img src="<%=path%>/static/images/index_nav%20(6).png" alt=""></h1>
+                                    <span>我的授权书 </span>
+                            </li>
+                    </ul>
+                </nav>
+                <nav>
+                 <ul>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(5).png" alt=""></h1>
+                                <span>我的店铺</span>
+                        </li>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(8).png" alt=""></h1>
+                                <span>我的资产</span>
+                        </li>
+                        <li>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(2).png" alt=""></h1>
+                                <span>个人信息</span>
+                        </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="back_j" style="display:none;">
+                  <p>您还没有选择拿货方式，这个功能很重要，请您务必设置。</p>
+                  <h1 class="j_qu">点击前往</h1>
+        </div>
+        <div class="back_login" style="display:none;">
+                  <p>您还不是合伙人，先去好货市场看看把~</p>
+                  <h1><span>取消</span><span>去好货市场</span></h1>
+        </div>
+        <div class="back" style="display:none;">
+    </div>
+            <script>
+             var mySwiper = new Swiper ('.swiper-container', {
+                direction: 'horizontal',
+                loop: true,
+                autoplay: 3000,
+                 autoplayDisableOnInteraction : false,
+                // 如果需要分页器
+                pagination: '.swiper-pagination' 
+              })
+             var myScroll = new IScroll(".wrap",{
+                 preventDefault: false
+            })
+            var length=10;
+                var obj={
+                 length:5,
+                    method:function(fn){
+                    fn();
+                    arguments[0]();
+                }
+            };
+                var fn1=function(){
+                    console.log(this.length);
+                };
+                obj.method(fn1);
+          
+  </script>
 </body>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
-<script src="<%=path%>/static/js/iscroll.js"></script>
-<script>
-    var mySwiper = new Swiper('.swiper-container', {
-        direction: 'horizontal',
-        loop: true,
-        autoplay: 3000,
-        autoplayDisableOnInteraction: false,
-        // 如果需要分页器
-        pagination: '.swiper-pagination'
-    })
-    var myScroll = new IScroll(".wrap", {
-        preventDefault: false
-    })
-
-</script>
 </html>

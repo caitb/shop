@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/jinhuoxiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <script src="<%=path%>/static/js/commonAjax.js"></script>
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
@@ -98,6 +97,8 @@
     </div>
     </div>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=path%>/static/js/commonAjax.js"></script>
+    <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
     <script>
 //        var myScroll = new IScroll("main",{
 //            preventDefault: false

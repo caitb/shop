@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @Controller
-//@RequestMapping("/index")
+@RequestMapping("/marketGood")
 public class IndexController extends BaseController {
 
     @Resource
@@ -40,8 +40,8 @@ public class IndexController extends BaseController {
     @Resource
     private BOrderService bOrderService;
 
-    @RequestMapping("/index")
-    public ModelAndView indexList(HttpServletRequest request)throws Exception{
+    @RequestMapping("/market")
+    public ModelAndView marketList(HttpServletRequest request)throws Exception{
         ComUser user = getComUser(request);
         if (user == null) {
             user = userService.getUserById(1l);
@@ -90,7 +90,7 @@ public class IndexController extends BaseController {
         //封装展示商品信息集合
         modelAndView.addObject("indexComS",ComS);
         modelAndView.addObject("ComSize",ComS.size());
-        modelAndView.setViewName("index");
+        modelAndView.setViewName("platform/system/market");
         modelAndView.addObject("user", user);
         return modelAndView;
     }

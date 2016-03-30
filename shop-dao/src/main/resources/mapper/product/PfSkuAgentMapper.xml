@@ -6,18 +6,13 @@
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
         <result column="discount" property="discount" jdbcType="DECIMAL"/>
+        <result column="bail" property="bail" jdbcType="DECIMAL"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT
-               id,
-               sku_id,
-               agent_level_id,
-               discount,
-               quantity,
-               remark
+        select id, sku_id, agent_level_id, discount, bail, quantity, remark
         FROM
                pf_sku_agent
         WHERE
@@ -31,11 +26,11 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
         insert into pf_sku_agent (id, sku_id, agent_level_id, 
-            discount, quantity, remark
-            )
-        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, 
-            #{discount,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
-            )
+            discount, bail, quantity,
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
+            #{discount,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
@@ -43,30 +38,31 @@
         set sku_id = #{skuId,jdbcType=INTEGER},
             agent_level_id = #{agentLevelId,jdbcType=INTEGER},
             discount = #{discount,jdbcType=DECIMAL},
+            bail = #{bail,jdbcType=DECIMAL},
             quantity = #{quantity,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id, discount, quantity, remark
+        select id, sku_id, agent_level_id, discount, bail, quantity, remark
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id, discount, quantity, remark
+        select id, sku_id, agent_level_id, discount, bail, quantity, remark
         from pf_sku_agent
     </select>
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id, discount, quantity, remark
+        select id, sku_id, agent_level_id, discount, bail, quantity, remark
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id, discount, quantity, remark
+        select id, sku_id, agent_level_id, discount, bail, quantity, remark
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -74,7 +70,7 @@
 
     <update id="updateById" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
         update
-               pf_sku_agent
+        pf_sku_agent
         <set>
             <if test="skuId != null">
                 sku_id = #{skuId,jdbcType=INTEGER},
@@ -89,10 +85,13 @@
                 quantity = #{quantity,jdbcType=INTEGER},
             </if>
             <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR}
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bail != null">
+                bail = #{bail,jdbcType=DECIMAL},
             </if>
         </set>
         where
-               id = #{id,jdbcType=INTEGER}
+        id = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

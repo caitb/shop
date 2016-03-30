@@ -7,14 +7,14 @@
         <result column="cname" property="cname" jdbcType="VARCHAR" />
         <result column="ename" property="ename" jdbcType="VARCHAR" />
         <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="LONGVARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
 
     <!-- 根据id查询一条记录 -->
     <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
-        SELECT
-               id, create_time, cname, ename, logo_url, remark
+        select id, create_time, cname, ename, logo_url, content, remark
         FROM
                com_brand
         WHERE
@@ -23,8 +23,7 @@
 
     <!-- 根据条件查询记录 -->
     <select id="selectByCondition" resultMap="BaseResultMap">
-        SELECT
-               id, create_time, cname, ename, logo_url, remark
+        select id, create_time, cname, ename, logo_url, content, remark
         FROM
                com_brand
         <where>
@@ -42,23 +41,24 @@
 
     <!-- 添加一条记录 -->
     <insert id="insert">
-        INSERT INTO
-                    com_brand (create_time, cname, ename, logo_url, remark)
-        VALUES
-                    (create_time = #{comBrand.createTime}, cname = #{comBrand.cname}, ename = #{comBrand.ename}, logo_url = #{comBrand.logoUrl}, remark = #{comBrand.remark})
+        insert into com_brand (id, create_time, cname,
+            ename, logo_url, content,
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{cname,jdbcType=VARCHAR},
+            #{ename,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR},
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <!-- 根据id更新一条记录 -->
     <update id="updateById">
-        UPDATE com_brand
-        SET
-               create_time = #{comBrand.createTime},
-               cname       = #{comBrand.cname},
-               ename       = #{comBrand.ename},
-               logo_url    = #{comBrand.logoUrl},
-               remark      = #{comBrand.remark}
-        WHERE
-               id = #{comBrand.id}
+        update com_brand
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            cname = #{cname,jdbcType=VARCHAR},
+            ename = #{ename,jdbcType=VARCHAR},
+            logo_url = #{logoUrl,jdbcType=VARCHAR},
+            content = #{content,jdbcType=LONGVARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
     </update>
 
     <!-- 根据id删除一条记录 -->

@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * 用户表（包括代理和分销用户）
- * 
+ *
  * @author masiis
  * @version 1.0 2016-03-03
  */
@@ -66,10 +66,6 @@ public class ComUser implements Serializable {
      */
     private String mobile;
     /**
-     * 密码
-     */
-    private  String password;
-    /**
      * 身份证号
      */
     private String idCard;
@@ -110,23 +106,21 @@ public class ComUser implements Serializable {
      */
     private String address;
     /**
-     * 是否代理商(0否1是)
+     * 拿货方式(0未选择1平台代发2自己发货)
+     */
+    private Integer sendType;
+    /**
+     * 是否合伙人(0否1是)
      */
     private Integer isAgent;
-    private Integer sendType;
+    /**
+     * 是否认证(0否1是)
+     */
     private Integer isVerified;
     /**
      * 性别(0女1男)
      */
     private Integer sex;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public Long getId() {
         return id;
@@ -149,7 +143,7 @@ public class ComUser implements Serializable {
     }
 
     public void setOpenid(String openid) {
-        this.openid = openid;
+        this.openid = openid == null ? null : openid.trim();
     }
 
     public String getWxNkName() {
@@ -157,7 +151,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxNkName(String wxNkName) {
-        this.wxNkName = wxNkName;
+        this.wxNkName = wxNkName == null ? null : wxNkName.trim();
     }
 
     public String getWxId() {
@@ -165,7 +159,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxId(String wxId) {
-        this.wxId = wxId;
+        this.wxId = wxId == null ? null : wxId.trim();
     }
 
     public String getWxHeadImg() {
@@ -173,7 +167,7 @@ public class ComUser implements Serializable {
     }
 
     public void setWxHeadImg(String wxHeadImg) {
-        this.wxHeadImg = wxHeadImg;
+        this.wxHeadImg = wxHeadImg == null ? null : wxHeadImg.trim();
     }
 
     public String getAccessToken() {
@@ -181,7 +175,7 @@ public class ComUser implements Serializable {
     }
 
     public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+        this.accessToken = accessToken == null ? null : accessToken.trim();
     }
 
     public String getRefreshToken() {
@@ -189,7 +183,7 @@ public class ComUser implements Serializable {
     }
 
     public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+        this.refreshToken = refreshToken == null ? null : refreshToken.trim();
     }
 
     public Date getAtokenExpire() {
@@ -213,7 +207,7 @@ public class ComUser implements Serializable {
     }
 
     public void setRealName(String realName) {
-        this.realName = realName;
+        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getMobile() {
@@ -221,7 +215,7 @@ public class ComUser implements Serializable {
     }
 
     public void setMobile(String mobile) {
-        this.mobile = mobile;
+        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     public String getIdCard() {
@@ -229,7 +223,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCard(String idCard) {
-        this.idCard = idCard;
+        this.idCard = idCard == null ? null : idCard.trim();
     }
 
     public String getIdCardFrontUrl() {
@@ -237,7 +231,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardFrontUrl(String idCardFrontUrl) {
-        this.idCardFrontUrl = idCardFrontUrl;
+        this.idCardFrontUrl = idCardFrontUrl == null ? null : idCardFrontUrl.trim();
     }
 
     public String getIdCardBackUrl() {
@@ -245,7 +239,7 @@ public class ComUser implements Serializable {
     }
 
     public void setIdCardBackUrl(String idCardBackUrl) {
-        this.idCardBackUrl = idCardBackUrl;
+        this.idCardBackUrl = idCardBackUrl == null ? null : idCardBackUrl.trim();
     }
 
     public Integer getProvinceId() {
@@ -261,7 +255,7 @@ public class ComUser implements Serializable {
     }
 
     public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
+        this.provinceName = provinceName == null ? null : provinceName.trim();
     }
 
     public Integer getCityId() {
@@ -277,7 +271,7 @@ public class ComUser implements Serializable {
     }
 
     public void setCityName(String cityName) {
-        this.cityName = cityName;
+        this.cityName = cityName == null ? null : cityName.trim();
     }
 
     public Integer getRegionId() {
@@ -293,7 +287,7 @@ public class ComUser implements Serializable {
     }
 
     public void setRegionName(String regionName) {
-        this.regionName = regionName;
+        this.regionName = regionName == null ? null : regionName.trim();
     }
 
     public String getAddress() {
@@ -301,23 +295,7 @@ public class ComUser implements Serializable {
     }
 
     public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getIsAgent() {
-        return isAgent;
-    }
-
-    public void setIsAgent(Integer isAgent) {
-        this.isAgent = isAgent;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
+        this.address = address == null ? null : address.trim();
     }
 
     public Integer getSendType() {
@@ -328,12 +306,28 @@ public class ComUser implements Serializable {
         this.sendType = sendType;
     }
 
+    public Integer getIsAgent() {
+        return isAgent;
+    }
+
+    public void setIsAgent(Integer isAgent) {
+        this.isAgent = isAgent;
+    }
+
     public Integer getIsVerified() {
         return isVerified;
     }
 
     public void setIsVerified(Integer isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
     }
 
     @Override
@@ -351,7 +345,6 @@ public class ComUser implements Serializable {
                 ", rtokenExpire=" + rtokenExpire +
                 ", realName='" + realName + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
                 ", idCard='" + idCard + '\'' +
                 ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
                 ", idCardBackUrl='" + idCardBackUrl + '\'' +
@@ -366,6 +359,8 @@ public class ComUser implements Serializable {
                 ", sendType=" + sendType +
                 ", isVerified=" + isVerified +
                 ", sex=" + sex +
+                ", sendType=" + sendType +
+                ", isVerified=" + isVerified +
                 '}';
     }
 }

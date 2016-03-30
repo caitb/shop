@@ -476,6 +476,7 @@
        <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
        <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
        <script src="<%=path%>/static/js/commonAjax.js"></script>
+       <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
        <script>
                $('body').on('touchmove', function (event) {
                    var event=event||event.window;

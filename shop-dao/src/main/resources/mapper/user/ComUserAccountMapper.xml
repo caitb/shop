@@ -79,4 +79,19 @@
         WHERE com_user_id = #{userid,jdbcType=DECIMAL}
     </update>
 
+    <update id="updateByIdWithVersion" parameterType="com.masiis.shop.dao.po.ComUserAccount">
+        update com_user_account
+        set com_user_id = #{comUserId,jdbcType=BIGINT},
+            total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
+            cost_fee = #{costFee,jdbcType=DECIMAL},
+            extractable_fee = #{extractableFee,jdbcType=DECIMAL},
+            counting_fee = #{countingFee,jdbcType=DECIMAL},
+            bail_fee = #{bailFee,jdbcType=DECIMAL},
+            created_time = #{createdTime,jdbcType=TIMESTAMP},
+            changed_time = #{changedTime,jdbcType=TIMESTAMP},
+            changed_by = #{changedBy,jdbcType=VARCHAR},
+            version = version + 1
+        where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
+    </update>
+
 </mapper>

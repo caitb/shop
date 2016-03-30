@@ -25,10 +25,14 @@
                                                                               alt=""></a>
             <p>申请合伙人</p>
         </header>
-        <div class="xinxi">
+<%--        <div class="xinxi">
             <p>注册信息</p>
             <p>支付订单</p>
             <p>选择拿货方式</p>
+        </div>--%>
+        <div class="paidan">
+            <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+            <h1>在您前面还有<span>1233</span>人排单</h1>
         </div>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>

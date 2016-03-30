@@ -47,4 +47,6 @@ public interface ComUserAccountMapper {
                             @Param("userid") Long id);
 
     int updateByPrimaryKey(ComUserAccount account);
+
+    int updateByIdWithVersion(ComUserAccount account);
 }

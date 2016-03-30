@@ -21,6 +21,11 @@ public class UserIdentityAuthService {
     @Resource
     private UserService userService;
 
+    /**
+     * 提交实名认证审核
+     * @author hanzengzhi
+     * @date 2016/3/30 15:39
+     */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontUrl,String idCardBackUrl){
         try{

@@ -55,10 +55,10 @@ public class payBOrderService {
 
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
-        if(pfBorderPayment==null){
+        if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
-        
+
     }
 
     /**
@@ -75,7 +75,8 @@ public class payBOrderService {
      * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
      * <7>减少发货方库存 如果用户id是0操作平台库存
      * <8>增加收货方库存
-     * <9>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+     * <9>增加保证金
+     * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void payBOrderI(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
         //<1>修改订单支付信息
@@ -117,6 +118,7 @@ public class payBOrderService {
         PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderId(bOrderId);
         if (pfUserSku != null) {
             pfUserSku.setIsPay(1);
+            pfUserSku.setBail(pfBorder.getBailAmount());
             pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
         }
         log.info("<5>修改用户sku代理关系支付状态");
@@ -177,7 +179,20 @@ public class payBOrderService {
             }
             log.info("<8>增加收货方库存");
         }
-        //<9>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+        //<9>增加保证金
+//        ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
+//        ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
+//        // 保存修改前的金额
+//        recordS.setPrevFee(accountS.getCostFee());
+//        accountS.setCostFee(accountS.getCostFee().add(orderPayment));
+//        // 保存修改后的金额
+//        recordS.setNextFee(accountS.getCostFee());
+//        recordMapper.insert(recordS);
+//        int typeS = accountMapper.updateByIdWithVersion(accountS);
+//        if(typeS == 0){
+//            throw new BusinessException("修改进货方成本账户失败!");
+//        }
+        //<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
         comUserAccountService.countingByOrder(pfBorder);
         log.info("<9>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
 

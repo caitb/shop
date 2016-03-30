@@ -37,106 +37,27 @@
                         <div>
                             <h2 id="sku1">${sku.name}</h2>
                             <h3>零售价：<span>${sku.priceRetail}</span></h3>
-                            <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.stock}</span></p>
+                            <p>已售：<span>0</span>　　在线库存：<span id="sku2">${sku.stock}</span></p>
                             <input type="hidden" id="pfuId" value="${sku.pfuId}">
                             <input type="hidden" id="skuId" value="${sku.id}">
+                            <p>拿货方式：<span>平台代发货</span>
                         </div>
                     </section>
                     <section class="sec3">
-                        <p class="jianku" onclick="jiankucun('${sku.name}','${sku.stock}')">减库存</p>
-                        <p class="buhuo" onclick="buhuokucun('${sku.name}')">补货</p>
+                        <p class="jianku"><a href="#">申请拿货</a></p>
+                        <p class="buhuo"><a href="#"></a>补货</p>
                     </section>
                 </c:forEach>
             </div>
             </div>
-        </div>
-        <div class="back_j">
-            <p>减少库存</p>
-            <h4>商　　品:　　<span id="skuName"></span></h4>
-            <h4>当前库存:　　<span id="skuStock"></span></h4>
-            <h4>数　　量:　　<div>
-                <span class="jian">-</span>
-                <input type="tel" class="number" value="1"/>
-                <span class="jia">+</span>
-            </div>
-            </h4>
-            <div>
-                <h1 class="j_qu">取消</h1>
-                <h1 class="j_que">确定</h1>
-            </div>
-        </div>
-        <div class="back_b">
-            <p>增加库存</p>
-            <h4>商品:　　<span id="addsku"></span></h4>
-            <h4>数量:　　<div>
-                <span class="jian">-</span>
-                <input type="tel" class="number" value="1"/>
-                <span class="jia">+</span>
-            </div>
-            </h4>
-            <div>
-                <h1 class="b_qu">取消</h1>
-                <h1 class="b_que">确定</h1>
-            </div>
-        </div>
-        <div class="back_que">
-            <p>确认减库存?</p>
-            <h4><b>商品:</b><span id="sku3"></span></h4>
-            <h4><b>当前库存:</b><span id="stock1"></span></h4>
-            <h4><b>减库存:</b><span id="stock2"></span></h4>
-            <h4><b>剩余库存:</b><span id="stock3"></span></h4>
-            <h3>
-                <span class="que_qu">取消</span>
-                <span class="que_que">确认</span>
-            </h3>
         </div>
         <div class="back">
         </div>
     </main>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
-<%--<script src="<%=path%>/static/js/iscroll.js"></script>--%>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script>
-//    var myScroll = new IScroll("main",{
-//        preventDefault: false
-//    })
-    var i=1;
-    $(".jia").on("click",function(){
-        i++;
-        $(".number").val(i)
-    })
-    $(".jian").on("click",function(){
-        if(i==1){
-            return false;
-        }
-        i--;
-        $(".number").val(i)
-    })
-    function jiankucun(a,b){
-        $("#skuName").html(a);
-        $("#skuStock").html(b);
-        $(".back").css("display","-webkit-box");
-        $(".back_j").show();
-    }
-    $(".j_qu").on("click",function(){
-        $(".back").css("display","none");
-        $(".back_j").hide();
-    })
-    $(".j_que").on("click",function(){
-        var skuName = $("#skuName").text();
-        $("#sku3").html(skuName);
-        var skuStock = $("#skuStock").text();
-        $("#stock1").html(skuStock);
-        $("#stock2").html(i);
-        $("#stock3").html(skuStock-i);
-        $(".back_j").hide();
-        $(".back_que").css("display","-webkit-box");
-    })
-    $(".que_qu").on("click",function(){
-        $(".back").css("display","none");
-        $(".back_que").hide();
-    })
     //ajax
     $('.que_que').on('click', function () {
         var pfuId = $("#pfuId").val();

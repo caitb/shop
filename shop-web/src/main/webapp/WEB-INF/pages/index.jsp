@@ -6,8 +6,8 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/class/swipwr/swiper.3.1.7.min.css">
+    <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/class/swipwr/swiper.3.1.7.min.js"></script>
+    <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
@@ -38,8 +38,8 @@
                             <div class="swiper-pagination"></div>
     </div>
                 </div>
-                <div class="index_login">
-                    <div class="admin">
+                <div class="index_login" style="display: block">
+                    <div class="admin" >
                         <img src="${user.wxHeadImg}" alt="">
                         <h3>${user.wxNkName}—欢迎您登入</h3>
                     </div> <c:if test="${user.isAgent==1}">
@@ -49,55 +49,58 @@
                         <li><p>总利润</p><h1>￥<span>${comUserAccount.costFee}</span>.00</h1></li>
                     </ul></c:if>
                 </div><c:if test="${user.isAgent==0}">
-                <div class="index_Nlogin">
-                   <span></span>
+                <div class="index_Nlogin" >
+                   <span style="background: url('<%=path%>/static/images/index_login1.png') no-repeat;background-size: contain;"></span>
                     <img src="<%=path%>/static/images/index_login.png" alt=""><p>您还不是合伙人，先去好货市场看看把~</p>
                 </div></c:if>
                 <nav>
                  <ul>
-                        <li>
+                        <li class="market">
+                                <a class="herf" href="<%=path%>/marketGood/market">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
-                                <span>好货市场</span>
+                                <span>好货市场</span></a>
                         </li>
-                        <li>
+                        <li class="market">
+                            <a class="herf" href="javascript:;"></a>
                                 <h1><img src="<%=path%>/static/images/index_nav%20(4).png" alt=""></h1>
-                                <span>商品管理</span>
+                                <span>商品管理</span></a>
                         </li>
-                        <li>
+                        <li class="market">
+                            <a class="herf" href="javascript:;">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""></h1>
-                                <span>订单管理</span>
+                                <span>订单管理</span></a>
                         </li>
                 </ul>
             </nav>
                 <nav>
                      <ul>
-                            <li>
+                            <li class="market"><a class="herf" href="javascript:;">
                                     <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""></h1>
-                                    <span>我的下级</span>
+                                    <span>我的下级</span></a>
                             </li>
-                            <li>
+                            <li class="market"><a class="herf" href="javascript:;">
                                     <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
-                                    <span>发展合伙人</span>
+                                    <span>发展合伙人</span></a>
                             </li>
-                            <li>
+                            <li class="market"><a class="herf" href="javascript:;">
                                     <h1><img src="<%=path%>/static/images/index_nav%20(6).png" alt=""></h1>
-                                    <span>我的授权书 </span>
+                                    <span>我的授权书 </span></a>
                             </li>
                     </ul>
                 </nav>
                 <nav>
                  <ul>
-                        <li>
+                        <li class="market"><a class="herf" href="javascript:;">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(5).png" alt=""></h1>
-                                <span>我的店铺</span>
+                                <span>我的店铺</span></a>
                         </li>
-                        <li>
+                        <li class="market"><a class="herf" href="javascript:;">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(8).png" alt=""></h1>
-                                <span>我的资产</span>
+                                <span>我的资产</span></a>
                         </li>
-                        <li>
+                        <li ><a href="javascript:;">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(2).png" alt=""></h1>
-                                <span>个人信息</span>
+                                <span>个人信息</span></a>
                         </li>
                 </ul>
             </nav>
@@ -108,7 +111,7 @@
         </div>
         <div class="back_login" style="display:none;">
                   <p>您还不是合伙人，先去好货市场看看把~</p>
-                  <h1><span>取消</span><span>去好货市场</span></h1>
+                  <h1><span id="quxiao">取消</span><span id="goMark">去好货市场</span></h1>
         </div>
         <div class="back" style="display:none;">
     </div>
@@ -121,22 +124,44 @@
                 // 如果需要分页器
                 pagination: '.swiper-pagination' 
               })
-             var myScroll = new IScroll(".wrap",{
-                 preventDefault: false
-            })
-            var length=10;
-                var obj={
-                 length:5,
-                    method:function(fn){
-                    fn();
-                    arguments[0]();
-                }
-            };
-                var fn1=function(){
-                    console.log(this.length);
+//             var myScroll = new IScroll(".wrap",{
+//                 preventDefault: false
+//            })
+                var length=10;
+                    var obj={
+                     length:5,
+                        method:function(fn){
+                        fn();
+                        arguments[0]();
+                    }
                 };
-                obj.method(fn1);
-          
+             var fn1=function(){
+                console.log(this.length);
+             };
+             obj.method(fn1);
+             $(".market").on("click",function(){
+                  var agent= ${user.isAgent};
+                  if(agent==0) {
+                      $(".back_login").attr("style", "display:block");
+                      $(".back").attr("style", "display:block");
+                      $(".herf").attr("href","javascript:;");
+                  }
+              })
+
+             $(".back").on("click",function(){
+                 $(".back_login").hide();
+                 $(".back").hide();
+             })
+             $("#quxiao").on("click",function(){
+                 $(".back_login").hide();
+                 $(".back").hide();
+             })
+             $("#goMark").on("click",function(){
+                 $(".back_login").hide();
+                 $(".back").hide();
+                 window.location.href="<%=path%>/marketGood/market";
+             })
+
   </script>
-</body>
+ </body>
 </html>

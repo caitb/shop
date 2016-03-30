@@ -7,10 +7,10 @@ import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.ProductMapper;
 import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
-import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +37,7 @@ public class ProductService {
     @Resource
     private ProductSimpleMapper productSimpleMapper;
     @Resource
-    private ComUserMapper comUserMapper;
+    private PfUserSkuStockMapper pfUserSkuStockMapper;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -117,11 +117,9 @@ public class ProductService {
      */
     public List<Product> productListByUser(Long userId) throws Exception {
         List<Product> userProducts = productMapper.getProductsByUser(userId);
-        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
-                product.setSendType(comUser.getSendType());
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
@@ -149,12 +147,7 @@ public class ProductService {
       * @Date 2016/3/21 0021 上午 10:13
       * 查看库存
       */
-    public Integer getStockByUser(Integer id) throws Exception {
-        Integer skuStock = 0;
-        Product product = productMapper.getProductStock(id);
-        if(product!=null){
-            skuStock = product.getStock();
-        }
-        return skuStock;
+    public PfUserSkuStock getStockByUser(Long id) throws Exception {
+        return pfUserSkuStockMapper.selectByPrimaryKey(id);
     }
 }

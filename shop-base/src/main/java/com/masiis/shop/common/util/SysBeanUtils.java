@@ -93,7 +93,39 @@ public class SysBeanUtils {
         return isNumeric(strArr[0]) && isNumeric(strArr[1]);
     }
 
+    /**
+     * 根据状态位来创建不同的账户操作流水号
+     *
+     * @param type
+     * @return
+     */
+    public static String createAccountRecordSerialNum(int type) {
+        StringBuilder res = null;
+        if (type == 0) {
+            res = new StringBuilder("LSHA");
+        } else if (type == 1) {
+            res = new StringBuilder("LSHB");
+        } else if (type == 2) {
+            res = new StringBuilder("LSHC");
+        } else if (type == 3) {
+            res = new StringBuilder("LSHD");
+        } else if (type == 4) {
+            res = new StringBuilder("LSHE");
+        } else if (type == 5) {
+            res = new StringBuilder("LSHF");
+        } else if (type == 6) {
+            res = new StringBuilder("LSHG");
+        } else {
+            res = new StringBuilder("LSHZ");
+        }
+        res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
+        for(int i = 0; i < 11; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
+    }
+
     public static void main(String[] aa) {
-        System.out.println(new BigDecimal("+234.5"));
+        System.out.println(createAccountRecordSerialNum(0));
     }
 }

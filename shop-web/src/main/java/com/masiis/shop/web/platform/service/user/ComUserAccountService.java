@@ -1,12 +1,12 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfUserBillItem;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +26,8 @@ public class ComUserAccountService {
     ComUserAccountMapper accountMapper;
     @Resource
     PfUserBillItemMapper itemMapper;
+    @Resource
+    ComUserAccountRecordMapper recordMapper;
 
     /**
      * 根据用户id查询用户资产账户
@@ -76,23 +78,140 @@ public class ComUserAccountService {
             PfUserBillItem item = createBillItemByBOrder(order);
             itemMapper.insert(item);
 
-            BigDecimal orderPayment = order.getPayAmount();
+            log.info("账单子项创建成功!");
+
+            BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
+
+            log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
 
             // 获取对应的account记录
-            ComUserAccount account = accountMapper.findByUserId(order.getUserId());
-        } catch (Exception e) {
-            log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage());
-            throw new BusinessException(e);
-        }
+            ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
+            ComUserAccountRecord recordC = createAccountRecordByCounting(orderPayment, account, item.getId());
+            recordC.setPrevFee(account.getCountingFee());
+            account.setCountingFee(account.getCountingFee().add(orderPayment));
+            recordC.setNextFee(account.getCountingFee());
+            recordMapper.insert(recordC);
 
+            log.info("插入结算金额的变动流水!");
+
+            ComUserAccountRecord recordT = createAccountRecordByTotal(orderPayment, account, item.getId());
+            recordT.setPrevFee(account.getTotalIncomeFee());
+            account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
+            recordT.setNextFee(account.getTotalIncomeFee());
+            recordMapper.insert(recordT);
+
+            log.info("插入总销售额的变动流水!");
+
+            int type = accountMapper.updateByPrimaryKey(account);
+            if(type == 0){
+                throw new BusinessException("修改出货方结算金额和总销售额失败!");
+            }
+
+            log.info("更新出货人账户结算额和总销售额成功!");
+
+            log.info("开始给进货人增加成本");
+
+            ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
+            ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
+            recordS.setPrevFee(accountS.getCostFee());
+            accountS.setCostFee(accountS.getCostFee().add(orderPayment));
+            recordS.setNextFee(accountS.getCostFee());
+            recordMapper.insert(recordS);
+            int typeS = accountMapper.updateByPrimaryKey(account);
+            if(typeS == 0){
+                throw new BusinessException("修改进货方成本账户失败!");
+            }
+
+            log.info("更新进货方成本账户成功!");
+        } catch (Exception e) {
+            log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage(), e);
+            throw new BusinessException("订单完成进行账户总销售额和结算金额操作错误");
+        }
     }
 
+    /**
+     * 根据订单入账计算进货方成本
+     *
+     * @param orderPayment
+     * @param account
+     * @param billId
+     * @return
+     */
+    private ComUserAccountRecord createAccountRecordByCost(BigDecimal orderPayment
+            , ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(6);
+        res.setHandleFee(orderPayment);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(6));
+        res.setHandleTime(new Date());
+
+        return res;
+    }
+
+    /**
+     * 创建总销售额的变动流水
+     *
+     * @param orderPayment
+     * @param account
+     * @param billId
+     * @return
+     */
+    private ComUserAccountRecord createAccountRecordByTotal(BigDecimal orderPayment, ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(3);
+        res.setHandleFee(orderPayment);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(3));
+        res.setHandleTime(new Date());
+
+        return res;
+    }
+
+    /**
+     * 创建结算额变动流水
+     *
+     * @param orderPayment
+     * @param account
+     * @param billId
+     * @return
+     */
+    private ComUserAccountRecord createAccountRecordByCounting(BigDecimal orderPayment,
+                                                     ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(0);
+        res.setHandleFee(orderPayment);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
+        res.setHandleTime(new Date());
+
+        return res;
+    }
+
+    /**
+     * 创建结算账单子项
+     *
+     * @param order
+     * @return
+     */
     private PfUserBillItem createBillItemByBOrder(PfBorder order) {
         PfUserBillItem item = new PfUserBillItem();
 
         item.setCreateDate(new Date());
         item.setOrderCreateDate(order.getCreateTime());
-        item.setOrderPayAmount(order.getPayAmount());
+        item.setOrderPayAmount(order.getPayAmount().subtract(order.getBailAmount()));
         item.setOrderSubType(0);
         item.setOrderType(0);
         item.setPfBorderId(order.getId());

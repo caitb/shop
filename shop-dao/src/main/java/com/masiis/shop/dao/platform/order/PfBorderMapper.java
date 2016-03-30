@@ -36,7 +36,8 @@ public interface PfBorderMapper {
     List<PfBorder> selectByUserPid(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
 
 
-    List<PfBorder> selectByUserAndDate( @Param("userid") Long userid,
+    List<PfBorder> selectUnCountingByUserAndDate( @Param("userid") Long userid,
                                         @Param("start") Date countStartDay,
                                         @Param("end") Date countEndDay);
+
 }

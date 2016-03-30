@@ -143,6 +143,17 @@
         </div>
 
         <div class="form-group">
+            <label for="brandId" class="col-sm-4 control-label">计量单位</label>
+            <div class="col-sm-5">
+                <select class="form-control" id="unitId" name="unit">
+                    <c:forEach items="${unitMeasures}" var="unit">
+                        <option value="${unit.id}">${unit.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
                 <div class="alert alert-success" role="alert">
@@ -279,7 +290,7 @@
                                     <div>
                                         <input type="text" class="form-control" id="intermediateCount" name="quantitys" placeholder="">
                                     </div>
-                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
+                                    金额门槛<small class="text-info threshold"></small>元
                                 </div>
 
                                 <hr>
@@ -325,7 +336,7 @@
                                     <div>
                                         <input type="text" class="form-control" id="primaryCount" name="quantitys" placeholder="">
                                     </div>
-                                    金额门槛<small class="text-info threshold">~9.99 ~9.99 999</small><small>元</small>
+                                    金额门槛<small class="text-info threshold"></small>元
                                 </div>
 
                                 <hr>
@@ -347,7 +358,7 @@
 
         <div class="form-group">
             <div class="col-sm-3"></div>
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <div class="alert alert-success" role="alert">
                     <strong>分销设置</strong>
                 </div>
@@ -431,7 +442,7 @@
         <hr/>
 
         <div class="form-group">
-            <label class="col-sm-4 control-label">主图</label>
+            <label class="col-sm-3 control-label">主图</label>
             <div class="col-sm-4 upload-widget" id="upload-widget"></div>
         </div>
 

@@ -102,7 +102,7 @@ public class ComUserAccountService {
 
             log.info("插入总销售额的变动流水!");
 
-            int type = accountMapper.updateByPrimaryKey(account);
+            int type = accountMapper.updateByIdWithVersion(account);
             if(type == 0){
                 throw new BusinessException("修改出货方结算金额和总销售额失败!");
             }
@@ -119,7 +119,7 @@ public class ComUserAccountService {
             // 保存修改后的金额
             recordS.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordS);
-            int typeS = accountMapper.updateByPrimaryKey(account);
+            int typeS = accountMapper.updateByIdWithVersion(accountS);
             if(typeS == 0){
                 throw new BusinessException("修改进货方成本账户失败!");
             }
@@ -179,7 +179,7 @@ public class ComUserAccountService {
     }
 
     /**
-     * 创建结算额变动流水
+     * 创建结算额增加变动流水
      *
      * @param orderPayment
      * @param account
@@ -197,6 +197,30 @@ public class ComUserAccountService {
         res.setComUserId(account.getComUserId());
         res.setHandleType(0);
         res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
+        res.setHandleTime(new Date());
+
+        return res;
+    }
+
+    /**
+     * 创建增加保证金变动流水
+     *
+     * @param bailAmount
+     * @param account
+     * @param billId
+     * @return
+     */
+    public ComUserAccountRecord createAccountRecordByBail(BigDecimal bailAmount,
+                                                               ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(5);
+        res.setHandleFee(bailAmount);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(5));
         res.setHandleTime(new Date());
 
         return res;
@@ -221,4 +245,5 @@ public class ComUserAccountService {
 
         return item;
     }
+
 }

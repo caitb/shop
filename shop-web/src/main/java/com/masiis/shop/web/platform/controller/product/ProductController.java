@@ -171,7 +171,9 @@ public class ProductController extends BaseController {
                                  @RequestParam("id") Long id) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/buhuo");
         PfUserSkuStock product = productService.getStockByUser(id);
+        Integer upperStock = productService.getUpperStock(product.getUserId(), product.getSkuId());
         mav.addObject("productInfo",product);
+        mav.addObject("upperStock",upperStock);//上级库存
         return mav;
     }
 }

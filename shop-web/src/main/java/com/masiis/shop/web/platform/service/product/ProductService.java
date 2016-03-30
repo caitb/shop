@@ -3,13 +3,12 @@ package com.masiis.shop.web.platform.service.product;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
-import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
-import com.masiis.shop.dao.platform.product.ComSpuMapper;
-import com.masiis.shop.dao.platform.product.ProductMapper;
-import com.masiis.shop.dao.platform.product.ProductSimpleMapper;
+import com.masiis.shop.dao.platform.product.*;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComSpu;
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,10 @@ public class ProductService {
     private ProductSimpleMapper productSimpleMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfSkuStockMapper pfSkuStockMapper;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -145,9 +148,24 @@ public class ProductService {
     /**
       * @Author 贾晶豪
       * @Date 2016/3/21 0021 上午 10:13
-      * 查看库存
+      * 查看当前库存
       */
     public PfUserSkuStock getStockByUser(Long id) throws Exception {
         return pfUserSkuStockMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 上级/平台库存
+     */
+    public Integer getUpperStock(Long UserId, Integer skuId) {
+        Integer upperStock;
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(UserId, skuId);//当前代理关系
+        if (pfUserSku.getPid() == 0) {
+            upperStock = pfSkuStockMapper.selectBySkuId(skuId).getStock();
+        } else {
+            PfUserSku upperUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSku.getPid());
+            upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(upperUserSku.getUserId(), skuId).getStock();
+        }
+        return upperStock;
     }
 }

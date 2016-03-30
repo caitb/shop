@@ -220,9 +220,9 @@ public class UserCertificateController extends BaseController {
      * @Date 2016/3/17 0017 下午 6:37
      * 个人证书详情
      */
-    @RequestMapping(value = "/userct/{pfuId}")
+    @RequestMapping(value = "/detail")
     public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable("pfuId") Integer pfuId) throws Exception {
+                                              @RequestParam("pfuId") Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cdetail");
         PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
         ComUser comUser = userService.getUserById(pfUserSku.getUserId());
@@ -233,22 +233,22 @@ public class UserCertificateController extends BaseController {
         mav.addObject("comSku", comSku);
         return mav;
     }
-
     /**
      * @Author 贾晶豪
      * @Date 2016/3/18 0018 下午 1:50
-     * 等待申请
+     * 上级信息
      */
-    @RequestMapping(value = "/ready/{skuId}")
+    @RequestMapping(value = "/userInfo")
     @ResponseBody
     public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
-                              @PathVariable("skuId") Integer skuId) throws Exception {
-        ModelAndView mav = new ModelAndView("/platform/user/cready");
-        ComSku comSku = skuService.getSkuById(skuId);
-        mav.addObject("skuName", comSku.getName());
+                              @PathVariable("uskId") Integer uskId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/upperUserInfo");
+        PfUserSku pfUserSku = userSkuService.getUserSkuById(uskId);
+        ComUser userInfo = userService.getUserById(pfUserSku.getUserId());
+        mav.addObject("userInfo", userInfo);
+        mav.addObject("pfUserSku", pfUserSku);
         return mav;
     }
-
     /**
      * @Author 贾晶豪
      * @Date 2016/3/18 0018 下午 2:19

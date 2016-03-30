@@ -31,4 +31,12 @@ public class OrderTask {
         }
         log.info("创建每日结算账单定时任务结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
+
+
+    /**
+     * 下单后72小时未支付订单自动取消
+     */
+    public void unPayOrderCancelJob(){
+
+    }
 }

@@ -36,7 +36,6 @@ public class UserIdentityAuthService {
             //修改用户数据
             comUser.setIdCardFrontUrl(frontFillFullName);
             comUser.setIdCardBackUrl(backFillFullName);
-            comUser.setIsVerified(0);
             comUser.setAuditStatus(1);
             int i = userService.updateComUser(comUser);
             if (i == 1){

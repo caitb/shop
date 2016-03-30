@@ -82,8 +82,10 @@ public class ComUserAccountService {
 
             BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
 
+            log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
+
             // 获取对应的account记录
-            ComUserAccount account = accountMapper.findByUserId(order.getUserId());
+            ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
             ComUserAccountRecord recordC = createAccountRecordByCounting(orderPayment, account, item.getId());
             recordC.setPrevFee(account.getCountingFee());
             account.setCountingFee(account.getCountingFee().add(orderPayment));
@@ -102,13 +104,53 @@ public class ComUserAccountService {
 
             int type = accountMapper.updateByPrimaryKey(account);
             if(type == 0){
-                throw new BusinessException("");
+                throw new BusinessException("修改出货方结算金额和总销售额失败!");
             }
-            log.info("更新账户结算额和总销售额成功!");
+
+            log.info("更新出货人账户结算额和总销售额成功!");
+
+            log.info("开始给进货人增加成本");
+
+            ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
+            ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
+            recordS.setPrevFee(accountS.getCostFee());
+            accountS.setCostFee(accountS.getCostFee().add(orderPayment));
+            recordS.setNextFee(accountS.getCostFee());
+            recordMapper.insert(recordS);
+            int typeS = accountMapper.updateByPrimaryKey(account);
+            if(typeS == 0){
+                throw new BusinessException("修改进货方成本账户失败!");
+            }
+
+            log.info("更新进货方成本账户成功!");
         } catch (Exception e) {
-            log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage());
-            throw new BusinessException(e);
+            log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage(), e);
+            throw new BusinessException("订单完成进行账户总销售额和结算金额操作错误");
         }
+    }
+
+    /**
+     * 根据订单入账计算进货方成本
+     *
+     * @param orderPayment
+     * @param account
+     * @param billId
+     * @return
+     */
+    private ComUserAccountRecord createAccountRecordByCost(BigDecimal orderPayment
+            , ComUserAccount account, Long billId) {
+        ComUserAccountRecord res = new ComUserAccountRecord();
+
+        res.setUserAccountId(account.getId());
+        res.setFeeType(6);
+        res.setHandleFee(orderPayment);
+        res.setBillId(billId);
+        res.setComUserId(account.getComUserId());
+        res.setHandleType(0);
+        res.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(6));
+        res.setHandleTime(new Date());
+
+        return res;
     }
 
     /**

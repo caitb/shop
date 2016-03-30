@@ -162,66 +162,6 @@ public class UserController extends BaseController {
         return modelAndView;
     }
 
-    @ResponseBody
-    @RequestMapping("userVerified/save.do")
-    public String userVerifiedAdd(HttpServletRequest request,
-                                  @RequestParam(value = "name", required = true) String name,
-                                  @RequestParam(value = "idCard", required = true) String idCard,
-                                  @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
-                                  @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
-    ) {
-        JSONObject object = new JSONObject();
-        try {
-            ComUser comUser = getComUser(request);
-            if (comUser == null) {
-                throw new BusinessException("用户信息有误请重新登陆");
-            } else if (comUser.getIsVerified() == 1) {
-                throw new BusinessException("用户已经实名认证");
-            }
-            if (org.apache.commons.lang.StringUtils.isBlank(name)) {
-                throw new BusinessException("姓名不能为空");
-            }
-            if (org.apache.commons.lang.StringUtils.isBlank(idCard)) {
-                throw new BusinessException("身份证不能为空");
-            }
-            if (org.apache.commons.lang.StringUtils.isBlank(idCardFrontUrl)) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            if (org.apache.commons.lang.StringUtils.isBlank(idCardBackUrl)) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            String rootPath = request.getServletContext().getRealPath("/");
-            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardFrontUrl);
-            String backFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardBackUrl);
-            //修改用户数据
-            comUser.setRealName(name);
-            comUser.setIdCard(idCard);
-            comUser.setIdCardFrontUrl(frontFillFullName);
-            comUser.setIdCardBackUrl(backFillFullName);
-            comUser.setIsVerified(1);
-            userService.updateComUser(comUser);
-            object.put("isError", false);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return object.toJSONString();
-    }
 
-    /**
-     * 上传文件
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/11 15:12
-     */
-    private String uploadFile(String filePath) throws FileNotFoundException {
-        File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
-        return frontFile.getName();
-    }
 }
 

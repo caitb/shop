@@ -122,6 +122,11 @@ public class ComUser implements Serializable {
      */
     private Integer sex;
 
+    /*审核状态*/
+    private Integer auditStatus;
+    /*审核通过或不通过原因*/
+    private String auditReason;
+
     public Long getId() {
         return id;
     }
@@ -330,6 +335,23 @@ public class ComUser implements Serializable {
         this.sex = sex;
     }
 
+
+    public Integer getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(Integer auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public String getAuditReason() {
+        return auditReason;
+    }
+
+    public void setAuditReason(String auditReason) {
+        this.auditReason = auditReason;
+    }
+
     @Override
     public String toString() {
         return "ComUser{" +
@@ -361,6 +383,8 @@ public class ComUser implements Serializable {
                 ", sex=" + sex +
                 ", sendType=" + sendType +
                 ", isVerified=" + isVerified +
+                ", auditStatus=" + auditStatus +
+                ", auditReason='" + auditReason + '\'' +
                 '}';
     }
 }

@@ -113,6 +113,8 @@ public class SysBeanUtils {
             res = new StringBuilder("LSHE");
         } else if (type == 5) {
             res = new StringBuilder("LSHF");
+        } else if (type == 6) {
+            res = new StringBuilder("LSHG");
         } else {
             res = new StringBuilder("LSHZ");
         }

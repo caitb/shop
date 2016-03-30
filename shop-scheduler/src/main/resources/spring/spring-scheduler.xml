@@ -14,7 +14,10 @@
     <task:scheduled-tasks>
         <task:scheduled ref="testTask" method="testJob" cron="0/5 * * * * ?"/>
         <!-- 订单相关job -->
+        <!-- 平台结算中到可提现的定时任务 -->
         <task:scheduled ref="orderTask" method="billCountJob" cron="0 30 0 * * ?" />
+        <!-- 未支付订单72小时后自动取消 -->
+        <task:scheduled ref="orderTask" method="unPayOrderCancelJob" cron="0 30 * * * ?"/>
     </task:scheduled-tasks>
 
 </beans>

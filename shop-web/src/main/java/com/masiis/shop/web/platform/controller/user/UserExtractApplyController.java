@@ -77,7 +77,7 @@ public class UserExtractApplyController extends BaseController {
             extractWay = cd.getValue();
         }
 
-        String extractMoney = account.getExtractableFee().toString();
+        String extractMoney = account == null?"0.00":account.getExtractableFee().toString();
 
         model.addAttribute("extractMoney", extractMoney);
         model.addAttribute("extractwayInfo", extractwayInfo);

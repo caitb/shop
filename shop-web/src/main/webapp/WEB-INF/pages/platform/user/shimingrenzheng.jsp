@@ -27,11 +27,6 @@
                                                                               alt=""></a>
             <p>实名认证</p>
         </header>
-        <div class="xinxi">
-            <p>注册信息</p>
-            <p>支付订单</p>
-            <p>提交资料</p>
-        </div>
         <p class="cp">
             <span>实名认证通过后才能申请合伙人</span>
         </p>
@@ -52,32 +47,13 @@
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
                        style="display: none;">
                 <label class="zheng">
-                    <c:if test="${idCardFrontUrl==''}">
-                        <img src="<%=path%>/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
-                             onclick="F_Open_dialog(0)">
-                    </c:if>
-                    <c:if test="${idCardFrontUrl!=''}">
-                        <img src="${idCardFrontUrl}" alt="" id="idCardFront" name="idCardPre"
-                             onclick="F_Open_dialog(0)">
-                    </c:if>
+                    <img src="<%=path%>/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
+                         onclick="F_Open_dialog(0)">
                 </label>
                 <label class="fan" style="margin-left:10px;">
-                    <c:if test="${idCardBackUrl==''}">
-                        <img src="<%=path%>/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
-                             onclick="F_Open_dialog(1)">
-                    </c:if>
-                    <c:if test="${idCardBackUrl!=''}">
-                        <img src="${idCardBackUrl}" alt="" id="idCardBack" name="idCardPre"
-                             onclick="F_Open_dialog(1)">
-                    </c:if>
+                    <img src="<%=path%>/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
+                         onclick="F_Open_dialog(1)">
                 </label>
-                <%--<img style="width:100%;display:block" class="block" id="idCardFront" name="idCardPre"--%>
-                <%--src="<%=path%>/static/images/default_pic.png"--%>
-                <%--onclick="F_Open_dialog(0)">--%>
-                <%--<img style="width:100%;display:block" class="block" id="idCardBack" name="idCardPre"--%>
-                <%--src="<%=path%>/static/images/default_pic.png"--%>
-                <%--onclick="F_Open_dialog(1)">--%>
-
             </div>
 
         </main>

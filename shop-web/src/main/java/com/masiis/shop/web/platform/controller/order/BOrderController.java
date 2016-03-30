@@ -14,6 +14,7 @@ import com.masiis.shop.web.platform.service.order.BorderFreightService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -54,6 +55,8 @@ public class BOrderController extends BaseController {
     private ComDictionaryService comDictionaryService;
     @Resource
     private BorderFreightService borderFreightService;
+    @Resource
+    private ComUserAccountService comUserAccountService;
 
     /**
      * 用户确认生成订单
@@ -403,9 +406,10 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("用户session丢失");
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
+            comUserAccountService.countingByOrder(pfBorder);
             pfBorder.setOrderStatus(orderStatus);
             pfBorder.setShipStatus(shipStatus);
-            bOrderService.updateGetStock(pfBorder, user);
+            bOrderService.updateGetStock(pfBorder,user);
             bOrderService.updateBOrder(pfBorder);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -448,7 +452,6 @@ public class BOrderController extends BaseController {
                 pfBorderFreight.setPfBorderId(orderId);
                 pfBorderFreight.setFreight(freight);
                 pfBorderFreight.setShipManName(shipManName);
-
                 bOrderService.updateStock(pfBorder, user);
                 bOrderService.updateBOrder(pfBorder);
                 borderFreightService.addPfBorderFreight(pfBorderFreight);
@@ -481,8 +484,6 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord:pfBorders) {
             if(pfBord.getOrderStatus()==0){
                 pfBorders0.add(pfBord);//待付款
-//            }else if(pfBord.getSendType()==1 && pfBord.getPayStatus()==1){
-//                    pfBorders6.add(pfBord);//已完成
             }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==0){
                 pfBorders10.add(pfBord);//代发货
             }else if (pfBord.getOrderStatus()==1 && pfBord.getShipStatus()==5){
@@ -519,8 +520,10 @@ public class BOrderController extends BaseController {
                         pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
                         pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                     }
-                    ComDictionary comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
-                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
+//                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
+//                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
+                    ComUser user = userService.getUserById(pfBorder.getUserPid());
+                    pfBorder.setPidUserName(user.getRealName());
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }

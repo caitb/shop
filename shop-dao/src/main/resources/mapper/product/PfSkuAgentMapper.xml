@@ -99,4 +99,15 @@
         where
         id = #{id,jdbcType=INTEGER}
     </update>
+    <!--获取用户商品等级标志 start-->
+    <select id="getSkuLevelIconByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select p1.sku_id, p1.agent_level_id,p1.icon
+        FROM
+        pf_sku_agent AS p1 , pf_user_sku AS p2
+        WHERE
+        p2.user_id = #{userId}
+        AND p2.sku_id = p1.sku_id
+        AND p2.agent_level_id = p1.agent_level_id
+    </select>
+    <!--获取用户商品等级标志 end-->
 </mapper>

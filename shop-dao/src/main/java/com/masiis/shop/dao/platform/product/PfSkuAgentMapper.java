@@ -33,4 +33,6 @@ public interface PfSkuAgentMapper {
 
     void updateById(PfSkuAgent pfSkuAgent);
 
+    /*获取用户商品等级标志*/
+    List<PfSkuAgent> getSkuLevelIconByUserId(Long userId);
 }

@@ -25,14 +25,14 @@
                                                                               alt=""></a>
             <p>申请合伙人</p>
         </header>
-        <%--        <div class="xinxi">
+                <div class="xinxi">
                     <p>注册信息</p>
                     <p>支付订单</p>
                     <p>选择拿货方式</p>
-                </div>--%>
+                </div>
         <div class="paidan">
+            <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
             <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
-            <h1>在您前面还有<span>1233</span>人排单</h1>
         </div>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
@@ -62,6 +62,7 @@
                             <input type="text" class="wei" id="weixin" name="weixin" value="${weixinId}" readonly/>
                         </c:if>
                         <span class="onc"></span><b class="gao"></b></p>
+                       <h1>拉手机打了卡涉及到了卡机的离开</h1>
                 </div>
             </section>
             <section class="sec2">
@@ -73,7 +74,7 @@
                         <input type="radio" id="b" name="danx" class="fou"/>
                         <label for="b" style="margin-left:30px;">否</label>
                     </h3>
-                    <h3>您的推荐人：<span>校长</span></h3>
+                    <h3 class="Bhide">您的推荐人：<span>校长</span></h3>
                     <div id="hehuo">
                         <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble"><span
                                 class="onc"></span><b

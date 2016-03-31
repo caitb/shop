@@ -10,19 +10,35 @@
   height: 100%;
   overflow: auto;
 }
-.wrap #box>.paidan{
+.paidan{
   width:100%;
+  background: white;
 }
-.wrap #box>.paidan>p{
+.paidan>p{
   margin:0 10px;
-  color: red;
+  color:#999;
+  font-size: 12px;
+  padding-bottom: 10px;
 }
-.wrap #box>.paidan>h1{
-  margin:0 10px;
+.paidan>h1 img{
+  display: block;
+  width: 20%;
+}
+.paidan>h1{
+  margin: 0 10px;
   letter-spacing: 1px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  padding: 20px 0;
 }
-.wrap #box>.paidan>h1>span{
-  font-weight: 600;
+.paidan>h1 b{
+  font-size: 12px;
+}
+.paidan>h1 span{
+  font-size: 12px;
+  color: #f52000;
 }
 .wrap #box main {
   width: 100%;
@@ -33,13 +49,13 @@
   -moz-box-orient: vertical;
 }
 .wrap #box main .sec1 {
-  margin-bottom: 5px;
   width: 100%;
+  padding: 10px 0;
+  background: white;
+  border-bottom: 1px solid #F6F6F6;
 }
 .wrap #box main .sec1 div {
   width: 100%;
-  border-bottom: 1px solid #F6F6F6;
-  background: white;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   display: -moz-box;
@@ -48,9 +64,14 @@
 .wrap #box main .sec1 div p {
   text-indent: 10px;
   color: #333333;
-  line-height: 40px;
   font-size: 14px;
   position: relative;
+}
+.wrap #box main .sec1 div h1{
+  text-indent: 6em;
+  font-size:12px;
+  color: red;
+  margin-top: 5px;
 }
 .wrap #box main .sec1 div p .onc {
   float: right;
@@ -80,12 +101,11 @@
 }
 .wrap #box main .sec1 div p input {
   color: #333333;
-  border: none;
   font-size: 12px;
   display: inline-block;
-  line-height: 30px;
-  margin-top: -4px;
   font-weight: 600;
+  border:1px solid #F6F6F6;
+  padding: 2px 0;
 }
 .wrap #box main .sec1 div p .btn {
   text-indent: 0;

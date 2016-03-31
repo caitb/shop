@@ -5,6 +5,28 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+.wrap .tai {
+  width: 100%;
+  background: #F6410C;
+  height: 60px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  position: relative;
+}
+.wrap .tai img {
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 40px;
+  left: 15px;
+  top: 12px;
+}
+.wrap .tai h1,
+.wrap .tai p {
+  text-indent: 5rem;
+  color: white;
+}
 .wrap .sec1 {
   width: 100%;
   height: 55px;
@@ -165,6 +187,7 @@
   line-height: 30px;
   float: right;
   color: #FF5200;
+  font-size: 12px;
 }
 .wrap .sec4 h1 {
   width: 100%;

@@ -412,11 +412,7 @@ public class BOrderController extends BaseController {
     @RequestMapping("/closeDeal.do")
     @ResponseBody
     @Transactional
-    public String closeDeal(HttpServletRequest request,
-                            @RequestParam(required = true) Integer orderStatus,
-                            @RequestParam(required = true) Long orderId,
-                            @RequestParam(required = true) Integer shipStatus,
-                            Integer stock) {
+    public String closeDeal(HttpServletRequest request, @RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -426,15 +422,15 @@ public class BOrderController extends BaseController {
             PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
             if (pfBorder.getSendType() == 1) {//平台代发
                 if (pfBorder.getOrderType() == 2) {//拿货
-                    pfBorder.setOrderStatus(orderStatus);
-                    pfBorder.setShipStatus(shipStatus);
+                    pfBorder.setOrderStatus(3);
+                    pfBorder.setShipStatus(9);
                     bOrderService.updateGetStock(pfBorder, user);
                     bOrderService.updateBOrder(pfBorder);
                     comUserAccountService.countingByOrder(pfBorder);
                 }
-            } else if (pfBorder.getSendType() == 1) {//自己发货
-                pfBorder.setOrderStatus(orderStatus);
-                pfBorder.setShipStatus(shipStatus);
+            } else if (pfBorder.getSendType() == 2) {//自己发货
+                pfBorder.setOrderStatus(3);
+                pfBorder.setShipStatus(9);
                 bOrderService.updateBOrder(pfBorder);
                 comUserAccountService.countingByOrder(pfBorder);
             }
@@ -461,7 +457,8 @@ public class BOrderController extends BaseController {
     public String deliver(HttpServletRequest request,
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
-                          @RequestParam(required = true) String freight) {
+                          @RequestParam(required = true) String freight,
+                          @RequestParam(required = true) Integer shipManId) {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -476,8 +473,10 @@ public class BOrderController extends BaseController {
                         throw new BusinessException("请重新输入快递单号");
                     } else {
                         pfBorder.setShipStatus(5);
+                        pfBorder.setOrderStatus(8);
                         PfBorderFreight pfBorderFreight = new PfBorderFreight();
                         pfBorderFreight.setCreateTime(new Date());
+                        pfBorderFreight.setShipManId(shipManId);
                         pfBorderFreight.setPfBorderId(orderId);
                         pfBorderFreight.setFreight(freight);
                         pfBorderFreight.setShipManName(shipManName);
@@ -486,8 +485,9 @@ public class BOrderController extends BaseController {
                         borderFreightService.addPfBorderFreight(pfBorderFreight);
                     }
                 }
-            } else if (pfBorder.getSendType() == 1) {//自己发货
+            } else if (pfBorder.getSendType() == 2) {//自己发货
                 pfBorder.setShipStatus(5);
+                pfBorder.setOrderStatus(8);
                 PfBorderFreight pfBorderFreight = new PfBorderFreight();
                 pfBorderFreight.setCreateTime(new Date());
                 pfBorderFreight.setPfBorderId(orderId);

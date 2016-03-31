@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.controller.user;
 
+import com.masiis.shop.admin.beans.user.User;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.dao.po.ComUser;
 import org.apache.commons.logging.Log;
@@ -7,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +77,23 @@ public class ComUserController {
         }
 
         return "error";
+    }
+
+    @RequestMapping("/detail.shtml")
+    public ModelAndView detail(HttpServletRequest request, HttpServletResponse response, Long id){
+        try {
+            User user = comUserService.detail(id);
+
+            ModelAndView mav = new ModelAndView("user/comuser/detail");
+            mav.addObject("user", user);
+
+            return mav;
+        } catch (Exception e) {
+            log.error("获取会员信息详情失败!");
+            e.printStackTrace();
+        }
+
+        return new ModelAndView("error");
     }
 
 }

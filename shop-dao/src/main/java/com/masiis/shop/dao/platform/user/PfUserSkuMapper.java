@@ -36,10 +36,11 @@ public interface PfUserSkuMapper {
 
     List<PfUserSkuCertificate> getUserSkuListById(@Param("id") Integer id);
 
-    PfUserSku selectByOrderId(Long bOrderId);
+    PfUserSku selectByOrderIdAndUserIdAndSkuId(@Param("bOrderId") Long bOrderId, @Param("userId") Long userId, @Param("skuId") Integer skuId);
 
     /**
      * 根据条件查询记录
+     *
      * @param pfUserSku
      * @return
      */

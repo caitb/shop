@@ -23,4 +23,6 @@ public interface ComUserAccountRecordMapper {
     List<ComUserAccountRecord> selectAll();
 
     int updateByPrimaryKey(ComUserAccountRecord record);
+
+    List<ComUserAccountRecord> selectByUserId(Long userId);
 }

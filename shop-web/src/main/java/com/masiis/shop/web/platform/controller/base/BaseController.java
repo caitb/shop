@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,5 +152,19 @@ public class BaseController {
 
     protected void setInfoLog(Object message) {
         log.info(message);
+    }
+
+    /**
+     * 获取web项目webapp或者webroot的根目录绝对磁盘路径
+     *
+     * @param request
+     * @return
+     */
+    protected String getWebRootPath(HttpServletRequest request){
+        String path = null;
+        try {
+            path = request.getServletContext().getResource("/").getPath();
+        } catch (MalformedURLException e) {}
+        return path;
     }
 }

@@ -59,4 +59,38 @@ public class PfBOrderTaskService {
 
         // 查询分销订单
     }
+
+
+    /**
+     * 订单发货7天后自动收货
+     */
+    public void confirmOrderReceived() {
+        // 7天前时间
+        Date expiraTime = DateUtil.getDateNextdays(-7);
+        log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
+
+        // 查询已发货状态且发货时间距离现在超过7天
+        // 查询代理订单
+        List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime, 7, 1);
+        if (bList == null) {
+            log.info("暂无超7天未收货代理订单!");
+        } else {
+            log.info("超过7天未收货代理啊订单个数:" + bList.size());
+            // 多线程处理
+            for(PfBorder bOrder:bList) {
+                try {
+                    log.info("开始代理订单收货,订单号为:" + bOrder.getOrderCode());
+                    bOrderService.confirmOrderReceive(bOrder);
+                    log.info("代理订单收货成功,订单号为:" + bOrder.getOrderCode());
+                } catch (Exception e) {
+                    log.info("代理订单收货失败,订单号为:" + bOrder.getOrderCode());
+                    log.error(e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(DateUtil.getDateNextdays(-7));
+    }
 }

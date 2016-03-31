@@ -3,11 +3,10 @@ package com.masiis.shop.admin.beans.user;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by cai_tb on 16/3/30.
+ * Created by cai_tb on 16/3/31.
  */
 public class User {
 

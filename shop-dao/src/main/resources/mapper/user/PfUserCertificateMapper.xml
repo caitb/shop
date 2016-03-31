@@ -25,15 +25,15 @@
     <!--个人信息-微信号信息查询  start-->
     <resultMap id="skuWeChatInfoMap" type="com.masiis.shop.dao.po.PfUserCertificate">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="pf_user_sku_id" property="pfUserSkuId" jdbcType="INTEGER"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="wx_id" property="wxId" jdbcType="VARCHAR"/>
-        <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku" resultMap="BaseResultMap">
+        <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku">
             <id column="id" property="id" jdbcType="INTEGER" />
             <result column="name" property="name" jdbcType="VARCHAR" />
         </association>
     </resultMap>
     <select id="selectSkuWeChatInfo" parameterType="java.lang.Long" resultMap="skuWeChatInfoMap">
-        SELECT p.id, p.pf_user_sku_id, p.wx_id,c.name,c.id
+        SELECT p.id, p.sku_id, p.wx_id,c.name,c.id
          FROM pf_user_certificate p ,com_sku c
          WHERE p.user_id = #{userId,jdbcType=BIGINT}
          AND p.sku_id = c.id

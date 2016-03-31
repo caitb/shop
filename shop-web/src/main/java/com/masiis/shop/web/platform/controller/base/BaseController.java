@@ -160,11 +160,17 @@ public class BaseController {
      * @param request
      * @return
      */
-    protected String getWebRootPath(HttpServletRequest request){
+    protected String getWebRootPath(HttpServletRequest request) {
         String path = null;
         try {
             path = request.getServletContext().getResource("/").getPath();
-        } catch (MalformedURLException e) {}
+        } catch (MalformedURLException e) {
+        }
         return path;
+    }
+
+    protected String getBasePath(HttpServletRequest request) {
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        return basePath;
     }
 }

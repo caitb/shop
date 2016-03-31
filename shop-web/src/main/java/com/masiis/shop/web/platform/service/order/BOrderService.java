@@ -183,6 +183,11 @@ public class BOrderService {
      * @param skuId    商品id
      * @param quantity 拿货数量
      * @param message  用户留言
+     * 操作详情：
+     * <1>处理订单数据
+     * <2>添加订单日志
+     * <3>冻结sku库存
+     * <4>初始化个人库存信息
      * @return
      * @throws Exception
      */

@@ -69,14 +69,29 @@ body .wrap .box .dlpople p {
   font-size: 14px;
 }
 body .wrap .box .dlpople p b {
-  color: #A0A0A0;
-  font-size: 12px;
+    color: white;
+    font-size: 12px;
+    width: 15px;
+    height: 15px;
+    background-color: #646464;
+    display: inline-block;
+    border-radius: 15px;
+    text-indent:0;
+    text-align: center;
+    line-height: 15px;
+    margin-left:5px;
 }
 body .wrap .box .dlpople p span {
   font-size: 12px;
 }
 body .wrap .box .dlpople p:nth-child(2) {
-  padding-right: 10px;
+    font-size: 12px;
+    -webkit-box-flex: 1;
+    text-align: right;
+    color: #999;
+}
+body .wrap .box .dlpople p:nth-child(3){
+    margin-right: 10px;
 }
 body .wrap .box nav {
   width: 100%;
@@ -123,10 +138,6 @@ body .wrap .box .tuw {
   background: white;
   margin-top: 5px;
 }
-body .wrap .box .tuw h1 {
-  font-size: 14px;
-  text-indent: 10px;
-}
 body .wrap .box main {
   width: 100%;
   height: auto;
@@ -135,44 +146,19 @@ body .wrap .box main {
   display: -moz-box;
   -moz-box-orient: vertical;
 }
-body .wrap .box main .sec1 {
-  width: 100%;
-  background: white;
+main h1{
+    padding: 5px 10px;
+    text-indent:20px;
+    margin-top: 5px;
+    background: #fff;
 }
-body .wrap .box main .sec1 img {
-  display: block;
-  width: 100%;
+main img{
+    width:100%;
 }
-body .wrap .box main .sec1 h2 {
-  color: #F5531F;
-  font-size: 14px;
-  margin-top: 5px;
-  padding-left: 10px;
-}
-body .wrap .box main .sec1 p {
-  font-size: 12px;
-  color: #999999;
-  padding-left: 10px;
-  margin-top: 2px;
-}
-body .wrap .box main .sec1 p:last-child {
-  padding-bottom: 5px;
-}
-body .wrap .box main .sec2 {
-  width: 100%;
-  padding: 20px 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-  display: -moz-box;
-  -moz-box-orient: vertical;
-  -moz-box-align: center;
-  -moz-box-pack: center;
-}
-body .wrap .box main .sec2 p {
-  font-size: 12px;
-  color: #ABABAB;
+main p{
+    padding:10px;
+    color: #666666;
+    background: #fff;
 }
 .wrap .back_b {
     width: 100%;
@@ -369,4 +355,82 @@ body footer .sec3 p a {
   color: #FCFFFF;
   font-size: 15px;
   text-align: center;
+}
+.back_q {
+    width: 90%;
+    position: fixed;
+    left: 5%;
+    top: 30%;
+    z-index: 10;
+    background: white;
+    padding-bottom: 15px;
+    display: none;
+}
+.back_q h1 {
+    margin: 0 5px;
+    border-bottom: 1px solid #F74A11;
+    text-indent: 10px;
+    line-height: 28px;
+    margin-bottom: 5px;
+    color: #FF5200;
+}
+.back_q p {
+    margin: 10px;
+    text-indent: 2em;
+}
+.back_q button {
+    margin: 0 auto;
+    display: block;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background: #C2C2C2;
+    border-radius: 5px;
+}
+.fixe{
+    position: fixed;
+    right: 10px;
+    bottom: 70px;
+    border-radius: 50px;
+    width:50px;
+    height: 50px;
+    background: #f0f0f0;
+    overflow: hidden;
+    display: -webkit-box;
+}
+.active{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+.fixe span{
+    display: block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-weight: 600;
+    font-size: 16px;
+}
+.fixe .on{
+    position: absolute;
+    right:0;
+}
+.fixe div{
+        -webkit-box-flex:1;
+        display: none;
+}
+.fixe ul{
+    display: -webkit-box;
+    -webkit-box-flex:1;
+}
+.fixe ul li{
+    -webkit-box-flex: 1;
+    width:1px;
+    text-align: center;
+}
+.fixe ul li a{
+    line-height: 50px;
+    font-size: 12px;
+    padding-left: 15px;
 }

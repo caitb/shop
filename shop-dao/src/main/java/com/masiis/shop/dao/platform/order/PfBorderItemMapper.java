@@ -26,5 +26,5 @@ public interface PfBorderItemMapper {
 
     List<PfBorderItem> selectAllByOrderId(Long pfBorderId);
 
-    List<PfBorderItem> selectPfBorderItemGroupByspuId(Long pfBorderId);
+    List<PfBorderItem> getPfBorderItemDetail(Long pfBorderId);
 }

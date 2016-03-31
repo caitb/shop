@@ -70,7 +70,7 @@ public class BOrderService {
      * @param pfBorderItems
      */
     @Transactional
-    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, List<PfUserSku> pfUserSkus, ComUser comUser) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
@@ -88,9 +88,11 @@ public class BOrderService {
             pfBorderItemMapper.insert(pfBorderItem);
         }
         //添加用户代理商品关系
-        if (pfUserSku != null) {
-            pfUserSku.setPfBorderId(pfBorder.getId());
-            pfUserSkuMapper.insert(pfUserSku);
+        if (pfUserSkus != null && pfUserSkus.size() > 0) {
+            for (PfUserSku pfUserSku : pfUserSkus) {
+                pfUserSku.setPfBorderId(pfBorder.getId());
+                pfUserSkuMapper.insert(pfUserSku);
+            }
         }
         //完善用户信息
         comUserMapper.updateByPrimaryKey(comUser);
@@ -176,20 +178,22 @@ public class BOrderService {
 
     /**
      * 添加拿货订单
-     * @param userId    用户id
-     * @param skuId     商品id
-     * @param quantity  拿货数量
-     * @param message   用户留言
+     *
+     * @param userId   用户id
+     * @param skuId    商品id
+     * @param quantity 拿货数量
+     * @param message  用户留言
      * @return
      * @throws Exception
      */
-    public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception{
+    @Transactional
+    public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception {
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能补货。");
         }
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
-        if (!comUser.getSendType().equals("1")){
+        if (!comUser.getSendType().equals("1")) {
             throw new BusinessException("发货方式不是平台代发，不能拿货");
         }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级
@@ -266,7 +270,7 @@ public class BOrderService {
             if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
                 throw new BusinessException("并发修改库存失败");
             }
-        }else {
+        } else {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
             if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
                 order.setOrderStatus(6);//排队订单
@@ -279,7 +283,7 @@ public class BOrderService {
         }
         //初始化个人库存信息
         PfUserSkuStock SkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserId(), pfBorderItem.getSkuId());
-        if (SkuStock == null){
+        if (SkuStock == null) {
             SkuStock = new PfUserSkuStock();
             SkuStock.setUserId(order.getUserId());
             SkuStock.setCreateTime(new Date());
@@ -315,114 +319,6 @@ public class BOrderService {
     }
 
     /**
-     * 合伙人订单支付回调
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/16 10:04
-     * 操作详情：
-     * <1>修改订单支付信息
-     * <2>修改订单数据
-     * <3>添加订单日志
-     * <4>修改合伙人商品关系状态
-     * <5>修改用户sku代理关系支付状态
-     * <6>修改sku代理量
-     * <7>冻结sku库存
-     * <8>初始化个人库存信息
-     * <9>更新上级用户资产 (暂不更新)
-     */
-    @Transactional
-    public void payBOrder(PfBorderPayment pfBorderPayment, String outOrderId) throws Exception {
-        //<1>修改订单支付信息
-        pfBorderPayment.setOutOrderId(outOrderId);
-        pfBorderPayment.setIsEnabled(1);//设置为有效
-        pfBorderPaymentMapper.updateById(pfBorderPayment);
-        BigDecimal payAmount = pfBorderPayment.getAmount();
-        Long bOrderId = pfBorderPayment.getPfBorderId();
-        //<2>修改订单数据
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
-        pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
-        pfBorder.setPayTime(new Date());
-        pfBorder.setPayStatus(1);//已付款
-        pfBorder.setOrderStatus(1);//已付款
-        pfBorderMapper.updateById(pfBorder);
-        //<3>添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(1);
-        pfBorderOperationLog.setPfBorderId(bOrderId);
-        pfBorderOperationLog.setRemark("订单已支付");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        //<4>修改合伙人商品关系状态
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        if (comUser.getIsAgent() == 0) {
-            comUser.setIsAgent(1);
-            comUserMapper.updateByPrimaryKey(comUser);
-        }
-        //<5>修改用户sku代理关系支付状态
-        PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderId(bOrderId);
-        if (pfUserSku != null) {
-            pfUserSku.setIsPay(1);
-            pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
-        }
-        //**************维护商品信息******************
-        PfSkuStatistic pfSkuStatistic = null;
-        PfSkuStock pfSkuStock = null;
-        PfUserSkuStock pfUserSkuStock = null;
-        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            //<6>修改sku代理量
-            pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfBorderItem.getSkuId());
-            pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
-            pfSkuStatisticMapper.updateById(pfSkuStatistic);
-            //<7>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
-            if (pfBorder.getUserPid() == 0) {
-                pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-                if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    pfBorder.setOrderStatus(6);//排队订单
-                    pfBorderMapper.updateById(pfBorder);
-                }
-                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
-                    throw new BusinessException("并发修改库存失败");
-                }
-            } else {
-                pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    pfBorder.setOrderStatus(6);//排队订单
-                    pfBorderMapper.updateById(pfBorder);
-                }
-                pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                    throw new BusinessException("并发修改库存失败");
-                }
-            }
-            //<8>初始化个人库存信息
-            PfUserSkuStock defaultUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-            if (defaultUserSkuStock == null) {
-                defaultUserSkuStock = new PfUserSkuStock();
-                defaultUserSkuStock.setCreateTime(new Date());
-                defaultUserSkuStock.setUserId(pfBorder.getUserId());
-                defaultUserSkuStock.setSpuId(pfBorderItem.getSpuId());
-                defaultUserSkuStock.setSkuId(pfBorderItem.getSkuId());
-                defaultUserSkuStock.setStock(0);
-                defaultUserSkuStock.setFrozenStock(0);
-                defaultUserSkuStock.setVersion(0);
-                pfUserSkuStockMapper.insert(defaultUserSkuStock);
-            }
-            //<9>更新上级用户资产 (暂不更新)
-//            if (pfBorder.getUserPid() != 0) {
-//                int i = comUserAccountMapper.payBOrderToUpdateUserAccount(pfBorder.getUserPid(), pfBorder.getPayAmount());
-//                if (i == 0) {
-//                    throw new BusinessException("更新用户资产失败");
-//                }
-//            }
-        }
-
-    }
-
-
-    /**
      * 更新出货库存
      *
      * @author muchaofeng
@@ -434,25 +330,25 @@ public class BOrderService {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             if (pfBorder.getUserPid() == 0) {
                 pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-                if (pfSkuStock.getStock() -pfBorderItem.getQuantity()>=0 && pfSkuStock.getFrozenStock() -pfBorderItem.getQuantity()>=0 ) {
-                    pfSkuStock.setStock(pfSkuStock.getStock()-pfBorderItem.getQuantity());
+                if (pfSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
+                    pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
                     pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
                     if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
                         throw new BusinessException("并发修改库存失败");
                     }
-                }else{
-                    throw new BusinessException(pfBorderItem.getSkuName()+"当前库存异常");
+                } else {
+                    throw new BusinessException(pfBorderItem.getSkuName() + "当前库存异常");
                 }
-            }else{
+            } else {
                 pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-                if (pfUserSkuStock.getStock() -pfBorderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity()>=0) {
+                if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
                     pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
-                    pfUserSkuStock.setStock(pfUserSkuStock.getStock()-pfBorderItem.getQuantity());
+                    pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
                     if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
                         throw new BusinessException("并发修改库存失败");
                     }
-                }else{
-                    throw new BusinessException(pfBorderItem.getSkuName()+"当前库存异常");
+                } else {
+                    throw new BusinessException(pfBorderItem.getSkuName() + "当前库存异常");
                 }
 
             }
@@ -511,12 +407,14 @@ public class BOrderService {
 
     /**
      * 通过spuId分组，根据id查询
+     *
      * @param pfBorderId
      * @return
      */
     public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
         return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
     }
+
     /**
      * 查用户商品关系表
      *

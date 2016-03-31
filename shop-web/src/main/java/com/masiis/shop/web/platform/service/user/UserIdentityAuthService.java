@@ -23,6 +23,42 @@ public class UserIdentityAuthService {
     private UserService userService;
 
     /**
+     * 获得身份证信息
+     *
+     * @author hanzengzhi
+     * @date 2016/3/31 15:27
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    public ComUser getIdentityAuthInfo(HttpServletRequest request,ComUser comUser ){
+        switch (comUser.getAuditStatus()){
+            case 3://审核不通过，从云服务器身份证下载到本地服务器供展示
+                loadIdCardFromOSSToLocal(request,comUser);
+                break;
+            default:
+                break;
+        }
+        return null;
+    }
+    /**
+     * 阿里云身份证图片下载到本地
+     * @author hanzengzhi
+     * @date 2016/3/31 15:47
+     */
+    private void loadIdCardFromOSSToLocal(HttpServletRequest request,ComUser comUser){
+        String rootPath = request.getServletContext().getRealPath("/");
+        String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
+        String savepath = SysConstants.ID_CARD_PATH;
+        String realpath = webappPath + savepath;
+        //OSS下载
+        OSSObjectUtils.downloadFile("mmshop", OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
+        OSSObjectUtils.downloadFile("mmshop", OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
+        //OSS删除
+        OSSObjectUtils.deleteBucketFile("mmshop",comUser.getIdCardFrontUrl());
+        OSSObjectUtils.deleteBucketFile("mmshop",comUser.getIdCardBackUrl());
+
+    }
+
+    /**
      * 提交实名认证审核
      * @author hanzengzhi
      * @date 2016/3/30 15:39

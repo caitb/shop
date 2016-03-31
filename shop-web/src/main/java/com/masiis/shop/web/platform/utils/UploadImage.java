@@ -102,5 +102,4 @@ public class UploadImage {
 				+ ("/static/images//");
 		return MultiImages(upload, imagesSavePath);
 	}
-
 }

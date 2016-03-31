@@ -122,8 +122,9 @@
         paraData.idCard = legalIdCard;
         paraData.idCardFrontUrl = fCardUrl;
         paraData.idCardBackUrl = bCardUrl;
+        alert(paraData);
         $.ajax({
-            url: "<%=basePath%>user/userVerified/save.do",
+            url: "<%=basePath%>identityAuth/sumbitAudit.do",
             type: "post",
             data: paraData,
             dataType: "json",

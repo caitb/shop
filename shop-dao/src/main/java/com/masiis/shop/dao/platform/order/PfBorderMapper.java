@@ -40,4 +40,15 @@ public interface PfBorderMapper {
                                         @Param("start") Date countStartDay,
                                         @Param("end") Date countEndDay);
 
+    /**
+     * 根据订单创建时间的上限,订单状态和支付状态来查询订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    List<PfBorder> selectByStatusAndDate(@Param("expiraTime") Date expiraTime,
+                                         @Param("orderStatus") Integer orderStatus,
+                                         @Param("payStatus") Integer payStatus);
 }

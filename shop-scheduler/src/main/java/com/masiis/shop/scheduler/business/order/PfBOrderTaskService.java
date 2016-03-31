@@ -1,5 +1,7 @@
 package com.masiis.shop.scheduler.business.order;
 
+import com.masiis.shop.common.interfaces.IParallelThread;
+import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.scheduler.service.order.PfBorderService;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by lzh on 2016/3/30.
@@ -30,6 +33,26 @@ public class PfBOrderTaskService {
         // 查询3天前创建的未支付订单
         // 查询代理订单
         List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime, 0, 0);
+        if (bList == null) {
+            log.info("暂无超过72小时未支付代理订单!");
+        } else {
+            log.info("超过72小时未支付代理订单个数:" + bList.size());
+            // 处理
+            /*for (PfBorder bOrder:bList) {
+                try{
+                    bOrderService.cancelUnPayBOrder(bOrder);
+                } catch (Exception e) {
+                    log.error("");
+                    continue;
+                }
+            }*/
+            CurrentThreadUtils.parallelJob(new IParallelThread() {
+                @Override
+                public Boolean doMyJob(Object obj) throws Exception {
+                    return null;
+                }
+            }, new LinkedBlockingDeque<Object>(bList), 0);
+        }
 
         // 查询分销订单
     }

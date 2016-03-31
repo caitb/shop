@@ -69,7 +69,7 @@
     </select>
 
     <select id="getPfBorderItemDetail" resultMap="ExtendsResultMap" parameterType="java.lang.Long">
-        select p.*,sku.img_url from pf_border_item p
+        select p.*,sku.img_url as logoUrl from pf_border_item p
           LEFT JOIN com_spu spu on p.spu_id = spu.id
           LEFT JOIN com_sku_image sku on p.sku_id=sku.sku_id and sku.is_default=1
         where p.pf_border_id = #{pfBorderId,jdbcType=BIGINT}

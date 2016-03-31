@@ -148,7 +148,7 @@
   position: fixed;
   left: 5%;
   top: 30%;
-  display: -webkit-box;
+  display: none;
   -webkit-box-orient: vertical;
 }
 .back_que p {
@@ -169,11 +169,12 @@
   text-align: left;
   font-weight: 600;
   color: #555555;
+  margin-right: 10px;
   text-indent: 10px;
 }
 .back_que h4 span:nth-child(2) {
-  -webkit-box-flex: 2;
-  margin-left: -10%;
+  -webkit-box-flex:2;
+  margin-left:-10%;
 }
 .back_que h4 span {
   -webkit-box-flex: 1;

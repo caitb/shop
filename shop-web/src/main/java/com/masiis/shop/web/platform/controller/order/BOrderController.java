@@ -68,7 +68,7 @@ public class BOrderController extends BaseController {
      * @date 2016/3/8 12:50
      */
     @ResponseBody
-    @RequestMapping("/addBOrder.do")
+    @RequestMapping("/add.do")
     public String addBOrder(HttpServletRequest request,
                             HttpServletResponse response,
                             @RequestParam(value = "realName", required = true) String realName,
@@ -174,7 +174,7 @@ public class BOrderController extends BaseController {
                 userSku.setIsPay(0);
                 userSku.setIsCertificate(0);
             }
-            Long bOrderId = bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+            Long bOrderId = bOrderService.AddBOrder(order, orderItems, null, comUser);//userSku
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {
@@ -324,6 +324,9 @@ public class BOrderController extends BaseController {
             if (pfBorderPayment.getIsEnabled() == 0) {
                 // 调用borderService的方法处理
                 payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
+                ComUser comUser = getComUser(request);
+                comUser.setIsAgent(1);
+                setComUser(request, comUser);
             }
             attrs.addAttribute("bOrderId", bOrderId);
             return "redirect:/border/payBOrdersSuccess.shtml";
@@ -332,10 +335,12 @@ public class BOrderController extends BaseController {
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
             req.setNonceStr(WXBeanUtils.createGenerateStr());
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSuccessUrl(getBasePath(request) + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
             req.setSign(WXBeanUtils.toSignString(req));
         }
+        ComUser comUser = getComUser(request);
+        comUser.setIsAgent(1);
+        setComUser(request, comUser);
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
     }

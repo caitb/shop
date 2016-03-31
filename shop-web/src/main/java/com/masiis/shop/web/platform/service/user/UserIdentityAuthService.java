@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.user;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +32,8 @@ public class UserIdentityAuthService {
         try{
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardFrontUrl);
-            String backFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardBackUrl);
+            String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+            String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             //修改用户数据
             comUser.setIdCardFrontUrl(frontFillFullName);
             comUser.setIdCardBackUrl(backFillFullName);

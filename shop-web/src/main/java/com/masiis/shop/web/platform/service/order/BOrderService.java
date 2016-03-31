@@ -70,7 +70,7 @@ public class BOrderService {
      * @param pfBorderItems
      */
     @Transactional
-    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfUserSku pfUserSku, ComUser comUser) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, List<PfUserSku> pfUserSkus, ComUser comUser) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
@@ -88,9 +88,11 @@ public class BOrderService {
             pfBorderItemMapper.insert(pfBorderItem);
         }
         //添加用户代理商品关系
-        if (pfUserSku != null) {
-            pfUserSku.setPfBorderId(pfBorder.getId());
-            pfUserSkuMapper.insert(pfUserSku);
+        if (pfUserSkus != null && pfUserSkus.size() > 0) {
+            for (PfUserSku pfUserSku : pfUserSkus) {
+                pfUserSku.setPfBorderId(pfBorder.getId());
+                pfUserSkuMapper.insert(pfUserSku);
+            }
         }
         //完善用户信息
         comUserMapper.updateByPrimaryKey(comUser);
@@ -176,20 +178,22 @@ public class BOrderService {
 
     /**
      * 添加拿货订单
-     * @param userId    用户id
-     * @param skuId     商品id
-     * @param quantity  拿货数量
-     * @param message   用户留言
+     *
+     * @param userId   用户id
+     * @param skuId    商品id
+     * @param quantity 拿货数量
+     * @param message  用户留言
      * @return
      * @throws Exception
      */
-    public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception{
+    @Transactional
+    public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception {
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能补货。");
         }
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
-        if (!comUser.getSendType().equals("1")){
+        if (!comUser.getSendType().equals("1")) {
             throw new BusinessException("发货方式不是平台代发，不能拿货");
         }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级
@@ -266,7 +270,7 @@ public class BOrderService {
             if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
                 throw new BusinessException("并发修改库存失败");
             }
-        }else {
+        } else {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
             if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
                 order.setOrderStatus(6);//排队订单
@@ -279,7 +283,7 @@ public class BOrderService {
         }
         //初始化个人库存信息
         PfUserSkuStock SkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserId(), pfBorderItem.getSkuId());
-        if (SkuStock == null){
+        if (SkuStock == null) {
             SkuStock = new PfUserSkuStock();
             SkuStock.setUserId(order.getUserId());
             SkuStock.setCreateTime(new Date());
@@ -326,25 +330,25 @@ public class BOrderService {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             if (pfBorder.getUserPid() == 0) {
                 pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-                if (pfSkuStock.getStock() -pfBorderItem.getQuantity()>=0 && pfSkuStock.getFrozenStock() -pfBorderItem.getQuantity()>=0 ) {
-                    pfSkuStock.setStock(pfSkuStock.getStock()-pfBorderItem.getQuantity());
+                if (pfSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
+                    pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
                     pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
                     if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
                         throw new BusinessException("并发修改库存失败");
                     }
-                }else{
-                    throw new BusinessException(pfBorderItem.getSkuName()+"当前库存异常");
+                } else {
+                    throw new BusinessException(pfBorderItem.getSkuName() + "当前库存异常");
                 }
-            }else{
+            } else {
                 pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-                if (pfUserSkuStock.getStock() -pfBorderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity()>=0) {
+                if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
                     pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
-                    pfUserSkuStock.setStock(pfUserSkuStock.getStock()-pfBorderItem.getQuantity());
+                    pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
                     if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
                         throw new BusinessException("并发修改库存失败");
                     }
-                }else{
-                    throw new BusinessException(pfBorderItem.getSkuName()+"当前库存异常");
+                } else {
+                    throw new BusinessException(pfBorderItem.getSkuName() + "当前库存异常");
                 }
 
             }
@@ -402,13 +406,14 @@ public class BOrderService {
     }
 
     /**
-     * 通过spuId分组，根据id查询
+     * 根据pfBorderId查询
      * @param pfBorderId
      * @return
      */
-    public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
-        return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
+    public List<PfBorderItem> getPfBorderItemDetail(Long pfBorderId) {
+        return pfBorderItemMapper.getPfBorderItemDetail(pfBorderId);
     }
+
     /**
      * 查用户商品关系表
      *

@@ -42,7 +42,7 @@ import java.util.Random;
  * @date 2016/3/30
  */
 @Service
-public class payBOrderService {
+public class PayBOrderService {
 
     private Logger log = Logger.getLogger(this.getClass());
     @Resource

@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.utils.UploadImage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,9 @@ public class UserIdentityAuthService {
                 //更新缓存
                 request.getSession().removeAttribute("comUser");
                 request.getSession().setAttribute("comUser", comUser);
+                //删除本地服务器照片
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             }
             return i;
         }catch (Exception e){

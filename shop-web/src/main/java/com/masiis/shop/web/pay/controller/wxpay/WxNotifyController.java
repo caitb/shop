@@ -76,7 +76,7 @@ public class WxNotifyController extends BaseController {
             // 开始进行订单异步回调通知业务,要进行参数有效性校验
             synchronized (this) {
                 // 放到service中处理
-                notifyService.handleWxPayNotify(param);
+                notifyService.handleWxPayNotify(param, getWebRootPath(request));
             }
 
             resObj.setReturn_code("SUCCESS");

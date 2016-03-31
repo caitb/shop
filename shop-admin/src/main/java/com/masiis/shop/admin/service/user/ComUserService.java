@@ -3,10 +3,13 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
+import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
+import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +28,12 @@ public class ComUserService {
     private ComUserMapper comUserMapper;
     @Resource
     private ComUserAccountMapper comUserAccountMapper;
+    @Resource
+    private ComUserAccountRecordMapper comUserAccountRecordMapper;
+    @Resource
+    private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private ComSkuMapper comSkuMapper;
 
     /**
      * 根据id查找合伙人
@@ -85,6 +94,35 @@ public class ComUserService {
         pageMap.put("rows", comUsers);
 
         return pageMap;
+    }
+
+    /**
+     * 会员详细信息
+     * @param id
+     * @return
+     */
+    public User detail(Long id){
+        ComUser comUser = comUserMapper.selectByPrimaryKey(id);
+        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUser.getId());
+        //List<ComUserAccountRecord> comUserAccountRecords = comUserAccountRecordMapper.selectByUserId(comUser.getId());
+        List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByUserId(comUser.getId());
+
+        Map<String, Object> wxAgentPro = new HashMap<>();
+        for(PfUserCertificate puc : pfUserCertificates){
+            ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
+            wxAgentPro.put(puc.getWxId(), comSku.getName());
+        }
+
+        String idCardImgUrl = PropertiesUtils.getStringValue("index_user_idCard_url");
+        comUser.setIdCardFrontUrl(idCardImgUrl+comUser.getIdCardFrontUrl());
+        comUser.setIdCardBackUrl(idCardImgUrl+comUser.getIdCardBackUrl());
+
+        User user = new User();
+        user.setComUser(comUser);
+        user.setComUserAccount(comUserAccount);
+        user.setWxAgentPro(wxAgentPro);
+
+        return user;
     }
 
     public String findByPid(Integer pid) {

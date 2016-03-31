@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <div class="wrap">
@@ -38,7 +39,7 @@
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p><b>￥${productDetails.priceRetail}</b><%--<span>最高利润${productDetails.maxDiscount}%
             </span>--%></p>
-            <p>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理<b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b></p>
+            <p style="padding-bottom: 5px;">超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理<b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b></p>
         </div>
 <%--        <div class="dlpople">
             <p>快递：<span>到付</span></p>
@@ -46,6 +47,7 @@
         </div>--%>
         <div class="dlpople">
             <p>库存</p>
+            <p>此商品已经进入排单期<b>?</b></p>
             <p><span>${productDetails.stock}件</span></p>
         </div>
         <nav>
@@ -68,20 +70,28 @@
                 </li>
             </ul>
         </nav>
-        <div class="tuw">
-            <h1>图文详情</h1>
-        </div>
         <main>
-            ${productDetails.content}
-            <section class="sec2">
-                <h2 style="color:#F74A11;">麦链合伙人提供技术支持</h2>
-                <p>Copyright2005-2016 iimai.com 版权所有</p>
-                <p>京ICP证080047号[京ICP备08010314号-6]</p>
-                <p>文网文[2009]024号 新出网证（京）字069号</p>
-                <p>京公网安备 11000002000006号</p>
-            </section>
+            <%--${productDetails.content}--%>
+            <h1 style="background:white url('<%=path%>/static/images/xiangqing_1.png') no-repeat 10px;background-size: 15px;"><a name="1f">品牌介绍</a></h1>
+                <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+            <p>阿拉斯加的拉伸空间大莱卡时间到了卡上就的拉伸空间的拉伸空间的拉伸空间打开就打算离开的骄傲是老大说离开家德拉科阿斯兰的拉伸空间的拉伸空间的考拉三季度来看</p>
+                <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;"><a name="2f">品牌介绍</a></h1>
+                <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+                <p>阿拉斯加的拉伸空间大莱卡时间到了卡上就的拉伸空间的拉伸空间的拉伸空间打开就打算离开的骄傲是老大说离开家德拉科阿斯兰的拉伸空间的拉伸空间的考拉三季度来看</p>
+                <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;"><a name="3f">品牌介绍</a></h1>
+                <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+                <p>阿拉斯加的拉伸空间大莱卡时间到了卡上就的拉伸空间的拉伸空间的拉伸空间打开就打算离开的骄傲是老大说离开家德拉科阿斯兰的拉伸空间的拉伸空间的考拉三季度来看</p>
         </main>
-
+        <div class="fixe">
+        <div class="left">
+            <ul>
+                <li><a href="#1f" style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 15px;">品牌介绍</a></li>
+                <li><a href="#2f"  style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 15px;">品牌介绍</a></li>
+                <li><a href="#3f"  style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 15px;">品牌介绍</a></li>
+            </ul>
+        </div>
+            <span class="btn">—</span>
+        </div>
         <div class="back_j" style="display: none">
             <p class="biao">绑定账号</p>
             <div>
@@ -95,7 +105,7 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back_b">
+        <%--<div class="back_b">
             <p>增加库存</p>
             <h4>商品:　　<span id="addsku"></span></h4>
             <h4>数量:　　<div>
@@ -108,9 +118,17 @@
                 <h1 class="b_qu">取消</h1>
                 <h1 class="b_que">确定</h1>
             </div>
-        </div>
+        </div>--%>
         <div class="back"></div>
+        <div class="back_q">
+            <h1>什么事结算中</h1>
+            <p>
+                为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+            </p>
+            <button>我知道了</button>
+        </div>
     </div>
+
 </div>
 <footer>
     <section class="sec3">
@@ -182,6 +200,24 @@
                 }
             }
         });
+    })
+    $(".btn").toggle(function(){
+        $(this).parent().animate({
+            width:"90%"
+        })
+        $(".fixe").addClass("active");
+        $(this).addClass("on").delay(3000).removeClass("on")
+        $(".left").show()
+        $(this).html("+")
+    },function () {
+        $(this).parent().animate({
+            width:"50px"
+        })
+        $(this).prev().hide()
+        $(".fixe").removeClass("active");
+        $(this).addClass("on")
+        $(".left").hide()
+        $(this).html("—")
     })
 </script>
 </body>

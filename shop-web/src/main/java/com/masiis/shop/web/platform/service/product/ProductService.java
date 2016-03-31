@@ -6,10 +6,7 @@ import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
-import com.masiis.shop.dao.po.ComSkuImage;
-import com.masiis.shop.dao.po.ComSpu;
-import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +38,8 @@ public class ProductService {
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -167,5 +166,20 @@ public class ProductService {
             upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(upperUserSku.getUserId(), skuId).getStock();
         }
         return upperStock;
+    }
+    /**
+      * @Author Jing Hao
+      * @Date 2016/3/31 0031 上午 11:07
+      * 发展直属下级的人数
+      */
+    public Integer getLowerCount(Integer skuId,Integer stock,Integer level){
+        Integer countLevel = 0;
+        if (level == 3 || stock == 0) {
+            return countLevel;
+        } else {
+            PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
+            countLevel = stock / pfSkuAgent.getQuantity();
+        }
+        return countLevel;
     }
 }

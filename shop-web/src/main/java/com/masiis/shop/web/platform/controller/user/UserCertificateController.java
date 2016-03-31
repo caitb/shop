@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
@@ -53,6 +54,12 @@ public class UserCertificateController extends BaseController {
     @Resource
     private UserCertificateService userCertificateService;
 
+
+    @RequestMapping(value = "text.do")
+    public String text(HttpServletRequest request,HttpServletResponse response){
+        return "platform/user/shimingrenzheng";
+    }
+
     /**
      * @author ZhaoLiang
      * @date 2016/3/10 18:37
@@ -96,7 +103,7 @@ public class UserCertificateController extends BaseController {
         try {
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String savepath = "/static/upload/user/idCard/";
+            String savepath = SysConstants.ID_CARD_PATH;
             String realpath = webappPath + savepath;
             String imgPath = UploadImage.upload(idCardImg, realpath);
             if (StringUtils.isBlank(imgPath)) {
@@ -151,8 +158,8 @@ public class UserCertificateController extends BaseController {
             }
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardFrontUrl);
-            String backFillFullName = uploadFile(webappPath + "/static/upload/user/idCard/" + idCardBackUrl);
+            String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+            String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             //修改用户数据
             ComUser comUser = userService.getUserById(pfUserSku.getUserId());
             comUser.setIdCard(idCard);
@@ -197,7 +204,7 @@ public class UserCertificateController extends BaseController {
      */
     private String uploadFile(String filePath) throws FileNotFoundException {
         File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
+        OSSObjectUtils.uploadFile("mmshop", frontFile, SysConstants.ID_CARD_PATH);
         return frontFile.getName();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class SysUriInit implements ApplicationListener<ContextRefreshedEvent> {
                                     int indexs = endPath.indexOf("{");
                                     int indexe = endPath.indexOf("}");
                                     if(indexs >= 0 && indexe>= 0 && indexe > indexs){
-                                        endPath = endPath.replaceAll("\\{.*\\}", "(.*)");
+                                        endPath = endPath.replaceAll(File.separator + "{.*" + File.separator + "}", "(.*)");
                                     }
                                     pathList.add(endPath);
                                 }

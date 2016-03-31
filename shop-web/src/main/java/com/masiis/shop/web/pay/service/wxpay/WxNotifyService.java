@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.PfCorderPayment;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
+import com.masiis.shop.web.platform.service.order.PayBOrderService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,15 @@ public class WxNotifyService {
     private BOrderService bOrderService;
     @Resource
     private COrderService cOrderService;
+    @Resource
+    private PayBOrderService payBOrderService;
 
     /**
      * 处理微信支付订单异步回调业务
      *
      * @param param
      */
-    public void handleWxPayNotify(CallBackNotifyReq param) {
+    public void handleWxPayNotify(CallBackNotifyReq param, String rootPath) {
         // 支付流水号
         String paySerialNum = param.getOut_trade_no();
         String orderType = String.valueOf(paySerialNum.charAt(0));
@@ -46,7 +49,7 @@ public class WxNotifyService {
                 }
                 log.info("处理订单开始,类型为B,支付流水号为:" + paySerialNum);
                 // 调用borderService的方法处理
-                bOrderService.payBOrder(payment, param.getTransaction_id());
+                payBOrderService.mainPayBOrder(payment, param.getTransaction_id(), rootPath);
             } catch (Exception e) {
                 // 判断异常类型
                 if(e instanceof BusinessException && "".equals(e.getMessage())){

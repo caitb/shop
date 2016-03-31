@@ -941,7 +941,7 @@
                         },
                         events: {
                             'click .view': function (e, value, row, index) {
-                                alert(row.name);
+                                window.parent.TabControlAppend('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
                             }
                         }
                     }

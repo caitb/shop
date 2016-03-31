@@ -58,12 +58,12 @@ public class UserPersonalInfoController extends BaseController {
     public String selectSkuWeChatInfo(HttpServletRequest request, HttpServletResponse response
             , Model model){
         ComUser comUser = getComUser(request);
-/*        if (comUser == null){
+        if (comUser == null){
             throw  new BusinessException("请重新登录");
-        }*/
+        }
         comUser.setId(1L);
-        PfUserCertificate pfUserCertificate = userPersonalInfoService.selectSkuWeChatInfo(comUser.getId());
-        model.addAttribute("pfUserCertificate",pfUserCertificate);
+        List<PfUserCertificate> pfUserCertificates = userPersonalInfoService.selectSkuWeChatInfo(comUser.getId());
+        model.addAttribute("pfUserCertificate",pfUserCertificates);
         return null;
     }
 

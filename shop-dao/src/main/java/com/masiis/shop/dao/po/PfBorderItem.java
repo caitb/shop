@@ -52,6 +52,10 @@ public class PfBorderItem extends PfBorderItemExtends {
      */
     private BigDecimal totalPrice;
     /**
+     * 保证金
+     */
+    private BigDecimal bailAmount;
+    /**
      * 评论标志位(0未评论1已评论)
      */
     private Integer isComment;
@@ -62,83 +66,122 @@ public class PfBorderItem extends PfBorderItemExtends {
     private String remark;
     private String skuUrl;//商品首页地址
 
-    public void setSkuUrl(String skuUrl) {this.skuUrl = skuUrl;}
-    public String getSkuUrl() {return skuUrl;}
+    public void setSkuUrl(String skuUrl) {
+        this.skuUrl = skuUrl;
+    }
+
+    public String getSkuUrl() {
+        return skuUrl;
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getPfBorderId() {
         return pfBorderId;
     }
+
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
     }
+
     public Integer getSpuId() {
         return spuId;
     }
+
     public void setSpuId(Integer spuId) {
         this.spuId = spuId;
     }
+
     public Integer getSkuId() {
         return skuId;
     }
+
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
+
     public String getSkuName() {
         return skuName;
     }
+
     public void setSkuName(String skuName) {
         this.skuName = skuName == null ? null : skuName.trim();
     }
+
     public Integer getQuantity() {
         return quantity;
     }
+
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
+
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
+
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
+
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    public BigDecimal getBailAmount() {
+        return this.bailAmount;
+    }
+
+    public void setBailAmount(BigDecimal bailAmount) {
+        this.bailAmount = bailAmount;
+    }
+
     public Integer getIsComment() {
         return isComment;
     }
+
     public void setIsComment(Integer isComment) {
         this.isComment = isComment;
     }
+
     public Integer getIsReturn() {
         return isReturn;
     }
+
     public void setIsReturn(Integer isReturn) {
         this.isReturn = isReturn;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }

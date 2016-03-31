@@ -1,8 +1,11 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderConsignee;
 import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -31,13 +34,13 @@ public class OrderPayEndController extends BaseController {
     private UserService userService;
     /**
      * 补货订单支付完成
-     * @param borderId
+     * @param borderCode    订单编码
      * @param request
      * created by wangbingjian
      */
     @RequestMapping(value = "replenishment")
     @ResponseBody
-    public void replenishmentOrderPaycompletion(@RequestParam(value = "borderId",required = true) Long borderId,
+    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderCode",required = true) String borderCode,
                                                         HttpServletRequest request)throws Exception{
 
         log.info("进入补货订单支付完成");
@@ -46,19 +49,23 @@ public class OrderPayEndController extends BaseController {
             user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
         }
         ModelAndView mv = new ModelAndView();
-        PfBorder pfBorder = bOrderService.getPfBorderById(borderId);
-        List<PfBorderItem> items = bOrderService.getPfBorderItemGroupByspuId(borderId);
+        PfBorder pfBorder = bOrderService.findByOrderCode(borderCode);
+        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
+        Integer sumQuantity = 0;
+        for (PfBorderItem pfBorderItem:items){
+            sumQuantity += pfBorderItem.getQuantity();
+        }
         mv.addObject("pfBorder",pfBorder);
         mv.addObject("pfBorderItems",items);
+        mv.addObject("skuImg",skuImg);
+        mv.addObject("sumQuantity",sumQuantity);
         //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
-//        if (pfBorder.getSendType().equals("1")){
-//            PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(borderId);
-//            mv.addObject("pfBorderConsignee",pfBorderConsignee);
-//        }else if (pfBorder.getSendType().equals("2")){
-//
-//        }else {
-//
-//        }
-        mv.setViewName("");
+        if (pfBorder.getSendType() == 1){
+            PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
+            mv.addObject("pfBorderConsignee",pfBorderConsignee);
+        }
+        mv.setViewName("platform/order/ReplenishmentPayments");
+        return mv;
     }
 }

@@ -39,4 +39,7 @@ public class SysConstants {
     public static final String SESSION_LOGIN_USER_NAME = "comUser";
 
     public static final String SYS_RUN_ENVIROMENT_KEY = "sys_run_enviroment_key";
+
+    /*身份证存储路径*/
+    public static final String ID_CARD_PATH="/static/upload/user/idCard/";
 }

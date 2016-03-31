@@ -23,8 +23,6 @@ public interface PfUserCertificateMapper {
 
     int updateById(PfUserCertificate record);
 
-    PfUserCertificate selectByUserId(Long userId);
-
     PfUserCertificate selectSkuWeChatInfo(Long userId);
 
     List<PfUserCertificate> selectByCode(Long userId);
@@ -33,5 +31,5 @@ public interface PfUserCertificateMapper {
 
     List<PfUserCertificate> selectByCondition(PfUserCertificate pfUserCertificate);
 
-    List<PfUserCertificate> selectByUser(Long userId);
+    List<PfUserCertificate> selectByUserId(Long userId);
 }

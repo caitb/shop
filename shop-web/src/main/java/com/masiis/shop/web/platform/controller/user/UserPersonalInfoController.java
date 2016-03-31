@@ -61,8 +61,9 @@ public class UserPersonalInfoController extends BaseController {
         if (comUser == null){
             throw  new BusinessException("请重新登录");
         }
-        PfUserCertificate pfUserCertificate = userPersonalInfoService.selectSkuWeChatInfo(comUser.getId());
-        model.addAttribute("pfUserCertificate",pfUserCertificate);
+        comUser.setId(1L);
+        List<PfUserCertificate> pfUserCertificates = userPersonalInfoService.selectSkuWeChatInfo(comUser.getId());
+        model.addAttribute("pfUserCertificate",pfUserCertificates);
         return null;
     }
 

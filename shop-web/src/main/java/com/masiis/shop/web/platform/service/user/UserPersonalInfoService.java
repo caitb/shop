@@ -53,7 +53,7 @@ public class UserPersonalInfoService {
      * @date 2016/3/29 13:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public PfUserCertificate selectSkuWeChatInfo(Long userId){
+    public List<PfUserCertificate> selectSkuWeChatInfo(Long userId){
         return userCertificateService.selectSkuWeChatInfo(userId);
     }
     /**

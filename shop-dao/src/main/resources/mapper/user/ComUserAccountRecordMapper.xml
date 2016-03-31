@@ -63,4 +63,23 @@
         from com_user_account_record
     </select>
 
+    <select id="selectByUserId" parameterType="Long" resultMap="BaseResultMap" >
+        select
+               id,
+               com_user_id,
+               user_account_id,
+               handle_serial_num,
+               handle_fee, prev_fee,
+               next_fee,
+               fee_type,
+               bill_id,
+               handle_type,
+               handle_time,
+               handler
+        from
+               com_user_account_record
+        WHERE
+               com_user_id = #{userId}
+    </select>
+
 </mapper>

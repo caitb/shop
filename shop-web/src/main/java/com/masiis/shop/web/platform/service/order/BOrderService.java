@@ -411,9 +411,9 @@ public class BOrderService {
      * @param pfBorderId
      * @return
      */
-    public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
-        return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
-    }
+//    public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
+//        return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
+//    }
 
     /**
      * 查用户商品关系表

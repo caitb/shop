@@ -105,7 +105,7 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back_b">
+        <%--<div class="back_b">
             <p>增加库存</p>
             <h4>商品:　　<span id="addsku"></span></h4>
             <h4>数量:　　<div>
@@ -118,7 +118,7 @@
                 <h1 class="b_qu">取消</h1>
                 <h1 class="b_que">确定</h1>
             </div>
-        </div>
+        </div>--%>
         <div class="back"></div>
         <div class="back_q">
             <h1>什么事结算中</h1>
@@ -208,6 +208,7 @@
         $(".fixe").addClass("active");
         $(this).addClass("on").delay(3000).removeClass("on")
         $(".left").show()
+        $(this).html("+")
     },function () {
         $(this).parent().animate({
             width:"50px"
@@ -216,6 +217,7 @@
         $(".fixe").removeClass("active");
         $(this).addClass("on")
         $(".left").hide()
+        $(this).html("—")
     })
 </script>
 </body>

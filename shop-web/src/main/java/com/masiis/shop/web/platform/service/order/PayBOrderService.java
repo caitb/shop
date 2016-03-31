@@ -244,6 +244,7 @@ public class PayBOrderService {
     }
 
     /**
+     * 平台代理订单支付成功回调(自发货)
      * @author ZhaoLiang
      * @date 2016/3/30 20:39
      * 操作详情：
@@ -253,7 +254,6 @@ public class PayBOrderService {
      * <4>修改合伙人商品关系状态
      * <5>修改用户sku代理关系支付状态
      * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     * <7>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void patBOrderII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         log.info("<1>修改订单支付信息");
@@ -323,12 +323,16 @@ public class PayBOrderService {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
         }
-        log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
-        comUserAccountService.countingByOrder(pfBorder);
     }
 
+    /**
+     * 获取证书编码
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/31 11:26
+     */
     private String getCertificateCode(PfUserCertificate certificateInfo) throws Exception {
-        String certificateCode = null;
+        String certificateCode = "";
         String value = "";
         StringBuffer Code = new StringBuffer("MASIIS");
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
@@ -339,7 +343,12 @@ public class PayBOrderService {
         return certificateCode;
     }
 
-    //给jpg添加文字并上传
+    /**
+     * 给jpg添加文字并上传
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/31 11:26
+     */
     private String uploadFile(String filePath, String[] markContent) throws Exception {
         String pname = getRandomFileName();
         ImageIcon imgIcon = new ImageIcon(filePath);
@@ -378,19 +387,11 @@ public class PayBOrderService {
      * @return
      */
     private String getRandomFileName() {
-
-        SimpleDateFormat simpleDateFormat;
-
-        simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
-
         String str = simpleDateFormat.format(date);
-
         Random random = new Random();
-
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
-
         return rannum + str;// 当前时间
     }
 }

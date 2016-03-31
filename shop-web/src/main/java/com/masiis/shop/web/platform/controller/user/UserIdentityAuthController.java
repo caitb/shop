@@ -98,7 +98,9 @@ public class UserIdentityAuthController extends BaseController {
                                   @RequestParam(value = "name", required = true) String name,
                                   @RequestParam(value = "idCard", required = true) String idCard,
                                   @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
-                                  @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl
+                                  @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl,
+                                  @RequestParam(value = "type", required = false) Integer type
+
     ) {
         JSONObject object = new JSONObject();
         try {
@@ -122,7 +124,7 @@ public class UserIdentityAuthController extends BaseController {
             }
             comUser.setRealName(name);
             comUser.setIdCard(idCard);
-            int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontUrl,idCardBackUrl);
+            int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontUrl,idCardBackUrl,type);
             if (i == 1){
                 object.put("isError", false);
             }else{

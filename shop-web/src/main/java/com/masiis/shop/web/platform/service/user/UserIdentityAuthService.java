@@ -23,6 +23,9 @@ public class UserIdentityAuthService {
     @Resource
     private UserService userService;
 
+    private final Integer saveType = 0;//保存操作
+    private final Integer updateType = 1;//更新操作
+
     /**
      * 获得身份证信息
      *
@@ -50,7 +53,7 @@ public class UserIdentityAuthService {
         String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
         String savepath = SysConstants.ID_CARD_PATH;
         String realpath = webappPath + savepath;
-        //OSS下载
+        //OSS下载到本地服务器
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
@@ -65,12 +68,17 @@ public class UserIdentityAuthService {
      * @date 2016/3/30 15:39
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontUrl,String idCardBackUrl){
+    public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontUrl,String idCardBackUrl,Integer type){
         try{
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
             String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
             String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
+            if (type.equals(updateType)){
+                //第一次审核不通过重新提交身份证审核,删除服务器之前的身份证
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
+            }
             //修改用户数据
             comUser.setIdCardFrontUrl(frontFillFullName);
             comUser.setIdCardBackUrl(backFillFullName);
@@ -80,7 +88,7 @@ public class UserIdentityAuthService {
                 //更新缓存
                 request.getSession().removeAttribute("comUser");
                 request.getSession().setAttribute("comUser", comUser);
-                //删除本地服务器照片
+                //删除最新上传的本地服务器照片
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             }

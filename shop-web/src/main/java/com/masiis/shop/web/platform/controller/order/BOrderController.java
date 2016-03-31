@@ -22,6 +22,7 @@ import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -410,6 +411,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/closeDeal.do")
     @ResponseBody
+    @Transactional
     public String closeDeal(HttpServletRequest request,
                             @RequestParam(required = true) Integer orderStatus,
                             @RequestParam(required = true) Long orderId,
@@ -455,6 +457,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/deliver.do")
     @ResponseBody
+    @Transactional
     public String deliver(HttpServletRequest request,
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,

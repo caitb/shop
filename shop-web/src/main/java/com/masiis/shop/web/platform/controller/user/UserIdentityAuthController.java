@@ -60,6 +60,19 @@ public class UserIdentityAuthController extends BaseController {
         }
         return jumpPage;
     }
+    /**
+     * 获得身份证信息
+     * @author hanzengzhi
+     * @date 2016/3/31 15:25
+     */
+    @RequestMapping(value = "getIdentityAuthInfo.do")
+    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response){
+        ComUser comUser = getComUser(request);
+        comUser.setAuditStatus(3);
+        userIdentityAuthService.getIdentityAuthInfo(request,comUser);
+        return null;
+    }
+
 
     /**
      * 实时的获取审核状态
@@ -80,8 +93,8 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/3/30 19:35
      */
     @ResponseBody
-    @RequestMapping("userVerified/save.do")
-    public String userVerifiedAdd(HttpServletRequest request,
+    @RequestMapping("sumbitAudit.do")
+    public String sumbitAudit(HttpServletRequest request,
                                   @RequestParam(value = "name", required = true) String name,
                                   @RequestParam(value = "idCard", required = true) String idCard,
                                   @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,

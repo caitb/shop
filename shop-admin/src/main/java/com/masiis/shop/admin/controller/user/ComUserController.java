@@ -52,7 +52,7 @@ public class ComUserController {
 
             return pageMap;
         } catch (Exception e) {
-            log.error("获取会员列表信息失败!");
+            log.error("获取会员列表信息失败![comUser="+comUser+"]");
             e.printStackTrace();
         }
 
@@ -72,7 +72,7 @@ public class ComUserController {
 
             return pageMap;
         } catch (Exception e) {
-            log.error("获取待审核会员列表失败!");
+            log.error("获取待审核会员列表失败![comUser="+comUser+"]");
             e.printStackTrace();
         }
 
@@ -89,11 +89,41 @@ public class ComUserController {
 
             return mav;
         } catch (Exception e) {
-            log.error("获取会员信息详情失败!");
+            log.error("获取会员信息详情失败![id="+id+"]");
             e.printStackTrace();
         }
 
         return new ModelAndView("error");
+    }
+
+    @RequestMapping("toaudit.do")
+    @ResponseBody
+    public Object toAudit(HttpServletRequest request, HttpServletResponse response, Long id){
+        try {
+            ComUser comUser = comUserService.toAudit(id);
+
+            return comUser;
+        } catch (Exception e) {
+            log.error("获取待审核人信息失败![id="+id+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
+    @RequestMapping("/audit.do")
+    @ResponseBody
+    public Object audit(HttpServletRequest request, HttpServletResponse response, ComUser comUser){
+        try {
+            comUserService.audit(comUser);
+
+            return "success";
+        } catch (Exception e) {
+            log.error("审核会员失败![comUser="+comUser+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
     }
 
 }

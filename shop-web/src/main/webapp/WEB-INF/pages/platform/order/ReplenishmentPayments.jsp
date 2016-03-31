@@ -78,9 +78,9 @@
         <p>留言： <input type="text" value="${pfBorder.userMessage}"></p>
     </section>
     <section class="sec4">
-        <p>商品合计：<span>￥${pfBorder.orderAmount}元</span></p>
+        <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
         <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
-        <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.receivableAmount}</span></h1>
+        <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
     </section>
     <div class="sec5">
         <p>订单编号：<span>${pfBorder.orderCode}</span></p>

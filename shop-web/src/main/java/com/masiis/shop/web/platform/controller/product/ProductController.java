@@ -141,7 +141,7 @@ public class ProductController extends BaseController {
             if (product.getStock() - stock < 0) {
                 throw new BusinessException("拿货数量超出平台库存!");
             }
-            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message);
+            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message,0);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);

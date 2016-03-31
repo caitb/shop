@@ -60,7 +60,7 @@
                                 <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
                                 <span>好货市场</span></a>
                         </li>
-                        <li class="market">
+                        <li class="market" onclick="javascript:window.location.replace('<%=basePath%>product/user/${user.id}');">
                             <a class="herf" href="javascript:;"></a>
                                 <h1><img src="<%=path%>/static/images/index_nav%20(4).png" alt=""></h1>
                                 <span>商品管理</span></a>
@@ -82,7 +82,7 @@
                                     <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
                                     <span>发展合伙人</span></a>
                             </li>
-                            <li class="market"><a class="herf" href="javascript:;">
+                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">
                                     <h1><img src="<%=path%>/static/images/index_nav%20(6).png" alt=""></h1>
                                     <span>我的授权书 </span></a>
                             </li>

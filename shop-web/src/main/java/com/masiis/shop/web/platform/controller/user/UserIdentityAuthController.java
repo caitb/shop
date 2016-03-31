@@ -29,10 +29,10 @@ public class UserIdentityAuthController extends BaseController {
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
 
-    private static final int NOAUDIT = 0;//未审核
-    private static final int AUDITING = 1;//审核中
-    private static final int AUDITSUCCESS = 2;//审核通过
-    private static final int AUDITFAIL = 3;//审核未通过
+    static final int NOAUDIT = 0;//未审核
+    static final int AUDITING = 1;//审核中
+    static final int AUDITSUCCESS = 2;//审核通过
+    static final int AUDITFAIL = 3;//审核未通过
 
     /**
      * 跳转到身份认证界面

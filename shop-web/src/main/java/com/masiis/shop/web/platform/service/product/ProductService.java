@@ -40,6 +40,9 @@ public class ProductService {
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private ComBrandMapper comBrandMapper;
+
     /**
      * @Author 贾晶豪
      * @Date 2016/3/5 0005 下午 2:30
@@ -54,6 +57,10 @@ public class ProductService {
 
             product.setSlogan(product.getSlogan().substring(0, 51) + "......");
         }
+        ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
+        ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+        product.setLogoUrl(comBrand.getLogoUrl());
+        product.setBrand(comBrand.getContent());
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
         String productImgValue = PropertiesUtils.getStringValue("index_product_308_308_url");
         if (skuImgList != null && skuImgList.size() > 0) {
@@ -162,8 +169,7 @@ public class ProductService {
         if (pfUserSku.getPid() == 0) {
             upperStock = pfSkuStockMapper.selectBySkuId(skuId).getStock();
         } else {
-            PfUserSku upperUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSku.getPid());
-            upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(upperUserSku.getUserId(), skuId).getStock();
+            upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId).getStock();
         }
         return upperStock;
     }

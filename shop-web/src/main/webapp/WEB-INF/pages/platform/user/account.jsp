@@ -42,7 +42,7 @@
                     <li>
                         <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
                         <h1><span>￥</span>${account.extractableFee}</h1>
-                        <h2>提现记录</h2>
+                        <h2><a href="#" onclick="toExtract()">提现记录</a></h2>
                     </li>
                     <li>
                         <p>结算中：</p>
@@ -127,6 +127,10 @@
     }
     function hideDetail(){
         $("#detail").hide();
+    }
+    function toExtract(){
+        fullShow();//跳转页面钱展示全屏遮罩loading...
+        window.location.href="<%=basePath%>extract/list";
     }
 </script>
 </body>

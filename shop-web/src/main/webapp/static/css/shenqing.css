@@ -51,33 +51,55 @@ body .kang a div p {
 }
 body>.paidan{
   width:100%;
+  background: white;
 }
 body>.paidan>p{
   margin:0 10px;
-  color: red;
+  color:#999;
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+body>.paidan>h1 img{
+  display: block;
+  width: 20%;
 }
 body>.paidan>h1{
-  margin:0 10px;
+  margin: 0 10px;
   letter-spacing: 1px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  padding: 20px 0;
 }
-body>.paidan>h1>span{
-  font-weight: 600;
+body>.paidan>h1 b{
+  font-size: 12px;
 }
-body>.biao>h1{
+body>.paidan>h1 span{
+  font-size: 12px;
+  color: #f52000;
+}
+body>.biao{
+  background: #fff;
+  margin: 5px 0;
+  padding-bottom: 5px;
+}
+body>.biao h1{
   padding: 5px 10px;
 }
-body>.biao>table{
+body>.biao table{
   width:96%;
-  margin:0 auto 10px auto;
+  margin:0 auto;
+  border:1px solid #F3F4F5;
 }
-body>.biao>table td{
+body>.biao table td{
   text-align: center;
-  border:1px solid #ccc;
+  border:1px solid #F3F4F5;
   background: white;
   padding:5px 0;
 }
 body>.biao>table tr:nth-child(1)>td{
-  background: #f6f6f6;
+  background: #CED8E3;
 }
 body .he {
   width: 100%;
@@ -98,7 +120,7 @@ body .he h1 {
   padding-left: 25px;
 }
 body main {
-  width: 100%;
+  margin: 0 5px;
   -webkit-box-flex: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -106,6 +128,9 @@ body main {
   display: -moz-box;
   -moz-box-orient: vertical;
   position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  background: white;
 }
 body main .sec1 {
   width: 100%;
@@ -116,12 +141,20 @@ body main .sec1 {
   display: -moz-box;
   -moz-box-align: center;
   border-bottom: 1px solid #f6f6f6;
+  position: relative;
 }
-body main .sec1 img {
+body main .sec1 img:first-child{
   display: block;
   width: 20px;
   height: 20px;
   margin-left: 10px;
+}
+body main .sec1 img:last-child{
+  position: absolute;
+  right: 10px;
+  top: 24px;
+  display: block;
+  width: 15px;
 }
 body main .sec1 div {
   -webkit-box-flex: 1;
@@ -146,7 +179,26 @@ body main .sec1 div p {
 body main .sec1_2 div {
   margin-left: 42px;
 }
-body main .sec2 {
+.sec1+div{
+  margin:0 5px;
+  background: #F3F4F5;
+  display: -webkit-box;
+  -webkit-box-align:center;
+  padding: 10px 0;
+  display: none;
+}
+.sec1+div p{
+  margin:0 20px;
+  background: #82C9CC;
+  width:50px;
+  height:50px;
+  border-radius: 25px;
+  overflow: hidden;
+}
+.sec1+div span{
+  display: block;;
+}
+body .sec2 {
   margin: 0 10px;
   display: -webkit-box;
   display: -moz-box;
@@ -156,7 +208,7 @@ body main .sec2 {
   border-radius: 5px;
   overflow: hidden;
 }
-body main .sec2 p {
+body .sec2 p {
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
@@ -167,7 +219,7 @@ body main .sec2 p {
   -moz-box-flex: 1;
   background: #F74A11;
 }
-body main .sec2 p a {
+body .sec2 p a {
   width: 100%;
   display: block;
   color: #FCFFFF;

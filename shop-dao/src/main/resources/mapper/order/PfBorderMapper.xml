@@ -279,9 +279,17 @@
         ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
-        where create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
-              and order_status = #{orderStatus,jdbcType=INTEGER}
-              and pay_status = #{payStatus,jdbcType=INTEGER}
+        <where>
+            <if test="expiraTime != null">
+                create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 
     <update id="updateOrderCancelById" >

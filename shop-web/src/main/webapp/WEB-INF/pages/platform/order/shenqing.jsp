@@ -33,11 +33,11 @@
     </a>
 </div>--%>
 <div class="paidan">
+    <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
     <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
-    <h1>在您前面还有<span>1233</span>人排单</h1>
 </div>
 <div class="biao">
-    <h1>申请条件：</h1>
+    <h1>申请条件</h1>
     <table>
         <tr>
             <td>申请条件</td>
@@ -52,27 +52,37 @@
         <tr>
             <td>申请条件</td>
             <td>是否完成</td>
-            <td>任务入口</td>
+            <td style="color: #FF5200;text-decoration: underline">任务入口</td>
         </tr>
     </table>
 </div>
-<div class="he">
-    <h1>合伙人特权</h1>
-</div>
+
 <main>
+    <div class="he">
+        <h1>合伙人特权</h1>
+    </div>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_3.png" alt="">
         <div>
             <h2>独立店铺</h2>
             <p>拥有自己的独立店铺进行推广装修等</p>
         </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_4.png" alt="">
         <div>
             <h2>寻找合伙人</h2>
             <p>可以用采购价格购买商品，赚取利差</p>
         </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_5.png" alt="">
@@ -80,6 +90,7 @@
             <h2>推广渠道</h2>
             <p>平台提供多样的推广渠道编辑推广自己商品</p>
         </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_6.png" alt="">
@@ -87,6 +98,7 @@
             <h2>团队管理</h2>
             <p>提供完善的售后和团队管理工具</p>
         </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_7.png" alt="">
@@ -94,18 +106,27 @@
             <h2>平台补助</h2>
             <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
         </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
-    <section class="sec2">
-
-        <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=0">继续</a></p>
-
-        <%--<p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>--%>
+    <section class="sec1">
+        <img src="<%=path%>/static/images/shouquan.png.png" alt="">
+        <div>
+            <h2>平台补助</h2>
+            <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
+        </div>
+        <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
     <input id="skuId" value="${skuId}" style="display: none"/>
     <input id="pUserId" value="${pUserId}" style="display: none"/>
     <input id="skipPageId" value="register" style="display: none"/>
     <input id="type" value="${type}" style="display: none"/>
 </main>
+<section class="sec2">
+
+    <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=0">继续</a></p>
+
+    <%--<p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>--%>
+</section>
 <div class="back_j">
     <p class="biao">绑定账号</p>
     <div>
@@ -139,5 +160,14 @@
     $("#nextPageId").bind("onclick", function () {
         window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=${type}";
     });
+    $(".down").toggle(function () {
+        $(this).attr("src","<%=path%>/static/images/top.png")
+        $(this).parent().css("borderBottom","none")
+        $(this).parent().next().css("display","-webkit-box");
+    }, function () {
+        $(this).attr("src","<%=path%>/static/images/down.png")
+        $(this).parent().next().hide();
+        $(this).parent().css("borderBottom","1px solid #f6f6f6")
+    })
 </script>
 </html>

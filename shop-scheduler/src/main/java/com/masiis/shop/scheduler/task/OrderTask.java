@@ -21,7 +21,7 @@ public class OrderTask {
     @Resource
     private PfUserBillTaskService billTaskService;
     @Resource
-    private PfBOrderTaskService orderTaskService;
+    private PfBOrderTaskService bOrderTaskService;
 
     /**
      * 创建每日结算账单
@@ -45,10 +45,27 @@ public class OrderTask {
         Date nowTime = new Date();
         log.info("72小时未支付订单自动取消job开始,开始时间为:" + DateUtil.Date2String(nowTime, "yyyy-MM-dd HH:mm:ss"));
         try{
-            orderTaskService.autoCancelUnPayOrder();
+            // 订单取消
+            bOrderTaskService.autoCancelUnPayOrder();
         } catch (Exception e) {
             log.error("72小时未支付订单自动取消job失败," + e.getMessage());
         }
         log.info("72小时未支付订单自动取消job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
+    }
+
+
+    /**
+     * 订单发货后7天自动收货
+     */
+    public void orderReceivedConfirmJob(){
+        Date nowTime = new Date();
+        log.info("订单发货7天后自动确认收货job开始,开始时间为:" + DateUtil.Date2String(nowTime, "yyyy-MM-dd HH:mm:ss"));
+        try{
+            // 订单自动收货
+            bOrderTaskService.confirmOrderReceived();
+        } catch (Exception e) {
+            log.error("订单发货7天后自动确认收货job失败," + e.getMessage());
+        }
+        log.info("订单发货7天后自动确认收货job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
 }

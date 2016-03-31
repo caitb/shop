@@ -16,6 +16,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ import java.util.List;
  */
 @Service
 public class BOrderService {
+    private final static Logger logger = Logger.getLogger(BOrderService.class);
     @Resource
     private PfBorderMapper pfBorderMapper;
     @Resource
@@ -193,6 +195,8 @@ public class BOrderService {
      */
     @Transactional
     public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception {
+        logger.info("进入拿货订单处理Service");
+        logger.info("<1>处理订单数据");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能补货。");
@@ -253,7 +257,7 @@ public class BOrderService {
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
-        //添加订单日志
+        logger.info("<2>添加订单日志");
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
         pfBorderOperationLog.setCreateMan(order.getUserId());
         pfBorderOperationLog.setCreateTime(new Date());
@@ -262,6 +266,7 @@ public class BOrderService {
         pfBorderOperationLog.setRemark("订单已支付");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
 
+        logger.info("<3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存");
         PfSkuStock pfSkuStock = null;
         PfUserSkuStock pfUserSkuStock = null;
         //冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
@@ -286,6 +291,7 @@ public class BOrderService {
                 throw new BusinessException("并发修改库存失败");
             }
         }
+        logger.info("<4>初始化个人库存信息");
         //初始化个人库存信息
         PfUserSkuStock SkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserId(), pfBorderItem.getSkuId());
         if (SkuStock == null) {

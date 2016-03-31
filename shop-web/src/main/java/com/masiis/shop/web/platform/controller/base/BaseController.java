@@ -161,10 +161,6 @@ public class BaseController {
      * @return
      */
     protected String getWebRootPath(HttpServletRequest request){
-        String path = null;
-        try {
-            path = request.getServletContext().getResource("/").getPath();
-        } catch (MalformedURLException e) {}
-        return path;
+        return request.getSession().getServletContext().getRealPath("/");
     }
 }

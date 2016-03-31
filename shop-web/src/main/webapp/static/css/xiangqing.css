@@ -41,12 +41,15 @@ body .wrap .box .price p {
 }
 body .wrap .box .price p b {
   color: #FF7D54;
-  font-size: 13px;
+  font-size: 14px;
+    float: right;
+    font-weight: 600;
+    margin-right: 10px;
+
 }
 body .wrap .box .price p span {
   color: #999;
   font-size: 12px;
-  padding-left: 20px;
 }
 body .wrap .box .dlpople {
   width: 100%;
@@ -70,7 +73,6 @@ body .wrap .box .dlpople p b {
   font-size: 12px;
 }
 body .wrap .box .dlpople p span {
-  color: #FF7D56;
   font-size: 12px;
 }
 body .wrap .box .dlpople p:nth-child(2) {
@@ -172,6 +174,86 @@ body .wrap .box main .sec2 p {
   font-size: 12px;
   color: #ABABAB;
 }
+.wrap .back_b {
+    width: 100%;
+    background: white;
+    position: fixed;
+    display: none;
+    margin: 0;
+    bottom: 0;
+    z-index: 11;
+}
+.wrap .back_b p {
+    border-bottom: 1px solid #F6F6F6;
+    text-indent: 10px;
+    line-height: 32px;
+    margin-bottom: 9px;
+    font-size: 12px;
+}
+.wrap .back_b h4 {
+    margin: 0 10px;
+    text-indent: 10px;
+    display: -webkit-box;
+    line-height: 30px;
+    font-size: 12px;
+}
+.wrap .back_b h4 div {
+    margin-top: 5px;
+    font-size: 12px;
+}
+.wrap .back_b h4 div .jian {
+    border-right: none;
+}
+.wrap .back_b h4 div .jia {
+    border-left: none;
+}
+.wrap .back_b h4 div .number {
+    color: #F74A11;
+    float: left;
+    width: 30px;
+    height: 26px;
+    text-align: center;
+}
+.wrap .back_b h4 div span {
+    display: block;
+    float: left;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #E5E5E5;
+    text-align: center;
+    line-height: 30px;
+    text-indent: 0;
+    font-size: 12px;
+}
+.wrap .back_b h4 div span:nth-child(2) {
+    width: 30px;
+}
+.wrap .back_b > div {
+    display: -webkit-box;
+    margin: 20px 30px 30px 30px;
+}
+.wrap .back_b > div h1 {
+    -webkit-box-flex: 1;
+    background: #ccc;
+    border-radius: 5px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+}
+.wrap .back_b > div h1 a {
+    color: white;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.wrap .back_b > div h1:nth-child(1) {
+    margin-right: 30px;
+}
+.wrap .back_b > div h1:nth-child(2) {
+    background: #0FC420;
+    color: white;
+}
+
 body .back_j {
   width: 90%;
   position: fixed;
@@ -199,6 +281,7 @@ body .back_j div {
 body .back_j div p {
   border-radius: 5px;
   line-height: 44px;
+  font-size: 12px;
   text-indent: 10px;
 }
 body .back_j div p input {

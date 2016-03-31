@@ -90,7 +90,7 @@ public class IndexController extends BaseController {
         //封装展示商品信息集合
         modelAndView.addObject("indexComS",ComS);
         modelAndView.addObject("ComSize",ComS.size());
-        modelAndView.setViewName("platform/system/haohuo");
+        modelAndView.setViewName("platform/system/market");
         modelAndView.addObject("user", user);
         return modelAndView;
     }

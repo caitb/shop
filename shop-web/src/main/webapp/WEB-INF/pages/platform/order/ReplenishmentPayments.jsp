@@ -18,12 +18,25 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/commonAjax.js"/>
     <script src="<%=path%>/static/js/iscroll.js"></script>
+    <script>
+        function toProduct(skuId){
+            fullShow();
+            window.location.href = "<%=basePath%>product/"+skuId;
+        }
+        function toIndex(){
+            fullShow();
+            window.location.href = "<%=basePath%>index";
+        }
+        function toPersonCenter(){
+            fullShow();
+            window.location.href = "<%=basePath%>personalInfo/personalHomePageInfo.html";
+        }
+    </script>
 </head>
 <body>
-
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="" onclick="history.go(-1)"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>订单详情</p>
     </header>
     <div class="tai">
@@ -48,7 +61,7 @@
     <section class="sec2">
         <c:forEach var="borderItem" items="${pfBorderItems}">
             <p class="photo">
-                <a href="<%=path%>/static/html/xiangqing.html">
+                <a href="#" onclick="toProduct(${borderItem.skuId})">
                     <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
                     <img src="${skuImg}${borderItem.logoUrl}" alt="">
                 </a>
@@ -65,17 +78,17 @@
         <p>留言： <input type="text" value="${pfBorder.userMessage}"></p>
     </section>
     <section class="sec4">
-        <p>商品合计：<span>￥${pfBorder.orderAmount}元</span></p>
+        <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
         <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
-        <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.receivableAmount}</span></h1>
+        <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
     </section>
     <div class="sec5">
         <p>订单编号：<span>${pfBorder.orderCode}</span></p>
         <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
     </div>
     <div class="sec6">
-        <p><a href="index.html">返回首页</a></p>
-        <p><a href="gerenzhongxin.html">返回个人中心</a></p>
+        <p><a href="#" onclick="toIndex()">返回首页</a></p>
+        <p><a href="#" onclick="toPersonCenter()">返回个人中心</a></p>
     </div>
 </div>
 </body>

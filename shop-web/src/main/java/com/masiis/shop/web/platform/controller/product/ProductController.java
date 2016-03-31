@@ -106,9 +106,8 @@ public class ProductController extends BaseController {
         try {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),skuId);//代理关系
-            PfUserSku pfUserSku1 = userSkuService.getUserSkuById(pfUserSku.getPid());
-            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getPid()==0 ? 0:pfUserSku1.getUserId());
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);//代理关系
+            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getUserPid());
             if(usableStock<0){
                 throw new BusinessException("可用库存不足!");
             }
@@ -142,7 +141,7 @@ public class ProductController extends BaseController {
             if (product.getStock() - stock < 0) {
                 throw new BusinessException("拿货数量超出平台库存!");
             }
-            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message);
+            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message,0);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);

@@ -125,6 +125,29 @@ public class ComUserService {
         return user;
     }
 
+    /**
+     * 获取待审核人信息
+     * @param id
+     * @return
+     */
+    public ComUser toAudit(Long id){
+        ComUser comUser = comUserMapper.selectByPrimaryKey(id);
+        String idCardImgUrl = PropertiesUtils.getStringValue("index_user_idCard_url");
+
+        comUser.setIdCardFrontUrl(idCardImgUrl+comUser.getIdCardFrontUrl());
+        comUser.setIdCardBackUrl(idCardImgUrl+comUser.getIdCardBackUrl());
+
+        return comUser;
+    }
+
+    /**
+     * 审核会员信息
+     * @param comUser
+     */
+    public void audit(ComUser comUser){
+        comUserMapper.updateByPrimaryKey(comUser);
+    }
+
     public String findByPid(Integer pid) {
         return comUserMapper.findByPid(pid);
     }

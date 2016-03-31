@@ -204,7 +204,7 @@ public class UserCertificateController extends BaseController {
      */
     private String uploadFile(String filePath) throws FileNotFoundException {
         File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, SysConstants.ID_CARD_PATH);
+        OSSObjectUtils.uploadFile( frontFile, SysConstants.ID_CARD_PATH);
         return frontFile.getName();
     }
 

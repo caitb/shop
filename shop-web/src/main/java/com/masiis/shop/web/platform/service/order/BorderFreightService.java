@@ -18,7 +18,7 @@ public class BorderFreightService {
     @Resource
     private PfBorderFreightMapper pfBorderFreightMapper;
 
-    public void addPfBorderFreight(PfBorderFreight pfBorderFreight){
+    public void addPfBorderFreight(PfBorderFreight pfBorderFreight) throws Exception{
         pfBorderFreightMapper.insert(pfBorderFreight);
     }
 }

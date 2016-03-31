@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.utils.UploadImage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,42 @@ public class UserIdentityAuthService {
 
     @Resource
     private UserService userService;
+
+    /**
+     * 获得身份证信息
+     *
+     * @author hanzengzhi
+     * @date 2016/3/31 15:27
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    public ComUser getIdentityAuthInfo(HttpServletRequest request,ComUser comUser ){
+        switch (comUser.getAuditStatus()){
+            case 3://审核不通过，从云服务器身份证下载到本地服务器供展示
+                loadIdCardFromOSSToLocal(request,comUser);
+                break;
+            default:
+                break;
+        }
+        return null;
+    }
+    /**
+     * 阿里云身份证图片下载到本地
+     * @author hanzengzhi
+     * @date 2016/3/31 15:47
+     */
+    private void loadIdCardFromOSSToLocal(HttpServletRequest request,ComUser comUser){
+        String rootPath = request.getServletContext().getRealPath("/");
+        String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
+        String savepath = SysConstants.ID_CARD_PATH;
+        String realpath = webappPath + savepath;
+        //OSS下载
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
+        //OSS删除
+        //OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
+        //OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
+
+    }
 
     /**
      * 提交实名认证审核
@@ -43,6 +80,9 @@ public class UserIdentityAuthService {
                 //更新缓存
                 request.getSession().removeAttribute("comUser");
                 request.getSession().setAttribute("comUser", comUser);
+                //删除本地服务器照片
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             }
             return i;
         }catch (Exception e){
@@ -58,7 +98,7 @@ public class UserIdentityAuthService {
      */
     private String uploadFile(String filePath) throws FileNotFoundException {
         File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
+        OSSObjectUtils.uploadFile(frontFile, "static/user/idCard/");
         return frontFile.getName();
     }
 }

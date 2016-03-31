@@ -37,6 +37,10 @@ public class Product extends ComSku {
 
     private Integer sendType;//发货方式
 
+    private String brand;//品牌介绍
+
+    private String logoUrl;//logo
+
     public String getSpuName() {
         return spuName;
     }
@@ -139,5 +143,21 @@ public class Product extends ComSku {
 
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

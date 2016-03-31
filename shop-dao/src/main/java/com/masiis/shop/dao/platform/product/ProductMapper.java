@@ -16,7 +16,7 @@ public interface ProductMapper {
 
     List<ComSkuImage> getSkuImgById(String skuId);
 
-    Integer maxDiscount();
+    double maxDiscount();
 
     List<Product> getProductsByUser(Long userId);
 

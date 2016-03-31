@@ -30,7 +30,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="#" onClick="toBack()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>提现申请</p>
         </header>
         <main>
@@ -54,5 +54,12 @@
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
 <script src="<%=path%>/static/js/dropload.min.js"></script>
 <script type="application/javascript" src="<%=path%>/static/js/extract_list.js"></script>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
+<script>
+    function toBack(){
+        fullShow();//跳转页面钱展示全屏遮罩loading...
+        window.location.href="<%=basePath%>account/home"
+    }
+</script>
 </body>
 </html>

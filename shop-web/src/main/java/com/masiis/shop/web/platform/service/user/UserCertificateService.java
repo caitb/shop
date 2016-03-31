@@ -268,7 +268,7 @@ public class UserCertificateService {
      * @author hanzengzhi
      * @date 2016/3/29 11:56
      */
-    public PfUserCertificate selectSkuWeChatInfo(Long userId){
+    public List<PfUserCertificate> selectSkuWeChatInfo(Long userId){
         return pfUserCertificateMapper.selectSkuWeChatInfo(userId);
     }
 }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <div class="wrap">
@@ -29,24 +30,26 @@
                         <div class="swiper-slide"><img src="${urlImg.fullImgUrl}" alt=""></div>
                     </c:forEach>
                 </div>
-                <!-- 如果需要分页器 -->
                 <div class="swiper-pagination"></div>
             </div>
         </div>
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>￥${productDetails.priceRetail}</b><%--<span>最高利润${productDetails.maxDiscount}%
-            </span>--%></p>
-            <p>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理<b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b></p>
+            <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
+            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：超过${productDetails.agentNum}</span></p>
+            <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
-<%--        <div class="dlpople">
-            <p>快递：<span>到付</span></p>
-            <p>代理人数：<b><span>${productDetails.agentNum}</span>人</b></p>
-        </div>--%>
         <div class="dlpople">
             <p>库存</p>
+            <c:if test="${productDetails.stock==0}">
+                <p>此商品已经进入排单期<b class="paidan">?</b></p>
+            </c:if>
             <p><span>${productDetails.stock}件</span></p>
+        </div>
+        <div class="dlpople">
+            <p>运费</p>
+            <p><span>到付</span></p>
         </div>
         <nav>
             <ul>
@@ -68,20 +71,26 @@
                 </li>
             </ul>
         </nav>
-        <div class="tuw">
-            <h1>图文详情</h1>
-        </div>
         <main>
-            ${productDetails.content}
-            <section class="sec2">
-                <h2 style="color:#F74A11;">麦链合伙人提供技术支持</h2>
-                <p>Copyright2005-2016 iimai.com 版权所有</p>
-                <p>京ICP证080047号[京ICP备08010314号-6]</p>
-                <p>文网文[2009]024号 新出网证（京）字069号</p>
-                <p>京公网安备 11000002000006号</p>
-            </section>
+            <h1 style="background:white url('<%=path%>/static/images/xiangqing_1.png') no-repeat 10px;background-size: 15px;"><a name="1f">品牌介绍</a></h1>
+            <img src="${productDetails.logoUrl}" alt="">
+            <p>${productDetails.brand}</p>
+                <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;"><a name="2f">商业政策</a></h1>
+                <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+                <p>好赚钱啊，特别赚钱，特别牛x的一款产品</p>
+                <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;"><a name="3f">商品详情</a></h1>
+                <p>${productDetails.content}</p>
         </main>
-
+        <div class="fixe">
+        <div class="left">
+            <ul>
+                <li><a href="#1f" style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 15px;">品牌介绍</a></li>
+                <li><a href="#2f"  style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 15px;">商业政策</a></li>
+                <li><a href="#3f"  style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 15px;">商品详情</a></li>
+            </ul>
+        </div>
+            <span class="btn">—</span>
+        </div>
         <div class="back_j" style="display: none">
             <p class="biao">绑定账号</p>
             <div>
@@ -95,21 +104,19 @@
             <p class="tishi" id="errorMessageId"></p>
             <h1 class="j_qu" id="nextPageId">下一步</h1>
         </div>
-        <div class="back_b">
-            <p>增加库存</p>
-            <h4>商品:　　<span id="addsku"></span></h4>
-            <h4>数量:　　<div>
-                <span class="jian">-</span>
-                <input type="tel" class="number" value="1"/>
-                <span class="jia">+</span>
-            </div>
-            </h4>
-            <div>
-                <h1 class="b_qu">取消</h1>
-                <h1 class="b_que">确定</h1>
-            </div>
-        </div>
         <div class="back"></div>
+        <div class="back_q">
+            <h1>什么事结算中</h1>
+            <p>
+                为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+            </p>
+            <button class="zhidao">我知道了</button>
+        </div>
+        <div class="back_login" style="display:none;">
+            <h2>您已合伙</h2>
+            <p>您已合伙，如需要补货，请在商品管理中补货</p>
+            <h1><span id="zhidao">我知道了</span><span onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span></h1>
+        </div>
     </div>
 </div>
 <footer>
@@ -124,9 +131,8 @@
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
             </p>
         </c:if>
-        <c:if test="${not empty pfUserSku && pfUserSku.isPay==1}">
-            <p style="background: #DA3600;"><a onclick="buhuokucun('${productDetails.name}')"
-                    href="javascript:;">补货</a></p>
+        <c:if test="${ not empty pfUserSku}">
+            <p style="background: #DA3600;" onclick="gotoBuhuo()">您已合伙</p>
         </c:if>
     </section>
 </footer>
@@ -146,23 +152,6 @@
         // 如果需要分页器
         pagination: '.swiper-pagination'
     })
-    var i=1;
-    $(".jia").on("click",function(){
-        i++;
-        $(".number").val(i)
-    })
-    $(".jian").on("click",function(){
-        if(i==1){
-            return false;
-        }
-        i--;
-        $(".number").val(i)
-    })
-    function buhuokucun(a){
-        $("#addsku").html(a);
-        $(".back").css("display","-webkit-box");
-        $(".back_b").show();
-    }
     $(".b_qu").on("click",function(){
         $(".back").css("display","none");
         $(".back_b").hide();
@@ -183,6 +172,36 @@
             }
         });
     })
+    $(".btn").toggle(function(){
+        $(this).parent().animate({
+            width:"90%"
+        })
+        $(".fixe").addClass("active");
+        $(this).addClass("on").delay(3000).removeClass("on")
+        $(".left").show()
+        $(this).html("+")
+    },function () {
+        $(this).parent().animate({
+            width:"50px"
+        })
+        $(this).prev().hide()
+        $(".fixe").removeClass("active");
+        $(this).addClass("on")
+        $(".left").hide()
+        $(this).html("—")
+    })
+    $(".paidan").on("click",function(){
+        $(".back").css("display","-webkit-box");
+        $(".back_q").show();
+    })
+    $(".zhidao").on("click",function(){
+        $(".back").css("display","none");
+        $(".back_q").hide();
+    })
+  function gotoBuhuo(){
+      $(".back").css("display","-webkit-box");
+      $(".back_login").show();
+  }
 </script>
 </body>
 </html>

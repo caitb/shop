@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-30 Created
+ * 2016-03-31 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -29,6 +29,10 @@ public class PfUserSku {
      * 用户id
      */
     private Long userId;
+    /**
+     * 上级用户id
+     */
+    private Long userPid;
     /**
      * sku主键id
      */
@@ -87,6 +91,12 @@ public class PfUserSku {
     }
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+    public Long getUserPid() {
+        return userPid;
+    }
+    public void setUserPid(Long userPid) {
+        this.userPid = userPid;
     }
     public Integer getSkuId() {
         return skuId;

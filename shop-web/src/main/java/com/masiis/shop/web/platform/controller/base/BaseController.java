@@ -163,4 +163,8 @@ public class BaseController {
     protected String getWebRootPath(HttpServletRequest request){
         return request.getSession().getServletContext().getRealPath("/");
     }
+    protected String getBasePath(HttpServletRequest request) {
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        return basePath;
+    }
 }

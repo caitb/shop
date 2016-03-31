@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
-import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -27,7 +26,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -78,6 +76,11 @@ public class PayBOrderService {
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
 
+    /**
+     * 支付回调统一入口
+     * @author ZhaoLiang
+     * @date 2016/3/31 11:55
+     */
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         if (pfBorderPayment == null) {
@@ -102,11 +105,11 @@ public class PayBOrderService {
      * <2>修改订单数据
      * <3>添加订单日志
      * <4>修改合伙人商品关系状态
-     * <5>修改用户sku代理关系数据
-     * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     * <7>减少发货方库存 如果用户id是0操作平台库存
-     * <8>增加收货方库存
-     * <9>增加保证金
+     * <5>增加保证金
+     * <6>修改用户sku代理关系数据
+     * <7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
+     * <8>减少发货方库存 如果用户id是0操作平台库存
+     * <9>增加收货方库存
      * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void payBOrderI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
@@ -198,6 +201,7 @@ public class PayBOrderService {
                     //平台库存不足，排单处理
                     pfBorder.setOrderStatus(6);//排队订单
                     pfBorderMapper.updateById(pfBorder);
+                    return;
                 } else {
                     //减少平台库存
                     pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
@@ -211,6 +215,7 @@ public class PayBOrderService {
                 if (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
                     pfBorder.setOrderStatus(6);//排队订单
                     pfBorderMapper.updateById(pfBorder);
+                    return;
                 } else {
                     //减少上级合伙人平台库存
                     parentSkuStock.setStock(parentSkuStock.getStock() - pfBorderItem.getQuantity());

@@ -14,6 +14,14 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
+.wrap .box .xinxi {
+  background: white url("../images/zhuce_3.png") no-repeat;
+  background-size: 80%;
+  background-position: center 85%;
+}
+.wrap .box .xinxi p {
+  color: #F85F30;
+}
 .wrap .box .cp {
   width: 100%;
   color: #333333;

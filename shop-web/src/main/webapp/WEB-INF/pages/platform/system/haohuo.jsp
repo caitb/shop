@@ -1,11 +1,14 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
@@ -40,24 +43,25 @@
                             <div class="swiper-pagination"></div>
     </div>
                 </div><a href="<%=path%>/productList/showProduct">
-                <div class="all" style="margin-top:5px;">
+                <div class="all">
                         <img src="<%=path%>/static/images/all.png" alt="">
                         <p>查看所有商品<img src="<%=path%>/static/images/next.png" alt=""></p>
                 </div></a>
                 <div class="main">
                     <div class="title"><img src="<%=path%>/static/images/haohuo_1.png" alt="">好货推荐</div>
                     <c:forEach items="${indexComS}"  var="Sku">
-                    <section class="sec1">
-                        <p class="photo"><a href="/product/${Sku.id}">
+                        <section class="sec1">
+                            <p class="photo"><a href="/product/${Sku.id}">
                                 <img src="${Sku.imgUrl}" alt=""></a>
-                        </p>
-                        <div>
-                            <h2>${Sku.comSku.name}</h2>
-                            <h3>试用费用：<span>${Sku.shipAmount}</span>元</h3>
-                            <h3>保 证 金：<span>${Sku.bail}</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</b></h3>
-                            <h2>超过<span>${Sku.agentNum}</span>人合伙<b>${Sku.discountLevel}</b></h2>
-                        </div>
-                </section></c:forEach>
+                            </p>
+                            <div>
+                                <h2>${Sku.comSku.name}</h2>
+                                <h3>试用费用：<span>${Sku.shipAmount}</span>元</h3>
+                                <h3>保 证 金：<span>${Sku.bail}</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</b></h3>
+                                <h2>超过<span>${Sku.agentNum}</span>人合伙<b>${Sku.discountLevel}</b></h2>
+                            </div>
+                        </section>
+                    </c:forEach>
                     <%--<section class="sec1">--%>
                         <%--<p class="photo">--%>
                                 <%--<img src="<%=path%>/static/images/haohuo.png" alt="">--%>

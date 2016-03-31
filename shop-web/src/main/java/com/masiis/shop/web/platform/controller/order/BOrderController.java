@@ -22,6 +22,7 @@ import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,25 +63,21 @@ public class BOrderController extends BaseController {
     private PayBOrderService payBOrderService;
 
     /**
-     * 用户确认生成订单
+     * 用户确认生成订单(合伙订单)
      *
      * @author ZhaoLiang
      * @date 2016/3/8 12:50
      */
     @ResponseBody
-    @RequestMapping("/addBOrder.do")
+    @RequestMapping("/add.do")
     public String addBOrder(HttpServletRequest request,
                             HttpServletResponse response,
-                            @RequestParam(value = "realName", required = true) String realName,
                             @RequestParam(value = "weixinId", required = true) String weixinId,
                             @RequestParam(value = "skuId", required = true) Integer skuId,
                             @RequestParam(value = "levelId", required = true) Integer levelId,
                             @RequestParam(value = "pUserId", required = true) Long pUserId) {
         JSONObject obj = new JSONObject();
         try {
-            if (StringUtils.isBlank(realName)) {
-                throw new BusinessException("名称不能为空");
-            }
             if (StringUtils.isBlank(weixinId)) {
                 throw new BusinessException("微信号不能为空");
             }
@@ -103,15 +100,13 @@ public class BOrderController extends BaseController {
                     }
                 }
             }
-            //处理用户数据
             ComUser comUser = getComUser(request);
-            comUser.setRealName(realName);
-            comUser.setWxId(weixinId);
-            setComUser(request, comUser);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
             //折扣后单价
             BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
+            //保证金
+            BigDecimal bailPrice = pfSkuAgent.getBail();
             //折扣后总价
             BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
             //处理订单数据
@@ -128,20 +123,27 @@ public class BOrderController extends BaseController {
                 order.setUserPid(0l);
             }
             order.setSupplierId(0);
-            order.setReceivableAmount(totalPrice);
-            order.setOrderAmount(totalPrice);//运费到付，商品总价即订单总金额
+            order.setReceivableAmount(totalPrice.add(bailPrice));
+            order.setOrderAmount(totalPrice.add(bailPrice));//运费到付，商品总价即订单总金额
+            order.setBailAmount(bailPrice);
             order.setProductAmount(totalPrice);
             order.setShipAmount(BigDecimal.ZERO);
             order.setPayAmount(BigDecimal.ZERO);
+            order.setShipManId(0);
+            order.setShipManName("");
             order.setShipType(0);
+            order.setShipRemark("");
+            order.setSendType(comUser.getSendType());
+            order.setOrderType(0);
             order.setOrderStatus(0);
             order.setShipStatus(0);
             order.setPayStatus(0);
+            order.setIsCounting(0);
             order.setIsShip(0);
             order.setIsReplace(0);
             order.setIsReceipt(0);
-            order.setIsCounting(0);
-            order.setOrderType(0);
+            order.setReplaceOrderId(0l);
+            order.setRemark("代理订单");
             //处理订单商品数据
             List<PfBorderItem> orderItems = new ArrayList<>();
             PfBorderItem pfBorderItem = new PfBorderItem();
@@ -153,19 +155,22 @@ public class BOrderController extends BaseController {
             pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
             pfBorderItem.setUnitPrice(unitPrice);
             pfBorderItem.setTotalPrice(totalPrice);
+            pfBorderItem.setBailAmount(pfSkuAgent.getBail());
             pfBorderItem.setIsComment(0);
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
+            List<PfUserSku> pfUserSkus = new ArrayList();
             PfUserSku userSku = null;
-            PfUserSku checkUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId());
-            if (checkUserSku == null) {
+            if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) == null) {
                 userSku = new PfUserSku();
                 userSku.setCreateTime(new Date());
                 if (pfUserSku == null) {
                     userSku.setPid(0);
+                    userSku.setUserPid(0l);
                 } else {
                     userSku.setPid(pfUserSku.getId());
+                    userSku.setUserPid(pfUserSku.getUserId());
                 }
                 userSku.setCode("");
                 userSku.setUserId(comUser.getId());
@@ -173,8 +178,12 @@ public class BOrderController extends BaseController {
                 userSku.setAgentLevelId(levelId);
                 userSku.setIsPay(0);
                 userSku.setIsCertificate(0);
+                userSku.setBail(pfSkuAgent.getBail());
+                pfUserSkus.add(userSku);
+            } else {
+                throw new BusinessException("此商品已经建立过代理，请通过补货增加库存。");
             }
-            Long bOrderId = bOrderService.AddBOrder(order, orderItems, userSku, comUser);
+            Long bOrderId = bOrderService.AddBOrder(order, orderItems, pfUserSkus);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {
@@ -324,6 +333,9 @@ public class BOrderController extends BaseController {
             if (pfBorderPayment.getIsEnabled() == 0) {
                 // 调用borderService的方法处理
                 payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
+                ComUser comUser = getComUser(request);
+                comUser.setIsAgent(1);
+                setComUser(request, comUser);
             }
             attrs.addAttribute("bOrderId", bOrderId);
             return "redirect:/border/payBOrdersSuccess.shtml";
@@ -332,10 +344,12 @@ public class BOrderController extends BaseController {
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
             req.setNonceStr(WXBeanUtils.createGenerateStr());
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            req.setSuccessUrl(basePath + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSuccessUrl(getBasePath(request) + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
             req.setSign(WXBeanUtils.toSignString(req));
         }
+        ComUser comUser = getComUser(request);
+        comUser.setIsAgent(1);
+        setComUser(request, comUser);
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
     }
@@ -397,6 +411,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/closeDeal.do")
     @ResponseBody
+    @Transactional
     public String closeDeal(HttpServletRequest request,
                             @RequestParam(required = true) Integer orderStatus,
                             @RequestParam(required = true) Long orderId,
@@ -442,6 +457,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/deliver.do")
     @ResponseBody
+    @Transactional
     public String deliver(HttpServletRequest request,
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,

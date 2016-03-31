@@ -9,8 +9,6 @@ public class PfBorderItemExtends {
 
     private String logoUrl;
 
-    private Long spuCount;
-
     public String getSpuNmme() {
         return spuNmme;
     }
@@ -27,11 +25,4 @@ public class PfBorderItemExtends {
         this.logoUrl = logoUrl;
     }
 
-    public Long getSpuCount() {
-        return spuCount;
-    }
-
-    public void setSpuCount(Long spuCount) {
-        this.spuCount = spuCount;
-    }
 }

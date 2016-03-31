@@ -1,80 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderItemMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderItem" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
-        <result column="quantity" property="quantity" jdbcType="INTEGER" />
-        <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
-        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
-        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
-        <result column="is_comment" property="isComment" jdbcType="INTEGER" />
-        <result column="is_return" property="isReturn" jdbcType="INTEGER" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.order.PfBorderItemMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfBorderItem">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="sku_name" property="skuName" jdbcType="VARCHAR"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL"/>
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL"/>
+        <result column="bail_amount" property="bailAmount" jdbcType="DECIMAL"/>
+        <result column="is_comment" property="isComment" jdbcType="INTEGER"/>
+        <result column="is_return" property="isReturn" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <resultMap id="ExtendsResultMap" type="com.masiis.shop.dao.po.PfBorderItem" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
-        <result column="quantity" property="quantity" jdbcType="INTEGER" />
-        <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
-        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
-        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
-        <result column="is_comment" property="isComment" jdbcType="INTEGER" />
-        <result column="is_return" property="isReturn" jdbcType="INTEGER" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="spuNmme" property="spuNmme" jdbcType="VARCHAR" />
-        <result column="logoUrl" property="logoUrl" jdbcType="VARCHAR" />
-        <result column="spuCount" property="spuCount" jdbcType="BIGINT" />
+    <resultMap id="ExtendsResultMap" type="com.masiis.shop.dao.po.PfBorderItem">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="sku_name" property="skuName" jdbcType="VARCHAR"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL"/>
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL"/>
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL"/>
+        <result column="bail_amount" property="bailAmount" jdbcType="DECIMAL"/>
+        <result column="is_comment" property="isComment" jdbcType="INTEGER"/>
+        <result column="is_return" property="isReturn" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="spuNmme" property="spuNmme" jdbcType="VARCHAR"/>
+        <result column="logoUrl" property="logoUrl" jdbcType="VARCHAR"/>
+        <result column="spuCount" property="spuCount" jdbcType="BIGINT"/>
     </resultMap>
 
 
-    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap" >
-        select
-               id,
-               create_time,
-               pf_border_id,
-               spu_id,
-               sku_id,
-               sku_name,
-               quantity,
-               original_price,
-               unit_price,
-               total_price,
-               is_comment,
-               is_return,
-               remark
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+       select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price,
+        unit_price, total_price, bail_amount, is_comment, is_return, remark
         from
                pf_border_item
         where
                id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderItem" resultMap="BaseResultMap" >
-        select
-               id,
-               create_time,
-               pf_border_id,
-               spu_id,
-               sku_id,
-               sku_name,
-               quantity,
-               original_price,
-               unit_price,
-               total_price,
-               is_comment,
-               is_return,
-               remark
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderItem" resultMap="BaseResultMap">
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price,
+        unit_price, total_price, bail_amount, is_comment, is_return, remark
         from
-               pf_border_item
+        pf_border_item
         <where>
             <if test="id != null">
                 id = #{id}
@@ -82,21 +60,9 @@
         </where>
     </select>
 
-    <select id="selectAllByOrderId" resultMap="BaseResultMap" >
-        select
-               id,
-               create_time,
-               pf_border_id,
-               spu_id,
-               sku_id,
-               sku_name,
-               quantity,
-               original_price,
-               unit_price,
-               total_price,
-               is_comment,
-               is_return,
-               remark
+    <select id="selectAllByOrderId" resultMap="BaseResultMap">
+        select id, create_time, pf_border_id, spu_id, sku_id, sku_name, quantity, original_price,
+        unit_price, total_price, bail_amount, is_comment, is_return, remark
         from
                pf_border_item
         where
@@ -111,44 +77,22 @@
         group by p.spu_id
     </select>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" useGeneratedKeys="true" keyProperty="id" >
-        insert into pf_border_item
-                    (
-                    id,
-                    create_time,
-                    pf_border_id,
-                    spu_id,
-                    sku_id,
-                    sku_name,
-                    quantity,
-                    original_price,
-                    unit_price,
-                    total_price,
-                    is_comment,
-                    is_return,
-                    remark
-                    )
-        values
-                    (
-                    #{id,jdbcType=BIGINT},
-                    #{createTime,jdbcType=TIMESTAMP},
-                    #{pfBorderId,jdbcType=BIGINT},
-                    #{spuId,jdbcType=INTEGER},
-                    #{skuId,jdbcType=INTEGER},
-                    #{skuName,jdbcType=VARCHAR},
-                    #{quantity,jdbcType=INTEGER},
-                    #{originalPrice,jdbcType=DECIMAL},
-                    #{unitPrice,jdbcType=DECIMAL},
-                    #{totalPrice,jdbcType=DECIMAL},
-                    #{isComment,jdbcType=INTEGER},
-                    #{isReturn,jdbcType=INTEGER},
-                    #{remark,jdbcType=VARCHAR}
-                    )
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" useGeneratedKeys="true" keyProperty="id">
+        insert into pf_border_item (id, create_time, pf_border_id,
+            spu_id, sku_id, sku_name,
+            quantity, original_price, unit_price,
+            total_price, bail_amount, is_comment,
+            is_return, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfBorderId,jdbcType=BIGINT},
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR},
+            #{quantity,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL},
+            #{totalPrice,jdbcType=DECIMAL}, #{bailAmount,jdbcType=DECIMAL}, #{isComment,jdbcType=INTEGER},
+            #{isReturn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderItem" >
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.PfBorderItem">
         update
-               pf_border_item
+        pf_border_item
         <set>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -177,6 +121,9 @@
             <if test="totalPrice != null">
                 total_price = #{totalPrice,jdbcType=DECIMAL},
             </if>
+            <if test="bailAmount!=null">
+                bail_amount = #{bailAmount,jdbcType=DECIMAL},
+            </if>
             <if test="isComment != null">
                 is_comment = #{isComment,jdbcType=INTEGER},
             </if>
@@ -190,7 +137,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteById" parameterType="java.lang.Long" >
+    <delete id="deleteById" parameterType="java.lang.Long">
         delete from pf_border_item where id = #{id,jdbcType=BIGINT}
     </delete>
 

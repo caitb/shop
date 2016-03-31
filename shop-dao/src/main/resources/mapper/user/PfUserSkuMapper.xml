@@ -176,11 +176,13 @@
         </where>
     </select>
 
-    <select id="selectByOrderId" resultMap="BaseResultMap">
+    <select id="selectByOrderIdAndUserIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, code, pid, user_id, sku_id, agent_level_id, is_pay, is_certificate,
         pf_border_id, bail, remark
         from pf_user_sku
         where pf_border_id = #{bOrderId}
+        and user_id = #{userId}
+        and sku_id = #{skuId}
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">

@@ -141,8 +141,23 @@ public class PayBOrderService {
             comUser.setIsAgent(1);
             comUserMapper.updateByPrimaryKey(comUser);
         }
+        log.info("<5>增加保证金");
+        if (pfBorder.getBailAmount().compareTo(BigDecimal.ZERO) > 0) {
+            ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
+            ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
+            // 保存修改前的金额
+            recordS.setPrevFee(accountS.getBailFee());
+            accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
+            // 保存修改后的金额
+            recordS.setNextFee(accountS.getBailFee());
+            recordMapper.insert(recordS);
+            int typeS = accountMapper.updateByIdWithVersion(accountS);
+            if (typeS == 0) {
+                throw new BusinessException("修改进货方成本账户失败!");
+            }
+        }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            log.info("<5>修改用户sku代理关系数据");
+            log.info("<6>修改用户sku代理关系数据");
             PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(bOrderId, comUser.getId(), pfBorderItem.getSkuId());
             //订单类型(0代理1补货2拿货)
             if (pfUserSku != null && pfBorder.getOrderType() == 0) {
@@ -172,11 +187,11 @@ public class PayBOrderService {
                 pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
             }
 
-            log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
+            log.info("<7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
             if (pfBorder.getOrderType() == 0) {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
-            log.info("<7>减少发货方库存 如果用户id是0操作平台库存");
+            log.info("<8>减少发货方库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
@@ -204,7 +219,7 @@ public class PayBOrderService {
                     }
                 }
             }
-            log.info("<8>增加收货方库存");
+            log.info("<9>增加收货方库存");
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             //如果还没有库存信息直接初始化库存
             if (pfUserSkuStock == null) {
@@ -224,26 +239,12 @@ public class PayBOrderService {
                 }
             }
         }
-        log.info("<9>增加保证金");
-        if (pfBorder.getBailAmount().compareTo(BigDecimal.ZERO) > 0) {
-            ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
-            ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
-            // 保存修改前的金额
-            recordS.setPrevFee(accountS.getBailFee());
-            accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
-            // 保存修改后的金额
-            recordS.setNextFee(accountS.getBailFee());
-            recordMapper.insert(recordS);
-            int typeS = accountMapper.updateByIdWithVersion(accountS);
-            if (typeS == 0) {
-                throw new BusinessException("修改进货方成本账户失败!");
-            }
-        }
         log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
         comUserAccountService.countingByOrder(pfBorder);
     }
 
     /**
+     * 平台代理订单支付成功回调(自发货)
      * @author ZhaoLiang
      * @date 2016/3/30 20:39
      * 操作详情：
@@ -253,7 +254,6 @@ public class PayBOrderService {
      * <4>修改合伙人商品关系状态
      * <5>修改用户sku代理关系支付状态
      * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     * <7>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void patBOrderII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         log.info("<1>修改订单支付信息");
@@ -323,12 +323,16 @@ public class PayBOrderService {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
         }
-        log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
-        comUserAccountService.countingByOrder(pfBorder);
     }
 
+    /**
+     * 获取证书编码
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/31 11:26
+     */
     private String getCertificateCode(PfUserCertificate certificateInfo) throws Exception {
-        String certificateCode = null;
+        String certificateCode = "";
         String value = "";
         StringBuffer Code = new StringBuffer("MASIIS");
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
@@ -339,7 +343,12 @@ public class PayBOrderService {
         return certificateCode;
     }
 
-    //给jpg添加文字并上传
+    /**
+     * 给jpg添加文字并上传
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/31 11:26
+     */
     private String uploadFile(String filePath, String[] markContent) throws Exception {
         String pname = getRandomFileName();
         ImageIcon imgIcon = new ImageIcon(filePath);
@@ -378,19 +387,11 @@ public class PayBOrderService {
      * @return
      */
     private String getRandomFileName() {
-
-        SimpleDateFormat simpleDateFormat;
-
-        simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
-
         String str = simpleDateFormat.format(date);
-
         Random random = new Random();
-
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
-
         return rannum + str;// 当前时间
     }
 }

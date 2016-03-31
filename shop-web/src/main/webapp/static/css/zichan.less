@@ -12,13 +12,12 @@
     }
 }
 .wrap{
-    width: 100%;
-    height: 100%;
+    -webkit-box-flex:1;
     color: #333333;
     position: relative;
     display: -webkit-box;
     -webkit-box-orient:vertical;
-    overflow-x: hidden;
+    overflow: hidden;
     main{
         -webkit-box-flex:1;
         .ban{
@@ -132,12 +131,11 @@
         .sec1{
             width: 100%;
             height: 100%;
-            padding-bottom: 100px;
             background: white;
             &>p{
               border-bottom: 1px solid #C2C2C2;
               text-indent: 10px;
-                padding: 4px 0;
+              padding: 10px 0; 
                 label{
                     float:right;
                     margin-right: 10px;
@@ -176,41 +174,7 @@
                     }
             }
             }
-            #Ldivall{
-                div{
-                display: -webkit-box;
-                margin:0 15px;
-                padding: 5px 0;
-                border-bottom:1px dashed #999999;
-                -webkit-box-orient:vertical;
-                p{
-                    width: 100%;
-                    padding:2px 0;
-                    display: -webkit-box;
-                    -webkit-box-pack:justify;
-                    span{
-                        display: block;
-                        font-size: 14px;
-                    }
-                    .sd{
-                        color: #999999;
-                        font-size: 12px;
-                        display: block;
-                    }
-                }
-                    
-                    h1{
-                        font-weight: normal;
-                        span{
-                            font-size: 12px;
-                            margin-right:10px;
-                        }
-                        b{
-                            float: right;
-                        }
-                    }
-            }
-            }
+            
         }
     }
 }

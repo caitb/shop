@@ -50,11 +50,11 @@ public class UserIdentityAuthService {
         String savepath = SysConstants.ID_CARD_PATH;
         String realpath = webappPath + savepath;
         //OSS下载
-        OSSObjectUtils.downloadFile("mmshop", OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
-        OSSObjectUtils.downloadFile("mmshop", OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
-        OSSObjectUtils.deleteBucketFile("mmshop",comUser.getIdCardFrontUrl());
-        OSSObjectUtils.deleteBucketFile("mmshop",comUser.getIdCardBackUrl());
+        OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
+        OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
 
     }
 
@@ -94,7 +94,7 @@ public class UserIdentityAuthService {
      */
     private String uploadFile(String filePath) throws FileNotFoundException {
         File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, "static/user/idCard/");
+        OSSObjectUtils.uploadFile(frontFile, "static/user/idCard/");
         return frontFile.getName();
     }
 }

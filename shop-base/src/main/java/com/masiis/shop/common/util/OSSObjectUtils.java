@@ -32,14 +32,14 @@ public class OSSObjectUtils {
     private static final String ACCESS_KEY = "5vvMM8VQfar454PIQadqmVu8ZiZMiK";
     private static final String ENDPOINT = "oss-cn-beijing.aliyuncs.com";
 
-    public static final String BUCKET = "mmshop";
+    private static final String BUCKET = "mmshop";
     public static final String OSS_URL = "http://static.masiis.com";
     public static final String CERTIFICATE_TEMPLATE = "/certificateTemplate";
     /* OSS下载身份证照片到本地用到的身份证key */
     public static final String OSS_DOWN_LOAD_IMG_KEY = "static/user/idCard/";
 
     // 删除一个Bucket和其中的Objects
-    public static void deleteBucketFile(String bucketName, String fileName)
+    public static void deleteBucketFile(String fileName)
             throws OSSException, ClientException {
 
 
@@ -54,26 +54,26 @@ public class OSSObjectUtils {
             System.out.println(bucket.getName());
         }
 
-        ObjectListing ObjectListing = client.listObjects(bucketName);
+        ObjectListing ObjectListing = client.listObjects(BUCKET);
         List<OSSObjectSummary> listDeletes = ObjectListing
                 .getObjectSummaries();
         for (int i = 0; i < listDeletes.size(); i++) {
             String objectName = listDeletes.get(i).getKey();
             // 如果不为空，先删除bucket下的文件
             if (objectName.equals(fileName)) {
-                client.deleteObject(bucketName, objectName);
+                client.deleteObject(BUCKET, objectName);
             }
         }
     }
 
     // 上传文件
-    public static void uploadFile(String bucketName, String key, String fileAbsolutePath, String imageFloder)
+    public static void uploadFile(String key, String fileAbsolutePath, String imageFloder)
             throws OSSException, ClientException, FileNotFoundException {
-        uploadFile(bucketName, new File(fileAbsolutePath), imageFloder);
+        uploadFile(new File(fileAbsolutePath), imageFloder);
     }
 
     // 上传文件
-    public static void uploadFile(String bucketName, File file, String imageFloder)
+    public static void uploadFile(File file, String imageFloder)
             throws OSSException, ClientException, FileNotFoundException {
         OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
         ObjectMetadata objectMeta = new ObjectMetadata();
@@ -82,30 +82,30 @@ public class OSSObjectUtils {
 //        objectMeta.setContentType("image/jpeg");
 
         InputStream input = new FileInputStream(file);
-        client.putObject(bucketName, imageFloder + file.getName(), input, objectMeta);
+        client.putObject(BUCKET, imageFloder + file.getName(), input, objectMeta);
 
-        uploadFile(bucketName, file.getName(), file.length(), new FileInputStream(file), imageFloder);
+        uploadFile(file.getName(), file.length(), new FileInputStream(file), imageFloder);
     }
 
     // 上传文件
-    public static void uploadFile(String bucketName, String fileName, long fileSize, InputStream input, String imageFloder)
+    public static void uploadFile(String fileName, long fileSize, InputStream input, String imageFloder)
             throws OSSException, ClientException, FileNotFoundException {
         OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
         ObjectMetadata objectMeta = new ObjectMetadata();
         objectMeta.setContentLength(fileSize);
-        client.putObject(bucketName, imageFloder + fileName, input, objectMeta);
+        client.putObject(BUCKET, imageFloder + fileName, input, objectMeta);
     }
     //流上传
-    public static void uploadFile(String bucketName, String key, InputStream is) {
+    public static void uploadFile( String key, InputStream is) {
         OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
-        client.putObject(bucketName, key, is);
+        client.putObject(BUCKET, key, is);
     }
 
     // 下载文件
-    public static void downloadFile(String bucketName, String key, String localPath)
+    public static void downloadFile(String key, String localPath)
             throws OSSException, ClientException {
         OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
-        client.getObject(new GetObjectRequest(bucketName, key),
+        client.getObject(new GetObjectRequest(BUCKET, key),
                 new File(localPath));
     }
 }

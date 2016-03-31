@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -37,19 +38,21 @@ public class PfBOrderTaskService {
             log.info("暂无超过72小时未支付代理订单!");
         } else {
             log.info("超过72小时未支付代理订单个数:" + bList.size());
-            // 处理
-            /*for (PfBorder bOrder:bList) {
-                try{
-                    bOrderService.cancelUnPayBOrder(bOrder);
-                } catch (Exception e) {
-                    log.error("");
-                    continue;
-                }
-            }*/
+            // 多线程处理
             CurrentThreadUtils.parallelJob(new IParallelThread() {
                 @Override
                 public Boolean doMyJob(Object obj) throws Exception {
-                    return null;
+                    PfBorder bOrder = (PfBorder) obj;
+                    try{
+                        log.info("开始取消订单,订单号为:" + bOrder.getOrderCode());
+                        bOrderService.cancelUnPayBOrder(bOrder);
+                        log.info("取消订单成功,订单号为:" + bOrder.getOrderCode());
+                        return true;
+                    } catch (Exception e) {
+                        log.info("取消订单失败,订单号为:" + bOrder.getOrderCode());
+                        log.error(e.getMessage(), e);
+                    }
+                    return false;
                 }
             }, new LinkedBlockingDeque<Object>(bList), 0);
         }

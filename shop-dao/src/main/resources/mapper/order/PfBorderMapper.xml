@@ -283,4 +283,15 @@
               and order_status = #{orderStatus,jdbcType=INTEGER}
               and pay_status = #{payStatus,jdbcType=INTEGER}
     </select>
+
+    <update id="updateOrderCancelById" >
+        update
+            pf_border
+        SET
+            order_status = 2
+        WHERE
+            id = #{orderId,jdbcType=BIGINT}
+        AND order_status = 0
+        AND pay_status = 0
+    </update>
 </mapper>

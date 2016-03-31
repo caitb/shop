@@ -51,4 +51,12 @@ public interface PfBorderMapper {
     List<PfBorder> selectByStatusAndDate(@Param("expiraTime") Date expiraTime,
                                          @Param("orderStatus") Integer orderStatus,
                                          @Param("payStatus") Integer payStatus);
+
+    /**
+     * 取消代理订单
+     *
+     * @param orderId
+     * @return
+     */
+    int updateOrderCancelById(@Param("orderId") Long orderId);
 }

@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.product;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.product.Product;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserSkuStock;
@@ -106,7 +107,8 @@ public class ProductController extends BaseController {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),skuId);//代理关系
-            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getPid().longValue());
+            PfUserSku pfUserSku1 = userSkuService.getUserSkuById(pfUserSku.getPid());
+            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getPid()==0 ? 0:pfUserSku1.getUserId());
             if(usableStock<0){
                 throw new BusinessException("可用库存不足!");
             }
@@ -140,7 +142,7 @@ public class ProductController extends BaseController {
             if (product.getStock() - stock < 0) {
                 throw new BusinessException("拿货数量超出平台库存!");
             }
-            bOrderService.addProductTake(comUser.getId(), product.getSkuId(), stock, message);
+            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
@@ -158,7 +160,12 @@ public class ProductController extends BaseController {
                                  @RequestParam("id") Long id) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/nahuo");
         PfUserSkuStock product = productService.getStockByUser(id);
+        ComSku comSku = skuService.getSkuById(product.getSkuId());
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(),product.getSkuId());
+        Integer lowerCount = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
         mav.addObject("productInfo",product);
+        mav.addObject("lowerCount",lowerCount);//下级人数
+        mav.addObject("comSku",comSku);
         return mav;
     }
     /**
@@ -171,9 +178,11 @@ public class ProductController extends BaseController {
                                  @RequestParam("id") Long id) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/buhuo");
         PfUserSkuStock product = productService.getStockByUser(id);
+        ComSku comSku = skuService.getSkuById(product.getSkuId());
         Integer upperStock = productService.getUpperStock(product.getUserId(), product.getSkuId());
         mav.addObject("productInfo",product);
         mav.addObject("upperStock",upperStock);//上级库存
+        mav.addObject("comSku",comSku);
         return mav;
     }
 }

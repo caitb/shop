@@ -1,3 +1,15 @@
+package com.masiis.shop.admin.beans.user;
+
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAccount;
+
+import java.util.Map;
+
+/**
+ * Created by cai_tb on 16/3/31.
+ */
+public class User {
+
     private ComUser comUser;
     private ComUserAccount comUserAccount;
     private Map<String, Object> wxAgentPro;
@@ -34,3 +46,4 @@
                 ", wxAgentPro=" + wxAgentPro +
                 '}';
     }
+}

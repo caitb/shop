@@ -38,34 +38,34 @@ public class OrderPayEndController extends BaseController {
      * @param request
      * created by wangbingjian
      */
-    @RequestMapping(value = "replenishment")
-    @ResponseBody
-    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderCode",required = true) String borderCode,
-                                                        HttpServletRequest request)throws Exception{
-
-        log.info("进入补货订单支付完成");
-        ComUser user = getComUser(request);
-        if (user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-        }
-        ModelAndView mv = new ModelAndView();
-        PfBorder pfBorder = bOrderService.findByOrderCode(borderCode);
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
-        Integer sumQuantity = 0;
-        for (PfBorderItem pfBorderItem:items){
-            sumQuantity += pfBorderItem.getQuantity();
-        }
-        mv.addObject("pfBorder",pfBorder);
-        mv.addObject("pfBorderItems",items);
-        mv.addObject("skuImg",skuImg);
-        mv.addObject("sumQuantity",sumQuantity);
-        //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
-        if (pfBorder.getSendType() == 1){
-            PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
-            mv.addObject("pfBorderConsignee",pfBorderConsignee);
-        }
-        mv.setViewName("platform/order/ReplenishmentPayments");
-        return mv;
-    }
+//    @RequestMapping(value = "replenishment")
+//    @ResponseBody
+//    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderCode",required = true) String borderCode,
+//                                                        HttpServletRequest request)throws Exception{
+//
+//        log.info("进入补货订单支付完成");
+//        ComUser user = getComUser(request);
+//        if (user == null){
+//            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+//        }
+//        ModelAndView mv = new ModelAndView();
+//        PfBorder pfBorder = bOrderService.findByOrderCode(borderCode);
+//        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+//        List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
+//        Integer sumQuantity = 0;
+//        for (PfBorderItem pfBorderItem:items){
+//            sumQuantity += pfBorderItem.getQuantity();
+//        }
+//        mv.addObject("pfBorder",pfBorder);
+//        mv.addObject("pfBorderItems",items);
+//        mv.addObject("skuImg",skuImg);
+//        mv.addObject("sumQuantity",sumQuantity);
+//        //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
+//        if (pfBorder.getSendType() == 1){
+//            PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
+//            mv.addObject("pfBorderConsignee",pfBorderConsignee);
+//        }
+//        mv.setViewName("platform/order/ReplenishmentPayments");
+//        return mv;
+//    }
 }

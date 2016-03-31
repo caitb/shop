@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ZhaoLiang on 2016/3/2.
@@ -51,8 +52,6 @@ public class BOrderService {
     @Resource
     private ComAgentLevelsMapper comAgentLevelsMapper;
     @Resource
-    private PfSkuStatisticMapper pfSkuStatisticMapper;
-    @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
@@ -60,8 +59,6 @@ public class BOrderService {
     private PfBorderFreightMapper pfBorderFreightMapper;
     @Resource
     private SkuService skuService;
-    @Resource
-    private ComUserAccountMapper comUserAccountMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
 
@@ -275,8 +272,7 @@ public class BOrderService {
         if (order.getUserPid() == 0) {
             pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
             if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < quantity) {
-                order.setOrderStatus(6);//排队订单
-                pfBorderMapper.updateById(order);
+                throw new BusinessException();
             }
             pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + quantity);
             if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
@@ -294,19 +290,21 @@ public class BOrderService {
             }
         }
         logger.info("<4>初始化个人库存信息");
-        //初始化个人库存信息
-        PfUserSkuStock SkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserId(), pfBorderItem.getSkuId());
-        if (SkuStock == null) {
-            SkuStock = new PfUserSkuStock();
-            SkuStock.setUserId(order.getUserId());
-            SkuStock.setCreateTime(new Date());
-            SkuStock.setSpuId(pfBorderItem.getSpuId());
-            SkuStock.setSkuId(pfBorderItem.getSkuId());
-            SkuStock.setStock(0);
-            SkuStock.setFrozenStock(0);
-            SkuStock.setVersion(0);
-            pfUserSkuStockMapper.insert(SkuStock);
-        }
+//        ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+//        PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+//        pfBorderConsignee.setCreateTime(new Date());
+//        pfBorderConsignee.setPfBorderId(pfBorder.getId());
+//        pfBorderConsignee.setUserId(comUserAddress.getUserId());
+//        pfBorderConsignee.setConsignee(comUserAddress.getName());
+//        pfBorderConsignee.setMobile(comUserAddress.getMobile());
+//        pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+//        pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+//        pfBorderConsignee.setCityId(comUserAddress.getCityId());
+//        pfBorderConsignee.setCityName(comUserAddress.getCityName());
+//        pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+//        pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+//        pfBorderConsignee.setAddress(comUserAddress.getAddress());
+//        pfBorderConsignee.setZip(comUserAddress.getZip());
         return rBOrderId;
     }
 

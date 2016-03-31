@@ -35,7 +35,6 @@
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="spuNmme" property="spuNmme" jdbcType="VARCHAR"/>
         <result column="logoUrl" property="logoUrl" jdbcType="VARCHAR"/>
-        <result column="spuCount" property="spuCount" jdbcType="BIGINT"/>
     </resultMap>
 
 
@@ -69,12 +68,11 @@
                pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectPfBorderItemGroupByspuId" resultMap="ExtendsResultMap" parameterType="java.lang.Long">
-        select p.*,c.name as spuNmme ,b.logo_url as logoUrl,count(1) as spuCount from pf_border_item p
-          LEFT JOIN com_spu c on p.spu_id = c.id
-          LEFT JOIN com_brand b on c.brand_id = b.id
-        where p.id = #{pfBorderId,jdbcType=BIGINT}
-        group by p.spu_id
+    <select id="getPfBorderItemDetail" resultMap="ExtendsResultMap" parameterType="java.lang.Long">
+        select p.*,sku.img_url as logoUrl from pf_border_item p
+          LEFT JOIN com_spu spu on p.spu_id = spu.id
+          LEFT JOIN com_sku_image sku on p.sku_id=sku.sku_id and sku.is_default=1
+        where p.pf_border_id = #{pfBorderId,jdbcType=BIGINT}
     </select>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfBorderItem" useGeneratedKeys="true" keyProperty="id">

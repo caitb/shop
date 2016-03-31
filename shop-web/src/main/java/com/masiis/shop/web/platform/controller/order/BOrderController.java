@@ -166,8 +166,10 @@ public class BOrderController extends BaseController {
                 userSku.setCreateTime(new Date());
                 if (pfUserSku == null) {
                     userSku.setPid(0);
+                    userSku.setUserPid(0l);
                 } else {
                     userSku.setPid(pfUserSku.getId());
+                    userSku.setUserPid(pfUserSku.getUserId());
                 }
                 userSku.setCode("");
                 userSku.setUserId(comUser.getId());

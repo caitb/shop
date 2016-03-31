@@ -72,15 +72,12 @@ public class BOrderService {
      * @param pfBorderItems
      */
     @Transactional
-    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, List<PfUserSku> pfUserSkus, ComUser comUser) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, List<PfUserSku> pfUserSkus) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
         if (pfBorderItems == null || pfBorderItems.size() == 0) {
             throw new BusinessException("pfBorderItems为空");
-        }
-        if (comUser == null) {
-            throw new BusinessException("comUser为空");
         }
         //添加订单
         pfBorderMapper.insert(pfBorder);
@@ -96,15 +93,13 @@ public class BOrderService {
                 pfUserSkuMapper.insert(pfUserSku);
             }
         }
-        //完善用户信息
-        comUserMapper.updateByPrimaryKey(comUser);
         //添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
         pfBorderOperationLog.setCreateTime(new Date());
         pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setCreateMan(comUser.getId());
+        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
         pfBorderOperationLog.setPfBorderStatus(0);
-        pfBorderOperationLog.setRemark("新增订单");
+        pfBorderOperationLog.setRemark("新增代理订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         return pfBorder.getId();
     }
@@ -119,22 +114,15 @@ public class BOrderService {
      */
     @Transactional
     public Long addReplenishmentOrders(Long userId, Integer skuId, int quantity) throws Exception {
+        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
+        PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfUserSku.getSkuId(), pfUserSku.getAgentLevelId());
+        ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+        //获取产品单价
+        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
         if (pfUserSku == null) {
             throw new BusinessException("您还没有代理过此商品，不能补货。");
         }
-        Integer levelId = pfUserSku.getAgentLevelId();//代理等级
-        Long pUserId = 0l;//上级代理用户id
-        BigDecimal amount = BigDecimal.ZERO;//订单总金额
-        Long rBOrderId = 0l;//返回生成的订单id
-        //获取上级代理
-        PfUserSku paremtUserSku = pfUserSkuMapper.selectByPrimaryKey(pfUserSku.getPid());
-        if (paremtUserSku != null) {
-            pUserId = paremtUserSku.getUserId();
-        }
-        PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
-        ComSku comSku = skuService.getSkuById(skuId);
-        amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(quantity)).multiply(pfSkuAgent.getDiscount());
         //处理订单数据
         PfBorder order = new PfBorder();
         order.setCreateTime(new Date());
@@ -143,39 +131,58 @@ public class BOrderService {
         order.setOrderCode(orderCode);
         order.setUserMessage("");
         order.setUserId(userId);
-        order.setUserPid(pUserId);
+        if (pfUserSku.getUserPid() != null && pfUserSku.getUserPid() > 0) {
+            order.setUserPid(pfUserSku.getUserPid());
+        } else {
+            order.setUserPid(0l);
+        }
         order.setSupplierId(0);
-        order.setReceivableAmount(amount);
-        order.setOrderAmount(amount);//运费到付，商品总价即订单总金额
-        order.setProductAmount(amount);
+        order.setReceivableAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));
+        order.setOrderAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));//运费到付，商品总价即订单总金额
+        order.setBailAmount(BigDecimal.ZERO);
+        order.setProductAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));
         order.setShipAmount(BigDecimal.ZERO);
         order.setPayAmount(BigDecimal.ZERO);
+        order.setShipManId(0);
+        order.setShipManName("");
         order.setShipType(0);
+        order.setShipRemark("");
+        order.setSendType(comUser.getSendType());
+        order.setOrderType(1);//订单类型(0代理1补货2拿货)
         order.setOrderStatus(0);
         order.setShipStatus(0);
         order.setPayStatus(0);
+        order.setIsCounting(0);
         order.setIsShip(0);
         order.setIsReplace(0);
         order.setIsReceipt(0);
-        order.setIsCounting(0);
+        order.setReplaceOrderId(0l);
         order.setRemark("补货订单");
-        order.setOrderType(1);
         pfBorderMapper.insert(order);
-        rBOrderId = order.getId();
+        //处理订单商品
         PfBorderItem pfBorderItem = new PfBorderItem();
         pfBorderItem.setCreateTime(new Date());
-        pfBorderItem.setPfBorderId(rBOrderId);
+        pfBorderItem.setPfBorderId(order.getId());
         pfBorderItem.setSpuId(comSku.getSpuId());
         pfBorderItem.setSkuId(comSku.getId());
         pfBorderItem.setSkuName(comSku.getName());
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setUnitPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()));
-        pfBorderItem.setTotalPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(quantity)));
+        pfBorderItem.setUnitPrice(unitPrice);
+        pfBorderItem.setTotalPrice(unitPrice.multiply(BigDecimal.valueOf(quantity)));
+        pfBorderItem.setBailAmount(BigDecimal.ZERO);
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
-        return rBOrderId;
+        //添加订单日志
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderId(order.getId());
+        pfBorderOperationLog.setCreateMan(order.getUserId());
+        pfBorderOperationLog.setPfBorderStatus(0);
+        pfBorderOperationLog.setRemark("新增补货订单");
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        return order.getId();
     }
 
     /**
@@ -185,11 +192,6 @@ public class BOrderService {
      * @param skuId    商品id
      * @param quantity 拿货数量
      * @param message  用户留言
-     * 操作详情：
-     * <1>处理订单数据
-     * <2>添加订单日志
-     * <3>冻结sku库存
-     * <4>初始化个人库存信息
      * @return
      * @throws Exception
      */
@@ -417,14 +419,14 @@ public class BOrderService {
     }
 
     /**
-     * 根据pfBorderId查询
+     * 通过spuId分组，根据id查询
+     *
      * @param pfBorderId
      * @return
      */
-
-    public List<PfBorderItem> getPfBorderItemDetail(Long pfBorderId) {
-        return pfBorderItemMapper.getPfBorderItemDetail(pfBorderId);
-    }
+//    public List<PfBorderItem> getPfBorderItemGroupByspuId(Long pfBorderId) {
+//        return pfBorderItemMapper.selectPfBorderItemGroupByspuId(pfBorderId);
+//    }
 
     /**
      * 查用户商品关系表

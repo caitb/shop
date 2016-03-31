@@ -71,6 +71,7 @@ main{
         .photo{
             width:62px;
             margin-left: 10px;
+            border:1px solid #999;
             img{
                 display:block;
                 width: 62px;
@@ -112,11 +113,22 @@ main{
              font-size: 12px;
              border-bottom: 1px solid #f6f6f6;
              color: #666666;
+             display: -webkit-box;
+             em{
+                 display: block;
+                 font-size: 12px;
+                 color: #666;
+                 line-height: 40px;
+                 margin-top: 0;
+             }
+             em+input{
+                 margin-top: 10px;
+             }
              input{
                  border: none;
                  color: #999999;
-                 width: 80%;
-                 display: inline-block;
+                 -webkit-box-flex:1;
+                 display:block;
              }
              span,b{
                  color: #FF5200;
@@ -164,21 +176,14 @@ main{
             font-size: 12px;
         }
     }
-    .weixin,.xianxia{
+    .weixin{
         display: block;
-        background: #45A5CF;
+        background: #0fc420;
         border-radius: 5px;
         padding:5px 0 5px 0;
         color: white;
         text-align: center;
         font-size: 16px;
-        margin:20px 10px 0 10px;
-    }
-    .weixin{
-            margin-top:3rem;
-        }
-    .xianxia{
-        background: #F74A11;
-        margin-bottom: 3rem;
+        margin:20px 10px 20px 10px;
     }
     }

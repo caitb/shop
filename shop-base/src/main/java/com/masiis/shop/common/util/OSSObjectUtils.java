@@ -42,18 +42,7 @@ public class OSSObjectUtils {
     public static void deleteBucketFile(String fileName)
             throws OSSException, ClientException {
 
-
-
-
         OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
-
-        // 获取用户的Bucket列表
-        List<Bucket> buckets = client.listBuckets();
-        // 遍历Bucket
-        for (Bucket bucket : buckets) {
-            System.out.println(bucket.getName());
-        }
-
         ObjectListing ObjectListing = client.listObjects(BUCKET);
         List<OSSObjectSummary> listDeletes = ObjectListing
                 .getObjectSummaries();

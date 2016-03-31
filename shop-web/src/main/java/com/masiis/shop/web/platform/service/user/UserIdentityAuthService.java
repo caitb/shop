@@ -53,8 +53,8 @@ public class UserIdentityAuthService {
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
-        OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
-        OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
+        //OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
+        //OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
 
     }
 

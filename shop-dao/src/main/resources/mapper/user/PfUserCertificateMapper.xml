@@ -36,7 +36,7 @@
         SELECT p.id, p.pf_user_sku_id, p.wx_id,c.name,c.id
          FROM pf_user_certificate p ,com_sku c
          WHERE p.user_id = #{userId,jdbcType=BIGINT}
-         AND p.pf_user_sku_id = c.id
+         AND p.sku_id = c.id
     </select>
     <!--个人信息-微信号信息查询  end-->
 

@@ -234,7 +234,7 @@
         from pf_border
     </select>
 
-    <select id="selectByConditionAndOrderByctime" parameterType="com.masiis.shop.dao.po.PfBorder"resultMap="BaseResultMap">
+    <select id="selectByConditionAndOrderByctime" parameterType="com.masiis.shop.dao.po.PfBorder" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,

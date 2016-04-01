@@ -57,7 +57,6 @@ public class UserApplyController {
     public ModelAndView partnersApply(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "skuId", required = true) Integer skuId,
-                                      @RequestParam(value = "type", required = false) Integer type,
                                       @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -67,11 +66,6 @@ public class UserApplyController {
         mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
         mv.addObject("slogan", productSimple.getSlogan());
         mv.addObject("pUserId", pUserId);
-        if (type != null && type == 1) {
-            mv.addObject("type", 1);
-        } else {
-            mv.addObject("type", 0);
-        }
         mv.setViewName("platform/order/shenqing");
         return mv;
     }
@@ -79,7 +73,6 @@ public class UserApplyController {
     /**
      * 合伙人注册
      *
-     * @param type 0 用户通过平台入口代理 1 用户通过分享链接代理
      * @author ZhaoLiang再次
      * @date 2016/3/5 14:27
      */
@@ -87,7 +80,6 @@ public class UserApplyController {
     public ModelAndView partnersRegister(HttpServletRequest request,
                                          HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
-                                         @RequestParam(value = "type", required = false) Integer type,
                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
         ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
@@ -96,7 +88,7 @@ public class UserApplyController {
         //获取商品代理信息
         List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
         int levelID = 0;
-        if (type != null && type == 1) {
+        if (pUserId != null && pUserId > 0) {
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
             if (pfUserSku == null) {
                 throw new BusinessException("推荐人还未代理过此产品");
@@ -141,62 +133,13 @@ public class UserApplyController {
             mv.addObject("mobile", "");
         }
         mv.addObject("pUserId", pUserId);
-        if (type != null && type == 1 && pUserId != null && pUserId > 0) {
+        if (pUserId != null && pUserId > 0) {
             mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
         } else {
             mv.addObject("pWxNkName", "");
         }
         mv.setViewName("platform/order/zhuce");
         return mv;
-    }
-
-    /**
-     * 合伙人注册数据验证
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/5 14:27
-     */
-    @ResponseBody
-    @RequestMapping("/registerConfirm/check.do")
-    public String partnersRegisterConfirmCheck(HttpServletRequest request,
-                                               HttpServletResponse response,
-                                               @RequestParam(value = "weixinId", required = true) String weixinId,
-                                               @RequestParam(value = "skuId", required = true) Integer skuId,
-                                               @RequestParam(value = "levelId", required = true) Long levelId,
-                                               @RequestParam(value = "pMobile", required = true) String pMobile) {
-
-        JSONObject object = new JSONObject();
-        try {
-            if (StringUtils.isBlank(weixinId)) {
-                throw new BusinessException("微信号不能为空");
-            }
-            if (levelId <= 0) {
-                throw new BusinessException("代理等级有误");
-            }
-            if (StringUtils.isNotBlank(pMobile)) {
-                ComUser pUser = userService.getUserByMobile(pMobile);
-                if (pUser == null) {
-                    throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
-                } else {
-                    PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-                    if (null == pfUserSku) {
-                        throw new BusinessException("您的推荐人还未代理此款商品");
-                    } else {
-                        if (pfUserSku.getAgentLevelId() >= levelId) {
-                            throw new BusinessException(" 您的代理等级只能低于您的推荐人代理等级");
-                        }
-                    }
-                }
-            }
-            object.put("isError", false);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return object.toJSONString();
     }
 
     /**

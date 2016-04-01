@@ -54,7 +54,7 @@
             <td>
                 <span style="color: #FF5200">否</span>
             </td>
-            <td><a href="" style="color: #FF5200;text-decoration: underline">去完成</a></td>
+            <td><a href="javascript:void(0);" onclick="goVerified();" style="color: #FF5200;text-decoration: underline">去完成</a></td>
         </tr>
     </table>
 </div>
@@ -191,13 +191,14 @@
 <script>
     function goVerified() {
         var para = "?";
-        para += "goToURL=<%=basePath%>userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}";
+        para += "goToURL=" + encodeURIComponent("<%=basePath%>userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
         window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
     }
 
     $("#nextPageId").bind("onclick", function () {
         window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
+
     $(".down").toggle(function () {
         $(this).attr("src","<%=path%>/static/images/top.png")
         $(this).parent().css("borderBottom","none")

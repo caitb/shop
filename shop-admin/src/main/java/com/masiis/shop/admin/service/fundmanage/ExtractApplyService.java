@@ -70,4 +70,8 @@ public class ExtractApplyService {
 
         return pageMap;
     }
+
+    public void audit(ComUserExtractApply comUserExtractApply){
+        comUserExtractApplyMapper.updateByPrimaryKey(comUserExtractApply);
+    }
 }

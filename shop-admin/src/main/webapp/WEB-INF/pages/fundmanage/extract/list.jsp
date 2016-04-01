@@ -129,7 +129,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            会员信息审核
+                                            提现申请审核
                                         </div>
                                     </div>
 
@@ -142,15 +142,15 @@
                                                     <div class="profile-user-info profile-user-info-striped">
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 会员信息 </div>
+                                                            <div class="profile-info-name"> 申请时间 </div>
 
                                                             <div class="profile-info-value">
-                                                                <span class="" id="nickName"> </span>
+                                                                <span class="" id="applyTime"> </span>
                                                             </div>
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 姓名 </div>
+                                                            <div class="profile-info-name"> 申请人 </div>
 
                                                             <div class="profile-info-value">
                                                                 <span class="editable editable-click" id="realName"> </span>
@@ -158,30 +158,69 @@
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 身份证号 </div>
+                                                            <div class="profile-info-name"> 申请金额 </div>
 
                                                             <div class="profile-info-value">
-                                                                <span class="" id="linkmanIDCard"> </span>
+                                                                <span class="" id="extractFee"> </span>
                                                             </div>
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 身份证扫描件 </div>
+                                                            <div class="profile-info-name"> 账户余额 </div>
 
                                                             <div class="profile-info-value">
-                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardF" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
-                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardB" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
+                                                                <span class="" id="extractableFee"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 提现方式 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractWay"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行卡号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankCard"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 开户行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="depositBankName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 持卡人姓名 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="cardOwnerName"> </span>
                                                             </div>
                                                         </div>
 
                                                         <div class="profile-info-row" id="auditReason">
-                                                            <div class="profile-info-name" id="jjT"> 拒绝原因 </div>
+                                                            <div class="profile-info-name" id="jjT"> 审核记录 </div>
 
                                                             <div class="profile-info-value" id="jjF">
                                                                 <form id="auditForm">
-                                                                  <input type="hidden" name="id" id="userId" value="" />
-                                                                  <input type="hidden" name="auditStatus" id="auditStatus" value="2" />
-                                                                  <textarea name="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                  <input type="hidden" name="id" id="applyId" value="" />
+                                                                  <input type="hidden" name="auditType" id="auditType" value="2" />
+                                                                  <textarea name="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -196,7 +235,133 @@
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-4">
                                             <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="1">
+                                                拒绝
+                                            </button>
+                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                                                通过
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- PAGE CONTENT ENDS -->
+
+                        <div id="modal-dakuan" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">&times;</span>
+                                            </button>
+                                            提现申请审核
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <div>
+                                            <div id="user-profile-1" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+
+                                                    <!-- #section:pages/profile.info -->
+                                                    <div class="profile-user-info profile-user-info-striped">
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请时间 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="applyTime"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请人 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="editable editable-click" id="realName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 申请金额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractFee"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 账户余额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractableFee"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 提现方式 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="extractWay"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行卡号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankCard"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 银行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="bankName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 开户行名称 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="depositBankName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 持卡人姓名 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="cardOwnerName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row" id="auditReason">
+                                                            <div class="profile-info-name" id="jjT"> 审核记录 </div>
+
+                                                            <div class="profile-info-value" id="jjF">
+                                                                <form id="auditForm">
+                                                                    <input type="hidden" name="id" id="applyId" value="" />
+                                                                    <input type="hidden" name="auditType" id="auditType" value="2" />
+                                                                    <textarea name="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="1">
                                                 拒绝
                                             </button>
                                             <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
@@ -242,6 +407,7 @@
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
+<script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
 
 <script src="<%=basePath%>static/js/date-util.js"></script>
 
@@ -397,29 +563,43 @@
                                 sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
                             }
                             if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
-                                sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">确认打款</a>');
+                                sArr.push('&nbsp;&nbsp;<a class="yes" href="javascript:void(0);">确认打款</a>');
                             }
 
                             return sArr.join('');
                         },
                         events: {
                             'click .audit': function(e, value, row, index){
-                                var s = 'data-toggle="modal" data-target="#modal-audit"';
-                                $.ajax({
-                                    url: '<%=basePath%>comuser/toaudit.do',
-                                    data: {id: row.id},
-                                    success: function(data){
-                                        data = window.eval('('+data+')');
-                                        $('#userId').val(data.id);
-                                        $('#nickName').html(data.wxNkName);
-                                        $('#realName').html(data.realName);
-                                        $('#linkmanIDCard').html(data.idCard);
-                                        $('#idCardF').attr('src', data.idCardFrontUrl);
-                                        $('#idCardB').attr('src', data.idCardBackUrl);
+                                $('#applyId').val(row.comUserExtractApply.id);
+                                $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
+                                $('#realName').html(row.comUser.realName);
+                                $('#extractFee').html(row.comUserExtractApply.extractFee);
+                                $('#extractableFee').html(row.comUserAccount.extractableFee);
+                                $('#extractWay').html(row.comUserExtractApply.extractWay);
+                                $('#bankCard').html(row.comUserExtractApply.bankCard);
+                                $('#bankName').html(row.comUserExtractApply.bankName);
+                                $('#depositBankName').html(row.comUserExtractApply.depositBankName);
+                                $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
 
-                                        $('#modal-audit').modal('show');
+                                $('#modal-audit').modal('show');
+                            },
+                            'click .yes': function(e, value, row, index){
+                                bootbox.confirm("确定已打款了?", function(result) {
+                                    if(result) {
+                                        $.ajax({
+                                            url: '<%=basePath%>fundmanage/extract/audit.do',
+                                            data: {id:row.comUserExtractApply.id, auditType: 3},
+                                            success: function(msg){
+                                                $('#table').bootstrapTable('refresh');
+                                                $.gritter.add({
+                                                    title: '消息',
+                                                    text: msg,
+                                                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                });
+                                            }
+                                        })
                                     }
-                                })
+                                });
                             }
                         }
                     }
@@ -586,11 +766,11 @@
     });
 
     $('.audit').on('click', function(){
-        var auditStatus = $(this).attr('audit-status');
-        var auditReason = $('textarea[name="auditReason"]').val();
+        var auditType = $(this).attr('audit-status');
+        var auditCause = $('textarea[name="auditCause"]').val();
 
-        $('#auditStatus').val(auditStatus);
-        if(!auditReason){
+        $('#auditType').val(auditType);
+        if(!auditCause){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写审核记录!',
@@ -601,7 +781,7 @@
         }
 
         $.ajax({
-            url: '<%=basePath%>comuser/audit.do',
+            url: '<%=basePath%>fundmanage/extract/audit.do',
             type: 'POST',
             data: $('#auditForm').serialize(),
             success: function(msg){
@@ -613,9 +793,11 @@
                     text: msg,
                     class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                 });
+                $('#table').bootstrapTable('refresh');
             }
         })
     });
+
 
 </script>
 </body>

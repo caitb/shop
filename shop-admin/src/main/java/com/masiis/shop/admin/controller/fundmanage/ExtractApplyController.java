@@ -3,6 +3,7 @@ package com.masiis.shop.admin.controller.fundmanage;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.service.fundmanage.ExtractApplyService;
+import com.masiis.shop.dao.po.ComUserExtractApply;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,6 +54,21 @@ public class ExtractApplyController {
             return pageMap;
         } catch (Exception e) {
             log.error("获取提现申请列表失败![comUserExtractApply="+con+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
+    }
+
+    @RequestMapping("/audit.do")
+    @ResponseBody
+    public Object audit(HttpServletRequest request, HttpServletResponse response, ComUserExtractApply comUserExtractApply){
+        try {
+            extractApplyService.audit(comUserExtractApply);
+
+            return "success";
+        } catch (Exception e) {
+            log.error("提现申请审核失败![comUserExtractApply="+comUserExtractApply+"]");
             e.printStackTrace();
         }
 

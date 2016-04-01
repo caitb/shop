@@ -68,22 +68,54 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" >
-        update com_user_extract_apply
-        set com_user_id = #{comUserId,jdbcType=BIGINT},
-            extract_fee = #{extractFee,jdbcType=DECIMAL},
-            extractway_info_id = #{extractwayInfoId,jdbcType=BIGINT},
-            apply_time = #{applyTime,jdbcType=TIMESTAMP},
-            extract_way = #{extractWay,jdbcType=BIGINT},
-            extract_time = #{extractTime,jdbcType=TIMESTAMP},
-            pay_time = #{payTime,jdbcType=TIMESTAMP},
-            audit_type = #{auditType,jdbcType=INTEGER},
-            audit_cause = #{auditCause,jdbcType=VARCHAR},
-            bank_card = #{bankCard,jdbcType=VARCHAR},
-            bank_name = #{bankName,jdbcType=VARCHAR},
-            card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
-            deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
-            remark = #{remark,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=BIGINT}
+        update
+               com_user_extract_apply
+        <set>
+            <if test="comUserId != null">
+                com_user_id = #{comUserId,jdbcType=BIGINT},
+            </if>
+            <if test="extractFee != null">
+                extract_fee = #{extractFee,jdbcType=DECIMAL},
+            </if>
+            <if test="extractwayInfoId != null">
+                extractway_info_id = #{extractwayInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="extractWay != null">
+                extract_way = #{extractWay,jdbcType=BIGINT},
+            </if>
+            <if test="extractTime != null">
+                extract_time = #{extractTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditType != null">
+                audit_type = #{auditType,jdbcType=INTEGER},
+            </if>
+            <if test="auditCause != null">
+                audit_cause = #{auditCause,jdbcType=VARCHAR},
+            </if>
+            <if test="bankCard != null">
+                bank_card = #{bankCard,jdbcType=VARCHAR},
+            </if>
+            <if test="bankName != null">
+                bank_name = #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="cardOwnerName != null">
+                card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
+            </if>
+            <if test="depositBankName != null">
+                deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where
+              id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >

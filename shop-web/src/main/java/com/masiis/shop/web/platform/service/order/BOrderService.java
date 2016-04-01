@@ -269,7 +269,7 @@ public class BOrderService {
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
         pfBorderOperationLog.setCreateMan(order.getUserId());
         pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(1);
+        pfBorderOperationLog.setPfBorderStatus(order.getOrderStatus());
         pfBorderOperationLog.setPfBorderId(order.getId());
         pfBorderOperationLog.setRemark("订单已支付,拿货订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);

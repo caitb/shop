@@ -67,13 +67,7 @@ public class UserApplyController extends BaseController {
         }
         if (pUserId != null && pUserId > 0) {
             ComUser pUser = userService.getUserById(pUserId);
-            if (pUser == null) {
-                throw new BusinessException("上级id不合法,系统不存在该代理");
-            }
-            PfUserSku userSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-            if (userSku == null) {
-                throw new BusinessException("该上级代理商没有该商品的代理权!");
-            }
+            checkParentData(pUser, skuId);
             model.addAttribute("", pUserId);
         }
         return "platform/order/shenqing";

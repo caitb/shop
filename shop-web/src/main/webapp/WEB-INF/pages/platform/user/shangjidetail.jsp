@@ -11,10 +11,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
+    <title>证书详情</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/dengdaishenhe.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/zhengshuxiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
@@ -27,15 +27,30 @@
     <main>
         <div id="box">
             <div class="sec1">
-                <h1>您的 ${skuName} 授权书申请成功！</h1>
+                <h1>所属人信息</h1>
+
+                <p>姓名：<span>${comUser.realName}</span></p>
+
+                <p>合作产品：<span>${comSku.name}</span></p>
+
+                <p>合伙人等级：<span>
+                    <c:choose>
+                        <c:when test="${cdetail.agentLevelId==1}">
+                            <em>高级合伙人</em>
+                        </c:when>
+                        <c:when test="${cdetail.agentLevelId==2}">
+                            <em>中级合伙人</em>
+                        </c:when>
+                        <c:when test="${cdetail.agentLevelId==3}">
+                            <em>初级合伙人</em>
+                        </c:when>
+                    </c:choose></span></p>
             </div>
             <div class="sec2">
-                <img src="<%=path%>/static/images/icon_45.png" alt="">
-                <p>审核结果会在1个工作日内完成</p>
-            </div>
-            <div class="sec6">
-                <p><a href="javascript:window.location.replace('<%=basePath%>/index');">返回首页</a></p>
-                <p><a href="javascript:window.location.replace('<%=basePath%>profile/profile');">返回个人中心</a></p>
+                <h1>证书图片</h1>
+                <p>
+                    <img src="${cdetail.imgUrl}" alt="">
+                </p>
             </div>
         </div>
     </main>

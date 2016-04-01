@@ -69,6 +69,9 @@ public class ProductController extends BaseController {
             mav = new ModelAndView("/platform/user/selfSkuList");
         }
         List<Product> userProducts = productService.productListByUser(userId);
+        for(Product product :userProducts){
+            product.setUpperStock(productService.getUpperStock(userId, product.getId()));
+        }
         mav.addObject("userProducts",userProducts);
         return mav;
     }
@@ -107,16 +110,14 @@ public class ProductController extends BaseController {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);//代理关系
-            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getUserPid());
+            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getUserPid()==null? 0:pfUserSku.getUserPid());
             if(usableStock<0){
-                throw new BusinessException("可用库存不足!");
+                object.put("isQueue", true);
+                object.put("message","您的订单将进入排单期");
             }
             Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(),skuId,stock);
             object.put("isError", false);
             object.put("orderCode", orderCode);
-            if (orderCode==null) {
-                throw new BusinessException("订单号生成失败，补货失败!");
-            }
         }catch (Exception ex){
             object.put("isError", true);
             object.put("message", ex.getMessage());

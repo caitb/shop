@@ -5,10 +5,13 @@ import com.masiis.shop.dao.platform.system.PbMenuMapper;
 import com.masiis.shop.dao.platform.system.PbUserMenuMapper;
 import com.masiis.shop.dao.po.PbMenu;
 import com.masiis.shop.dao.po.PbUserMenu;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -50,6 +53,16 @@ public class PbMenuService {
             PbMenu pbMenu = pbMenuMapper.selectById(pbUserMenu.getPbMenuId());
             if(pbMenu != null) pbMenus.add(pbMenu);
         }
+
+        Collections.sort(pbMenus, new Comparator<PbMenu>() {
+            @Override
+            public int compare(PbMenu o1, PbMenu o2) {
+                if(o1 != null && o2 != null && o1.getSort() != null && o2.getSort() != null){
+                    return o1.getSort().compareTo(o2.getSort());
+                }
+                return 0;
+            }
+        });
         return pbMenus;
     }
 

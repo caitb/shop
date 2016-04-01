@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.controller.user.UserApplyController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BorderFreightService;
 import com.masiis.shop.web.platform.service.order.PayBOrderService;
@@ -87,18 +88,7 @@ public class BOrderController extends BaseController {
             PfUserSku pfUserSku = null;
             if (pUserId != null && pUserId > 0) {
                 ComUser pUser = userService.getUserById(pUserId);
-                if (pUser == null) {
-                    throw new BusinessException("您的推荐人还未注册，请联系您的推荐人先注册!");
-                } else {
-                    pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-                    if (pfUserSku == null) {
-                        throw new BusinessException("您的推荐人还未代理此款商品");
-                    } else {
-                        if (pfUserSku.getAgentLevelId() >= levelId) {
-                            throw new BusinessException("您的代理等级只能低于您的推荐人代理等级");
-                        }
-                    }
-                }
+                pfUserSku = new UserApplyController().checkParentData(pUser, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);

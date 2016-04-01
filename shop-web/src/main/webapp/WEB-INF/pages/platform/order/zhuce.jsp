@@ -32,7 +32,9 @@
                 </div>
         <div class="paidan">
             <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-            <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+            <p style="color: #FF5200">
+                *由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货
+            </p>
         </div>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
@@ -59,10 +61,10 @@
                             <input type="text" class="wei" id="weixin" name="weixin"/>
                         </c:if>
                         <c:if test="${weixinId!=''}">
-                            <input type="text" class="wei" id="weixin" name="weixin" value="${weixinId}" readonly/>
+                            <input type="text" class="wei" id="weixin" name="weixin" value="${weixinId}"<%-- readonly--%>/>
                         </c:if>
                         <span class="onc"></span><b class="gao"></b></p>
-                       <h1>拉手机打了卡涉及到了卡机的离开</h1>
+                       <h1>*此微信号将在授权证书上显示</h1>
                 </div>
             </section>
             <section class="sec2">
@@ -87,9 +89,18 @@
                     </div>
                 </c:if>
 
-                <h2 style="text-indent:10px;font-weight:500">选择合伙人等级：</h2>
+                <h2 style="text-indent:10px;font-weight:500;margin-bottom: 5px;">选择合伙人等级：</h2>
                 <div class="dengji">
-                    ${agentInfo}
+                    <%--${agentInfo}--%>
+                        <p><label>高级合伙人</label>
+                            <b>商品数量：</b> <span>800</span> <b>金额：</b> <span>15000</span> <b>保证金：</b> <span>15000</span>
+                        </p>
+                        <p><label>中级合伙人</label>
+                            <b>商品数量：</b> <span>600</span> <b>金额：</b> <span>5000</span> <b>保证金：</b> <span>15000</span>
+                        </p>
+                        <p><label>初级合伙人</label>
+                            <b>商品数量：</b> <span>100</span> <b>金额：</b> <span>1000</span> <b>保证金：</b> <span>15000</span>
+                        </p>
                 </div>
             </section>
             <section class="sec3">

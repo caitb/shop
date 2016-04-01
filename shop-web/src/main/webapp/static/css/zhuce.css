@@ -105,7 +105,7 @@
   display: inline-block;
   font-weight: 600;
   border:1px solid #F6F6F6;
-  padding: 2px 0;
+  padding: 5px;
 }
 .wrap #box main .sec1 div p .btn {
   text-indent: 0;
@@ -159,6 +159,7 @@
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
   background: white;
+  display: none;
 }
 .wrap #box main .sec2 > h3 input {
   display: none;
@@ -209,12 +210,11 @@
 }
 .wrap #box main .sec2 div h3 input {
   color: #333333;
-  border: none;
   font-size: 12px;
   display: inline-block;
-  line-height: 30px;
-  margin-top: -4px;
+  padding: 5px;
   font-weight: 600;
+  border: 1px solid #f3f4f5;
 }
 .wrap #box main .sec2 div h3 span {
   position: absolute;
@@ -224,6 +224,7 @@
   top: 10px;
   right: 18px;
   background: white url("../images/no.png") no-repeat;
+  background-size: 100% 100%;
   text-indent: 10px;
   line-height: 40px;
   color: #999999;
@@ -235,20 +236,28 @@
 .wrap #box main .sec2 .dengji p {
   display: block;
   color: #999999;
-  line-height: 40px;
+  line-height: 25px;
   border-bottom: 1px solid #F6F6F6;
-  text-indent: 35px;
-  background: url("../images/icon_14.png") no-repeat 10px;
+  text-indent: 30px;
+  background: url("../images/icon_14.png") no-repeat 6px;
   background-size: 5%;
   font-size: 13px;
+}
+.wrap #box main .sec2 .dengji p label{
+  font-size: 14px;
+  display: block;
+  color: #333;
 }
 .wrap #box main .sec2 .dengji p span,
 .wrap #box main .sec2 .dengji p b {
   font-size: 12px;
   color: #999999;
 }
+.wrap #box main .sec2 .dengji p b:nth-child(2){
+  padding-left: 30px;
+}
 .wrap #box main .sec2 .dengji .on {
-  background: url("../images/icon_11.png") no-repeat 10px;
+  background: url("../images/icon_11.png") no-repeat 6px;
   background-size: 5%;
 }
 .wrap #box main .sec2 .jin {

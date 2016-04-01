@@ -245,6 +245,105 @@
             <if test="id != null">
                 id = #{id,jdbcType=BIGINT}
             </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createMan != null">
+                create_man = #{createMan,jdbcType=BIGINT},
+            </if>
+            <if test="orderCode != null">
+                order_code = #{orderCode,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="userPid != null">
+                user_pid = #{userPid,jdbcType=BIGINT},
+            </if>
+            <if test="userMessage != null">
+                user_message = #{userMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=INTEGER},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyMan != null">
+                modify_man = #{modifyMan,jdbcType=BIGINT},
+            </if>
+            <if test="receivableAmount != null">
+                receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="orderAmount != null">
+                order_amount = #{orderAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="productAmount != null">
+                product_amount = #{productAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="shipAmount != null">
+                ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="shipManId != null">
+                ship_man_id = #{shipManId,jdbcType=INTEGER},
+            </if>
+            <if test="shipManName != null">
+                ship_man_name = #{shipManName,jdbcType=VARCHAR},
+            </if>
+            <if test="shipType != null">
+                ship_type = #{shipType,jdbcType=INTEGER},
+            </if>
+            <if test="shipTime != null">
+                ship_time = #{shipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="shipRemark != null">
+                ship_remark = #{shipRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="orderType != null">
+                order_type = #{orderType,jdbcType=INTEGER},
+            </if>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="shipStatus != null">
+                ship_status = #{shipStatus,jdbcType=INTEGER},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isCounting != null">
+                is_counting = #{isCounting,jdbcType=INTEGER},
+            </if>
+            <if test="isShip != null">
+                is_ship = #{isShip,jdbcType=INTEGER},
+            </if>
+            <if test="isReplace != null">
+                is_replace = #{isReplace,jdbcType=INTEGER},
+            </if>
+            <if test="isReceipt != null">
+                is_receipt = #{isReceipt,jdbcType=INTEGER},
+            </if>
+            <if test="receiptTime != null">
+                receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="replaceOrderId != null">
+                replace_order_id = #{replaceOrderId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="bailAmount != null">
+                bail_amount=#{bailAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="sendType != null">
+                send_type=#{sendType,jdbcType=INTEGER},
+            </if>
         </where>
     </select>
 

@@ -55,42 +55,55 @@ public class ComUserExtractwayInfo {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getBankCard() {
         return bankCard;
     }
+
     public void setBankCard(String bankCard) {
-        this.bankCard = bankCard == null ? null : bankCard.trim();
+        this.bankCard = bankCard;
     }
+
     public String getBankName() {
         return bankName;
     }
+
     public void setBankName(String bankName) {
-        this.bankName = bankName == null ? null : bankName.trim();
+        this.bankName = bankName;
     }
+
     public String getDepositBankName() {
         return depositBankName;
     }
+
     public void setDepositBankName(String depositBankName) {
-        this.depositBankName = depositBankName == null ? null : depositBankName.trim();
+        this.depositBankName = depositBankName;
     }
+
     public String getCardOwnerName() {
         return cardOwnerName;
     }
+
     public void setCardOwnerName(String cardOwnerName) {
-        this.cardOwnerName = cardOwnerName == null ? null : cardOwnerName.trim();
+        this.cardOwnerName = cardOwnerName;
     }
+
     public Long getComUserId() {
         return comUserId;
     }
+
     public void setComUserId(Long comUserId) {
         this.comUserId = comUserId;
     }
+
     public Long getExtractWay() {
         return extractWay;
     }
+
     public void setExtractWay(Long extractWay) {
         this.extractWay = extractWay;
     }
@@ -114,25 +127,51 @@ public class ComUserExtractwayInfo {
     public Integer getIsEnable() {
         return isEnable;
     }
+
     public void setIsEnable(Integer isEnable) {
         this.isEnable = isEnable;
     }
+
     public Date getCreatedTime() {
         return createdTime;
     }
+
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
     public Date getChangedTime() {
         return changedTime;
     }
+
     public void setChangedTime(Date changedTime) {
         this.changedTime = changedTime;
     }
+
     public String getChangedBy() {
         return changedBy;
     }
+
     public void setChangedBy(String changedBy) {
-        this.changedBy = changedBy == null ? null : changedBy.trim();
+        this.changedBy = changedBy;
+    }
+
+    @Override
+    public String toString() {
+        return "ComUserExtractwayInfo{" +
+                "id=" + id +
+                ", bankCard='" + bankCard + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", depositBankName='" + depositBankName + '\'' +
+                ", cardOwnerName='" + cardOwnerName + '\'' +
+                ", comUserId=" + comUserId +
+                ", extractWay=" + extractWay +
+                ", cardImg='" + cardImg + '\'' +
+                ", isDefault=" + isDefault +
+                ", isEnable=" + isEnable +
+                ", createdTime=" + createdTime +
+                ", changedTime=" + changedTime +
+                ", changedBy='" + changedBy + '\'' +
+                '}';
     }
 }

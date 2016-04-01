@@ -260,7 +260,7 @@
           jQuery(tabControl_tab_next).attr('class', 'next' + (offset($.length - 1) > 5 ? ' scroll' : ''));
 
           //改变尺寸
-          jQuery(tabControl_main).css('height', (jQuery(document).height() - 160) + 'px');
+          jQuery(tabControl_main).css('height', (jQuery(document).height() - 190) + 'px');
           jQuery(tabControl_main).find('iframe').css('width', (jQuery('.tab-content').width()) + 'px');
           jQuery(tabControl_main).find('iframe').css('height', (jQuery('.tab-content').height()) + 'px');
 

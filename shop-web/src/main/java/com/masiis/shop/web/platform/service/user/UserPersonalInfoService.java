@@ -27,7 +27,11 @@ public class UserPersonalInfoService {
     @Resource
     private SkuAgentService skuAgentService;
 
-
+    /**
+     * 个人信息首页信息
+     * @author hanzengzhi
+     * @date 2016/4/1 11:59
+     */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public Map<String,Object> getPersonalHomePageInfo(Long userId){
         //获取代理商品信息

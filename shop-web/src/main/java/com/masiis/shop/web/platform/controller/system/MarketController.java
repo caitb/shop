@@ -27,7 +27,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/marketGood")
-public class IndexController extends BaseController {
+public class MarketController extends BaseController {
 
     @Resource
     private IndexShowService indexShowService;

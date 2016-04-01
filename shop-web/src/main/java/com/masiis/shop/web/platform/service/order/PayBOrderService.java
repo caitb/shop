@@ -78,6 +78,7 @@ public class PayBOrderService {
 
     /**
      * 支付回调统一入口
+     *
      * @author ZhaoLiang
      * @date 2016/3/31 11:55
      */
@@ -85,6 +86,9 @@ public class PayBOrderService {
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
+        }
+        if (pfBorderPayment.getIsEnabled() == 1) {
+            throw new BusinessException("该支付记录已经被处理成功");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
         //拿货方式(0未选择1平台代发2自己发货)
@@ -123,6 +127,9 @@ public class PayBOrderService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder.getSendType() != 1) {
             throw new BusinessException("订单拿货类型错误：为" + pfBorder.getSendType() + ",应为1.");
+        }
+        if (pfBorder.getPayStatus() == 1) {
+            throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
@@ -251,6 +258,7 @@ public class PayBOrderService {
 
     /**
      * 平台代理订单支付成功回调(自发货)
+     *
      * @author ZhaoLiang
      * @date 2016/3/30 20:39
      * 操作详情：

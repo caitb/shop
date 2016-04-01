@@ -1,27 +1,4 @@
 $(function () {
-    var nameCheckFun = function (data) {
-        if ($(data).val() == "") {
-            $(data).parent().find("span").show();
-            $(data).css({"color": "#F74A11"})
-            $(data).parent().find("b").html("姓名不能为空");
-            return false;
-        }
-        if (!isCardName($(data).val())) {
-            $(data).parent().find("span").show();
-            $(data).css({"color": "#F74A11"})
-            $(data).parent().find("b").html("姓名是2-15字的汉字");
-            return false;
-        }
-        return true;
-        //检验姓名：姓名是2-15字的汉字
-        function isCardName(s) {
-            var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
-            if (!patrn.exec(s)) {
-                return false;
-            }
-            return true;
-        }
-    }
     var weixinCheckFun = function (data) {
         if ($(data).val() == "") {
             $(data).parent().find("span").show();
@@ -85,12 +62,6 @@ $(function () {
             return true;
         }
     }
-    $("#name").on("blur", function () {
-        if (nameCheckFun(this)) {
-            $(this).next().hide();
-            $(this).css({"color": "black"})
-        }
-    });
     $("#weixin").on("blur", function () {
         if (weixinCheckFun(this)) {
             $(this).next().hide();
@@ -103,12 +74,8 @@ $(function () {
             $(this).css({"color": "black"})
         }
     })
-
     $("#next").click(function () {
         var n = 0;
-/*        if (!nameCheckFun($("#name"))) {
-            n++;
-        }*/
         if (!weixinCheckFun($("#weixin"))) {
             n++;
         }
@@ -180,7 +147,6 @@ $(function () {
             }
         });
     });
-
     $("[name='danx']").on("click", function () {
         if ($(this).attr("class") == "shi") {
             $(".dengji input").attr("disabled", false)

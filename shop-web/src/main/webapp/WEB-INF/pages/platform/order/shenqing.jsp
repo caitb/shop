@@ -34,7 +34,7 @@
 </div>--%>
 <div class="paidan">
     <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-    <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+    <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
 </div>
 <div class="biao">
     <h1>申请条件</h1>
@@ -45,14 +45,16 @@
             <td>任务入口</td>
         </tr>
         <tr>
-            <td>申请阿萨德条件</td>
-            <td>是否完成</td>
-            <td>任务入口</td>
+            <td>注册麦链商场账户</td>
+            <td>是</td>
+            <td>--</td>
         </tr>
         <tr>
-            <td>申请条件</td>
-            <td>是否完成</td>
-            <td style="color: #FF5200;text-decoration: underline">任务入口</td>
+            <td>实名认证</td>
+            <td>
+                <span style="color: #FF5200">否</span>
+            </td>
+            <td><a href="javascript:void(0);" onclick="goVerified();" style="color: #FF5200;text-decoration: underline">去完成</a></td>
         </tr>
     </table>
 </div>
@@ -84,6 +86,13 @@
         </div>
         <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_5.png" alt="">
         <div>
@@ -92,6 +101,13 @@
         </div>
         <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_6.png" alt="">
         <div>
@@ -100,6 +116,13 @@
         </div>
         <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <section class="sec1">
         <img src="<%=path%>/static/images/shenqing_7.png" alt="">
         <div>
@@ -108,14 +131,28 @@
         </div>
         <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shouquan.png.png" alt="">
+        <img src="<%=path%>/static/images/shouquan.png" alt="">
         <div>
-            <h2>平台补助</h2>
-            <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
+            <h2>授权证书</h2>
+            <p style="margin-right:10px;">官方的授权证书证明你的身份</p>
         </div>
         <img src="<%=path%>/static/images/down.png" alt="" class="down">
     </section>
+    <div>
+        <p></p>
+        <h1>
+            <span>啊上来肯德基</span>
+            <span>啊上来肯德基</span>
+        </h1>
+    </div>
     <input id="skuId" value="${skuId}" style="display: none"/>
     <input id="pUserId" value="${pUserId}" style="display: none"/>
     <input id="skipPageId" value="register" style="display: none"/>
@@ -154,12 +191,14 @@
 <script>
     function goVerified() {
         var para = "?";
-        para += "goToURL=<%=basePath%>userApply/apply.shtml?skuId=${skuId}&type=${type}&pUserId=${pUserId}";
+        para += "goToURL=" + encodeURIComponent("<%=basePath%>userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
         window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
     }
+
     $("#nextPageId").bind("onclick", function () {
-        window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=${type}";
+        window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
+
     $(".down").toggle(function () {
         $(this).attr("src","<%=path%>/static/images/top.png")
         $(this).parent().css("borderBottom","none")

@@ -174,6 +174,27 @@ public class ComUserExtractApply {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    @Override
+    public String toString() {
+        return "ComUserExtractApply{" +
+                "id=" + id +
+                ", comUserId=" + comUserId +
+                ", extractFee=" + extractFee +
+                ", extractwayInfoId=" + extractwayInfoId +
+                ", applyTime=" + applyTime +
+                ", extractWay=" + extractWay +
+                ", extractTime=" + extractTime +
+                ", payTime=" + payTime +
+                ", auditType=" + auditType +
+                ", auditCause='" + auditCause + '\'' +
+                ", bankCard='" + bankCard + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", cardOwnerName='" + cardOwnerName + '\'' +
+                ", depositBankName='" + depositBankName + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
+
     /**************************************以下为视图属性**************************************/
     private String auditTypeView;
     private String bankCardView;

@@ -104,7 +104,7 @@ public class UserApplyController extends BaseController{
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
-        ComUser comUser = getComUser(request);
+        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
         //获取商品信息
         ComSku comSku = skuService.getSkuById(skuId);
         //获取商品代理信息
@@ -145,6 +145,15 @@ public class UserApplyController extends BaseController{
         mv.addObject("agentInfo", sb.toString());
         mv.addObject("skuId", comSku.getId());
         mv.addObject("skuName", comSku.getName());
+        if (comUser != null) {
+            mv.addObject("name", StringUtils.isBlank(comUser.getRealName()) ? "" : comUser.getRealName());
+            mv.addObject("weixinId", StringUtils.isBlank(comUser.getWxId()) ? "" : comUser.getWxId());
+            mv.addObject("mobile", StringUtils.isBlank(comUser.getMobile()) ? "" : comUser.getMobile());
+        } else {
+            mv.addObject("name", "");
+            mv.addObject("weixinId", "");
+            mv.addObject("mobile", "");
+        }
         mv.addObject("pUserId", pUserId);
         if (pUserId != null && pUserId > 0) {
             mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
@@ -153,6 +162,19 @@ public class UserApplyController extends BaseController{
         }
         mv.setViewName("platform/order/zhuce");
         return mv;
+    }
+
+    /**
+     * 申请完成
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/15 17:03
+     */
+    @RequestMapping("/applyOK.shtml")
+    public ModelAndView applyOK() throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("platform/order/shenqingok");
+        return modelAndView;
     }
 
     @ResponseBody
@@ -170,7 +192,7 @@ public class UserApplyController extends BaseController{
                     throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
                 } else {
                     pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-                    if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
+                    if (null == pfUserSku) {
                         throw new BusinessException("您的推荐人还未代理此款商品");
                     }
                 }
@@ -188,29 +210,5 @@ public class UserApplyController extends BaseController{
             }
         }
         return jsonObject.toJSONString();
-    }
-
-    /**
-     * 申请完成
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/15 17:03
-     */
-    @RequestMapping("/applyOK.shtml")
-    public ModelAndView applyOK() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("platform/order/shenqingok");
-        return modelAndView;
-    }
-
-    public void checkParentData(ComUser pUser, Integer skuId) throws Exception {
-        if (pUser == null) {
-            throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
-        } else {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-            if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
-                throw new BusinessException("您的推荐人还未代理此款商品");
-            }
-        }
     }
 }

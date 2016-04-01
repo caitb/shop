@@ -2,10 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -13,19 +10,18 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.rmi.server.ExportException;
 import java.util.List;
 
 /**
@@ -55,20 +51,32 @@ public class UserApplyController extends BaseController {
      * @date 2016/3/5 13:51
      */
     @RequestMapping("/apply.shtml")
-    public ModelAndView partnersApply(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      @RequestParam(value = "skuId", required = true) Integer skuId,
-                                      @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        ProductSimple productSimple = productService.getSkuSimple(skuId);
-        mv.addObject("skuId", skuId);
-        mv.addObject("skuName", productSimple.getSkuName());
-        mv.addObject("skuImg", skuImg + productSimple.getSkuDefaultImgURL());
-        mv.addObject("slogan", productSimple.getSlogan());
-        mv.addObject("pUserId", pUserId);
-        mv.setViewName("platform/order/shenqing");
-        return mv;
+    public String partnersApply(HttpServletRequest request,
+                                HttpServletResponse response,
+                                @RequestParam(value = "skuId", required = true) Integer skuId,
+                                @RequestParam(value = "pUserId", required = false) Long pUserId,
+                                Model model) throws Exception {
+
+        ComUser user = getComUser(request);
+        if (user == null) {
+            throw new BusinessException("用户未登录!");
+        }
+        ComSku sku = skuService.getSkuById(skuId);
+        if (sku == null) {
+            throw new BusinessException("sku不合法,系统不存在该sku");
+        }
+        if (pUserId != null && pUserId > 0) {
+            ComUser pUser = userService.getUserById(pUserId);
+            if (pUser == null) {
+                throw new BusinessException("上级id不合法,系统不存在该代理");
+            }
+            PfUserSku userSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+            if (userSku == null) {
+                throw new BusinessException("该上级代理商没有该商品的代理权!");
+            }
+            model.addAttribute("", pUserId);
+        }
+        return "platform/order/shenqing";
     }
 
     /**

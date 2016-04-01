@@ -164,7 +164,7 @@ $(function () {
         paraData.levelId = $(".dengji .on").attr("levelId");
         paraData.pUserId = pUserId;
         $.ajax({
-            url: path + "border/addBOrder.do",
+            url: path + "border/add.do",
             type: "post",
             data: paraData,
             dataType: "json",

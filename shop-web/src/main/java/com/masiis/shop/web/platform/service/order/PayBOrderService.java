@@ -151,6 +151,7 @@ public class PayBOrderService {
             // 保存修改前的金额
             recordS.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
+            accountS.setCostFee(pfBorder.getPayAmount());
             // 保存修改后的金额
             recordS.setNextFee(accountS.getBailFee());
             recordMapper.insert(recordS);

@@ -292,7 +292,7 @@
 
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>fundmanage/extract/list.do',
+            url: '<%=basePath%>operate/advert/list.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
@@ -337,25 +337,11 @@
                         }
                     },
                     {
-                        field: 'createTime',
-                        title: '申请日期',
-                        sortable: true,
-                        //editable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.applyTime){
-                                return new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss');
-                            }
-                        }
-                    },
-                    {
                         field: 'name',
-                        title: '申请人',
-                        sortable: true,
-                        //editable: true,
-                        footerFormatter: totalNameFormatter,
                         align: 'center',
+                        title: '名称',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
                             if(row.comUser && row.comUser.realName){
                                 return row.comUser.realName;
@@ -363,8 +349,8 @@
                         }
                     },
                     {
-                        field: 'record',
-                        title: '拿货记录',
+                        field: 'type',
+                        title: '类型',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -375,8 +361,8 @@
                         }
                     },
                     {
-                        field: 'extractFee',
-                        title: '申请金额',
+                        field: 'position',
+                        title: '显示位置',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -387,93 +373,18 @@
                         }
                     },
                     {
-                        align: 'center',
-                        field: 'extractableFee',
-                        title: '账户余额',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.extractableFee){
-                                return '￥' + row.comUserAccount.extractableFee;
-                            }
-                        }
-                    },
-                    {
-                        align: 'center',
-                        field: 'bankName',
-                        title: '提现方式',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.bankName){
-                                return row.comUserExtractApply.bankName;
-                            }
-                        }
-                    },
-                    {
-                        field: 'auditType',
-                        title: '打款状态',
-                        sortable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center',
-                        formatter: function(value, row, index){
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
-                                return '<span class="label label-sm label-grey">待审核</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 1) {
-                                return '<span class="label label-sm label-info">已拒绝</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
-                                return '<span class="label label-sm label-success">待打款</span>';
-                            }else if(row.comUserExtractApply && row.comUserExtractApply.auditType == 3){
-                                return '<span class="label label-sm label-danger">已打款</span>';
-                            }
-                        }
-                    },
-                    {
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            var sArr = ['<a class="v-detail" href="javascript:void(0);">查看</a>'];
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
-                                sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
-                            }
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
-                                sArr.push('&nbsp;&nbsp;<a class="yes" href="javascript:void(0);">确认打款</a>');
-                            }
+                            var sHtm  = '<a class="edit-modal" href="javascript:void(0);">编辑模块</a>';
+                                sHtm += '<a class="edit-content" href="javascript:void(0);">编辑内容</a>';
 
-                            return sArr.join('');
+                            return sHtm;
                         },
                         events: {
-                            'click .audit': function(e, value, row, index){
-                                $('#applyId').val(row.comUserExtractApply.id);
-                                $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName').html(row.comUser.realName);
-                                $('#extractFee').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                $('#extractWay').html(row.comUserExtractApply.extractWay);
-                                $('#bankCard').html(row.comUserExtractApply.bankCard);
-                                $('#bankName').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
-
-                                $('#modal-audit').modal('show');
+                            'click .edit-modal': function(e, value, row, index){
                             },
-                            'click .yes': function(e, value, row, index){
-                                bootbox.confirm("确定已打款了?", function(result) {
-                                    if(result) {
-                                        $.ajax({
-                                            url: '<%=basePath%>fundmanage/extract/audit.do',
-                                            data: {id:row.comUserExtractApply.id, auditType: 3},
-                                            success: function(msg){
-                                                $('#table').bootstrapTable('refresh');
-                                                $.gritter.add({
-                                                    title: '消息',
-                                                    text: msg,
-                                                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                                });
-                                            }
-                                        })
-                                    }
-                                });
+                            'click .edit-content': function(e, value, row, index){
                             }
                         }
                     }

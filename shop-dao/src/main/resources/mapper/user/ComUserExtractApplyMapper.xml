@@ -186,4 +186,33 @@
                                                   order by apply_time DESC limit #{startNum,jdbcType=INTEGER}, 1)
               order by ea.apply_time DESC limit #{qSize,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByCondition" parameterType="Map" resultMap="BaseResultMap">
+        select
+               id,
+               com_user_id,
+               extract_fee,
+               extractway_info_id,
+               apply_time,
+               extract_way,
+               extract_time,
+               pay_time,
+               audit_type,
+               audit_cause,
+               bank_card,
+               bank_name,
+               card_owner_name,
+               deposit_bank_name,
+               remark
+        from
+               com_user_extract_apply
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="comUserId != null">
+                AND com_user_id = #{comUserId}
+            </if>
+        </where>
+    </select>
 </mapper>

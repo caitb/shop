@@ -16,7 +16,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
-@Repository
+import java.util.Map;
+
 public interface ComUserExtractApplyMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -59,4 +60,6 @@ public interface ComUserExtractApplyMapper {
                                                             @Param("end") Date end,
                                                             @Param("startNum") Integer startNum,
                                                             @Param("qSize") Integer qSize);
+
+    List<ComUserExtractApply> selectByCondition(Map<String, Object> con);
 }

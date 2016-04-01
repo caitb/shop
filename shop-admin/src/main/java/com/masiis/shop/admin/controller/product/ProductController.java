@@ -159,7 +159,7 @@ public class ProductController {
                     for(int px=0; px<imgPxs.length; px++){
                         ImageUtils.scale2(imgAbsoluteUrl, resultPath, imgPxs[px], imgPxs[px], true);
                         File curFile = new File(resultPath);
-                        OSSObjectUtils.uploadFile("mmshop", curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
+                        OSSObjectUtils.uploadFile(curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
 
                         //删除缩放的图片
                         curFile.delete();
@@ -178,7 +178,7 @@ public class ProductController {
             if(detailDir.exists() && detailDir.listFiles().length > 0){
                 File[] files = detailDir.listFiles();
                 for(File f : files){
-                    OSSObjectUtils.uploadFile("mmshop", f, "static/product/detail_img/");
+                    OSSObjectUtils.uploadFile(f, "static/product/detail_img/");
                     f.delete();
                 }
             }

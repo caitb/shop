@@ -6,14 +6,11 @@ import com.masiis.shop.admin.service.certificate.CertificateService;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,37 +61,6 @@ public class CertificateController {
         return pageMap;
      }
 
-    @RequestMapping("/update.do")
-    @ResponseBody
-    public String update(HttpServletRequest request, HttpServletResponse response,
-                         @RequestParam(required = true) Integer status,
-                         @RequestParam(required = true) Integer id,
-                         @RequestParam(required = false) String reason)throws Exception {
-        String reasonCode = null;
-        if(reason!=null){
-            reasonCode = URLDecoder.decode(reason, "UTF-8");
-        }
-        certificateService.approveCertificate(request, status, id,reasonCode);
-        return "已审核";
-     }
-
-    @RequestMapping("/load.shtml")
-    public ModelAndView load(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
-        ModelAndView mav = new ModelAndView("certificate/edit");
-        CertificateInfo certificateInfo = certificateService.getApproveInfoById(id);
-        mav.addObject("certificateInfo", certificateInfo);
-        return mav;
-      }
-
-    @RequestMapping("/listUpper.do")
-    @ResponseBody
-    public Map<String, Object> loadUppers(HttpServletRequest request, HttpServletResponse response, Integer id)throws Exception{
-        Map<String, Object> Param = new HashMap<>();
-        CertificateInfo certificateInfo = certificateService.getUpperPartner(id);
-        Param.put("certificateInfo",certificateInfo);
-        return Param;
-     }
-
     @RequestMapping("/updateUpper.do")
     @ResponseBody
     public String updateUpperById(HttpServletRequest request, HttpServletResponse response, String id, String pid){
@@ -112,6 +78,4 @@ public class CertificateController {
     public String findById(HttpServletRequest request, HttpServletResponse response,Integer id){
         return  certificateService.findById(id);
     }
-
-
     }

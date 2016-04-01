@@ -12,12 +12,13 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
         <result column="rank" property="rank" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
     </resultMap>
 
     <!-- 根据id查询一条记录 -->
     <select id="selectById" resultMap="BaseResultMap">
         SELECT
-               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark
+               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark, sort
         FROM
                pb_menu
         WHERE
@@ -27,7 +28,7 @@
     <!-- 根据条件查询记录 -->
     <select id="selectByCondition" resultMap="BaseResultMap">
         SELECT
-               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark
+               id, name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark, sort
         FROM
         pb_menu
         <where>
@@ -49,9 +50,9 @@
     <!-- 添加一条记录 -->
     <insert id="insert">
         INSERT INTO
-                    pb_menu (name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark)
+                    pb_menu (name, icon, url, parent_id, is_deleted, create_time, update_time, rank, remark, sort)
         VALUES
-                    (#{pbMenu.name}, #{pbMenu.icon}, #{pbMenu.url}, #{pbMenu.parentId}, #{pbMenu.isDeleted}, #{pbMenu.createTime}, #{pbMenu.updateTime}, #{pbMenu.rank}, #{pbMenu.remark})
+                    (#{pbMenu.name}, #{pbMenu.icon}, #{pbMenu.url}, #{pbMenu.parentId}, #{pbMenu.isDeleted}, #{pbMenu.createTime}, #{pbMenu.updateTime}, #{pbMenu.rank}, #{pbMenu.remark}, #{pbMenu.sort})
     </insert>
 
     <!-- 根据id更新一条记录 -->
@@ -66,7 +67,8 @@
                create_time = #{pbMenu.createTime},
                update_time = #{pbMenu.updateTime},
                rank        = #{pbMenu.rank},
-               remark      = #{pbMenu.remark}
+               remark      = #{pbMenu.remark},
+               sort        = #{pbMenu.sort}
         WHERE
                id = #{pbMenu.id}
     </update>

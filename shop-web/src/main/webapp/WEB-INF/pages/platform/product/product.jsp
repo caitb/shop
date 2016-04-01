@@ -131,7 +131,7 @@
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
             </p>
         </c:if>
-        <c:if test="${ not empty pfUserSku}">
+        <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
             <p style="background: #DA3600;" onclick="gotoBuhuo()">您已合伙</p>
         </c:if>
     </section>

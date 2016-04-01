@@ -42,4 +42,5 @@ public class SysConstants {
 
     /*身份证存储路径*/
     public static final String ID_CARD_PATH="/static/upload/user/idCard/";
+
 }

@@ -251,7 +251,7 @@ public class MyTeamService {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write(bimage, "png", imOut);
             InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("mmshop", "static/user/certificate/" + pname + ".jpg", is);
+            OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
 //            FileOutputStream out = new FileOutputStream(outPath); //先用一个特定的输出文件名
 //            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
 //            JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bimage);

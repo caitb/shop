@@ -33,6 +33,7 @@
     <![endif]-->
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
@@ -59,527 +60,9 @@
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
 
-    <!-- #section:basics/sidebar -->
-    <div id="sidebar" class="sidebar responsive" hidden>
-        <script type="text/javascript">
-            try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
-        </script>
-
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts" style="display: none;">
-            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                <button class="btn btn-success">
-                    <i class="ace-icon fa fa-signal"></i>
-                </button>
-
-                <button class="btn btn-info">
-                    <i class="ace-icon fa fa-pencil"></i>
-                </button>
-
-                <!-- #section:basics/sidebar.layout.shortcuts -->
-                <button class="btn btn-warning">
-                    <i class="ace-icon fa fa-users"></i>
-                </button>
-
-                <button class="btn btn-danger">
-                    <i class="ace-icon fa fa-cogs"></i>
-                </button>
-
-                <!-- /section:basics/sidebar.layout.shortcuts -->
-            </div>
-
-            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                <span class="btn btn-success"></span>
-
-                <span class="btn btn-info"></span>
-
-                <span class="btn btn-warning"></span>
-
-                <span class="btn btn-danger"></span>
-            </div>
-        </div><!-- /.sidebar-shortcuts -->
-
-        <ul class="nav nav-list">
-            <li class="">
-                <a href="index.html">
-                    <i class="menu-icon fa fa-tachometer"></i>
-                    <span class="menu-text"> Dashboard </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-desktop"></i>
-                    <span class="menu-text"> UI &amp; Elements </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-caret-right"></i>
-
-                            Layouts
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li class="">
-                                <a href="top-menu.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Top Menu
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-1.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Default Mobile Menu
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-2.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Mobile Menu 2
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="mobile-menu-3.html">
-                                    <i class="menu-icon fa fa-caret-right"></i>
-                                    Mobile Menu 3
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="">
-                        <a href="typography.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Typography
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="elements.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Elements
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="buttons.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Buttons &amp; Icons
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="treeview.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Treeview
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="jquery-ui.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            jQuery UI
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="nestable-list.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Nestable Lists
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="#" class="dropdown-toggle">
-                            <i class="menu-icon fa fa-caret-right"></i>
-
-                            Three Level Menu
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-
-                        <b class="arrow"></b>
-
-                        <ul class="submenu">
-                            <li class="">
-                                <a href="#">
-                                    <i class="menu-icon fa fa-leaf green"></i>
-                                    Item #1
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="">
-                                <a href="#" class="dropdown-toggle">
-                                    <i class="menu-icon fa fa-pencil orange"></i>
-
-                                    4th level
-                                    <b class="arrow fa fa-angle-down"></b>
-                                </a>
-
-                                <b class="arrow"></b>
-
-                                <ul class="submenu">
-                                    <li class="">
-                                        <a href="#">
-                                            <i class="menu-icon fa fa-plus purple"></i>
-                                            Add Product
-                                        </a>
-
-                                        <b class="arrow"></b>
-                                    </li>
-
-                                    <li class="">
-                                        <a href="#">
-                                            <i class="menu-icon fa fa-eye pink"></i>
-                                            View Products
-                                        </a>
-
-                                        <b class="arrow"></b>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="active open">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-list"></i>
-                    <span class="menu-text"> Tables </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="active">
-                        <a href="tables.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Simple &amp; Dynamic
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            jqGrid plugin
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-pencil-square-o"></i>
-                    <span class="menu-text"> Forms </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="form-elements.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Form Elements
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="form-wizard.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Wizard &amp; Validation
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="wysiwyg.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Wysiwyg &amp; Markdown
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="dropzone.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Dropzone File Upload
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="widgets.html">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> Widgets </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="calendar.html">
-                    <i class="menu-icon fa fa-calendar"></i>
-
-							<span class="menu-text">
-								Calendar
-
-                                <!-- #section:basics/sidebar.layout.badge -->
-								<span class="badge badge-transparent tooltip-error" title="2 Important Events">
-									<i class="ace-icon fa fa-exclamation-triangle red bigger-130"></i>
-								</span>
-
-                                <!-- /section:basics/sidebar.layout.badge -->
-							</span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="gallery.html">
-                    <i class="menu-icon fa fa-picture-o"></i>
-                    <span class="menu-text"> Gallery </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-tag"></i>
-                    <span class="menu-text"> More Pages </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="profile.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            User Profile
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="inbox.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Inbox
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="pricing.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Pricing Tables
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="invoice.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Invoice
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="timeline.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Timeline
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="email.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Email Templates
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="login.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Login &amp; Register
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-file-o"></i>
-
-							<span class="menu-text">
-								Other Pages
-
-                                <!-- #section:basics/sidebar.layout.badge -->
-								<span class="badge badge-primary">5</span>
-
-                                <!-- /section:basics/sidebar.layout.badge -->
-							</span>
-
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="faq.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            FAQ
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="error-404.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Error 404
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="error-500.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Error 500
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="grid.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Grid
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="">
-                        <a href="blank.html">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            Blank Page
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
-            </li>
-        </ul><!-- /.nav-list -->
-
-        <!-- #section:basics/sidebar.layout.minimize -->
-        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-            <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-        </div>
-
-        <!-- /section:basics/sidebar.layout.minimize -->
-        <script type="text/javascript">
-            try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
-        </script>
-    </div>
 
     <!-- /section:basics/sidebar -->
     <div class="main-content" style="margin: 0;">
-        <!-- #section:basics/content.breadcrumbs -->
-        <div class="breadcrumbs" id="breadcrumbs" style="display: none;">
-            <script type="text/javascript">
-                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-            </script>
-
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="#">Home</a>
-                </li>
-
-                <li>
-                    <a href="#">Tables</a>
-                </li>
-                <li class="active">Simple &amp; Dynamic</li>
-            </ul><!-- /.breadcrumb -->
-
-            <!-- #section:basics/content.searchbox -->
-            <div class="nav-search" id="nav-search">
-                <form class="form-search">
-							<span class="input-icon">
-								<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-								<i class="ace-icon fa fa-search nav-search-icon"></i>
-							</span>
-                </form>
-            </div><!-- /.nav-search -->
-
-            <!-- /section:basics/content.searchbox -->
-        </div>
 
         <!-- /section:basics/content.breadcrumbs -->
         <div class="page-content">
@@ -638,7 +121,8 @@
                             </div>
                         </div>
 
-                        <div id="modal-table" class="modal fade" tabindex="-1">
+
+                        <div id="modal-audit" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -646,109 +130,85 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            Results for "Latest Registered Domains
+                                            会员信息审核
                                         </div>
                                     </div>
 
                                     <div class="modal-body no-padding">
-                                        <table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-                                            <thead>
-                                            <tr>
-                                                <th>Domain</th>
-                                                <th>Price</th>
-                                                <th>Clicks</th>
+                                        <div>
+                                            <div id="user-profile-1" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
 
-                                                <th>
-                                                    <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                    Update
-                                                </th>
-                                            </tr>
-                                            </thead>
+                                                    <!-- #section:pages/profile.info -->
+                                                    <div class="profile-user-info profile-user-info-striped">
 
-                                            <tbody>
-                                            <tr>
-                                                <td>
-                                                    <a href="#">ace.com</a>
-                                                </td>
-                                                <td>$45</td>
-                                                <td>3,330</td>
-                                                <td>Feb 12</td>
-                                            </tr>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 会员信息 </div>
 
-                                            <tr>
-                                                <td>
-                                                    <a href="#">base.com</a>
-                                                </td>
-                                                <td>$35</td>
-                                                <td>2,595</td>
-                                                <td>Feb 18</td>
-                                            </tr>
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="nickName"> </span>
+                                                            </div>
+                                                        </div>
 
-                                            <tr>
-                                                <td>
-                                                    <a href="#">max.com</a>
-                                                </td>
-                                                <td>$60</td>
-                                                <td>4,400</td>
-                                                <td>Mar 11</td>
-                                            </tr>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 姓名 </div>
 
-                                            <tr>
-                                                <td>
-                                                    <a href="#">best.com</a>
-                                                </td>
-                                                <td>$75</td>
-                                                <td>6,500</td>
-                                                <td>Apr 03</td>
-                                            </tr>
+                                                            <div class="profile-info-value">
+                                                                <span class="editable editable-click" id="realName"> </span>
+                                                            </div>
+                                                        </div>
 
-                                            <tr>
-                                                <td>
-                                                    <a href="#">pro.com</a>
-                                                </td>
-                                                <td>$55</td>
-                                                <td>4,250</td>
-                                                <td>Jan 21</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 身份证号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="linkmanIDCard"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 身份证扫描件 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardF" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
+                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardB" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row" id="auditReason">
+                                                            <div class="profile-info-name" id="jjT"> 拒绝原因 </div>
+
+                                                            <div class="profile-info-value" id="jjF">
+                                                                <form id="auditForm">
+                                                                  <input type="hidden" name="id" id="userId" value="" />
+                                                                  <input type="hidden" name="auditStatus" id="auditStatus" value="2" />
+                                                                  <textarea name="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="modal-footer no-margin-top">
-                                        <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
-                                            <i class="ace-icon fa fa-times"></i>
-                                            Close
-                                        </button>
-
-                                        <ul class="pagination pull-right no-margin">
-                                            <li class="prev disabled">
-                                                <a href="#">
-                                                    <i class="ace-icon fa fa-angle-double-left"></i>
-                                                </a>
-                                            </li>
-
-                                            <li class="active">
-                                                <a href="#">1</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">2</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">3</a>
-                                            </li>
-
-                                            <li class="next">
-                                                <a href="#">
-                                                    <i class="ace-icon fa fa-angle-double-right"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                                                拒绝
+                                            </button>
+                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                                                通过
+                                            </button>
+                                        </div>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
                         </div><!-- PAGE CONTENT ENDS -->
+
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.page-content-area -->
@@ -782,6 +242,7 @@
 <!-- page specific plugin scripts -->
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 
 <script src="<%=basePath%>static/js/date-util.js"></script>
 
@@ -905,11 +366,28 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="view" href="javascript:void(0);">查看</a>';
+                            if(row && row.auditStatus == 1){
+                                return '<a class="audit" href="javascript:void(0);">审核</a>';
+                            }
                         },
                         events: {
-                            'click .view': function (e, value, row, index) {
-                                alert(row.name);
+                            'click .audit': function(e, value, row, index){
+                                var s = 'data-toggle="modal" data-target="#modal-audit"';
+                                $.ajax({
+                                    url: '<%=basePath%>comuser/toaudit.do',
+                                    data: {id: row.id},
+                                    success: function(data){
+                                        data = window.eval('('+data+')');
+                                        $('#userId').val(data.id);
+                                        $('#nickName').html(data.wxNkName);
+                                        $('#realName').html(data.realName);
+                                        $('#linkmanIDCard').html(data.idCard);
+                                        $('#idCardF').attr('src', data.idCardFrontUrl);
+                                        $('#idCardB').attr('src', data.idCardBackUrl);
+
+                                        $('#modal-audit').modal('show');
+                                    }
+                                })
                             }
                         }
                     }
@@ -1073,6 +551,38 @@
 
     $('#searchBtn').on('click', function(){
 
+    });
+
+    $('.audit').on('click', function(){
+        var auditStatus = $(this).attr('audit-status');
+        var auditReason = $('textarea[name="auditReason"]').val();
+
+        $('#auditStatus').val(auditStatus);
+        if(!auditReason){
+            $.gritter.add({
+                title: '温馨提示',
+                text: '请填写审核记录!',
+                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+            });
+
+            return false;
+        }
+
+        $.ajax({
+            url: '<%=basePath%>comuser/audit.do',
+            type: 'POST',
+            data: $('#auditForm').serialize(),
+            success: function(msg){
+                if('success' == msg){
+                    $('#modal-audit').modal('hide');
+                }
+                $.gritter.add({
+                    title: '消息',
+                    text: msg,
+                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                });
+            }
+        })
     });
 
 </script>

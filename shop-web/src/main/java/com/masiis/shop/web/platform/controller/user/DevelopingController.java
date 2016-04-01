@@ -232,7 +232,7 @@ public class DevelopingController extends BaseController {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
             ImageIO.write(bufferedImage, "png", imOut);
             InputStream is = new ByteArrayInputStream(bs.toByteArray());
-            OSSObjectUtils.uploadFile("mmshop", "static/user/poster/" + saveFileName, is);
+            OSSObjectUtils.uploadFile( "static/user/poster/" + saveFileName, is);
         } catch (Exception e) {
             log.error("画海报出错了!");
             e.printStackTrace();

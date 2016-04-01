@@ -73,7 +73,7 @@
            </main>
            <div class="back_que">
                <p>确认发货?</p>
-               <h4>快递公司:<select id="select"><option>顺风</option><option >EMS</option></select></h4>
+               <h4>快递公司:<select id="select"><option value="1">顺风</option><option value="2-EMS">EMS</option></select></h4>
                <h4>快递单号:<input type="text" id="input"/></h4>
                <h3 id="faHuo">发货</h3>
            </div>
@@ -99,12 +99,15 @@
                 $(".back_que").hide();
                 $(".back").hide();
                 var shipManName = $("#select").val();
+                var shipManId = $("#select").text();
+                alert(shipManId);
+                alert(shipManName);
                 var freight = $("#input").val();
                 var borderId = ${borderDetail.pfBorder.id};
                 $.ajax({
                     type:"POST",
                     url : "<%=path%>/border/deliver.do",
-                    data:{shipManName:shipManName,freight:freight,orderId:borderId},
+                    data:{shipManName:shipManName,freight:freight,orderId:borderId,shipManId:shipManId},
                     dataType:"Json",
                     success:function(date){
 //                        if(!date.msgs){

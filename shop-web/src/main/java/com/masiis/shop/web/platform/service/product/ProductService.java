@@ -78,8 +78,8 @@ public class ProductService {
      * 代理商利润
      */
     public Integer getMaxDiscount() throws Exception {
-        Integer MaxDiscount = productMapper.maxDiscount() * 100;
-        return MaxDiscount;
+        int bb= (int)((1-productMapper.maxDiscount())*100);
+        return bb;
     }
     /**
      * 跳转到试用申请页

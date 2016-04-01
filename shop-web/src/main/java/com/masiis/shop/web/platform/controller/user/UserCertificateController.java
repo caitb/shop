@@ -204,7 +204,7 @@ public class UserCertificateController extends BaseController {
      */
     private String uploadFile(String filePath) throws FileNotFoundException {
         File frontFile = new File(filePath);
-        OSSObjectUtils.uploadFile("mmshop", frontFile, SysConstants.ID_CARD_PATH);
+        OSSObjectUtils.uploadFile( frontFile, SysConstants.ID_CARD_PATH);
         return frontFile.getName();
     }
 
@@ -229,7 +229,7 @@ public class UserCertificateController extends BaseController {
      */
     @RequestMapping(value = "/detail")
     public ModelAndView userCertificateDetail(HttpServletRequest request, HttpServletResponse response,
-                                              @RequestParam("pfuId") Integer pfuId) throws Exception {
+                                              @RequestParam(value = "pfuId",required = true) Integer pfuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/cdetail");
         PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
         ComUser comUser = userService.getUserById(pfUserSku.getUserId());
@@ -245,54 +245,34 @@ public class UserCertificateController extends BaseController {
      * @Date 2016/3/18 0018 下午 1:50
      * 上级信息
      */
-    @RequestMapping(value = "/userInfo")
-    @ResponseBody
+    @RequestMapping("/userInfo.list")
     public ModelAndView ready(HttpServletRequest request, HttpServletResponse response,
-                              @PathVariable("uskId") Integer uskId) throws Exception {
+                              @RequestParam(value ="uskId",required = true) Integer uskId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/upperUserInfo");
         PfUserSku pfUserSku = userSkuService.getUserSkuById(uskId);
         ComUser userInfo = userService.getUserById(pfUserSku.getUserId());
+        ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
         mav.addObject("userInfo", userInfo);
         mav.addObject("pfUserSku", pfUserSku);
-        return mav;
-    }
-    /**
-     * @Author 贾晶豪
-     * @Date 2016/3/18 0018 下午 2:19
-     * 审核失败详情
-     */
-    @RequestMapping(value = "/fail/{pfuId}")
-    public ModelAndView userCertificateFailDetail(HttpServletRequest request, HttpServletResponse response,
-                                                  @PathVariable("pfuId") Integer pfuId) throws Exception {
-        ModelAndView mav = new ModelAndView("/platform/user/ctfail");
-        PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
-        ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
-        ComUser comuser = userService.getUserById(cdetail.getUserId());
-        String ctValue = PropertiesUtils.getStringValue("index_user_idCard_url");
-        comuser.setIdCardFrontUrl(ctValue + comuser.getIdCardFrontUrl());
-        comuser.setIdCardBackUrl(ctValue + comuser.getIdCardBackUrl());
-        mav.addObject("ctfaildetail", cdetail);
-        mav.addObject("comUser", comuser);
         mav.addObject("comSku", comSku);
         return mav;
     }
     /**
-     * 更新证书
-     * Jing Hao
-     * param :user_sku_id
+     * @Author 贾晶豪
+     * @Date 2016/3/17 0017 下午 6:37
+     * 个人证书详情
      */
-    @RequestMapping(value = "/updatect.do")
-    @ResponseBody
-    public String addCertificate(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam(value = "pfuId", required = true) Integer pfuId){
-        JSONObject object = new JSONObject();
-        try {
-            userCertificateService.receiveCertificate(request,pfuId);
-            object.put("isError", false);
-        } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", "领取证书失败!");
-        }
-        return object.toJSONString();
+    @RequestMapping(value = "/upperDetail")
+    public ModelAndView upperUserCertificateDetail(HttpServletRequest request, HttpServletResponse response,
+                                              @RequestParam(value = "pfuId",required = true) Integer pfuId) throws Exception {
+        ModelAndView mav = new ModelAndView("/platform/user/shangjidetail");
+        PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
+        ComUser comUser = userService.getUserById(pfUserSku.getUserId());
+        PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
+        ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
+        mav.addObject("cdetail", cdetail);
+        mav.addObject("comUser", comUser);
+        mav.addObject("comSku", comSku);
+        return mav;
     }
 }

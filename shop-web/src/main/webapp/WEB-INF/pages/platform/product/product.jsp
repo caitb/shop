@@ -37,7 +37,7 @@
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999">代理人数：超过${productDetails.agentNum}</span></p>
+            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：超过${productDetails.agentNum}</span></p>
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
         <div class="dlpople">
@@ -106,9 +106,9 @@
         </div>
         <div class="back"></div>
         <div class="back_q">
-            <h1>什么事结算中</h1>
+            <h1>什么是排单期？</h1>
             <p>
-                为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+                由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
             </p>
             <button class="zhidao">我知道了</button>
         </div>

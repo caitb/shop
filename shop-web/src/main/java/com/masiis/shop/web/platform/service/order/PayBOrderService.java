@@ -383,7 +383,7 @@ public class PayBOrderService {
         ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
         ImageIO.write(bimage, "png", imOut);
         InputStream is = new ByteArrayInputStream(bs.toByteArray());
-        OSSObjectUtils.uploadFile("mmshop", "static/user/certificate/" + pname + ".jpg", is);
+        OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
         return pname;
     }
 

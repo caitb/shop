@@ -15,6 +15,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ import java.util.concurrent.ExecutionException;
 @Service
 public class BOrderService {
     private final static Logger logger = Logger.getLogger(BOrderService.class);
+    @Resource
+    private UserAddressService userAddressService;
     @Resource
     private PfBorderMapper pfBorderMapper;
     @Resource
@@ -189,11 +192,15 @@ public class BOrderService {
      * @param skuId    商品id
      * @param quantity 拿货数量
      * @param message  用户留言
+     * <1>处理订单数据
+     * <2>添加订单日志
+     * <3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
+     * <4>添加订单地址信息
      * @return
      * @throws Exception
      */
     @Transactional
-    public Long addProductTake(Long userId, Integer skuId, int quantity, String message) throws Exception {
+    public Long addProductTake(Long userId, Integer skuId, int quantity, String message,long userAddressId) throws Exception {
         logger.info("进入拿货订单处理Service");
         logger.info("<1>处理订单数据");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
@@ -225,6 +232,7 @@ public class BOrderService {
         order.setUserMessage(message);
         order.setUserId(userId);
         order.setUserPid(pUserId);
+        order.setBailAmount(new BigDecimal(0));
         order.setSupplierId(0);
         order.setReceivableAmount(amount);
         order.setOrderAmount(amount);//运费到付，商品总价即订单总金额
@@ -232,9 +240,9 @@ public class BOrderService {
         order.setShipAmount(BigDecimal.ZERO);
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
-        order.setOrderStatus(1);    //已付款
+        order.setOrderStatus(7);    //待发货
         order.setShipStatus(0);
-        order.setPayStatus(1);      //已付款
+        order.setPayStatus(7);      //待发货
         order.setIsShip(0);
         order.setIsReplace(0);
         order.setIsReceipt(0);
@@ -249,6 +257,7 @@ public class BOrderService {
         pfBorderItem.setSpuId(comSku.getSpuId());
         pfBorderItem.setSkuId(comSku.getId());
         pfBorderItem.setSkuName(comSku.getName());
+        pfBorderItem.setBailAmount(new BigDecimal(0));
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
         pfBorderItem.setUnitPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()));
@@ -262,7 +271,7 @@ public class BOrderService {
         pfBorderOperationLog.setCreateTime(new Date());
         pfBorderOperationLog.setPfBorderStatus(1);
         pfBorderOperationLog.setPfBorderId(order.getId());
-        pfBorderOperationLog.setRemark("订单已支付");
+        pfBorderOperationLog.setRemark("订单已支付,拿货订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
 
         logger.info("<3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存");
@@ -272,7 +281,7 @@ public class BOrderService {
         if (order.getUserPid() == 0) {
             pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
             if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < quantity) {
-                throw new BusinessException();
+                throw new BusinessException("拿货失败：拿货数量超过库存数量");
             }
             pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + quantity);
             if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
@@ -281,30 +290,30 @@ public class BOrderService {
         } else {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
             if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
-                order.setOrderStatus(6);//排队订单
-                pfBorderMapper.updateById(order);
+                throw new BusinessException("拿货失败：拿货数量超过库存数量");
             }
             pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
             if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
                 throw new BusinessException("并发修改库存失败");
             }
         }
-        logger.info("<4>初始化个人库存信息");
-//        ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
-//        PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
-//        pfBorderConsignee.setCreateTime(new Date());
-//        pfBorderConsignee.setPfBorderId(pfBorder.getId());
-//        pfBorderConsignee.setUserId(comUserAddress.getUserId());
-//        pfBorderConsignee.setConsignee(comUserAddress.getName());
-//        pfBorderConsignee.setMobile(comUserAddress.getMobile());
-//        pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-//        pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-//        pfBorderConsignee.setCityId(comUserAddress.getCityId());
-//        pfBorderConsignee.setCityName(comUserAddress.getCityName());
-//        pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
-//        pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
-//        pfBorderConsignee.setAddress(comUserAddress.getAddress());
-//        pfBorderConsignee.setZip(comUserAddress.getZip());
+        logger.info("<4>添加订单地址信息");
+        ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+        PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+        pfBorderConsignee.setCreateTime(new Date());
+        pfBorderConsignee.setPfBorderId(order.getId());
+        pfBorderConsignee.setUserId(comUserAddress.getUserId());
+        pfBorderConsignee.setConsignee(comUserAddress.getName());
+        pfBorderConsignee.setMobile(comUserAddress.getMobile());
+        pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+        pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+        pfBorderConsignee.setCityId(comUserAddress.getCityId());
+        pfBorderConsignee.setCityName(comUserAddress.getCityName());
+        pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+        pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+        pfBorderConsignee.setAddress(comUserAddress.getAddress());
+        pfBorderConsignee.setZip(comUserAddress.getZip());
+        pfBorderConsigneeMapper.insert(pfBorderConsignee);
         return rBOrderId;
     }
 

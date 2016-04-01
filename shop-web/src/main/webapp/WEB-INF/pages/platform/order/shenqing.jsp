@@ -32,7 +32,7 @@
         </div>
     </a>
 </div>--%>
-<div class="paidan">
+<div class="paidan" style="display: none;">
     <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
     <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
 </div>
@@ -46,15 +46,26 @@
         </tr>
         <tr>
             <td>注册麦链商场账户</td>
-            <td>是</td>
+            <td>已完成</td>
             <td>--</td>
         </tr>
         <tr>
             <td>实名认证</td>
-            <td>
-                <span style="color: #FF5200">否</span>
-            </td>
-            <td><a href="javascript:void(0);" onclick="goVerified();" style="color: #FF5200;text-decoration: underline">去完成</a></td>
+            <c:choose>
+                <c:when test="${user.auditStatus == 2}">
+                    <td>已完成</td>
+                    <td>--</td>
+                </c:when>
+                <c:otherwise>
+                    <td><span style="color: #FF5200">否</span></td>
+                    <c:if test="${user.auditStatus == 1}">
+                        <td><span style="color: #FF5200">审核中</span></td>
+                    </c:if>
+                    <c:if test="${user.auditStatus == 0}">
+                        <td><a href="javascript:void(0);" onclick="goVerified();" style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
         </tr>
     </table>
 </div>
@@ -160,7 +171,7 @@
 </main>
 <section class="sec2">
 
-    <p><a href="<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}&type=0">继续</a></p>
+    <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
 
     <%--<p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>--%>
 </section>
@@ -177,16 +188,17 @@
     <p class="tishi" id="errorMessageId"></p>
     <h1 class="j_qu" id="nextPageId">下一步</h1>
 </div>
-<div class="back_login" style="display:none;">
-    <p>您还不是合伙人，先去好货市场看看把~</p>
-    <h1><span id="quxiao">取消</span><span id="goMark">去认证</span></h1>
+<div id="realNameVerifyDiv" class="back_login" style="display:none;">
+    <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
+    <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified();">去认证</span></h1>
 </div>
 <div class="back" style="display: none">
 
 </div>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/js/iscroll.js"></script>
 <script>
     function goVerified() {
@@ -197,6 +209,21 @@
 
     $("#nextPageId").bind("onclick", function () {
         window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+    });
+
+    $("#goToNext").on("click", function(){
+        var auditStatus = "${user.auditStatus}";
+        if(auditStatus == 2){
+            window.location.href = "<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+        } else if(auditStatus == 1){
+            alert("您的实名认证正在审核中,请耐心等候!");
+        } else if(auditStatus == 0){
+            $("#realNameVerifyDiv").show();
+        }
+    });
+
+    $("#quxiao").on("click", function(){
+        $("#realNameVerifyDiv").hide();
     });
 
     $(".down").toggle(function () {

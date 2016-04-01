@@ -51,12 +51,11 @@ public class UserApplyController extends BaseController {
      * @date 2016/3/5 13:51
      */
     @RequestMapping("/apply.shtml")
-    public String partnersApply(HttpServletRequest request,
+    public ModelAndView partnersApply(HttpServletRequest request,
                                 HttpServletResponse response,
                                 @RequestParam(value = "skuId", required = true) Integer skuId,
-                                @RequestParam(value = "pUserId", required = false) Long pUserId,
-                                Model model) throws Exception {
-
+                                @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+        ModelAndView res = new ModelAndView();
         ComUser user = getComUser(request);
         if (user == null) {
             throw new BusinessException("用户未登录!");
@@ -68,9 +67,15 @@ public class UserApplyController extends BaseController {
         if (pUserId != null && pUserId > 0) {
             ComUser pUser = userService.getUserById(pUserId);
             checkParentData(pUser, skuId);
-            model.addAttribute("", pUserId);
+            res.addObject("pUserId", pUserId);
         }
-        return "platform/order/shenqing";
+
+        // 判断排单标志位,如果处于排单状态下,显示排单人数
+
+        res.addObject("user", user);
+        res.addObject("skuId", skuId);
+        res.setViewName("platform/order/shenqing");
+        return res;
     }
 
     /**

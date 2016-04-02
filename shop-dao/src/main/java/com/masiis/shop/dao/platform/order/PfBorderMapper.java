@@ -32,10 +32,9 @@ public interface PfBorderMapper {
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 
-    List<PfBorder> selectByConditionAndOrderByctime(PfBorder pfBorder);
-
     void updateByPrimaryKey(PfBorder pfBorder);
-    List<PfBorder> selectByUserPid(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
+
+    List<PfBorder> selectByUserPid(@Param("userPId") Long userPId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
 
 
     List<PfBorder> selectUnCountingByUserAndDate( @Param("userid") Long userid,

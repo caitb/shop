@@ -159,7 +159,6 @@
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
   background: white;
-  display: none;
 }
 .wrap #box main .sec2 > h3 input {
   display: none;
@@ -174,10 +173,6 @@
   background: url("../images/icon_11.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
-}
-.tui,#hehuo{
-    /*display: none;*/
-
 }
 .wrap #box main .sec2 #hehuo {
   width: 100%;

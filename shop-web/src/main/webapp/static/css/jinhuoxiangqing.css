@@ -44,6 +44,40 @@ body {
 }
 .wrap main .kuaidi p {
   line-height: 25px;
+}.paidan{
+   width:100%;
+   background: white;
+  margin-top: 10px;
+ }
+.paidan>p{
+  margin:0 10px;
+  color:#999;
+  font-size: 12px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+.paidan>p span{
+  font-style: 12px;
+}
+.paidan>h1 img{
+  display: block;
+  width: 20%;
+}
+.paidan>h1{
+  margin: 0 10px;
+  letter-spacing: 1px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  padding: 10px 0 5px 0;
+}
+.paidan>h1 b{
+  font-size: 12px;
+}
+.paidan>h1 span{
+  font-size: 12px;
+  color: #f52000;
 }
 .wrap main .sec1 {
   width: 100%;
@@ -52,16 +86,13 @@ body {
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: justify;
+  margin-top:10px;
 }
 .wrap main .sec1 img {
   display: inline-block;
   width: 15px;
   height: 20px;
   margin-left: 10px;
-  margin-top: 10px;
 }
 .wrap main .sec1 div {
   width: 88%;
@@ -116,30 +147,26 @@ body {
 }
 .wrap main .sec2 div {
   -webkit-box-flex: 1;
-  -moz-box-flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
   margin-left: 10px;
 }
 .wrap main .sec2 div h2 {
   color: #333333;
   font-size: 12px;
-  height: 15px;
+  margin-bottom: 5px;
 }
 .wrap main .sec2 div h3 {
-  height: 15px;
   font-size: 12px;
   color: #999999;
+  margin-bottom: 5px;
 }
 .wrap main .sec2 div h3 span {
   font-size: 12px;
 }
-.wrap main .sec2 div h3 b {
+.wrap main .sec2 div p b {
   font-size: 12px;
   float: right;
   color: #999999;
@@ -147,16 +174,14 @@ body {
 }
 .wrap main .sec2 div p {
   width: 100%;
-  height: 15px;
   font-size: 12px;
   color: #999999;
 }
 .wrap main .sec2 div p span {
-  color: #FF7F5A;
-  display: inline-block;
-  float: right;
+  color: #FF5200;
   margin-right: 10px;
   font-size: 12px;
+
 }
 .wrap main .sec2 div h1 {
   width: 100%;

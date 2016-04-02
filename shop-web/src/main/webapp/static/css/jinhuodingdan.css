@@ -94,8 +94,8 @@
 }
 .wrap .box main .all .sec1 .shangpin .photo img {
   display: block;
-  width: 54px;
-  height: 54px;
+  width: 62px;
+  height: 62px;
   border: 1px solid #999999;
 }
 .wrap .box main .all .sec1 .shangpin div {
@@ -127,9 +127,9 @@
   margin-right: 10px;
 }
 .wrap .box main .all .sec1 .shangpin div .defult {
-  padding-bottom: 5px;
   font-size: 12px;
   margin-right: 10px;
+  text-align: right;
 }
 .wrap .box main .all .sec1 .shangpin div .defult span {
   font-size: 12px;
@@ -139,7 +139,6 @@
   color: #A5A5A5;
   text-align: right;
   font-size: 12px;
-  padding: 5px 0;
 }
 .wrap .box main .all .sec1 h1 span {
   display: inline-block;

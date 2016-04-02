@@ -57,19 +57,20 @@
                                 <div>
                                     <h2>${pbi.skuName}</h2>
                                     <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款：<span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
-                                    <h1>
+                                    <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.unitPrice}</span></p>
+
+                                </div>
+                            </div>
+                                <h1>
                                         <%--<b>合计：￥${pb.orderAmount}</b>
                                         (共<span>${pb.totalQuantity}</span>
                                         件商品 运费
                                         <span>￥${pb.shipAmount}</span>)--%>
-                                        <b>发货方：</b>
-                                        <span>自己发货</span>
-                                        <b>类型：</b>
-                                        <span>下级补货</span>
-                                    </h1>
-                                </div>
-                            </div></c:forEach>
+                                    <b>发货方：</b>
+                                    <span>自己发货</span>
+                                    <b>类型：</b>
+                                    <span>下级补货</span>
+                                </h1></c:forEach>
 
 
                             <div class="ding">

@@ -102,17 +102,15 @@
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   display: -webkit-box;
-  -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
   margin-left: 6px;
+  height:62px;
 }
 .wrap .box main .all .sec1 .shangpin div h2 {
   color: #333333;
   font-size: 12px;
   margin-top: -5px;
+  line-height:25px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
   font-size: 12px;
@@ -130,12 +128,14 @@
 .wrap .box main .all .sec1 .shangpin div .defult {
   margin-right: 10px;
   text-align: right;
+  line-height: 30px;
 }
 .wrap .box main .all .sec1 h1 {
   margin: 0 10px;
   color: #A5A5A5;
   text-align: right;
   font-size: 12px;
+  padding: 5px 0;
 }
 .wrap .box main .all .sec1 h1 span {
   display: inline-block;

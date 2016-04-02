@@ -580,7 +580,8 @@ ace.handle_side_menu = function($) {
 			var href = link_element.attr('href');
 			history.pushState({'url': href, 'hash': link_element.attr('data-url')}, null, href);
 			*/
-			TabControlAppend(link_element.attr('index'), link_element.text(), link_element.attr('data-url'));
+			//TabControlAppend(link_element.attr('index'), link_element.text(), link_element.attr('data-url'));
+			$('#myTabbable').add(link_element.attr('index'),link_element.text(),link_element.attr('data-url'));
 
 			return;
 		}

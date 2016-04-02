@@ -51,12 +51,18 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <h3>规格：<span>默认</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
+                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h1><%--<b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)--%>
+                                        <b>发货方：</b>
+                                        <span>自己发货</span>
+                                        <b>类型：</b>
+                                        <span>下级补货</span>
+                                    </h1>
                                 </div>
                             </div>
                             </c:forEach>
-                            <h1><b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)</h1>
+
                             <div class="ding">
                                 <p><a href="<%=path%>/border/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if><c:if test="${pb.payStatus ==1 && pb.shipStatus==0}">

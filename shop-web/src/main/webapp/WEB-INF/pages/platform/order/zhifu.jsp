@@ -37,7 +37,7 @@
                 <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
                 <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
             </div>
-            <c:if test="${pfBorder.sendType==2}">
+            <c:if test="${pfBorder.orderType==1 && pfBorder.sendType==2}">
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
                 </div>
@@ -96,12 +96,14 @@
     }
 
     function submit() {
-        if ($("#addressId").val() == null || $("#addressId").val() == "") {
+        var sendType =${pfBorder.sendType};
+        var orderType=${pfBorder.orderType};
+        if (orderType==1 && sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {
             alert("请填写收获地址");
             return;
         }
         var paraData = {};
-        paraData.bOrderId = "${bOrderId}";
+        paraData.bOrderId = "${pfBorder.id}";
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
         $.ajax({

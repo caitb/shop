@@ -77,7 +77,7 @@ public class ProductController extends BaseController {
     }
 
     /**
-     * 自己拿货，更新库存
+     * 自己发货，维护库存
      */
     @RequestMapping(value = "/selfUser/updateStock.do")
     @ResponseBody
@@ -86,9 +86,9 @@ public class ProductController extends BaseController {
                                      @RequestParam(required = true) Integer id) {
         JSONObject object = new JSONObject();
         try {
-            ADD:
             productService.updateStock(stock, id);
             object.put("isError", false);
+            object.put("message", "√库存更改成功 ");
         } catch (Exception ex) {
             object.put("isError", true);
             object.put("message", ex.getMessage());

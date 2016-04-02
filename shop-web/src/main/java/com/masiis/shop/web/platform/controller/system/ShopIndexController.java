@@ -4,6 +4,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
@@ -54,6 +55,19 @@ public class ShopIndexController extends BaseController {
             urls.add(url);
         }
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
+
+        List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
+        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
+        for (PfBorder pfBord : pfBorders) {
+            if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+                pfBorders10.add(pfBord);//代发货
+            } else if (pfBord.getOrderStatus() == 6) {
+                pfBorders6.add(pfBord);//排单中
+            }
+        }
+        Integer borderNum = pfBorders10.size()+pfBorders6.size();
+        modelAndView.addObject("borderNum",borderNum);//订单数量
         modelAndView.addObject("comUserAccount",comUserAccount);//封装用户统计信息
         modelAndView.addObject("urls",urls);//封装图片地址集合
         modelAndView.setViewName("index");

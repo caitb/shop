@@ -143,12 +143,13 @@ public class ProductService {
      * @Date 2016/3/16 0016 下午 7:38
      * 更新库存
      */
-    public void updateStock(Integer stock, Integer id) throws Exception {
+    public void updateStock(Integer selfStock, Integer id) throws Exception {
         Map<String, Object> param = new HashMap<>();
         Product product = productMapper.getProductStock(id);
-        if (product != null && (product.getStock() - stock >= 0)) {
-            param.put("stock", product.getStock() - stock);
+        if (product != null) {
+            param.put("stock", selfStock);
             param.put("id", id);
+            ADD:
             productMapper.updateStock(param);
         }
     }

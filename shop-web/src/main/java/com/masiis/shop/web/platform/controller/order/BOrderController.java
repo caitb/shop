@@ -416,21 +416,7 @@ public class BOrderController extends BaseController {
             if (user == null) {
                 throw new BusinessException("用户session丢失");
             }
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            if (pfBorder.getSendType() == 1) {//平台代发
-                if (pfBorder.getOrderType() == 2) {//拿货
-                    pfBorder.setOrderStatus(3);
-                    pfBorder.setShipStatus(9);
-                    bOrderService.updateGetStock(pfBorder, user);
-                    bOrderService.updateBOrder(pfBorder);
-                    comUserAccountService.countingByOrder(pfBorder);
-                }
-            } else if (pfBorder.getSendType() == 2) {//自己发货
-                pfBorder.setOrderStatus(3);
-                pfBorder.setShipStatus(9);
-                bOrderService.updateBOrder(pfBorder);
-                comUserAccountService.countingByOrder(pfBorder);
-            }
+            bOrderService.closeDeal(orderId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -450,12 +436,11 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/deliver.do")
     @ResponseBody
-    @Transactional
     public String deliver(HttpServletRequest request,
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight,
-                          @RequestParam(required = true) Integer shipManId) {
+                          @RequestParam(required = true) String shipManId) {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -463,36 +448,7 @@ public class BOrderController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            if (pfBorder.getSendType() == 1) {//平台代发
-                if (pfBorder.getOrderType() == 2) {//拿货
-                    if (freight == null || freight == "") {
-                        throw new BusinessException("请重新输入快递单号");
-                    } else {
-                        pfBorder.setShipStatus(5);
-                        pfBorder.setOrderStatus(8);
-                        PfBorderFreight pfBorderFreight = new PfBorderFreight();
-                        pfBorderFreight.setCreateTime(new Date());
-                        pfBorderFreight.setShipManId(shipManId);
-                        pfBorderFreight.setPfBorderId(orderId);
-                        pfBorderFreight.setFreight(freight);
-                        pfBorderFreight.setShipManName(shipManName);
-                        bOrderService.updateStock(pfBorder, user);
-                        bOrderService.updateBOrder(pfBorder);
-                        borderFreightService.addPfBorderFreight(pfBorderFreight);
-                    }
-                }
-            } else if (pfBorder.getSendType() == 2) {//自己发货
-                pfBorder.setShipStatus(5);
-                pfBorder.setOrderStatus(8);
-                PfBorderFreight pfBorderFreight = new PfBorderFreight();
-                pfBorderFreight.setCreateTime(new Date());
-                pfBorderFreight.setPfBorderId(orderId);
-                pfBorderFreight.setFreight(freight);
-                pfBorderFreight.setShipManName(shipManName);
-                bOrderService.updateBOrder(pfBorder);
-                borderFreightService.addPfBorderFreight(pfBorderFreight);
-            }
+            bOrderService.deliver(shipManName,orderId,freight,shipManId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -521,9 +477,9 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7 && pfBord.getShipStatus() == 0) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 5) {
+            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
@@ -559,8 +515,12 @@ public class BOrderController extends BaseController {
                     }
 //                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
 //                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
-                    ComUser user = userService.getUserById(pfBorder.getUserPid());
-                    pfBorder.setPidUserName(user.getRealName());
+                    if(pfBorder.getUserPid()==0){
+                        pfBorder.setPidUserName("平台代理");
+                    }else{
+                        ComUser user = userService.getUserById(pfBorder.getUserPid());
+                        pfBorder.setPidUserName(user.getRealName());
+                    }
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }
@@ -671,6 +631,7 @@ public class BOrderController extends BaseController {
                 pfBorders6.add(pfBord);//排单中
             }
         }
+        Integer borderNum10 = pfBorders10.size();
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
@@ -706,6 +667,7 @@ public class BOrderController extends BaseController {
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pfBorders", pfBorderss);
+        modelAndView.addObject("borderNum10", borderNum10);
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }

@@ -89,25 +89,6 @@
         i--;
         $(".number").val(i)
     })
-    //ajax
-    $('.que_que').on('click', function () {
-        var pfuId = $("#pfuId").val();
-        $.ajax({
-            url: '<%=basePath%>product/user/stock',
-            type: 'post',
-            data: {stock:i,id:pfuId},
-            dataType: 'json',
-            success: function (data) {
-               $(".back").css("display","none");
-               $(".back_que").css("display","none");
-               if(data['isError'] == false){
-                   location.reload(true);
-                }else{
-                   alert(data['message']);
-               }
-            }
-        });
-    });
     function buhuokucun(a,b){
         $("#addsku").html(a);
         $("#maxStock").html(b);

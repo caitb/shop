@@ -94,28 +94,27 @@
 }
 .wrap .box main .all .sec1 .shangpin .photo img {
   display: block;
-  width: 54px;
-  height: 54px;
+  width: 62px;
+  height: 62px;
   border: 1px solid #999999;
 }
 .wrap .box main .all .sec1 .shangpin div {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   display: -webkit-box;
-  -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
   margin-left: 6px;
+  height:62px;
 }
 .wrap .box main .all .sec1 .shangpin div h2 {
   color: #333333;
   font-size: 12px;
+  margin-top: -5px;
+  line-height:25px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
-  color: #999999;
   font-size: 12px;
+  color: #999999;
 }
 .wrap .box main .all .sec1 .shangpin div h3 span {
   font-size: 12px;
@@ -127,11 +126,9 @@
   margin-right: 10px;
 }
 .wrap .box main .all .sec1 .shangpin div .defult {
-  padding-bottom: 5px;
-  font-size: 12px;
   margin-right: 10px;
-}
-.wrap .box main .all .sec1 .shangpin div .defult span {
+  text-align: right;
+  line-height: 30px;
   font-size: 12px;
 }
 .wrap .box main .all .sec1 h1 {

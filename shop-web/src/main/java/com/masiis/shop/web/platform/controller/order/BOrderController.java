@@ -34,6 +34,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -226,14 +227,13 @@ public class BOrderController extends BaseController {
             if (userSku.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
                 lowProfit = lowProfit.add(pfBorderItem.getTotalPrice());
             } else {
-                ComAgentLevel downAgenLevel = bOrderService.findComAgentLevel(userSku.getAgentLevelId() + 1);
-                BigDecimal lowerAmount = downAgenLevel.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
+                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), userSku.getAgentLevelId() + 1);
+                BigDecimal lowerAmount = pfSkuAgent.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
                 lowProfit = lowProfit.add(lowerAmount.subtract(pfBorderItem.getTotalPrice()));
             }
             BigDecimal higherAmount = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity()));
             highProfit = highProfit.add(higherAmount.subtract(pfBorderItem.getTotalPrice()));
         }
-
         //获得地址
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, userAddressId, comUser.getId());
         if (comUserAddress != null) {
@@ -243,8 +243,8 @@ public class BOrderController extends BaseController {
         mv.addObject("pfBorder", pfBorder);
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
-        mv.addObject("lowProfit", lowProfit);
-        mv.addObject("highProfit", highProfit);
+        mv.addObject("lowProfit", lowProfit.setScale(2, RoundingMode.HALF_DOWN));
+        mv.addObject("highProfit", highProfit.setScale(2, RoundingMode.HALF_DOWN));
         mv.setViewName("platform/order/zhifu");
         return mv;
     }
@@ -260,12 +260,9 @@ public class BOrderController extends BaseController {
     public String payBOrderSubmit(HttpServletRequest request,
                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                   @RequestParam(value = "userMessage", required = true) String userMessage,
-                                  @RequestParam(value = "userAddressId", required = true) Long userAddressId) {
+                                  @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
         JSONObject jsonObject = new JSONObject();
         try {
-            if (userAddressId <= 0) {
-                throw new BusinessException("收货地址不能为空");
-            }
             if (bOrderId <= 0) {
                 throw new BusinessException("订单号错误");
             }
@@ -273,22 +270,29 @@ public class BOrderController extends BaseController {
             if (!bOrderService.checkBOrderStock(pfBorder)) {
                 throw new BusinessException("订单商品库存不足");
             }
+            //拿货方式(0未选择1平台代发2自己发货)
+            PfBorderConsignee pfBorderConsignee = null;
+            if (pfBorder.getOrderType() == 1 && pfBorder.getSendType() == 2) {
+                if (userAddressId == null || userAddressId <= 0) {
+                    throw new BusinessException("收货地址不能为空");
+                }
+                ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+                pfBorderConsignee = new PfBorderConsignee();
+                pfBorderConsignee.setCreateTime(new Date());
+                pfBorderConsignee.setPfBorderId(pfBorder.getId());
+                pfBorderConsignee.setUserId(comUserAddress.getUserId());
+                pfBorderConsignee.setConsignee(comUserAddress.getName());
+                pfBorderConsignee.setMobile(comUserAddress.getMobile());
+                pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+                pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+                pfBorderConsignee.setCityId(comUserAddress.getCityId());
+                pfBorderConsignee.setCityName(comUserAddress.getCityName());
+                pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+                pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+                pfBorderConsignee.setAddress(comUserAddress.getAddress());
+                pfBorderConsignee.setZip(comUserAddress.getZip());
+            }
             pfBorder.setUserMessage(userMessage);
-            ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
-            PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
-            pfBorderConsignee.setCreateTime(new Date());
-            pfBorderConsignee.setPfBorderId(pfBorder.getId());
-            pfBorderConsignee.setUserId(comUserAddress.getUserId());
-            pfBorderConsignee.setConsignee(comUserAddress.getName());
-            pfBorderConsignee.setMobile(comUserAddress.getMobile());
-            pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-            pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-            pfBorderConsignee.setCityId(comUserAddress.getCityId());
-            pfBorderConsignee.setCityName(comUserAddress.getCityName());
-            pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
-            pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
-            pfBorderConsignee.setAddress(comUserAddress.getAddress());
-            pfBorderConsignee.setZip(comUserAddress.getZip());
             bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
             jsonObject.put("isError", false);
         } catch (Exception ex) {
@@ -368,6 +372,7 @@ public class BOrderController extends BaseController {
         String skuName = "";//合作产品
         String levelName = "";//合伙人等级
         String pRealName = "";//上级合伙人
+        String sendType = "";//拿货方式
         ComUser comUser = getComUser(request);
         realName = comUser.getRealName();
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
@@ -385,11 +390,20 @@ public class BOrderController extends BaseController {
             //判断是否已经
             pRealName = pComuser.getRealName();
         }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 0) {
+            sendType = "未选择";
+        } else if (pfBorder.getSendType() == 1) {
+            sendType = "平台代发";
+        } else if (pfBorder.getSendType() == 2) {
+            sendType = "自己发货";
+        }
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
         mav.addObject("pRealName", pRealName);
         mav.addObject("userSkuId", pfUserSku.getId());
+        mav.addObject("sendType", sendType);
         mav.setViewName("platform/order/lingquzhengshu");
 //            }
 //            //补货订单
@@ -405,7 +419,6 @@ public class BOrderController extends BaseController {
      * @author muchaofeng
      * @date 2016/3/20 13:40
      */
-
     @RequestMapping("/closeDeal.do")
     @ResponseBody
     @Transactional
@@ -416,21 +429,7 @@ public class BOrderController extends BaseController {
             if (user == null) {
                 throw new BusinessException("用户session丢失");
             }
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            if (pfBorder.getSendType() == 1) {//平台代发
-                if (pfBorder.getOrderType() == 2) {//拿货
-                    pfBorder.setOrderStatus(3);
-                    pfBorder.setShipStatus(9);
-                    bOrderService.updateGetStock(pfBorder, user);
-                    bOrderService.updateBOrder(pfBorder);
-                    comUserAccountService.countingByOrder(pfBorder);
-                }
-            } else if (pfBorder.getSendType() == 2) {//自己发货
-                pfBorder.setOrderStatus(3);
-                pfBorder.setShipStatus(9);
-                bOrderService.updateBOrder(pfBorder);
-                comUserAccountService.countingByOrder(pfBorder);
-            }
+            bOrderService.closeDeal(orderId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -447,15 +446,13 @@ public class BOrderController extends BaseController {
      * @author muchaofeng
      * @date 2016/3/20 13:40
      */
-
     @RequestMapping("/deliver.do")
     @ResponseBody
-    @Transactional
     public String deliver(HttpServletRequest request,
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight,
-                          @RequestParam(required = true) Integer shipManId) {
+                          @RequestParam(required = true) String shipManId) {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -463,36 +460,7 @@ public class BOrderController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
-            PfBorder pfBorder = bOrderService.getPfBorderById(orderId);
-            if (pfBorder.getSendType() == 1) {//平台代发
-                if (pfBorder.getOrderType() == 2) {//拿货
-                    if (freight == null || freight == "") {
-                        throw new BusinessException("请重新输入快递单号");
-                    } else {
-                        pfBorder.setShipStatus(5);
-                        pfBorder.setOrderStatus(8);
-                        PfBorderFreight pfBorderFreight = new PfBorderFreight();
-                        pfBorderFreight.setCreateTime(new Date());
-                        pfBorderFreight.setShipManId(shipManId);
-                        pfBorderFreight.setPfBorderId(orderId);
-                        pfBorderFreight.setFreight(freight);
-                        pfBorderFreight.setShipManName(shipManName);
-                        bOrderService.updateStock(pfBorder, user);
-                        bOrderService.updateBOrder(pfBorder);
-                        borderFreightService.addPfBorderFreight(pfBorderFreight);
-                    }
-                }
-            } else if (pfBorder.getSendType() == 2) {//自己发货
-                pfBorder.setShipStatus(5);
-                pfBorder.setOrderStatus(8);
-                PfBorderFreight pfBorderFreight = new PfBorderFreight();
-                pfBorderFreight.setCreateTime(new Date());
-                pfBorderFreight.setPfBorderId(orderId);
-                pfBorderFreight.setFreight(freight);
-                pfBorderFreight.setShipManName(shipManName);
-                bOrderService.updateBOrder(pfBorder);
-                borderFreightService.addPfBorderFreight(pfBorderFreight);
-            }
+            bOrderService.deliver(shipManName,orderId,freight,shipManId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -521,9 +489,9 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7 && pfBord.getShipStatus() == 0) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 5) {
+            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
@@ -559,8 +527,12 @@ public class BOrderController extends BaseController {
                     }
 //                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
 //                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
-                    ComUser user = userService.getUserById(pfBorder.getUserPid());
-                    pfBorder.setPidUserName(user.getRealName());
+                    if(pfBorder.getUserPid()==0){
+                        pfBorder.setPidUserName("平台代理");
+                    }else{
+                        ComUser user = userService.getUserById(pfBorder.getUserPid());
+                        pfBorder.setPidUserName(user.getRealName());
+                    }
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }
@@ -671,6 +643,7 @@ public class BOrderController extends BaseController {
                 pfBorders6.add(pfBord);//排单中
             }
         }
+        Integer borderNum10 = pfBorders10.size();
         List<List<PfBorder>> pfBorderss = new ArrayList<>();
         pfBorderss.add(0, pfBorders);
         pfBorderss.add(1, pfBorders0);
@@ -706,6 +679,7 @@ public class BOrderController extends BaseController {
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pfBorders", pfBorderss);
+        modelAndView.addObject("borderNum10", borderNum10);
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
     }
@@ -720,4 +694,5 @@ public class BOrderController extends BaseController {
         }
         return mv;
     }
+
 }

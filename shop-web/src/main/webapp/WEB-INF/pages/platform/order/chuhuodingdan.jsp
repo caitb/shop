@@ -51,12 +51,18 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <h3>规格：<span>默认</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
+                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div>
+                                <h1><%--<b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)--%>
+                                    <b>发货方：</b>
+                                    <span>自己发货</span>
+                                    <b>类型：</b>
+                                    <span>下级补货</span>
+                                </h1>
                             </c:forEach>
-                            <h1><b>合计：￥${pb.orderAmount}</b>(共<span>${pb.totalQuantity}</span>件商品 运费<span>￥${pb.shipAmount}</span>)</h1>
+
                             <div class="ding">
                                 <p><a href="<%=path%>/border/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if><c:if test="${pb.payStatus ==1 && pb.shipStatus==0}">
@@ -457,14 +463,14 @@
        </div>
        <div class="back_que">
            <p>确认发货?</p>
-           <h4>快递公司:<select id="select"><option selected="selected">顺风</option><option >EMS</option></select></h4>
+           <h4>快递公司:<select id="select"><option value="1">顺风</option><option value="2">EMS</option></select></h4>
            <h4>快递单号:<input type="text" id="input"/></h4>
-           <h3 id="fahuo">发货</h3>
+           <h3 id="faHuo">发货</h3>
        </div>
        <div class="shouhuo">
            <p>收货人信息</p>
            <h4><span>姓　名:</span><span id="1"></span></h4>
-           <h4><span>地　址:</span><span id="2">阿斯科利的asdasdasdasdas将阿</span></h4>
+           <h4><span>地　址:</span><span id="2">阿斯科利的阿</span></h4>
            <h4><span>手机号:</span><span id="3"></span></h4>
            <h4><span>邮　编:</span><span id="4"></span></h4>
            <h3 class="close">关闭</h3>
@@ -499,17 +505,18 @@
                function fahuo(id){
                    $(".back").css("display","-webkit-box");
                    $(".back_que").css("display","-webkit-box");
-                   $("#fahuo").on("click",function(){
+                   $("#faHuo").on("click",function(){
                        $(".back_que").hide();
                        $(".back").hide();
-                       var shipManName = $("#select").val();
+                       var shipManId = $("#select option:selected").val();
+                       var shipManName = $("#select option:selected").text();
                        var freight = $("#input").val();
                        var aa="fahuo_"+id;
-
+                       alert(shipManName);
                        $.ajax({
                            type:"POST",
                            url : "<%=path%>/border/deliver.do",
-                           data:{shipManName:shipManName,freight:freight,orderId:id},
+                           data:{shipManName:shipManName,freight:freight,orderId:id,shipManId:shipManId},
                            dataType:"Json",
                            success:function(date){
                                    $("span[name=" + aa + "]").attr("style", "display:none");

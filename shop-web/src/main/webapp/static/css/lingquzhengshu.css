@@ -60,11 +60,18 @@
   width: 1px;
   text-indent: 10px;
 }
+.btn{
+  width:100%;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+}
 .wrap .lingqu {
   display: block;
   background: #F74A11;
   border-radius: 5px;
-  line-height: 40px;
+  line-height: 35px;
+  padding: 0 20px;
   text-align: center;
   color: white;
   margin: 3rem 10px 5px 10px;

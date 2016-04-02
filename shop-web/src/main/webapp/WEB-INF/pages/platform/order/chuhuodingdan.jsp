@@ -459,7 +459,7 @@
            <p>确认发货?</p>
            <h4>快递公司:<select id="select"><option selected="selected">顺风</option><option >EMS</option></select></h4>
            <h4>快递单号:<input type="text" id="input"/></h4>
-           <h3 id="fahuo">发货</h3>
+           <h3 id="faHuo">发货</h3>
        </div>
        <div class="shouhuo">
            <p>收货人信息</p>
@@ -499,13 +499,13 @@
                function fahuo(id){
                    $(".back").css("display","-webkit-box");
                    $(".back_que").css("display","-webkit-box");
-                   $("#fahuo").on("click",function(){
+                   $("#faHuo").on("click",function(){
                        $(".back_que").hide();
                        $(".back").hide();
                        var shipManName = $("#select").val();
                        var freight = $("#input").val();
                        var aa="fahuo_"+id;
-
+                       alert(shipManName);
                        $.ajax({
                            type:"POST",
                            url : "<%=path%>/border/deliver.do",

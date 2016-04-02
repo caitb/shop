@@ -20,7 +20,7 @@
 <body>
        <div class="wrap">
            <div class="box">
-                <header class="xq_header"><a href="<%=path%>/profile/profile">
+                <header class="xq_header"><a href="<%=path%>/border/borderManagement.html">
                     <img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>

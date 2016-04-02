@@ -57,7 +57,7 @@
                  <ul>
                         <li class="market">
                                 <a class="herf" href="<%=path%>/marketGood/market">
-                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""><span>1</span></h1>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
                                 <span>好货市场</span></a>
                         </li>
                         <li class="market" onclick="javascript:window.location.replace('<%=basePath%>product/user/${user.id}');">
@@ -66,8 +66,8 @@
                                 <span>商品管理</span></a>
                         </li>
                         <li class="market">
-                            <a class="herf" href="javascript:;">
-                                <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""></h1>
+                            <a class="herf" href="<%=path%>/border/borderManagement.html">
+                                <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""><c:if test="${borderNum!=0}"><span>${borderNum}</span></c:if></h1>
                                 <span>订单管理</span></a>
                         </li>
                 </ul>
@@ -75,7 +75,7 @@
                 <nav>
                      <ul>
                             <li class="market"><a class="herf" href="javascript:;">
-                                    <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""></h1>
+                                    <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""><span>1</span></h1>
                                     <span>我的下级</span></a>
                             </li>
                             <li class="market"><a class="herf" href="javascript:;">

@@ -16,19 +16,6 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/checkUtil.js"></script>
 </head>
-<script>
-    function updateAddress() {
-        var paramJson = addressJS.getJsonParam();
-        if (addressJS.validateAddressInfo(paramJson)) {
-            $.post("/userAddress/addOrUpdateAddress.do",
-                    paramJson, function (data) {
-                        if (data == "success") {
-                            window.location.href = "<%=path%>/userAddress/toManageAddressPage.html";
-                        }
-                    });
-        }
-    }
-</script>
 <body>
 <main>
     <div class="wrap">
@@ -82,7 +69,8 @@
             </div>
         </div>
         <input type="text" id="operateTypeId" style="display: none" value="update"/>
-        <input type="text" id="jumpTypeId" style="display: none" value="jumpToOrder"/>
+        <input type="text" id="addAddressJumpTypeId" style="display:none;" value="${addAddressJumpType}">
+        <input type="text" id="manageAddressJumpTypeId" style="display:none;" value="${manageAddressJumpType}">
         <a onclick="updateAddress()" class="baocun">
             保存
         </a>
@@ -93,6 +81,9 @@
 <script>
     comAreaJS.init("edit");
     addressJS.init();
+    function updateAddress() {
+        addressJS.updateAddress()
+    }
 </script>
 </body>
 </html>

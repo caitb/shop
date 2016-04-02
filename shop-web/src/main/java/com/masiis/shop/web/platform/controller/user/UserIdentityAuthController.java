@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.asm.Opcodes;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import org.apache.commons.lang.StringUtils;
@@ -28,12 +29,6 @@ public class UserIdentityAuthController extends BaseController {
 
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
-
-    static final int NOAUDIT = 0;//未审核
-    static final int AUDITING = 1;//审核中
-    static final int AUDITSUCCESS = 2;//审核通过
-    static final int AUDITFAIL = 3;//审核未通过
-
     /**
      * 跳转到身份认证界面
      * @author hanzengzhi
@@ -46,8 +41,12 @@ public class UserIdentityAuthController extends BaseController {
         ComUser comUser = getComUser(request);
         model.addAttribute("comUser",comUser);
         String jumpPage = "";
-        if (comUser!=null){
-            switch (auditStatus){
+        AuditStatusEnum auditStatusEnum = AuditStatusEnum.getAuditStatusEnum(auditStatus) ;
+        if (comUser!=null&&auditStatusEnum!=null){
+            switch (auditStatusEnum){
+                case NOAUDIT://未认证
+                    jumpPage = "platform/user/shimingrenzheng";
+                    break;
                 case AUDITING://审核中
                     break;
                 case AUDITSUCCESS://审核通过
@@ -99,7 +98,7 @@ public class UserIdentityAuthController extends BaseController {
                                   @RequestParam(value = "idCard", required = true) String idCard,
                                   @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
                                   @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl,
-                                  @RequestParam(value = "type", required = false) Integer type
+                                  @RequestParam(value = "type", required = false,defaultValue = "0") int type
 
     ) {
         JSONObject object = new JSONObject();
@@ -107,7 +106,7 @@ public class UserIdentityAuthController extends BaseController {
             ComUser comUser = getComUser(request);
             if (comUser == null) {
                 throw new BusinessException("用户信息有误请重新登陆");
-            } else if (comUser.getAuditStatus()==AUDITFAIL){
+            } else if (comUser.getAuditStatus()==AuditStatusEnum.AUDITING.getIndex()){
                 throw new BusinessException("已提交审核");
             }
             if (org.apache.commons.lang.StringUtils.isBlank(name)) {

@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserPersonalInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -39,14 +40,16 @@ public class UserPersonalInfoController extends BaseController {
         ComUser comUser = getComUser(request);
         Map<String,Object> map = null;
         if (comUser!=null){
-            map = userPersonalInfoService.getPersonalHomePageInfo(comUser.getId());
+            map = userPersonalInfoService.getPersonalHomePageInfo(comUser);
         }
         if (map!=null){
             model.addAttribute("pfskuAgents",map.get("pfskuAgents"));
         }
         model.addAttribute("comUser",comUser);
-        return null;
+        model.addAttribute("auditStatusName", AuditStatusEnum.getName(comUser.getAuditStatus()));
+        return "platform/user/gerenxinxi";
     }
+
 
     /**
      * 个人信息--微信号查询
@@ -71,7 +74,7 @@ public class UserPersonalInfoController extends BaseController {
      * @author hanzengzhi
      * @date 2016/4/1 12:07
      */
-    @RequestMapping(value = "lookIdentityAuthInfo.do")
+    @RequestMapping(value = "lookIdentityAuthInfo.html")
     public String lookIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
                                        @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus){
         //重定向到身份认证controller
@@ -118,7 +121,7 @@ public class UserPersonalInfoController extends BaseController {
      */
     @RequestMapping(value = "toAddressManagePage.do")
     public String toAddressManagePage(HttpServletRequest request,HttpServletResponse response,
-                                      @RequestParam(value = "jumpType",required = false)int jumpType){
+                                      @RequestParam(value = "jumpType",required = false,defaultValue = "0")int jumpType){
         //重定向到管理地址controller
         return "redirect:userAddress/toManageAddressPage.html?jumpType="+jumpType;
     }

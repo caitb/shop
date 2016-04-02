@@ -21,66 +21,53 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
-                                                                              alt=""></a>
+            <a href="javascript:;" onClick="javascript :history.go(-1);">
+                <img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>支付订单</p>
         </header>
         <main>
-            <c:if test="${orderType==0}">
+            <c:if test="${pfBorder.orderType==0}">
                 <div class="xinxi">
                     <p>注册信息</p>
                     <p>支付订单</p>
                     <p>提交资料</p>
                 </div>
             </c:if>
-            <%--<div class="xinz" onclick="toChooseAddressPage()">
-                <p><a>选择收货地址</a></p>
-            </div>
-            <section class="sec1">
-                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-                <div onclick="toChooseAddressPage()">
-                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                    <a href="#"><p>收货地址：
-                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span><img
-                                src="<%=path%>/static/images/next.png" alt=""></p></a>
-                </div>
-            </section>--%>
             <div class="paidan">
-            <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-            <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
-        </div>
-            <%--${productInfo}--%>
-            <section class="sec2">
-                <p class="photo">
-                    <img src="<%=path%>/static/images/shenqing_1.png.png" alt="">
-                </p>
-                <div>
-                    <h2>抗引力——快速瘦脸精华<b style="float:right; margin-right:10px;font-size:12px;">x1</b></h2>
-                    <h3>规格：<span>默认</span></h3>
-                    <p>商品总价:<span>123123</span>保证金:<span>123123</span></p>
+                <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
+                <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+            </div>
+            <c:if test="${pfBorder.sendType==2}">
+                <div class="xinz" onclick="toChooseAddressPage()">
+                    <p><a>选择收货地址</a></p>
                 </div>
-            </section>
+                <section class="sec1">
+                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                    <div onclick="toChooseAddressPage()">
+                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址：
+                            <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span><img
+                                    src="<%=path%>/static/images/next.png" alt=""></p></a>
+                    </div>
+                </section>
+            </c:if>
+            ${productInfo}
             <section class="sec3">
-                <%--<p>运费<span>到付</span></p>
-                <h1>共<b>${quantity}</b>件商品　运费：<span>到付</span><b>　合计：</b><span
-                        style="padding-right: 10px;">￥${orderAmount}</span></h1>--%>
                 <p>留言：<input type="text" id="userMessage" name="userMessage"></p>
             </section>
             <div>
                 <p><img src="<%=path%>/static/images/lirun.png" alt=""></p>
                 <h1>
-                    <span>啊上来肯德基</span>
-                    <span>啊上来肯德基</span>
+                    <span>预计您的利润</span>
+                    <span>￥${lowProfit}~￥${highProfit}</span>
                 </h1>
             </div>
             <section class="sec4">
-                <p><b>功夫v：</b><span>￥${orderAmount}</span></p>
-                <p>（含保证金12000）</p>
-                <%--<p><b>需付：</b><span>￥${receivableAmount}</span></p>--%>
+                <p><b>保证金：</b><span>￥${pfBorder.bailAmount}</span></p>
+                <p>共需支付：￥${pfBorder.receivableAmount}</p>
             </section>
             <a href="javascript:;" onclick="submit()" class="weixin">微信支付</a>
-            <%--<a href="javascript:;" class="xianxia">线下支付</a>--%>
         </main>
     </div>
 </div>

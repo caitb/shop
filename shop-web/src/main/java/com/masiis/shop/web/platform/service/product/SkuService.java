@@ -43,6 +43,11 @@ public class SkuService {
         return comSkuImageMapper.selectDefaultImgBySkuId(skuId);
     }
 
+    /**
+     * 判断库存是否足够
+     * @author ZhaoLiang
+     * @date 2016/4/1 16:19
+     */
     public int checkSkuStock(Integer skuId, int quantity, Long pUserId) {
         int n;
         if (pUserId == 0) {

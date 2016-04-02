@@ -199,45 +199,52 @@ public class BOrderController extends BaseController {
                                   @RequestParam(value = "userMessage", required = false) String userMessage,
                                   @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
         StringBuffer stringBuffer = new StringBuffer();
         int sumQuantity = 0;
+        BigDecimal lowProfit = BigDecimal.ZERO;//最低利润
+        BigDecimal highProfit = BigDecimal.ZERO;//最高利润
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+            PfUserSku userSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
+            //获取用户代理等级
+            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(userSku.getAgentLevelId());
             stringBuffer.append("<section class=\"sec2\" >");
             stringBuffer.append("<p class=\"photo\" >");
             stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
             stringBuffer.append("</p>");
             stringBuffer.append("<div>");
-            stringBuffer.append("<h2> " + pfBorderItem.getSkuName() + "'</h2>");
-            stringBuffer.append("<h3 ></h3>");
-            stringBuffer.append("<p ><span> ￥" + pfBorderItem.getUnitPrice() + " </span ><b style = \"float:right; margin-right:10px;font-size:12px;\" > x" + pfBorderItem.getQuantity() + " </b ></p >");
+            stringBuffer.append("<h2> " + pfBorderItem.getSkuName() + "'<b style=\"float:right; margin-right:10px;font-size:12px;\">x" + pfBorderItem.getQuantity() + "</b></h2>");
+            stringBuffer.append("<h3>合伙人等级：<span>" + comAgentLevel.getName() + "</span></h3>");
+            stringBuffer.append("<p>商品总价:<span>" + pfBorderItem.getTotalPrice() + "</span>保证金:<span>" + pfBorderItem.getBailAmount() + "</span></p>");
             stringBuffer.append("</div>");
             stringBuffer.append("</section>");
             sumQuantity += pfBorderItem.getQuantity();
+            if (userSku.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
+                lowProfit = lowProfit.add(pfBorderItem.getTotalPrice());
+            } else {
+                ComAgentLevel downAgenLevel = bOrderService.findComAgentLevel(userSku.getAgentLevelId() + 1);
+                BigDecimal lowerAmount = downAgenLevel.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
+                lowProfit = lowProfit.add(lowerAmount.subtract(pfBorderItem.getTotalPrice()));
+            }
+            BigDecimal higherAmount = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity()));
+            highProfit = highProfit.add(higherAmount.subtract(pfBorderItem.getTotalPrice()));
         }
 
         //获得地址
-        ComUser comUser = getComUser(request);
-        Long userId = null;
-        if (comUser != null) {
-            userId = comUser.getId();
-        } else {
-            userId = 1L;
-        }
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, userAddressId, userId);
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, userAddressId, comUser.getId());
         if (comUserAddress != null) {
             request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
         mv.addObject("comUserAddress", comUserAddress);
-        mv.addObject("bOrderId", bOrderId);
-        mv.addObject("receivableAmount", pfBorder.getReceivableAmount());
-        mv.addObject("orderAmount", pfBorder.getOrderAmount());
+        mv.addObject("pfBorder", pfBorder);
         mv.addObject("productInfo", stringBuffer.toString());
         mv.addObject("quantity", sumQuantity);
-        mv.addObject("orderType", pfBorder.getOrderType());
+        mv.addObject("lowProfit", lowProfit);
+        mv.addObject("highProfit", highProfit);
         mv.setViewName("platform/order/zhifu");
         return mv;
     }

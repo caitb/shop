@@ -28,9 +28,9 @@ public class SysConstants {
      * session
      * 当前订单的id和当前的订单的地址
      */
-    public static final String SESSION_ORDER_Id="orderId";
-    public static final String SESSION_ORDER_SELECTED_ADDRESS="orderSelectedAddress";
-    public static final String SESSION_ORDER_SKU_ID="skuId";
+    public static final String SESSION_ORDER_Id = "orderId";
+    public static final String SESSION_ORDER_SELECTED_ADDRESS = "orderSelectedAddress";
+    public static final String SESSION_ORDER_SKU_ID = "skuId";
     /**
      * 商品最小图片
      */
@@ -41,6 +41,7 @@ public class SysConstants {
     public static final String SYS_RUN_ENVIROMENT_KEY = "sys_run_enviroment_key";
 
     /*身份证存储路径*/
-    public static final String ID_CARD_PATH="/static/upload/user/idCard/";
+    public static final String ID_CARD_PATH = "/static/upload/user/idCard/";
 
+    public static final Integer MAX_AGENT_LEVEL = 3;//最低代理等级
 }

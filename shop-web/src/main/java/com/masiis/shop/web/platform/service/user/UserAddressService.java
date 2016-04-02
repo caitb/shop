@@ -5,6 +5,7 @@ import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.controller.user.UserAddressController;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
@@ -80,15 +81,18 @@ public class UserAddressService {
      * @date 2016/3/22 20:30
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, String jumpType) {
+    public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, int addAddressJumpType) {
         try {
             if (operateType.equals("save")) {
                 addComUserAddress(comUserAddress);
                 String path = "";
                 if (!StringUtils.isEmpty(comUserAddress.getId())) {
-                    switch (jumpType) {
-                        case "jumpToOrder":
+                    switch (addAddressJumpType) {
+                        case UserAddressController.addAddressPageToOrderPage:  //跳转到订单界面
                             path = getOrderPagePath(request, comUserAddress.getId());
+                            break;
+                        case UserAddressController.getAddAddressPageToPersonalInfoPage://跳转到管理地址界面
+                            path = "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType="+addAddressJumpType;
                             break;
                         default:
                             break;
@@ -112,7 +116,11 @@ public class UserAddressService {
             throw new BusinessException(e.getMessage());
         }
     }
-
+    /**
+     * 获得订单地址路径参数
+     * @author hanzengzhi
+     * @date 2016/4/2 11:34
+     */
     public String getOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
         try{
             String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
@@ -129,16 +137,16 @@ public class UserAddressService {
     }
 
     /**
-     * 获得跳转到的订单地址
+     * 获得具体的订单地址
      * 1:支付试用订单地址
      * 2：合伙人支付订单地址
      *
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String type, Long orderId, Integer skuId, Long selectedAddressId) {
+    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId) {
         StringBuffer sb = new StringBuffer();
-        switch (type) {
+        switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
                 getTrialOrderAddress(sb, skuId, selectedAddressId);
                 break;

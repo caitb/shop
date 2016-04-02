@@ -70,14 +70,16 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="<%=path%>/userAddress/manageAddressPageToChooseAddressPage.html" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a onclick="returnToPage()" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
                         <h2 class="gl" onclick="complete()">完成</h2>
                 </header>
                 <div class="xinz">
-                    <p><a href="<%=path%>/userAddress/toAddAddressPage.html">新增收货地址</a></p>
+                    <p><a href="<%=path%>/userAddress/toAddAddressPage.html?addAddressJumpType=${addAddressJumpType}">新增收货地址</a></p>
                     <input id="defaultAddressId" style="display:none;" value=""/>
                 </div>
+               <input id="addAddressJumpTypeId" style="display: none" value="${addAddressJumpType}"/>
+               <input id="manageAddressJumpTypeId" style="display: none" value="${manageAddressJumpType}"/>
                  <section class="pp">
                         <h1>您还没有收货地址</h1>
                         <p>请添加新地址</p>
@@ -125,7 +127,13 @@
             }
         }
         function editAddress(id){
-            window.location.href = "<%=path%>/userAddress/toEditAddress.html?id="+id;
+            var addAddressJumpType = $("#addAddressJumpTypeId").val();
+            var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+            window.location.href = "<%=path%>/userAddress/toEditAddress.html?id="+id+"&addAddressJumpType="+addAddressJumpType+"&manageAddressJumpType="+manageAddressJumpType;
+        }
+        function returnToPage(){
+            var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+            window.location.href ="<%=path%>/userAddress/manageAddressPageToChooseAddressPage.html?manageAddressJumpType="+manageAddressJumpType;
         }
     </script>
 </body>

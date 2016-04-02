@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -15,35 +16,43 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/gerenxinxi.css">
+    <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="<%=path%>/profile/profile"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>个人信息</p>
     </header>
     <main>
-        <div class="sec1">
-            <p>头像</p>
-            <span><img src="${comUser.wxHeadImg}" alt=""></span>
+        <div class="head_img">
+            <p><img src="<%=path%>/static/images/admin.png" alt=""></p>
+            <div><h1>${comUser.realName}</h1>
+                <h1></h1></div>
         </div>
-        <div class="sec1">
-            <p>昵称</p>
-            <b>${comUser.wxNkName}</b>
-        </div>
-        <div class="sec1" style="margin-top:10px;">
-            <p>姓名</p>
-            <b>${comUser.realName}</b>
-        </div>
-        <div class="sec1" >
-            <p>微信号</p>
-            <b>${comUser.wxId}</b>
-        </div>
-        <div class="sec1">
+        <div class="sec1" style="margin-top:5px;">
             <p>手机号</p>
-            <b>${comUser.mobile}</b>
+            <p>${comUser.mobile}</p>
+        </div>
+        <div class="sec1">
+            <p>微信号</p>
+            <p><img src="<%=path%>/static/images/next.png" alt=""></p>
+        </div>
+        <div class="sec1" id = "identityAuthId">
+            <p>实名认证</p>
+            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt=""></p>
+            <input id="auditStatusId" style="display: none" value="${comUser.auditStatus}" />
+        </div>
+        <div class="sec1">
+            <p>我的银行卡</p>
+            <p><img src="<%=path%>/static/images/next.png" alt=""></p>
+        </div>
+        <div  id="addressManageId" class="sec1">
+            <p>地址管理</p>
+            <p><img  src="<%=path%>/static/images/next.png" alt=""></p>
         </div>
     </main>
 </div>
 </body>
+<script type="text/javascript" src="<%=path%>/static/js/personalInfo.js"></script>
 </html>

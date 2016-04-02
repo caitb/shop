@@ -477,9 +477,9 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7 && pfBord.getShipStatus() == 0) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 5) {
+            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
@@ -515,8 +515,12 @@ public class BOrderController extends BaseController {
                     }
 //                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
 //                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
-                    ComUser user = userService.getUserById(pfBorder.getUserPid());
-                    pfBorder.setPidUserName(user.getRealName());
+                    if(pfBorder.getUserPid()==0){
+                        pfBorder.setPidUserName("平台代理");
+                    }else{
+                        ComUser user = userService.getUserById(pfBorder.getUserPid());
+                        pfBorder.setPidUserName(user.getRealName());
+                    }
                     pfBorder.setPfBorderItems(pfBorderItems);
                 }
             }

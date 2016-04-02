@@ -30,7 +30,7 @@
                     <p>支付订单</p>
                     <p>选择拿货方式</p>
                 </div>
-        <div class="paidan">
+        <div class="paidan" style="display: none">
             <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
             <p style="color: #FF5200">
                 *由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货
@@ -41,66 +41,46 @@
         </p>
         <main>
             <section class="sec1">
-                <%--<div>--%>
-                <%--<p>手机号　<b style="color:#999999;">${mobile}</b></p>--%>
-                <%--</div>--%>
-                <%--<div>--%>
-                <%--<p>姓　名：--%>
-                <%--<c:if test="${name==''}">--%>
-                <%--<input type="text" class="name" id="name" name="name"/>--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${name!=''}">--%>
-                <%--<input type="text" class="name" id="name" name="name" value="${name}" readonly/>--%>
-                <%--</c:if>--%>
-                <%--<span class="onc"></span><b class="gao"></b>--%>
-                <%--</p>--%>
-                <%--</div>--%>
                 <div>
                     <p>微信号：
-                        <c:if test="${weixinId==''}">
-                            <input type="text" class="wei" id="weixin" name="weixin"/>
-                        </c:if>
-                        <c:if test="${weixinId!=''}">
-                            <input type="text" class="wei" id="weixin" name="weixin" value="${weixinId}"<%-- readonly--%>/>
-                        </c:if>
-                        <span class="onc"></span><b class="gao"></b></p>
-                       <h1>*此微信号将在授权证书上显示</h1>
+                        <input type="text" class="wei" id="weixin" name="weixin"/>
+                        <span class="onc"></span><b class="gao"></b>
+                    </p>
+                        <h1>*此微信号将在授权证书上显示</h1>
                 </div>
             </section>
             <section class="sec2">
                 <c:if test="${pWxNkName==''}">
-                    <h3 class="tui">
+                    <h3 class="tui" style="display: block">
                         <span>是否有推荐人：</span>
                         <input type="radio" id="q" name="danx" class="shi" checked="checked">
                         <label for="q" style="margin-left:5px;">是</label>
                         <input type="radio" id="b" name="danx" class="fou"/>
                         <label for="b" style="margin-left:30px;">否</label>
                     </h3>
-                    <h3 class="Bhide">您的推荐人：<span>校长</span></h3>
+                    <%--<h3 class="Bhide">您的推荐人：<span>校长</span></h3>--%>
                     <div id="hehuo">
-                        <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble"><span
-                                class="onc"></span><b
-                                class="gao"></b></h3>
+                        <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble">
+                            <span class="onc"></span>
+                            <b class="gao"></b>
+                        </h3>
                     </div>
                 </c:if>
                 <c:if test="${pWxNkName!=''}">
                     <div id="hehuo">
-                        <h3>您的推荐人： <input type="text" class="stel" value="${pWxNkName}" readonly/></h3>
+                        <h3>您的推荐人： <input type="text" class="stel" value="${pWxNkName}" readonly="readonly"/></h3>
                     </div>
                 </c:if>
 
                 <h2 style="text-indent:10px;font-weight:500;margin-bottom: 5px;">选择合伙人等级：</h2>
                 <div class="dengji">
-                    <%--${agentInfo}--%>
-                        <p><label>高级合伙人</label>
-                            <b>商品数量：</b> <span>800</span> <b>金额：</b> <span>15000</span> <b>保证金：</b> <span>15000</span>
-                        </p>
-                        <p><label>中级合伙人</label>
-                            <b>商品数量：</b> <span>600</span> <b>金额：</b> <span>5000</span> <b>保证金：</b> <span>15000</span>
-                        </p>
-                        <p><label>初级合伙人</label>
-                            <b>商品数量：</b> <span>100</span> <b>金额：</b> <span>1000</span> <b>保证金：</b> <span>15000</span>
-                        </p>
+                    <c:forEach items="${agentSkuViews}" var="view">
+                        <c:if test="${view.agent.agentLevelId >= pUserLevelId}">
+                            <p><label>${view.level.name}</label>
+                                <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.agentFee}</span> <b>保证金：</b> <span>${view.agent.bail}</span>
+                            </p>
+                        </c:if>
+                    </c:forEach>
                 </div>
             </section>
             <section class="sec3">
@@ -110,7 +90,7 @@
                 </p>
             </section>
             <section class="sec4">
-                <a id="next" style="color:white" href="javascript:;">下一步</a>
+                <a id="next" style="color:white" href="javascript:void(0);">下一步</a>
             </section>
         </main>
     </div>
@@ -141,7 +121,7 @@
     var pMobile = "${pMobile}";
 </script>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/iscroll.js"></script>
 <script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </html>

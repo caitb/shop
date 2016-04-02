@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.order.AgentSkuView;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -10,6 +11,7 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +36,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/userApply")
 public class UserApplyController extends BaseController {
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private ProductService productService;
     @Resource
@@ -83,7 +88,7 @@ public class UserApplyController extends BaseController {
      *
      * @author ZhaoLiang再次
      * @date 2016/3/5 14:27
-     */
+     *//*
     @RequestMapping("/register.shtml")
     public ModelAndView partnersRegister(HttpServletRequest request,
                                          HttpServletResponse response,
@@ -132,6 +137,82 @@ public class UserApplyController extends BaseController {
         mv.addObject("skuName", comSku.getName());
         mv.addObject("pUserId", pUserId);
         if (pUserId != null && pUserId > 0) {
+            mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
+        } else {
+            mv.addObject("pWxNkName", "");
+        }
+        mv.setViewName("platform/order/zhuce");
+        return mv;
+    }*/
+
+    /**
+     * 合伙人注册
+     *
+     * @author ZhaoLiang再次
+     * @date 2016/3/5 14:27
+     */
+    @RequestMapping("/register.shtml")
+    public ModelAndView partnersRegister(HttpServletRequest request,
+                                         HttpServletResponse response,
+                                         @RequestParam(value = "skuId", required = true) Integer skuId,
+                                         @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if(comUser == null){
+            throw new BusinessException("用户未登录!");
+        }
+        if(skuId == null || skuId < 0){
+            log.error("skuId不合法,skuId:" + skuId + ",用户id为:" + comUser.getId());
+            throw new BusinessException("skuId不合法!");
+        }
+        //获取商品信息
+        ComSku comSku = skuService.getSkuById(skuId);
+        if(comSku == null){
+            log.error("该skuId对应的商品不存在,skuId:" + skuId);
+            throw new BusinessException("该skuId对应的商品不存在");
+        }
+        //获取商品代理信息
+        List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+        //获取代理信息
+        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
+        // 上级代理等级id(0表示没有上级推荐)
+        Integer pUserLevelId = 0;
+        if (pUserId != null && pUserId > 0) {
+            ComUser pComUser = userService.getUserById(pUserId);
+            if(pComUser == null){
+                log.error("上级代理id不合法,pUserId:" + pUserId);
+                throw new BusinessException("上级代理id不合法!");
+            }
+            checkParentData(pComUser, skuId);
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+            if (pfUserSku.getAgentLevelId() >= 3) {
+                throw new BusinessException("您的推荐人还不能发展下级代理");
+            }
+            pUserLevelId = pfUserSku.getAgentLevelId();
+        }
+
+        // 创建该sku代理商的代理门槛信息
+        List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
+        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+            AgentSkuView view = new AgentSkuView();
+            view.setAgent(pfSkuAgent);
+            for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                    view.setLevel(comAgentLevel);
+                }
+            }
+            BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+            amount = amount.setScale(2, RoundingMode.HALF_DOWN);
+            view.setAgentFee(amount);
+            agentSkuViews.add(view);
+        }
+        mv.addObject("skuId", comSku.getId());
+        mv.addObject("skuName", comSku.getName());
+        mv.addObject("pUserLevelId", pUserLevelId);
+        mv.addObject("pUserId", pUserId);
+        mv.addObject("agentSkuViews", agentSkuViews);
+        if (pUserId != null && pUserId > 0) {
+            // 上级代理商品关系
             mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
         } else {
             mv.addObject("pWxNkName", "");

@@ -27,8 +27,8 @@
     <main>
         <div class="head_img">
             <p><img src="<%=path%>/static/images/admin.png" alt=""></p>
-            <div><h1>名字</h1>
-                <h1>${comUser.realName}</h1></div>
+            <div><h1>${comUser.realName}</h1>
+                <h1></h1></div>
         </div>
         <div class="sec1" style="margin-top:5px;">
             <p>手机号</p>

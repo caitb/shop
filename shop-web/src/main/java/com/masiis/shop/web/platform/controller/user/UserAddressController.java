@@ -135,7 +135,6 @@ public class UserAddressController extends BaseController {
         return redirectHead+redirectBody;
     }
 
-
     /**
      * 跳转到编辑地址界面
      *
@@ -225,7 +224,6 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0")int addAddressJumpType,
                                       @RequestParam(value = "manageAddressJumpType",required = false,defaultValue = "0")int manageAddressJumpType,
                                       Model model)throws Exception {
-        request.getSession().setAttribute("manageAddressJumpType",manageAddressJumpType);
         model.addAttribute("addAddressJumpType",addAddressJumpType);
         model.addAttribute("manageAddressJumpType",manageAddressJumpType);
         return "platform/order/guanli";

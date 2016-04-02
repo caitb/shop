@@ -38,6 +38,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
+            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>拿货信息</p>
         </header>
         <section class="sec1">
@@ -53,23 +54,24 @@
         <section class="sec2">
             <p class="photo">
                 <a>
-                    <img src="${sku.comSkuImage.fullImgUrl}" alt="">
+                    <img src="${comSkuImage}" alt="">
                 </a>
             </p>
             <div>
                 <h2>${comSku.name}</h2>
-                <h3>规格：<span>默认</span><b>x1</b></h3>
-                <p>零售价： 非卖品</p>
-                <h1><b style="color:#333333">合计：</b><span>￥0</span></h1>
+                <h3>规格：<span>默认</span></h3>
+                <p>零售价： ${comSku.priceRetail}  合伙人价: ${comSku.priceRetail}</p>
             </div>
         </section>
         <section class="sec3">
-            <p>试用理由： ${userMessage}</p>
+            <p>留言： ${userMessage}</p>
         </section>
         <section class="sec4">
-            <p>商品合计：<span>￥0</span></p>
-            <p>运费：<span>￥${product.shipAmount}</span></p>
-            <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
+            <p>在线库存：<span>${productInfo.stock}</span></p>
+            <p>拿货数量：<span>￥${product.shipAmount}</span></p>
+            <p>您的剩余库存可发展下级合伙人的数量为 1 - ${lowerCount}</p>
+            <p>您申请的货物将由您自行保管；
+            您只能使用在线库存发展下级合伙人，您自提的货物不再支持 在线合伙人的发展</p>
         </section>
     </div>
 </div>

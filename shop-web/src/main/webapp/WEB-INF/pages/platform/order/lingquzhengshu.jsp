@@ -57,8 +57,10 @@
                 <p>${sendType}</p>
             </div>
         </div>
-        <a href="javascript:;" class="lingqu" onclick="submit();">返回首页</a>
-        <a href="javascript:;" class="lingqu" onclick="submit();">查看证书</a>
+        <div class="btn">
+        <button class="lingqu" onclick="submit();">返回首页</button>
+        <button class="lingqu" onclick="submit();">查看证书</button>
+        </div>
     </div>
 </main>
 </body>

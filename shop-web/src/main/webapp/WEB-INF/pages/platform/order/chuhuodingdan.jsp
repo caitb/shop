@@ -457,14 +457,14 @@
        </div>
        <div class="back_que">
            <p>确认发货?</p>
-           <h4>快递公司:<select id="select"><option selected="selected">顺风</option><option >EMS</option></select></h4>
+           <h4>快递公司:<select id="select"><option value="1">顺风</option><option value="2">EMS</option></select></h4>
            <h4>快递单号:<input type="text" id="input"/></h4>
            <h3 id="faHuo">发货</h3>
        </div>
        <div class="shouhuo">
            <p>收货人信息</p>
            <h4><span>姓　名:</span><span id="1"></span></h4>
-           <h4><span>地　址:</span><span id="2">阿斯科利的asdasdasdasdas将阿</span></h4>
+           <h4><span>地　址:</span><span id="2">阿斯科利的阿</span></h4>
            <h4><span>手机号:</span><span id="3"></span></h4>
            <h4><span>邮　编:</span><span id="4"></span></h4>
            <h3 class="close">关闭</h3>
@@ -502,14 +502,15 @@
                    $("#faHuo").on("click",function(){
                        $(".back_que").hide();
                        $(".back").hide();
-                       var shipManName = $("#select").val();
+                       var shipManId = $("#select option:selected").val();
+                       var shipManName = $("#select option:selected").text();
                        var freight = $("#input").val();
                        var aa="fahuo_"+id;
                        alert(shipManName);
                        $.ajax({
                            type:"POST",
                            url : "<%=path%>/border/deliver.do",
-                           data:{shipManName:shipManName,freight:freight,orderId:id},
+                           data:{shipManName:shipManName,freight:freight,orderId:id,shipManId:shipManId},
                            dataType:"Json",
                            success:function(date){
                                    $("span[name=" + aa + "]").attr("style", "display:none");

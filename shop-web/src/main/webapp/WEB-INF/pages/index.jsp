@@ -57,7 +57,7 @@
                  <ul>
                         <li class="market">
                                 <a class="herf" href="<%=path%>/marketGood/market">
-                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
+                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""><span>1</span></h1>
                                 <span>好货市场</span></a>
                         </li>
                         <li class="market" onclick="javascript:window.location.replace('<%=basePath%>product/user/${user.id}');">

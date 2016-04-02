@@ -339,11 +339,13 @@ public class BOrderService {
     @Transactional
     public void toPayBOrder(PfBorder pfBorder, PfBorderConsignee pfBorderConsignee) throws Exception {
         pfBorderMapper.updateById(pfBorder);
-        PfBorderConsignee pbc = pfBorderConsigneeMapper.selectByBorderId(pfBorderConsignee.getPfBorderId());
-        if (pbc != null) {
-            pfBorderConsigneeMapper.deleteByOrderId(pfBorderConsignee.getPfBorderId());
+        if(pfBorderConsignee!=null) {
+            PfBorderConsignee pbc = pfBorderConsigneeMapper.selectByBorderId(pfBorderConsignee.getPfBorderId());
+            if (pbc != null) {
+                pfBorderConsigneeMapper.deleteByOrderId(pfBorderConsignee.getPfBorderId());
+            }
+            pfBorderConsigneeMapper.insert(pfBorderConsignee);
         }
-        pfBorderConsigneeMapper.insert(pfBorderConsignee);
     }
 
 //    /**

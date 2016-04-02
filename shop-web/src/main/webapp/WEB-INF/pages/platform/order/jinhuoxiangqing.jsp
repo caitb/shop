@@ -44,11 +44,15 @@
                 <p>承运公司：<span>${bdpb.shipManName}</span></p>
                 <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach>
             </div>
+           <div class="paidan">
+               <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>1233</span>件</b></h1>
+               <p>当前平台在线库存量为<span>9999</span>件</p>
+           </div>
             <section class="sec1">
                        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                        <div>
                             <a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b> <span>${borderDetail.pfBorderConsignee.mobile}</span></h2></a>
-                            <a href="#"><p>收货地址： <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+                            <a href="#"><p>收货地址： <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span><%--<img src="<%=path%>/static/images/next.png" alt="">--%></p></a>
                         </div>
 
             </section><c:forEach items="${borderDetail.pfBorderItems}" var="bdpi">
@@ -60,9 +64,9 @@
                 </p>
                 <div>
                     <h2>${bdpi.skuName}</h2>
-                    <h3>规格：<span>默认</span><b>x${bdpi.quantity}</b></h3>
-                    <p>零售价： ${bdpi.unitPrice}</p>
-                    <h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>
+                    <h3>规格：<span>默认</span></h3>
+                    <p>零售价： <span>${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
+                    <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>
             <section class="sec3">

@@ -119,13 +119,25 @@
 }
 .wrap .box nav ul li h1 {
   height: 30px;
+  position: relative;
+}
+.wrap .box nav ul li h1 span{
+  position: absolute;
+  top:-10px;
+  left:30px;
+  background: #fff;
+  padding: 0 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  border:1px solid #ff5200;
+  color: #ff5200;
 }
 .wrap .box nav ul li h1 img {
   display: block;
   width: 40%;
   margin: 0 auto;
 }
-.wrap .box nav ul li span {
+.wrap .box nav ul li>span {
   display: block;
   text-align: center;
   margin-top: 4px;

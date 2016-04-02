@@ -603,13 +603,13 @@ public class BOrderService {
                 pfBorder.setShipStatus(9);
                 borderSkuStockService.updateGetStock(pfBorder, user);
                 pfBorderMapper.updateById(pfBorder);
-                comUserAccountService.countingByOrder(pfBorder);
+                //comUserAccountService.countingByOrder(pfBorder);
             }
         } else if (pfBorder.getSendType() == 2) {//自己发货
             pfBorder.setOrderStatus(3);
             pfBorder.setShipStatus(9);
             pfBorderMapper.updateById(pfBorder);
-            comUserAccountService.countingByOrder(pfBorder);
+           //comUserAccountService.countingByOrder(pfBorder);
         }
     }
 }

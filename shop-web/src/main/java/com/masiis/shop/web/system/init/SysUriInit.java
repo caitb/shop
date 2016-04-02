@@ -26,6 +26,7 @@ public class SysUriInit implements ApplicationListener<ContextRefreshedEvent> {
     public List<String> getUriLists(){
         return uriLists;
     }
+    private String regexSpec = "\\";
 
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if(event.getApplicationContext().getParent() == null){
@@ -51,7 +52,7 @@ public class SysUriInit implements ApplicationListener<ContextRefreshedEvent> {
                                     int indexs = endPath.indexOf("{");
                                     int indexe = endPath.indexOf("}");
                                     if(indexs >= 0 && indexe>= 0 && indexe > indexs){
-                                        endPath = endPath.replaceAll(File.separator + "{.*" + File.separator + "}", "(.*)");
+                                        endPath = endPath.replaceAll(regexSpec + "{.*" + regexSpec + "}", "(.*)");
                                     }
                                     pathList.add(endPath);
                                 }

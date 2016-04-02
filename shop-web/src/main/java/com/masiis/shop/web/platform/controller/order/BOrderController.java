@@ -542,11 +542,11 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 7 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
-            }  else if (pfBord.getOrderStatus() == 6) {
+            }  else if (pfBord.getOrderStatus() == 6 && pfBord.getSendType()!=2){
                 pfBorders6.add(pfBord);//排单中
-            }else if (pfBord.getOrderStatus() == 8 ) {
+            }else if (pfBord.getOrderStatus() == 8 && pfBord.getSendType()==2){
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorders3.add(pfBord);//已完成

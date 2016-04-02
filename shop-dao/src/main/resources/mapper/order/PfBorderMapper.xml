@@ -214,8 +214,8 @@
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
         from pf_border
         where
-        <if test="userId != null">
-            user_pid = #{userId,jdbcType=BIGINT}
+        <if test="userPId != null">
+            user_pid = #{userPId,jdbcType=BIGINT}
         </if>
         <if test="orderStatus != null">
             AND order_status = #{orderStatus,jdbcType=INTEGER}

@@ -419,7 +419,6 @@ public class BOrderController extends BaseController {
      * @author muchaofeng
      * @date 2016/3/20 13:40
      */
-
     @RequestMapping("/closeDeal.do")
     @ResponseBody
     @Transactional
@@ -447,7 +446,6 @@ public class BOrderController extends BaseController {
      * @author muchaofeng
      * @date 2016/3/20 13:40
      */
-
     @RequestMapping("/deliver.do")
     @ResponseBody
     public String deliver(HttpServletRequest request,
@@ -696,4 +694,5 @@ public class BOrderController extends BaseController {
         }
         return mv;
     }
+
 }

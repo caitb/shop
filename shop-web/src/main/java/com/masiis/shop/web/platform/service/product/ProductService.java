@@ -132,6 +132,7 @@ public class ProductService {
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
+
             }
         }
         return userProducts;

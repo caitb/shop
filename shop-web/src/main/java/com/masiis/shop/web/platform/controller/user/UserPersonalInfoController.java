@@ -66,6 +66,17 @@ public class UserPersonalInfoController extends BaseController {
         model.addAttribute("pfUserCertificate",pfUserCertificates);
         return null;
     }
+    /**
+     * 查看实名认证信息
+     * @author hanzengzhi
+     * @date 2016/4/1 12:07
+     */
+    @RequestMapping(value = "lookIdentityAuthInfo.do")
+    public String lookIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
+                                       @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus){
+        //重定向到身份认证controller
+        return "redirect:identityAuth/toInentityAuthPage.html?auditStatus="+auditStatus;
+    }
 
     /**
      * 个人信息查询银行卡信息
@@ -99,5 +110,16 @@ public class UserPersonalInfoController extends BaseController {
         }else{
             return "false";
         }
+    }
+    /**
+     * 跳转到管理地址界面
+     * @author hanzengzhi
+     * @date 2016/4/1 12:22
+     */
+    @RequestMapping(value = "toAddressManagePage.do")
+    public String toAddressManagePage(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(value = "jumpType",required = false)int jumpType){
+        //重定向到管理地址controller
+        return "redirect:userAddress/toManageAddressPage.html?jumpType="+jumpType;
     }
 }

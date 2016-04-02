@@ -581,6 +581,7 @@
                     text: msg,
                     class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                 });
+                $('#table').bootstrapTable('refresh');
             }
         })
     });

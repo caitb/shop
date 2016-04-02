@@ -13,7 +13,10 @@
     $("body").append(_html);
   }
   var hideWindow = function(){
-        $('.alert').fadeIn("slow").delay(2000).fadeOut("slow");
+        $('.alert').fadeIn("slow").delay(2000).fadeOut("slow", function(){
+          $('.alert').remove();
+        });
+
       }
   var loadCssFile = function(){
         $("<link>").attr({

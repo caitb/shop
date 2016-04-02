@@ -41,6 +41,8 @@ public class Product extends ComSku {
 
     private String logoUrl;//logo
 
+    private Integer upperStock;//上级库存
+
     public String getSpuName() {
         return spuName;
     }
@@ -159,5 +161,13 @@ public class Product extends ComSku {
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    public Integer getUpperStock() {
+        return upperStock;
+    }
+
+    public void setUpperStock(Integer upperStock) {
+        this.upperStock = upperStock;
     }
 }

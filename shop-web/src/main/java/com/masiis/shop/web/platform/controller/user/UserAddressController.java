@@ -210,7 +210,7 @@ public class UserAddressController extends BaseController {
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "jumpType",required = false)int jumpType)throws Exception {
+                                      @RequestParam(value = "jumpType",required = false,defaultValue = "0")int jumpType)throws Exception {
         request.getSession().setAttribute("jumpType",jumpType);
         return "platform/order/guanli";
     }

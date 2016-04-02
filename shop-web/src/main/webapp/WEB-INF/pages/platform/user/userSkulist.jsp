@@ -44,8 +44,8 @@
                         </div>
                     </section>
                     <section class="sec3">
-                        <p class="jianku"><a href="#">申请拿货</a></p>
-                        <p class="buhuo"><a href="#"></a>补货</p>
+                        <p class="jianku" onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">申请拿货</p>
+                        <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}')">补货</p>
                     </section>
                 </c:forEach>
             </div>
@@ -53,11 +53,42 @@
         </div>
         <div class="back">
         </div>
-    </main>
+        <div class="back_b">
+            <p>补货信息</p>
+            <h4>商品:　　<span id="addsku"></span></h4>
+            <h4>本次最多可补货数量:　　<span id="maxStock"></span></h4>
+            <h4>补货数量:　　<div>
+                <span class="jian">-</span>
+                <input type="tel" class="number" value="1"/>
+                <span class="jia">+</span>
+            </div>
+            </h4>
+            <div>
+                <h1 class="b_qu">取消</h1>
+                <h1 class="b_que">确定</h1>
+            </div>
+        </div>
+</main>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
+<%--<script src="<%=path%>/static/js/definedAlertWindow.js"></script>--%>
 <script>
+    var i=1;
+    $(".jia").on("click",function(){
+        i++;
+        $(".number").val(i)
+    })
+    $(".number").on("change", function () {
+        i=$(this).val();
+    })
+    $(".jian").on("click",function(){
+        if(i==1){
+            return false;
+        }
+        i--;
+        $(".number").val(i)
+    })
     //ajax
     $('.que_que').on('click', function () {
         var pfuId = $("#pfuId").val();
@@ -77,8 +108,9 @@
             }
         });
     });
-    function buhuokucun(a){
+    function buhuokucun(a,b){
         $("#addsku").html(a);
+        $("#maxStock").html(b);
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
     }
@@ -89,12 +121,15 @@
     $(".b_que").on("click",function(){
         var skuId = $("#skuId").val();
         $.ajax({
-            url: '<%=basePath%>product/user/addStock',
+            url: '<%=basePath%>product/user/addStock.do',
             type: 'post',
             data: {stock:i,skuId:skuId},
             dataType: 'json',
             success: function (data) {
                 if(data['isError'] == false){
+                    if(data['isQueue'] == true){
+                        alert(data['message']);
+                    }
                     window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
                 }else{
                     alert(data['message']);

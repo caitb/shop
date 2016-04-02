@@ -105,6 +105,8 @@ public class LoginFilter implements Filter{
 
     private boolean checkUriIsValid(String uri) {
         for (String str:uris) {
+            // 去除多斜杠的判断影响
+            uri = uri.replaceAll("(/[/]+)", "/");
             if(uri.matches(str)){
                 return true;
             }
@@ -119,9 +121,9 @@ public class LoginFilter implements Filter{
     }
 
     public static void main(String[] args) {
-        String aa = "/";
-        String cc = aa.replaceAll("\\{.*\\}", "(.*)");
+        String aa = "/ss//s//////d/ss";
+        String cc = aa.replaceAll("(/[/]+)", "/");//("\\{.*\\}", "(.*)");
         String bb = "/";
-        System.out.println(bb.matches(cc));
+        System.out.println(cc);
     }
 }

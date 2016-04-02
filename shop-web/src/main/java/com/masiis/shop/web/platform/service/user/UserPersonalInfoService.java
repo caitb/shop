@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserCertificate;
@@ -33,14 +34,13 @@ public class UserPersonalInfoService {
      * @date 2016/4/1 11:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> getPersonalHomePageInfo(Long userId){
+    public Map<String,Object> getPersonalHomePageInfo(ComUser comUser){
         //获取代理商品信息
-        List<PfSkuAgent> pfSkuAgents = skuAgentService.getSkuLevelIconByUserId(userId);
+        List<PfSkuAgent> pfSkuAgents = skuAgentService.getSkuLevelIconByUserId(comUser.getId());
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("pfskuAgents",pfSkuAgents);
-        return map;
+        return null;
     }
-
     /**
      * 查询用户的银行卡信息
      * @author hanzengzhi

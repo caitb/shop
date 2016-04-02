@@ -1,5 +1,6 @@
 (function () {
     window.addressJS = window.addressJS || {
+            basePath : "http://"+ window.location.host,
             init: function () {
                 addressJS.initBody();
                 addressJS.initInput();
@@ -43,12 +44,12 @@
                     $(".dizhi").focus();
                     $(".onc").eq(3).next().html("详细地址不能为空");
                     return false;
-                } else if(addressJS.getStrLen(detailAddress)>60){
+                } else if (addressJS.getStrLen(detailAddress) > 60) {
                     $(".dizhi").next().show()
                     $(".dizhi").focus();
                     $(".onc").eq(3).next().html("详细地址不能超过30个字");
                     return false;
-                }else {
+                } else {
                     $(".onc").hide();
                     return true;
                 }
@@ -76,17 +77,17 @@
                 })
             },
             bindChange: function () {
-                $("#name").bind("change",function(){
+                $("#name").bind("change", function () {
                     addressJS.checkName($("#name").val());
                 });
-                $("#phone").bind("change",function(){
+                $("#phone").bind("change", function () {
                     addressJS.checkPhone($("#phone").val());
                 });
-                $("#postcode").bind("change",function(){
+                $("#postcode").bind("change", function () {
                     addressJS.checkPostCode($("#postcode").val());
                 });
-                $("#detailAddress").bind("change",function(){
-                   addressJS.checkDetailAddress($("#detailAddress").val());
+                $("#detailAddress").bind("change", function () {
+                    addressJS.checkDetailAddress($("#detailAddress").val());
                 });
             },
             getJsonParam: function () {
@@ -103,8 +104,7 @@
                 var detailAddress = $("#detailAddress").val();
                 var isDefault = $("#isDefaultId").val();
                 var operateType = $("#operateTypeId").val();
-                var jumpType = $("#jumpTypeId").val();
-
+                var addAddressJumpType = $("#addAddressJumpTypeId").val();
                 var paramJson = {
                     "id": addressId,
                     "name": name,
@@ -119,7 +119,7 @@
                     "detailAddress": detailAddress,
                     "isDefault": isDefault,
                     "operateType": operateType,
-                    "jumpType": jumpType
+                    "addAddressJumpType": addAddressJumpType
                 }
                 return paramJson;
             },
@@ -131,7 +131,7 @@
                     $(".onc").eq(0).next().html("姓名不能为空");
                     return false;
                 }
-                if (addressJS.getStrLen(name)>20) {
+                if (addressJS.getStrLen(name) > 20) {
                     $(".name").next().show();
                     $(".name").focus();
                     $(".onc").eq(0).next().html("姓名不能超过10个字");
@@ -201,6 +201,19 @@
             },
             validateAddressInfo: function (paramJson) {
                 return addressJS.checkName(paramJson.name) ? ( addressJS.checkPhone(paramJson.phone) ? (addressJS.checkPostCode(paramJson.postcode) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson.detailAddress) : false) : false) : false ) : false;
+            },
+            updateAddress: function () {
+                var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+                var addAddressJumpType = $("#addAddressJumpTypeId").val();
+                var paramJson = addressJS.getJsonParam();
+                if (addressJS.validateAddressInfo(paramJson)) {
+                    $.post("/userAddress/addOrUpdateAddress.do",
+                        paramJson, function (data) {
+                            if (data == "success") {
+                                window.location.href = addressJS.basePath + "/userAddress/toManageAddressPage.html?manageAddressJumpType=" + manageAddressJumpType + "&addAddressJumpType=" + addAddressJumpType;
+                            }
+                        });
+                }
             }
         }
 })();

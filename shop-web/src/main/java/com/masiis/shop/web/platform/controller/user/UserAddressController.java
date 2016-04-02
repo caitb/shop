@@ -32,10 +32,14 @@ public class UserAddressController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
 
-    //管理地址跳转到个人中心界面
+    //管理地址跳转到选择地址界面
     private static  final  int managePageToChooseAddressPageTag = 0;
     //管理地址跳转到个人中心界面
     private static  final  int managePageToPersonalInfoPageTag = 1;
+    //新增地址增加完跳转到订单界面
+    public static final int addAddressPageToOrderPage = 0;
+    //新增地址增加完跳转到管理地址界面
+    public static final int getAddAddressPageToPersonalInfoPage =1;
 
     /**
      * 跳转到新增地址界面
@@ -45,7 +49,10 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/toAddAddressPage.html")
     public String toAddAddressPage(HttpServletRequest request,
-                                   HttpServletResponse response, Model model) throws Exception {
+                                   HttpServletResponse response,
+                                   @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0") int addAddressJumpType,
+                                   Model model) throws Exception {
+        model.addAttribute("addAddressJumpType",addAddressJumpType);
         return "platform/order/xinjiandizhi";
     }
 
@@ -74,7 +81,7 @@ public class UserAddressController extends BaseController {
                                      @RequestParam(value = "operateType", required = true) String operateType,
                                      @RequestParam(value = "addressId", required = false) Integer selectedAddressId,
                                      @RequestParam(value = "pfCorderId", required = false) Integer pfCorderId,
-                                     @RequestParam(value = "jumpType",required = false)String jumpType,
+                                     @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0")int addAddressJumpType,
                                      Model model) throws JsonProcessingException {
         try{
             ComUser comUser = getComUser(request);
@@ -98,7 +105,7 @@ public class UserAddressController extends BaseController {
 
             model.addAttribute("addressId", selectedAddressId);
             model.addAttribute("pfCorderId", pfCorderId);
-            String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,jumpType);
+            String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,addAddressJumpType);
             return s;
         }catch (Exception ex){
             if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
@@ -128,7 +135,6 @@ public class UserAddressController extends BaseController {
         return redirectHead+redirectBody;
     }
 
-
     /**
      * 跳转到编辑地址界面
      *
@@ -138,7 +144,9 @@ public class UserAddressController extends BaseController {
     @RequestMapping("/toEditAddress.html")
     public String toEditAddress(HttpServletRequest request,
                                 HttpServletResponse response,
-                                @RequestParam(value = " ", required = true) Long id,
+                                @RequestParam(value = "id", required = true) Long id,
+                                @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0")int addAddressJumpType,
+                                @RequestParam(value = "manageAddressJumpType",required = false,defaultValue = "0")int manageAddressJumpType,
                                 Model model) throws Exception {
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(id);
         if (comUserAddress != null) {
@@ -146,6 +154,8 @@ public class UserAddressController extends BaseController {
             model.addAttribute("cityId", comUserAddress.getCityId());
             model.addAttribute("countyId", comUserAddress.getRegionId());
             model.addAttribute("comUserAddress", comUserAddress);
+            model.addAttribute("addAddressJumpType",addAddressJumpType);
+            model.addAttribute("manageAddressJumpType",manageAddressJumpType);
         }
         return "platform/order/editAddress";
     }
@@ -159,21 +169,22 @@ public class UserAddressController extends BaseController {
     @RequestMapping("/manageAddressPageToChooseAddressPage.html")
     public String manageAddressPageToChooseAddressPage(HttpServletRequest request,
                                                        HttpServletResponse response,
+                                                       @RequestParam(value = "manageAddressJumpType",required = true,defaultValue = "0")int manageAddressJumpType,
                                                        Model model)throws Exception {
-        int jumpType = (int) request.getSession().getAttribute("jumpType");
         String returnPage = null;
-        switch (jumpType){
+        switch (manageAddressJumpType){
             case managePageToChooseAddressPageTag: //返回到选择地址界面
                 returnPage = "platform/order/xuanze";
                 Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
                 model.addAttribute("addressId", selectedAddressId);
                 break;
             case managePageToPersonalInfoPageTag:  //返回到到个人中心
+                String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
+                returnPage = "redirect:" + basePath +"/personalInfo/personalHomePageInfo.html";
                 break;
             default://返回到选择地址界面
                 break;
         }
-        request.getSession().removeAttribute("jumpType");
         return returnPage;
     }
 
@@ -210,8 +221,11 @@ public class UserAddressController extends BaseController {
     @RequestMapping("/toManageAddressPage.html")
     public String toManageAddressPage(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      @RequestParam(value = "jumpType",required = false,defaultValue = "0")int jumpType)throws Exception {
-        request.getSession().setAttribute("jumpType",jumpType);
+                                      @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0")int addAddressJumpType,
+                                      @RequestParam(value = "manageAddressJumpType",required = false,defaultValue = "0")int manageAddressJumpType,
+                                      Model model)throws Exception {
+        model.addAttribute("addAddressJumpType",addAddressJumpType);
+        model.addAttribute("manageAddressJumpType",manageAddressJumpType);
         return "platform/order/guanli";
     }
 
@@ -260,7 +274,6 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "id", required = true) Long id,
                                       @RequestParam(value = "defaultAddressId", required = false) Long defaultAddressId)  {
         try{
-
             if (StringUtils.isEmpty(id)) {
                 throw new BusinessException("删除地址失败");
             }

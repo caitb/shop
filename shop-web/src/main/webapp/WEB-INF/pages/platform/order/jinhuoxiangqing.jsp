@@ -31,23 +31,31 @@
             <div class="tai"><c:if test="${borderDetail.pfBorder.orderStatus==0}">
                 <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>未付款</h1>
                            <p>亲，未付款的订单可以保留7天~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==0}"> <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 50px;height: 36px;"><h1>待发货</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==7}"> <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 50px;height: 36px;"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.payStatus==1 && borderDetail.pfBorder.shipStatus==5}"> <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;"><h1>待收货</h1>
+                <c:if test="${borderDetail.pfBorder.payStatus==8 && borderDetail.pfBorder.sendType ==2}"> <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;"><h1>已发货</h1>
                     <p>亲，卖家已发货~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==3}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==3 }"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p></c:if>
-                <c:if test="${borderDetail.pfBorder.orderStatus==6}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
+                <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
                     <p>亲，订单排单中~~</p></c:if>
-            </div>
-            <div class="kuaidi"> <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
+            </div><c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
+           <div class="kuaidi">
+               <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
+               <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
+           </div></c:when><c:otherwise>
+            <div class="kuaidi">
+                <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
+                <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
+                <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">
+                <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
                 <p>承运公司：<span>${bdpb.shipManName}</span></p>
-                <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach>
-            </div>
+                <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach></c:if>
+            </div></c:otherwise></c:choose> <c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
            <div class="paidan">
                <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>1233</span>件</b></h1>
                <p>当前平台在线库存量为<span>9999</span>件</p>
-           </div>
+           </div></c:when><c:otherwise>
             <section class="sec1">
                        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                        <div>
@@ -55,7 +63,7 @@
                             <a href="#"><p>收货地址： <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span><%--<img src="<%=path%>/static/images/next.png" alt="">--%></p></a>
                         </div>
 
-            </section><c:forEach items="${borderDetail.pfBorderItems}" var="bdpi">
+            </section></c:otherwise></c:choose><c:forEach items="${borderDetail.pfBorderItems}" var="bdpi">
             <section class="sec2">
                 <p class="photo">
                    <a href="<%=path%>/static/html/xiangqing.html">

@@ -472,6 +472,59 @@ public class BOrderController extends BaseController {
     }
 
     /**
+     * 订单管理
+     * @author muchaofeng
+     * @date 2016/4/2 14:09
+     */
+    @RequestMapping("/borderManagement.html")
+    public ModelAndView borderManagement(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception{
+        ComUser comUser = getComUser(request);
+        List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
+        List<PfBorder> pfBorderps = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
+        List<PfBorder> pfBorders0 = new ArrayList<>();
+        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorders15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
+        for (PfBorder pfBord : pfBorders) {
+            if (pfBord.getOrderStatus() == 0) {
+                pfBorders0.add(pfBord);//待付款
+            } else if (pfBord.getOrderStatus() == 7 ) {
+                pfBorders10.add(pfBord);//代发货
+            } else if (pfBord.getOrderStatus() == 8 ) {
+                pfBorders15.add(pfBord);//待收货
+            }  else if (pfBord.getOrderStatus() == 6) {
+                pfBorders6.add(pfBord);//排单中
+            }
+        }
+        List<PfBorder> pfBorderp0 = new ArrayList<>();
+        List<PfBorder> pfBorderp10 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorderp15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorderp6 = new ArrayList<>();//排单中
+        for (PfBorder pfBord : pfBorderps) {
+            if (pfBord.getOrderStatus() == 0) {
+                pfBorderp0.add(pfBord);//待付款
+            } else if (pfBord.getOrderStatus() == 8 ) {
+                pfBorderp15.add(pfBord);//待收货
+            }  else if (pfBord.getOrderStatus() == 6) {
+                pfBorderp6.add(pfBord);//排单中
+            }else if (pfBord.getOrderStatus() == 7 ) {
+                pfBorderp10.add(pfBord);//代发货
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("pfBorders10", pfBorders0.size());
+        modelAndView.addObject("pfBorders6", pfBorders6.size());
+        modelAndView.addObject("pfBorders0", pfBorders0.size());
+        modelAndView.addObject("pfBorders8", pfBorders15.size());
+        modelAndView.addObject("pfBorderps10", pfBorderp10.size());
+        modelAndView.addObject("pfBorderps6", pfBorderp6.size());
+        modelAndView.addObject("pfBorderps0", pfBorderp0.size());
+        modelAndView.addObject("pfBorderps8", pfBorderp15.size());
+        modelAndView.setViewName("platform/order/dingdanguanli");
+        return modelAndView;
+    }
+
+    /**
      * 进货订单
      *
      * @author muchaofeng
@@ -489,12 +542,12 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 7 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
-                pfBorders15.add(pfBord);//待收货
-            } else if (pfBord.getOrderStatus() == 6) {
+            }  else if (pfBord.getOrderStatus() == 6 && pfBord.getSendType()!=2){
                 pfBorders6.add(pfBord);//排单中
+            }else if (pfBord.getOrderStatus() == 8 && pfBord.getSendType()==2){
+                pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorders3.add(pfBord);//已完成
             }
@@ -633,9 +686,9 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+            } else if (pfBord.getOrderStatus() == 7 ) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 5) {
+            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorders3.add(pfBord);//已完成

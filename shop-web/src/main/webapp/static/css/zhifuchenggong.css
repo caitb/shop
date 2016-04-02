@@ -9,6 +9,20 @@
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
 }
+.kuaidi {
+  background: white;
+  text-indent: 10px;
+  padding: 5px 0;
+  width:100%;
+}
+ .kuaidi p {
+  line-height: 25px;
+}
+.paidan{
+   width:100%;
+   background: white;
+   margin-top: 10px;
+ }
 .wrap .box .tai {
   width: 100%;
   background: #F6410C;
@@ -205,6 +219,22 @@
   color: #FF7F5A;
   font-size: 12px;
 }
+.sec5 {
+  width: 100%;
+  background: white;
+  margin-top: 10px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+.sec5 p {
+  margin: 0 10px;
+  font-size: 13px;
+}
+.sec5 p span {
+  padding-left: 5px;
+  margin-right: 15px;
+  font-size: 13px;
+}
 .wrap .box .sec4 h1 span:last-child {
   margin-right: 10px;
 }
@@ -214,7 +244,7 @@
 .wrap .box > p {
   width: 100%;
   text-align: center;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .wrap .box > p a {
   background: url("../images/icon_37.png") no-repeat 0;

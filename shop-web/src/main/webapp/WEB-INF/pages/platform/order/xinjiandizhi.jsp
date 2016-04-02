@@ -116,7 +116,7 @@
             </div>
         </div>
         <input type="text" id="operateTypeId" style="display: none" value="save"/>
-        <input type="text" id="jumpTypeId" style="display: none" value="jumpToOrder"/>
+        <input type="text" id="addAddressJumpTypeId" style="display: none" value="${addAddressJumpType}"/>
         <a onclick="saveAddress()" class="baocun">
             保存
         </a>

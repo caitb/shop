@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.service.order;
 
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -24,6 +25,8 @@ public class OrderQueueDealService {
     private static final Logger log = Logger.getLogger(OrderQueueDealService.class);
 
     @Autowired
+    private SkuService skuService;
+    @Autowired
     private PfBorderMapper pfBorderMapper;
     @Autowired
     private PfBorderItemMapper pfBorderItemMapper;
@@ -41,61 +44,51 @@ public class OrderQueueDealService {
      * @return
      * @throws Exception
      */
-    public Map<String, String> commonQueuingOrder(Map<String, String> orderMap) throws Exception {
-        if (orderMap == null) {
-            return orderMap;
-        }
-        Map<String, String> map = new HashMap<>();
-//        Iterator it = orderMap.entrySet().iterator();
-//        String key;
-//        String value;
-//        String receiveMsg = "";
-//        while (it.hasNext()) {
-//            Map.Entry entry = (Map.Entry) it.next();
-//            key = (String) entry.getKey();
-//            value = (String) entry.getValue();
-//            try {
-//                if (value.equals("1")) {
-//                    receiveMsg = pfQueuingOrder(key);
-//                }
-//                if (value.equals("2")) {
-//                    receiveMsg = userQueuingOrder(key);
-//                }
-//                map.put(key, receiveMsg);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                map.put(key, "系统异常");
-//            }
-//        }
-        return map;
-    }
-
-
     @Transactional
-    private void abvas(Long orderId) throws Exception {
-        pfQueuingOrder(orderId);
+    public Map<Long,String> commonQueuingOrder(Map<Long, String> orderMap) throws Exception {
+        if (orderMap == null) {
+            throw new BusinessException("参数为空");
+        }
+        Map<Long, String> map = new HashMap<>();
+        Iterator it = orderMap.entrySet().iterator();
+        Long key;
+        String value;
+        String receiveMsg = "";
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            key = (Long) entry.getKey();
+            value = (String) entry.getValue();
+            if (value.equals("1")) {
+                receiveMsg = pfQueuingOrder(key);
+            }
+            if (value.equals("2")) {
+                receiveMsg = userQueuingOrder(key);
+            }
+            map.put(key,receiveMsg);
+        }
+        return map;
     }
 
     /**
      * 平台代发处理排单
-     *
      * @param orderId 订单id
      * @throws Exception
      */
-    private void pfQueuingOrder(Long orderId) throws Exception {
+    private String pfQueuingOrder(Long orderId) throws Exception {
         log.info("进入平台代发排单处理Service");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
         if (pfBorder == null) {
-            log.info("平台代发:订单编号不存在，orderId=" + orderId);
-            throw new BusinessException("平台代发:订单编号不存在，orderCode=" + orderId);
+            throw new BusinessException("平台代发:订单编号不存在，orderId=" + orderId);
         }
         if (pfBorder.getSendType() != 1) {
-            log.info("平台代发:该订单不是平台代发货，orderCode=" + orderId);
-            throw new BusinessException("平台代发:该订单不是平台代发货，orderCode=" + orderId);
+            throw new BusinessException("平台代发:该订单不是平台代发货，orderId=" + orderId);
         }
         if (pfBorder.getOrderStatus() != 6) {
-            log.info("平台代发:该订单不是排单状态，orderCode=" + orderId);
-            throw new BusinessException("平台代发:该订单不是排单状态，orderCode=" + orderId);
+            throw new BusinessException("平台代发:该订单不是排单状态，orderId=" + orderId);
+        }
+        //判断库存是否充足,库存不足直接返回
+        if (!checkBOrderStock(pfBorder)){
+            return "false";
         }
         List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         int skuId;
@@ -108,11 +101,11 @@ public class OrderQueueDealService {
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
             //当取货数量不大于平台当前库存则直接进行平台减库存用户加库存操作
             //取货数量大于平台库存量则向上抛出异常
-            if (quantity <= pfSkuStock.getStock()) {
+            if (quantity <= pfSkuStock.getStock() - pfSkuStock.getFrozenStock()) {
                 //平台减库存
-                pfSkuStock.setStock(pfSkuStock.getStock().intValue() - quantity);
+                pfSkuStock.setStock(pfSkuStock.getStock() - quantity);
+                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - quantity);
                 if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
-                    log.info("平台代发:更新平台商品库存表失败");
                     throw new BusinessException("平台代发:更新平台商品库存表失败");
                 }
                 //代理加库存
@@ -128,9 +121,8 @@ public class OrderQueueDealService {
                     userSkuStock.setRemark("处理排单时插入的数据");
                     userSkuStock.setVersion(0);
                 } else {
-                    userSkuStock.setStock(userSkuStock.getStock().intValue() + quantity);
+                    userSkuStock.setStock(userSkuStock.getStock() + quantity);
                     if (pfUserSkuStockMapper.updateByIdAndVersion(userSkuStock) == 0) {
-                        log.info("平台代发:更新代理商商品库存表失败");
                         throw new BusinessException("平台代发:更新代理商商品库存表失败");
                     }
                 }
@@ -142,7 +134,6 @@ public class OrderQueueDealService {
         //修改订单状态，订单完成
         pfBorder.setOrderStatus(3);
         if (pfBorderMapper.updateById(pfBorder) == 0) {
-            log.info("平台代发:修改订单状态失败");
             throw new BusinessException("平台代发:修改订单状态失败");
         }
         //添加订单日志
@@ -158,29 +149,29 @@ public class OrderQueueDealService {
         for (PfBorder order : pfBorders) {
             pfQueuingOrder(order.getId());
         }
+        return "success";
     }
 
     /**
      * 用户自发货订单排单处理
-     *
-     * @param orderCode
+     * @param orderId       订单id
      * @throws Exception
      */
-    @Transactional
-    public String userQueuingOrder(String orderCode) throws Exception {
+    private String userQueuingOrder(Long orderId) throws Exception {
         log.info("用户自发货订单排单处理Service");
-        PfBorder pfBorder = pfBorderMapper.selectByOrderCode(orderCode);
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
         if (pfBorder == null) {
-            log.info("自发货:订单编号不存在，orderCode=" + orderCode);
-            return "自发货:订单编号不存在，orderCode=" + orderCode;
+            throw new BusinessException("自发货:订单编号不存在，orderCode=" + orderId);
         }
         if (pfBorder.getSendType() != 2) {
-            log.info("自发货:该订单不是自发货，orderCode=" + orderCode);
-            return "自发货:该订单不是自发货，orderCode=" + orderCode;
+            throw new BusinessException("自发货:该订单不是自发货，orderCode=" + orderId);
         }
         if (pfBorder.getOrderStatus() != 6) {
-            log.info("自发货:该订单不是排单状态，orderCode=" + orderCode);
-            return "自发货:该订单不是排单状态，orderCode=" + orderCode;
+            throw new BusinessException("自发货:该订单不是排单状态，orderCode=" + orderId);
+        }
+        //判断库存是否充足,库存不足直接返回
+        if (!checkBOrderStock(pfBorder)){
+            return "false";
         }
         List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         int skuId;
@@ -192,24 +183,15 @@ public class OrderQueueDealService {
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
             //当取货数量不大于平台当前库存则直接进行平台减库存加冻结库存
             //取货数量大于平台库存量则向上抛出异常
-            if (quantity <= pfSkuStock.getStock()) {
-                pfSkuStock.setStock(pfSkuStock.getStock().intValue() - quantity);
-                pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock().intValue() + quantity);
-                pfSkuStock.setRemark("自发货排单处理");
-                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
-                    log.info("自发货:自发货排单处理，平台库存更新失败");
-                    return "自发货:自发货排单处理，平台库存更新失败";
-                }
-            } else {
+            if (quantity > pfSkuStock.getStock() - pfSkuStock.getFrozenStock()) {
                 log.info("自发货:平台商品库存不足，拿货数量为" + quantity + "，平台库存量" + pfSkuStock.getStock());
-                return "自发货:平台商品库存不足，拿货数量为" + quantity + "，平台库存量" + pfSkuStock.getStock();
+                throw new BusinessException("自发货:平台商品库存不足，拿货数量为" + quantity + "，平台库存量" + pfSkuStock.getStock());
             }
         }
         //修改订单状态，订单完成
         pfBorder.setOrderStatus(7);
         if (pfBorderMapper.updateById(pfBorder) == 0) {
-            log.info("自发货:修改订单状态失败");
-            return "自发货:修改订单状态失败";
+            throw new BusinessException("自发货:修改订单状态失败");
         }
         //添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
@@ -220,5 +202,22 @@ public class OrderQueueDealService {
         pfBorderOperationLog.setRemark("订单待发货，自发货排单处理订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         return "success";
+    }
+
+    /**
+     * 判断订单库存是否充足
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/18 14:25
+     */
+    private boolean checkBOrderStock(PfBorder pfBorder) {
+        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
+            int n = skuService.checkSkuStock(pfBorderItem.getSkuId(), pfBorderItem.getQuantity(), pfBorder.getUserPid());
+            if (n < 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

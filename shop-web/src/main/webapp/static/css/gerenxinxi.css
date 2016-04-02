@@ -7,6 +7,33 @@
 .wrap main {
   -webkit-box-flex: 1;
 }
+.wrap main .head_img {
+  display: -webkit-box;
+  background: white;
+  padding: 10px 10px;
+}
+.wrap main .head_img p {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  border: 2px solid #f3f4f5;
+  overflow: hidden;
+}
+.wrap main .head_img p img {
+  display: block;
+  width: 100%;
+}
+.wrap main .head_img div {
+  margin-left: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+}
+.wrap main .head_img div h1:nth-child(1) {
+  font-size: 16px;
+}
 .wrap main .sec1 {
   display: -webkit-box;
   background: #fff;
@@ -14,21 +41,23 @@
   -webkit-box-pack: justify;
   padding: 10px 10px;
   border-bottom: 1px solid #f6f6f6;
+  margin-bottom: 5px;
 }
-.wrap main .sec1 p {
+.wrap main .sec1 p:nth-child(1) {
   font-weight: 600;
 }
-.wrap main .sec1 b {
-  display: block;
+.wrap main .sec1 p:nth-child(2) {
+  display: -webkit-box;
 }
-.wrap main .sec1 span {
+.wrap main .sec1 p:nth-child(2) b {
   display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  overflow: hidden;
+  margin-right: 10px;
 }
-.wrap main .sec1 span img {
+.wrap main .sec1 p:nth-child(2) img {
   display: block;
-  width: 100%;
+  width: 12px;
+  height: 20px;
+}
+.wrap main .sec1:nth-child(2) {
+  margin: 0;
 }

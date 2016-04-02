@@ -2,11 +2,10 @@ package com.masiis.shop.web.platform.controller.product;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -133,16 +132,19 @@ public class ProductController extends BaseController {
     public String applyStock(HttpServletRequest request, HttpServletResponse response,
                              @RequestParam(required = true) Integer stock,
                              @RequestParam(required = true) Long id,
-                             @RequestParam(required = false) String message) {
+                             @RequestParam(required = false) String message,
+                             @RequestParam(required = true) Long userAddressId) {
         JSONObject object = new JSONObject();
         try {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSkuStock product = productService.getStockByUser(id);
             if (product.getStock() - stock < 0) {
-                throw new BusinessException("拿货数量超出平台库存!");
+                throw new BusinessException("拿货数量超出库存!");
             }
-            bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message,0);
+            Long orderCode = bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message,userAddressId);
+            PfBorder pfBorder = bOrderService.findByOrderCode(String.valueOf(orderCode));
+            object.put("borderId", pfBorder.getId());
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
@@ -161,11 +163,14 @@ public class ProductController extends BaseController {
         ModelAndView mav = new ModelAndView("/platform/user/nahuo");
         PfUserSkuStock product = productService.getStockByUser(id);
         ComSku comSku = skuService.getSkuById(product.getSkuId());
+        ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(),product.getSkuId());
         Integer lowerCount = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
         mav.addObject("productInfo",product);
         mav.addObject("lowerCount",lowerCount);//下级人数
         mav.addObject("comSku",comSku);
+        mav.addObject("comSkuImage",productImgValue+comSkuImage.getImgUrl());
         return mav;
     }
     /**

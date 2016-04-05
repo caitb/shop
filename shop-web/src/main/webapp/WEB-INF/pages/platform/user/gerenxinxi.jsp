@@ -34,7 +34,7 @@
             <p>手机号</p>
             <p>${comUser.mobile}</p>
         </div>
-        <div class="sec1">
+        <div class="sec1" id="weChatNumberId">
             <p>微信号</p>
             <p><img src="<%=path%>/static/images/next.png" alt=""></p>
         </div>

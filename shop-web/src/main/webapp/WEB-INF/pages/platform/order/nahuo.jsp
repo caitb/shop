@@ -109,9 +109,6 @@
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(document).ready(function () {
-            isShowAddress();
-    })
     function isShowAddress(){
         var addressId = $("#addressId").val();
         if (addressId == "") {
@@ -123,13 +120,13 @@
         }
     }
     function platformSendGoods(){
-        isShowAddress();
+        $(".xuan").hide();
+        $(".shouhuo").hide();
         $("#platformSendGoodsId").attr("class","active");
         $("#ownSendGoodsId").removeClass("active");
     }
     function ownSendGoods(){
-        $(".xuan").hide();
-        $(".shouhuo").hide();
+        isShowAddress();
         $("#ownSendGoodsId").attr("class","active");
         $("#platformSendGoodsId").removeClass("active");
     }

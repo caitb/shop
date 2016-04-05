@@ -96,11 +96,16 @@
     </div>
     <div class="back_que">
         <p>数据确认</p>
-        <h4><b>商品选择:</b><span id="q_skuName"></span></h4>
-        <h4><b>姓名:</b><span id="q_name">${name}</span></h4>
-        <h4><b>手机号:</b><span id="q_mobile">${mobile}</span></h4>
+        <h4><b>商品选择:</b><span id="q_skuName">${skuName}</span></h4>
         <h4><b>微信:</b><span id="q_weixinId"></span></h4>
-        <h4><b>推荐人电话:</b><span id="q_pMobile"></span></h4>
+        <c:choose>
+            <c:when test="${pWxNkName==''}">
+                <h4><b>推荐人电话:</b><span id="q_pMobile"></span></h4>
+            </c:when>
+            <c:otherwise>
+                <h4><b>推荐人微信:</b><span id="q_pWx">${pWxNkName}</span></h4>
+            </c:otherwise>
+        </c:choose>
         <h4><b>合伙人等级:</b><span id="q_levelName"></span></h4>
         <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
         <h3>

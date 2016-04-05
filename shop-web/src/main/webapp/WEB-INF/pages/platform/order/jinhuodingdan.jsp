@@ -60,11 +60,11 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.unitPrice}</span></p>
+                                    <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                    <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                                共<span>${pb.totalQuantity}</span>件商品 <b>合计：￥${pb.orderAmount}</b>( 运费：到付)
+                               <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -73,11 +73,9 @@
                                         <b>类型：</b><span>补货</span></c:if>
                                 </h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/border/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">
-                                    <a href="<%=path%>/border/payBOrder.shtml?bOrderId=${pb.id}">选择拿货方式</a>
-                                </c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    <a href="<%=path%>/border/payBOrder.shtml?bOrderId=${pb.id}">继续支付</a></c:if>
+                                <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
                                 </span><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货

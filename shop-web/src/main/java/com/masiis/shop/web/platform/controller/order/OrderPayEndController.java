@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -30,8 +29,7 @@ public class OrderPayEndController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private BorderSkuStockService borderSkuStockService;
-    @Resource
-    private UserService userService;
+
     /**
      * 补货订单支付完成
      * @param bOrderId    订单编码

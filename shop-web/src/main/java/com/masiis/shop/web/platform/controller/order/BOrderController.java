@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -442,4 +443,28 @@ public class BOrderController extends BaseController {
             modelAndView.setViewName("platform/order/nahuo");
             return modelAndView;
         }
+
+    @ResponseBody
+    @RequestMapping("/setUserSendType/save.do")
+    public String setUserSendTypeSave(HttpServletRequest request,
+                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                      @RequestParam(value = "sendType", required = true) Integer sendType,
+                                      @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("isError", true);
+        try {
+            ComUser comUser = getComUser(request);
+            payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
+            comUser.setSendType(sendType);
+            setComUser(request, comUser);
+            jsonObject.put("isError", false);
+        } catch (Exception ex) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
+        }
+        return jsonObject.toJSONString();
+    }
 }

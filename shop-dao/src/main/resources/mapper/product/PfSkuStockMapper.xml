@@ -10,11 +10,12 @@
         <result column="stock" property="stock" jdbcType="INTEGER"/>
         <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, create_time, supplier_id, spu_id, sku_id, stock, frozen_stock, remark,version
+    id, create_time, supplier_id, spu_id, sku_id, stock, frozen_stock, remark,is_queue,version
   </sql>
 
     <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -27,6 +28,7 @@
     stock,
     frozen_stock,
     remark,
+    is_queue,
     version
     from
     pf_sku_stock
@@ -55,6 +57,7 @@
     stock,
     frozen_stock,
     remark,
+    is_queue,
     version
     from
     pf_sku_stock
@@ -134,6 +137,7 @@
             stock,
             frozen_stock,
             remark,
+            is_queue,
             version
     from
             pf_sku_stock

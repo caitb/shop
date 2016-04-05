@@ -4,16 +4,14 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
-import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
-import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
+import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,15 +64,15 @@ public class PayBOrderService {
     @Resource
     private ComUserAccountMapper accountMapper;
     @Resource
-    private PfUserBillItemMapper itemMapper;
-    @Resource
     private ComUserAccountRecordMapper recordMapper;
-    @Resource
-    private CertificateMapper certificateMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
+    @Resource
+    private UserAddressService userAddressService;
+    @Resource
+    private PfBorderConsigneeMapper pfBorderConsigneeMapper;
 
     /**
      * 支付回调统一入口
@@ -97,6 +95,42 @@ public class PayBOrderService {
         } else if (pfBorder.getSendType() == 2) {
             patBOrderII(pfBorderPayment, outOrderId, rootPath);
         }
+    }
+
+
+    /**
+     * 支付完成选择拿货方式
+     *
+     * @author ZhaoLiang
+     * @date 2016/4/5 11:44
+     */
+    @Transactional
+    public void updateBOrderSendType(ComUser comUser, Long bOrderId, Integer sendType, Long userAddressId) throws Exception {
+        if (comUser.getSendType() == 0) {
+            comUser.setSendType(sendType);
+            comUserMapper.updateByPrimaryKey(comUser);
+        } else {
+            sendType = comUser.getSendType();
+        }
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        pfBorder.setSendType(sendType);
+        pfBorderMapper.updateById(pfBorder);
+        ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+        PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+        pfBorderConsignee.setCreateTime(new Date());
+        pfBorderConsignee.setPfBorderId(pfBorder.getId());
+        pfBorderConsignee.setUserId(comUserAddress.getUserId());
+        pfBorderConsignee.setConsignee(comUserAddress.getName());
+        pfBorderConsignee.setMobile(comUserAddress.getMobile());
+        pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+        pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+        pfBorderConsignee.setCityId(comUserAddress.getCityId());
+        pfBorderConsignee.setCityName(comUserAddress.getCityName());
+        pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+        pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+        pfBorderConsignee.setAddress(comUserAddress.getAddress());
+        pfBorderConsignee.setZip(comUserAddress.getZip());
+        pfBorderConsigneeMapper.insert(pfBorderConsignee);
     }
 
     /**

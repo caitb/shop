@@ -453,6 +453,9 @@ public class BOrderController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("isError", true);
         try {
+            if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
+                throw new BusinessException("用户自发货，请选择收货地址。");
+            }
             ComUser comUser = getComUser(request);
             payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
             comUser.setSendType(sendType);

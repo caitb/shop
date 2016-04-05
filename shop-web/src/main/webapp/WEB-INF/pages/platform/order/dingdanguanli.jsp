@@ -44,7 +44,7 @@
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders8 !=0}"><span>${pfBorders8}</span></c:if></h1>
                     <h1>需要我收货</h1>
                 </li>
-                <li><a href="<%=path%>/border/stockBorder">
+                <li><a href="<%=path%>/borderManage/stockBorder">
                     <h1>查看全部》</h1></a>
                 </li>
                 <li style="background:#f6f6f6"></li>
@@ -71,7 +71,7 @@
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorderps8 !=0}"><span>${pfBorderps8}</span></c:if></h1>
                     <h1>需要对方收货</h1>
                 </li>
-                <li><a href="<%=path%>/border/deliveryBorder">
+                <li><a href="<%=path%>/borderManage/deliveryBorder">
                     <h1>查看全部》</h1></a>
                 </li>
                 <li style="background:#f6f6f6"></li>

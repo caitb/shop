@@ -9,6 +9,8 @@ public class PfBorderItemExtends {
 
     private String logoUrl;
 
+    private Integer realStock;
+
     public String getSpuNmme() {
         return spuNmme;
     }
@@ -25,4 +27,11 @@ public class PfBorderItemExtends {
         this.logoUrl = logoUrl;
     }
 
+    public Integer getRealStock() {
+        return realStock;
+    }
+
+    public void setRealStock(Integer realStock) {
+        this.realStock = realStock;
+    }
 }

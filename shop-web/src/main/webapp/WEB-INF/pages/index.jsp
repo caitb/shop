@@ -66,7 +66,7 @@
                                 <span>商品管理</span></a>
                         </li>
                         <li class="market">
-                            <a class="herf" href="<%=path%>/border/borderManagement.html">
+                            <a class="herf" href="<%=path%>/borderManage/borderManagement.html">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""><c:if test="${borderNum!=0}"><span>${borderNum}</span></c:if></h1>
                                 <span>订单管理</span></a>
                         </li>

@@ -68,15 +68,15 @@
                 <p>类型：  </p><span>拿货</span>
             </c:if>
         </div>
-        <section class="sec1">
-            <c:if test="${pfBorder.sendType==2 || pfBorder.orderType==2}">
+        <c:if test="${pfBorder.sendType==2 || pfBorder.orderType==2}">
+            <section class="sec1">
                 <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                 <div>
                     <a href="#"><h2>收货人：<b>${pfBorderConsignee.consignee}</b> <span>${pfBorderConsignee.mobile}</span></h2></a>
                     <a href="#"><p>收货地址： <span>${pfBorderConsignee.address}</span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
                 </div>
-            </c:if>
-        </section>
+            </section>
+        </c:if>
         <c:if test="${pfBorder.sendType == 1}">
             <c:forEach var="pfBorderItem" items="${pfBorderItems}">
                 <div class="paidan">
@@ -85,8 +85,8 @@
                 </div>
                 <section class="sec2">
                     <p class="photo">
-                        <a href="#" onclick="toProduct(${borderItem.skuId})">
-                            <img src="${skuImg}${borderItem.logoUrl}" alt="">
+                        <a href="#" onclick="toProduct(${pfBorderItem.skuId})">
+                            <img src="${skuImg}${pfBorderItem.logoUrl}" alt="">
                         </a>
                     </p>
                     <div>
@@ -104,15 +104,20 @@
         </section>
         <section class="sec4">
             <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
-            <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
+            <c:if test="${pfBorder.sendType == 1}">
+                <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
+            </c:if>
+            <c:if test="${pfBorder.sendType == 2}">
+                <p>运费：<span>到付</span></p>
+            </c:if>
             <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
         </section>
         <div class="sec5">
             <p>订单编号：<span>${pfBorder.orderCode}</span></p>
             <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
-            <p>创建时间：<span><fmt:parseDate value="${pfBorder.createTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
-            <p>付款时间：<span><fmt:parseDate value="${pfBorder.payTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
-            <p>发货时间：<span><fmt:parseDate value="${pfBorder.shipTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
+            <p>创建时间：<span><fmt:formatDate value="${pfBorder.createTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+            <p>付款时间：<span><fmt:formatDate value="${pfBorder.payTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+            <p>发货时间：<span><fmt:formatDate value="${pfBorder.shipTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
         </div>
         <botton class="btn">
             返回市场

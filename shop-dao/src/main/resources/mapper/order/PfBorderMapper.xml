@@ -401,4 +401,8 @@
         AND order_status = 0
         AND pay_status = 0
     </update>
+    
+    <select id="countSales" parameterType="String" resultType="Double">
+        SELECT sum(pay_amount - bail_amount) FROM pf_border WHERE FIND_IN_SET(user_id,#{sUserIds})
+    </select>
 </mapper>

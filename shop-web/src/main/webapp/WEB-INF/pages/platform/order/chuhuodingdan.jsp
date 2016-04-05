@@ -56,8 +56,8 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
                                 </div>
                             </div> </c:forEach>
                                 <h1>

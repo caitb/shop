@@ -1,9 +1,6 @@
 package com.masiis.shop.dao.beans.order;
 
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
-import com.masiis.shop.dao.po.PfBorderFreight;
-import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.*;
 
 import java.util.List;
 
@@ -18,7 +15,15 @@ public class BorderDetail {
     private List<PfBorderItem> pfBorderItems;
     private List<PfBorderFreight> pfBorderFreights;//快递公司信息
     private PfBorderConsignee pfBorderConsignee;//收货人
+    private List<PfBorderPayment> pfBorderPayments;//支付方式
 
+    public void setPfBorderPayments(List<PfBorderPayment> pfBorderPayments) {
+        this.pfBorderPayments = pfBorderPayments;
+    }
+
+    public List<PfBorderPayment> getPfBorderPayments() {
+        return pfBorderPayments;
+    }
 
     public void setBuyerName(String buyerName) {this.buyerName = buyerName;}
 

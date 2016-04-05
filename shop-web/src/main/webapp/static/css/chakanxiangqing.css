@@ -44,7 +44,6 @@
 }
 .wrap main #box .sec2 p span:nth-child(1) {
   display: inline-block;
-  width: 75px;
   margin: 0;
   font-weight: 600;
 }

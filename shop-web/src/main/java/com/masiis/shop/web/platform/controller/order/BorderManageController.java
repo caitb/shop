@@ -5,6 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.beans.order.StockManage;
+import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -56,6 +57,8 @@ public class BorderManageController extends BaseController {
     private ComUserAccountService comUserAccountService;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfBorderPaymentMapper pfBorderPaymentMapper;
     @Resource
     private BorderSkuStockService borderSkuStockService;
 
@@ -259,20 +262,30 @@ public class BorderManageController extends BaseController {
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         PfUserSkuStock pfUserSkuStock = null;
-        StockManage stockManage =null;
+        StockManage stockManage =new StockManage();
+        List<StockManage> StockManages = new ArrayList<>();
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
             pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
             pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-            stockManage.setSkuName(pfBorderItem.getSkuName());
-            stockManage.setStockNum(pfUserSkuStock.getStock());
-            pfBorder.getStockManages().add(stockManage);
+            if(pfUserSkuStock==null){
+                stockManage.setStockNum(0);
+//                pfBorder.getStockManages().add(stockManage);
+            }else {
+                stockManage.setSkuName(pfBorderItem.getSkuName());
+                stockManage.setStockNum(pfUserSkuStock.getStock());
+            }
+            StockManages.add(stockManage);
         }
         //快递公司信息
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
+        if(pfBorderFreights.size()==0){
+            pfBorderFreights=null;
+        }
         //收货人
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
+        pfBorder.setStockManages(StockManages);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);
         borderDetail.setPfBorderFreights(pfBorderFreights);
@@ -309,7 +322,10 @@ public class BorderManageController extends BaseController {
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
         //收货人
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
+        //支付方式
+        List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(id);
         borderDetail.setBuyerName(comUser.getRealName());
+        borderDetail.setPfBorderPayments(pfBorderPayments);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);
         borderDetail.setPfBorderFreights(pfBorderFreights);

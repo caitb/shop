@@ -72,15 +72,15 @@ public class MarketController extends BaseController {
             String url = skuValue + indexCom.getImgUrl();
             //重新封装商品图片地址
             indexCom.setImgUrl(url);
-            if(user!=null && user.getIsAgent()==1) {
+//            if(user!=null && user.getIsAgent()==1) {
                 //判断会员权限
                 indexCom.setIsPartner(1);
                 //确定代理权限，显示优惠区间
                 indexCom.setMaxDiscount(productService.getMaxDiscount());
                 indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
-            }else{
-                indexCom.setDiscountLevel("成为合伙人可查看利润");
-            }
+//            }else{
+//                indexCom.setDiscountLevel("成为合伙人可查看利润");
+//            }
             PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getId());
             if (pfUserSku !=null){
                 indexCom.setIsPay(pfUserSku.getIsPay());

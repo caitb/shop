@@ -64,11 +64,11 @@ public class PayBOrderService {
     @Resource
     private ComUserAccountService comUserAccountService;
     @Resource
-    ComUserAccountMapper accountMapper;
+    private ComUserAccountMapper accountMapper;
     @Resource
-    PfUserBillItemMapper itemMapper;
+    private PfUserBillItemMapper itemMapper;
     @Resource
-    ComUserAccountRecordMapper recordMapper;
+    private ComUserAccountRecordMapper recordMapper;
     @Resource
     private CertificateMapper certificateMapper;
     @Resource

@@ -4,6 +4,7 @@ import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -48,6 +49,8 @@ public class MyTeamService {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComBrandMapper comBrandMapper;
+    @Resource
+    private PfBorderMapper pfBorderMapper;
 
 
     /**
@@ -73,10 +76,47 @@ public class MyTeamService {
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
+            Map<String, String> curMap = countChild(pus.getId(), pus.getUserId());
+            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length);
+            agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
+
             agentSkuMaps.add(agentSkuMap);
         }
 
         return agentSkuMaps;
+    }
+
+    /**
+     * 统计团队人数
+     * @param userSkuId
+     * @return
+     */
+    public Map<String, String> countChild(Integer userSkuId, Long userId){
+        String curPIds = userSkuId.toString();
+        String curUserIds = userId.toString();
+        StringBuilder childIds = new StringBuilder(4000);
+        StringBuilder userIds = new StringBuilder(4000);
+        childIds.append("," + curPIds);
+        userIds.append("," + curUserIds);
+
+        while (curPIds != null){
+           Map<String, String> curMap = pfUserSkuMapper.countChild(curPIds);
+           if(curMap == null) curMap = new HashMap<>();
+           curPIds = curMap.get("sPIds");
+           curUserIds = curMap.get("sUserIds");
+
+           if(curPIds != null) childIds.append("," + curPIds);
+           if(curUserIds != null) userIds.append("," + curUserIds);
+        }
+
+        childIds.deleteCharAt(0);
+        userIds.deleteCharAt(0);
+
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("childIds", childIds.toString());
+        resultMap.put("userIds", userIds.toString());
+
+        return resultMap;
     }
 
     /**

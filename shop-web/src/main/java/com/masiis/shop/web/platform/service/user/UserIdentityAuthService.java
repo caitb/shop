@@ -8,6 +8,7 @@ import com.masiis.shop.web.platform.utils.UploadImage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,8 @@ public class UserIdentityAuthService {
 
     private final Integer saveType = 0;//保存操作
     private final Integer updateType = 1;//更新操作
+
+    private String identityAuthRealPath = null;
 
     /**
      * 获得身份证信息
@@ -49,17 +52,24 @@ public class UserIdentityAuthService {
      * @date 2016/3/31 15:47
      */
     private void loadIdCardFromOSSToLocal(HttpServletRequest request,ComUser comUser){
-        String rootPath = request.getServletContext().getRealPath("/");
-        String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-        String savepath = SysConstants.ID_CARD_PATH;
-        String realpath = webappPath + savepath;
+        identityAuthRealPath = getIdentityAuthRealPath(request);
         //OSS下载到本地服务器
-        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), realpath+"\\"+comUser.getIdCardFrontUrl());
-        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), realpath+"\\"+comUser.getIdCardBackUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
-
+    }
+    public String getIdentityAuthRealPath(HttpServletRequest request){
+        if (StringUtils.isEmpty(identityAuthRealPath)){
+            String rootPath = request.getServletContext().getRealPath("/");
+            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
+            String savepath = SysConstants.ID_CARD_PATH;
+            String realpath = webappPath + savepath;
+            return realpath;
+        }else{
+            return identityAuthRealPath;
+        }
     }
 
     /**

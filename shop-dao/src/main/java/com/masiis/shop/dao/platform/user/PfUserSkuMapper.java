@@ -46,4 +46,11 @@ public interface PfUserSkuMapper {
      */
     List<PfUserSku> selectByCondition(PfUserSku pfUserSku);
 
+    /**
+     * 统计团队人数
+     * @param sPIds
+     * @return
+     */
+    Map<String, String> countChild(String sPIds);
+
 }

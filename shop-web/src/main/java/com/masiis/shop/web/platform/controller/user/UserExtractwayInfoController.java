@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComBank;
 import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.ComUser;
@@ -97,7 +98,6 @@ public class UserExtractwayInfoController extends BaseController {
                 user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
             }
             Long userId = user.getId();
-//            Long userId = Long.valueOf(1);
             //根据id查询字典表数据
             ComDictionary comDictionary = comDictionaryService.findById(35);
             //根据银行id查询银行基础信息表
@@ -161,6 +161,9 @@ public class UserExtractwayInfoController extends BaseController {
         log.info("通过userId查询已绑定卡片信息");
 
         ComUser user = getComUser(request);
+        if (user == null){
+            throw new BusinessException("该用户未登录");
+        }
         ModelAndView mv = new ModelAndView();
         Long userId = user.getId();
         List<ComUserExtractwayInfo> list;
@@ -184,6 +187,9 @@ public class UserExtractwayInfoController extends BaseController {
 
         log.info("准备跳转至新增银行卡页面");
         ComUser user = getComUser(request);
+        if (user == null){
+            throw new BusinessException("该用户未登录");
+        }
         Long userId = user.getId();
         log.info("userId="+userId);
         ModelAndView mv = new ModelAndView();
@@ -210,12 +216,15 @@ public class UserExtractwayInfoController extends BaseController {
                                  HttpServletRequest request){
 
         ComUser user = getComUser(request);
-        Long userId = user.getId();
-        log.info("userId:"+userId);
         log.info("id:"+id);
-        List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
         JSONObject jsonobject = new JSONObject();
         try{
+            if (user == null){
+                throw new BusinessException("该用户未登录");
+            }
+            Long userId = user.getId();
+            log.info("userId:"+userId);
+            List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
             for (ComUserExtractwayInfo info:list){
                 if (info.getId()==Long.valueOf(id)){
                     if (info.getIsDefault() != 0){

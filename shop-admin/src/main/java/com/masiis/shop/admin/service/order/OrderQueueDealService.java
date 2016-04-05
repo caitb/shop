@@ -40,7 +40,7 @@ public class OrderQueueDealService {
     /**
      * 排单处理入口
      *
-     * @param orderMap map类型参数 key：订单编号 value：发货类型（同数据库）
+     * @param orderMap map类型参数 key：订单id value：发货类型（同数据库）
      * @return
      * @throws Exception
      */

@@ -79,19 +79,24 @@ $(function () {
         if (!weixinCheckFun($("#weixin"))) {
             n++;
         }
-        if(pUserId == undefined || pUserId==''){
-            if($("#q").prop("checked") == true){
-                if (!mobileCheckFun($("#pMobile"))) {
-                    n++;
-                }
-                $("#q_pMobile").html($("#pMobile").val());
+        if($("#q").prop("checked") == true){
+            if (!mobileCheckFun($("#pMobile"))) {
+                n++;
             }
+            $("#q_pMobile").html($("#pMobile").val());
+            $("#q_pMobile").parent().css("display", "-webkit-box");
+        }else{
+            $("#q_pMobile").parent().css("display", "none");
         }
         if (n > 0) {
             return;
         }
         // 获取微信号
         $("#q_weixinId").html($("#weixin").val());
+        // 获取合伙人等级
+        $("#q_levelName").html($(".on label").html());
+        // 获取所缴纳货款
+        $("#q_amount").html($(".on span:eq(0)").html() * $(".on span:eq(1)").html() + (+$(".on span:eq(2)").html()));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");
@@ -104,7 +109,7 @@ $(function () {
         paraData.realName = $("#q_name").html();
         paraData.weixinId = $("#q_weixinId").html();
         paraData.skuId = skuId;
-        paraData.levelId = $(".dengji .on").attr("levelId");
+        paraData.levelId = $(".on").attr("levelId");
         paraData.pUserId = pUserId;
         $.ajax({
             url: path + "border/add.do",

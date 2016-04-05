@@ -82,11 +82,21 @@ body .wrap .box .dlpople p span {
     color: #FF7D56;
     font-size: 12px;
 }
+.laba{
+    display: inline-block;
+}
+.laba img{
+    display: inline-block;
+    width: 15px;
+    float: left;
+    margin-top: 4px;
+}
 body .wrap .box .dlpople p:nth-child(2) {
     font-size: 12px;
     -webkit-box-flex: 1;
     text-align: right;
     color: #999;
+    margin-right:10px;
 }
 body .wrap .box .dlpople p:nth-child(3){
     margin-right: 10px;

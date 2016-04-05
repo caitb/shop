@@ -69,16 +69,12 @@
                                         <b>类型：</b><span>下级合伙订单</span></c:if><c:if test="${pb.orderType==1}">
                                         <b>类型：</b><span>下级补货</span></c:if>
                                 </h1>
-
-
                             <div class="ding">
                                 <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                <c:when test=""
-                                <c:if test="${pb.payStatus ==1 && pb.shipStatus==0}">
-                                <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">
-                                    发货
-                                </span></c:if>
+                                <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                <c:when test="${pb.orderStatus ==7}">
+                                <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                             </div>
                         </section></c:forEach>
                     </div></c:forEach>

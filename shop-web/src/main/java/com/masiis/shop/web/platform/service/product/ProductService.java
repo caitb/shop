@@ -132,7 +132,8 @@ public class ProductService {
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
-
+                PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(product.getId());
+                product.setIsQueue(pfSkuStock.getIsQueue());
             }
         }
         return userProducts;
@@ -166,9 +167,9 @@ public class ProductService {
      * 上级/平台库存
      */
     public Integer getUpperStock(Long UserId, Integer skuId) {
-        Integer upperStock;
+        Integer upperStock = 0;
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(UserId, skuId);//当前代理关系
-        if (pfUserSku.getPid() == 0) {
+        if (pfUserSku!=null && pfUserSku.getPid() == 0) {
             upperStock = pfSkuStockMapper.selectBySkuId(skuId).getStock();
         } else {
             upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId).getStock();

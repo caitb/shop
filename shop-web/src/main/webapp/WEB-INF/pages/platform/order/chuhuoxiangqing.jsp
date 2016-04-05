@@ -54,10 +54,12 @@
                 <p><span>支付日期：</span><span><fmt:formatDate value="${borderDetail.pfBorder.payTime}"
                                                            pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p><span>支付类型：</span><span>微信支付</span></p>
+                <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台发货</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
+                <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">下级合伙订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">下级补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
                 <p><span>物流状态：</span><c:if
                         test="${borderDetail.pfBorder.orderStatus==3 &&borderDetail.pfBorder.shipStatus==9}"><span>已完成</span></c:if><c:if
-                        test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==5}"><span>已发货</span></c:if><c:if
-                        test="${borderDetail.pfBorder.payStatus==1 &&borderDetail.pfBorder.shipStatus==0}"><span>未发货</span><a
+                        test="${borderDetail.pfBorder.orderStatus==8}"><span>已发货</span></c:if><c:if
+                        test="${borderDetail.pfBorder.orderStatus==7}"><span>未发货</span><a
                         class="fah">发货</a></c:if></p>
                 <p><span>配送方式：</span><span>物流配送</span></p>
                 <p><span>发货时间：</span><span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}"

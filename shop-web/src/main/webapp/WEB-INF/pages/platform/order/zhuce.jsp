@@ -76,7 +76,7 @@
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId >= pUserLevelId}">
-                            <p><label>${view.level.name}</label>
+                            <p levelId="${view.agent.agentLevelId}"><label>${view.level.name}</label>
                                 <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.agentFee}</span> <b>保证金：</b> <span>${view.agent.bail}</span>
                             </p>
                         </c:if>
@@ -124,6 +124,7 @@
     var mobile = "${mobile}";
     var pUserId = "${pUserId}";
     var pMobile = "${pMobile}";
+    var pUserLevelId = "${pUserLevelId}";
 </script>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>

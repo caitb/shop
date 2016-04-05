@@ -11,19 +11,16 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.controller.user.UserApplyController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.BorderFreightService;
 import com.masiis.shop.web.platform.service.order.PayBOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
-import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,10 +54,6 @@ public class BOrderController extends BaseController {
     private UserAddressService userAddressService;
     @Resource
     private ComDictionaryService comDictionaryService;
-    @Resource
-    private BorderFreightService borderFreightService;
-    @Resource
-    private ComUserAccountService comUserAccountService;
     @Resource
     private PayBOrderService payBOrderService;
 
@@ -341,11 +334,22 @@ public class BOrderController extends BaseController {
             attrs.addAttribute("bOrderId", bOrderId);
             return "redirect:/border/payBOrdersSuccess.shtml";
         } else if (enviromentkey.equals("1")) {
+            String successURL = getBasePath(request);
+            //订单类型(0代理1补货2拿货)
+            if (pfBorder.getOrderType() == 0) {
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 1) {
+                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 2) {
+                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+            } else {
+                throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
+            }
             req = new WxPaySysParamReq();
             req.setOrderId(pfBorder.getOrderCode());
             req.setSignType("MD5");
             req.setNonceStr(WXBeanUtils.createGenerateStr());
-            req.setSuccessUrl(getBasePath(request) + "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId());
+            req.setSuccessUrl(successURL);
             req.setSign(WXBeanUtils.toSignString(req));
         }
         ComUser comUser = getComUser(request);
@@ -356,7 +360,7 @@ public class BOrderController extends BaseController {
     }
 
     /**
-     * 成功支付订单
+     * 成功支付订单(代理订单)
      *
      * @author muchaofeng
      * @date 2016/3/9 15:06
@@ -366,8 +370,6 @@ public class BOrderController extends BaseController {
                                           @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         ModelAndView mav = new ModelAndView();
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        //首次代理订单
-//            if (pfBorder.getOrderType() == 0) {
         String realName = "";//姓名
         String skuName = "";//合作产品
         String levelName = "";//合伙人等级
@@ -405,11 +407,6 @@ public class BOrderController extends BaseController {
         mav.addObject("userSkuId", pfUserSku.getId());
         mav.addObject("sendType", sendType);
         mav.setViewName("platform/order/lingquzhengshu");
-//            }
-//            //补货订单
-//            else {
-//
-//            }
         return mav;
     }
 
@@ -421,7 +418,6 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/closeDeal.do")
     @ResponseBody
-    @Transactional
     public String closeDeal(HttpServletRequest request, @RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
@@ -429,7 +425,7 @@ public class BOrderController extends BaseController {
             if (user == null) {
                 throw new BusinessException("用户session丢失");
             }
-            bOrderService.closeDeal(orderId,user);
+            bOrderService.closeDeal(orderId, user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -460,7 +456,7 @@ public class BOrderController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
-            bOrderService.deliver(shipManName,orderId,freight,shipManId,user);
+            bOrderService.deliver(shipManName, orderId, freight, shipManId, user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -473,11 +469,12 @@ public class BOrderController extends BaseController {
 
     /**
      * 订单管理
+     *
      * @author muchaofeng
      * @date 2016/4/2 14:09
      */
     @RequestMapping("/borderManagement.html")
-    public ModelAndView borderManagement(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception{
+    public ModelAndView borderManagement(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = getComUser(request);
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorderps = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
@@ -488,11 +485,11 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 7 ) {
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 8 ) {
+            } else if (pfBord.getOrderStatus() == 8) {
                 pfBorders15.add(pfBord);//待收货
-            }  else if (pfBord.getOrderStatus() == 6) {
+            } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
             }
         }
@@ -503,11 +500,11 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorderps) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorderp0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 8 ) {
+            } else if (pfBord.getOrderStatus() == 8) {
                 pfBorderp15.add(pfBord);//待收货
-            }  else if (pfBord.getOrderStatus() == 6) {
+            } else if (pfBord.getOrderStatus() == 6) {
                 pfBorderp6.add(pfBord);//排单中
-            }else if (pfBord.getOrderStatus() == 7 ) {
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorderp10.add(pfBord);//代发货
             }
         }
@@ -544,9 +541,9 @@ public class BOrderController extends BaseController {
                 pfBorders0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
-            }  else if (pfBord.getOrderStatus() == 6 && pfBord.getSendType()!=2){
+            } else if (pfBord.getOrderStatus() == 6 && pfBord.getSendType() != 2) {
                 pfBorders6.add(pfBord);//排单中
-            }else if (pfBord.getOrderStatus() == 8 && pfBord.getSendType()==2){
+            } else if (pfBord.getOrderStatus() == 8 && pfBord.getSendType() == 2) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorders3.add(pfBord);//已完成
@@ -580,9 +577,9 @@ public class BOrderController extends BaseController {
                     }
 //                    ComDictionary  comDictionary = comDictionaryService.findComDictionary(pfBorder.getOrderStatus());
 //                    pfBorder.setOrderSkuStatus(comDictionary.getValue());
-                    if(pfBorder.getUserPid()==0){
+                    if (pfBorder.getUserPid() == 0) {
                         pfBorder.setPidUserName("平台代理");
-                    }else{
+                    } else {
                         ComUser user = userService.getUserById(pfBorder.getUserPid());
                         pfBorder.setPidUserName(user.getRealName());
                     }
@@ -686,7 +683,7 @@ public class BOrderController extends BaseController {
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
-            } else if (pfBord.getOrderStatus() == 7 ) {
+            } else if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
             } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
                 pfBorders15.add(pfBord);//待收货
@@ -750,7 +747,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/setUserSendType.shtml")
     public ModelAndView setUserSendType(HttpServletRequest request,
-                                        @RequestParam(value = "bOrderId") Long bOrderId){
+                                        @RequestParam(value = "bOrderId") Long bOrderId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("platform/order/nahuo");
         return modelAndView;

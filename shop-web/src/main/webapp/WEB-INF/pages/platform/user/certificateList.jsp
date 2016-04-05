@@ -30,15 +30,29 @@
             <c:forEach items="${pfUserCertificates}" var="cet">
                 <c:choose>
                     <c:when test="${cet.agentLevelId==1}">
-                        <div class="sec1">
-                            <p><span>合伙产品</span><b>${cet.skuName}</b></p>
+                        <div class="big">
+                            <div class="sec1">
+                                    <%--                            <p><span>合伙产品</span><b>${cet.skuName}</b></p>
 
-                            <p><span>合伙人等级：
-                                <em name="agentLevel">高级合伙人</em>
-                                <em name="upperName"><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></em>
-                        </span></p>
-                            <a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}"><img
-                                    src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                                                                <p><span>合伙人等级：
+                                                                    <em name="agentLevel">高级合伙人</em>
+                                                                    <em name="upperName"><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></em>
+                                                            </span></p>
+                                                                <a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}"><img
+                                                                        src="<%=path%>/static/images/rightgo.png" alt=""></a>--%>
+                                <p>合伙产品</p>
+                                <h1>抗引力—瘦脸精华</h1>
+                            </div>
+                            <div class="small">
+                                <div class="left">
+                                    <p>上级合伙人：<span>王平</span></p>
+                                    <h1>合伙人等级：<span>中介合伙人</span>保证金：<span>1000.00</span>元</h1>
+                                </div>
+                                <div class="right">
+                                    <p><img src="<%=path%>/static/images/see.png" alt="">查看证书</p>
+
+                                </div>
+                            </div>
                         </div>
                     </c:when>
                     <c:when test="${cet.agentLevelId==2}">

@@ -153,6 +153,9 @@ public class UserAddressService {
             case SysConstants.SESSION_PAY_ORDER_TYPE_VALUE:
                 getPayBorderAddress(sb, orderId, selectedAddressId);
                 break;
+            case SysConstants.SESSION_ORDER_TAKE_GOODS_VALUE:
+                getTakeGoodsPageAddress(sb, orderId, selectedAddressId);
+                break;
             default:
                 break;
         }
@@ -190,6 +193,21 @@ public class UserAddressService {
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("userAddressId=").append(selectedAddressId);
+        }
+    }
+    /**
+     *  拿货界面地址
+     * @author hanzengzhi
+     * @date 2016/4/5 10:40
+     */
+    private void getTakeGoodsPageAddress(StringBuffer sb, Long orderId, Long selectedAddressId){
+        //跳转到支付界面
+        sb.append("/border/setUserSendType.shtml?");
+        if (!StringUtils.isEmpty(orderId)) {
+            sb.append("bOrderId=").append(orderId).append("&");
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("selectedAddressId=").append(selectedAddressId);
         }
     }
 

@@ -41,6 +41,10 @@ public class PfSkuStock {
      */
     private String remark;
     /**
+     * 是否进入排单
+     */
+    private Integer isQueue;
+    /**
      * 版本号
      */
     private Integer version;
@@ -98,5 +102,13 @@ public class PfSkuStock {
     }
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Integer getIsQueue() {
+        return isQueue;
+    }
+
+    public void setIsQueue(Integer isQueue) {
+        this.isQueue = isQueue;
     }
 }

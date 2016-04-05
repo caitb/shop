@@ -21,6 +21,8 @@
         <result column="stock" property="stock" jdbcType="INTEGER" />
         <result column="agent_num" property="agentNum" jdbcType="INTEGER" />
         <result column="pfuid" property="pfuId" jdbcType="INTEGER" />
+        <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
+        <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
@@ -45,7 +47,7 @@
     <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
         SELECT sku.id,sku.name,sku.price_retail,sku.remark,sku.spu_id,
                 spu.name,spu.slogan,spu.content,
-                sku_stok.stock,spu.ship_amount,
+                sku_stok.stock,spu.ship_amount,sku_stok.is_queue,
                 sku_static.agent_num
         FROM com_sku sku
         LEFT JOIN com_spu spu ON sku.spu_id = spu.id
@@ -66,19 +68,19 @@
     </select>
     <!-->用户商品列表<-->
     <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="Long">
-        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.user_id = #{userId}
     </select>
     <!-->更新库存<-->
     <update id="updateStock" parameterType="java.util.HashMap">
-        UPDATE pf_user_sku_stock SET stock = #{stock}
+        UPDATE pf_user_sku_stock SET custom_stock = #{selfStock}
         WHERE id = #{id}
     </update>
     <!-->查询库存表<-->
     <select id="getProductStock" resultMap="ProductResultMap" parameterType="int">
-        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.id = #{id}

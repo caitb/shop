@@ -37,14 +37,14 @@
                             <div>
                                 <h2 id="sku1">${sku.name}</h2>
                                 <h3>零售价：<span>${sku.priceRetail}</span></h3>
-                                <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.stock}</span></p>
+                                <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.customStock}</span></p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="hidden" id="skuId" value="${sku.id}">
                                 <p>拿货方式：<span>自己发货</span>
                             </div>
                         </section>
                         <section class="sec3">
-                            <p class="jianku" onclick="jiankucun('${sku.name}','${sku.stock}')">库存维护</p>
+                            <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}')">库存维护</p>
                             <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}')">补货</p>
                         </section>
                     </c:forEach>

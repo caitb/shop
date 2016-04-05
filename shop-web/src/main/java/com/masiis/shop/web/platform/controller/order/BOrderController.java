@@ -748,11 +748,25 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/setUserSendType.shtml")
     public ModelAndView setUserSendType(HttpServletRequest request,
-                                        @RequestParam(value = "bOrderId") Long bOrderId) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("platform/order/nahuo");
-        return modelAndView;
-    }
+                                        HttpServletResponse response,
+            @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
+            @RequestParam(value = "bOrderId") Long bOrderId){
+            ModelAndView modelAndView = new ModelAndView();
+            ComUser comUser = getComUser(request);
+            ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
+            modelAndView.addObject("comUserAddress",comUserAddress);
+            modelAndView.addObject("bOrderId",bOrderId);
+            if (comUserAddress!=null){
+                modelAndView.addObject("addressId",comUserAddress.getId());
+            }
+            if (selectedAddressId==null){
+                modelAndView.addObject("isPlatformSendGoods","true");
+            }else{
+                modelAndView.addObject("isPlatformSendGoods","false");
+            }
+            modelAndView.setViewName("platform/order/nahuo");
+            return modelAndView;
+        }
 
     @ResponseBody
     @RequestMapping("/setUserSendType/save.do")

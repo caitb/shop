@@ -41,6 +41,10 @@ public class PfUserSkuStock {
      */
     private String remark;
     /**
+     * 自发货库存
+     */
+    private Integer customStock;
+    /**
      * 乐观锁
      */
     private Integer version;
@@ -87,6 +91,15 @@ public class PfUserSkuStock {
     public void setFrozenStock(Integer frozenStock) {
         this.frozenStock = frozenStock;
     }
+
+    public Integer getCustomStock() {
+        return customStock;
+    }
+
+    public void setCustomStock(Integer customStock) {
+        this.customStock = customStock;
+    }
+
     public String getRemark() {
         return remark;
     }

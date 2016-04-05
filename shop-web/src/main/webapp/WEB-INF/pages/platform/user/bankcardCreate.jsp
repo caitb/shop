@@ -46,7 +46,7 @@
 <script>
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo";
+        window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
     }
     function submitClick() {
         var bankcard = $("#bankcard").val();
@@ -87,7 +87,7 @@
                     alert(data.message);
                 }else {
                     fullShow();//跳转页面钱展示全屏遮罩loading...
-                    window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo";
+                    window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
                 }
             },
             //调用执行后调用的函数

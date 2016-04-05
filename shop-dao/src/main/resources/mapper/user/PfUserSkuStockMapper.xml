@@ -9,6 +9,7 @@
         <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="stock" property="stock" jdbcType="INTEGER"/>
         <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
+        <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
@@ -43,18 +44,18 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock,custom_stock, remark, version
         from pf_user_sku_stock
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, custom_stock,remark, version
         from pf_user_sku_stock
     </select>
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock,custom_stock, remark, version
         from pf_user_sku_stock
         where user_id = #{userId}
         and sku_id = #{skuId}
@@ -72,7 +73,7 @@
     </update>
 
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock, remark, version
+        select id, create_time, user_id, spu_id, sku_id, stock, frozen_stock,custom_stock, remark, version
         from pf_user_sku_stock
         where user_id = #{userId,jdbcType=BIGINT}
     </select>

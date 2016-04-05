@@ -50,6 +50,7 @@ public class UserIdentityAuthController extends BaseController {
                 case AUDITING://审核中
                     break;
                 case AUDITSUCCESS://审核通过
+                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
                     break;
                 case AUDITFAIL://审核不通过
                     break;
@@ -65,11 +66,12 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/3/31 15:25
      */
     @RequestMapping(value = "getIdentityAuthInfo.do")
-    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response){
+    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,Model model){
         ComUser comUser = getComUser(request);
         comUser.setAuditStatus(3);
         userIdentityAuthService.getIdentityAuthInfo(request,comUser);
-        return null;
+        model.addAttribute("comUser",comUser);
+        return "platform/user/shimingyirenzheng";
     }
 
 

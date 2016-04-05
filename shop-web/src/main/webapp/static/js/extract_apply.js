@@ -44,7 +44,7 @@ $(function(){
 });
 
 function choiceBank(){
-    window.location.href = basepath + "extractwayinfo/findExtractwayInfo";
+    window.location.href = basepath + "extractwayinfo/findExtractwayInfo.shtml";
 }
 
 function backLastPage(){

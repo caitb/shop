@@ -115,9 +115,6 @@
                 if (data.isError == false) {
                     window.location.href = "<%=basePath%>border/payBOrderReady.shtml?bOrderId=" + paraData.bOrderId;
                 }
-                else {
-                    alert(data.message);
-                }
             }
         });
     }

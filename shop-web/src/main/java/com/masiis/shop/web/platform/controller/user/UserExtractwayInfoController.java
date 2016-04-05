@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComBank;
 import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.ComUser;
@@ -92,17 +93,14 @@ public class UserExtractwayInfoController extends BaseController {
             }
             if (user == null){
                 jsonobject.put("isTrue","false");
-                jsonobject.put("message","新增用户提现方式信息【腥增前请登陆】");
+                jsonobject.put("message","新增用户提现方式信息【新增前请登陆】");
                 log.info(jsonobject.toJSONString());
-                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+                return jsonobject.toJSONString();
             }
             Long userId = user.getId();
-//            Long userId = Long.valueOf(1);
-            //根据id查询字典表数据
-            ComDictionary comDictionary = comDictionaryService.findById(35);
+
             //根据银行id查询银行基础信息表
             ComBank comBank = comBankService.findById(Integer.valueOf(bankid));
-            log.info(String.valueOf(comDictionary.getKey()));
             ComUserExtractwayInfo extractway = userExtractwayInfoService.findByBankcardAndCardownername(bankcard,cardownername);
             if (extractway == null){
                 extractway = new ComUserExtractwayInfo();
@@ -111,7 +109,7 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setDepositBankName(depositbankname);
                 extractway.setCardOwnerName(cardownername);
                 extractway.setComUserId(Long.valueOf(userId));
-                extractway.setExtractWay(comDictionary.getKey()==null?1:comDictionary.getKey().longValue());
+                extractway.setExtractWay(Long.valueOf(3));   //默认体现方式为银行卡提现
                 extractway.setCardImg(comBank.getBankImg());
                 extractway.setIsEnable(0);//新增用户体现方式，是否启用默认为启用
                 extractway.setIsDefault(0);//设置为提现默认银行卡
@@ -120,6 +118,9 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setChangedTime(new Date());
                 userExtractwayInfoService.addComUserExtractwayInfo(extractway);
             }else {
+                //询字典表数据
+                ComDictionary comDictionary = comDictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY",extractway.getExtractWay().intValue());
+                log.info(String.valueOf(comDictionary.getKey()));
                 //存在数据并且为未启用状态
                 if (extractway.getIsEnable() > 0) {
                     extractway.setBankCard(bankcard);
@@ -127,7 +128,7 @@ public class UserExtractwayInfoController extends BaseController {
                     extractway.setDepositBankName(depositbankname);
                     extractway.setCardOwnerName(cardownername);
                     extractway.setComUserId(Long.valueOf(userId));
-                    extractway.setExtractWay(comDictionary.getKey() == null ? 1 : comDictionary.getKey().longValue());
+                    extractway.setExtractWay(comDictionary.getKey() == null ? 3 : comDictionary.getKey().longValue());
                     extractway.setCardImg(comBank.getBankImg());
                     extractway.setIsEnable(0);//将未启用状态改为启用状态
                     extractway.setIsDefault(0);//设置为提现默认银行卡
@@ -161,12 +162,11 @@ public class UserExtractwayInfoController extends BaseController {
         log.info("通过userId查询已绑定卡片信息");
 
         ComUser user = getComUser(request);
-        ModelAndView mv = new ModelAndView();
         if (user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+            throw new BusinessException("该用户未登录");
         }
+        ModelAndView mv = new ModelAndView();
         Long userId = user.getId();
-//        Long userId = Long.valueOf(1);
         List<ComUserExtractwayInfo> list;
         try{
             list = userExtractwayInfoService.findByUserId(userId);
@@ -189,11 +189,10 @@ public class UserExtractwayInfoController extends BaseController {
         log.info("准备跳转至新增银行卡页面");
         ComUser user = getComUser(request);
         if (user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+            throw new BusinessException("该用户未登录");
         }
         Long userId = user.getId();
         log.info("userId="+userId);
-//        Long userId = Long.valueOf(1);
         ModelAndView mv = new ModelAndView();
         List<ComBank> list = null;
         try{
@@ -218,17 +217,15 @@ public class UserExtractwayInfoController extends BaseController {
                                  HttpServletRequest request){
 
         ComUser user = getComUser(request);
-        if (user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-        }
-        Long userId = user.getId();
-        log.info("userId="+userId);
-//        Long userId = Long.valueOf(1);
-        log.info("userId:"+userId);
         log.info("id:"+id);
-        List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
         JSONObject jsonobject = new JSONObject();
         try{
+            if (user == null){
+                throw new BusinessException("该用户未登录");
+            }
+            Long userId = user.getId();
+            log.info("userId:"+userId);
+            List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
             for (ComUserExtractwayInfo info:list){
                 if (info.getId()==Long.valueOf(id)){
                     if (info.getIsDefault() != 0){

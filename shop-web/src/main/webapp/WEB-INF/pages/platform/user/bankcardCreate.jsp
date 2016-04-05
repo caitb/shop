@@ -21,7 +21,7 @@
 <input type="hidden" id="userId" name="userId" value="${userId}"/>
 <div class="wrap">
     <header class="xq_header">
-        <a href="#" onclick="backLastPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.back(-1)" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>添加银行卡</p>
     </header>
     <main>
@@ -44,10 +44,10 @@
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
-    function backLastPage(){
-        fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
-    }
+    <%--function backLastPage(){--%>
+        <%--fullShow();//跳转页面钱展示全屏遮罩loading...--%>
+        <%--window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";--%>
+    <%--}--%>
     function submitClick() {
         var bankcard = $("#bankcard").val();
         var bankid = $("#bankid").val();

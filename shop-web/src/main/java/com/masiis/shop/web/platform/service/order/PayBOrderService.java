@@ -113,24 +113,33 @@ public class PayBOrderService {
             sendType = comUser.getSendType();
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        if (pfBorder.getOrderStatus() != 1) {
+            throw new BusinessException("订单状态有误！现在为：" + pfBorder.getOrderStatus());
+        }
         pfBorder.setSendType(sendType);
+        pfBorder.setOrderStatus(7);//待发货
         pfBorderMapper.updateById(pfBorder);
-        ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
-        PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
-        pfBorderConsignee.setCreateTime(new Date());
-        pfBorderConsignee.setPfBorderId(pfBorder.getId());
-        pfBorderConsignee.setUserId(comUserAddress.getUserId());
-        pfBorderConsignee.setConsignee(comUserAddress.getName());
-        pfBorderConsignee.setMobile(comUserAddress.getMobile());
-        pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-        pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-        pfBorderConsignee.setCityId(comUserAddress.getCityId());
-        pfBorderConsignee.setCityName(comUserAddress.getCityName());
-        pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
-        pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
-        pfBorderConsignee.setAddress(comUserAddress.getAddress());
-        pfBorderConsignee.setZip(comUserAddress.getZip());
-        pfBorderConsigneeMapper.insert(pfBorderConsignee);
+        if (userAddressId != null && userAddressId > 0) {
+            ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+            if (comUserAddress == null) {
+                throw new BusinessException("用户地址有误");
+            }
+            PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+            pfBorderConsignee.setCreateTime(new Date());
+            pfBorderConsignee.setPfBorderId(pfBorder.getId());
+            pfBorderConsignee.setUserId(comUserAddress.getUserId());
+            pfBorderConsignee.setConsignee(comUserAddress.getName());
+            pfBorderConsignee.setMobile(comUserAddress.getMobile());
+            pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+            pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+            pfBorderConsignee.setCityId(comUserAddress.getCityId());
+            pfBorderConsignee.setCityName(comUserAddress.getCityName());
+            pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+            pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+            pfBorderConsignee.setAddress(comUserAddress.getAddress());
+            pfBorderConsignee.setZip(comUserAddress.getZip());
+            pfBorderConsigneeMapper.insert(pfBorderConsignee);
+        }
     }
 
     /**
@@ -169,7 +178,13 @@ public class PayBOrderService {
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
         pfBorder.setPayStatus(1);//已付款
-        pfBorder.setOrderStatus(1);//已付款
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 0) {
+            pfBorder.setOrderStatus(1);//已付款
+        } else {
+            pfBorder.setOrderStatus(7);//待收货
+        }
+
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();

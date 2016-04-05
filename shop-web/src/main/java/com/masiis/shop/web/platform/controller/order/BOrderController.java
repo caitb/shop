@@ -425,24 +425,24 @@ public class BOrderController extends BaseController {
     @RequestMapping("/setUserSendType.shtml")
     public ModelAndView setUserSendType(HttpServletRequest request,
                                         HttpServletResponse response,
-            @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-            @RequestParam(value = "bOrderId") Long bOrderId){
-            ModelAndView modelAndView = new ModelAndView();
-            ComUser comUser = getComUser(request);
-            ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
-            modelAndView.addObject("comUserAddress",comUserAddress);
-            modelAndView.addObject("bOrderId",bOrderId);
-            if (comUserAddress!=null){
-                modelAndView.addObject("addressId",comUserAddress.getId());
-            }
-            if (selectedAddressId==null){
-                modelAndView.addObject("isPlatformSendGoods","true");
-            }else{
-                modelAndView.addObject("isPlatformSendGoods","false");
-            }
-            modelAndView.setViewName("platform/order/nahuo");
-            return modelAndView;
+                                        @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
+                                        @RequestParam(value = "bOrderId") Long bOrderId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
+        modelAndView.addObject("comUserAddress", comUserAddress);
+        modelAndView.addObject("bOrderId", bOrderId);
+        if (comUserAddress != null) {
+            modelAndView.addObject("addressId", comUserAddress.getId());
         }
+        if (selectedAddressId == null) {
+            modelAndView.addObject("isPlatformSendGoods", "true");
+        } else {
+            modelAndView.addObject("isPlatformSendGoods", "false");
+        }
+        modelAndView.setViewName("platform/order/nahuo");
+        return modelAndView;
+    }
 
     @ResponseBody
     @RequestMapping("/setUserSendType/save.do")
@@ -453,6 +453,9 @@ public class BOrderController extends BaseController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("isError", true);
         try {
+            if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
+                throw new BusinessException("用户自发货，请选择收货地址。");
+            }
             ComUser comUser = getComUser(request);
             payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
             comUser.setSendType(sendType);

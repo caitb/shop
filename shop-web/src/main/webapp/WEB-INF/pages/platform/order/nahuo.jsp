@@ -88,17 +88,19 @@
             </div>
             <div class="sec2">
                 <h1>请选择拿货方式</h1>
-                <button>平台待发货（90%的用户选择）</button>
-                <button class="active">自己发货</button>
+                <button id="platformSendGoodsId"   class="active" onclick="platformSendGoods()">平台待发货（90%的用户选择）</button>
+                <button  id="ownSendGoodsId" onclick="ownSendGoods()">自己发货</button>
 
-                <section class="shouhuo">
-                    <div>
-                        <a href="#"><h2>收货人：<b>王平</b> <span>18611536163</span></h2></a>
-                        <a href="#"><p>收货地址： <span>北京市 朝阳区 丰联广场A座809A</span></p></a>
+                <section id=""class="shouhuo">
+                    <div onclick="toChooseAddressPage()">
+                        <input style="display: none" type="text" id="bOrderId" value="${bOrderId}"/>
+                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span></p></a>
                         <img src="<%=path%>/static/images/next.png" alt="">
                     </div>
                 </section>
-                <div class="xuan"><h1>选择收获地址<span>》</span></h1></div>
+                <div class="xuan" onclick="toChooseAddressPage()"><h1>选择收获地址<span></span></h1></div>
                 <p>*选择后，您的其他合伙商品将使用同一种方式，不可更改</p>
             </div>
             <button>继续</button>
@@ -107,9 +109,38 @@
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(".sec2 button").on("click", function () {
-        $(this).addClass("active").siblings().removeClass("active")
+    $(document).ready(function () {
+            isShowAddress();
     })
+    function isShowAddress(){
+        var addressId = $("#addressId").val();
+        if (addressId == "") {
+            $(".xuan").show();
+            $(".shouhuo").hide();
+        }else{
+            $(".xuan").hide();
+            $(".shouhuo").show();
+        }
+    }
+    function platformSendGoods(){
+        isShowAddress();
+        $("#platformSendGoodsId").attr("class","active");
+        $("#ownSendGoodsId").removeClass("active");
+    }
+    function ownSendGoods(){
+        $(".xuan").hide();
+        $(".shouhuo").hide();
+        $("#ownSendGoodsId").attr("class","active");
+        $("#platformSendGoodsId").removeClass("active");
+    }
+   /* $(".sec2 button").on("click", function () {
+        $(this).addClass("active").siblings().removeClass("active")
+    })*/
+    function toChooseAddressPage() {
+        var selectedAddressId = $("#addressId").val();
+        var bOrderId = $("#bOrderId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=takeGoods&selectedAddressId=" + selectedAddressId + "&orderId=" + bOrderId;
+    }
 </script>
 </body>
 </html>

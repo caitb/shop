@@ -23,6 +23,7 @@ public class SysConstants {
     public static final String SESSION_ORDER_TYPE = "orderType";
     public static final String SESSION_TRIAL_ORDER_TYPE_VALUE = "zhifushiyong";//试用支付
     public static final String SESSION_PAY_ORDER_TYPE_VALUE = "zhifu";//支付
+    public static final String SESSION_ORDER_TAKE_GOODS_VALUE = "takeGoods";//拿货
 
     /**
      * session

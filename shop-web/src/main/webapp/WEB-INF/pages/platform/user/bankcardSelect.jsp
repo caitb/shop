@@ -21,7 +21,7 @@
 <input type="hidden" id="selectId" name="selectId" value = ""/>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onClick="backLastPage();"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:history.back(-1)" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">
@@ -58,9 +58,6 @@
                 url : "<%=path%>/extractwayinfo/setbankdefault.do",
                 data:{id:id},
                 dataType:"Json",
-//                beforeSend:function(){
-//
-//                },
                 success:function(data){
                     if(data.isTrue == "false"){
                         alert(data.message);
@@ -69,11 +66,6 @@
                         window.location.href="<%=basePath%>extract/toapply";
                     }
                 },
-                //调用执行后调用的函数
-//                complete: function(XMLHttpRequest, textStatus){
-//                    alert(XMLHttpRequest.responseText);
-//                    alert(textStatus);
-//                },
                 error: function(){
                     //请求出错处理
                     alert("请求出错，请稍后再试");
@@ -81,10 +73,10 @@
             });
         })
 
-         function backLastPage(){
-             fullShow();//跳转页面钱展示全屏遮罩loading...
-             window.location.href="<%=basePath%>extract/toapply";
-         }
+         <%--function backLastPage(){--%>
+             <%--fullShow();//跳转页面钱展示全屏遮罩loading...--%>
+             <%--window.location.href="<%=basePath%>extract/toapply";--%>
+         <%--}--%>
     </script>
 </body>
 </html>

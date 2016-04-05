@@ -95,14 +95,12 @@ public class UserExtractwayInfoController extends BaseController {
                 jsonobject.put("isTrue","false");
                 jsonobject.put("message","新增用户提现方式信息【新增前请登陆】");
                 log.info(jsonobject.toJSONString());
-                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+                return jsonobject.toJSONString();
             }
             Long userId = user.getId();
-            //根据id查询字典表数据
-            ComDictionary comDictionary = comDictionaryService.findById(35);
+
             //根据银行id查询银行基础信息表
             ComBank comBank = comBankService.findById(Integer.valueOf(bankid));
-            log.info(String.valueOf(comDictionary.getKey()));
             ComUserExtractwayInfo extractway = userExtractwayInfoService.findByBankcardAndCardownername(bankcard,cardownername);
             if (extractway == null){
                 extractway = new ComUserExtractwayInfo();
@@ -111,7 +109,7 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setDepositBankName(depositbankname);
                 extractway.setCardOwnerName(cardownername);
                 extractway.setComUserId(Long.valueOf(userId));
-                extractway.setExtractWay(comDictionary.getKey()==null?1:comDictionary.getKey().longValue());
+                extractway.setExtractWay(Long.valueOf(3));   //默认体现方式为银行卡提现
                 extractway.setCardImg(comBank.getBankImg());
                 extractway.setIsEnable(0);//新增用户体现方式，是否启用默认为启用
                 extractway.setIsDefault(0);//设置为提现默认银行卡
@@ -120,6 +118,9 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setChangedTime(new Date());
                 userExtractwayInfoService.addComUserExtractwayInfo(extractway);
             }else {
+                //询字典表数据
+                ComDictionary comDictionary = comDictionaryService.findByCodeAndKey("COM_USER_EXTRACT_WAY",extractway.getExtractWay().intValue());
+                log.info(String.valueOf(comDictionary.getKey()));
                 //存在数据并且为未启用状态
                 if (extractway.getIsEnable() > 0) {
                     extractway.setBankCard(bankcard);
@@ -127,7 +128,7 @@ public class UserExtractwayInfoController extends BaseController {
                     extractway.setDepositBankName(depositbankname);
                     extractway.setCardOwnerName(cardownername);
                     extractway.setComUserId(Long.valueOf(userId));
-                    extractway.setExtractWay(comDictionary.getKey() == null ? 1 : comDictionary.getKey().longValue());
+                    extractway.setExtractWay(comDictionary.getKey() == null ? 3 : comDictionary.getKey().longValue());
                     extractway.setCardImg(comBank.getBankImg());
                     extractway.setIsEnable(0);//将未启用状态改为启用状态
                     extractway.setIsDefault(0);//设置为提现默认银行卡

@@ -105,4 +105,14 @@ public class BorderSkuStockService {
         }
         return stockManages;
     }
+
+    /**
+     * 查询商品库存
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public PfUserSkuStock getUserSkuStockByUserIdAndSkuId(Long userId,int skuId){
+        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
+    }
 }

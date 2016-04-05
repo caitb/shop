@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/gerenxinxi.css">
     <script type="text/javascript" src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="<%=path%>/static/js/definedAlertWindow.js"></script>
 </head>
 <body>
 <div class="wrap">

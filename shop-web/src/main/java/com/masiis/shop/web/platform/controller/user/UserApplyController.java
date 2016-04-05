@@ -236,12 +236,15 @@ public class UserApplyController extends BaseController {
             } else {
                 throw new BusinessException("手机号为空");
             }
+            pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+
             jsonObject.put("isError", false);
             jsonObject.put("pUserId", pUser.getId());
             jsonObject.put("levelId", pfUserSku.getAgentLevelId());
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
+                jsonObject.put("isError", true);
+                jsonObject.put("message", ex.getMessage());
             } else {
                 throw new BusinessException("网络错误", ex);
             }

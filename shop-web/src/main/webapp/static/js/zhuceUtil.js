@@ -79,47 +79,23 @@ $(function () {
         if (!weixinCheckFun($("#weixin"))) {
             n++;
         }
-        if (!mobileCheckFun($("#pMobile"))) {
-            n++;
+        if(pUserId == undefined || pUserId==''){
+            if($("#q").prop("checked") == true){
+                if (!mobileCheckFun($("#pMobile"))) {
+                    n++;
+                }
+                $("#q_pMobile").html($("#pMobile").val());
+            }
         }
         if (n > 0) {
             return;
         }
-        var paraData = {};
-        paraData.name = $("#name").val();
-        paraData.weixinId = $("#weixin").val();
-        paraData.skuId = skuId;
-        paraData.levelId = $(".dengji .on").attr("levelId");
-        if ($('input[name="danx"]:checked').attr("class") == "shi") {
-            paraData.pMobile = $("#pMobile").val();
-        } else {
-            paraData.pMobile = "";
-        }
-        $.ajax({
-            url: path + "userApply/registerConfirm/check.do",
-            type: "POST",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                if (data && data.isError == false) {
-                    $("#q_skuName").html(skuName);
-                    $("#q_name").html($("#name").val());
-                    $("#q_mobile").html(mobile);
-                    $("#q_weixinId").html($("#weixin").val());
-                    if ($('input[name="danx"]:checked').attr("class") == "shi") {
-                        $("#q_pMobile").html($("#pMobile").val());
-                    } else {
-                        $("#q_pMobile").html("");
-                    }
-                    $("#q_levelName").html($(".dengji .on [name='levelName']").html());
-                    $("#q_amount").html($(".dengji .on [name='amount']").html());
-                    $(".back_que").show();
-                    $(".back").show();
-                } else {
-                    alert(data.message);
-                }
-            }
-        });
+        // 获取微信号
+        $("#q_weixinId").html($("#weixin").val());
+
+        // 弹出确认框
+        $(".back_que").css("display", "-webkit-box");
+        $(".back").show();
     });
     $("#submit").click(function (event) {
         var event = event || event.window;
@@ -172,4 +148,5 @@ $(function () {
         $(".back_que").hide();
         $(".back").hide();
     })
-})
+
+});

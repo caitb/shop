@@ -104,7 +104,12 @@
         </section>
         <section class="sec4">
             <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
-            <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
+            <c:if test="${pfBorder.sendType == 1}">
+                <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
+            </c:if>
+            <c:if test="${pfBorder.sendType == 2}">
+                <p>运费：<span>到付</span></p>
+            </c:if>
             <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
         </section>
         <div class="sec5">

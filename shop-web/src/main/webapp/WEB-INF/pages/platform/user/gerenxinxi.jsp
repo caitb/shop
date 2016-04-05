@@ -26,7 +26,7 @@
     </header>
     <main>
         <div class="head_img">
-            <p><img src="<%=path%>/static/images/admin.png" alt=""></p>
+            <p><img src="${comUser.wxHeadImg}" alt=""></p>
             <div><h1>${comUser.realName}</h1>
                 <h1></h1></div>
         </div>

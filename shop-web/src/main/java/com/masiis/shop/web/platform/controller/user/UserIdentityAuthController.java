@@ -48,11 +48,7 @@ public class UserIdentityAuthController extends BaseController {
                 case NOAUDIT://未认证
                     jumpPage = "platform/user/shimingrenzheng";
                     break;
-                case AUDITING://审核中
-                    break;
                 case AUDITSUCCESS://审核通过
-                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
-                    break;
                 case AUDITFAIL://审核不通过
                     jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
                     break;

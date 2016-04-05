@@ -748,4 +748,11 @@ public class BOrderController extends BaseController {
         return mv;
     }
 
+    @RequestMapping("/setUserSendType.shtml")
+    public ModelAndView setUserSendType(HttpServletRequest request,
+                                        @RequestParam(value = "bOrderId") Long bOrderId){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("platform/order/nahuo");
+        return modelAndView;
+    }
 }

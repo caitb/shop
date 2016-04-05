@@ -105,7 +105,7 @@
         </div>
     </div>
 </div>
-<script src="../js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
     $(".sec2 button").on("click", function () {
         $(this).addClass("active").siblings().removeClass("active")

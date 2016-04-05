@@ -209,6 +209,11 @@ public class PayBOrderService {
                     //平台库存不足，排单处理
                     pfBorder.setOrderStatus(6);//排队订单
                     pfBorderMapper.updateById(pfBorder);
+                    //增加平台冻结库存
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
+                        throw new BusinessException("(平台发货)排队订单增加冻结量失败");
+                    }
                     return;
                 } else {
                     //减少平台库存
@@ -223,6 +228,11 @@ public class PayBOrderService {
                 if (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
                     pfBorder.setOrderStatus(6);//排队订单
                     pfBorderMapper.updateById(pfBorder);
+                    //增加平台冻结库存
+                    parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
+                    if (pfUserSkuStockMapper.updateByIdAndVersion(parentSkuStock) == 0) {
+                        throw new BusinessException("(代理发货)排队订单增加冻结量失败");
+                    }
                     return;
                 } else {
                     //减少上级合伙人平台库存

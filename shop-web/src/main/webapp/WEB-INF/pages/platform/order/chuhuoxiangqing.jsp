@@ -133,7 +133,7 @@
         var borderId = ${borderDetail.pfBorder.id};
         $.ajax({
             type: "POST",
-            url: "/border/deliver.do",
+            url: "/borderManage/deliver.do",
             data:{shipManName:shipManName,freight:freight,orderId:borderId,shipManId:shipManId},
             dataType: "Json",
             success: function () {

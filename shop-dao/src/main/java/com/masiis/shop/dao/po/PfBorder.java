@@ -7,6 +7,8 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.beans.order.StockManage;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -161,6 +163,15 @@ public class PfBorder {
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
+    private List<StockManage> stockManages;//库存
+
+    public List<StockManage> getStockManages() {
+        return stockManages;
+    }
+
+    public void setStockManages(List<StockManage> stockManages) {
+        this.stockManages = stockManages;
+    }
 
     public void setPidUserName(String pidUserName) {this.pidUserName = pidUserName;}
 

@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -251,28 +252,15 @@ public class UserCertificateController extends BaseController {
         ModelAndView mav = new ModelAndView("/platform/user/upperUserInfo");
         PfUserSku pfUserSku = userSkuService.getUserSkuById(uskId);
         ComUser userInfo = userService.getUserById(pfUserSku.getUserId());
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String sDate=sdf.format(userInfo.getCreateTime());
         ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
+        PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
         mav.addObject("userInfo", userInfo);
         mav.addObject("pfUserSku", pfUserSku);
         mav.addObject("comSku", comSku);
-        return mav;
-    }
-    /**
-     * @Author 贾晶豪
-     * @Date 2016/3/17 0017 下午 6:37
-     * 个人证书详情
-     */
-    @RequestMapping(value = "/upperDetail")
-    public ModelAndView upperUserCertificateDetail(HttpServletRequest request, HttpServletResponse response,
-                                              @RequestParam(value = "pfuId",required = true) Integer pfuId) throws Exception {
-        ModelAndView mav = new ModelAndView("/platform/user/shangjidetail");
-        PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
-        ComUser comUser = userService.getUserById(pfUserSku.getUserId());
-        PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
-        ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
-        mav.addObject("cdetail", cdetail);
-        mav.addObject("comUser", comUser);
-        mav.addObject("comSku", comSku);
+        mav.addObject("pfUserCertificate", pfUserCertificate);
+        mav.addObject("sDate", sDate);
         return mav;
     }
 }

@@ -53,7 +53,7 @@ public class UserCertificateService {
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
         if (certificateInfoList != null) {
             for (CertificateInfo certificateInfo : certificateInfoList) {
-                if (certificateInfo.getUserPid() != null) {
+                if (certificateInfo.getPid() != 0) {
                     certificateInfo.setUpperName(comUserMapper.selectByPrimaryKey(certificateInfo.getUserPid()).getRealName());
                 }
                 PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());

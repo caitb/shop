@@ -31,48 +31,53 @@
                 <c:choose>
                     <c:when test="${cet.agentLevelId==1}">
                         <div class="big">
-                            <div class="sec1">
-                                    <%--                            <p><span>合伙产品</span><b>${cet.skuName}</b></p>
-
-                                                                <p><span>合伙人等级：
-                                                                    <em name="agentLevel">高级合伙人</em>
-                                                                    <em name="upperName"><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></em>
-                                                            </span></p>
-                                                                <a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}"><img
-                                                                        src="<%=path%>/static/images/rightgo.png" alt=""></a>--%>
+                            <div class="sec1 sec">
                                 <p>合伙产品</p>
-                                <h1>抗引力—瘦脸精华</h1>
+                                <h1>${cet.skuName}</h1>
                             </div>
                             <div class="small">
                                 <div class="left">
-                                    <p>上级合伙人：<span>王平</span></p>
-                                    <h1>合伙人等级：<span>中介合伙人</span>保证金：<span>1000.00</span>元</h1>
+                                    <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
+                                    <h1>合伙人等级：<span>高级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
                                 </div>
                                 <div class="right">
-                                    <p><img src="<%=path%>/static/images/see.png" alt="">查看证书</p>
-
+                                    <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>
                                 </div>
                             </div>
                         </div>
                     </c:when>
                     <c:when test="${cet.agentLevelId==2}">
-                        <div class="sec2">
-                            <p><span>合伙产品</span><b>${cet.skuName}</b></p>
-
-                            <p><span>合伙人等级：
-                                <em name="agentLevel">中级合伙人</em>
-                        </span></p>
-                            <a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}"><img
-                                    src="<%=path%>/static/images/rightgo.png" alt=""></a>
+                        <div class="big">
+                            <div class="sec1 sec2">
+                                <p>合伙产品</p>
+                                <h1>${cet.skuName}</h1>
+                            </div>
+                            <div class="small">
+                                <div class="left">
+                                    <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
+                                    <h1>合伙人等级：<span>中级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
+                                </div>
+                                <div class="right">
+                                    <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>
+                                </div>
+                            </div>
                         </div>
                     </c:when>
                     <c:when test="${cet.agentLevelId==3}">
-                        <div class="sec2">
-                            <p><span>合伙产品</span><b>${cet.skuName}</b></p>
-
-                            <p><span>合伙人等级：
-                                <em name="agentLevel">初级合伙人</em>
-                        </span></p>
+                        <div class="big">
+                            <div class="sec1 sec3">
+                                <p>合伙产品</p>
+                                <h1>${cet.skuName}</h1>
+                            </div>
+                            <div class="small">
+                                <div class="left">
+                                    <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
+                                    <h1>合伙人等级：<span>初级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
+                                </div>
+                                <div class="right">
+                                    <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>
+                                </div>
+                            </div>
                         </div>
                     </c:when>
                 </c:choose>

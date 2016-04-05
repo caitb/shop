@@ -115,9 +115,9 @@
         <div class="sec5">
             <p>订单编号：<span>${pfBorder.orderCode}</span></p>
             <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
-            <p>创建时间：<span><fmt:formatDate value="${pfBorder.createTime}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
-            <p>付款时间：<span><fmt:formatDate value="${pfBorder.payTime}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
-            <p>发货时间：<span><fmt:formatDate value="${pfBorder.shipTime}" var="date" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+            <p>创建时间：<span><fmt:formatDate value="${pfBorder.createTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+            <p>付款时间：<span><fmt:formatDate value="${pfBorder.payTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
+            <p>发货时间：<span><fmt:formatDate value="${pfBorder.shipTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
         </div>
         <botton class="btn">
             返回市场

@@ -45,7 +45,7 @@
                     </section>
                     <section class="sec3">
                         <p class="jianku" onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">申请拿货</p>
-                        <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}')">补货</p>
+                        <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}')">补货</p>
                     </section>
                 </c:forEach>
             </div>
@@ -56,13 +56,14 @@
         <div class="back_b">
             <p>补货信息</p>
             <h4>商品:　　<span id="addsku"></span></h4>
-            <h4>本次最多可补货数量:　　<span id="maxStock"></span></h4>
+            <h4 id="xianshi">本次最多可补货数量:　　<span id="maxStock"></span></h4>
             <h4>补货数量:　　<div>
                 <span class="jian">-</span>
                 <input type="tel" class="number" value="1"/>
                 <span class="jia">+</span>
             </div>
             </h4>
+            <h4 class="queue">您的订单将进入排单期</h4>
             <div>
                 <h1 class="b_qu">取消</h1>
                 <h1 class="b_que">确定</h1>
@@ -89,9 +90,14 @@
         i--;
         $(".number").val(i)
     })
-    function buhuokucun(a,b){
+    function buhuokucun(a,b,c){
+        $(".queue").hide();//init
         $("#addsku").html(a);
         $("#maxStock").html(b);
+        if(c==1){ //进入排单
+            $(".queue").show();
+            $("#xianshi").hide();
+        }
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
     }

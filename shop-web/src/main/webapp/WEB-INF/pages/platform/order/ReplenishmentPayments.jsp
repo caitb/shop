@@ -35,7 +35,6 @@
     </script>
 </head>
 <body>
-
 <div class="wrap">
     <main>
         <header class="xq_header">
@@ -111,9 +110,9 @@
         <div class="sec5">
             <p>订单编号：<span>${pfBorder.orderCode}</span></p>
             <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
-            <p>创建时间：<span><fmt:parseDate value="${pfBorder.createTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"></span></p>
-            <p>付款时间：<span><fmt:parseDate value="${pfBorder.payTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"></span></p>
-            <p>发货时间：<span><fmt:parseDate value="${pfBorder.shipTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"></span></p>
+            <p>创建时间：<span><fmt:parseDate value="${pfBorder.createTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
+            <p>付款时间：<span><fmt:parseDate value="${pfBorder.payTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
+            <p>发货时间：<span><fmt:parseDate value="${pfBorder.shipTime}" var="date" pattern="yyyy-MM-dd'T'HHmmss"/></span></p>
         </div>
         <botton class="btn">
             返回市场

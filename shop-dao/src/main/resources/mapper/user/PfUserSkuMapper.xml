@@ -136,11 +136,25 @@
     </select>
 
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
-        select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
-        is_certificate, pf_border_id, bail, remark
-        from pf_user_sku
-        where user_id = #{userId}
-        and sku_id = #{skuId}
+        select
+               id,
+               create_time,
+               code,
+               pid,
+               user_id,
+               user_pid,
+               sku_id,
+               agent_level_id,
+               is_pay,
+               is_certificate,
+               pf_border_id,
+               bail,
+               remark
+        from
+               pf_user_sku
+        where
+               user_id = #{userId}
+               and sku_id = #{skuId}
     </select>
 
     <select id="getUserSkuList" parameterType="map" resultMap="UserSkuResultMap">
@@ -232,6 +246,10 @@
                 and user_pid = #{userPid,jdbcType=BIGINT}
             </if>
         </where>
+    </select>
+
+    <select id="selectChildrenByPId" parameterType="Integer" resultType="Long">
+        SELECT user_id FROM pf_user_sku WHERE pid = #{pId}
     </select>
 
     <select id="countChild" parameterType="String" resultType="Map">

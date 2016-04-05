@@ -47,7 +47,13 @@ public interface PfUserSkuMapper {
     List<PfUserSku> selectByCondition(PfUserSku pfUserSku);
 
     /**
-     * 统计团队人数
+     * 统计直接下级人数
+     * @param pId
+     * @return
+     */
+    List<Long> selectChildrenByPId(Integer pId);
+    /**
+     * 统计团队总人数
      * @param sPIds
      * @return
      */

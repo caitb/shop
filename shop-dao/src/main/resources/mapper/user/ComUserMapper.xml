@@ -309,4 +309,42 @@
         </where>
     </select>
 
+    <select id="selectByIds" parameterType="List" resultMap="BaseResultMap">
+        select
+                id,
+                create_time,
+                openid,
+                wx_nk_name,
+                wx_id,
+                wx_head_img,
+                access_token,
+                refresh_token,
+                atoken_expire,
+                rtoken_expire,
+                real_name,
+                mobile,
+                id_card,
+                id_card_front_url,
+                id_card_back_url,
+                province_id,
+                province_name,
+                city_id,
+                city_name,
+                region_id,
+                region_name,
+                address,
+                is_agent,
+                sex,
+                send_type,
+                audit_status,
+                audit_reason
+        from
+                com_user
+        WHERE
+               id IN
+               <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+                   #{id}
+               </foreach>
+    </select>
+
 </mapper>

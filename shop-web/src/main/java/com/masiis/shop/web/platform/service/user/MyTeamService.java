@@ -122,41 +122,41 @@ public class MyTeamService {
     /**
      * 获取团队列表
      * @param userSkuId
-     * @param skuId
      * @return
      */
-    public Map<String, Object> findTeam(Integer userSkuId, Integer skuId){
-        PfUserSku pfUserSku = new PfUserSku();
-        pfUserSku.setPid(userSkuId);
-        pfUserSku.setSkuId(skuId);
+    public Map<String, Object> findTeam(Integer userSkuId){
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
+        List<Long> userIds = pfUserSkuMapper.selectChildrenByPId(pfUserSku.getId());
+        List<ComUser> comUsers = new ArrayList<>();
+        if(userIds != null && userIds.size() > 0){
+            comUsers = comUserMapper.selectByIds(userIds);
+        }
+        Map<String, String> curMap = countChild(pfUserSku.getId(), pfUserSku.getUserId());
+        ComSku comSku = comSkuMapper.selectById(pfUserSku.getSkuId());
 
-        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(pfUserSku);
+        Map<String, Object> teamMap = new HashMap<>();
+        teamMap.put("skuName", comSku.getName());//商品名称
+        teamMap.put("totalChildren", userIds.size());//直接下级人数
+        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size());//间接下级人数
+        teamMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));//总销售额
 
-        List<Map<String, Object>> isAuditTeamMaps = new ArrayList<>();
-        List<Map<String, Object>> noAuditTeamMaps = new ArrayList<>();
-        for(PfUserSku pus : pfUserSkus){
-            ComUser comUser = comUserMapper.selectByPrimaryKey(pus.getUserId());
-            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
+        List<Map<String, Object>> userAgentMaps = new ArrayList<>();
+        for(ComUser comUser : comUsers){
+            PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfUserSku.getSkuId());
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
 
-            Map<String, Object> teamMap = new HashMap<>();
-            teamMap.put("comUserId", comUser.getId());
-            teamMap.put("comUserName", comUser.getRealName());
-            teamMap.put("comUserImg", comUser.getWxHeadImg());
-            teamMap.put("skuId", pus.getSkuId());
-            teamMap.put("agentLevelId", comAgentLevel.getId());
-            teamMap.put("agentLevelName", comAgentLevel.getName());
-            teamMap.put("userSkuId", pus.getId());
-            teamMap.put("code", pus.getCode());
+            Map<String, Object> userAgentMap = new HashMap<>();
+            userAgentMap.put("userId", comUser.getId());
+            userAgentMap.put("userName", comUser.getRealName());
+            userAgentMap.put("agentLevelName", comAgentLevel.getName());
 
-            if(pus.getIsCertificate() == 1) isAuditTeamMaps.add(teamMap);
-            if(pus.getIsCertificate() == 0) noAuditTeamMaps.add(teamMap);
+            userAgentMaps.add(userAgentMap);
         }
 
-        Map<String, Object> teamMaps = new HashMap<>();
-        teamMaps.put("isAuditTeamMaps", isAuditTeamMaps);
-        teamMaps.put("noAuditTeamMaps", noAuditTeamMaps);
+        teamMap.put("userAgentMaps", userAgentMaps);
 
-        return teamMaps;
+
+        return teamMap;
     }
 
     /**

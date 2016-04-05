@@ -62,20 +62,18 @@ public class MyTeamController extends BaseController {
      * @param request
      * @param response
      * @param userSkuId
-     * @param skuId
      * @return
      */
     @RequestMapping("/teamdetail")
     public ModelAndView teamDetail(HttpServletRequest request, HttpServletResponse response,
-                             Integer userSkuId,
-                             Integer skuId){
+                             Integer userSkuId){
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamDetail");
 
-            Map<String, Object> teamMaps = myTeamService.findTeam(userSkuId, skuId);
+            Map<String, Object> teamMap = myTeamService.findTeam(userSkuId);
 
-            mav.addObject("teamMaps", teamMaps);
+            mav.addObject("teamMap", teamMap);
             return mav;
         } catch (Exception e) {
             log.error("获取团队成员列表失败!");

@@ -69,4 +69,6 @@ public interface ComUserMapper {
     List<ComUser> selectByCondition(ComUser comUser);
 
     List<ComUser> auditList(ComUser comUser);
+
+    List<ComUser> selectByIds(List<Long> ids);
 }

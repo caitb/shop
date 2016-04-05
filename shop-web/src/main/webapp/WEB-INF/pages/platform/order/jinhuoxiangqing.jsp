@@ -39,22 +39,22 @@
                     <p>亲，交易完成~~</p></c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}"><img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
                     <p>亲，订单排单中~~</p></c:if>
-            </div><c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
-           <div class="kuaidi">
-               <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
-               <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
-           </div></c:when><c:otherwise>
+            </div>
             <div class="kuaidi">
+                <c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
                 <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
                 <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
-                <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">
+                    </c:when><c:otherwise>
+                <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
+                <p>类型：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
                 <c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
                 <p>承运公司：<span>${bdpb.shipManName}</span></p>
-                <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach></c:if>
+                <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach>
             </div></c:otherwise></c:choose> <c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
            <div class="paidan">
-               <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>1233</span>件</b></h1>
-               <p>当前平台在线库存量为<span>9999</span>件</p>
+               <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${borderDetail.pfBorder.totalQuantity}</span>件</b></h1>
+               <c:forEach items="${borderDetail.pfBorder.stockManages}" var="sm">
+               <p>当前平台在线库<span>${sm.skuName}</span>存量为<span>${sm.stockNum}</span>件</p></c:forEach>
            </div></c:when><c:otherwise>
             <section class="sec1">
                        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
@@ -129,7 +129,7 @@
                 $(".back").hide();
                 $.ajax({
                     type:"POST",
-                    url : "<%=path%>/border/closeDeal.do",
+                    url : "<%=path%>/borderManage/closeDeal.do",
                     data:{orderStatus:3,orderId:id,shipStatus:9},
                     dataType:"Json",
                     success:function(date){

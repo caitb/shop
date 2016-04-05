@@ -57,17 +57,15 @@ public class UserPersonalInfoController extends BaseController {
      * @date 2016/3/29 14:02
      */
     @RequestMapping(value = "selectSkuWeChatInfo.do")
-    @ResponseBody
     public String selectSkuWeChatInfo(HttpServletRequest request, HttpServletResponse response
             , Model model){
         ComUser comUser = getComUser(request);
         if (comUser == null){
             throw  new BusinessException("请重新登录");
         }
-        comUser.setId(1L);
         List<PfUserCertificate> pfUserCertificates = userPersonalInfoService.selectSkuWeChatInfo(comUser.getId());
-        model.addAttribute("pfUserCertificate",pfUserCertificates);
-        return null;
+        model.addAttribute("pfUserCertificates",pfUserCertificates);
+        return "platform/user/weixinhao" ;
     }
     /**
      * 查看实名认证信息

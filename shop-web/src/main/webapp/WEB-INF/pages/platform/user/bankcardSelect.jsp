@@ -25,7 +25,7 @@
             <p>选择银行卡</p>            
             </header>
             <div class="xinz">
-                    <p><a href="<%=basePath%>extractwayinfo/toCreateBankcard.do" style="color:#333;">新增银行卡</a></p>
+                    <p><a href="<%=basePath%>extractwayinfo/toCreateBankcard.shtml" style="color:#333;">新增银行卡</a></p>
             </div>
        <div class="main">
                 <img src="<%=path%>/static/images/icon_56.png" alt="">

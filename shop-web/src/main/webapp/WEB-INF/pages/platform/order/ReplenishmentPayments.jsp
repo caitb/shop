@@ -23,73 +23,99 @@
             fullShow();
             window.location.href = "<%=basePath%>product/"+skuId;
         }
-        function toIndex(){
-            fullShow();
-            window.location.href = "<%=basePath%>index";
-        }
-        function toPersonCenter(){
-            fullShow();
-            window.location.href = "<%=basePath%>personalInfo/personalHomePageInfo.html";
-        }
+        <%--function toIndex(){--%>
+            <%--fullShow();--%>
+            <%--window.location.href = "<%=basePath%>index";--%>
+        <%--}--%>
+        <%--function toPersonCenter(){--%>
+            <%--fullShow();--%>
+            <%--window.location.href = "<%=basePath%>personalInfo/personalHomePageInfo.html";--%>
+        <%--}--%>
     </script>
 </head>
 <body>
+
 <div class="wrap">
-    <header class="xq_header">
-        <a href="" onclick="history.go(-1)"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>订单详情</p>
-    </header>
-    <div class="tai">
-        <img src="<%=path%>/static/images/icon_64.png" alt="">
-        <h1>支付成功</h1>
-        <c:if test="${pfBorder.sendType==1}">
-            <p>您的订单支付成功，请耐心等待收货</p>
-        </c:if>
-        <c:if test="${pfBorder.sendType==2}">
-            <p>您的订单支付成功，在线库存已经变更</p>
-        </c:if>
-    </div>
-    <section class="sec1">
-    <c:if test="${pfBorder.sendType==1}">
-        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-        <div>
-            <a href="#"><h2>收货人：<b>${pfBorderConsignee.consignee}</b> <span>${pfBorderConsignee.mobile}</span></h2></a>
-            <a href="#"><p>收货地址： <span>${pfBorderConsignee.address}</span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+    <main>
+        <header class="xq_header">
+            <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>订单详情</p>
+        </header>
+        <div class="tai">
+            <img src="<%=path%>/static/images/icon_68.png" alt="">
+            <c:if test="${pfBorder.sendType == 1}">
+                <h1>已完成</h1>
+                <p>您的订单已完成，库存已更新</p>
+            </c:if>
+            <c:if test="${pfBorder.sendType == 2}">
+                <h1>待发货</h1>
+                <p>您的订单已提交，请耐心等待收获</p>
+            </c:if>
         </div>
-    </c:if>
-    </section>
-    <section class="sec2">
-        <c:forEach var="borderItem" items="${pfBorderItems}">
-            <p class="photo">
-                <a href="#" onclick="toProduct(${borderItem.skuId})">
-                    <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                    <img src="${skuImg}${borderItem.logoUrl}" alt="">
-                </a>
-            </p>
-            <div>
-                <h2>${borderItem.skuName}</h2>
-                <h3>规格：<span>默认</span><b>x${borderItem.quantity}</b></h3>
-                <p>零售价：${borderItem.unitPrice}</p>
-                <h1><b style="color:#333333">合计：</b><span>￥${borderItem.totalPrice}</span></h1>
-            </div>
-        </c:forEach>
-    </section>
-    <section class="sec3">
-        <p>留言： <input type="text" value="${pfBorder.userMessage}"></p>
-    </section>
-    <section class="sec4">
-        <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
-        <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
-        <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
-    </section>
-    <div class="sec5">
-        <p>订单编号：<span>${pfBorder.orderCode}</span></p>
-        <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
-    </div>
-    <div class="sec6">
-        <p><a href="#" onclick="toIndex()">返回首页</a></p>
-        <p><a href="#" onclick="toPersonCenter()">返回个人中心</a></p>
-    </div>
+        <div class="kuaidi">
+            <c:if test="${pfBorder.sendType == 1}">
+                <p>发货方式：<span>平台代发</span></p>
+            </c:if>
+            <c:if test="${pfBorder.sendType == 2}">
+                <p>发货方式：<span>自己发货</span></p>
+                <p>承运公司：<span></span></p>
+                <p>运单编号：<span></span></p>
+            </c:if>
+            <c:if test="${orderType.orderType == 1}">
+                <p>类型：  </p><span>补货</span>
+            </c:if>
+            <c:if test="${orderType.orderType == 2}">
+                <p>类型：  </p><span>拿货</span>
+            </c:if>
+        </div>
+        <section class="sec1">
+            <c:if test="${pfBorder.sendType==2 || pfBorder.orderType==2}">
+                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                <div>
+                    <a href="#"><h2>收货人：<b>${pfBorderConsignee.consignee}</b> <span>${pfBorderConsignee.mobile}</span></h2></a>
+                    <a href="#"><p>收货地址： <span>${pfBorderConsignee.address}</span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+                </div>
+            </c:if>
+        </section>
+        <c:if test="${pfBorder.sendType == 1}">
+            <c:forEach var="pfBorderItem" items="${pfBorderItems}">
+                <div class="paidan">
+                    <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${pfBorderItem.quantity}</span>件</b></h1>
+                    <p>当前平台在线库存量为<span>${pfBorderItem.realStock}</span>件</p>
+                </div>
+                <section class="sec2">
+                    <p class="photo">
+                        <a href="#" onclick="toProduct(${borderItem.skuId})">
+                            <img src="${skuImg}${borderItem.logoUrl}" alt="">
+                        </a>
+                    </p>
+                    <div>
+                        <h2>${pfBorderItem.skuName}</h2>
+                        <h3>规格：<span>默认</span><b>x${pfBorderItem.quantity}</b></h3>
+                        <p>零售价：${pfBorderItem.unitPrice}</p>
+                        <h1><b style="color:#333333">合计：</b><span>￥${pfBorderItem.totalPrice}</span></h1>
+                    </div>
+                </section>
+            </c:forEach>
+        </c:if>
+
+        <section class="sec3">
+            <p>留言： <input type="text" value="${pfBorder.userMessage}"></p>
+        </section>
+        <section class="sec4">
+            <p>商品合计：<span>￥${pfBorder.productAmount}元</span></p>
+            <p>运费：<span>￥${pfBorder.shipAmount}元</span></p>
+            <h1>共<b>${sumQuantity}</b>件商品　运费：<span>￥${pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${pfBorder.orderAmount}</span></h1>
+        </section>
+        <div class="sec5">
+            <p>订单编号：<span>${pfBorder.orderCode}</span></p>
+            <%--<p>订单编号：<span>1290301293</span><span>1290301293</span></p>--%>
+        </div>
+        <botton class="btn">
+            返回市场
+        </botton>
+        <h3></h3>
+    </main>
 </div>
 </body>
 </html>

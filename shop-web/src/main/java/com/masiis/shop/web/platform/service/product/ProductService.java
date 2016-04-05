@@ -147,7 +147,7 @@ public class ProductService {
         Map<String, Object> param = new HashMap<>();
         Product product = productMapper.getProductStock(id);
         if (product != null) {
-            param.put("stock", selfStock);
+            param.put("selfStock", selfStock);
             param.put("id", id);
             ADD:
             productMapper.updateStock(param);

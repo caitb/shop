@@ -5,6 +5,9 @@
                 personalInfoJS.initClick();
             },
             initClick:function(){
+                $("#weChatNumberId").bind("click",function(){
+                    window.location.href = personalInfoJS.basePath + "/personalInfo/selectSkuWeChatInfo.do";
+                })
                 $("#identityAuthId").bind("click",function(){
                     window.location.href = personalInfoJS.basePath + "/identityAuth/toInentityAuthPage.html?auditStatus="+$("#auditStatusId").val();
                     ;

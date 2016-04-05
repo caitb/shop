@@ -1,13 +1,11 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
-import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.order.BorderSkuStockService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -31,37 +29,40 @@ public class OrderPayEndController extends BaseController {
     @Resource
     private BOrderService bOrderService;
     @Resource
+    private BorderSkuStockService borderSkuStockService;
+    @Resource
     private UserService userService;
     /**
      * 补货订单支付完成
-     * @param borderCode    订单编码
+     * @param bOrderId    订单编码
      * @param request
      * created by wangbingjian
      */
-    @RequestMapping(value = "replenishment")
-    @ResponseBody
-    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderCode",required = true) String borderCode,
+    @RequestMapping(value = "replenishment.shtml")
+    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId",required = true) Long bOrderId,
                                                         HttpServletRequest request)throws Exception{
 
         log.info("进入补货订单支付完成");
-        ComUser user = getComUser(request);
-        if (user == null){
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
-        }
         ModelAndView mv = new ModelAndView();
-        PfBorder pfBorder = bOrderService.findByOrderCode(borderCode);
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
+        List<PfBorderItem> its = null;
         Integer sumQuantity = 0;
+        PfUserSkuStock pfUserSkuStock;
         for (PfBorderItem pfBorderItem:items){
             sumQuantity += pfBorderItem.getQuantity();
+            pfUserSkuStock = borderSkuStockService.getUserSkuStockByUserIdAndSkuId(bOrderId,pfBorderItem.getSkuId());
+            pfBorderItem.setRealStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
+            its.add(pfBorderItem);
         }
         mv.addObject("pfBorder",pfBorder);
-        mv.addObject("pfBorderItems",items);
+        mv.addObject("pfBorderItems",its);
         mv.addObject("skuImg",skuImg);
         mv.addObject("sumQuantity",sumQuantity);
         //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
-        if (pfBorder.getSendType() == 1){
+        //orderType 1:补货 2:拿货 0:代理
+        if (pfBorder.getSendType() == 2||pfBorder.getOrderType() == 2){
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee",pfBorderConsignee);
         }

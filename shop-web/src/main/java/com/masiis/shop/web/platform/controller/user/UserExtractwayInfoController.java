@@ -156,8 +156,7 @@ public class UserExtractwayInfoController extends BaseController {
      * 通过userId查询已绑定卡片信息
      * @return
      */
-    @RequestMapping(value = "/findExtractwayInfo")
-    @ResponseBody
+    @RequestMapping(value = "/findExtractwayInfo.shtml")
     public ModelAndView findByUserId(HttpServletRequest request) throws Exception{
         log.info("通过userId查询已绑定卡片信息");
 
@@ -184,8 +183,7 @@ public class UserExtractwayInfoController extends BaseController {
      * 跳转至新增银行卡页面
      * @return
      */
-    @RequestMapping(value = "/toCreateBankcard.do")
-    @ResponseBody
+    @RequestMapping(value = "/toCreateBankcard.shtml")
     public ModelAndView toBankCardCreate(HttpServletRequest request) throws Exception{
 
         log.info("准备跳转至新增银行卡页面");

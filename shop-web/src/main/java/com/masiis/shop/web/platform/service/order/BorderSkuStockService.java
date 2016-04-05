@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.beans.order.StockManage;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 更改库存
@@ -83,5 +86,33 @@ public class BorderSkuStockService {
                 }
             }
         }
+    }
+    /**
+     * 商品库存
+     * @author muchaofeng
+     * @date 2016/4/5 12:14
+     */
+
+    public List<StockManage> totalGetStock(PfBorder pfBorder, ComUser user) {
+        PfUserSkuStock pfUserSkuStock = null;
+        StockManage stockManage =null;
+        List<StockManage> stockManages=new ArrayList<>();
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
+            stockManage.setSkuName(pfBorderItem.getSkuName());
+            stockManage.setStockNum(pfUserSkuStock.getStock());
+            stockManages.add(stockManage);
+        }
+        return stockManages;
+    }
+
+    /**
+     * 查询商品库存
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public PfUserSkuStock getUserSkuStockByUserIdAndSkuId(Long userId,int skuId){
+        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
     }
 }

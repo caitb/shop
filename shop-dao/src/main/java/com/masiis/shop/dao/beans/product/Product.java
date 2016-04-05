@@ -43,6 +43,10 @@ public class Product extends ComSku {
 
     private Integer upperStock;//上级库存
 
+    private Integer customStock;//自拿货库存
+
+    private Integer isQueue;//排单flag
+
     public String getSpuName() {
         return spuName;
     }
@@ -169,5 +173,21 @@ public class Product extends ComSku {
 
     public void setUpperStock(Integer upperStock) {
         this.upperStock = upperStock;
+    }
+
+    public Integer getCustomStock() {
+        return customStock;
+    }
+
+    public void setCustomStock(Integer customStock) {
+        this.customStock = customStock;
+    }
+
+    public Integer getIsQueue() {
+        return isQueue;
+    }
+
+    public void setIsQueue(Integer isQueue) {
+        this.isQueue = isQueue;
     }
 }

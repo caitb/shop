@@ -42,10 +42,14 @@
         </div>
         <div class="dlpople">
             <p>库存</p>
-            <c:if test="${productDetails.stock==0}">
-                <p>此商品已经进入排单期<b class="paidan">?</b></p>
-            </c:if>
-            <p><span>${productDetails.stock}件</span></p>
+            <c:choose>
+                <c:when test="${productDetails.stock==0 || productDetails.isQueue==1}">
+                    <p>此商品已经进入排单期<b class="paidan">?</b></p>
+                </c:when>
+                <c:otherwise>
+                    <p><span>${productDetails.stock}件</span></p>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="dlpople">
             <p>运费</p>

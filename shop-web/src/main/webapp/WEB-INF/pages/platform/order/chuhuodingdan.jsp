@@ -20,7 +20,7 @@
 <body>
        <div class="wrap">
            <div class="box">
-                <header class="xq_header"><a href="<%=path%>/border/borderManagement.html">
+                <header class="xq_header"><a href="<%=path%>/borderManage/borderManagement.html">
                     <img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>
@@ -64,7 +64,7 @@
                             </c:forEach>
 
                             <div class="ding">
-                                <p><a href="<%=path%>/border/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
+                                <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if><c:if test="${pb.payStatus ==1 && pb.shipStatus==0}">
                                 <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">
                                     发货

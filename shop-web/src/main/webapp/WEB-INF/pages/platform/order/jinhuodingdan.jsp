@@ -46,9 +46,9 @@
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==6 && pb.sendType!=2}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8 && pb.sendType==2}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                             </h2>
                             <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -62,13 +62,9 @@
                                     <h2>${pbi.skuName}</h2>
                                     <h3><span>单价</span><b>x${pbi.quantity}</b></h3>
                                     <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.unitPrice}</span></p>
-
                                 </div>
                             </div></c:forEach>
-                                        <%--<b>合计：￥${pb.orderAmount}</b>
-                                        (共<span>${pb.totalQuantity}</span>
-                                        件商品 运费
-                                        <span>￥${pb.shipAmount}</span>)--%>
+                                共<span>${pb.totalQuantity}</span>件商品 <b>合计：￥${pb.orderAmount}</b>( 运费：到付)
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">

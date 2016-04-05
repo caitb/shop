@@ -60,4 +60,11 @@ public interface PfBorderMapper {
      * @return
      */
     int updateOrderCancelById(@Param("orderId") Long orderId);
+
+    /**
+     * 统计团队销售额
+     * @param sUserIds
+     * @return
+     */
+    Double countSales(String sUserIds);
 }

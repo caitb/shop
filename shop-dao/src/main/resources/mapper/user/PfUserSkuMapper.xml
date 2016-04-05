@@ -233,6 +233,37 @@
             </if>
         </where>
     </select>
+
+    <select id="countChild" parameterType="String" resultType="Map">
+        <!--<![CDATA[-->
+<!--DROP FUNCTION IF EXISTS fn_concat;-->
+<!--delimiter $$-->
+<!--CREATE FUNCTION fn_concat(ppid int) RETURNS int-->
+<!--BEGIN-->
+<!--DECLARE sTemp VARCHAR(4000);-->
+<!--DECLARE sTempChd VARCHAR(4000);-->
+<!--DECLARE _count INT;-->
+<!--DECLARE c INT;-->
+
+<!--SET sTemp = '';-->
+<!--SET sTempChd = cast(ppid as char);-->
+<!--SET _count = 0;-->
+<!--SET c = 0;-->
+<!--WHILE sTempChd IS NOT NULL DO-->
+<!--SET sTemp = CONCAT(sTemp,sTempChd);-->
+<!--SET sTemp = CONCAT(sTemp,',');-->
+<!--SET _count = _count + c;-->
+<!--SELECT GROUP_CONCAT(id),COUNT(1) INTO sTempChd,c FROM com_area WHERE FIND_IN_SET(pid,sTempChd);-->
+<!--END WHILE;-->
+<!--RETURN _count;-->
+<!--END $$-->
+<!--delimiter ;-->
+
+<!--SELECT fn_concat(2);-->
+        <!--]]>-->
+
+        SELECT GROUP_CONCAT(id) sPIds, GROUP_CONCAT(user_id) sUserIds FROM pf_user_sku WHERE FIND_IN_SET(pid,#{sPIds});
+    </select>
 </mapper>
 
 

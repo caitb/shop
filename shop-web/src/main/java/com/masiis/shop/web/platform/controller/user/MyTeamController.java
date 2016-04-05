@@ -38,6 +38,14 @@ public class MyTeamController extends BaseController {
             ComUser comUser = getComUser(request);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
+            Integer totalChild = 0;
+            Double totalSales = 0.0;
+            for(Map<String, Object> agentSkuMap : agentSkuMaps){
+                totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
+                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString());
+            }
+            mav.addObject("totalChild", totalChild);
+            mav.addObject("totalSales", totalSales);
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;

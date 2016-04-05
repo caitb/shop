@@ -34,13 +34,13 @@ public class OrderPayEndController extends BaseController {
     private UserService userService;
     /**
      * 补货订单支付完成
-     * @param borderCode    订单编码
+     * @param borderId    订单编码
      * @param request
      * created by wangbingjian
      */
     @RequestMapping(value = "replenishment")
     @ResponseBody
-    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderCode",required = true) String borderCode,
+    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "borderId",required = true) Long borderId,
                                                         HttpServletRequest request)throws Exception{
 
         log.info("进入补货订单支付完成");
@@ -49,7 +49,7 @@ public class OrderPayEndController extends BaseController {
             user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
         }
         ModelAndView mv = new ModelAndView();
-        PfBorder pfBorder = bOrderService.findByOrderCode(borderCode);
+        PfBorder pfBorder = bOrderService.getPfBorderById(borderId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
         Integer sumQuantity = 0;

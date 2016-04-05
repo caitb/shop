@@ -758,6 +758,11 @@ public class BOrderController extends BaseController {
             if (comUserAddress!=null){
                 modelAndView.addObject("addressId",comUserAddress.getId());
             }
+            if (selectedAddressId==null){
+                modelAndView.addObject("isPlatformSendGoods","true");
+            }else{
+                modelAndView.addObject("isPlatformSendGoods","false");
+            }
             modelAndView.setViewName("platform/order/nahuo");
             return modelAndView;
         }

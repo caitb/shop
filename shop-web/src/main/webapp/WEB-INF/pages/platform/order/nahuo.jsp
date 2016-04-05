@@ -88,12 +88,13 @@
             </div>
             <div class="sec2">
                 <h1>请选择拿货方式</h1>
-                <button id="platformSendGoodsId"   class="active" onclick="platformSendGoods()">平台待发货（90%的用户选择）</button>
+                <button  id="platformSendGoodsId"   onclick="platformSendGoods()">平台待发货（90%的用户选择）</button>
                 <button  id="ownSendGoodsId" onclick="ownSendGoods()">自己发货</button>
 
                 <section id=""class="shouhuo">
                     <div onclick="toChooseAddressPage()">
                         <input style="display: none" type="text" id="bOrderId" value="${bOrderId}"/>
+                        <input style="display: none" type="text" id="isPlatformSendGoodsId" value="${isPlatformSendGoods}"/>
                         <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                         <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                         <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span></p></a>
@@ -109,6 +110,14 @@
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
+    $(document).ready(function(){
+        var isPlatformSendGoods = $("#isPlatformSendGoodsId").val();
+        if(isPlatformSendGoods=="true"){
+            platformSendGoods();
+        }else{
+            ownSendGoods();
+        }
+    })
     function isShowAddress(){
         var addressId = $("#addressId").val();
         if (addressId == "") {

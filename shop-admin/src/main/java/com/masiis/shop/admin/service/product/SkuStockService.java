@@ -63,16 +63,10 @@ public class SkuStockService {
     }
 
     /**
-     * 更新记录
-     * @param id
-     * @param stock 追加的库存量
+     * 更新库存
+     * @param pfSkuStock
      */
-    public void update(Integer id, Integer stock, Integer frozenStock){
-
-        PfSkuStock pfSkuStock = pfSkuStockMapper.selectById(id);
-        if (stock != null)      pfSkuStock.setStock(pfSkuStock.getStock() + stock);
-        if(frozenStock != null) pfSkuStock.setFrozenStock(frozenStock);
-
+    public void update(PfSkuStock pfSkuStock){
         pfSkuStockMapper.updateById(pfSkuStock);
     }
 }

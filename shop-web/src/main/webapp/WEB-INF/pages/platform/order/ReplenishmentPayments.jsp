@@ -24,6 +24,11 @@
             fullShow();
             window.location.href = "<%=basePath%>product/"+skuId;
         }
+
+        function toMarket(){
+            fullShow();
+            window.location.href = "<%=basePath%>marketGood/market";
+        }
         <%--function toIndex(){--%>
             <%--fullShow();--%>
             <%--window.location.href = "<%=basePath%>index";--%>
@@ -38,7 +43,6 @@
 <div class="wrap">
     <main>
         <header class="xq_header">
-            <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>订单详情</p>
         </header>
         <div class="tai">
@@ -119,7 +123,7 @@
             <p>付款时间：<span><fmt:formatDate value="${pfBorder.payTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
             <p>发货时间：<span><fmt:formatDate value="${pfBorder.shipTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span></p>
         </div>
-        <botton class="btn">
+        <botton class="btn" onclick="toMarket()">
             返回市场
         </botton>
         <h3></h3>

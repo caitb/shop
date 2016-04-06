@@ -29,11 +29,11 @@
         </header>
         <div class="tai">
             <img src="<%=path%>/static/images/icon_43.png" alt="" style="width:40px;height: 40px;">
-            <h1>买家已发货</h1>
-            <p>还剩<span>7</span>天自动确认</p>
+            <h1>您的资料审核失败了！</h1>
+            <p>失败原因:<span>1111111111</span></p>
         </div>
         <p class="cp">
-            <span>您的实名认证被拒绝,原因如下:</span>
+            <span>实名认证通过后才能申请合伙人:</span>
         </p>
 
         <main>
@@ -54,10 +54,12 @@
                 <label class="zheng">
                     <img src="${idCardFrontUrl}" alt="" id="idCardFront" name="idCardPre"
                          onclick="F_Open_dialog(0)">
+                    重新上传
                 </label>
                 <label class="fan" style="margin-left:10px;">
                     <img src="${idCardBackUrl}" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
+                    重新上传
                 </label>
             </div>
 
@@ -135,8 +137,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    alert("提交成功！");
-                    window.location.href = "${goToURL}";
+                    window.location.href = "<%=path%>/identityAuth/toWaitIdentityPage.html";
                 }
                 else {
                     alert(data.message);

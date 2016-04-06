@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
@@ -80,17 +81,34 @@ public class UserPersonalInfoController extends BaseController {
     }
 
     /**
+     * 跳转到银行卡界面
+     * @author hanzengzhi
+     * @date 2016/4/6 19:54
+     */
+    @RequestMapping(value ="toBankCardPage.html")
+    public String toBankCardPage(HttpServletRequest request ,HttpServletResponse response){
+        return "platform/user/wodeyinhang";
+    }
+    /**
      * 个人信息查询银行卡信息
      * @author hanzengzhi
      * @date 2016/3/29 14:14
      */
-    @RequestMapping(value ="findBankCardInfoByUserId.do" )
+    @RequestMapping(value ="findBankCardInfoByUserId.do")
+    @ResponseBody
     public String findBankCardInfoByUserId(HttpServletRequest request,HttpServletResponse response){
-        ComUser comUser = getComUser(request);
-        if (comUser == null){
-            throw new BusinessException();
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            ComUser comUser = getComUser(request);
+            if (comUser == null){
+                throw new BusinessException();
+            }
+            List<ComUserExtractwayInfo> comUserExtractwayInfos = userPersonalInfoService.findBankCardInfoByUserId(comUser.getId());
+            String returnJson = objectMapper.writeValueAsString(comUserExtractwayInfos);
+            return returnJson;
+        }catch (Exception e){
+
         }
-        List<ComUserExtractwayInfo> comUserExtractwayInfos = userPersonalInfoService.findBankCardInfoByUserId(comUser.getId());
         return null;
     }
     /**
@@ -98,14 +116,15 @@ public class UserPersonalInfoController extends BaseController {
      * @author hanzengzhi
      * @date 2016/3/29 14:49
      */
-    @RequestMapping(value = "deletBankCardInfoById.do")
+    @RequestMapping(value = "deleteBankCardInfoById.do")
     @ResponseBody
-    public String deletBankCardInfoById(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestParam(value = "id")Long id){
+    public String deleteBankCardInfoById(HttpServletRequest request, HttpServletResponse response,
+                                        @RequestParam(value = "id",required = true)Long id){
         if (id.equals("")){
             throw new BusinessException("删除银行卡失败");
         }
-        int i = userPersonalInfoService.deleteBankCardInfoById(id);
+        //int i = userPersonalInfoService.deleteBankCardInfoById(id);
+        int i =1;
         if (i == 1){
             return "true";
         }else{

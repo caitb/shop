@@ -52,7 +52,7 @@
             <p>我的资金</p>
             <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
         </div>
-        <div class="sec1" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 7px;  background-size: 20px;">
+        <div class="sec1" id="bankCardId" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 7px;  background-size: 20px;">
             <p>我的银行卡</p>
             <p><img src="<%=path%>/static/images/next.png" alt=""></p>
         </div>

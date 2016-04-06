@@ -86,6 +86,8 @@
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   width: 1px;
+  text-decoration: underline;
+  text-align: center;
 }
 .wrap .box main .sfphoto label img {
   display: block;

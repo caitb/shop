@@ -137,7 +137,7 @@ public class MyTeamService {
         Map<String, Object> teamMap = new HashMap<>();
         teamMap.put("skuName", comSku.getName());//商品名称
         teamMap.put("totalChildren", userIds.size());//直接下级人数
-        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size());//间接下级人数
+        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size()-1);//间接下级人数
         teamMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));//总销售额
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
@@ -149,6 +149,7 @@ public class MyTeamService {
             userAgentMap.put("userId", comUser.getId());
             userAgentMap.put("userName", comUser.getRealName());
             userAgentMap.put("agentLevelName", comAgentLevel.getName());
+            userAgentMap.put("code", userSku.getCode());
 
             userAgentMaps.add(userAgentMap);
         }
@@ -161,45 +162,45 @@ public class MyTeamService {
 
     /**
      *
-     * @param comUserId
-     * @param skuId
-     * @param agentLevelId
+     * @param code
      * @return
      */
-    public Map<String, Object> viewMember(Long comUserId, Integer skuId, Integer agentLevelId, Integer userSkuId){
-        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(userSkuId);
+    public Map<String, Object> viewMember(String code){
+        PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByCode(code);
         if(pfUserCertificate == null){//合伙人未填写证书申请
             return null;
         }
 
-        ComUser comUser = comUserMapper.selectByPrimaryKey(comUserId);
-        ComSku comSku = comSkuMapper.selectById(skuId);
-        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(agentLevelId);
+        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId());
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
+        ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
+        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
+        Map<String, String> curMap = countChild(pfUserSku.getId(), comUser.getId());
 
 
         Map<String, Object> memberMap = new HashMap<>();
+        memberMap.put("stock", statisticsBuy.get("stock"));
+        memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
+        memberMap.put("countChild", curMap.get("childIds").split(",").length - 1);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());
-        memberMap.put("idCardFrontImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardFrontUrl());
-        memberMap.put("idCardBackImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardBackUrl());
-        memberMap.put("weixin", comUser.getWxId());
-        memberMap.put("idCard", comUser.getIdCard());
+        memberMap.put("auditStatus", comUser.getAuditStatus());
+        memberMap.put("idCardImg", comUser.getIdCardFrontUrl());
+        //memberMap.put("idCardFrontImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardFrontUrl());
+        //memberMap.put("idCardBackImg", PropertiesUtils.getStringValue("index_user_idCard_url") + comUser.getIdCardBackUrl());
+        memberMap.put("weixin", pfUserCertificate.getWxId());
+        memberMap.put("idCard", pfUserCertificate.getIdCard());
         memberMap.put("frontImg", comUser.getIdCardFrontUrl());
         memberMap.put("backImg", comUser.getIdCardBackUrl());
         memberMap.put("skuId", comSku.getId());
         memberMap.put("skuName", comSku.getName());
         memberMap.put("agentLevelId", comAgentLevel.getId());
         memberMap.put("agentLevelName", comAgentLevel.getName());
+        memberMap.put("status", pfUserCertificate.getStatus());
         memberMap.put("certificateImg", PropertiesUtils.getStringValue("index_user_certificate_url") + pfUserCertificate.getImgUrl());
-        memberMap.put("pfUserCertificateId", pfUserCertificate.getId());
-        memberMap.put("joinTime", pfUserCertificate.getBeginTime());
-        memberMap.put("applyTime", pfUserCertificate.getCreateTime());
-        if(userSkuId != null){
-            PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
-            memberMap.put("payStatus", pfUserSku.getIsPay());
-            memberMap.put("userSkuId", pfUserSku.getId());
-        }
+        memberMap.put("applyTime", pfUserCertificate.getBeginTime());
 
         return memberMap;
     }

@@ -132,6 +132,7 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_TYPE);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
         return redirectHead+redirectBody;
     }
 
@@ -201,11 +202,13 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "orderId", required = false) Long orderId,
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
+                                      @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, orderId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
+        request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);
         model.addAttribute("addressId", selectedAddressId);
         return "platform/order/xuanze";
     }

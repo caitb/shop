@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PfBorderMapper {
@@ -67,4 +68,11 @@ public interface PfBorderMapper {
      * @return
      */
     Double countSales(String sUserIds);
+
+    /**
+     * 统计代理商购买次数和购买总额
+     * @param userId
+     * @return
+     */
+    Map<String, Double> statisticsBuy(Long userId);
 }

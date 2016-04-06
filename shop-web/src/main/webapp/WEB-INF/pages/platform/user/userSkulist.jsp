@@ -30,6 +30,10 @@
             <div class="main">
             <div class="d_box">
                 <c:forEach items="${userProducts}" var="sku">
+                    <h1>
+                        <img src="<%=path%>/static/images/ip.png" alt="">
+                        拿货方式：<span>平台代发货</span>
+                    </h1>
                     <section class="sec2">
                         <p class="photo">
                             <img src="${sku.comSkuImage.fullImgUrl}" alt="">
@@ -40,7 +44,7 @@
                             <p>已售：<span>0</span>　　在线库存：<span id="sku2">${sku.stock}</span></p>
                             <input type="hidden" id="pfuId" value="${sku.pfuId}">
                             <input type="hidden" id="skuId" value="${sku.id}">
-                            <p>拿货方式：<span>平台代发货</span>
+                            <%--<p>拿货方式：<span>平台代发货</span>--%>
                         </div>
                     </section>
                     <section class="sec3">

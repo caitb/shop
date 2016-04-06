@@ -116,7 +116,10 @@
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="version != null">
-                version = #{version,jdbcType=INTEGER}
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="isQueue != null">
+                is_queue = #{isQueue},
             </if>
         </set>
         where

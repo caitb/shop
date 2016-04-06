@@ -1,9 +1,7 @@
 $(function () {
     var weixinCheckFun = function (data) {
         if ($(data).val() == "") {
-            $(data).parent().find("span").show();
-            $(data).css({"color": "#F74A11"})
-            $(data).parent().find("b").html("微信号不能为空");
+            alert("微信号不能为空");
             return false;
         }
         return true;
@@ -12,16 +10,12 @@ $(function () {
         var bl = true;
         if ($('input[name="danx"]:checked').attr("class") == "shi") {
             if ($(data).val() == "") {
-                $(data).parent().find("span").show();
-                $(data).css({"color": "#F74A11"})
-                $(data).parent().find("b").html("手机号不能为空");
+                alert("手机号不能为空");
                 return false;
             }
 
             if (!isMobile($(data).val())) {
-                $(data).parent().find("span").show();
-                $(data).css({"color": "#F74A11"})
-                $(data).parent().find("b").html("手机号格式不正确");
+                alert("手机号格式不正确");
                 return false;
             }
             var para = {};
@@ -40,9 +34,7 @@ $(function () {
                         var checkLevelId = $(".dengji .on").attr("levelId");
 
                     } else {
-                        $(data).parent().find("span").show();
-                        $(data).css({"color": "#F74A11"})
-                        $(data).parent().find("b").html(rdata.message);
+                        alert(rdata.message);
                         bl = false;
                     }
                 }
@@ -96,7 +88,7 @@ $(function () {
         // 获取合伙人等级
         $("#q_levelName").html($(".on label").html());
         // 获取所缴纳货款
-        $("#q_amount").html($(".on span:eq(0)").html() * $(".on span:eq(1)").html() + (+$(".on span:eq(2)").html()));
+        $("#q_amount").html($(".on").attr("agentFee"));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");

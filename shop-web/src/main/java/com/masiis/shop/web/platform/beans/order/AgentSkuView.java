@@ -16,6 +16,7 @@ public class AgentSkuView {
     private PfSkuAgent agent;
     private ComAgentLevel level;
     private BigDecimal agentFee;
+    private BigDecimal sinFee;
 
     public ComSku getSku() {
         return sku;
@@ -47,5 +48,13 @@ public class AgentSkuView {
 
     public void setLevel(ComAgentLevel level) {
         this.level = level;
+    }
+
+    public BigDecimal getSinFee() {
+        return sinFee;
+    }
+
+    public void setSinFee(BigDecimal sinFee) {
+        this.sinFee = sinFee;
     }
 }

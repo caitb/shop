@@ -130,44 +130,44 @@ public class BorderManageController extends BaseController {
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorderps = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = new ArrayList<>();
-        List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
-        List<PfBorder> pfBorders15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorders7 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorders8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorders) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorders0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 7 ) {
-                pfBorders10.add(pfBord);//代发货
+                pfBorders7.add(pfBord);//代发货
             } else if (pfBord.getOrderStatus() == 8 ) {
-                pfBorders15.add(pfBord);//待收货
+                pfBorders8.add(pfBord);//待收货
             }  else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
             }
         }
         List<PfBorder> pfBorderp0 = new ArrayList<>();
-        List<PfBorder> pfBorderp10 = new ArrayList<>();//代发货
-        List<PfBorder> pfBorderp15 = new ArrayList<>();//待收货
+        List<PfBorder> pfBorderp7 = new ArrayList<>();//代发货
+        List<PfBorder> pfBorderp8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorderp6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorderps) {
             if (pfBord.getOrderStatus() == 0) {
                 pfBorderp0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 8 ) {
-                pfBorderp15.add(pfBord);//待收货
+                pfBorderp8.add(pfBord);//待收货
             }  else if (pfBord.getOrderStatus() == 6) {
                 pfBorderp6.add(pfBord);//排单中
             }else if (pfBord.getOrderStatus() == 7 ) {
-                pfBorderp10.add(pfBord);//代发货
+                pfBorderp7.add(pfBord);//代发货
             }
         }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("pfBorders10", pfBorders0.size());
+        modelAndView.addObject("pfBorders7", pfBorders7.size());
         modelAndView.addObject("pfBorders6", pfBorders6.size());
         modelAndView.addObject("pfBorders0", pfBorders0.size());
-        modelAndView.addObject("pfBorders8", pfBorders15.size());
-        modelAndView.addObject("pfBorderps10", pfBorderp10.size());
+        modelAndView.addObject("pfBorders8", pfBorders8.size());
+        modelAndView.addObject("pfBorderps7", pfBorderp7.size());
         modelAndView.addObject("pfBorderps6", pfBorderp6.size());
         modelAndView.addObject("pfBorderps0", pfBorderp0.size());
-        modelAndView.addObject("pfBorderps8", pfBorderp15.size());
+        modelAndView.addObject("pfBorderps8", pfBorderp8.size());
         modelAndView.setViewName("platform/order/dingdanguanli");
         return modelAndView;
     }
@@ -262,37 +262,41 @@ public class BorderManageController extends BaseController {
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         PfUserSkuStock pfUserSkuStock = null;
-        StockManage stockManage =new StockManage();
-        List<StockManage> StockManages = new ArrayList<>();
+        Integer stockNum =0;
+        StringBuffer stringBuffer =new StringBuffer();
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
             pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
             pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-            if(pfUserSkuStock==null){
-                stockManage.setStockNum(0);
-//                pfBorder.getStockManages().add(stockManage);
-            }else {
-                stockManage.setSkuName(pfBorderItem.getSkuName());
-                stockManage.setStockNum(pfUserSkuStock.getStock());
+            if(pfUserSkuStock!=null){
+                stockNum=stockNum+pfUserSkuStock.getStock();
+            }else{
+                pfUserSkuStock.setStock(0);
+                stockNum=stockNum+pfUserSkuStock.getStock();
             }
-            StockManages.add(stockManage);
         }
         //快递公司信息
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
         if(pfBorderFreights.size()==0){
-            pfBorderFreights=null;
+                stringBuffer.append("<p>承运公司：<span></span></p>");
+                stringBuffer.append("<p>运单编号：<span></span></p>");
+        }else {
+            for (PfBorderFreight pfBorderFreight:pfBorderFreights) {
+                stringBuffer.append("<p>承运公司：<span>"+pfBorderFreight.getShipManName()+"</span></p>");
+                stringBuffer.append("<p>运单编号：<span>"+pfBorderFreight.getFreight()+"</span></p>");
+            }
         }
+
         //收货人
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
-        pfBorder.setStockManages(StockManages);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
         ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("borderDetail", borderDetail);
-//        modelAndView.setViewName("platform/user/jinhuoxiangqing");
+        modelAndView.addObject("stockNum", stockNum);
+        modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("borderDetail", borderDetail);
         modelAndView.setViewName("platform/order/jinhuoxiangqing");
         return modelAndView;

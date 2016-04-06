@@ -405,4 +405,16 @@
     <select id="countSales" parameterType="String" resultType="Double">
         SELECT sum(pay_amount - bail_amount) FROM pf_border WHERE FIND_IN_SET(user_id,#{sUserIds})
     </select>
+
+    <select id="statisticsBuy" parameterType="Long" resultType="Map">
+        SELECT
+               COUNT(1) stock,
+               SUM(pay_amount - bail_amount) totalAmount
+        FROM
+               pf_border
+        WHERE
+               user_id = #{userId}
+               AND order_type IN (0,1)
+               AND pay_status = 1
+    </select>
 </mapper>

@@ -112,6 +112,17 @@ public class UserPersonalInfoController extends BaseController {
         return null;
     }
     /**
+     * 跳转到新增银行界面
+     * @author hanzengzhi
+     * @date 2016/4/6 20:38
+     */
+    @RequestMapping(value = "toAddBankCardPage.html")
+    public String toAddBankCardPage(HttpServletRequest request,HttpServletResponse response){
+        String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
+        return "redirect:" + basePath + "/extractwayinfo/toCreateBankcard.shtml";
+    }
+
+    /**
      * 删除银行卡信息
      * @author hanzengzhi
      * @date 2016/3/29 14:49
@@ -123,8 +134,7 @@ public class UserPersonalInfoController extends BaseController {
         if (id.equals("")){
             throw new BusinessException("删除银行卡失败");
         }
-        //int i = userPersonalInfoService.deleteBankCardInfoById(id);
-        int i =1;
+        int i = userPersonalInfoService.deleteBankCardInfoById(id);
         if (i == 1){
             return "true";
         }else{

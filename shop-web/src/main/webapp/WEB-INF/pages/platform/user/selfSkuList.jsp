@@ -30,6 +30,10 @@
             <div class="main">
                 <div class="d_box">
                     <c:forEach items="${userProducts}" var="sku">
+                        <h1>
+                            <img src="<%=path%>/static/images/ip.png" alt="">
+                            拿货方式：<span>自己发货</span>
+                        </h1>
                         <section class="sec2">
                             <p class="photo">
                                 <img src="${sku.comSkuImage.fullImgUrl}" alt="">
@@ -40,7 +44,6 @@
                                 <p>已售：<span>0</span>　　库存：<span id="sku2">${sku.customStock}</span></p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="hidden" id="skuId" value="${sku.id}">
-                                <p>拿货方式：<span>自己发货</span>
                             </div>
                         </section>
                         <section class="sec3">
@@ -96,7 +99,6 @@
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     function jiankucun(a,b){
         $("#skuName").html(a);

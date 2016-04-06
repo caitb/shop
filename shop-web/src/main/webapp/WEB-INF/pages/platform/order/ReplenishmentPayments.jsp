@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/dingdanxiangqing.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/jinhuoxiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/commonAjax.js"/>
@@ -61,11 +61,11 @@
                 <p>承运公司：<span></span></p>
                 <p>运单编号：<span></span></p>
             </c:if>
-            <c:if test="${orderType.orderType == 1}">
-                <p>类型：  </p><span>补货</span>
+            <c:if test="${pfBorder.orderType == 1}">
+                <p>类型：<span>补货</span></p>
             </c:if>
-            <c:if test="${orderType.orderType == 2}">
-                <p>类型：  </p><span>拿货</span>
+            <c:if test="${pfBorder.orderType == 2}">
+                <p>类型：<span>拿货</span></p>
             </c:if>
         </div>
         <c:if test="${pfBorder.sendType==2 || pfBorder.orderType==2}">

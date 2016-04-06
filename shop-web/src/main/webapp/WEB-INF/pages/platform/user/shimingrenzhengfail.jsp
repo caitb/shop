@@ -27,6 +27,11 @@
                                                                               alt=""></a>
             <p>实名认证</p>
         </header>
+        <div class="tai">
+            <img src="<%=path%>/static/images/icon_43.png" alt="" style="width:40px;height: 40px;">
+            <h1>买家已发货</h1>
+            <p>还剩<span>7</span>天自动确认</p>
+        </div>
         <p class="cp">
             <span>您的实名认证被拒绝,原因如下:</span>
         </p>

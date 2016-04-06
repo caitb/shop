@@ -78,7 +78,10 @@ public class UserExtractApplyController extends BaseController {
         }
 
         String extractMoney = account == null?"0.00":account.getExtractableFee().toString();
-
+        if (extractwayInfo != null){
+            String cardCode = extractwayInfo.getBankCard();
+            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
+        }
         model.addAttribute("extractMoney", extractMoney);
         model.addAttribute("extractwayInfo", extractwayInfo);
         model.addAttribute("hasCard", hasCard);

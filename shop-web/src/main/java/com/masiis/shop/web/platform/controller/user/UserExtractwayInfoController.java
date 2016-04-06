@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -168,10 +169,18 @@ public class UserExtractwayInfoController extends BaseController {
         ModelAndView mv = new ModelAndView();
         Long userId = user.getId();
         List<ComUserExtractwayInfo> list;
+        List<ComUserExtractwayInfo> userExtractwayInfos = new ArrayList<>();
         try{
             list = userExtractwayInfoService.findByUserId(userId);
+
+            String cardCode;
+            for (ComUserExtractwayInfo info : list){
+                cardCode = info.getBankCard();
+                info.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
+                userExtractwayInfos.add(info);
+            }
             mv.addObject("userId",userId);
-            mv.addObject("extractwayList",list);
+            mv.addObject("extractwayList",userExtractwayInfos);
         }catch (Exception e){
             e.printStackTrace();
         }

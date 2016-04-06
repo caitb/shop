@@ -22,7 +22,7 @@
     <div class="wrap">
         <header class="xq_header">
                    <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                   <p>个人信息</p>
+                   <p>实名认证</p>
         </header>
         <main>
             <p>您的实名认证已经通过</p>

@@ -30,8 +30,8 @@
     })
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        var skuId = $("#skuId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId=" + selectedAddressId + "&skuId=" + skuId;
+        var pfUserSkuStockId = $("#pfUserSkuStockId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=manageGoodsTakeGoods&selectedAddressId=" + selectedAddressId + "&pfUserSkuStockId=" + pfUserSkuStockId;
     }
 </script>
 <body>
@@ -44,6 +44,7 @@
         <section class="sec1">
             <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
             <div onclick="toChooseAddressPage()">
+                <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
                 <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                 <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                 <a href="#"><p>收货地址：

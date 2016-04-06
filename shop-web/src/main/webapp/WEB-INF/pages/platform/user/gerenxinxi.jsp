@@ -26,29 +26,37 @@
         <p>个人信息</p>
     </header>
     <main>
-        <div class="head_img">
+        <div class="head_img" style="background: url('<%=path%>/static/images/icon_27.png')">
             <p><img src="${comUser.wxHeadImg}" alt=""></p>
             <div><h1>${comUser.realName}</h1>
-                <h1></h1></div>
+                <h1>
+                    <span><img src="<%=path%>/static/images/admin.png" alt="">等级A1</span>
+                    <span><img src="<%=path%>/static/images/admin.png" alt="">等级A1</span>
+                </h1>
+            </div>
         </div>
-        <div class="sec1" style="margin-top:5px;">
+        <div class="sec1" style="margin-top:5px;background:white url('<%=path%>/static/images/people.png') no-repeat 10px;  background-size: 13px;">
             <p>手机号</p>
             <p>${comUser.mobile}</p>
         </div>
-        <div class="sec1" id="weChatNumberId">
+        <div class="sec1" id="weChatNumberId" style="background:white url('<%=path%>/static/images/weixin.png') no-repeat 7px;  background-size: 20px;">
             <p>微信号</p>
             <p><img src="<%=path%>/static/images/next.png" alt=""></p>
         </div>
-        <div class="sec1" id = "identityAuthId">
+        <div class="sec1" id = "identityAuthId" style="padding-left: 10px">
             <p>实名认证</p>
-            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt=""></p>
+            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
             <input id="auditStatusId" style="display: none" value="${comUser.auditStatus}" />
         </div>
-        <div class="sec1">
+        <div class="sec1" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 7px;  background-size: 20px;margin-bottom: 0;">
+            <p>我的资金</p>
+            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
+        </div>
+        <div class="sec1" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 7px;  background-size: 20px;">
             <p>我的银行卡</p>
             <p><img src="<%=path%>/static/images/next.png" alt=""></p>
         </div>
-        <div  id="addressManageId" class="sec1">
+        <div  id="addressManageId" class="sec1" style="padding-left: 10px">
             <p>地址管理</p>
             <p><img  src="<%=path%>/static/images/next.png" alt=""></p>
         </div>

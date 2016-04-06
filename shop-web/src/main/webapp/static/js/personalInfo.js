@@ -19,6 +19,9 @@
                 $("#bankCardId").bind("click",function(){
                     window.location.href = personalInfoJS.basePath + "/personalInfo/toBankCardPage.html";
                 })
+                $("#capitalId").bind("click",function(){
+                    window.location.href = personalInfoJS.basePath + "/account/home";
+                })
                 $("#addressManageId").bind("click",function(){
                     window.location.href =personalInfoJS.basePath + "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType=1";
                 })

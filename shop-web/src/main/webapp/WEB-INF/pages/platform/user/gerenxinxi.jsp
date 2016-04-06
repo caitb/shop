@@ -48,7 +48,7 @@
             <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
             <input id="auditStatusId" style="display: none" value="${comUser.auditStatus}" />
         </div>
-        <div class="sec1" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 7px;  background-size: 20px;margin-bottom: 0;">
+        <div class="sec1" id="capitalId" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 7px;  background-size: 20px;margin-bottom: 0;">
             <p>我的资金</p>
             <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
         </div>

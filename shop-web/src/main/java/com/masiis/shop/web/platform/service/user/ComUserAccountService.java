@@ -85,34 +85,37 @@ public class ComUserAccountService {
             log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
 
             // 获取对应的account记录
-            ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
-            ComUserAccountRecord recordC = createAccountRecordByCounting(orderPayment, account, item.getId());
-            recordC.setPrevFee(account.getCountingFee());
-            account.setCountingFee(account.getCountingFee().add(orderPayment));
-            recordC.setNextFee(account.getCountingFee());
-            recordMapper.insert(recordC);
+            if(order.getUserPid() != 0){
+                ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
 
-            log.info("插入结算金额的变动流水!");
+                ComUserAccountRecord recordC = createAccountRecordByCounting(orderPayment, account, item.getId());
+                recordC.setPrevFee(account.getCountingFee());
+                account.setCountingFee(account.getCountingFee().add(orderPayment));
+                recordC.setNextFee(account.getCountingFee());
+                recordMapper.insert(recordC);
 
-            ComUserAccountRecord recordT = createAccountRecordByTotal(orderPayment, account, item.getId());
-            recordT.setPrevFee(account.getTotalIncomeFee());
-            account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
-            recordT.setNextFee(account.getTotalIncomeFee());
-            recordMapper.insert(recordT);
+                log.info("插入结算金额的变动流水!");
 
-            log.info("插入总销售额的变动流水!");
+                ComUserAccountRecord recordT = createAccountRecordByTotal(orderPayment, account, item.getId());
+                recordT.setPrevFee(account.getTotalIncomeFee());
+                account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
+                recordT.setNextFee(account.getTotalIncomeFee());
+                recordMapper.insert(recordT);
 
-            int type = accountMapper.updateByIdWithVersion(account);
-            if(type == 0){
-                throw new BusinessException("修改出货方结算金额和总销售额失败!");
+                log.info("插入总销售额的变动流水!");
+
+                int type = accountMapper.updateByIdWithVersion(account);
+                if(type == 0){
+                    throw new BusinessException("修改出货方结算金额和总销售额失败!");
+                }
+
+                log.info("更新出货人账户结算额和总销售额成功!");
             }
-
-            log.info("更新出货人账户结算额和总销售额成功!");
 
             log.info("开始给进货人增加成本");
 
             ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
-            ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, account, item.getId());
+            ComUserAccountRecord recordS = createAccountRecordByCost(orderPayment, accountS, item.getId());
             // 保存修改前的金额
             recordS.setPrevFee(accountS.getCostFee());
             accountS.setCostFee(accountS.getCostFee().add(orderPayment));

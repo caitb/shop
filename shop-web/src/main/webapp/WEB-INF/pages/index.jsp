@@ -98,7 +98,7 @@
                                 <h1><img src="<%=path%>/static/images/index_nav%20(8).png" alt=""></h1>
                                 <span>我的资产</span></a>
                         </li>
-                        <li ><a href="javascript:;">
+                        <li ><a href="<%=path%>/personalInfo/personalHomePageInfo.html">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(2).png" alt=""></h1>
                                 <span>个人信息</span></a>
                         </li>

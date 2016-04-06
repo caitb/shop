@@ -10,6 +10,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,8 @@ public class ProductController extends BaseController {
     private SkuService skuService;
     @Resource
     private UserService userService;
+    @Resource
+    private UserAddressService userAddressService;
 
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
@@ -158,9 +161,18 @@ public class ProductController extends BaseController {
      */
     @RequestMapping(value = "/user/applySkuInfo.list")
     @ResponseBody
-    public ModelAndView applySkuInfo(HttpServletRequest request, HttpServletResponse response,
+    public ModelAndView applySkuInfo(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                  @RequestParam("id") Long id) throws Exception{
         ModelAndView mav = new ModelAndView("/platform/user/nahuo");
+        ComUser comUser = getComUser(request);
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
+        if (comUserAddress != null) {
+            mav.addObject("addressId", comUserAddress.getId());
+            mav.addObject("pfUserSkuStockId",id);
+            mav.addObject("comUserAddress",comUserAddress);
+        }
         PfUserSkuStock product = productService.getStockByUser(id);
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());

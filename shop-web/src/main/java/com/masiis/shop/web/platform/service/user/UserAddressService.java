@@ -126,10 +126,11 @@ public class UserAddressService {
             String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
+            Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId);
+                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
@@ -144,7 +145,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId) {
+    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -155,6 +156,9 @@ public class UserAddressService {
                 break;
             case SysConstants.SESSION_ORDER_TAKE_GOODS_VALUE:
                 getTakeGoodsPageAddress(sb, orderId, selectedAddressId);
+                break;
+            case SysConstants.SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE://管理商品拿货
+                getManageGoodsTakeGoodsPageAddress(sb, pfUserSkuStockId, selectedAddressId);
                 break;
             default:
                 break;
@@ -172,7 +176,7 @@ public class UserAddressService {
         //跳转到支付使用界面
         sb.append("/corder/confirmOrder.do?");
         if (!StringUtils.isEmpty(skuId)) {
-            sb.append("skuId=").append(skuId).append("&");
+            sb.append("skuId=").append(skuId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);
@@ -189,10 +193,10 @@ public class UserAddressService {
         //跳转到支付界面
         sb.append("/border/payBOrder.shtml?");
         if (!StringUtils.isEmpty(orderId)) {
-            sb.append("bOrderId=").append(orderId).append("&");
+            sb.append("bOrderId=").append(orderId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
-            sb.append("userAddressId=").append(selectedAddressId);
+            sb.append("&userAddressId=").append(selectedAddressId);
         }
     }
     /**
@@ -204,13 +208,26 @@ public class UserAddressService {
         //跳转到支付界面
         sb.append("/border/setUserSendType.shtml?");
         if (!StringUtils.isEmpty(orderId)) {
-            sb.append("bOrderId=").append(orderId).append("&");
+            sb.append("bOrderId=").append(orderId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
-            sb.append("selectedAddressId=").append(selectedAddressId);
+            sb.append("&selectedAddressId=").append(selectedAddressId);
         }
     }
-
+    /**
+     * 获得商品管理拿货的地址路径
+     * @author hanzengzhi
+     * @date 2016/4/6 10:45
+     */
+    private void getManageGoodsTakeGoodsPageAddress(StringBuffer sb, Long pfUserSkuStockId, Long selectedAddressId) {
+        sb.append("/product/user/applySkuInfo.list?");
+        if (!StringUtils.isEmpty(pfUserSkuStockId)) {
+            sb.append("id=").append(pfUserSkuStockId);
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("&selectedAddressId=").append(selectedAddressId);
+        }
+    }
 
     /**
      * 增加收货地址

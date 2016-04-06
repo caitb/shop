@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.user.PfUserSkuMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSku">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="pid" property="pid" jdbcType="INTEGER" />
-        <result column="user_id" property="userId" jdbcType="BIGINT" />
-        <result column="user_pid" property="userPid" jdbcType="BIGINT" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
-        <result column="is_pay" property="isPay" jdbcType="INTEGER" />
-        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER" />
-        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT" />
-        <result column="bail" property="bail" jdbcType="DECIMAL" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
+        <result column="is_pay" property="isPay" jdbcType="INTEGER"/>
+        <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
+        <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
+        <result column="bail" property="bail" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
 
@@ -62,7 +62,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSku">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSku" useGeneratedKeys="true" keyProperty="id">
         insert into pf_user_sku (id, create_time, code,
             pid, user_id, user_pid,
             sku_id, agent_level_id, is_pay,
@@ -254,30 +254,30 @@
 
     <select id="countChild" parameterType="String" resultType="Map">
         <!--<![CDATA[-->
-<!--DROP FUNCTION IF EXISTS fn_concat;-->
-<!--delimiter $$-->
-<!--CREATE FUNCTION fn_concat(ppid int) RETURNS int-->
-<!--BEGIN-->
-<!--DECLARE sTemp VARCHAR(4000);-->
-<!--DECLARE sTempChd VARCHAR(4000);-->
-<!--DECLARE _count INT;-->
-<!--DECLARE c INT;-->
+        <!--DROP FUNCTION IF EXISTS fn_concat;-->
+        <!--delimiter $$-->
+        <!--CREATE FUNCTION fn_concat(ppid int) RETURNS int-->
+        <!--BEGIN-->
+        <!--DECLARE sTemp VARCHAR(4000);-->
+        <!--DECLARE sTempChd VARCHAR(4000);-->
+        <!--DECLARE _count INT;-->
+        <!--DECLARE c INT;-->
 
-<!--SET sTemp = '';-->
-<!--SET sTempChd = cast(ppid as char);-->
-<!--SET _count = 0;-->
-<!--SET c = 0;-->
-<!--WHILE sTempChd IS NOT NULL DO-->
-<!--SET sTemp = CONCAT(sTemp,sTempChd);-->
-<!--SET sTemp = CONCAT(sTemp,',');-->
-<!--SET _count = _count + c;-->
-<!--SELECT GROUP_CONCAT(id),COUNT(1) INTO sTempChd,c FROM com_area WHERE FIND_IN_SET(pid,sTempChd);-->
-<!--END WHILE;-->
-<!--RETURN _count;-->
-<!--END $$-->
-<!--delimiter ;-->
+        <!--SET sTemp = '';-->
+        <!--SET sTempChd = cast(ppid as char);-->
+        <!--SET _count = 0;-->
+        <!--SET c = 0;-->
+        <!--WHILE sTempChd IS NOT NULL DO-->
+        <!--SET sTemp = CONCAT(sTemp,sTempChd);-->
+        <!--SET sTemp = CONCAT(sTemp,',');-->
+        <!--SET _count = _count + c;-->
+        <!--SELECT GROUP_CONCAT(id),COUNT(1) INTO sTempChd,c FROM com_area WHERE FIND_IN_SET(pid,sTempChd);-->
+        <!--END WHILE;-->
+        <!--RETURN _count;-->
+        <!--END $$-->
+        <!--delimiter ;-->
 
-<!--SELECT fn_concat(2);-->
+        <!--SELECT fn_concat(2);-->
         <!--]]>-->
 
         SELECT GROUP_CONCAT(id) sPIds, GROUP_CONCAT(user_id) sUserIds FROM pf_user_sku WHERE FIND_IN_SET(pid,#{sPIds});

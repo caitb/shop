@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.user.PfUserSkuCustom;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -143,30 +144,35 @@ public class BOrderController extends BaseController {
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
             //处理用户sku关系数据
-            List<PfUserSku> pfUserSkus = new ArrayList();
-            PfUserSku userSku = null;
+            List<PfUserSkuCustom> pfUserSkuCustoms = new ArrayList();
+            PfUserSkuCustom pfUserSkuCustom = null;
             if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) == null) {
-                userSku = new PfUserSku();
-                userSku.setCreateTime(new Date());
+                pfUserSkuCustom = new PfUserSkuCustom();
+                pfUserSkuCustom.setCreateTime(new Date());
                 if (pfUserSku == null) {
-                    userSku.setPid(0);
-                    userSku.setUserPid(0l);
+                    pfUserSkuCustom.setPid(0);
+                    pfUserSkuCustom.setUserPid(0l);
                 } else {
-                    userSku.setPid(pfUserSku.getId());
-                    userSku.setUserPid(pfUserSku.getUserId());
+                    pfUserSkuCustom.setPid(pfUserSku.getId());
+                    pfUserSkuCustom.setUserPid(pfUserSku.getUserId());
                 }
-                userSku.setCode("");
-                userSku.setUserId(comUser.getId());
-                userSku.setSkuId(comSku.getId());
-                userSku.setAgentLevelId(levelId);
-                userSku.setIsPay(0);
-                userSku.setIsCertificate(0);
-                userSku.setBail(pfSkuAgent.getBail());
-                pfUserSkus.add(userSku);
+                pfUserSkuCustom.setCode("");
+                pfUserSkuCustom.setUserId(comUser.getId());
+                pfUserSkuCustom.setSkuId(comSku.getId());
+                pfUserSkuCustom.setAgentLevelId(levelId);
+                pfUserSkuCustom.setIsPay(0);
+                pfUserSkuCustom.setIsCertificate(0);
+                pfUserSkuCustom.setBail(pfSkuAgent.getBail());
+                //自定义属性
+                pfUserSkuCustom.setSpuId(comSku.getSpuId());
+                pfUserSkuCustom.setIdCard(comUser.getIdCard());
+                pfUserSkuCustom.setMobile(comUser.getMobile());
+                pfUserSkuCustom.setWxId(weixinId);
+                pfUserSkuCustoms.add(pfUserSkuCustom);
             } else {
                 throw new BusinessException("此商品已经建立过代理，请通过补货增加库存。");
             }
-            Long bOrderId = bOrderService.AddBOrder(order, orderItems, pfUserSkus);
+            Long bOrderId = bOrderService.AddBOrder(order, orderItems, pfUserSkuCustoms);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {

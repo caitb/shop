@@ -74,7 +74,7 @@
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"/>
-<script src="<%=path%>/static/js/iscroll.js"></script>
+<script src="<%=path%>/static/js/iscroll.js"/>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();

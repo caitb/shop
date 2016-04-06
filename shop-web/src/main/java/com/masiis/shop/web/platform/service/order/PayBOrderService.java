@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
+import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
@@ -104,9 +105,6 @@ public class PayBOrderService {
         Long bOrderId = pfBorderPayment.getPfBorderId();
         log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getSendType() != 1) {
-            throw new BusinessException("订单拿货类型错误：为" + pfBorder.getSendType() + ",应为1.");
-        }
         if (pfBorder.getPayStatus() == 1) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
         }
@@ -361,9 +359,9 @@ public class PayBOrderService {
         if (sendType == 1) {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
-        }else if(sendType == 2) {
+        } else if (sendType == 2) {
             pfBorder.setSendType(sendType);
-            pfBorder.setOrderStatus(7);//待发货
+            pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());//待发货
             pfBorderMapper.updateById(pfBorder);
             if (userAddressId != null && userAddressId > 0) {
                 ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
@@ -385,10 +383,10 @@ public class PayBOrderService {
                 pfBorderConsignee.setAddress(comUserAddress.getAddress());
                 pfBorderConsignee.setZip(comUserAddress.getZip());
                 pfBorderConsigneeMapper.insert(pfBorderConsignee);
-            }else{
+            } else {
                 throw new BusinessException("请选择收货地址");
             }
-        }else{
+        } else {
             throw new BusinessException("拿货方式有误");
         }
     }

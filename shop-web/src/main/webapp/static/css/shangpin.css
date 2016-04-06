@@ -18,6 +18,18 @@
     background: white;
     margin-top: 5px;
 }
+.wrap main #box .main .d_box h1{
+    border-bottom: 1px solid #e2e2e2;
+    line-height: 30px;
+}
+.wrap main #box .main .d_box h1 img{
+    display: inline-block;
+    width: 17px;
+    margin-top: 6px;
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 .wrap main #box .main .d_box .sec2 {
     width: 100%;
     height: 78px;

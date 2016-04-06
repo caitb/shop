@@ -111,11 +111,12 @@ public class PayBOrderService {
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
+        pfBorder.setPayStatus(1);
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 2) {
-            pfBorder.setPayStatus(7);//待发货
+            pfBorder.setOrderStatus(7);//待发货
         } else {
-            pfBorder.setPayStatus(1);//已付款
+            pfBorder.setOrderStatus(1);//已付款
         }
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
@@ -199,7 +200,8 @@ public class PayBOrderService {
      * 操作详情：
      * <8>减少发货方库存 如果用户id是0操作平台库存
      * <9>增加收货方库存
-     * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+     * <10>修改订单状态为已完成
+     * <11>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
      */
     private void saveBOrderSendType(PfBorder pfBorder) throws Exception {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
@@ -263,7 +265,10 @@ public class PayBOrderService {
                 }
             }
         }
-        log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
+        log.info("<10>修改订单状态为已完成");
+        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
+        pfBorderMapper.updateById(pfBorder);
+        log.info("<11>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
         comUserAccountService.countingByOrder(pfBorder);
     }
 

@@ -113,8 +113,8 @@
     </div>
 </div>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
-<script src="<%=path%>/static/js/definedAlertWindow.js"/>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     var sendType = 0;
     $(document).ready(function () {

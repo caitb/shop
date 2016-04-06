@@ -117,6 +117,9 @@ $(function () {
                 else {
                     alert(data.message);
                 }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert(XMLHttpRequest.responseText);
             }
         });
     });

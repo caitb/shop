@@ -336,17 +336,28 @@ public class BOrderController extends BaseController {
                 comUser.setIsAgent(1);
                 setComUser(request, comUser);
             }
+            String successURL = "";
+            //订单类型(0代理1补货2拿货)
+            if (pfBorder.getOrderType() == 0) {
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 1) {
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+            } else if (pfBorder.getOrderType() == 2) {
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+            } else {
+                throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
+            }
             attrs.addAttribute("bOrderId", bOrderId);
-            return "redirect:/border/payBOrdersSuccess.shtml";
+            return "redirect:/" + successURL;
         } else if (enviromentkey.equals("1")) {
             String successURL = getBasePath(request);
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
                 successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else if (pfBorder.getOrderType() == 1) {
-                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
             } else if (pfBorder.getOrderType() == 2) {
-                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
             } else {
                 throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
             }

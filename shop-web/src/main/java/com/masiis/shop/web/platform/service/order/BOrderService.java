@@ -102,6 +102,7 @@ public class BOrderService {
                 pfUserSku.setPfBorderId(pfBorder.getId());
                 pfUserSkuMapper.insert(pfUserSku);
                 PfUserCertificate pfUserCertificate = new PfUserCertificate();
+                pfUserCertificate.setCode("");
                 pfUserCertificate.setCreateTime(new Date());
                 pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
                 pfUserCertificate.setUserId(pfUserSkuCustom.getUserId());
@@ -112,7 +113,7 @@ public class BOrderService {
                 pfUserCertificate.setWxId(pfUserSkuCustom.getWxId());
                 pfUserCertificate.setAgentLevelId(pfUserSkuCustom.getAgentLevelId());
                 pfUserCertificate.setStatus(0);
-                pfUserCertificateMapper.updateById(pfUserCertificate);
+                pfUserCertificateMapper.insert(pfUserCertificate);
             }
         }
         //添加订单日志

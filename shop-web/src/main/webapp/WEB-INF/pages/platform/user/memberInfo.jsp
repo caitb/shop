@@ -28,15 +28,15 @@
     <main>
         <div class="nav">
             <p>
-                <span>23</span>
-                <span>拿货次数</span>
+                <span>${memberMap.stock}</span>
+                <span>进货次数</span>
             </p>
             <p>
-                <span>asd</span>
-                <span>拿货总额</span>
+                <span>${memberMap.totalAmount}</span>
+                <span>进货总额</span>
             </p>
             <p>
-                <span>asd</span>
+                <span>${memberMap.countChild}</span>
                 <span>ta的下级合伙人</span>
             </p>
         </div>

@@ -171,12 +171,18 @@ public class MyTeamService {
             return null;
         }
 
+        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId());
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
         ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
+        Map<String, String> curMap = countChild(pfUserSku.getId(), comUser.getId());
 
 
         Map<String, Object> memberMap = new HashMap<>();
+        memberMap.put("stock", statisticsBuy.get("stock"));
+        memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
+        memberMap.put("countChild", curMap.get("childIds").split(",").length - 1);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());

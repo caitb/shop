@@ -74,7 +74,7 @@
             </nav>
                 <nav>
                      <ul>
-                            <li class="market"><a class="herf" href="javascript:;">
+                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><a class="herf" href="javascript:void(0);">
                                     <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""><span>1</span></h1>
                                     <span>我的下级</span></a>
                             </li>

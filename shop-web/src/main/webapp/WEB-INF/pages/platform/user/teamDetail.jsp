@@ -39,7 +39,7 @@
         </div>
         <p>团队成员列表</p>
         <c:forEach items="${teamMap.userAgentMaps}" var="userAgentMap">
-        <div class="sec1">
+        <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/memberinfo?code=${userAgentMap.code}');">
             <p><img src="<%=basePath%>static/images/yes.png" alt=""></p>
             <p>
                 <b>${userAgentMap.userName}</b>

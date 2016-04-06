@@ -87,22 +87,16 @@ public class MyTeamController extends BaseController {
      * 团队成员详细信息
      * @param request
      * @param response
-     * @param comUserId
-     * @param skuId
-     * @param agentLevelId
      * @return
      */
     @RequestMapping("/memberinfo")
     public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response,
-                                   Long comUserId,
-                                   Integer skuId,
-                                   Integer agentLevelId,
-                                   Integer userSkuId){
+                                   String code){
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/memberInfo");
 
-            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
+            Map<String, Object> memberMap = myTeamService.viewMember(code);
             mav.addObject("memberMap", memberMap);
 
             return mav;
@@ -125,7 +119,7 @@ public class MyTeamController extends BaseController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/audit");
 
-            Map<String, Object> memberMap = myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
+            Map<String, Object> memberMap = null; //myTeamService.viewMember(comUserId, skuId, agentLevelId, userSkuId);
             mav.addObject("memberMap", memberMap);
 
             return mav;

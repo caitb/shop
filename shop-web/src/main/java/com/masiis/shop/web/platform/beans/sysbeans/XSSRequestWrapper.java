@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Map;
 
 /**
+ * html标签过滤器,防止部分XSS攻击
+ *
  * @Date:2016/4/6
  * @auth:lzh
  */

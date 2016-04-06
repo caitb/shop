@@ -21,13 +21,19 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String getParameter(String parameter){
-        String value = new HTMLFilter().filter(super.getParameter(parameter));
+        String value = super.getParameter(parameter);
+        if(value != null){
+            value = new HTMLFilter().filter(value);
+        }
         return value;
     }
 
     @Override
     public String getHeader(String name) {
-        String value = new HTMLFilter().filter(super.getHeader(name));
+        String value = super.getHeader(name);
+        if(value != null) {
+            value = new HTMLFilter().filter(value);
+        }
         return value;
     }
 
@@ -39,5 +45,4 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
     public HttpServletRequest getOriRequest(){
         return this.request;
     }
-
 }

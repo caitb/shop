@@ -44,7 +44,7 @@
             <p>库存</p>
             <c:choose>
                 <c:when test="${productDetails.stock==0 || productDetails.isQueue==1}">
-                    <p>此商品已经进入排单期<b class="paidan">?</b></p>
+                    <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b></p>
                 </c:when>
                 <c:otherwise>
                     <p><span>${productDetails.stock}件</span></p>

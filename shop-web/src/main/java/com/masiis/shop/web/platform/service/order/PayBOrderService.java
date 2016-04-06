@@ -79,6 +79,14 @@ public class PayBOrderService {
      *
      * @author ZhaoLiang
      * @date 2016/3/31 11:55
+     * 操作详情：
+     * <1>修改订单支付信息
+     * <2>修改订单数据
+     * <3>添加订单日志
+     * <4>修改用户为已代理
+     * <5>增加保证金
+     * <6>修改用户sku代理关系数据
+     * <7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
      */
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
@@ -88,78 +96,6 @@ public class PayBOrderService {
         if (pfBorderPayment.getIsEnabled() == 1) {
             throw new BusinessException("该支付记录已经被处理成功");
         }
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
-        //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1) {
-            payBOrderI(pfBorderPayment, outOrderId, rootPath);
-        } else if (pfBorder.getSendType() == 2) {
-            patBOrderII(pfBorderPayment, outOrderId, rootPath);
-        }
-    }
-
-
-    /**
-     * 支付完成选择拿货方式
-     *
-     * @author ZhaoLiang
-     * @date 2016/4/5 11:44
-     */
-    @Transactional
-    public void updateBOrderSendType(ComUser comUser, Long bOrderId, Integer sendType, Long userAddressId) throws Exception {
-        if (comUser.getSendType() == 0) {
-            comUser.setSendType(sendType);
-            comUserMapper.updateByPrimaryKey(comUser);
-        } else {
-            sendType = comUser.getSendType();
-        }
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getOrderStatus() != 1) {
-            throw new BusinessException("订单状态有误！现在为：" + pfBorder.getOrderStatus());
-        }
-        pfBorder.setSendType(sendType);
-        pfBorder.setOrderStatus(7);//待发货
-        pfBorderMapper.updateById(pfBorder);
-        if (userAddressId != null && userAddressId > 0) {
-            ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
-            if (comUserAddress == null) {
-                throw new BusinessException("用户地址有误");
-            }
-            PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
-            pfBorderConsignee.setCreateTime(new Date());
-            pfBorderConsignee.setPfBorderId(pfBorder.getId());
-            pfBorderConsignee.setUserId(comUserAddress.getUserId());
-            pfBorderConsignee.setConsignee(comUserAddress.getName());
-            pfBorderConsignee.setMobile(comUserAddress.getMobile());
-            pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-            pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-            pfBorderConsignee.setCityId(comUserAddress.getCityId());
-            pfBorderConsignee.setCityName(comUserAddress.getCityName());
-            pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
-            pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
-            pfBorderConsignee.setAddress(comUserAddress.getAddress());
-            pfBorderConsignee.setZip(comUserAddress.getZip());
-            pfBorderConsigneeMapper.insert(pfBorderConsignee);
-        }
-    }
-
-    /**
-     * 平台代理订单支付成功回调(平台代发货)
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/30 14:33
-     * 操作详情：
-     * <1>修改订单支付信息
-     * <2>修改订单数据
-     * <3>添加订单日志
-     * <4>修改合伙人商品关系状态
-     * <5>增加保证金
-     * <6>修改用户sku代理关系数据
-     * <7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     * <8>减少发货方库存 如果用户id是0操作平台库存
-     * <9>增加收货方库存
-     * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
-     */
-    private void payBOrderI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -177,14 +113,12 @@ public class PayBOrderService {
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
-        pfBorder.setPayStatus(1);//已付款
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 0) {
-            pfBorder.setOrderStatus(1);//已付款
+        if (pfBorder.getSendType() == 2) {
+            pfBorder.setPayStatus(7);//待发货
         } else {
-            pfBorder.setOrderStatus(7);//待收货
+            pfBorder.setPayStatus(1);//已付款
         }
-
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
@@ -194,7 +128,7 @@ public class PayBOrderService {
         pfBorderOperationLog.setPfBorderId(bOrderId);
         pfBorderOperationLog.setRemark("订单已支付");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        log.info("<4>修改合伙人商品关系状态");
+        log.info("<4>修改用户为已代理");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {
             comUser.setIsAgent(1);
@@ -211,8 +145,7 @@ public class PayBOrderService {
             // 保存修改后的金额
             recordS.setNextFee(accountS.getBailFee());
             recordMapper.insert(recordS);
-            int typeS = accountMapper.updateByIdWithVersion(accountS);
-            if (typeS == 0) {
+            if (accountMapper.updateByIdWithVersion(accountS) == 0) {
                 throw new BusinessException("修改进货方成本账户失败!");
             }
         }
@@ -242,6 +175,7 @@ public class PayBOrderService {
                 String value2 = "授权期限：" + beginTime + "至" + endTime;
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
+                pfUserCertificate.setImgUrl(picName);
                 pfUserCertificateMapper.updateById(pfUserCertificate);
                 pfUserSku.setCode(pfUserCertificate.getCode());
                 pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
@@ -251,6 +185,26 @@ public class PayBOrderService {
             if (pfBorder.getOrderType() == 0) {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
+        }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 1) {
+            //处理平台发货类型订单
+            saveBOrderSendType(pfBorder);
+        }
+    }
+
+    /**
+     * 处理平台发货类型订单
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/30 14:33
+     * 操作详情：
+     * <8>减少发货方库存 如果用户id是0操作平台库存
+     * <9>增加收货方库存
+     * <10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+     */
+    private void saveBOrderSendType(PfBorder pfBorder) throws Exception {
+        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<8>减少发货方库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
@@ -313,89 +267,6 @@ public class PayBOrderService {
         }
         log.info("<10>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
         comUserAccountService.countingByOrder(pfBorder);
-    }
-
-    /**
-     * 平台代理订单支付成功回调(自发货)
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/30 20:39
-     * 操作详情：
-     * <1>修改订单支付信息
-     * <2>修改订单数据
-     * <3>添加订单日志
-     * <4>修改合伙人商品关系状态
-     * <5>修改用户sku代理关系支付状态
-     * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     */
-    private void patBOrderII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
-        log.info("<1>修改订单支付信息");
-        pfBorderPayment.setOutOrderId(outOrderId);
-        pfBorderPayment.setIsEnabled(1);//设置为有效
-        pfBorderPaymentMapper.updateById(pfBorderPayment);
-        BigDecimal payAmount = pfBorderPayment.getAmount();
-        Long bOrderId = pfBorderPayment.getPfBorderId();
-        log.info("<2>修改订单数据");
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getSendType() != 1) {
-            throw new BusinessException("订单拿货类型错误：为" + pfBorder.getSendType() + ",应为1.");
-        }
-        pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
-        pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
-        pfBorder.setPayTime(new Date());
-        pfBorder.setPayStatus(1);//已付款
-        pfBorder.setOrderStatus(1);//已付款
-        pfBorderMapper.updateById(pfBorder);
-        log.info("<3>添加订单日志");
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(1);
-        pfBorderOperationLog.setPfBorderId(bOrderId);
-        pfBorderOperationLog.setRemark("订单已支付");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        log.info("<4>修改合伙人商品关系状态");
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        if (comUser.getIsAgent() == 0) {
-            comUser.setIsAgent(1);
-            comUserMapper.updateByPrimaryKey(comUser);
-        }
-        for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            log.info("<5>修改用户sku代理关系数据");
-            PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(bOrderId, comUser.getId(), pfBorderItem.getSkuId());
-            //订单类型(0代理1补货2拿货)
-            if (pfUserSku != null && pfBorder.getOrderType() == 0) {
-                pfUserSku.setIsCertificate(1);
-                pfUserSku.setIsPay(1);
-                pfUserSku.setBail(pfBorderItem.getBailAmount());
-                PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId());
-                pfUserCertificate.setCreateTime(new Date());
-                pfUserCertificate.setStatus(1);
-                pfUserCertificate.setBeginTime(new Date());
-                Calendar calendar = Calendar.getInstance();
-                Date date = new Date(System.currentTimeMillis());
-                calendar.setTime(date);
-                calendar.add(Calendar.YEAR, 2);
-                date = calendar.getTime();
-                pfUserCertificate.setEndTime(date);
-                pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
-                String name = comUser.getRealName();//申请人
-                String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
-                String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
-                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "，手机：" + pfUserCertificate.getMobile() + "，微信：" + pfUserCertificate.getWxId();
-                String value2 = "授权期限：" + beginTime + "至" + endTime;
-                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
-                pfUserCertificateMapper.updateById(pfUserCertificate);
-                pfUserSku.setCode(pfUserCertificate.getCode());
-                pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
-            }
-
-            log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
-            if (pfBorder.getOrderType() == 0) {
-                pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
-            }
-        }
     }
 
     /**
@@ -466,5 +337,59 @@ public class PayBOrderService {
         Random random = new Random();
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
         return rannum + str;// 当前时间
+    }
+
+    /**
+     * 支付完成选择拿货方式
+     *
+     * @author ZhaoLiang
+     * @date 2016/4/5 11:44
+     */
+    @Transactional
+    public void updateBOrderSendType(ComUser comUser, Long bOrderId, Integer sendType, Long userAddressId) throws Exception {
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        if (pfBorder.getOrderStatus() != 1) {
+            throw new BusinessException("订单状态有误！现在为：" + pfBorder.getOrderStatus());
+        }
+        if (comUser.getSendType() == 0) {
+            comUser.setSendType(sendType);
+            comUserMapper.updateByPrimaryKey(comUser);
+        } else {
+            sendType = comUser.getSendType();
+        }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (sendType == 1) {
+            //处理平台发货类型订单
+            saveBOrderSendType(pfBorder);
+        }else if(sendType == 2) {
+            pfBorder.setSendType(sendType);
+            pfBorder.setOrderStatus(7);//待发货
+            pfBorderMapper.updateById(pfBorder);
+            if (userAddressId != null && userAddressId > 0) {
+                ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
+                if (comUserAddress == null) {
+                    throw new BusinessException("用户地址有误");
+                }
+                PfBorderConsignee pfBorderConsignee = new PfBorderConsignee();
+                pfBorderConsignee.setCreateTime(new Date());
+                pfBorderConsignee.setPfBorderId(pfBorder.getId());
+                pfBorderConsignee.setUserId(comUserAddress.getUserId());
+                pfBorderConsignee.setConsignee(comUserAddress.getName());
+                pfBorderConsignee.setMobile(comUserAddress.getMobile());
+                pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+                pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+                pfBorderConsignee.setCityId(comUserAddress.getCityId());
+                pfBorderConsignee.setCityName(comUserAddress.getCityName());
+                pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+                pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+                pfBorderConsignee.setAddress(comUserAddress.getAddress());
+                pfBorderConsignee.setZip(comUserAddress.getZip());
+                pfBorderConsigneeMapper.insert(pfBorderConsignee);
+            }else{
+                throw new BusinessException("请选择收货地址");
+            }
+        }else{
+            throw new BusinessException("拿货方式有误");
+        }
     }
 }

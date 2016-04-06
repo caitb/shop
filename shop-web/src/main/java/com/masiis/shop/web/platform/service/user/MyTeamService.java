@@ -4,6 +4,7 @@ import com.masiis.shop.common.util.CCPRestSmsSDK;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComBrandMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -48,6 +49,8 @@ public class MyTeamService {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComBrandMapper comBrandMapper;
+    @Resource
+    private PfBorderMapper pfBorderMapper;
 
 
     /**
@@ -73,6 +76,10 @@ public class MyTeamService {
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
+            Map<String, String> curMap = countChild(pus.getId(), pus.getUserId());
+            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length);
+            agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
+
             agentSkuMaps.add(agentSkuMap);
         }
 
@@ -80,43 +87,76 @@ public class MyTeamService {
     }
 
     /**
-     * 获取团队列表
+     * 统计团队人数
      * @param userSkuId
-     * @param skuId
      * @return
      */
-    public Map<String, Object> findTeam(Integer userSkuId, Integer skuId){
-        PfUserSku pfUserSku = new PfUserSku();
-        pfUserSku.setPid(userSkuId);
-        pfUserSku.setSkuId(skuId);
+    public Map<String, String> countChild(Integer userSkuId, Long userId){
+        String curPIds = userSkuId.toString();
+        String curUserIds = userId.toString();
+        StringBuilder childIds = new StringBuilder(4000);
+        StringBuilder userIds = new StringBuilder(4000);
+        childIds.append("," + curPIds);
+        userIds.append("," + curUserIds);
 
-        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(pfUserSku);
+        while (curPIds != null){
+           Map<String, String> curMap = pfUserSkuMapper.countChild(curPIds);
+           if(curMap == null) curMap = new HashMap<>();
+           curPIds = curMap.get("sPIds");
+           curUserIds = curMap.get("sUserIds");
 
-        List<Map<String, Object>> isAuditTeamMaps = new ArrayList<>();
-        List<Map<String, Object>> noAuditTeamMaps = new ArrayList<>();
-        for(PfUserSku pus : pfUserSkus){
-            ComUser comUser = comUserMapper.selectByPrimaryKey(pus.getUserId());
-            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pus.getAgentLevelId());
-
-            Map<String, Object> teamMap = new HashMap<>();
-            teamMap.put("comUserId", comUser.getId());
-            teamMap.put("comUserName", comUser.getRealName());
-            teamMap.put("comUserImg", comUser.getWxHeadImg());
-            teamMap.put("skuId", pus.getSkuId());
-            teamMap.put("agentLevelId", comAgentLevel.getId());
-            teamMap.put("agentLevelName", comAgentLevel.getName());
-            teamMap.put("userSkuId", pus.getId());
-            teamMap.put("code", pus.getCode());
-
-            if(pus.getIsCertificate() == 1) isAuditTeamMaps.add(teamMap);
-            if(pus.getIsCertificate() == 0) noAuditTeamMaps.add(teamMap);
+           if(curPIds != null) childIds.append("," + curPIds);
+           if(curUserIds != null) userIds.append("," + curUserIds);
         }
 
-        Map<String, Object> teamMaps = new HashMap<>();
-        teamMaps.put("isAuditTeamMaps", isAuditTeamMaps);
-        teamMaps.put("noAuditTeamMaps", noAuditTeamMaps);
+        childIds.deleteCharAt(0);
+        userIds.deleteCharAt(0);
 
-        return teamMaps;
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("childIds", childIds.toString());
+        resultMap.put("userIds", userIds.toString());
+
+        return resultMap;
+    }
+
+    /**
+     * 获取团队列表
+     * @param userSkuId
+     * @return
+     */
+    public Map<String, Object> findTeam(Integer userSkuId){
+        PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
+        List<Long> userIds = pfUserSkuMapper.selectChildrenByPId(pfUserSku.getId());
+        List<ComUser> comUsers = new ArrayList<>();
+        if(userIds != null && userIds.size() > 0){
+            comUsers = comUserMapper.selectByIds(userIds);
+        }
+        Map<String, String> curMap = countChild(pfUserSku.getId(), pfUserSku.getUserId());
+        ComSku comSku = comSkuMapper.selectById(pfUserSku.getSkuId());
+
+        Map<String, Object> teamMap = new HashMap<>();
+        teamMap.put("skuName", comSku.getName());//商品名称
+        teamMap.put("totalChildren", userIds.size());//直接下级人数
+        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size());//间接下级人数
+        teamMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));//总销售额
+
+        List<Map<String, Object>> userAgentMaps = new ArrayList<>();
+        for(ComUser comUser : comUsers){
+            PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfUserSku.getSkuId());
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
+
+            Map<String, Object> userAgentMap = new HashMap<>();
+            userAgentMap.put("userId", comUser.getId());
+            userAgentMap.put("userName", comUser.getRealName());
+            userAgentMap.put("agentLevelName", comAgentLevel.getName());
+
+            userAgentMaps.add(userAgentMap);
+        }
+
+        teamMap.put("userAgentMaps", userAgentMaps);
+
+
+        return teamMap;
     }
 
     /**

@@ -6,65 +6,48 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
+    <title>订单详情</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/kangtuandui.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/wodetuandui.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <script src="<%=basePath%>static/js/iscroll.js"></script>
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-        <p>抗引力团队</p>
+        <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+        <p>我的团队</p>
     </header>
-    <nav>
-        <ul>
-            <li class="s">已审核</li>
-            <li class="d on">待审核</li>
-        </ul>
-    </nav>
     <main>
-        <div class="yi">
-            <c:forEach items="${teamMaps.isAuditTeamMaps}" var="isAuditTeamMap">
-            <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/memberinfo?comUserId=${isAuditTeamMap.comUserId}&skuId=${isAuditTeamMap.skuId}&agentLevelId=${isAuditTeamMap.agentLevelId}&userSkuId=${isAuditTeamMap.userSkuId}');">
-                <img src="${isAuditTeamMap.comUserImg}" alt="">
-                <p>
-                    <b>队员姓名：<em>${isAuditTeamMap.comUserName}</em></b>
-                    <span>合伙人等级：<em>${isAuditTeamMap.agentLevelName}</em></span>
-                </p>
-            </div>
-            </c:forEach>
+        <div class="nav">
+            <p>
+                <span>${teamMap.totalChildren}</span>
+                <span>直接下级</span>
+            </p>
+            <p>
+                <span>${teamMap.countChild}</span>
+                <span>间接下级</span>
+            </p>
+            <p>
+                <span>${teamMap.countSales}</span>
+                <span>销售额</span>
+            </p>
         </div>
-        <div class="wei">
-            <c:forEach items="${teamMaps.noAuditTeamMaps}" var="noAuditTeamMap">
-            <div class="sec1"  onclick="javascript:window.location.replace('<%=basePath%>myteam/toaudit?comUserId=${noAuditTeamMap.comUserId}&skuId=${noAuditTeamMap.skuId}&agentLevelId=${noAuditTeamMap.agentLevelId}&userSkuId=${noAuditTeamMap.userSkuId}');">
-                <img src="${noAuditTeamMap.comUserImg}" alt="">
-                <p>
-                    <b>队员姓名：<em>${noAuditTeamMap.comUserName}</em></b>
-                    <span>合伙人等级：<em>${noAuditTeamMap.agentLevelName}</em></span>
-                </p>
-            </div>
-            </c:forEach>
+        <p>团队成员列表</p>
+        <c:forEach items="${teamMap.userAgentMaps}" var="userAgentMap">
+        <div class="sec1">
+            <p><img src="<%=basePath%>static/images/yes.png" alt=""></p>
+            <p>
+                <b>${userAgentMap.userName}</b>
+                <b><img src="<%=basePath%>static/images/lv.png" alt="">合伙人等级<span>${userAgentMap.agentLevelName}</span></b>
+            </p>
         </div>
+        </c:forEach>
     </main>
-    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
-    <script>
-        $(".s").on("click",function(){
-            $(this).addClass("on").siblings().removeClass("on")
-            $(".yi").show().siblings().hide();
-        })
-        $(".d").on("click",function(){
-            $(this).addClass("on").siblings().removeClass("on")
-            $(".wei").show().siblings().hide();
-        })
-    </script>
 </div>
 </body>
 </html>

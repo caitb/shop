@@ -38,6 +38,14 @@ public class MyTeamController extends BaseController {
             ComUser comUser = getComUser(request);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
+            Integer totalChild = 0;
+            Double totalSales = 0.0;
+            for(Map<String, Object> agentSkuMap : agentSkuMaps){
+                totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
+                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString());
+            }
+            mav.addObject("totalChild", totalChild);
+            mav.addObject("totalSales", totalSales);
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;
@@ -54,20 +62,18 @@ public class MyTeamController extends BaseController {
      * @param request
      * @param response
      * @param userSkuId
-     * @param skuId
      * @return
      */
     @RequestMapping("/teamdetail")
     public ModelAndView teamDetail(HttpServletRequest request, HttpServletResponse response,
-                             Integer userSkuId,
-                             Integer skuId){
+                             Integer userSkuId){
 
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamDetail");
 
-            Map<String, Object> teamMaps = myTeamService.findTeam(userSkuId, skuId);
+            Map<String, Object> teamMap = myTeamService.findTeam(userSkuId);
 
-            mav.addObject("teamMaps", teamMaps);
+            mav.addObject("teamMap", teamMap);
             return mav;
         } catch (Exception e) {
             log.error("获取团队成员列表失败!");

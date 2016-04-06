@@ -6,7 +6,7 @@ package com.masiis.shop.common.enums;
 * @date 2016/4/5 15:22
 */
 
-public enum BorderStatu {
+public enum BOrderStatus {
     NotPaid{
         public Integer getCode() {
             return 0;
@@ -95,11 +95,11 @@ public enum BorderStatu {
 
     public abstract Integer getCode();
     public abstract String getDesc();
-    public static BorderStatu getByCode(Integer code){
+    public static BOrderStatus getByCode(Integer code){
         if(code == null){
             return null;
         }
-        for(BorderStatu pt:BorderStatu.values()){
+        for(BOrderStatus pt: BOrderStatus.values()){
             if (pt.getCode().intValue() == code.intValue()) {
                 return pt;
             }

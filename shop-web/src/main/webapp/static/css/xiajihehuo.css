@@ -40,33 +40,40 @@
   margin-bottom: 10px;
   padding: 10px 0;
 }
-.wrap main .sec1 p:nth-child(1) {
-  width: 40px;
-  height: 40px;
+.wrap main .sec1 > p {
   margin-left: 10px;
-  border-radius: 25px;
   overflow: hidden;
   margin-right: 10px;
+  padding: 4px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px #e2e2e2;
 }
-.wrap main .sec1 p:nth-child(1) img {
-  width: 100%;
+.wrap main .sec1 > p img {
+  width: 40px;
   display: block;
+  height: 40px;
+  border: 1px solid #e2e2e2;
 }
-.wrap main .sec1 p:nth-child(2) {
+.wrap main .sec1 div {
   border-left: 1px solid #f6f6f6;
-  padding: 5px 0;
   padding-left: 10px;
 }
-.wrap main .sec1 p:nth-child(2) b {
+.wrap main .sec1 div p:nth-child(1) {
+  margin-bottom: 8px;
+}
+.wrap main .sec1 div p {
+  display: block;
+  color: #333;
+}
+.wrap main .sec1 div p em {
+  font-size: 12px;
+  color: #666666;
+  margin-left: 10px;
+}
+.wrap main .sec1 div p span {
   display: block;
   color: #666666;
 }
-.wrap main .sec1 p:nth-child(2) b img {
-  display: inline-block;
-  width: 13px;
-  margin-right: 5px;
-}
-.wrap main .sec1 p:nth-child(2) b span {
-  margin-left: 5px;
-  color: #666666;
+.wrap main .sec1 div p b {
+  color: #666;
 }

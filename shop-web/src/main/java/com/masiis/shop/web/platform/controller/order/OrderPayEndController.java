@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,12 +46,12 @@ public class OrderPayEndController extends BaseController {
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         List<PfBorderItem> items = bOrderService.getPfBorderItemDetail(pfBorder.getId());
-        List<PfBorderItem> its = null;
+        List<PfBorderItem> its = new ArrayList<>();
         Integer sumQuantity = 0;
         PfUserSkuStock pfUserSkuStock;
         for (PfBorderItem pfBorderItem:items){
             sumQuantity += pfBorderItem.getQuantity();
-            pfUserSkuStock = borderSkuStockService.getUserSkuStockByUserIdAndSkuId(bOrderId,pfBorderItem.getSkuId());
+            pfUserSkuStock = borderSkuStockService.getUserSkuStockByUserIdAndSkuId(pfBorder.getUserId(),pfBorderItem.getSkuId());
             pfBorderItem.setRealStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
             its.add(pfBorderItem);
         }

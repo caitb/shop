@@ -5,6 +5,7 @@ import com.alibaba.fastjson.asm.Opcodes;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.AuditStatusEnum;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import org.apache.commons.lang.StringUtils;
@@ -47,12 +48,9 @@ public class UserIdentityAuthController extends BaseController {
                 case NOAUDIT://未认证
                     jumpPage = "platform/user/shimingrenzheng";
                     break;
-                case AUDITING://审核中
-                    break;
                 case AUDITSUCCESS://审核通过
-                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
-                    break;
                 case AUDITFAIL://审核不通过
+                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
                     break;
                 default:
                     break;
@@ -66,12 +64,23 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/3/31 15:25
      */
     @RequestMapping(value = "getIdentityAuthInfo.do")
-    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,Model model){
+    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
+                                      Model model){
         ComUser comUser = getComUser(request);
-        comUser.setAuditStatus(3);
         userIdentityAuthService.getIdentityAuthInfo(request,comUser);
+        String returnPagePath = null;
+        switch (comUser.getAuditStatus()){
+            case 3://审核失败
+                model.addAttribute("idCardFrontUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
+                model.addAttribute("idCardBackUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
+                returnPagePath = "platform/user/shimingrenzhengfail";
+                break;
+            default:
+                returnPagePath = "platform/user/shimingyirenzheng";
+                break;
+        }
         model.addAttribute("comUser",comUser);
-        return "platform/user/shimingyirenzheng";
+        return returnPagePath;
     }
 
 

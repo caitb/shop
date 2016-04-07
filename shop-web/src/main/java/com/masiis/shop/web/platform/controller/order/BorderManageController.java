@@ -375,14 +375,14 @@ public class BorderManageController extends BaseController {
         }
         //快递公司信息
         List<PfBorderFreight> pfBorderFreights = bOrderService.findByPfBorderFreightOrderId(id);
-        if(pfBorderFreights.size()==0){
-                stringBuffer.append("<p>承运公司：<span></span></p>");
-                stringBuffer.append("<p>运单编号：<span></span></p>");
-        }else {
+        if(pfBorderFreights.size()!=0 && pfBorderFreights!=null){
             for (PfBorderFreight pfBorderFreight:pfBorderFreights) {
                 stringBuffer.append("<p>承运公司：<span>"+pfBorderFreight.getShipManName()+"</span></p>");
                 stringBuffer.append("<p>运单编号：<span>"+pfBorderFreight.getFreight()+"</span></p>");
             }
+        }else {
+            stringBuffer.append("<p>承运公司：<span></span></p>");
+            stringBuffer.append("<p>运单编号：<span></span></p>");
         }
 
         //收货人

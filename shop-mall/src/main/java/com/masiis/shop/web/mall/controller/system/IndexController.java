@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class IndexController extends BaseController {
 
     @RequestMapping("/index")
-    @ResponseBody
     public String index(){
-        return "<div><img src='/static/images/wx.jpg'></div>";
+        return "shop_index";
     }
 }

@@ -35,7 +35,7 @@ public interface PfBorderMapper {
 
     void updateByPrimaryKey(PfBorder pfBorder);
 
-    List<PfBorder> selectByUserPid(@Param("userPId") Long userPId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
+    List<PfBorder> selectByUserPid(@Param("userPId") Long userPId,@Param("orderStatus") Integer orderStatus,@Param("sendType") Integer sendType);
 
 
     List<PfBorder> selectUnCountingByUserAndDate( @Param("userid") Long userid,

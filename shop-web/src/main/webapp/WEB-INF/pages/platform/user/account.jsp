@@ -27,7 +27,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>我的资产</p>
         </header>
         <main>
@@ -120,7 +120,7 @@
     }
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>profile/profile";
+        window.location.href="<%=basePath%>personalInfo/personalHomePageInfo.html";
     }
     function showDetail(){
         $("#detail").show();

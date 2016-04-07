@@ -122,14 +122,18 @@
     })
     function submit() {
         var checked = document.getElementById("active").checked;
+        var currentStock = $("#currentStock").text();
+        var levelStock = $("#levelStock").val();
+        var afterLowerCount =(currentStock-i)/levelStock
         if(checked==true){
-            $(".back").css("display","-webkit-box");
-            $(".back_que").show();
-            $("#applyStock").html(i);
-            var currentStock = $("#currentStock").text();
-            var levelStock = $("#levelStock").val();
-            var afterLowerCount =(currentStock-i)/levelStock
-            $("#afterLowerCount").html(afterLowerCount);
+            if (afterLowerCount >= 0) {
+                $(".back").css("display", "-webkit-box");
+                $(".back_que").show();
+                $("#applyStock").html(i);
+                $("#afterLowerCount").html(afterLowerCount);
+            } else {
+                alert("在线库存不足!");
+            }
         }else{
             alert("请确认拿货风险!");
         }

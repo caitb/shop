@@ -339,11 +339,14 @@ public class BOrderController extends BaseController {
             String successURL = "";
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
-                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+                //拿货方式(0未选择1平台代发2自己发货)
+                if (pfBorder.getSendType() == 0) {
+                    successURL += "border/setUserSendType.shtml";
+                } else {
+                    successURL += "border/payBOrdersSuccess.shtml";
+                }
             } else if (pfBorder.getOrderType() == 1) {
-                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
-            } else if (pfBorder.getOrderType() == 2) {
-                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                successURL += "payEnd/replenishment.shtml";
             } else {
                 throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
             }
@@ -353,11 +356,13 @@ public class BOrderController extends BaseController {
             String successURL = getBasePath(request);
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
+                //拿货方式(0未选择1平台代发2自己发货)
+                if (pfBorder.getSendType() == 0) {
+                    successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                }
                 successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else if (pfBorder.getOrderType() == 1) {
-                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
-            } else if (pfBorder.getOrderType() == 2) {
-                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
             } else {
                 throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
             }

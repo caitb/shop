@@ -267,6 +267,10 @@ public class PayBOrderService {
         }
         log.info("<10>修改订单状态为已完成");
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
+        //修改订单拿货类型
+        if(pfBorder.getSendType()==0){
+            pfBorder.setSendType(1);
+        }
         pfBorderMapper.updateById(pfBorder);
         log.info("<11>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
         comUserAccountService.countingByOrder(pfBorder);

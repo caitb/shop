@@ -26,6 +26,7 @@
     </header>
     <main>
         <p>新增银行卡信息</p>
+        <input id="returnJumpTypeId" value="${returnJumpType}" style="display: none" />
         <h1>银行卡号：<input type="text" id="bankcard" placeholder="填写您的卡号"></h1>
         <h1>银行名称：<select id="bankid" name="bankid">
             <option value="">请选择银行</option>
@@ -73,11 +74,12 @@
             alert("请输入正确银行卡号");
             return;
         }
+        var returnJumpType = $("#returnJumpTypeId").val();
         $.ajax({
             type:"POST",
             async:false,
             url : "<%=path%>/extractwayinfo/add.do",
-            data:{bankcard:bankcard,bankid:bankid,depositbankname:depositbankname,cardownername:cardownername},
+            data:{bankcard:bankcard,bankid:bankid,depositbankname:depositbankname,cardownername:cardownername,returnJumpType:returnJumpType},
             dataType:"Json",
             beforeSend:function(){
 
@@ -86,8 +88,12 @@
                 if(data.isTrue == "false"){
                     alert(data.message);
                 }else {
-                    fullShow();//跳转页面钱展示全屏遮罩loading...
-                    window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
+                    if (data.returnJumpType == 0){
+                        fullShow();//跳转页面钱展示全屏遮罩loading...
+                        window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
+                    }else if (data.returnJumpType == 1){
+                        window.location.href="<%=basePath%>personalInfo/toBankCardPage.html";
+                    }
                 }
             },
             //调用执行后调用的函数

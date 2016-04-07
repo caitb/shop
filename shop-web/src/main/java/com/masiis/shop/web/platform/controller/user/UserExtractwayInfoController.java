@@ -44,6 +44,10 @@ public class UserExtractwayInfoController extends BaseController {
     private UserService userService;
     @Resource
     private ComBankService comBankService;
+
+    private final int ADDTOCHOSE = 0; //新增完银行卡跳转到选择银行卡界面
+    private final int ADDTOMANAGE = 1; //新增完银行卡跳转到个人中心的管理银行卡界面
+
     /**
      * 新增用户提现方式信息
      * @param bankcard          银行卡号
@@ -58,6 +62,7 @@ public class UserExtractwayInfoController extends BaseController {
                                         @RequestParam(value = "bankid",required = true) String bankid,
                                         @RequestParam(value = "depositbankname",required = true) String depositbankname,
                                         @RequestParam(value = "cardownername",required = true) String cardownername,
+                                        @RequestParam(value = "returnJumpType",required = false,defaultValue = "0") int returnJumpType,
                                         HttpServletRequest request){
 
         log.info("bankcard:"+bankcard);
@@ -143,6 +148,15 @@ public class UserExtractwayInfoController extends BaseController {
                     return jsonobject.toJSONString();
                 }
             }
+            switch (returnJumpType){
+                case ADDTOCHOSE:
+                    jsonobject.put("returnJumpType",ADDTOCHOSE);
+                    break;
+                case ADDTOMANAGE:
+                    jsonobject.put("returnJumpType",ADDTOMANAGE);
+                    break;
+                default:
+            }
             jsonobject.put("isTrue","true");
         }catch (Exception e){
             jsonobject.put("isTrue","false");
@@ -193,7 +207,8 @@ public class UserExtractwayInfoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/toCreateBankcard.shtml")
-    public ModelAndView toBankCardCreate(HttpServletRequest request) throws Exception{
+    public ModelAndView toBankCardCreate(HttpServletRequest request,
+                                         @RequestParam(value = "returnJumpType",required = false,defaultValue = "0") int returnJumpType) throws Exception{
 
         log.info("准备跳转至新增银行卡页面");
         ComUser user = getComUser(request);
@@ -211,6 +226,7 @@ public class UserExtractwayInfoController extends BaseController {
         }
         mv.addObject("userId",userId);
         mv.addObject("bankList",list);
+        mv.addObject("returnJumpType",returnJumpType);
         mv.setViewName("platform/user/bankcardCreate");
         return mv;
     }

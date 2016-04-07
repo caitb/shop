@@ -119,7 +119,7 @@ public class UserPersonalInfoController extends BaseController {
     @RequestMapping(value = "toAddBankCardPage.html")
     public String toAddBankCardPage(HttpServletRequest request,HttpServletResponse response){
         String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
-        return "redirect:" + basePath + "/extractwayinfo/toCreateBankcard.shtml";
+        return "redirect:" + basePath + "/extractwayinfo/toCreateBankcard.shtml?returnJumpType=1";
     }
 
     /**

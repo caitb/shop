@@ -362,14 +362,6 @@ public class COrderService {
         log.info("试用申请--微信支付成功--回调---end");
     }
     /**
-     * @author hanzengzhi
-     * @date 2016/3/8 15:45
-     */
-    public PfCorder queryPfCorderById(Long id) {
-        return pfCorderMapper.selectById(id);
-    }
-
-    /**
      * 判断用户是否使用过商品
      *
      * @author hanzengzhi
@@ -409,18 +401,13 @@ public class COrderService {
         return pfCorderPaymentMapper.selectBySerialNum(paySerialNum);
     }
     /**
-     * 通过订单id查询买家留言
+     * 通过订单id查询订单信息
      * @author hanzengzhi
      * @date 2016/3/23 15:09
      */
-    public String querUserMessage(Long id){
+    public PfCorder queryPfCorderById(Long id){
         log.info("------订单pfcorder----id-----"+id);
         PfCorder pfCorder = pfCorderService.getPfCorderById(id);
-        if (pfCorder!=null){
-            log.info("------订单留言信息----message-----"+pfCorder.getUserMassage());
-            return pfCorder.getUserMassage();
-        }
-        log.info("------订单留言信息----pfcorder为null-----");
-        return null;
+        return pfCorder;
     }
 }

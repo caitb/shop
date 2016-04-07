@@ -42,12 +42,10 @@
             </div>
             <div class="kuaidi">
                 <p>拿货方式：<span><c:if test="${borderDetail.pfBorder.sendType==0}">未选择</c:if><c:if test="${borderDetail.pfBorder.sendType==1}">平台代发</c:if><c:if test="${borderDetail.pfBorder.sendType==2}">自己发货</c:if></span></p>
-                <p>类    型：<span><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p><c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}"></c:when>
-                <c:when test="${borderDetail.pfBorderFreights==null}">
-                <p>承运公司：<span></span></p>
-                <p>运单编号：<span></span></p></c:when><c:otherwise><c:forEach items="${borderDetail.pfBorderFreights}" var="bdpb">
-                <p>承运公司：<span>${bdpb.shipManName}</span></p>
-                <p>运单编号：<span>${bdpb.freight}</span></p></c:forEach></c:otherwise></c:choose>
+                <p>类    型：<span><c:if test="${borderDetail.pfBorder.orderType==0}">合伙人订单</c:if><c:if test="${borderDetail.pfBorder.orderType==1}">补货</c:if><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2}">申请拿货</c:if></span></p>
+                <c:if test="${borderDetail.pfBorder.sendType!=1 || borderDetail.pfBorder.orderType==2}">
+                ${stringBuffer}
+                </c:if>
             </div>
            <c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
            <div class="paidan">

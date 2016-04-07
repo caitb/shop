@@ -169,7 +169,7 @@ public class DevelopingController extends BaseController {
                     CreateParseCode.createCode(220,220, shareLink, qrcodePath);
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName());
+                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
                     //保存二维码海报图片地址

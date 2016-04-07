@@ -27,7 +27,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="#" onClick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>我的资产</p>
         </header>
         <main>

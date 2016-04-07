@@ -1,9 +1,6 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserExtractwayInfo;
-import com.masiis.shop.dao.po.PfSkuAgent;
-import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +24,8 @@ public class UserPersonalInfoService {
     private UserExtractwayInfoService userExtractwayInfoService;
     @Resource
     private SkuAgentService skuAgentService;
+    @Resource
+    private ComUserAccountService accountService;
 
     /**
      * 个人信息首页信息
@@ -37,9 +36,11 @@ public class UserPersonalInfoService {
     public Map<String,Object> getPersonalHomePageInfo(ComUser comUser){
         //获取代理商品信息
         List<PfSkuAgent> pfSkuAgents = skuAgentService.getSkuLevelIconByUserId(comUser.getId());
+        ComUserAccount comUserAccount = accountService.findAccountByUserid(comUser.getId());
         Map<String,Object> map = new LinkedHashMap<String, Object>();
         map.put("pfskuAgents",pfSkuAgents);
-        return null;
+        map.put("comUserAccount",comUserAccount);
+        return map;
     }
     /**
      * 查询用户的银行卡信息

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @autor JingHao
@@ -65,14 +66,16 @@ public class ProductController extends BaseController {
     public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception{
         ModelAndView mav;
         ComUser comUser = userService.getUserById(userId);
-        if(comUser.getSendType()==0){ //平台发货
+        if(comUser.getSendType()==1){ //平台发货
             mav = new ModelAndView("/platform/user/userSkulist");
         }else{
             mav = new ModelAndView("/platform/user/selfSkuList");
         }
         List<Product> userProducts = productService.productListByUser(userId);
-        for(Product product :userProducts){
-            product.setUpperStock(productService.getUpperStock(userId, product.getId()));
+        if (userProducts != null) {
+            for (Product product : userProducts) {
+                product.setUpperStock(productService.getUpperStock(userId, product.getId()));
+            }
         }
         mav.addObject("userProducts",userProducts);
         return mav;
@@ -145,9 +148,8 @@ public class ProductController extends BaseController {
             if (product.getStock() - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
-            Long orderCode = bOrderService.addProductTake(comUser.getId(), product.getSkuId(),stock, message,userAddressId);
-            PfBorder pfBorder = bOrderService.findByOrderCode(String.valueOf(orderCode));
-            object.put("borderId", pfBorder.getId());
+            Long orderCode = bOrderService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);
+            object.put("borderId", orderCode);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);
@@ -178,11 +180,12 @@ public class ProductController extends BaseController {
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(),product.getSkuId());
-        Integer lowerCount = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
+        Map<String,Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
         mav.addObject("productInfo",product);
-        mav.addObject("lowerCount",lowerCount);//下级人数
+        mav.addObject("lowerCount",objectMap.get("countLevel"));//下级人数
         mav.addObject("comSku",comSku);
         mav.addObject("comSkuImage",productImgValue+comSkuImage.getImgUrl());
+        mav.addObject("levelStock",objectMap.get("levelStock"));
         return mav;
     }
     /**

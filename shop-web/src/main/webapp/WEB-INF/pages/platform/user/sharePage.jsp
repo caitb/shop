@@ -39,7 +39,6 @@
             <img src="${shareMap.poster}" alt="">
             <h3 id="downloadImage2">请长按图片保存海报</h3>
         </div>
-        <button type="button" id="sharePY">分享到朋友圈</button>
     </div>
 </div>
 </body>

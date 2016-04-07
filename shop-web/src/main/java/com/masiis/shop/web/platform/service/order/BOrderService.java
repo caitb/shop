@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.user.PfUserSkuCustom;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
@@ -11,6 +12,7 @@ import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
@@ -228,10 +230,10 @@ public class BOrderService {
         logger.info("<1>处理订单数据");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
-            throw new BusinessException("您还没有代理过此商品，不能补货。");
+            throw new BusinessException("您还没有代理过此商品，不能拿货。");
         }
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
-        if (!comUser.getSendType().equals("1")) {
+        if (comUser.getSendType() != 1) {
             throw new BusinessException("发货方式不是平台代发，不能拿货");
         }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级
@@ -486,8 +488,8 @@ public class BOrderService {
      * @date 2016/3/14 13:22
      */
 
-    public List<PfBorder> findByUserId(Long UserId, Integer orderStatus, Integer shipStatus) {
-        return pfBorderMapper.selectByUserId(UserId, orderStatus, shipStatus);
+    public List<PfBorder> findByUserId(Long UserId, Integer orderStatus, Integer sendType) {
+        return pfBorderMapper.selectByUserId(UserId, orderStatus, sendType);
     }
 
     /**
@@ -549,6 +551,32 @@ public class BOrderService {
      */
     public PfUserSku findPfUserSku(long userId, Integer skuId) {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
+    }
+    /**
+     * 异步查询订单
+     * @author muchaofeng
+     * @date 2016/4/6 14:36
+     */
+
+    public List<PfBorder> findPfBorder(long userId, Integer orderStatus, Integer sendType) {
+        List<PfBorder> pfBorders = pfBorderMapper.selectByUserId(userId, orderStatus, sendType);
+        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        for (PfBorder pfBorder : pfBorders) {
+            List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            for (PfBorderItem pfBorderItem : pfBorderItems) {
+//               ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+                pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
+                pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+            }
+            if(pfBorder.getUserPid()==0){
+                pfBorder.setPidUserName("平台代理");
+            }else{
+                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+                pfBorder.setPidUserName(user.getRealName());
+            }
+            pfBorder.setPfBorderItems(pfBorderItems);
+        }
+        return pfBorders;
     }
 
     /**

@@ -75,7 +75,7 @@ wx.ready(function () {
             alert("请先关注麦链社交商城，通过微信分享文章 ");
         }else{
             alert('开始激活分享!');
-            WeixinJSBridge.invoke('menu:share:timeline',shareData);
+            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
         }
     });
 

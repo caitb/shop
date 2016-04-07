@@ -128,15 +128,15 @@
     document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
         // 发送给好友
         WeixinJSBridge.on('menu:share:appmessage', function(argv){
-            shareFriend();
+            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
         });
         // 分享到朋友圈
         WeixinJSBridge.on('menu:share:timeline', function(argv){
-            shareTimeline();
+            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
         });
         // 分享到微博
         WeixinJSBridge.on('menu:share:weibo', function(argv){
-            shareWeibo();
+            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
         });
     }, false);
 </script>

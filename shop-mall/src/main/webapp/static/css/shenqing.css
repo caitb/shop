@@ -1,0 +1,350 @@
+body .kang {
+  width: 100%;
+  height: 78px;
+  margin-top: 5px;
+  background: white;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-align: center;
+  overflow: hidden;
+}
+body .kang a {
+  display: block;
+  width: 100%;
+  height: 78px;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-align: center;
+}
+body .kang a .photo {
+  width: 62px;
+  margin-left: 10px;
+  border: 1px solid #f6f6f6;
+}
+body .kang a .photo img {
+  display: block;
+  width: 62px;
+  height: 62px;
+}
+body .kang a div {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
+  margin-left: 10px;
+}
+body .kang a div h2 {
+  color: #FF5200;
+  font-size: 15px;
+}
+body .kang a div p {
+  width: 100%;
+  font-size: 10px;
+  color: #B0B0B0;
+}
+body>.paidan{
+  width:100%;
+  background: white;
+}
+body>.paidan>p{
+  margin:0 10px;
+  color:#999;
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+body>.paidan>h1 img{
+  display: block;
+  width: 20%;
+}
+body>.paidan>h1{
+  margin: 0 10px;
+  letter-spacing: 1px;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  padding: 20px 0;
+}
+body>.paidan>h1 b{
+  font-size: 12px;
+}
+body>.paidan>h1 span{
+  font-size: 12px;
+  color: #f52000;
+}
+body>.biao{
+  background: #fff;
+  margin: 5px 0;
+  padding-bottom: 5px;
+}
+body>.biao h1{
+  padding: 5px 10px;
+}
+body>.biao table{
+  width:96%;
+  margin:0 auto;
+  border:1px solid #F3F4F5;
+}
+body>.biao table td{
+  text-align: center;
+  border:1px solid #F3F4F5;
+  background: white;
+  padding:5px 0;
+}
+body>.biao>table tr:nth-child(1)>td{
+  background: #CED8E3;
+}
+body .he {
+  width: 100%;
+  height: 38px;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  display: -moz-box;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  background: white;
+  border-bottom: 1px solid #f6f6f6;
+}
+body .he h1 {
+  background: url("../images/shenqing_2.png") no-repeat;
+  background-size: 20%;
+  color: #333333;
+  padding-left: 25px;
+}
+body main {
+  margin: 0 5px;
+  -webkit-box-flex: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -moz-box-flex: 1;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  background: white;
+}
+body main .sec1 {
+  width: 100%;
+  height: 55px;
+  background: white;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-align: center;
+  border-bottom: 1px solid #f6f6f6;
+  position: relative;
+}
+body main .sec1 img:first-child{
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+body main .sec1 img:last-child{
+  position: absolute;
+  right: 10px;
+  top: 24px;
+  display: block;
+  width: 15px;
+}
+body main .sec1 div {
+  -webkit-box-flex: 1;
+  margin-right: 10px;
+  margin-left: 12px;
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-orient: vertical;
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-orient: vertical;
+}
+body main .sec1 div h2 {
+  color: #333333;
+  font-size: 15px;
+}
+body main .sec1 div p {
+  width: 100%;
+  font-size: 12px;
+  color: #B4B4B4;
+}
+body main .sec1_2 div {
+  margin-left: 42px;
+}
+.sec1+div{
+  margin:0 5px;
+  background: #F3F4F5;
+  display: -webkit-box;
+  -webkit-box-align:center;
+  padding: 10px 0;
+  display: none;
+}
+.sec1+div p{
+  margin:0 20px;
+  background: #82C9CC;
+  width:50px;
+  height:50px;
+  border-radius: 25px;
+  overflow: hidden;
+}
+.sec1+div span{
+  display: block;;
+}
+body .sec2 {
+  margin: 0 10px;
+  display: -webkit-box;
+  display: -moz-box;
+  height: 42px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  overflow: hidden;
+}
+body .sec2 p {
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  -webkit-box-flex: 1;
+  display: -moz-box;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  -moz-box-flex: 1;
+  background: #F74A11;
+}
+body .sec2 p a {
+  width: 100%;
+  display: block;
+  color: #FCFFFF;
+  font-size: 15px;
+  text-align: center;
+}
+body .back_j {
+  width: 90%;
+  position: fixed;
+  top: 30%;
+  left: 5%;
+  background: #fff;
+  z-index: 10;
+  border-radius: 5px;
+  display: none;
+}
+body .back_j .biao {
+  margin: 0 5px;
+  border-bottom: 1px solid #F74A11;
+  text-indent: 10px;
+  line-height: 50px;
+  margin-bottom: 5px;
+  color: #FF5200;
+  letter-spacing: 1px;
+}
+body .back_j div {
+  margin: 0 20px;
+  position: relative;
+  border-bottom: 1px solid #cdcdcd;
+}
+body .back_j div p {
+  border-radius: 5px;
+  line-height: 44px;
+  text-indent: 10px;
+}
+body .back_j div p input {
+  border: none;
+}
+body .back_j div em {
+  font-size: 12px;
+  position: absolute;
+  right: 4px;
+  top: 46%;
+  display: none;
+}
+body .back_j .d {
+  margin-top: 0;
+}
+body .back_j .d p input {
+  display: inline-block;
+  width: 30%;
+}
+body .back_j .d p button {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #F74A11;
+  color: white;
+  float: right;
+  margin-top: 8px;
+}
+body .back_j .d p .on {
+  background: #ccc;
+  color: #ccc;
+}
+body .back_j .tishi {
+  position: absolute;
+  bottom: 60px;
+  width: 100%;
+  text-align: center;
+  color: red;
+}
+body .back_j .j_qu {
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  background: #ff5200;
+  margin: 40px auto 20px auto;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+}
+body .back_login {
+  width: 90%;
+  position: fixed;
+  top: 30%;
+  left: 5%;
+  background: #fff;
+  z-index: 11;
+  border-radius: 5px;
+  padding: 50px 0 30px 0;
+}
+body .back_login > p {
+  margin: 0 5%;
+  text-align: center;
+}
+body .back_login h1 {
+  height: 30px;
+  line-height: 30px;
+  margin: 30px 20px 0 20px;
+  text-align: center;
+  display: -webkit-box;
+}
+body .back_login h1 span {
+  display: block;
+  -webkit-box-flex: 1;
+  border-radius: 5px;
+  line-height: 30px;
+  width: 1px;
+}
+body .back_login h1 span:first-child {
+  background: #F6F6F6;
+  color: #999999;
+  margin-right: 5px;
+}
+body .back_login h1 span:last-child {
+  background: #F74A11;
+  color: white;
+  margin-left: 5px;
+}
+body .back {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+}

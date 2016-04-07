@@ -123,6 +123,22 @@
             window.console.log(JSON.stringify(res));
         }
     };
+
+    // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+            shareFriend();
+        });
+        // 分享到朋友圈
+        WeixinJSBridge.on('menu:share:timeline', function(argv){
+            shareTimeline();
+        });
+        // 分享到微博
+        WeixinJSBridge.on('menu:share:weibo', function(argv){
+            shareWeibo();
+        });
+    }, false);
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>

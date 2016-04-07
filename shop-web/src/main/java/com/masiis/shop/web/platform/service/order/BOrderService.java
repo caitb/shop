@@ -498,8 +498,8 @@ public class BOrderService {
      * @author muchaofeng
      * @date 2016/3/23 14:36
      */
-    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer shipStatus) {
-        return pfBorderMapper.selectByUserPid(UserId, orderStatus, shipStatus);
+    public List<PfBorder> findByUserPid(Long UserId, Integer orderStatus, Integer sendType) {
+        return pfBorderMapper.selectByUserPid(UserId, orderStatus, sendType);
     }
 
     /**
@@ -553,18 +553,16 @@ public class BOrderService {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
     }
     /**
-     * 异步查询订单
+     * 异步查询进货订单
      * @author muchaofeng
      * @date 2016/4/6 14:36
      */
-
     public List<PfBorder> findPfBorder(long userId, Integer orderStatus, Integer sendType) {
         List<PfBorder> pfBorders = pfBorderMapper.selectByUserId(userId, orderStatus, sendType);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         for (PfBorder pfBorder : pfBorders) {
             List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-//               ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
                 pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                 pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
             }
@@ -578,7 +576,31 @@ public class BOrderService {
         }
         return pfBorders;
     }
-
+    /**
+     * 异步查询出货订单
+     * @author muchaofeng
+     * @date 2016/4/7 15:54
+     */
+    public List<PfBorder> findPfpBorder(long userId, Integer orderStatus, Integer sendType) {
+        List<PfBorder> pfBorders = pfBorderMapper.selectByUserPid(userId, orderStatus, sendType);
+        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        for (PfBorder pfBorder : pfBorders) {
+            List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            for (PfBorderItem pfBorderItem : pfBorderItems) {
+               ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+                pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
+                pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+            }
+            if(pfBorder.getUserPid()==0){
+                pfBorder.setPidUserName("平台代理");
+            }else{
+                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+                pfBorder.setPidUserName(user.getRealName());
+            }
+            pfBorder.setPfBorderItems(pfBorderItems);
+        }
+        return pfBorders;
+    }
     /**
      * 判断订单库存是否充足
      *

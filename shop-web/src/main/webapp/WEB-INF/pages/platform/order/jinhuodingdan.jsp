@@ -413,7 +413,7 @@
                             }else if(pfBorder.orderStatus ==8){
                                 StatusName="交易成功";
                             }
-                            trHtml+="<h2>订单号：<b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";
+                            trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";
                             $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
                                 trHtml+="<div class='shangpin'>";
                                 trHtml+=" <p class=\"photo\">";

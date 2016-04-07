@@ -75,7 +75,12 @@ wx.ready(function () {
             alert("请先关注麦链社交商城，通过微信分享文章 ");
         }else{
             alert('开始激活分享!');
-            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
+            WeixinJSBridge.invoke('menu:share:timeline',{
+                titile: '自定义分享按钮',
+                desc: '这是一个测试例子',
+                link: 'https://www.baidu.com/',
+                imgUrl: 'http://pic.qjimage.com/chineseview058/thu/488-0185.jpg'
+            });
         }
     });
 

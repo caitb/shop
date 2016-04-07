@@ -124,21 +124,18 @@
         }
     };
 
-    // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        // 发送给好友
-        WeixinJSBridge.on('menu:share:appmessage', function(argv){
-            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
+
+    function weixinSendAppMessage(title,desc,link,imgUrl){
+        WeixinJSBridge.invoke('sendAppMessage',{
+            //"appid":appId,
+            "img_url":imgUrl,
+            //"img_width":"640",
+            //"img_height":"640",
+            "link":link,
+            "desc":desc,
+            "title":title
         });
-        // 分享到朋友圈
-        WeixinJSBridge.on('menu:share:timeline', function(argv){
-            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
-        });
-        // 分享到微博
-        WeixinJSBridge.on('menu:share:weibo', function(argv){
-            WeixinJSBridge.invoke('menu:share:timeline',shareData2);
-        });
-    }, false);
+    }
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>

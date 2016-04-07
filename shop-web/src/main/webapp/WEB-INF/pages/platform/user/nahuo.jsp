@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/zhifuchenggong.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/shenqinghehu.css">
 </head>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/checkUtil.js"></script>
+<%--<script src="<%=path%>/static/js/commonAjax.js"></script>--%>
+<%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     $(document).ready(function () {
@@ -33,14 +33,15 @@
         var pfUserSkuStockId = $("#pfUserSkuStockId").val();
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=manageGoodsTakeGoods&selectedAddressId=" + selectedAddressId + "&pfUserSkuStockId=" + pfUserSkuStockId;
     }
+
 </script>
 <body>
 <div class="wrap">
-    <div class="box">
-        <header class="xq_header">
+    <header class="xq_header">
             <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>拿货信息</p>
-        </header>
+        <p>申请拿货</p>
+    </header>
+    <main>
         <section class="sec1">
             <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
             <div onclick="toChooseAddressPage()">
@@ -54,28 +55,108 @@
         </section>
         <section class="sec2">
             <p class="photo">
-                <a>
-                    <img src="${comSkuImage}" alt="">
-                </a>
+                <img src="${comSkuImage}" alt="">
             </p>
             <div>
                 <h2>${comSku.name}</h2>
                 <h3>规格：<span>默认</span></h3>
-                <p>零售价： ${comSku.priceRetail}  合伙人价: ${comSku.priceRetail}</p>
+                <p>零售价：<span>${comSku.priceRetail}</span><b style="float:right; margin-right:10px;font-size:12px;">合伙价：<b style="font-size:12px; color:#FF5200">${comSku.priceRetail}</b></b></p>
             </div>
         </section>
         <section class="sec3">
-            <p>留言： ${userMessage}</p>
+            <p>留言：<input type="text" id="msg"></p>
+            <input type="hidden" id="levelStock" value="${levelStock}"/>
         </section>
         <section class="sec4">
-            <p>在线库存：<span>${productInfo.stock}</span></p>
-            <p>拿货数量：<span>￥${product.shipAmount}</span></p>
-            <p>您的剩余库存可发展下级合伙人的数量为 1 - ${lowerCount}</p>
-            <p>您申请的货物将由您自行保管；
-            您只能使用在线库存发展下级合伙人，您自提的货物不再支持 在线合伙人的发展</p>
+            <p><em>在线库存：</em><b>${productInfo.stock}</b></p>
+            <p>
+                <em>拿货数量：</em><b><span class="jian">-</span><input type="text" value="1" class="number">
+                <span class="jia">+</span></b>
+            </p>
+            <p><span>注</span>您的剩余库存可发展夏季合伙人的数量为1~${lowerCount}</p>
         </section>
-    </div>
+        <section class="sec5">
+            <div>
+                <h1>说明</h1>
+                <p>您申请的货物将由您自行保管；<br/>您只能使用再现库存发展夏季合伙人，您得体的货物不再支持在线和活人的发展</p>
+            </div>
+            <input type="checkbox" id="active">
+            <label for="active"><b>拿货风险：</b>请确认以了解申请拿货的部分不能继续发展下线，货物有我仔细销售</label>
+            <button onclick="submit();">确认拿货</button>
+        </section>
+    </main>
 </div>
+<div class="back_que">
+    <p>确认减库存?</p>
+    <h4><b>在线库存:</b><span id="currentStock">${productInfo.stock}</span></h4>
+    <h4><b>拿货数量:</b><span id="applyStock"></span></h4>
+    <h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>
+    <h4 style="color:#666666;"><em>注</em>您的拿货数量将不再能发展下级合伙人</h4>
+    <h3>
+        <span class="que_qu">返回修改</span>
+        <span class="que_que">确定</span>
+    </h3>
+</div>
+<div class="back">
+
+</div>
+<script type="text/javascript">
+    var i=1;
+    $(".number").on("change",function(){
+        i=$(this).val();
+    })
+    $(".jian").on("click",function(){
+        if(i<=1){
+            return false;
+        }
+        i--;
+        $(".number").val(i)
+    })
+    $(".jia").on("click",function(){
+        i++;
+        $(".number").val(i)
+    })
+    $(".que_qu").on("click",function(){
+        $(".back").css("display","none");
+        $(".back_que").hide();
+    })
+    function submit() {
+        var checked = document.getElementById("active").checked;
+        if(checked==true){
+            $(".back").css("display","-webkit-box");
+            $(".back_que").show();
+            $("#applyStock").html(i);
+            var currentStock = $("#currentStock").text();
+            var levelStock = $("#levelStock").val();
+            var afterLowerCount =(currentStock-i)/levelStock
+            $("#afterLowerCount").html(afterLowerCount);
+        }else{
+            alert("请确认拿货风险!");
+        }
+    }
+    $('.que_que').on('click', function () {
+        var paraData = {};
+        paraData.userAddressId = "${comUserAddress.id}";
+        paraData.message = $("#msg").val();
+        paraData.stock = $("#applyStock").text();
+        paraData.id = ${productInfo.id};
+        $.ajax({
+            url: "<%=basePath%>/product/user/applyStock.do",
+            type: "post",
+            data: paraData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>borderManage/borderDetils.html?id=" + data.borderId;
+                }
+                else {
+                    $(".back").css("display","none");
+                    $(".back_que").hide();
+                    alert(data.message);
+                }
+            }
+        });
+    });
+</script>
 </body>
-<script src="<%=path%>/static/js/iscroll.js"></script>
 </html>

@@ -181,14 +181,18 @@ public class ProductService {
       * @Date 2016/3/31 0031 上午 11:07
       * 发展直属下级的人数
       */
-    public Integer getLowerCount(Integer skuId,Integer stock,Integer level){
+    public Map<String,Object> getLowerCount(Integer skuId,Integer stock,Integer level){
+        Map<String,Object> param = new HashMap();
         Integer countLevel = 0;
         if (level == 3 || stock == 0) {
-            return countLevel;
+            param.put("countLevel",countLevel);
+            return param;
         } else {
             PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
             countLevel = stock / pfSkuAgent.getQuantity();
+            param.put("countLevel", countLevel);
+            param.put("levelStock",pfSkuAgent.getQuantity());
         }
-        return countLevel;
+        return param;
     }
 }

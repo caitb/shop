@@ -55,7 +55,7 @@
             </div>
         </section>
         <section class="sec3">
-            <p>备注信息： ${userMessage}</p>
+            <p>备注信息： ${pfCorder.userMassage}</p>
         </section>
         <section class="sec4">
             <p>商品合计：<span>￥0</span></p>
@@ -63,10 +63,10 @@
             <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
         </section>
         <div class="sec5">
-            <p>订单编号：<span>${borderDetail.pfBorder.orderCode}</span></p>
-            <p>创建时间：<span><fmt:formatDate value="${borderDetail.pfBorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-            <p>付款时间：<span><fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-            <p>发货时间：<span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+            <p>订单编号：<span>${pfCorder.orderCode}</span></p>
+            <p>创建时间：<span><fmt:formatDate value="${pfCorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+            <p>付款时间：<span><fmt:formatDate value="${pfCorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+            <p>发货时间：<span><fmt:formatDate value="${pfCorder.deliveryTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
         </div>
         <p><a href="<%=path%>/index">返回首页</a></p>
     </div>

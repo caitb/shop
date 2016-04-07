@@ -73,7 +73,7 @@
 </div>
 </body>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
+<script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/iscroll.js"></script>
 <script>
     $(document).ready(function () {

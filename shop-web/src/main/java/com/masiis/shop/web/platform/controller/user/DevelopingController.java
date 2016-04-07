@@ -20,6 +20,7 @@ import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
+import com.masiis.shop.web.platform.utils.qrcode.QRCodeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -166,7 +167,8 @@ public class DevelopingController extends BaseController {
                         headImgPath += File.separator+"default.png";
                     }
                     //生成二维码
-                    CreateParseCode.createCode(220,220, shareLink, qrcodePath);
+                    //CreateParseCode.createCode(220,220, shareLink, qrcodePath);
+                    QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());

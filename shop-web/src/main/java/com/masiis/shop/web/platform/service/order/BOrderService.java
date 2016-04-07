@@ -228,10 +228,10 @@ public class BOrderService {
         logger.info("<1>处理订单数据");
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
         if (pfUserSku == null) {
-            throw new BusinessException("您还没有代理过此商品，不能补货。");
+            throw new BusinessException("您还没有代理过此商品，不能拿货。");
         }
         ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
-        if (!comUser.getSendType().equals("1")) {
+        if (comUser.getSendType() != 1) {
             throw new BusinessException("发货方式不是平台代发，不能拿货");
         }
         Integer levelId = pfUserSku.getAgentLevelId();//代理等级

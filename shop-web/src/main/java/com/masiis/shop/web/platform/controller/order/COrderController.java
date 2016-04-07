@@ -157,7 +157,7 @@ public class COrderController extends BaseController {
                                         Model model)throws Exception {
         try {
             model = getOrderInfo(request, model, skuId, addressId);
-            model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
+            model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
         } catch (Exception e) {
             e.getStackTrace();
         }
@@ -177,7 +177,7 @@ public class COrderController extends BaseController {
                                      @RequestParam(value = "addressId", required = true) Long addressId,
                                      Model model)throws Exception {
         model = getOrderInfo(request, model, skuId, addressId);
-        model.addAttribute("userMessage",cOrderService.querUserMessage(pfCorderId));
+        model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
         return "platform/order/zhifushibai";
     }
 

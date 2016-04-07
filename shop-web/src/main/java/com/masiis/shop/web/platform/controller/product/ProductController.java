@@ -59,6 +59,7 @@ public class ProductController extends BaseController {
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
         mav.addObject("pfUserSku",pfUserSku);//是否代理过该商品
         mav.addObject("productDetails",productDetails);
+        mav.addObject("bOrderId",pfUserSku.getPfBorderId());
         return mav;
     }
 

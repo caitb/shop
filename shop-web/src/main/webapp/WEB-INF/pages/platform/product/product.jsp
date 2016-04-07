@@ -132,7 +132,13 @@
                 <a id="applyTrial" onclick="validateCodeJS.applyTrial()">申请试用</a>
                 <a id="trialed" style="display: none">已试用</a>
             </p>
+        </c:if>
+        <c:if test="${empty pfUserSku}"><!--未代理><-->
             <p style="background: #DA3600;"><a href="<%=basePath%>userApply/apply.shtml?skuId=${productDetails.id}">申请合伙人</a>
+            </p>
+        </c:if>
+        <c:if test="${not empty pfUserSku && pfUserSku.isPay==0}"><!--未支付><-->
+            <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${bOrderId}">申请合伙人</a>
             </p>
         </c:if>
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">

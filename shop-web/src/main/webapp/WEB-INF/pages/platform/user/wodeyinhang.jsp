@@ -22,8 +22,8 @@
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>选择银行卡</p>            
+            <a href="<%=path%>/personalInfo/personalHomePageInfo.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>我的银行卡</p>
             </header>
             <div class="xinz">
                     <p><a href="<%=path%>/personalInfo/toAddBankCardPage.html" style="color:#333;">新增银行卡</a></p>

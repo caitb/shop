@@ -3,12 +3,12 @@ package com.masiis.shop.web.platform.controller.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.ComUserExtractwayInfo;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserPersonalInfoService;
-import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +48,7 @@ public class UserPersonalInfoController extends BaseController {
         }
         model.addAttribute("comUser",comUser);
         model.addAttribute("auditStatusName", AuditStatusEnum.getName(comUser.getAuditStatus()));
+        model.addAttribute("comUserAccount",map.get("comUserAccount"));
         return "platform/user/gerenxinxi";
     }
 

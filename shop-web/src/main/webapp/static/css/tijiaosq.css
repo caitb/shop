@@ -14,19 +14,12 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
-.wrap .box .xinxi {
-  background: white url("../images/zhuce_3.png") no-repeat;
-  background-size: 80%;
-  background-position: center 85%;
-}
-.wrap .box .xinxi p {
-  color: #F85F30;
-}
 .wrap .box .cp {
   width: 100%;
   color: #333333;
   text-indent: 10px;
-  padding: 15px 0 5px 0;
+  height: 38px;
+  line-height: 38px;
   font-size: 14px;
 }
 .wrap .box .cp h1{
@@ -41,44 +34,27 @@
   padding-bottom: 10px;
 }
 .wrap .box main .sf {
+  height: 37px;
   width: 100%;
   text-indent: 10px;
+  line-height: 34px;
   background: white;
   border-bottom: 1px solid #F6F6F6;
   color: #333333;
   display: -webkit-box;
-  padding: 10px 0;
 }
 .wrap .box main .sf span {
   display: block;
   width: 70px;
-}
-.wrap .box .tai {
-  width: 100%;
-  background: #F6410C;
-  height: 60px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
-  position: relative;
-}
-.wrap .box .tai img {
-  position: absolute;
-  display: block;
-  width: 50px;
-  height: 30px;
-  left: 15px;
-  top: 12px;
-}
-.wrap .box .tai h1,
-.wrap .box .tai p {
-  text-indent: 5rem;
-  color: white;
+  line-height: 37px;
 }
 .wrap .box main .sf input {
   display: block;
+  height: 20px;
   border: none;
+  margin-top: -2px;
   -webkit-box-flex: 1;
+  margin-top: 4px;
 }
 .wrap .box main .sfphoto {
   margin: 0 10px 0px 10px;
@@ -90,8 +66,6 @@
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   width: 1px;
-  text-decoration: underline;
-  text-align: center;
 }
 .wrap .box main .sfphoto label img {
   display: block;

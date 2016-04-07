@@ -57,17 +57,17 @@
                  <ul>
                         <li class="market">
                                 <a class="herf" href="<%=path%>/marketGood/market">
-                                <h1><img src="<%=path%>/static/images/index_nav%20(3).png" alt=""></h1>
+                                <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
                                 <span>好货市场</span></a>
                         </li>
                         <li class="market" onclick="javascript:window.location.replace('<%=basePath%>product/user/${user.id}');">
                             <a class="herf" href="javascript:;"></a>
-                                <h1><img src="<%=path%>/static/images/index_nav%20(4).png" alt=""></h1>
+                                <h1><img src="<%=path%>/static/images/1%20(2).png" style="height: 18px;margin-top: 2px;"></h1>
                                 <span>商品管理</span></a>
                         </li>
                         <li class="market">
                             <a class="herf" href="<%=path%>/borderManage/borderManagement.html">
-                                <h1><img src="<%=path%>/static/images/index_nav%20(1).png" alt=""><c:if test="${borderNum!=0}"><span>${borderNum}</span></c:if></h1>
+                                <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""><c:if test="${borderNum!=0}"><span>${borderNum}</span></c:if></h1>
                                 <span>订单管理</span></a>
                         </li>
                 </ul>
@@ -75,21 +75,20 @@
                 <nav>
                      <ul>
                             <li class="market" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><a class="herf" href="javascript:void(0);">
-                                    <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""><span>1</span></h1>
+                                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt=""><span>1</span></h1>
                                     <span>我的下级</span></a>
                             </li>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><a class="herf" href="javascript:;">
-                                    <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
+                            <li class="market"><a class="herf" href="javascript:;">
+                                    <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""></h1>
                                     <span>发展合伙人</span></a>
                             </li>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=36');"><a class="herf" href="javascript:;">
-                            <%--<li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">--%>
-                                    <h1><img src="<%=path%>/static/images/index_nav%20(6).png" alt=""></h1>
+                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">
+                                    <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
                                     <span>我的授权书 </span></a>
                             </li>
                     </ul>
                 </nav>
-                <nav>
+<%--                <nav>
                  <ul>
                         <li class="market"><a class="herf" href="javascript:;">
                                 <h1><img src="<%=path%>/static/images/index_nav%20(5).png" alt=""></h1>
@@ -104,7 +103,7 @@
                                 <span>个人信息</span></a>
                         </li>
                 </ul>
-            </nav>
+            </nav>--%>
         </div>
         <div class="back_j" style="display:none;">
                   <p>您还没有选择拿货方式，这个功能很重要，请您务必设置。</p>
@@ -115,7 +114,30 @@
                   <h1><span id="quxiao">取消</span><span id="goMark">去好货市场</span></h1>
         </div>
         <div class="back" style="display:none;">
+
     </div>
+        <div class="bottom">
+            <footer>
+                <div class="btm" style="background: #DA3600;">
+                    <a href="index.html">
+                        <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                        <span>我是合伙人</span>
+                    </a>
+                </div>
+                <div class="btm">
+                    <a href="javascript:;">
+                        <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
+                        <span>我的店铺</span>
+                    </a>
+                </div>
+                <div class="btm">
+                    <a href="../html/xiaodianguanli.html">
+                        <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+                        <span>个人中心</span>
+                    </a>
+                </div>
+            </footer>
+        </div>
             <script>
              var mySwiper = new Swiper ('.swiper-container', {
                 direction: 'horizontal',

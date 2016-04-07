@@ -150,34 +150,34 @@ public class DevelopingController extends BaseController {
             puc.setUserId(comUser.getId());
             puc.setSkuId(comSku.getId());
             List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
-            if(pfUserCertificates != null && pfUserCertificates.size() > 0){
-                PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
-                if(pfUserCertificate.getPoster() == null){
-                    String headImgName = "headimg.png";
-                    String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
-                    String qrcodeName = "qrcode.png";
-                    String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
-                    //下载用户微信头像
-                    if(comUser.getWxHeadImg() != null){
-                        String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
-                        DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
-                        headImgPath += File.separator+headImgName;
-                    }else{//没有微信头像,用默认头像
-                        headImgPath += File.separator+"default.png";
-                    }
-                    //生成二维码
-                    CreateParseCode.createCode(220,220, shareLink, qrcodePath);
-                    //生成海报并上传到OSS
-                    String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName());
-                    //删除本地二维码图片
-                    new File(qrcodePath).delete();
-                    //保存二维码海报图片地址
-                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
-                    pfUserCertificateMapper.updateById(pfUserCertificate);
-                }
-                resultMap.put("poster", pfUserCertificate.getPoster());
-            }
+//            if(pfUserCertificates != null && pfUserCertificates.size() > 0){
+//                PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
+//                if(pfUserCertificate.getPoster() == null){
+//                    String headImgName = "headimg.png";
+//                    String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
+//                    String qrcodeName = "qrcode.png";
+//                    String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
+//                    //下载用户微信头像
+//                    if(comUser.getWxHeadImg() != null){
+//                        String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
+//                        DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
+//                        headImgPath += File.separator+headImgName;
+//                    }else{//没有微信头像,用默认头像
+//                        headImgPath += File.separator+"default.png";
+//                    }
+//                    //生成二维码
+//                    CreateParseCode.createCode(220,220, shareLink, qrcodePath);
+//                    //生成海报并上传到OSS
+//                    String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
+//                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName());
+//                    //删除本地二维码图片
+//                    new File(qrcodePath).delete();
+//                    //保存二维码海报图片地址
+//                    pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
+//                    pfUserCertificateMapper.updateById(pfUserCertificate);
+//                }
+//                resultMap.put("poster", pfUserCertificate.getPoster());
+//            }
 
 
             resultMap.put("appId", WxConstants.APPID);

@@ -82,7 +82,8 @@
                                     <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
                                     <span>发展合伙人</span></a>
                             </li>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">
+                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=36');"><a class="herf" href="javascript:;">
+                            <%--<li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">--%>
                                     <h1><img src="<%=path%>/static/images/index_nav%20(6).png" alt=""></h1>
                                     <span>我的授权书 </span></a>
                             </li>

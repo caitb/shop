@@ -564,7 +564,7 @@ public class BOrderService {
         for (PfBorder pfBorder : pfBorders) {
             List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-//                ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
+//               ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
                 pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                 pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
             }

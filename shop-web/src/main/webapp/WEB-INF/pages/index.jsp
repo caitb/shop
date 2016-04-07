@@ -61,7 +61,7 @@
                                 <span>好货市场</span></a>
                         </li>
                         <li class="market">
-                            <a class="herf" href="<%=basePath%>product/user/${user.id}"></a>
+                            <a class="herf" href="<%=basePath%>product/user/${user.id}">
                                 <h1><img src="<%=path%>/static/images/1%20(2).png" style="height: 18px;margin-top: 2px;"></h1>
                                 <span>商品管理</span></a>
                         </li>

@@ -26,25 +26,25 @@
             <div class="sec1">
                 <h1>进货订单</h1>
                 <ul>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=7">
                         <h1><img src="<%=path%>/static/images/fahuo.png" alt=""><c:if test="${pfBorders10 !=0}"><span>${pfBorders7}</span></c:if></h1>
-                        <h1>等待发货</h1>
+                        <h1>等待发货</h1></a>
                     </li>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=6">
                         <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorders6 !=0}"><span>${pfBorders6}</span></c:if></h1>
-                        <h1>我在拍单</h1>
+                        <h1>我在拍单</h1></a>
                     </li>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span>${pfBorders0}</span></c:if></h1>
-                        <h1>需要我付款</h1>
+                        <h1>需要我付款</h1></a>
                     </li>
                 </ul>
                 <ul>
-                <li>
+                <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=8&sendType=2">
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders8 !=0}"><span>${pfBorders8}</span></c:if></h1>
-                    <h1>需要我收货</h1>
+                    <h1>需要我收货</h1></a>
                 </li>
-                <li><a href="<%=path%>/borderManage/stockBorder">
+                <li><a href="<%=path%>/borderManage/stockDouckBorder">
                     <h1>查看全部》</h1></a>
                 </li>
                 <li style="background:#f6f6f6"></li>
@@ -53,23 +53,23 @@
             <div class="sec1">
                 <h1>出货订单</h1>
                 <ul>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=7">
                         <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""><c:if test="${pfBorderps10 !=0}"><span>${pfBorderps7}</span></c:if></h1>
-                        <h1>我要发货</h1>
+                        <h1>我要发货</h1></a>
                     </li>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=6">
                         <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorderps6 !=0}"><span>${pfBorderps6}</span></c:if></h1>
-                        <h1>我收到排单</h1>
+                        <h1>我收到排单</h1></a>
                     </li>
-                    <li>
+                    <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorderps0 !=0}"><span>${pfBorderps0}</span></c:if></h1>
-                        <h1>需要对方付款</h1>
+                        <h1>需要对方付款</h1></a>
                     </li>
                 </ul>
                 <ul>
-                <li>
+                <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=8&sendType=2">
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorderps8 !=0}"><span>${pfBorderps8}</span></c:if></h1>
-                    <h1>需要对方收货</h1>
+                    <h1>需要对方收货</h1></a>
                 </li>
                 <li><a href="<%=path%>/borderManage/deliveryBorder">
                     <h1>查看全部》</h1></a>

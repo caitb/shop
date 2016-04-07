@@ -29,7 +29,7 @@ public interface PfBorderMapper {
 
     PfBorder selectByOrderCode(String orderId);
 
-    List<PfBorder> selectByUserId(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("shipStatus") Integer shipStatus);
+    List<PfBorder> selectByUserId(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("sendType") Integer sendType);
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 

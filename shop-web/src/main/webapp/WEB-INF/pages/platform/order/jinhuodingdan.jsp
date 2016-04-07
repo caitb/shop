@@ -38,33 +38,80 @@
                     </ul>
                 </nav>
                 <main>
-                    <c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">
+                    <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>
+                    <%--<div class="all">--%>
+                        <%--<c:forEach items="${pbs}" var="pb">--%>
+                        <%--<section class="sec1">--%>
+                           <%--<p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>--%>
+                            <%--<h2>--%>
+                                <%--订单号：<span>${pb.orderCode}</span>--%>
+                                <%--<c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>--%>
+                            <%--</h2>--%>
+                            <%--<c:forEach items="${pb.pfBorderItems}" var="pbi">--%>
+                            <%--<div class="shangpin">--%>
+                                <%--<p class="photo">--%>
+                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
+                                        <%--<img src="${pbi.skuUrl}" alt="">--%>
+                                    <%--</a>--%>
+                                <%--</p>--%>
+                                <%--<div>--%>
+                                    <%--<h2>${pbi.skuName}</h2>--%>
+                                    <%--<h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>--%>
+                                    <%--<p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>--%>
+                                <%--</div>--%>
+                            <%--</div></c:forEach>--%>
+                               <%--<h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>--%>
+                                <%--<h1><b>发货方：</b>--%>
+                                    <%--<span>${pb.pidUserName}</span>--%>
+                                    <%--<c:if test="${pb.orderType==2 && pb.sendType==1}">--%>
+                                        <%--<b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">--%>
+                                        <%--<b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">--%>
+                                        <%--<b>类型：</b><span>补货</span></c:if>--%>
+                                <%--</h1>--%>
+                            <%--<div class="ding">--%>
+                                <%--<p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>--%>
+                                <%--<span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">--%>
+                                    <%--继续支付</a></c:if>--%>
+                                <%--</span><c:if test="${pb.orderStatus ==8}">--%>
+                                <%--<span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">--%>
+                                    <%--确认收货--%>
+                                <%--</span></c:if>--%>
+                            <%--</div>--%>
+                        <%--</section>--%>
+                        <%--</c:forEach>--%>
+                    <%--</div>--%>
+                    <%--</c:forEach>--%>
+
                     <div class="all">
-                        <c:forEach items="${pbs}" var="pb">
-                        <section class="sec1">
-                           <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
-                            <h2>
-                                订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
-                                <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
-                            </h2>
-                            <c:forEach items="${pb.pfBorderItems}" var="pbi">
-                            <div class="shangpin">
-                                <p class="photo">
-                                   <a href="<%=path%>/static/html/xiangqing.html">
-                                        <img src="${pbi.skuUrl}" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>${pbi.skuName}</h2>
-                                    <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
-                                </div>
-                            </div></c:forEach>
-                               <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                        <c:forEach items="${pfBorders}" var="pb">
+                            <section class="sec1">
+                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                <h2>
+                                    订单号：<span>${pb.orderCode}</span>
+                                    <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                    <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                </h2>
+                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                    <div class="shangpin">
+                                        <p class="photo">
+                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                                <img src="${pbi.skuUrl}" alt="">
+                                            </a>
+                                        </p>
+                                        <div>
+                                            <h2>${pbi.skuName}</h2>
+                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                            <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                        </div>
+                                    </div></c:forEach>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -72,248 +119,243 @@
                                         <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
                                         <b>类型：</b><span>补货</span></c:if>
                                 </h1>
-                            <div class="ding">
-                                <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <div class="ding">
+                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
                                     继续支付</a></c:if>
                                 </span><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
-                            </div>
-                        </section>
+                                </div>
+                            </section>
                         </c:forEach>
                     </div>
-                    </c:forEach>
-
-                    <%--<div class="all">           --%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="fa">--%>
-                                    <%--确认收货--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="jixu">--%>
-                                    <%--继续支付--%>
-                                <%--</span>--%>
-                                <%--<span class="quxiao">--%>
-                                    <%--取消订单--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                    <%--</div>--%>
-                    <%--<div class="all">           --%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="fa">--%>
-                                    <%--确认收货--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="jixu">--%>
-                                    <%--继续支付--%>
-                                <%--</span>--%>
-                                <%--<span class="quxiao">--%>
-                                    <%--取消订单--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                    <%--</div>--%>
-                    <%--<div class="all">           --%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="fa">--%>
-                                    <%--确认收货--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="jixu">--%>
-                                    <%--继续支付--%>
-                                <%--</span>--%>
-                                <%--<span class="quxiao">--%>
-                                    <%--取消订单--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                    <%--</div>--%>
-                    <%--<div class="all">           --%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="fa">--%>
-                                    <%--确认收货--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                        <%--<section class="sec1">--%>
-                           <%--<p>时间：<span>2016-2-24</span><span>16:24</span></p>--%>
-                            <%--<h2>--%>
-                                <%--订单号：<span>e12093891283091283</span>--%>
-                                <%--<b>待发货</b>--%>
-                            <%--</h2>--%>
-                            <%--<div class="shangpin">--%>
-                                <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
-                                        <%--<img src="<%=path%>/static/images/shenqing_1.png" alt="">--%>
-                                    <%--</a>--%>
-                                <%--</p>--%>
-                                <%--<div>--%>
-                                    <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                                    <%--<h3>规格：<span>默认</span><b>x1000</b></h3>--%>
-                                    <%--<p class="defult">零售价： <span style="float:none;color:#FF6A2A;">￥123</span></p>--%>
-                                    <%--<p><b>合计：￥2500.00</b>(共<span>100</span>件商品 运费<span>￥300</span>)</p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="ding">--%>
-                                <%--<p><a href="chakanxiangqing.html">查看订单详情</a></p>--%>
-                                <%--<span class="jixu">--%>
-                                    <%--继续支付--%>
-                                <%--</span>--%>
-                                <%--<span class="quxiao">--%>
-                                    <%--取消订单--%>
-                                <%--</span>--%>
-                            <%--</div>--%>
-                        <%--</section>--%>
-                    <%--</div>--%>
+                    <div class="all">
+                        <c:forEach items="${pfBorders}" var="pb">
+                            <section class="sec1">
+                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                <h2>
+                                    订单号：<span>${pb.orderCode}</span>
+                                    <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                    <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                </h2>
+                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                    <div class="shangpin">
+                                        <p class="photo">
+                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                                <img src="${pbi.skuUrl}" alt="">
+                                            </a>
+                                        </p>
+                                        <div>
+                                            <h2>${pbi.skuName}</h2>
+                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                            <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                        </div>
+                                    </div></c:forEach>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                                <h1><b>发货方：</b>
+                                    <span>${pb.pidUserName}</span>
+                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                        <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                        <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                        <b>类型：</b><span>补货</span></c:if>
+                                </h1>
+                                <div class="ding">
+                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
+                                </span><c:if test="${pb.orderStatus ==8}">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                                    确认收货
+                                </span></c:if>
+                                </div>
+                            </section>
+                        </c:forEach>
+                    </div>
+                    <div class="all">
+                        <c:forEach items="${pfBorders}" var="pb">
+                            <section class="sec1">
+                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                <h2>
+                                    订单号：<span>${pb.orderCode}</span>
+                                    <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                    <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                </h2>
+                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                    <div class="shangpin">
+                                        <p class="photo">
+                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                                <img src="${pbi.skuUrl}" alt="">
+                                            </a>
+                                        </p>
+                                        <div>
+                                            <h2>${pbi.skuName}</h2>
+                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                            <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                        </div>
+                                    </div></c:forEach>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                                <h1><b>发货方：</b>
+                                    <span>${pb.pidUserName}</span>
+                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                        <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                        <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                        <b>类型：</b><span>补货</span></c:if>
+                                </h1>
+                                <div class="ding">
+                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
+                                </span><c:if test="${pb.orderStatus ==8}">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                                    确认收货
+                                </span></c:if>
+                                </div>
+                            </section>
+                        </c:forEach>
+                    </div>
+                    <div class="all">
+                        <c:forEach items="${pfBorders}" var="pb">
+                            <section class="sec1">
+                                <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                <h2>
+                                    订单号：<span>${pb.orderCode}</span>
+                                    <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                    <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                </h2>
+                                <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                    <div class="shangpin">
+                                        <p class="photo">
+                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                                <img src="${pbi.skuUrl}" alt="">
+                                            </a>
+                                        </p>
+                                        <div>
+                                            <h2>${pbi.skuName}</h2>
+                                            <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                            <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                        </div>
+                                    </div></c:forEach>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                                <h1><b>发货方：</b>
+                                    <span>${pb.pidUserName}</span>
+                                    <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                        <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                        <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                        <b>类型：</b><span>补货</span></c:if>
+                                </h1>
+                                <div class="ding">
+                                    <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
+                                </span><c:if test="${pb.orderStatus ==8}">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                                    确认收货
+                                </span></c:if>
+                                </div>
+                            </section>
+                        </c:forEach>
+                    </div>
+                        <div class="all">
+                            <c:forEach items="${pfBorders}" var="pb">
+                                <section class="sec1">
+                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                    <h2>
+                                        订单号：<span>${pb.orderCode}</span>
+                                        <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                        <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                        <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    </h2>
+                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                        <div class="shangpin">
+                                            <p class="photo">
+                                                <a href="<%=path%>/static/html/xiangqing.html">
+                                                    <img src="${pbi.skuUrl}" alt="">
+                                                </a>
+                                            </p>
+                                            <div>
+                                                <h2>${pbi.skuName}</h2>
+                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                                <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                            </div>
+                                        </div></c:forEach>
+                                    <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                                    <h1><b>发货方：</b>
+                                        <span>${pb.pidUserName}</span>
+                                        <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                            <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                            <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                            <b>类型：</b><span>补货</span></c:if>
+                                    </h1>
+                                    <div class="ding">
+                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
+                                </span><c:if test="${pb.orderStatus ==8}">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                                    确认收货
+                                </span></c:if>
+                                    </div>
+                                </section>
+                            </c:forEach>
+                        </div>
+                        <div class="all">
+                            <c:forEach items="${pfBorders}" var="pb">
+                                <section class="sec1">
+                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                    <h2>
+                                        订单号：<span>${pb.orderCode}</span>
+                                        <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                        <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                        <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    </h2>
+                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                        <div class="shangpin">
+                                            <p class="photo">
+                                                <a href="<%=path%>/static/html/xiangqing.html">
+                                                    <img src="${pbi.skuUrl}" alt="">
+                                                </a>
+                                            </p>
+                                            <div>
+                                                <h2>${pbi.skuName}</h2>
+                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                                <p class="defult">实收款：<span style="float:none;color:#FF6A2A;font-size: 12px">￥${pbi.totalPrice}</span></p>
+                                            </div>
+                                        </div></c:forEach>
+                                    <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>( 运费：到付)</h1>
+                                    <h1><b>发货方：</b>
+                                        <span>${pb.pidUserName}</span>
+                                        <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                            <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                            <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                            <b>类型：</b><span>补货</span></c:if>
+                                    </h1>
+                                    <div class="ding">
+                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
+                                    继续支付</a></c:if>
+                                </span><c:if test="${pb.orderStatus ==8}">
+                                <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
+                                    确认收货
+                                </span></c:if>
+                                    </div>
+                                </section>
+                            </c:forEach>
+                        </div>
                 </main>
            </div>
            <div class="back_shouhuo" style="display: none">
@@ -341,14 +383,85 @@
        </div>
        <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
        <script src="<%=path%>/static/js/commonAjax.js"></script>
+       <script src="<%=path%>/static/js/jinhuoshijian.js"></script>
        <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
        <script>
+           $(function(){
             $("li").on("click",function(){
                 var index=$(this).index();
                 $("li").children("a").removeClass("on")
                 $(this).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
+                $.ajax({
+                    type:"POST",
+                    url : "<%=path%>/borderManage/clickType.do",
+                    data:{index:index},
+                    dataType:"Json",
+                    success:function(data){
+                        var trHtml = "";
+                        var orderStatusName="";
+                        var StatusName="";
+                        var orderTypeName="";
+                        var sendTypeName="";
+                        $.each(data, function(i, pfBorder) {
+                            var time2 = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
+                            trHtml+="<section class='sec1'>";
+                            trHtml+="<p>时间: <span>"+time2 +"</span></p>";
+                            if(pfBorder.orderStatus==0){
+                                StatusName="待付款";
+                            }else if(pfBorder.orderStatus ==6 && pfBorder.sendType==1){
+                                StatusName="排单中";
+                            }else if(pfBorder.orderStatus ==7){
+                                StatusName="待发货";
+                            }else if(pfBorder.orderStatus ==8){
+                                StatusName="已发货";
+                            }else if(pfBorder.orderStatus ==8){
+                                StatusName="交易成功";
+                            }
+                            trHtml+="<h2>订单号：<b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";
+                            $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
+                                trHtml+="<div class='shangpin'>";
+                                trHtml+=" <p class=\"photo\">";
+                                trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
+                                trHtml+="<img src=\""+pfBorderItem.skuUrl+"\" alt=\"\"></a></p>";
+                                trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
+                                trHtml+="<p class=\"defult\">实收款：<span style=\"float:none;color:#FF6A2A;font-size: 12px\">￥"+pfBorderItem.totalPrice+"</span></p></div></div>";
+                            });
+                            trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>( 运费：到付)</h1>";
+                            trHtml+="<h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
+                            if(pfBorder.orderType==2 && pfBorder.sendType==1){
+                                orderTypeName="拿货";
+                            }else if(pfBorder.orderType==0){
+                                orderTypeName="合伙订单";
+                            }else if(pfBorder.orderType==1){
+                                orderTypeName="补货";
+                            }
+                            trHtml+="<b>类型：</b><span>"+pfBorder.pidUserName+"</span></h1>";
+                            trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
+                            if(pfBorder.sendType==0){
+                                sendTypeName="选择拿货方式";
+                            }else if(pfBorder.orderStatus ==0 && pfBorder.sendType!=0){
+                                sendTypeName="继续支付";
+                            }
+                            trHtml+="<span class=\"jixu\">"+sendTypeName+"</a></span>";
+                            if(pfBorder.orderStatus ==8){
+                                orderStatusName="确认收货";
+                            }
+                            trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo(\" '+pfBorder.orderStatus+'\",\" '+pfBorder.id+' \")\">";
+                            trHtml+=""+orderStatusName+"</span></div></section>";
+                        });
+                        $(".all").eq(index).html(trHtml);
+                    }
+                })
             })
+           })
+            $(document).ready(function(){
+                var index=${index};
+                $("li").children("a").removeClass("on")
+                $("li").eq(index).children("a").addClass("on");
+                $(".all").eq(index).show().siblings().hide();
+            });
+
 
             $(".fa").on("click",function(){
                 $(".back").css("display","-webkit-box");
@@ -365,7 +478,7 @@
                     var aa="querenshouhuo_"+id;
                     $.ajax({
                         type:"POST",
-                        url : "<%=path%>/border/closeDeal.do",
+                        url : "<%=path%>/borderManage/closeDeal.do",
                         data:{orderStatus:3,shipStatus:9,orderId:id},
                         dataType:"Json",
                         success:function(date){

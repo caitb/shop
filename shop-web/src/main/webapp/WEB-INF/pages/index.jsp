@@ -55,13 +55,13 @@
                 </div></c:if>
                 <nav>
                  <ul>
-                        <li class="market">
+                        <li>
                                 <a class="herf" href="<%=path%>/marketGood/market">
                                 <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
                                 <span>好货市场</span></a>
                         </li>
-                        <li class="market" onclick="javascript:window.location.replace('<%=basePath%>product/user/${user.id}');">
-                            <a class="herf" href="javascript:;"></a>
+                        <li class="market">
+                            <a class="herf" href="<%=basePath%>product/user/${user.id}"></a>
                                 <h1><img src="<%=path%>/static/images/1%20(2).png" style="height: 18px;margin-top: 2px;"></h1>
                                 <span>商品管理</span></a>
                         </li>
@@ -74,15 +74,15 @@
             </nav>
                 <nav>
                      <ul>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamlist');"><a class="herf" href="javascript:void(0);">
+                            <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
                                     <h1><img src="<%=path%>/static/images/1%20(4).png" alt=""><span>1</span></h1>
                                     <span>我的下级</span></a>
                             </li>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=36');"><a class="herf" href="javascript:void(0);">
+                            <li class="market"><a class="herf" href="<%=basePath%>developing/sharelink?skuId=36">
                                     <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""></h1>
                                     <span>发展合伙人</span></a>
                             </li>
-                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>userCertificate/userList/${user.id}');"><a class="herf" href="javascript:;">
+                            <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
                                     <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
                                     <span>我的授权书 </span></a>
                             </li>

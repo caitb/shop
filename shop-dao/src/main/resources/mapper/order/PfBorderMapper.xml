@@ -202,8 +202,8 @@
         <if test="orderStatus != null">
             AND order_status = #{orderStatus,jdbcType=INTEGER}
         </if>
-        <if test="shipStatus != null">
-            AND ship_status = #{shipStatus,jdbcType=INTEGER}
+        <if test="sendType != null">
+            AND send_type = #{sendType,jdbcType=INTEGER}
         </if>
     </select>
     <select id="selectByUserPid" resultMap="BaseResultMap" parameterType="java.lang.Long">

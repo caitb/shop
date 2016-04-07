@@ -14,6 +14,6 @@
 index
 <hr/>
 <hr/>
-<img src="/static/images/wx.jpg">
+<img style="width: 200px;height: 200px" src="/static/images/wx.jpg">
 </body>
 </html>

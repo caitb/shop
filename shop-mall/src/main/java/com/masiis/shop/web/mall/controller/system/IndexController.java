@@ -15,6 +15,6 @@ public class IndexController extends BaseController {
     @RequestMapping("/index")
     @ResponseBody
     public String index(){
-        return "index_controller";
+        return "<div><img src='/static/images/wx.jpg'></div>";
     }
 }

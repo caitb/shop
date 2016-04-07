@@ -29,7 +29,7 @@ body .wrap .banner {
   -moz-box-orient: vertical;
   -moz-box-align: center;
   -moz-box-pack: center;
-  background: url("../images/bdbanner.png") no-repeat;
+  background: url("../../images/bdbanner.png") no-repeat;
   background-size: 100% 100%;
   color: white;
 }
@@ -79,7 +79,7 @@ body .wrap .rodia {
   text-align: right;
 }
 body .wrap .rodia label {
-  background: url(../images/zhuced.png) no-repeat 1px;
+  background: url(../../images/zhuced.png) no-repeat 1px;
   background-size: 6%;
   font-size: 12px;
   color: #333333;
@@ -96,7 +96,7 @@ body .wrap .rodia input {
   display: none;
 }
 body .wrap .rodia .on {
-  background: url(../images/zhucedb.png) no-repeat 1px;
+  background: url(../../images/zhucedb.png) no-repeat 1px;
   background-size: 7%;
   padding-left: 15px;
 }

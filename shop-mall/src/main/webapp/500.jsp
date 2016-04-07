@@ -12,10 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>服务器错误</title>
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/500,404.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common/500,404.css/css/500,404.css">
 </head>
 <body>
-<img src="<%=path%>/static/images/500.png" alt="">
+<img src="<%=path%>/static/images/common/500.png/images/500.png" alt="">
 <p>
     <a href=""></a>
     <a href="">返回上一页</a>

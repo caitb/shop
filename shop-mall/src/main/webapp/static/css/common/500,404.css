@@ -23,10 +23,10 @@ p a {
   text-align: center;
 }
 p a:nth-child(2) {
-  background: url("../images/fanhui.png") no-repeat 5px;
+  background: url("../../images/fanhui.png") no-repeat 5px;
   background-size: 15px;
 }
 p a:nth-child(3) {
-  background: url("../images/shouye.png") no-repeat 5px;
+  background: url("../../images/shouye.png") no-repeat 5px;
   background-size: 15px;
 }

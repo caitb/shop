@@ -78,7 +78,7 @@
                                     <h1><img src="<%=path%>/static/images/index_nav%20(7).png" alt=""><span>1</span></h1>
                                     <span>我的下级</span></a>
                             </li>
-                            <li class="market"><a class="herf" href="javascript:;">
+                            <li class="market" onclick="javascript:window.location.replace('<%=basePath%>developing/ui');"><a class="herf" href="javascript:;">
                                     <h1><img src="<%=path%>/static/images/index_nav(9).png" alt=""></h1>
                                     <span>发展合伙人</span></a>
                             </li>

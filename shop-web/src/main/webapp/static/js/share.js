@@ -71,10 +71,10 @@ wx.ready(function () {
     wx.onMenuShareWeibo(shareData);
 
     $('#sharePY').on('click', function(){
-        if(typeof wx == 'undefined'){
+        if(typeof WeixinJSBridge == 'undefined'){
             alert("请先关注麦链社交商城，通过微信分享文章 ");
         }else{
-            wx.invoke('shareTimeline',shareData);
+            WeixinJSBridge.invoke('shareTimeline',shareData);
         }
     });
 

@@ -37,7 +37,7 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUser" useGeneratedKeys="true" keyProperty="id">
-         insert into com_user (id, create_time, openid,
+        insert into com_user (id, create_time, openid,
             wx_nk_name, wx_id, wx_head_img,
             access_token, refresh_token, atoken_expire,
             rtoken_expire, real_name, mobile,

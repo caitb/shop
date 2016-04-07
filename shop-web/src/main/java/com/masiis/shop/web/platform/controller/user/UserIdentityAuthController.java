@@ -149,4 +149,13 @@ public class UserIdentityAuthController extends BaseController {
         }
         return object.toJSONString();
     }
+    /**
+     * 跳转到待审核界面
+     * @author hanzengzhi
+     * @date 2016/4/6 15:05
+     */
+    @RequestMapping(value = "toWaitIdentityPage.html")
+    public String toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response){
+        return "platform/user/daishenhe";
+    }
 }

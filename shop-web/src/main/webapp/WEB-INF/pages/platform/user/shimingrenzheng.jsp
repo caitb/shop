@@ -130,11 +130,11 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    alert("提交成功！");
-                    window.location.href = "${goToURL}";
+                    window.location.href = "<%=path%>/identityAuth/toWaitIdentityPage.html";
                 }
                 else {
                     alert(data.message);
+                    return false;
                 }
             }
         });

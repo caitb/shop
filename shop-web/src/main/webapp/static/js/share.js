@@ -70,6 +70,14 @@ wx.ready(function () {
     wx.onMenuShareQZone(shareData);
     wx.onMenuShareWeibo(shareData);
 
+    $('#sharePY').on('click', function(){
+        if(typeof WeixinJSBridge == 'undefined'){
+            alert("请先关注麦链社交商城，通过微信分享文章 ");
+        }else{
+            WeixinJSBridge.invoke('shareTimeline',shareData);
+        }
+    });
+
     function decryptCode(code, callback) {
         $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
             if (res.errcode == 0) {

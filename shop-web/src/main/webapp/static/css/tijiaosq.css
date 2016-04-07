@@ -22,6 +22,10 @@
   line-height: 38px;
   font-size: 14px;
 }
+.wrap .box .cp h1{
+  font-size:12px;
+  text-indent: 20px;
+}
 .wrap .box .cp span {
   font-size: 14px;
 }

@@ -38,24 +38,25 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUser" useGeneratedKeys="true" keyProperty="id">
         insert into com_user (id, create_time, openid,
-        wx_nk_name, wx_id, wx_head_img,
-        access_token, refresh_token, atoken_expire,
-        rtoken_expire, real_name, mobile,
-        id_card, id_card_front_url, id_card_back_url,
-        province_id, province_name, city_id,
-        city_name, region_id, region_name,
-        address,send_type, is_agent, is_verified, sex,audit_status,audit_reason
-        )
+            wx_nk_name, wx_id, wx_head_img,
+            access_token, refresh_token, atoken_expire,
+            rtoken_expire, real_name, mobile,
+            id_card, id_card_front_url, id_card_back_url,
+            province_id, province_name, city_id,
+            city_name, region_id, region_name,
+            address, send_type, is_agent,
+            sex, audit_status, audit_reason
+            )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{openid,jdbcType=VARCHAR},
-        #{wxNkName,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR},
-        #{accessToken,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, #{atokenExpire,jdbcType=TIMESTAMP},
-        #{rtokenExpire,jdbcType=TIMESTAMP}, #{realName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
-        #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR}, #{idCardBackUrl,jdbcType=VARCHAR},
-        #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
-        #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
-        #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
-        #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}
-        )
+            #{wxNkName,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR},
+            #{accessToken,jdbcType=VARCHAR}, #{refreshToken,jdbcType=VARCHAR}, #{atokenExpire,jdbcType=TIMESTAMP},
+            #{rtokenExpire,jdbcType=TIMESTAMP}, #{realName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+            #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR}, #{idCardBackUrl,jdbcType=VARCHAR},
+            #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER},
+            #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER},
+            #{sex,jdbcType=INTEGER}, #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR}
+            )
     </insert>
 
     <update id="updatePhone" parameterType="com.masiis.shop.dao.po.ComUser">

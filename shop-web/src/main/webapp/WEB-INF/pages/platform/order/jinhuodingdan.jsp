@@ -121,9 +121,8 @@
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                    <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                    <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -166,9 +165,8 @@
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                    <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                    <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -211,9 +209,8 @@
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                    <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                    <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -256,9 +253,8 @@
                                 </h1>
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                    <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                    <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -301,9 +297,9 @@
                                     </h1>
                                     <div class="ding">
                                         <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                        <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                        <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if>
+                                        <c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -346,9 +342,8 @@
                                     </h1>
                                     <div class="ding">
                                         <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
-                                <span class="jixu"><c:if test="${pb.sendType==0}">选择拿货方式</c:if> <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}">
-                                    继续支付</a></c:if>
-                                </span><c:if test="${pb.orderStatus ==8}">
+                                        <c:if test="${pb.sendType==0}"><span class="jixu">选择拿货方式</span></c:if>
+                                        <c:if test="${pb.orderStatus ==0 && pb.sendType!=0}"><span class="jixu">继续支付</span></c:if><c:if test="${pb.orderStatus ==8}">
                                 <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                     确认收货
                                 </span></c:if>
@@ -440,15 +435,21 @@
                             trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
                             if(pfBorder.sendType==0){
                                 sendTypeName="选择拿货方式";
+                                trHtml+="<span class=\"jixu\">"+sendTypeName+"</span></a>";
                             }else if(pfBorder.orderStatus ==0 && pfBorder.sendType!=0){
                                 sendTypeName="继续支付";
+                                trHtml+="<span class=\"jixu\">"+sendTypeName+"</span></a>";
+                            }else{
+                                trHtml+="</a>";
                             }
-                            trHtml+="<span class=\"jixu\">"+sendTypeName+"</a></span>";
+//                            trHtml+="<span class=\"jixu\">"+sendTypeName+"</span></a>";
                             if(pfBorder.orderStatus ==8){
                                 orderStatusName="确认收货";
+                                trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo(\""+pfBorder.orderStatus+"\",\""+pfBorder.id+" \")\">"+orderStatusName+"</span>";
+                            }else{
+                                trHtml+="";
                             }
-                            trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo(\" '+pfBorder.orderStatus+'\",\" '+pfBorder.id+' \")\">";
-                            trHtml+=""+orderStatusName+"</span></div></section>";
+                            trHtml+="</div></section>";
                         });
                         $(".all").eq(index).html(trHtml);
                     }

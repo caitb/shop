@@ -30,7 +30,7 @@
         <div class="tai">
             <img src="<%=path%>/static/images/icon_43.png" alt="" style="width:40px;height: 40px;">
             <h1>您的资料审核失败了！</h1>
-            <p>失败原因:<span>1111111111</span></p>
+            <p>失败原因:<span>${comUser.auditReason}</span></p>
         </div>
         <p class="cp">
             <span>实名认证通过后才能申请合伙人:</span>

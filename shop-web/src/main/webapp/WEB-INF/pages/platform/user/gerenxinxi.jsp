@@ -50,7 +50,7 @@
         </div>
         <div class="sec1" id="capitalId" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 7px;  background-size: 20px;margin-bottom: 0;">
             <p>我的资金</p>
-            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
+            <p><b>可提现 ￥${comUserAccount.extractableFee}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
         </div>
         <div class="sec1" id="bankCardId" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 7px;  background-size: 20px;">
             <p>我的银行卡</p>

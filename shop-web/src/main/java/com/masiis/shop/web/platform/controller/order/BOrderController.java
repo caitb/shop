@@ -360,8 +360,9 @@ public class BOrderController extends BaseController {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType() == 0) {
                     successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                }else{
+                    successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
                 }
-                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else if (pfBorder.getOrderType() == 1) {
                 successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
             } else {

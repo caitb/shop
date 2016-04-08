@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.dao.mall.order.SfOrderItemDistributionExtendMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.po.SfOrderItemDistribution;
 import org.apache.log4j.Logger;
@@ -17,6 +18,8 @@ public class SfOrderItemDistributionService {
 
     @Autowired
     private SfOrderItemDistributionMapper sfOrderItemDistributionMapper;
+    @Autowired
+    private SfOrderItemDistributionExtendMapper sfOrderItemDistributionExtendMapper;
 
     private final Logger log = Logger.getLogger(SfOrderItemDistributionService.class);
 
@@ -30,6 +33,6 @@ public class SfOrderItemDistributionService {
     }
 
     public List<SfOrderItemDistribution> findCommissionRecordByUserId(Long userId){
-        return sfOrderItemDistributionMapper.selectCommissionRecordByUserId(userId);
+        return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
     }
 }

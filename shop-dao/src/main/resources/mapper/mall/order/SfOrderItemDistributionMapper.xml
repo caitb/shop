@@ -70,17 +70,6 @@
         from sf_order_item_distribution
     </select>
 
-    <select id="selectCommissionRecordByUserId" resultMap="CommissionRecordResultMap">
-        select dis.*,wx.nk_name as nk_name,sku.name as sku_name,od.create_time as order_time,sku.id as sku_id
-            from sf_order_item_distribution dis
-            LEFT JOIN sf_order od on dis.sf_order_id = od.id
-            LEFT JOIN com_user_new u on dis.user_id = u.id
-            LEFT JOIN com_wx_user wx on u.id = wx.com_user_id
-            LEFT JOIN sf_sku_distribution sdis on dis.sf_sku_distribution_id = sdis.id
-            LEFT JOIN com_sku sku on sdis.sku_id = sku.id
-        where dis.is_counting = 1 and dis.user_id = #{0}
-    </select>
-
     <select id="selectCountByCondition" resultType="java.lang.Integer" parameterType="com.masiis.shop.dao.po.SfOrderItemDistribution">
         SELECT COUNT(*) FROM sf_order_item_distribution WHERE 1=1
         <if test="createTime != null">

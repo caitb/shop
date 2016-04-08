@@ -23,5 +23,4 @@ public interface SfOrderItemDistributionMapper {
 
     int selectCountByCondition(SfOrderItemDistribution record);
 
-    List<SfOrderItemDistribution> selectCommissionRecordByUserId(Long userId);
 }

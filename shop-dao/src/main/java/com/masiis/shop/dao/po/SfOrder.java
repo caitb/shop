@@ -7,10 +7,12 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.mallBeans.BaseOrder;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SfOrder {
+public class SfOrder extends BaseOrder {
 
     private Long id;
     /**

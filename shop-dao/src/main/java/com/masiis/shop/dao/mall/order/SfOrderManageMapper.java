@@ -8,9 +8,10 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrder;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface SfOrderManageMapper {
-    List<SfOrder> selectByUserId(Long userId, Integer orderStatus, Integer sendType);
+    List<SfOrder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 }

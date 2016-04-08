@@ -10,15 +10,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链商城</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/wodedingdan.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/wodedingdan.css">
 </head>
 <body>
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="zhifu.html"><img src="../images/xq_rt.png" alt=""></a>
+                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>
                 <nav>
@@ -31,7 +31,7 @@
                     </ul>
                 </nav>
                 <main>
-                    <div class="all">           
+                    <div class="all"><c:forEach items="${sfOrders}" var="pb">
                         <section class="sec1">
                            <p>时间：<span>2016-2-24</span><span>16:24</span></p>
                             <h2>
@@ -40,8 +40,32 @@
                             </h2>
                             <div class="shangpin">
                                 <p class="photo">
-                                   <a href="../html/xiangqing.html">
-                                        <img src="../images/shenqing_1.png" alt="">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                                    </a>
+                                </p>
+                                <div>
+                                    <h2>抗引力——快速瘦脸精华<b>x1000</b></h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥123</span></p>
+                                </div>
+                            </div>
+                            <h1>共12家商品 合计：￥1233 （含运费￥50.00）</h1>
+                            <div class="ding">
+                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                            </div>
+                        </section></c:forEach>
+                    </div>
+                     <div class="all">           
+                        <section class="sec1">
+                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
+                            <h2>
+                                订单号：<span>e12093891283091283</span>
+                                <b>待发货</b>
+                            </h2>
+                            <div class="shangpin">
+                                <p class="photo">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
                                     </a>
                                 </p>
                                 <div>
@@ -64,8 +88,8 @@
                             </h2>
                             <div class="shangpin">
                                 <p class="photo">
-                                   <a href="../html/xiangqing.html">
-                                        <img src="../images/shenqing_1.png" alt="">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
                                     </a>
                                 </p>
                                 <div>
@@ -88,8 +112,8 @@
                             </h2>
                             <div class="shangpin">
                                 <p class="photo">
-                                   <a href="../html/xiangqing.html">
-                                        <img src="../images/shenqing_1.png" alt="">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
                                     </a>
                                 </p>
                                 <div>
@@ -112,32 +136,8 @@
                             </h2>
                             <div class="shangpin">
                                 <p class="photo">
-                                   <a href="../html/xiangqing.html">
-                                        <img src="../images/shenqing_1.png" alt="">
-                                    </a>
-                                </p>
-                                <div>
-                                    <h2>抗引力——快速瘦脸精华<b>x1000</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥123</span></p>
-                                </div>
-                            </div>
-                            <h1>共12家商品 合计：￥1233 （含运费￥50.00）</h1>
-                            <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
-                            </div>
-                        </section>
-                    </div>
-                     <div class="all">           
-                        <section class="sec1">
-                           <p>时间：<span>2016-2-24</span><span>16:24</span></p>
-                            <h2>
-                                订单号：<span>e12093891283091283</span>
-                                <b>待发货</b>
-                            </h2>
-                            <div class="shangpin">
-                                <p class="photo">
-                                   <a href="../html/xiangqing.html">
-                                        <img src="../images/shenqing_1.png" alt="">
+                                   <a href="<%=path%>/static/html/xiangqing.html">
+                                        <img src="<%=path%>/static/images/shenqing_1.png" alt="">
                                     </a>
                                 </p>
                                 <div>
@@ -171,7 +171,10 @@
            <div class="back">
                
            </div>
-       <script src="../js/jquery-1.8.3.min.js"></script>
+       <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+       <script src="<%=path%>/static/js/commonAjax.js"></script>
+       <script src="<%=path%>/static/js/jinhuoshijian.js"></script>
+       <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
        <script>
             $("li").on("click",function(){
                 var index=$(this).index();

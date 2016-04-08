@@ -56,7 +56,7 @@
                 <nav>
                  <ul>
                         <li>
-                                <a class="herf" href="<%=path%>/marketGood/market">
+                                <a href="<%=path%>/marketGood/market">
                                 <h1><img src="<%=path%>/static/images/1%20(1).png" alt=""></h1>
                                 <span>好货市场</span></a>
                         </li>

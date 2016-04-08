@@ -174,7 +174,7 @@ public class PayBOrderService {
                 String value2 = "授权期限：" + beginTime + "至" + endTime;
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
-                pfUserCertificate.setImgUrl(picName);
+                pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.updateById(pfUserCertificate);
                 pfUserSku.setCode(pfUserCertificate.getCode());
                 pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
@@ -268,7 +268,7 @@ public class PayBOrderService {
         log.info("<10>修改订单状态为已完成");
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
         //修改订单拿货类型
-        if(pfBorder.getSendType()==0){
+        if (pfBorder.getSendType() == 0) {
             pfBorder.setSendType(1);
         }
         pfBorderMapper.updateById(pfBorder);

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserAccountMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserAccount" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL" />
+        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL" />
+        <result column="version" property="version" jdbcType="BIGINT" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_account
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserAccount" >
+        insert into sf_user_account (id, create_time, user_id, 
+            extractable_fee, counting_fee, version
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{extractableFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{version,jdbcType=BIGINT}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserAccount" >
+        update sf_user_account
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            extractable_fee = #{extractableFee,jdbcType=DECIMAL},
+            counting_fee = #{countingFee,jdbcType=DECIMAL},
+            version = #{version,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, extractable_fee, counting_fee, version
+        from sf_user_account
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, user_id, extractable_fee, counting_fee, version
+        from sf_user_account
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, extractable_fee, counting_fee, version
+        from sf_user_account
+    </select>
+
+</mapper>

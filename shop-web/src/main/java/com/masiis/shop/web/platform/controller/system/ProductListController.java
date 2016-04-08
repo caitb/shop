@@ -59,15 +59,15 @@ public class ProductListController extends BaseController {
             if (pfUserSku !=null){
                 indexComSku.setIsPay(pfUserSku.getIsPay());
             }
-            if (user != null && user.getIsAgent() == 1) {
+//            if (user != null && user.getIsAgent() == 1) {
                 //确定代理权限
-                indexComSku.setIsPartner(1);
+//                indexComSku.setIsPartner(1);
                 //显示优惠区间
                 indexComSku.setMaxDiscount(productService.getMaxDiscount());
                 indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
-            } else {
-                indexComSku.setDiscountLevel("成为合伙人可查看");
-            }
+//            } else {
+//                indexComSku.setDiscountLevel("成为合伙人可查看");
+//            }
             Com.add(indexComSku);
         }
         ModelAndView modelAndView = new ModelAndView();

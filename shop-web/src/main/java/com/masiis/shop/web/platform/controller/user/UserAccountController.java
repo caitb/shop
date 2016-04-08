@@ -46,7 +46,7 @@ public class UserAccountController extends BaseController{
         ComUser user = getComUser(request);
         log.info("进入我的资产首页");
         if(user == null){
-            user = userService.getUserByOpenid("o2-m4wZWlG4mdln4SQJRo29YnL2U");
+            throw new BusinessException("用户未登录!");
         }
         //String kid = aesEncryptBySalt(String.valueOf(user.getId()), SysConstants.COOKIE_AES_KEY, SysConstants.COOKIE_KEY_SALT);
         log.info("用户id："+user.getId());
@@ -102,7 +102,7 @@ public class UserAccountController extends BaseController{
         JSONArray jsonArray = null;
         try{
             if(user == null){
-                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+                throw new BusinessException("用户未登录!");
             }
             List<PfUserBill> userBills;
             //使用分页方式查询

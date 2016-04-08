@@ -85,6 +85,7 @@ public class BOrderController extends BaseController {
                 pfUserSku = new UserApplyController().checkParentData(pUser, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
+            comUser = userService.getUserById(comUser.getId());
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
             //折扣后单价

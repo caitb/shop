@@ -28,7 +28,7 @@
     <p>实名认证已经提交</p>
     <h2>您的实名认证已经提交，审核结果会在1个工作日内下发到您的手机请注意查收。</h2>
 </div>
-<a href="<%=path%>/static/html/index.html" class="jixu">
+<a href="<%=basePath%>marketGood/market" class="jixu">
     返回市场
 </a>
 </body>

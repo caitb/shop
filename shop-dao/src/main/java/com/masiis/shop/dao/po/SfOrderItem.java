@@ -7,10 +7,12 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SfOrderItem {
+public class SfOrderItem extends SfOrderItemImage {
 
     private Long id;
     /**

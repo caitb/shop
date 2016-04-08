@@ -178,8 +178,13 @@
                 $("li").children("a").removeClass("on")
                 $(this).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
-                alert(index)
             })
+            $(document).ready(function(){
+                var index=${index};
+                $("li").children("a").removeClass("on")
+                $("li").eq(index).children("a").addClass("on");
+                $(".all").eq(index).show().siblings().hide();
+            });
             $(".sh").on("click",function(){
                 $(".back").css("display","-webkit-box");
                 $(".shouhuo").css("display","-webkit-box");

@@ -52,7 +52,6 @@ public class WxPayController extends BaseController{
             if(user == null){
                 // 未知原因错误
                 log.error("未知原因错误");
-                user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
             }
         } catch (Exception e) {
             log.error("" + e.getMessage());

@@ -50,7 +50,7 @@ public class UserExtractApplyController extends BaseController {
     public String toApply(HttpServletRequest request, Model model){
         ComUser user = getComUser(request);
         if(user == null) {
-            user = userService.getUserByOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
+            throw new BusinessException("用户未登录!");
         }
         ComUserAccount account = accountService.findAccountByUserid(user.getId());
         if(account == null){

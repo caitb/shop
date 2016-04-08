@@ -121,7 +121,7 @@ public class ProductController {
                 for(int i=0; i<discounts.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setAgentLevelId(new Integer(i + 1));
-                    pfSkuAgent.setDiscount(new BigDecimal(discounts[i]));
+                    pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
@@ -131,7 +131,7 @@ public class ProductController {
                 List<SfSkuDistribution> sfSkuDistributions = new ArrayList<>();
                 for(int i=0; i<distributionDiscounts.length; i++){
                     SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
-                    sfSkuDistribution.setDiscount(new BigDecimal(distributionDiscounts[i]));
+                    sfSkuDistribution.setDiscount(new BigDecimal(Double.parseDouble(distributionDiscounts[i])*0.01));
                     sfSkuDistribution.setSort(i+1);
 
                     sfSkuDistributions.add(sfSkuDistribution);
@@ -223,7 +223,7 @@ public class ProductController {
                 for(int i=0; i<discounts.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setId(skuAgentIds[i]);
-                    pfSkuAgent.setDiscount(new BigDecimal("0."+discounts[i]));
+                    pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
@@ -234,7 +234,7 @@ public class ProductController {
                 for(int i=0; i<distributionDiscounts.length; i++){
                     SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
                     sfSkuDistribution.setId(skuDistributionIds[i]);
-                    sfSkuDistribution.setDiscount(new BigDecimal("0."+distributionDiscounts[i]));
+                    sfSkuDistribution.setDiscount(new BigDecimal(Double.parseDouble(distributionDiscounts[i])*0.01));
 
                     sfSkuDistributions.add(sfSkuDistribution);
                 }
@@ -304,5 +304,11 @@ public class ProductController {
         Map<String, Object> pageMap = productService.list(pageNumber, pageSize, comSku);
 
         return pageMap;
+    }
+
+    public static void main(String[] args){
+        String d = "80.3";
+        BigDecimal bigDecimal = new BigDecimal(Double.parseDouble(d)*0.01);
+        System.out.println(bigDecimal);
     }
 }

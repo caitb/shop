@@ -592,10 +592,10 @@
                     var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
                     $('input[name="quantitys"]').each(function(i,o){
                         var discount = $($('input[name="discounts"]').get(i)).val();
-                            discount = discount==null||discount=='undefined' ? 0.00 : '0.'+discount;
+                            discount = discount==null||discount=='undefined' ? 0.00 : discount*0.01;
                         var quantity = $(o).val() ? $(o).val() : 0;
                         var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
-                            distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : '0.'+distributionDiscount;
+                            distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
                         $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
                         $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
                         $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));

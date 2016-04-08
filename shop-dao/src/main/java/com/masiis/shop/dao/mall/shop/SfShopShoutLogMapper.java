@@ -9,6 +9,7 @@ package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShopShoutLog;
 import java.util.List;
+import java.util.Map;
 
 public interface SfShopShoutLogMapper {
     int deleteByPrimaryKey(Long id);
@@ -20,4 +21,6 @@ public interface SfShopShoutLogMapper {
     List<SfShopShoutLog> selectAll();
 
     int updateByPrimaryKey(SfShopShoutLog record);
+
+    SfShopShoutLog selectByCondition(Map<String, Object> con);
 }

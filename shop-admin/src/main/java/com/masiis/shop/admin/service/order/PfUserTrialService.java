@@ -7,7 +7,6 @@ import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderOperationLog;
 import com.masiis.shop.dao.po.PfUserTrial;
-import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +22,8 @@ public class PfUserTrialService {
 
     @Resource
     private PfUserTrialMapper pfUserTrialMapper;
-    @Resource
-    private SfUserRelationMapper sfUserRealtionMapper;
+//    @Resource
+//    private SfUserRelationMapper sfUserRealtionMapper;
     @Resource
     private PfCorderMapper pfCorderMapper;
     @Resource
@@ -52,9 +51,9 @@ public class PfUserTrialService {
        return pfUserTrialMapper.selectById(id);
     }
 
-    public SfUserRelation findPidById(Long userId) {
-        return sfUserRealtionMapper.findByUserId(userId);
-    }
+//    public SfUserRelation findPidById(Long userId) {
+//        return sfUserRealtionMapper.findByUserId(userId);
+//    }
 
     /**
      * 生成订单、日志、收货人信息

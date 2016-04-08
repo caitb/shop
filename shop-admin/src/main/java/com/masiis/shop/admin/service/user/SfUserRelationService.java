@@ -11,16 +11,16 @@ import javax.annotation.Resource;
 @Service
 public class SfUserRelationService {
 
-    @Resource
-    private SfUserRelationMapper sfUserRelationMapper;
-
-    /**
-     * 根据用户id查找记录
-     * @param userId
-     * @return
-     */
-    public SfUserRelation findByUserId(Long userId){
-        return sfUserRelationMapper.selectByUserId(userId);
-    }
+//    @Resource
+//    private SfUserRelationMapper sfUserRelationMapper;
+//
+//    /**
+//     * 根据用户id查找记录
+//     * @param userId
+//     * @return
+//     */
+//    public SfUserRelation findByUserId(Long userId){
+//        return sfUserRelationMapper.selectByUserId(userId);
+//    }
 
 }

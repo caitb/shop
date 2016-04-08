@@ -333,9 +333,6 @@ public class BOrderController extends BaseController {
             if (pfBorderPayment.getIsEnabled() == 0) {
                 // 调用borderService的方法处理
                 payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
-                ComUser comUser = getComUser(request);
-                comUser.setIsAgent(1);
-                setComUser(request, comUser);
             }
             String successURL = "";
             //订单类型(0代理1补货2拿货)
@@ -360,7 +357,7 @@ public class BOrderController extends BaseController {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType() == 0) {
                     successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
-                }else{
+                } else {
                     successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
                 }
             } else if (pfBorder.getOrderType() == 1) {
@@ -375,9 +372,6 @@ public class BOrderController extends BaseController {
             req.setSuccessUrl(successURL);
             req.setSign(WXBeanUtils.toSignString(req));
         }
-        ComUser comUser = getComUser(request);
-        comUser.setIsAgent(1);
-        setComUser(request, comUser);
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
     }
@@ -480,8 +474,6 @@ public class BOrderController extends BaseController {
             }
             ComUser comUser = getComUser(request);
             payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
-            comUser.setSendType(sendType);
-            setComUser(request, comUser);
             jsonObject.put("isError", false);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

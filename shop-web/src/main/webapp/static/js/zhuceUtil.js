@@ -71,13 +71,13 @@ $(function () {
         if (!weixinCheckFun($("#weixin"))) {
             n++;
         }
-        if($("#q").prop("checked") == true){
+        if ($("#q").prop("checked") == true) {
             if (!mobileCheckFun($("#pMobile"))) {
                 n++;
             }
             $("#q_pMobile").html($("#pMobile").val());
             $("#q_pMobile").parent().css("display", "-webkit-box");
-        }else{
+        } else {
             $("#q_pMobile").parent().css("display", "none");
         }
         if (n > 0) {
@@ -95,6 +95,10 @@ $(function () {
         $(".back").show();
     });
     $("#submit").click(function (event) {
+        if ($(this).html() == "正在提交...") {
+            return;
+        }
+        $(this).html("正在提交...");
         var event = event || event.window;
         event.stopPropagation();
         var paraData = {};

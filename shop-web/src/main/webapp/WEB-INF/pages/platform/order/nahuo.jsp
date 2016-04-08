@@ -35,7 +35,7 @@
         <div class="xinxi">
             <p>注册信息</p>
             <p>支付订单</p>
-            <p>提交资料</p>
+            <p>选择拿货方式</p>
         </div>
         <div class="nahuo">
             <p>支付成功，请选择拿货方式</p>

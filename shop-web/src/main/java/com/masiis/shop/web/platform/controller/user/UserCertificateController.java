@@ -188,7 +188,6 @@ public class UserCertificateController extends BaseController {
             pfUserCertificate.setAgentLevelId(pfUserSku.getAgentLevelId());
             pfUserCertificate.setStatus(0);
             userService.insertUserCertificate(comUser, pfUserCertificate);
-            setComUser(request, comUser);
             object.put("isError", false);
         } catch (Exception ex) {
             object.put("isError", true);

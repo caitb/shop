@@ -35,12 +35,13 @@
             </c:if>
             <div class="paidan">
                 <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-                <p>奥斯卡了的骄傲是离开的骄傲了啥空间的卢卡斯惊呆了卡三季度来看阿斯利康三</p>
+                <p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>
             </div>
             <c:if test="${pfBorder.orderType==1 && pfBorder.sendType==2}">
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
                 </div>
+
                 <section class="sec1">
                     <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                     <div onclick="toChooseAddressPage()">
@@ -52,6 +53,13 @@
                     </div>
                 </section>
             </c:if>
+            <div class="Type">
+                <p>拿货方式：<span>自己发货</span><b>你已选择拿货方式，不可更改</b></p>
+            </div>
+            <div class="Type2">
+                <p>拿货方式：<span>平台胎发</span><b>你已选择拿货方式，不可更改</b></p>
+                <h1>支付成功后，您的在线库存将会增加</h1>
+            </div>
             ${productInfo}
             <section class="sec3">
                 <p>留言：<input type="text" id="userMessage" name="userMessage"></p>

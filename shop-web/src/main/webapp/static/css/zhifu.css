@@ -13,6 +13,27 @@
   display: -moz-box;
   -moz-box-orient: vertical;
 }
+.Type,.Type2{
+  padding: 5px 0;
+}
+.Type p{
+    text-align: center;
+  font-size: 12px;
+}
+.Type p span,.Type p b{
+  font-size: 12px;
+}
+.Type2 p span,.Type2 p b{
+  font-size: 12px;
+}
+.Type2 p{
+  text-align: center;
+  font-size: 12px;
+}
+.Type2 h1{
+  text-align: center;
+  font-size: 12px;
+}
 .paidan{
   width:100%;
   background: white;

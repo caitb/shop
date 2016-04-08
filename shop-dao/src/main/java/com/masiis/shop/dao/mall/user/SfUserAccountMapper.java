@@ -20,6 +20,4 @@ public interface SfUserAccountMapper {
     List<SfUserAccount> selectAll();
 
     int updateByPrimaryKey(SfUserAccount record);
-
-    SfUserAccount selectByUserId(Long userId);
 }

@@ -1,6 +1,5 @@
 package com.masiis.shop.admin.service.user;
 
-import com.masiis.shop.dao.platform.user.SfUserRelationMapper;
 import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Service;
 

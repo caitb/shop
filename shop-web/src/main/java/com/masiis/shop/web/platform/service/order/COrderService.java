@@ -216,7 +216,6 @@ public class COrderService {
      * @date 2016/3/15 10:47
      */
     private PfCorder initPfCorderParamData(Long userId, Integer skuId, Product product, String reason) {
-        SfUserRelation sfUserRelation = trialService.findPidById(userId);
         //生成试用订单
         PfCorder pfCorder = new PfCorder();
         pfCorder.setCreateTime(new Date());

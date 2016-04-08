@@ -3,7 +3,6 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.dao.platform.order.PfCorderMapper;
 import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
-import com.masiis.shop.dao.platform.user.SfUserRelationMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.springframework.stereotype.Service;
@@ -17,18 +16,13 @@ import javax.annotation.Resource;
 @Service
 @Transactional
 public class PfUserTrialService {
-    @Resource
-    private SfUserRelationMapper sfUserRealtionMapper;
+
     @Resource
     private PfCorderMapper pfCorderMapper;
     @Resource
     private PfCorderOperationLogMapper pfCorderOperationLogMapper;
     @Resource
     private UserService userService;
-
-    public SfUserRelation findPidById(Long userId) {
-        return sfUserRealtionMapper.findByUserId(userId);
-    }
 
     /**
      * 生成订单、日志、收货人信息

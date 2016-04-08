@@ -67,7 +67,7 @@
                 <p><b>保证金：</b><span>￥${pfBorder.bailAmount}</span></p>
                 <p>共需支付：￥${pfBorder.receivableAmount}</p>
             </section>
-            <a href="javascript:;" onclick="submit()" class="weixin">微信支付</a>
+            <a href="javascript:;" onclick="submit(this)" class="weixin">微信支付</a>
         </main>
     </div>
 </div>
@@ -95,11 +95,12 @@
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId=" + selectedAddressId + "&orderId=${bOrderId}";
     }
 
-    function submit() {
-        if ($(this).html() == "正在提交...") {
+    function submit(para) {
+        alert($(para).html());
+        if ($(para).html() == "正在提交...") {
             return;
         }
-        $(this).html("正在提交...");
+        $(para).html("正在提交...");
         var sendType =${pfBorder.sendType};
         var orderType=${pfBorder.orderType};
         if (orderType==1 && sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {

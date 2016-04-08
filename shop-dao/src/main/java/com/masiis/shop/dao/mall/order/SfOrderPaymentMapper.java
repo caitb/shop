@@ -8,7 +8,6 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderPayment;
-
 import java.util.List;
 
 public interface SfOrderPaymentMapper {

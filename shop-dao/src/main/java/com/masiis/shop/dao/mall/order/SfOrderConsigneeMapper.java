@@ -8,7 +8,6 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderConsignee;
-
 import java.util.List;
 
 public interface SfOrderConsigneeMapper {

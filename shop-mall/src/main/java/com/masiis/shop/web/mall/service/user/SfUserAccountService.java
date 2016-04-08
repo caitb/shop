@@ -20,7 +20,8 @@ public class SfUserAccountService {
      * @return
      */
     public SfUserAccount findAccountByUserId(Long userId){
-        return userAccountMapper.selectByUserId(userId);
+        return null;
+//        return userAccountMapper.selectByUserId(userId);
     }
 
 }

@@ -85,6 +85,7 @@ public class BOrderController extends BaseController {
                 pfUserSku = new UserApplyController().checkParentData(pUser, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
+            comUser = userService.getUserById(comUser.getId());
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
             //折扣后单价
@@ -359,8 +360,9 @@ public class BOrderController extends BaseController {
                 //拿货方式(0未选择1平台代发2自己发货)
                 if (pfBorder.getSendType() == 0) {
                     successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+                }else{
+                    successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
                 }
-                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
             } else if (pfBorder.getOrderType() == 1) {
                 successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
             } else {

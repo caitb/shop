@@ -52,24 +52,23 @@ public class ProductController extends BaseController {
         HttpSession session = request.getSession();
         ComUser comUser = (ComUser) session.getAttribute("comUser");
         Product productDetails = productService.getSkuDetails(skuId);
-        if(comUser !=null && comUser.getIsAgent()==1){
+        if (comUser != null && comUser.getIsAgent() == 1) {
             productDetails.setIsPartner(true);
             productDetails.setMaxDiscount(productService.getMaxDiscount());
         }
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(),Integer.parseInt(skuId));
-        mav.addObject("pfUserSku",pfUserSku);//是否代理过该商品
-        mav.addObject("productDetails",productDetails);
-        mav.addObject("bOrderId",pfUserSku.getPfBorderId());
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), Integer.parseInt(skuId));
+        mav.addObject("pfUserSku", pfUserSku);//是否代理过该商品
+        mav.addObject("productDetails", productDetails);
         return mav;
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception{
+    public ModelAndView getProductByUser(HttpServletRequest request, HttpServletResponse response, @PathVariable("userId") Long userId) throws Exception {
         ModelAndView mav;
         ComUser comUser = userService.getUserById(userId);
-        if(comUser.getSendType()==1){ //平台发货
+        if (comUser.getSendType() == 1) { //平台发货
             mav = new ModelAndView("/platform/user/userSkulist");
-        }else{
+        } else {
             mav = new ModelAndView("/platform/user/selfSkuList");
         }
         List<Product> userProducts = productService.productListByUser(userId);
@@ -78,7 +77,7 @@ public class ProductController extends BaseController {
                 product.setUpperStock(productService.getUpperStock(userId, product.getId()));
             }
         }
-        mav.addObject("userProducts",userProducts);
+        mav.addObject("userProducts", userProducts);
         return mav;
     }
 
@@ -101,6 +100,7 @@ public class ProductController extends BaseController {
         }
         return object.toJSONString();
     }
+
     /**
      * @Author Jing Hao
      * @Date 2016/3/22 0022 下午 4:02
@@ -110,21 +110,21 @@ public class ProductController extends BaseController {
     @ResponseBody
     public String addProductStock(HttpServletRequest request, HttpServletResponse response,
                                   @RequestParam(required = true) Integer stock,
-                                  @RequestParam(required = true) Integer skuId){
+                                  @RequestParam(required = true) Integer skuId) {
         JSONObject object = new JSONObject();
         try {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);//代理关系
-            int usableStock = skuService.checkSkuStock(skuId,stock,pfUserSku.getUserPid()==null? 0:pfUserSku.getUserPid());
-            if(usableStock<0){
+            int usableStock = skuService.checkSkuStock(skuId, stock, pfUserSku.getUserPid() == null ? 0 : pfUserSku.getUserPid());
+            if (usableStock < 0) {
                 object.put("isQueue", true);
-                object.put("message","您的订单将进入排单期");
+                object.put("message", "您的订单将进入排单期");
             }
-            Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(),skuId,stock);
+            Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(), skuId, stock);
             object.put("isError", false);
             object.put("orderCode", orderCode);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             object.put("isError", true);
             object.put("message", ex.getMessage());
         }
@@ -158,6 +158,7 @@ public class ProductController extends BaseController {
         }
         return object.toJSONString();
     }
+
     /**
      * 拿货信息
      * Jing Hao
@@ -167,28 +168,29 @@ public class ProductController extends BaseController {
     public ModelAndView applySkuInfo(HttpServletRequest request,
                                      HttpServletResponse response,
                                      @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-                                 @RequestParam("id") Long id) throws Exception{
+                                     @RequestParam("id") Long id) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/nahuo");
         ComUser comUser = getComUser(request);
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
         if (comUserAddress != null) {
             mav.addObject("addressId", comUserAddress.getId());
-            mav.addObject("pfUserSkuStockId",id);
-            mav.addObject("comUserAddress",comUserAddress);
+            mav.addObject("pfUserSkuStockId", id);
+            mav.addObject("comUserAddress", comUserAddress);
         }
         PfUserSkuStock product = productService.getStockByUser(id);
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(),product.getSkuId());
-        Map<String,Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
-        mav.addObject("productInfo",product);
-        mav.addObject("lowerCount",objectMap.get("countLevel"));//下级人数
-        mav.addObject("comSku",comSku);
-        mav.addObject("comSkuImage",productImgValue+comSkuImage.getImgUrl());
-        mav.addObject("levelStock",objectMap.get("levelStock"));
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(product.getUserId(), product.getSkuId());
+        Map<String, Object> objectMap = productService.getLowerCount(product.getSkuId(), product.getStock(), pfUserSku.getAgentLevelId());
+        mav.addObject("productInfo", product);
+        mav.addObject("lowerCount", objectMap.get("countLevel"));//下级人数
+        mav.addObject("comSku", comSku);
+        mav.addObject("comSkuImage", productImgValue + comSkuImage.getImgUrl());
+        mav.addObject("levelStock", objectMap.get("levelStock"));
         return mav;
     }
+
     /**
      * 补货信息
      * Jing Hao
@@ -196,14 +198,14 @@ public class ProductController extends BaseController {
     @RequestMapping(value = "/user/addSkuInfo.list")
     @ResponseBody
     public ModelAndView addSkuInfo(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam("id") Long id) throws Exception{
+                                   @RequestParam("id") Long id) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/buhuo");
         PfUserSkuStock product = productService.getStockByUser(id);
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         Integer upperStock = productService.getUpperStock(product.getUserId(), product.getSkuId());
-        mav.addObject("productInfo",product);
-        mav.addObject("upperStock",upperStock);//上级库存
-        mav.addObject("comSku",comSku);
+        mav.addObject("productInfo", product);
+        mav.addObject("upperStock", upperStock);//上级库存
+        mav.addObject("comSku", comSku);
         return mav;
     }
 }

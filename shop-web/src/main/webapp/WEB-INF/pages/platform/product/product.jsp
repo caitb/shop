@@ -138,7 +138,7 @@
             </p>
         </c:if>
         <c:if test="${not empty pfUserSku && pfUserSku.isPay==0}"><!--未支付><-->
-            <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${bOrderId}">申请合伙人</a>
+            <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pfUserSku.pfBorderId}">申请合伙人</a>
             </p>
         </c:if>
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">

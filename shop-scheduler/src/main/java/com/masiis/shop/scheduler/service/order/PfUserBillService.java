@@ -26,7 +26,7 @@ public class PfUserBillService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private PfBorderMapper orderMapper;
+    private PfBorderMapper borderMapper;
     @Resource
     private PfUserBillMapper billMapper;
     @Resource
@@ -60,6 +60,14 @@ public class PfUserBillService {
                     log.info("此账单子项是退货订单,销售额是:" + item.getOrderPayAmount());
                     bill.setBillAmount(bill.getBillAmount().subtract(item.getOrderPayAmount()));
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getOrderPayAmount()));
+                }
+                if(item.getOrderType().intValue() == 0){
+                    // 代理订单
+                    PfBorder order = borderMapper.selectByPrimaryKey(item.getPfBorderId());
+                    order.setIsCounting(1);
+                    borderMapper.updateByPrimaryKey(order);
+                } else if(item.getOrderType().intValue() == 1){
+                    // 分销订单
                 }
             }
             // 修改账单状态

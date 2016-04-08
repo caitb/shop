@@ -119,8 +119,8 @@ public class UserController extends BaseController {
                                         Model model) {
         model.addAttribute("path", path);
         switch (skipPage) {
-            case "register":
-                model.addAttribute("message", "自动跳转到合伙人申请页面...");
+            case "applyPartner":
+                model.addAttribute("message", "自动跳转到合伙人引导页面...");
                 break;
             case "trial":
                 model.addAttribute("message", "自动跳转到支付页面...");

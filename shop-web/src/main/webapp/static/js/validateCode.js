@@ -2,7 +2,7 @@
     window.validateCodeJS = window.validateCodeJS || {
             skuId: $("#skuId").val(),
             phone: null,
-            skipPageId: $("#skipPageId").val(),
+            skipPageId: "",
             bindPhoneStatus: true,
             bindPhoneSkipBasePath: "/user/bingPhoneStatusToPage.shtml",
             bindPhoneSkipParam: "",
@@ -17,8 +17,9 @@
                     validateCodeJS.toNextPage();
                 })
             },
-            applyTrial: function () {
+            applyTrial: function (skipPageValue) {
                 var skuId = $("#skuId").val();
+                validateCodeJS.skipPageId = skipPageValue;
                 $.ajax({
                     url: '/user/isBindPhone.do',
                     type: 'post',
@@ -26,10 +27,8 @@
                     success: function (data) {
                         if (data == "true") {
                             switch (validateCodeJS.skipPageId) {
-                                case "register":
-                                    var pUserId = $("#pUserId").val();
-                                    var type = $("#type").val();
-                                    window.location.href = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId + "&type=" + type;
+                                case "applyPartner":
+                                    window.location.href = "/userApply/apply.shtml?skuId=" + $("#skuId").val();
                                     break;
                                 case "trial":
                                     window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
@@ -193,10 +192,9 @@
             skipPage: function () {
                 var path;
                 switch (validateCodeJS.skipPageId) {
-                    case "register":
-                        var type = $("#type").val();
-                        path = "/userApply/register.shtml?skuId=" + validateCodeJS.skuId + "&pUserId=" + pUserId + "&type=" + type;
-                        validateCodeJS.bindPhoneSkipParam = "?skipPage=register&status=success&path=" + path
+                    case "applyPartner":
+                        path = "/userApply/apply.shtml?skuId=" + $("#skuId").val();
+                        validateCodeJS.bindPhoneSkipParam = "?skipPage=applyPartner&status=success&path=" + path
                         break;
                     case "trial":
                         path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;

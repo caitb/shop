@@ -592,11 +592,13 @@
                     var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
                     $('input[name="quantitys"]').each(function(i,o){
                         var discount = $($('input[name="discounts"]').get(i)).val();
+                            discount = discount==null||discount=='undefined' ? 0.00 : '0.'+discount;
                         var quantity = $(o).val() ? $(o).val() : 0;
                         var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
-                        $($('.dfenrun').get(i)).html(priceRetail*discount);
-                        $($('.threshold').get(i)).html(priceRetail*discount*quantity);
-                        $($('.ffenrun').get(i)).html(priceRetail*distributionDiscount);
+                            distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : '0.'+distributionDiscount;
+                        $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
+                        $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
+                        $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
                     });
                 });
 

@@ -223,7 +223,7 @@ public class ProductController {
                 for(int i=0; i<discounts.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setId(skuAgentIds[i]);
-                    pfSkuAgent.setDiscount(new BigDecimal(discounts[i]));
+                    pfSkuAgent.setDiscount(new BigDecimal("0."+discounts[i]));
                     pfSkuAgent.setQuantity(quantitys[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
@@ -234,7 +234,7 @@ public class ProductController {
                 for(int i=0; i<distributionDiscounts.length; i++){
                     SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
                     sfSkuDistribution.setId(skuDistributionIds[i]);
-                    sfSkuDistribution.setDiscount(new BigDecimal(distributionDiscounts[i]));
+                    sfSkuDistribution.setDiscount(new BigDecimal("0."+distributionDiscounts[i]));
 
                     sfSkuDistributions.add(sfSkuDistribution);
                 }

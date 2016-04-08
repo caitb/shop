@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.order.SfOrderMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfOrder" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
+        <result column="user_message" property="userMessage" jdbcType="VARCHAR" />
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
+        <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+        <result column="product_amount" property="productAmount" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="receivable_amount" property="receivableAmount" jdbcType="DECIMAL" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="distribution_amount" property="distributionAmount" jdbcType="DECIMAL" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="ship_man_id" property="shipManId" jdbcType="INTEGER" />
+        <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR" />
+        <result column="ship_type" property="shipType" jdbcType="INTEGER" />
+        <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP" />
+        <result column="ship_remark" property="shipRemark" jdbcType="VARCHAR" />
+        <result column="send_type" property="sendType" jdbcType="INTEGER" />
+        <result column="order_type" property="orderType" jdbcType="INTEGER" />
+        <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+        <result column="ship_status" property="shipStatus" jdbcType="INTEGER" />
+        <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+        <result column="is_counting" property="isCounting" jdbcType="INTEGER" />
+        <result column="is_ship" property="isShip" jdbcType="INTEGER" />
+        <result column="is_replace" property="isReplace" jdbcType="INTEGER" />
+        <result column="is_receipt" property="isReceipt" jdbcType="INTEGER" />
+        <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+        <result column="replace_order_id" property="replaceOrderId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_order
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrder" >
+        insert into sf_order (id, create_time, create_man, 
+            order_code, user_id, shop_id, 
+            shop_user_id, user_message, modify_time, 
+            modify_man, order_amount, product_amount, 
+            ship_amount, receivable_amount, pay_amount, 
+            distribution_amount, pay_time, ship_man_id, 
+            ship_man_name, ship_type, ship_time, 
+            ship_remark, send_type, order_type, 
+            order_status, ship_status, pay_status, 
+            is_counting, is_ship, is_replace, 
+            is_receipt, receipt_time, replace_order_id, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, 
+            #{shopUserId,jdbcType=BIGINT}, #{userMessage,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
+            #{modifyMan,jdbcType=BIGINT}, #{orderAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, 
+            #{shipAmount,jdbcType=DECIMAL}, #{receivableAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, 
+            #{distributionAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, 
+            #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, 
+            #{shipRemark,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, 
+            #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, 
+            #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER}, 
+            #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfOrder" >
+        update sf_order
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            order_code = #{orderCode,jdbcType=VARCHAR},
+            user_id = #{userId,jdbcType=BIGINT},
+            shop_id = #{shopId,jdbcType=BIGINT},
+            shop_user_id = #{shopUserId,jdbcType=BIGINT},
+            user_message = #{userMessage,jdbcType=VARCHAR},
+            modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+            modify_man = #{modifyMan,jdbcType=BIGINT},
+            order_amount = #{orderAmount,jdbcType=DECIMAL},
+            product_amount = #{productAmount,jdbcType=DECIMAL},
+            ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
+            pay_amount = #{payAmount,jdbcType=DECIMAL},
+            distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+            pay_time = #{payTime,jdbcType=TIMESTAMP},
+            ship_man_id = #{shipManId,jdbcType=INTEGER},
+            ship_man_name = #{shipManName,jdbcType=VARCHAR},
+            ship_type = #{shipType,jdbcType=INTEGER},
+            ship_time = #{shipTime,jdbcType=TIMESTAMP},
+            ship_remark = #{shipRemark,jdbcType=VARCHAR},
+            send_type = #{sendType,jdbcType=INTEGER},
+            order_type = #{orderType,jdbcType=INTEGER},
+            order_status = #{orderStatus,jdbcType=INTEGER},
+            ship_status = #{shipStatus,jdbcType=INTEGER},
+            pay_status = #{payStatus,jdbcType=INTEGER},
+            is_counting = #{isCounting,jdbcType=INTEGER},
+            is_ship = #{isShip,jdbcType=INTEGER},
+            is_replace = #{isReplace,jdbcType=INTEGER},
+            is_receipt = #{isReceipt,jdbcType=INTEGER},
+            receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            replace_order_id = #{replaceOrderId,jdbcType=BIGINT},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
+        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount, 
+        pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
+        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
+        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        from sf_order
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
+        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount, 
+        pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
+        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
+        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        from sf_order
+    </select>
+
+</mapper>

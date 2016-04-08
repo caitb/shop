@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfShopCartMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopCart" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="sf_shop_id" property="sfShopId" jdbcType="BIGINT" />
+        <result column="sf_shop_user_id" property="sfShopUserId" jdbcType="BIGINT" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="is_check" property="isCheck" jdbcType="INTEGER" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_shop_cart
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopCart" >
+        insert into sf_shop_cart (id, create_time, user_id, 
+            sf_shop_id, sf_shop_user_id, sku_id, 
+            quantity, sort, is_check
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{sfShopId,jdbcType=BIGINT}, #{sfShopUserId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, 
+            #{quantity,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{isCheck,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopCart" >
+        update sf_shop_cart
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            sf_shop_id = #{sfShopId,jdbcType=BIGINT},
+            sf_shop_user_id = #{sfShopUserId,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            quantity = #{quantity,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            is_check = #{isCheck,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, sku_id, quantity, sort, 
+        is_check
+        from sf_shop_cart
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, sf_shop_id, sf_shop_user_id, sku_id, quantity, sort, 
+        is_check
+        from sf_shop_cart
+    </select>
+
+</mapper>

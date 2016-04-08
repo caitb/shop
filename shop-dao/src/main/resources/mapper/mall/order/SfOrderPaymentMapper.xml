@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.order.SfOrderPaymentMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfOrderPayment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="sf_order_id" property="sfOrderId" jdbcType="BIGINT" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="pay_type_id" property="payTypeId" jdbcType="INTEGER" />
+        <result column="pay_type_name" property="payTypeName" jdbcType="VARCHAR" />
+        <result column="is_enabled" property="isEnabled" jdbcType="INTEGER" />
+        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR" />
+        <result column="pay_serial_num" property="paySerialNum" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_order_payment
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderPayment" >
+        insert into sf_order_payment (id, create_time, sf_order_id, 
+            amount, pay_type_id, pay_type_name, 
+            is_enabled, out_order_id, pay_serial_num, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{sfOrderId,jdbcType=BIGINT}, 
+            #{amount,jdbcType=DECIMAL}, #{payTypeId,jdbcType=INTEGER}, #{payTypeName,jdbcType=VARCHAR}, 
+            #{isEnabled,jdbcType=INTEGER}, #{outOrderId,jdbcType=VARCHAR}, #{paySerialNum,jdbcType=VARCHAR}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfOrderPayment" >
+        update sf_order_payment
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sf_order_id = #{sfOrderId,jdbcType=BIGINT},
+            amount = #{amount,jdbcType=DECIMAL},
+            pay_type_id = #{payTypeId,jdbcType=INTEGER},
+            pay_type_name = #{payTypeName,jdbcType=VARCHAR},
+            is_enabled = #{isEnabled,jdbcType=INTEGER},
+            out_order_id = #{outOrderId,jdbcType=VARCHAR},
+            pay_serial_num = #{paySerialNum,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_order_id, amount, pay_type_id, pay_type_name, is_enabled, 
+        out_order_id, pay_serial_num, remark
+        from sf_order_payment
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, sf_order_id, amount, pay_type_id, pay_type_name, is_enabled, 
+        out_order_id, pay_serial_num, remark
+        from sf_order_payment
+    </select>
+
+</mapper>

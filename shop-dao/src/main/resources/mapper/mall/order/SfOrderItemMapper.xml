@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.order.SfOrderItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfOrderItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="sf_order_id" property="sfOrderId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="sku_name" property="skuName" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL" />
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="distribution_amount" property="distributionAmount" jdbcType="DECIMAL" />
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="is_comment" property="isComment" jdbcType="INTEGER" />
+        <result column="is_return" property="isReturn" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_order_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderItem" >
+        insert into sf_order_item (id, create_time, sf_order_id, 
+            spu_id, sku_id, sku_name, 
+            quantity, original_price, unit_price, 
+            distribution_amount, total_price, is_comment, 
+            is_return, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{sfOrderId,jdbcType=BIGINT}, 
+            #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{skuName,jdbcType=VARCHAR}, 
+            #{quantity,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{unitPrice,jdbcType=DECIMAL}, 
+            #{distributionAmount,jdbcType=DECIMAL}, #{totalPrice,jdbcType=DECIMAL}, #{isComment,jdbcType=INTEGER}, 
+            #{isReturn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfOrderItem" >
+        update sf_order_item
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sf_order_id = #{sfOrderId,jdbcType=BIGINT},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            sku_name = #{skuName,jdbcType=VARCHAR},
+            quantity = #{quantity,jdbcType=INTEGER},
+            original_price = #{originalPrice,jdbcType=DECIMAL},
+            unit_price = #{unitPrice,jdbcType=DECIMAL},
+            distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+            total_price = #{totalPrice,jdbcType=DECIMAL},
+            is_comment = #{isComment,jdbcType=INTEGER},
+            is_return = #{isReturn,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_order_id, spu_id, sku_id, sku_name, quantity, original_price, 
+        unit_price, distribution_amount, total_price, is_comment, is_return, remark
+        from sf_order_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, sf_order_id, spu_id, sku_id, sku_name, quantity, original_price, 
+        unit_price, distribution_amount, total_price, is_comment, is_return, remark
+        from sf_order_item
+    </select>
+
+</mapper>

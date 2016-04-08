@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfShopSkuMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopSku" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="is_sale" property="isSale" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="bail" property="bail" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
+        <result column="share_num" property="shareNum" jdbcType="BIGINT" />
+        <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_shop_sku
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopSku" >
+        insert into sf_shop_sku (id, create_time, shop_id, 
+            shop_user_id, spu_id, sku_id, 
+            is_sale, agent_level_id, bail, 
+            ship_amount, sale_num, share_num, 
+            qr_code, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
+            #{shopUserId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
+            #{isSale,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{bail,jdbcType=DECIMAL}, 
+            #{shipAmount,jdbcType=DECIMAL}, #{saleNum,jdbcType=BIGINT}, #{shareNum,jdbcType=BIGINT}, 
+            #{qrCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopSku" >
+        update sf_shop_sku
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            shop_id = #{shopId,jdbcType=BIGINT},
+            shop_user_id = #{shopUserId,jdbcType=BIGINT},
+            spu_id = #{spuId,jdbcType=INTEGER},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            is_sale = #{isSale,jdbcType=INTEGER},
+            agent_level_id = #{agentLevelId,jdbcType=INTEGER},
+            bail = #{bail,jdbcType=DECIMAL},
+            ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            sale_num = #{saleNum,jdbcType=BIGINT},
+            share_num = #{shareNum,jdbcType=BIGINT},
+            qr_code = #{qrCode,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
+        bail, ship_amount, sale_num, share_num, qr_code, remark
+        from sf_shop_sku
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
+        bail, ship_amount, sale_num, share_num, qr_code, remark
+        from sf_shop_sku
+    </select>
+
+</mapper>

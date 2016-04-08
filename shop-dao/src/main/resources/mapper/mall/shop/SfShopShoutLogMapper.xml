@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopShoutLog" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
+        <result column="num" property="num" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_shop_shout_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopShoutLog" >
+        insert into sf_shop_shout_log (id, create_time, user_id, 
+            shop_id, shop_user_id, num, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{shopId,jdbcType=BIGINT}, #{shopUserId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopShoutLog" >
+        update sf_shop_shout_log
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            shop_id = #{shopId,jdbcType=BIGINT},
+            shop_user_id = #{shopUserId,jdbcType=BIGINT},
+            num = #{num,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, shop_id, shop_user_id, num, remark
+        from sf_shop_shout_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, shop_id, shop_user_id, num, remark
+        from sf_shop_shout_log
+    </select>
+
+</mapper>

@@ -5,14 +5,15 @@
  * -----------------------------------------------
  * 2016-03-04 Created
  */
-package com.masiis.shop.dao.platform.product;
+package com.masiis.shop.dao.mall.product;
 
 import com.masiis.shop.dao.po.ComSku;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository("mallComSkuMapper")
+
+@Repository
 public interface ComSkuMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -69,5 +70,5 @@ public interface ComSkuMapper {
      * 根据id删除一条记录
      * @param id
      */
-    void deleteById(@Param("id")Long id);
+    void deleteById(@Param("id") Long id);
 }

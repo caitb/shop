@@ -20,4 +20,6 @@ public interface SfShopCartMapper {
     List<SfShopCart> selectAll();
 
     int updateByPrimaryKey(SfShopCart record);
+
+    List<SfShopCart>  getShopCartInfoByUserId(Long userId);
 }

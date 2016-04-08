@@ -57,9 +57,9 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView partnersApply(HttpServletRequest request,
-                                HttpServletResponse response,
-                                @RequestParam(value = "skuId", required = true) Integer skuId,
-                                @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "skuId", required = true) Integer skuId,
+                                      @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView res = new ModelAndView();
         ComUser user = getComUser(request);
         if (user == null) {
@@ -77,7 +77,7 @@ public class UserApplyController extends BaseController {
 
         // 判断排单标志位,如果处于排单状态下,显示排单人数
 
-        res.addObject("user", user);
+        res.addObject("user", userService.getUserById(user.getId()));
         res.addObject("skuId", skuId);
         res.setViewName("platform/order/shenqing");
         return res;
@@ -158,16 +158,16 @@ public class UserApplyController extends BaseController {
                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
         ComUser comUser = getComUser(request);
-        if(comUser == null){
+        if (comUser == null) {
             throw new BusinessException("用户未登录!");
         }
-        if(skuId == null || skuId < 0){
+        if (skuId == null || skuId < 0) {
             log.error("skuId不合法,skuId:" + skuId + ",用户id为:" + comUser.getId());
             throw new BusinessException("skuId不合法!");
         }
         //获取商品信息
         ComSku comSku = skuService.getSkuById(skuId);
-        if(comSku == null){
+        if (comSku == null) {
             log.error("该skuId对应的商品不存在,skuId:" + skuId);
             throw new BusinessException("该skuId对应的商品不存在");
         }
@@ -179,7 +179,7 @@ public class UserApplyController extends BaseController {
         Integer pUserLevelId = 0;
         if (pUserId != null && pUserId > 0) {
             ComUser pComUser = userService.getUserById(pUserId);
-            if(pComUser == null){
+            if (pComUser == null) {
                 log.error("上级代理id不合法,pUserId:" + pUserId);
                 throw new BusinessException("上级代理id不合法!");
             }

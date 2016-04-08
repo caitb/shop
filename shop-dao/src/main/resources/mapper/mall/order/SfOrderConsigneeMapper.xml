@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.order.SfOrderConsigneeMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfOrderConsignee" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="sf_order_id" property="sfOrderId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+        <result column="province_name" property="provinceName" jdbcType="VARCHAR" />
+        <result column="city_id" property="cityId" jdbcType="INTEGER" />
+        <result column="city_name" property="cityName" jdbcType="VARCHAR" />
+        <result column="region_id" property="regionId" jdbcType="INTEGER" />
+        <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="zip" property="zip" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_order_consignee
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderConsignee" >
+        insert into sf_order_consignee (id, create_time, sf_order_id, 
+            user_id, consignee, mobile, 
+            province_id, province_name, city_id, 
+            city_name, region_id, region_name, 
+            address, zip, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{sfOrderId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{consignee,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+            #{provinceId,jdbcType=INTEGER}, #{provinceName,jdbcType=VARCHAR}, #{cityId,jdbcType=INTEGER}, 
+            #{cityName,jdbcType=VARCHAR}, #{regionId,jdbcType=INTEGER}, #{regionName,jdbcType=VARCHAR}, 
+            #{address,jdbcType=VARCHAR}, #{zip,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfOrderConsignee" >
+        update sf_order_consignee
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sf_order_id = #{sfOrderId,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
+            consignee = #{consignee,jdbcType=VARCHAR},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            province_id = #{provinceId,jdbcType=INTEGER},
+            province_name = #{provinceName,jdbcType=VARCHAR},
+            city_id = #{cityId,jdbcType=INTEGER},
+            city_name = #{cityName,jdbcType=VARCHAR},
+            region_id = #{regionId,jdbcType=INTEGER},
+            region_name = #{regionName,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            zip = #{zip,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_order_id, user_id, consignee, mobile, province_id, province_name, 
+        city_id, city_name, region_id, region_name, address, zip, remark
+        from sf_order_consignee
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, sf_order_id, user_id, consignee, mobile, province_id, province_name, 
+        city_id, city_name, region_id, region_name, address, zip, remark
+        from sf_order_consignee
+    </select>
+
+</mapper>

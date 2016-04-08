@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfSkuDistributionMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfSkuDistribution" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="sort" property="sort" jdbcType="INTEGER" />
+        <result column="discount" property="discount" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from sf_sku_distribution
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >
+        insert into sf_sku_distribution (id, sku_id, sort, 
+            discount, remark)
+        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+            #{discount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >
+        update sf_sku_distribution
+        set sku_id = #{skuId,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            discount = #{discount,jdbcType=DECIMAL},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, sku_id, sort, discount, remark
+        from sf_sku_distribution
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, sku_id, sort, discount, remark
+        from sf_sku_distribution
+    </select>
+
+</mapper>

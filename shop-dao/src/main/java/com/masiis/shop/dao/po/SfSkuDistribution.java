@@ -3,18 +3,12 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-04-08 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.math.BigDecimal;
 
-/**
- * 商铺SKU分销分润表
- * 
- * @author masiis
- * @version 1.0 2016-03-03
- */
 public class SfSkuDistribution {
 
     private Integer id;
@@ -35,51 +29,31 @@ public class SfSkuDistribution {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Integer getSkuId() {
         return skuId;
     }
-
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
-
     public Integer getSort() {
         return sort;
     }
-
     public void setSort(Integer sort) {
         this.sort = sort;
     }
-
     public BigDecimal getDiscount() {
         return discount;
     }
-
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
-
     public String getRemark() {
         return remark;
     }
-
     public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "SfSkuDistribution{" +
-                "id=" + id +
-                ", skuId=" + skuId +
-                ", sort=" + sort +
-                ", discount=" + discount +
-                ", remark='" + remark + '\'' +
-                '}';
+        this.remark = remark == null ? null : remark.trim();
     }
 }

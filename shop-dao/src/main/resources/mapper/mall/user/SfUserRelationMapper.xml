@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserRelationMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserRelation" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="user_pid" property="userPid" jdbcType="BIGINT" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+        insert into sf_user_relation (id, create_time, user_id, 
+            user_pid, level, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
+            #{userPid,jdbcType=BIGINT}, #{level,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserRelation" >
+        update sf_user_relation
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            level = #{level,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, user_pid, level, remark
+        from sf_user_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, user_id, user_pid, level, remark
+        from sf_user_relation
+    </select>
+
+</mapper>

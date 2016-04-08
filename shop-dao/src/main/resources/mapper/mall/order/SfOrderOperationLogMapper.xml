@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.order.SfOrderOperationLogMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfOrderOperationLog" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="create_man" property="createMan" jdbcType="BIGINT" />
+        <result column="sf_order_id" property="sfOrderId" jdbcType="BIGINT" />
+        <result column="sf_order_status" property="sfOrderStatus" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_order_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderOperationLog" >
+        insert into sf_order_operation_log (id, create_time, create_man, 
+            sf_order_id, sf_order_status, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT}, 
+            #{sfOrderId,jdbcType=BIGINT}, #{sfOrderStatus,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfOrderOperationLog" >
+        update sf_order_operation_log
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_man = #{createMan,jdbcType=BIGINT},
+            sf_order_id = #{sfOrderId,jdbcType=BIGINT},
+            sf_order_status = #{sfOrderStatus,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, sf_order_id, sf_order_status, remark
+        from sf_order_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, create_man, sf_order_id, sf_order_status, remark
+        from sf_order_operation_log
+    </select>
+
+</mapper>

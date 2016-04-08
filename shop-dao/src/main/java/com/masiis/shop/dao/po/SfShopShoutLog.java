@@ -1,5 +1,5 @@
 /*
- * SfOrderOperationLog.java
+ * SfShopShoutLog.java
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
@@ -9,7 +9,7 @@ package com.masiis.shop.dao.po;
 
 import java.util.Date;
 
-public class SfOrderOperationLog {
+public class SfShopShoutLog {
 
     private Long id;
     /**
@@ -17,17 +17,21 @@ public class SfOrderOperationLog {
      */
     private Date createTime;
     /**
-     * 创建人
+     * 用户id
      */
-    private Long createMan;
+    private Long userId;
     /**
-     * 订单号
+     * 小铺id
      */
-    private Long sfOrderId;
+    private Long shopId;
     /**
-     * 订单状态
+     * 小铺归属人id
      */
-    private Integer sfOrderStatus;
+    private Long shopUserId;
+    /**
+     * 呐喊次数
+     */
+    private Integer num;
     /**
      * 备注
      */
@@ -45,23 +49,29 @@ public class SfOrderOperationLog {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public Long getCreateMan() {
-        return createMan;
+    public Long getUserId() {
+        return userId;
     }
-    public void setCreateMan(Long createMan) {
-        this.createMan = createMan;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    public Long getSfOrderId() {
-        return sfOrderId;
+    public Long getShopId() {
+        return shopId;
     }
-    public void setSfOrderId(Long sfOrderId) {
-        this.sfOrderId = sfOrderId;
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
-    public Integer getSfOrderStatus() {
-        return sfOrderStatus;
+    public Long getShopUserId() {
+        return shopUserId;
     }
-    public void setSfOrderStatus(Integer sfOrderStatus) {
-        this.sfOrderStatus = sfOrderStatus;
+    public void setShopUserId(Long shopUserId) {
+        this.shopUserId = shopUserId;
+    }
+    public Integer getNum() {
+        return num;
+    }
+    public void setNum(Integer num) {
+        this.num = num;
     }
     public String getRemark() {
         return remark;

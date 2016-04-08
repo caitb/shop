@@ -40,12 +40,6 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, create_time, user_id, extractable_fee, counting_fee, version
-        from sf_user_account
-        where user_id = #{userId,jdbcType=BIGINT}
-    </select>
-
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, user_id, extractable_fee, counting_fee, version
         from sf_user_account

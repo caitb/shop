@@ -1,8 +1,23 @@
+/*
+ * SfShopMapper.java
+ * Copyright(C) 2014-2016 麦士集团
+ * All rights reserved.
+ * -----------------------------------------------
+ * 2016-04-08 Created
+ */
 package com.masiis.shop.dao.mall.shop;
 
-/**
- * @Date:2016/4/8
- * @auth:lzh
- */
-public class SfShopMapper {
+import com.masiis.shop.dao.po.SfShop;
+import java.util.List;
+
+public interface SfShopMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(SfShop record);
+
+    SfShop selectByPrimaryKey(Long id);
+
+    List<SfShop> selectAll();
+
+    int updateByPrimaryKey(SfShop record);
 }

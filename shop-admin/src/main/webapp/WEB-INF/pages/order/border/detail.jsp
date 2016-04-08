@@ -133,7 +133,7 @@
                                             <div class="profile-info-name"> 支付日期 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="editable editable-click" id="payTime"><fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <span class="" id="payTime"><fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                             </div>
                                         </div>
 
@@ -142,7 +142,7 @@
 
                                             <div class="profile-info-value">
                                                 <c:forEach items="${order.pfBorderPayments}" var="borderPayment">
-                                                    <c:if test="${borderPayment.payTypeId == 1}"><span class="" id="payType">微信</span></c:if>
+                                                    ${borderPayment.payTypeName}
                                                 </c:forEach>
                                             </div>
                                         </div>
@@ -153,8 +153,8 @@
                                             <div class="profile-info-value">
                                                 <c:if test="${order.pfBorder.shipStatus == 0}">
                                                     <span>未发货</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">正面</span>
-                                                    <button type="button" class="btn btn-info" id="fahuo-" data-toggle="collapse" hidden>
+                                                    <span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">发货</span>
+                                                    <button type="button" class="btn btn-info" id="fahuo-" data-toggle="collapse" style="display: none;">
                                                         发货
                                                     </button>
                                                     <div id="delivery" class="collapse" aria-expanded="false" style="height: 0px;">
@@ -188,77 +188,6 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <script>
-                                                        $('#fahuo').on('click', function(){
-                                                            $.ajax({
-                                                                url: '<%=basePath%>comshipman/list.do',
-                                                                success: function(data){
-                                                                    data = window.eval('(' + data + ')');
-                                                                    var sOptions = '<option value="-1">请选择</option>';
-                                                                    for(var i in data){
-                                                                        sOptions += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
-                                                                    }
-                                                                    $('#shipName').html(sOptions);
-                                                                }
-                                                            });
-                                                            $('#delivery').collapse(true);
-                                                        });
-
-                                                        $('#shipName').change(function(){
-                                                            $('#shipManName').val($(this).find('option[value="'+$(this).val()+'"]').html());
-                                                        });
-
-                                                        $(document).ready(function() {
-                                                            $('#deliForm').bootstrapValidator({
-                                                                        message: '必须填写',
-                                                                        feedbackIcons: {
-                                                                            valid: 'glyphicon glyphicon-ok',
-                                                                            invalid: 'glyphicon glyphicon-remove',
-                                                                            validating: 'glyphicon glyphicon-refresh'
-                                                                        },
-                                                                        fields: {
-                                                                            shipManId: {
-                                                                                message: '请选择一个快递!',
-                                                                                validators: {
-                                                                                    notEmpty: {}
-                                                                                }
-                                                                            },
-                                                                            freight: {
-                                                                                message: '请填写快递单号!',
-                                                                                validators: {
-                                                                                    notEmpty: {}
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    })
-                                                                    .on('success.form.bv', function(e) {
-                                                                        // Prevent form submission
-                                                                        e.preventDefault();
-
-                                                                        // Get the form instance
-                                                                        var $form = $(e.target);
-
-                                                                        // Get the BootstrapValidator instance
-                                                                        var bv = $form.data('bootstrapValidator');
-
-                                                                        // Use Ajax to submit form data
-                                                                        $.ajax({
-                                                                            url: '<%=basePath%>order/border/delivery.do',
-                                                                            type: 'POST',
-                                                                            data: $form.serialize(),
-                                                                            success: function(msg){
-                                                                                if(msg == 'success'){
-                                                                                    $('#delivery').collapse('hide');
-                                                                                    $('#fahuo').hide();
-                                                                                    $('#shiSta').html('已发货');
-                                                                                    return;
-                                                                                }
-                                                                                alert(msg);
-                                                                            }
-                                                                        });
-                                                                    });
-                                                        });
-                                                    </script>
                                                 </c:if>
                                                 <c:if test="${order.pfBorder.shipStatus == 5}"><span>已发货</span></c:if>
                                                 <c:if test="${order.pfBorder.shipStatus == 9}"><span>已收货</span></c:if>
@@ -269,7 +198,11 @@
                                             <div class="profile-info-name"> 配送方式 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="extractableFee">${user.comUserAccount.extractableFee}</span>
+                                                <span class="" id="extractableFee">
+                                                    <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
+                                                        ${pfBorderFreight.shipManName}
+                                                    </c:forEach>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -277,7 +210,9 @@
                                             <div class="profile-info-name"> 发货时间 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="countingFee"><fmt:formatDate value="${order.pfBorder.shipTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
+                                                    <span class="" id="bfCreateTime"><fmt:formatDate value="${pfBorderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                </c:forEach>
                                             </div>
                                         </div>
 
@@ -285,7 +220,9 @@
                                             <div class="profile-info-name"> 运单单号 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="shipNo"><fmt:formatDate value="${user.comUser.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
+                                                    <span class="" id="freight">${pfBorderFreight.freight}</span>
+                                                </c:forEach>
                                             </div>
                                         </div>
 
@@ -293,7 +230,7 @@
                                             <div class="profile-info-name"> 收货人 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="" id="distribution">${order.pfBorderConsignee.consignee}</span>
+                                                <span class="" id="consignee">${order.pfBorderConsignee.consignee}</span>
                                             </div>
                                         </div>
 
@@ -333,7 +270,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="address"></span>
+                                                <span class="bgarea" id="remark">${order.pfBorder.remark}</span>
                                             </div>
                                         </div>
 
@@ -341,7 +278,7 @@
                                             <div class="profile-info-name"> 运费 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="address"></span>
+                                                <span class="bgarea" id="shipAmount">${order.pfBorder.shipAmount}</span>
                                             </div>
                                         </div>
 
@@ -349,7 +286,7 @@
                                             <div class="profile-info-name"> 商品总金额 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="address"></span>
+                                                <span class="bgarea" id="productAmount">${order.pfBorder.productAmount}</span>
                                             </div>
                                         </div>
 
@@ -357,7 +294,7 @@
                                             <div class="profile-info-name"> 实付金额 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="address"></span>
+                                                <span class="bgarea" id="payAmount">${order.pfBorder.payAmount}</span>
                                             </div>
                                         </div>
 
@@ -365,7 +302,15 @@
                                             <div class="profile-info-name"> 订单状态 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="address"></span>
+                                                <span class="bgarea" id="order_status">
+                                                    <c:if test="${order.pfBorder.orderStatus == 0}">未处理</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 1}">已付款</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 2}">已取消</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 3}">已完成</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 4}">退款中</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 5}">已退款</c:if>
+                                                    <c:if test="${order.pfBorder.orderStatus == 7}">待发货</c:if>
+                                                </span>
                                             </div>
                                         </div>
 
@@ -764,6 +709,77 @@
         });
 
 
+    });
+</script>
+<script>
+    $('#fahuo').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>comshipman/list.do',
+            success: function(data){
+                data = window.eval('(' + data + ')');
+                var sOptions = '<option value="-1">请选择</option>';
+                for(var i in data){
+                    sOptions += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
+                }
+                $('#shipName').html(sOptions);
+            }
+        });
+        $('#delivery').collapse(true);
+    });
+
+    $('#shipName').change(function(){
+        $('#shipManName').val($(this).find('option[value="'+$(this).val()+'"]').html());
+    });
+
+    $(document).ready(function() {
+        $('#deliForm').bootstrapValidator({
+                    message: '必须填写',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        shipManId: {
+                            message: '请选择一个快递!',
+                            validators: {
+                                notEmpty: {}
+                            }
+                        },
+                        freight: {
+                            message: '请填写快递单号!',
+                            validators: {
+                                notEmpty: {}
+                            }
+                        }
+                    }
+                })
+                .on('success.form.bv', function(e) {
+                    // Prevent form submission
+                    e.preventDefault();
+
+                    // Get the form instance
+                    var $form = $(e.target);
+
+                    // Get the BootstrapValidator instance
+                    var bv = $form.data('bootstrapValidator');
+
+                    // Use Ajax to submit form data
+                    $.ajax({
+                        url: '<%=basePath%>order/border/delivery.do',
+                        type: 'POST',
+                        data: $form.serialize(),
+                        success: function(msg){
+                            if(msg == 'success'){
+                                $('#delivery').collapse('hide');
+                                $('#fahuo').hide();
+                                $('#shiSta').html('已发货');
+                                return;
+                            }
+                            alert(msg);
+                        }
+                    });
+                });
     });
 </script>
 

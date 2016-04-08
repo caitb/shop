@@ -477,7 +477,12 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a href="<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id +'">查看</a>';
+                            return '<a class="detail" href="javascript:void(0);">查看</a>';
+                        },
+                        events: {
+                            'click .detail': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                            }
                         }
                     }
                 ]

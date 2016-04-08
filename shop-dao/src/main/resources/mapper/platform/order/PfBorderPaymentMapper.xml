@@ -67,7 +67,13 @@
                pf_border_payment
         <where>
             <if test="id != null">
-                id = #{id}
+                AND id = #{id}
+            </if>
+            <if test="pfBorderId != null">
+                AND pf_border_id = #{pfBorderId}
+            </if>
+            <if test="isEnabled != null">
+                AND is_enabled = #{isEnabled}
             </if>
         </where>
     </select>

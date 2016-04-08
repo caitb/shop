@@ -17,10 +17,8 @@
 <body>
 <img src="<%=path%>/static/images/500.png" alt="">
 <p>
-    <a href=""></a>
-    <a href="">返回上一页</a>
-    <a href="">返回首页</a>
-    <a href=""></a>
+    <a href="javascript:;" onClick="javascript :history.go(-1);">返回上一页</a>
+    <a href="<%=basePath%>">返回首页</a>
 </p>
 </body>
 </html>

@@ -9,18 +9,16 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>服务器错误</title>
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/500,404.css">
 </head>
 <body>
-        <img src="<%=path%>/static/images/404.png" alt="">
-        <p>
-           <a href=""></a>
-            <a href="">返回上一页</a>
-            <a href="">返回首页</a>
-            <a href=""></a>
-        </p>
+<img src="<%=path%>/static/images/404.png" alt="">
+<p>
+    <a href="javascript:;" onClick="javascript :history.go(-1);">返回上一页</a>
+    <a href="<%=basePath%>">返回首页</a>
+</p>
 </body>
 </html>

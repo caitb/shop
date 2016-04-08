@@ -96,6 +96,10 @@
     }
 
     function submit() {
+        if ($(this).html() == "正在提交...") {
+            return;
+        }
+        $(this).html("正在提交...");
         var sendType =${pfBorder.sendType};
         var orderType=${pfBorder.orderType};
         if (orderType==1 && sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {

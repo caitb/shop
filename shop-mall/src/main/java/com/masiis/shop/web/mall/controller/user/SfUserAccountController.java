@@ -34,7 +34,7 @@ public class SfUserAccountController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "commissionHome")
+    @RequestMapping(value = "/commissionHome")
     public ModelAndView userCommission(HttpServletRequest request) throws Exception{
         log.info("进入小铺我的佣金首页");
         ComUser comUser = getComUser(request);
@@ -46,19 +46,23 @@ public class SfUserAccountController extends BaseController {
         //查询分销用户账户表
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
         if (userAccount == null){
-            mv.setViewName("");
+            mv.setViewName("shop_index");
             return mv;
         }
         SfOrderItemDistribution record = new SfOrderItemDistribution();
         record.setUserId(userId);
         //根据条件查询 小铺订单商品分润 数量
         int count = sfOrderItemDistributionService.findCountByCondition(record);
-        //根据userId查询小铺订单商品分润信息
-        List<SfOrderItemDistribution> list = sfOrderItemDistributionService.findCommissionRecordByUserId(userId);
+        log.info("userId:"+userId+"   小铺订单商品分润数量:"+count);
+        List<SfOrderItemDistribution> list = null;
+        if (count > 0){
+            //根据userId查询小铺订单商品分润信息
+            list = sfOrderItemDistributionService.findCommissionRecordByUserId(userId);
+        }
         mv.addObject("userAccount",userAccount);
         mv.addObject("count",count);
         mv.addObject("orderItemDistributions",list);
-        mv.setViewName("");
+        mv.setViewName("shop_index");
         return mv;
     }
 }

@@ -26,12 +26,10 @@ public class SfOrderItemDistributionService {
      * @return
      */
     public int findCountByCondition(SfOrderItemDistribution record){
-        return 0;
-//        return sfOrderItemDistributionMapper.selectCountByCondition(record);
+        return sfOrderItemDistributionMapper.selectCountByCondition(record);
     }
 
     public List<SfOrderItemDistribution> findCommissionRecordByUserId(Long userId){
-        return null;
-//        return sfOrderItemDistributionMapper.selectCommissionRecordByUserId(userId);
+        return sfOrderItemDistributionMapper.selectCommissionRecordByUserId(userId);
     }
 }

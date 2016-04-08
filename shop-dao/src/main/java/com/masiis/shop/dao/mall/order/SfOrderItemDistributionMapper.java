@@ -20,4 +20,8 @@ public interface SfOrderItemDistributionMapper {
     List<SfOrderItemDistribution> selectAll();
 
     int updateByPrimaryKey(SfOrderItemDistribution record);
+
+    int selectCountByCondition(SfOrderItemDistribution record);
+
+    List<SfOrderItemDistribution> selectCommissionRecordByUserId(Long userId);
 }

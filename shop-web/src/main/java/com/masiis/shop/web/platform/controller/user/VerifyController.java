@@ -100,6 +100,7 @@ public class VerifyController extends BaseController {
                     user.setCreateTime(new Date());
                     user.setIsAgent(0);
                     user.setAuditStatus(0);
+                    user.setSendType(0);
                 }
                 // 设置最新的信息
                 user.setAccessToken(res.getAccess_token());

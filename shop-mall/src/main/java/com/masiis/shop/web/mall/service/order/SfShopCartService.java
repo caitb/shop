@@ -21,8 +21,8 @@ public class SfShopCartService {
      * @author hanzengzhi
      * @date 2016/4/9 10:38
      */
-    public List<SfShopCart> getShopCartInfoByUserId(Long userId){
-        return sfShopCartMapper.getShopCartInfoByUserId(userId);
+    public List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long shopId){
+        return sfShopCartMapper.getShopCartInfoByUserIdAndShopId(userId,shopId);
     }
 
 }

@@ -21,5 +21,5 @@ public interface SfShopCartMapper {
 
     int updateByPrimaryKey(SfShopCart record);
 
-    List<SfShopCart>  getShopCartInfoByUserId(Long userId);
+    List<SfShopCart>  getShopCartInfoByUserIdAndShopId(Long userId,Long sfShopId);
 }

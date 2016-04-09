@@ -12,6 +12,7 @@
         <result column="shout_num" property="shoutNum" jdbcType="BIGINT" />
         <result column="pageviews" property="pageviews" jdbcType="BIGINT" />
         <result column="sale_amount" property="saleAmount" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
@@ -33,6 +34,7 @@
                     shout_num,
                     pageviews,
                     sale_amount,
+                    ship_amount,
                     qr_code,
                     remark
                     )
@@ -47,6 +49,7 @@
                     #{shoutNum,jdbcType=BIGINT},
                     #{pageviews,jdbcType=BIGINT},
                     #{saleAmount,jdbcType=DECIMAL},
+                    #{shipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR}
                     )
@@ -82,6 +85,9 @@
             <if test="saleAmount != null" >
                 sale_amount = #{saleAmount,jdbcType=DECIMAL},
             </if>
+            <if test="shipAmount != null" >
+                ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
             <if test="qrCode != null" >
                 qr_code = #{qrCode,jdbcType=VARCHAR},
             </if>
@@ -104,6 +110,7 @@
                shout_num,
                pageviews,
                sale_amount,
+               ship_amount,
                qr_code,
                remark
         from
@@ -124,6 +131,7 @@
                shout_num,
                pageviews,
                sale_amount,
+                ship_amount,
                qr_code,
                remark
         from

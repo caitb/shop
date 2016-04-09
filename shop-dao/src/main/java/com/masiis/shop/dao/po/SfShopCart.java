@@ -28,6 +28,12 @@ public class SfShopCart {
      * 小铺归属人id
      */
     private Long sfShopUserId;
+
+    /**
+     * spu主键id
+     */
+    private Integer spuId;
+
     /**
      * sku主键id
      */

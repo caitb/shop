@@ -32,7 +32,8 @@ public class UserAddressService {
     @Resource
     private ComUserAddressMapper comUserAddressMapper;
 
-    private static final String indexPath="/index";
+    private static final String indexPath = "/index";
+
     /**
      * 根据条件查询用户地址
      *
@@ -50,8 +51,8 @@ public class UserAddressService {
      * @param userId
      * @return
      */
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public ComUserAddress getOrderAddress( Long selectedAddressId, Long userId) {
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public ComUserAddress getOrderAddress(Long selectedAddressId, Long userId) {
         try {
             //获得用户的默认地址
             ComUserAddress comUserAddress = new ComUserAddress();
@@ -70,16 +71,18 @@ public class UserAddressService {
             } else {
                 return null;
             }
-        }catch (Exception e){
-            throw new BusinessException("获得订单选择的地址失败----"+e);
+        } catch (Exception e) {
+            throw new BusinessException("获得订单选择的地址失败----" + e);
         }
     }
+
     /**
      * 增加或更新地址
+     *
      * @author hanzengzhi
      * @date 2016/3/22 20:30
      */
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, int addAddressJumpType) {
         try {
             if (operateType.equals("save")) {
@@ -91,7 +94,7 @@ public class UserAddressService {
                             path = getOrderPagePath(request, comUserAddress.getId());
                             break;
                         case UserAddressController.getAddAddressPageToPersonalInfoPage://跳转到管理地址界面
-                            path = "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType="+addAddressJumpType;
+                            path = "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType=" + addAddressJumpType;
                             break;
                         default:
                             break;
@@ -115,23 +118,25 @@ public class UserAddressService {
             throw new BusinessException(e.getMessage());
         }
     }
+
     /**
      * 获得订单地址路径参数
+     *
      * @author hanzengzhi
      * @date 2016/4/2 11:34
      */
     public String getOrderPagePath(HttpServletRequest request, Long selectedAddressId) {
-        try{
+        try {
             String orderType = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_TYPE);
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
-            Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
-            if (StringUtils.isEmpty(orderType)){
+            Long pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
+            if (StringUtils.isEmpty(orderType)) {
                 return indexPath;
-            }else{
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId);
+            } else {
+                return getOrderAddress(orderType, orderId, skuId, selectedAddressId, pfUserSkuStockId);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
     }
@@ -144,7 +149,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -198,12 +203,14 @@ public class UserAddressService {
             sb.append("&userAddressId=").append(selectedAddressId);
         }
     }
+
     /**
-     *  拿货界面地址
+     * 拿货界面地址
+     *
      * @author hanzengzhi
      * @date 2016/4/5 10:40
      */
-    private void getTakeGoodsPageAddress(StringBuffer sb, Long orderId, Long selectedAddressId){
+    private void getTakeGoodsPageAddress(StringBuffer sb, Long orderId, Long selectedAddressId) {
         //跳转到支付界面
         sb.append("/border/setUserSendType.shtml?");
         if (!StringUtils.isEmpty(orderId)) {
@@ -213,8 +220,10 @@ public class UserAddressService {
             sb.append("&selectedAddressId=").append(selectedAddressId);
         }
     }
+
     /**
      * 获得商品管理拿货的地址路径
+     *
      * @author hanzengzhi
      * @date 2016/4/6 10:45
      */
@@ -275,9 +284,9 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/9 15:23
      */
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public Long deleteUserAddressById(Long id, Long userId, Long defaultAddressId) {
-        try{
+        try {
             int i = comUserAddressMapper.deleteByPrimaryKey(id);
             int ii = 0;
             ComUserAddress comUserAddress = new ComUserAddress();
@@ -301,8 +310,8 @@ public class UserAddressService {
                 //删除失败
                 return 0L;
             }
-        }catch (Exception e){
-            throw new BusinessException("删除地址失败----"+e);
+        } catch (Exception e) {
+            throw new BusinessException("删除地址失败----" + e);
         }
     }
 
@@ -312,9 +321,9 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/9 16:24
      */
-    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public Boolean settingDefaultAddress(Long id, Long userId) {
-        try{
+        try {
             //取消之前的默认地址
             int ii = comUserAddressMapper.cancelDefaultAddress(userId);
             //设置新的默认地址
@@ -324,8 +333,8 @@ public class UserAddressService {
             } else {
                 return false;
             }
-        }catch (Exception e){
-            throw new BusinessException("设置默认地址失败-----"+e);
+        } catch (Exception e) {
+            throw new BusinessException("设置默认地址失败-----" + e);
         }
     }
 

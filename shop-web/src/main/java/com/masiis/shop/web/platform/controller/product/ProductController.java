@@ -171,7 +171,7 @@ public class ProductController extends BaseController {
                                      @RequestParam("id") Long id) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/user/nahuo");
         ComUser comUser = getComUser(request);
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(selectedAddressId, comUser.getId());
         if (comUserAddress != null) {
             mav.addObject("addressId", comUserAddress.getId());
             mav.addObject("pfUserSkuStockId", id);

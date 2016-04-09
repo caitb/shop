@@ -2,11 +2,14 @@ package com.masiis.shop.web.mall.service.shop;
 
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopShoutLog;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +21,8 @@ import java.util.Map;
 @Service
 public class SfShopService {
 
+    @Resource
+    private ComUserMapper comUserMapper;
     @Resource
     private SfShopMapper sfShopMapper;
     @Resource

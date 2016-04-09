@@ -2,13 +2,14 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.product.SkuService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,11 +25,14 @@ import java.util.List;
  * @Date:2016/4/7
  * @auth:lzh
  */
+@Controller
 @RequestMapping("/shop")
 public class SfShopController extends BaseController {
 
     private Log log = LogFactory.getLog(SfShopController.class);
 
+    @Resource
+    private ComUserMapper comUserMapper;
     @Resource
     private SfShopService sfShopService;
 
@@ -60,6 +64,24 @@ public class SfShopController extends BaseController {
         return "error";
     }
 
+    @RequestMapping("/getPoster")
+    public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId){
+        ModelAndView mav = new ModelAndView("mall/shop/test");
+
+        try {
+            ComUser comUser = getComUser(request);
+                    comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+
+            return mav;
+        } catch (Exception e) {
+            log.error("获取专属海报失败![shopId="+shopId+"][comUser="+getComUser(request)+"]");
+            e.printStackTrace();
+        }
+
+        mav.setViewName("error");
+        return mav;
+    }
+
     /**
      * @Author jjh
      * @Date 2016/4/8 0008 下午 5:50
@@ -77,32 +99,6 @@ public class SfShopController extends BaseController {
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
-        mav.addObject("shopId", shopId);
         return mav;
     }
-    /**
-      * @Author jjh
-      * @Date 2016/4/9 0009 下午 1:45
-      * 立即购买
-      */
-    @RequestMapping("/addCart.do")
-    @ResponseBody
-    public String addProductToCart(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(required = true) Long shopId,
-                                   @RequestParam(required = true) Integer skuId,
-                                   @RequestParam(required = true) Integer quantity){
-        JSONObject object = new JSONObject();
-        try{
-            HttpSession session = request.getSession();
-            ComUser comUser = (ComUser) session.getAttribute("comUser");
-            skuService.addProductToCart(shopId,comUser.getId(),skuId,quantity);
-            object.put("isError", false);
-        }
-        catch (Exception ex){
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
-        }
-        return object.toJSONString();
-    }
-
 }

@@ -62,7 +62,7 @@ public class COrderService {
      */
     public Map<String, Object> confirmOrder(HttpServletRequest request, Integer skuId, Long userId, Long selectedAddressId) {
         Map<String, Object> pfCorderMap = new HashMap<String, Object>();
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, userId);
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress( selectedAddressId, userId);
         Product product = getProductDetail(skuId);
         pfCorderMap.put("comUserAddress", comUserAddress);
         pfCorderMap.put("product", product);

@@ -17,50 +17,117 @@
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-        delete from sf_shop
-        where id = #{id,jdbcType=BIGINT}
+        delete from sf_shop where id = #{id,jdbcType=BIGINT}
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShop" >
-        insert into sf_shop (id, create_time, name, 
-            user_id, status, logo, 
-            explanation, shout_num, pageviews, 
-            sale_amount, qr_code, remark
-            )
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
-            #{userId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{logo,jdbcType=VARCHAR}, 
-            #{explanation,jdbcType=VARBINARY}, #{shoutNum,jdbcType=BIGINT}, #{pageviews,jdbcType=BIGINT}, 
-            #{saleAmount,jdbcType=DECIMAL}, #{qrCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
-            )
+        insert into sf_shop
+                    (
+                    id,
+                    create_time,
+                    name,
+                    user_id,
+                    status,
+                    logo,
+                    explanation,
+                    shout_num,
+                    pageviews,
+                    sale_amount,
+                    qr_code,
+                    remark
+                    )
+        values      (
+                    #{id,jdbcType=BIGINT},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{name,jdbcType=VARCHAR},
+                    #{userId,jdbcType=BIGINT},
+                    #{status,jdbcType=INTEGER},
+                    #{logo,jdbcType=VARCHAR},
+                    #{explanation,jdbcType=VARBINARY},
+                    #{shoutNum,jdbcType=BIGINT},
+                    #{pageviews,jdbcType=BIGINT},
+                    #{saleAmount,jdbcType=DECIMAL},
+                    #{qrCode,jdbcType=VARCHAR},
+                    #{remark,jdbcType=VARCHAR}
+                    )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShop" >
         update sf_shop
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            name = #{name,jdbcType=VARCHAR},
-            user_id = #{userId,jdbcType=BIGINT},
-            status = #{status,jdbcType=INTEGER},
-            logo = #{logo,jdbcType=VARCHAR},
-            explanation = #{explanation,jdbcType=VARBINARY},
-            shout_num = #{shoutNum,jdbcType=BIGINT},
-            pageviews = #{pageviews,jdbcType=BIGINT},
-            sale_amount = #{saleAmount,jdbcType=DECIMAL},
-            qr_code = #{qrCode,jdbcType=VARCHAR},
-            remark = #{remark,jdbcType=VARCHAR}
+        <set >
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="logo != null" >
+                logo = #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="explanation != null" >
+                explanation = #{explanation,jdbcType=VARBINARY},
+            </if>
+            <if test="shoutNum != null" >
+                shout_num = #{shoutNum,jdbcType=BIGINT},
+            </if>
+            <if test="pageviews != null" >
+                pageviews = #{pageviews,jdbcType=BIGINT},
+            </if>
+            <if test="saleAmount != null" >
+                sale_amount = #{saleAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="qrCode != null" >
+                qr_code = #{qrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, name, user_id, status, logo, explanation, shout_num, pageviews, 
-        sale_amount, qr_code, remark
-        from sf_shop
-        where id = #{id,jdbcType=BIGINT}
+        select
+               id,
+               create_time,
+               name,
+               user_id,
+               status,
+               logo,
+               explanation,
+               shout_num,
+               pageviews,
+               sale_amount,
+               qr_code,
+               remark
+        from
+               sf_shop
+        where
+               id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, name, user_id, status, logo, explanation, shout_num, pageviews, 
-        sale_amount, qr_code, remark
-        from sf_shop
+        select
+               id,
+               create_time,
+               name,
+               user_id,
+               status,
+               logo,
+               explanation,
+               shout_num,
+               pageviews,
+               sale_amount,
+               qr_code,
+               remark
+        from
+               sf_shop
     </select>
 
 </mapper>

@@ -1,7 +1,6 @@
 package com.masiis.shop.web.mall.controller.order;
 
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -12,8 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -63,7 +60,7 @@ public class SfOrderManagerController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
-        modelAndView.setViewName("platform/order/wodedingdan");
+        modelAndView.setViewName("mall/order/wodedingdan");
         return modelAndView;
     }
 

@@ -1,6 +1,8 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.dao.mall.order.SfOrderItemMallMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemMapper;
+import com.masiis.shop.dao.mall.order.SfOrderManageMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
@@ -25,18 +27,18 @@ import java.util.List;
 @Transactional
 public class SfOrderManageService {
     @Autowired
-    private SfOrderMapper sfOrderMapper;
+    private SfOrderManageMapper sfOrderManageMapper;
     @Autowired
     private ComSkuImageMapper comSkuImageMapper;
     @Autowired
-    private SfOrderItemMapper sfOrderItemMapper;
+    private SfOrderItemMallMapper sfOrderItemMallMapper;
 
     public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Integer sendType){
-        return sfOrderMapper.selectByUserId(userId,orderStatus,sendType);
+        return sfOrderManageMapper.selectByUserId(userId,orderStatus,sendType);
     }
 
     public List<SfOrderItem> findSfOrderItemBySfOrderId(Long sfOrderId){
-        return sfOrderItemMapper.selectBySfOrderId(sfOrderId);
+        return sfOrderItemMallMapper.selectBySfOrderId(sfOrderId);
     }
 
     public ComSkuImage findComSkuImage(Integer skuId) {

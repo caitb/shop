@@ -46,7 +46,7 @@ public class UserAddressService {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public ComUserAddress getOrderAddress(HttpServletRequest request, Long selectedAddressId, Long userId) {
+    public ComUserAddress getOrderAddress(Long selectedAddressId, Long userId) {
         try {
             //获得用户的默认地址
             ComUserAddress comUserAddress = new ComUserAddress();

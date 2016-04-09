@@ -12,39 +12,112 @@
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-        delete from sf_shop_shout_log
-        where id = #{id,jdbcType=BIGINT}
+        delete from sf_shop_shout_log where id = #{id,jdbcType=BIGINT}
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopShoutLog" >
-        insert into sf_shop_shout_log (id, create_time, user_id, 
-            shop_id, shop_user_id, num, 
-            remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
-            #{shopId,jdbcType=BIGINT}, #{shopUserId,jdbcType=BIGINT}, #{num,jdbcType=INTEGER}, 
-            #{remark,jdbcType=VARCHAR})
+        insert into sf_shop_shout_log
+                    (
+                    id,
+                    create_time,
+                    user_id,
+                    shop_id,
+                    shop_user_id,
+                    num,
+                    remark
+                    )
+        values      (
+                    #{id,jdbcType=BIGINT},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{userId,jdbcType=BIGINT},
+                    #{shopId,jdbcType=BIGINT},
+                    #{shopUserId,jdbcType=BIGINT},
+                    #{num,jdbcType=INTEGER},
+                    #{remark,jdbcType=VARCHAR}
+                    )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopShoutLog" >
         update sf_shop_shout_log
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            user_id = #{userId,jdbcType=BIGINT},
-            shop_id = #{shopId,jdbcType=BIGINT},
-            shop_user_id = #{shopUserId,jdbcType=BIGINT},
-            num = #{num,jdbcType=INTEGER},
-            remark = #{remark,jdbcType=VARCHAR}
+        <set >
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="shopId != null" >
+                shop_id = #{shopId,jdbcType=BIGINT},
+            </if>
+            <if test="shopUserId != null" >
+                shop_user_id = #{shopUserId,jdbcType=BIGINT},
+            </if>
+            <if test="num != null" >
+                num = #{num,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, create_time, user_id, shop_id, shop_user_id, num, remark
-        from sf_shop_shout_log
-        where id = #{id,jdbcType=BIGINT}
+        select
+               id,
+               create_time,
+               user_id,
+               shop_id,
+               shop_user_id,
+               num,
+               remark
+        from
+               sf_shop_shout_log
+        where
+               id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, user_id, shop_id, shop_user_id, num, remark
-        from sf_shop_shout_log
+        select
+               id,
+               create_time,
+               user_id,
+               shop_id,
+               shop_user_id,
+               num,
+               remark
+        from
+               sf_shop_shout_log
+    </select>
+    
+    <select id="selectByCondition" parameterType="Map" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               user_id,
+               shop_id,
+               shop_user_id,
+               num,
+               remark
+        from
+               sf_shop_shout_log
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="shopId != null">
+                AND shop_id = #{shopId}
+            </if>
+            <if test="shopUserId != null">
+                AND shop_user_id = #{shopUserId}
+            </if>
+            <if test="createTime != null">
+                AND create_time = #{createTime}
+            </if>
+        </where>
     </select>
 
 </mapper>

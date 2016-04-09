@@ -26,10 +26,4 @@
         where sf_order_id = #{sfOrderId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, sf_order_id, spu_id, sku_id, sku_name, quantity, original_price, 
-        unit_price, distribution_amount, total_price, is_comment, is_return, remark
-        from sf_order_item
-    </select>
-
 </mapper>

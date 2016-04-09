@@ -8,10 +8,12 @@
 package com.masiis.shop.dao.po;
 
 import com.masiis.shop.dao.beans.order.PfBorderItemExtends;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Repository
 public class PfBorderItem extends PfBorderItemExtends {
 
     private Long id;

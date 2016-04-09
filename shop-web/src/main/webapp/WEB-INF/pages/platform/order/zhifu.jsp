@@ -57,7 +57,7 @@
             </c:if>
             <c:if test="${pfBorder.orderType!=1 || pfBorder.sendType!=2}">
                 <div class="Type2">
-                    <p>拿货方式：<span>平台胎发</span><b>你已选择拿货方式，不可更改</b></p>
+                    <p>拿货方式：<span>平台代发</span><b>你已选择拿货方式，不可更改</b></p>
                     <h1>支付成功后，您的在线库存将会增加</h1>
                 </div>
             </c:if>
@@ -105,7 +105,6 @@
     }
 
     function submit(para) {
-        alert($(para).html());
         if ($(para).html() == "正在提交...") {
             return;
         }

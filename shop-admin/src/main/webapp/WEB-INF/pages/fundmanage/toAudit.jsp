@@ -99,8 +99,8 @@
                 <tr>
                     <td class="meta-attributes__attr-name">微信绑定状态</td>
                     <td class="meta-attributes__attr-detail">
-                        <c:if test="${extractApply.comUser.openid != null}">已绑定</c:if>
-                        <c:if test="${extractApply.comUser.openid == null}">未绑定</c:if>
+                        <c:if test="${extractApply.comUser.unionid != null}">已绑定</c:if>
+                        <c:if test="${extractApply.comUser.unionid == null}">未绑定</c:if>
                     </td>
                 </tr>
 

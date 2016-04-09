@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class SfShop {
@@ -52,6 +53,9 @@ public class SfShop {
      * 二维码图片全称(不包括路径)
      */
     private String qrCode;
+
+    /*运费*/
+    private BigDecimal shipAmount;
     /**
      * 备注
      */
@@ -128,5 +132,13 @@ public class SfShop {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public BigDecimal getShipAmount() {
+        return shipAmount;
+    }
+
+    public void setShipAmount(BigDecimal shipAmount) {
+        this.shipAmount = shipAmount;
     }
 }

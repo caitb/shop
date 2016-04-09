@@ -68,4 +68,6 @@ public class SkuService {
     public ComSkuExtension findSkuExteBySkuId(Integer skuId){
         return comSkuExtensionMapper.selectBySkuId(skuId);
     }
+
+
 }

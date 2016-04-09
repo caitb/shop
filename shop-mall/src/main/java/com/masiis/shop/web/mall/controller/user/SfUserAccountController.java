@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -46,7 +47,15 @@ public class SfUserAccountController extends BaseController {
         //查询分销用户账户表
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
         if (userAccount == null){
-            mv.setViewName("shop_index");
+            userAccount = new SfUserAccount();
+            BigDecimal fee = new BigDecimal(0);
+            userAccount.setUserId(Long.valueOf(0));
+            userAccount.setCountingFee(fee);
+            userAccount.setExtractableFee(fee);
+            mv.addObject("userAccount",userAccount);
+            mv.addObject("count",0);
+            mv.addObject("orderItemDistributions",null);
+            mv.setViewName("mall/user/sf_commission");
             return mv;
         }
         SfOrderItemDistribution record = new SfOrderItemDistribution();
@@ -62,7 +71,7 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("userAccount",userAccount);
         mv.addObject("count",count);
         mv.addObject("orderItemDistributions",list);
-        mv.setViewName("shop_index");
+        mv.setViewName("mall/user/sf_commission");
         return mv;
     }
 }

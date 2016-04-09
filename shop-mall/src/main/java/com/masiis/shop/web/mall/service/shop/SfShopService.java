@@ -56,4 +56,13 @@ public class SfShopService {
         return false;
     }
 
+    /**
+     * 根据id获得小铺信息
+     * @author hanzengzhi
+     * @date 2016/4/9 12:04
+     */
+    public SfShop getSfShopById(Long id){
+        return sfShopMapper.selectByPrimaryKey(id);
+    }
+
 }

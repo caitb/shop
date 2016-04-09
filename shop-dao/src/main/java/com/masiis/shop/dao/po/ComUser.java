@@ -1,170 +1,124 @@
 /*
- * ComUser.java
+ * ComUserNew.java
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-03 Created
+ * 2016-04-08 Created
  */
 package com.masiis.shop.dao.po;
 
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * 用户表（包括代理和分销用户）
- *
- * @author masiis
- * @version 1.0 2016-03-03
- */
-public class ComUser implements Serializable {
+public class ComUser implements Serializable{
 
     private static final long serialVersionUID = -2543606660018018096L;
 
+    /**
+     * 主键id
+     */
     private Long id;
     /**
      * 创建时间
      */
     private Date createTime;
     /**
-     * 微信用户唯一标识
-     */
-    private String openid;
-    /**
-     * 微信昵称
-     */
-    private String wxNkName;
-    /**
-     * 微信号
-     */
-    private String wxId;
-    /**
-     * 微信头像url
-     */
-    private String wxHeadImg;
-    /**
-     * 微信access_token
-     */
-    private String accessToken;
-    /**
-     * 微信refresh_token
-     */
-    private String refreshToken;
-    /**
-     * access_token过期时间
-     */
-    private Date atokenExpire;
-    /**
-     * refreshtoken过期时间
-     */
-    private Date rtokenExpire;
-    /**
-     * 真实姓名
-     */
-    private String realName;
-    /**
-     * 手机号
+     * 电话号码,用户唯一标识
      */
     private String mobile;
     /**
-     * 身份证号
+     * 用户注册邮箱
+     */
+    private String userMail;
+    /**
+     * 用户头像
+     */
+    private String wxHeadImg;
+    /**
+     * 用户在平台的昵称,不同于微信昵称
+     */
+    private String wxNkName;
+    /**
+     * 性别(0女1男)
+     */
+    private Integer sex;
+    /**
+     * 用户真实姓名
+     */
+    private String realName;
+    /**
+     * 身份证号码
      */
     private String idCard;
     /**
-     * 身份证正面
+     * 身份证前面图片url
      */
     private String idCardFrontUrl;
     /**
-     * 身份证背面
+     * 身份证后面图片url
      */
     private String idCardBackUrl;
     /**
-     * 发货省id
+     * 微信号(手填)
      */
-    private Integer provinceId;
+    private String wxId;
     /**
-     * 发货省名称
+     * 是否绑定（0否1是）
      */
-    private String provinceName;
-    /**
-     * 发货市id
-     */
-    private Integer cityId;
-    /**
-     * 发货市名称
-     */
-    private String cityName;
-    /**
-     * 发货区id
-     */
-    private Integer regionId;
-    /**
-     * 发货区名称
-     */
-    private String regionName;
-    /**
-     * 发货地址
-     */
-    private String address;
-    /**
-     * 拿货方式(0未选择1平台代发2自己发货)
-     */
-    private Integer sendType;
+    private Integer isBinding;
     /**
      * 是否合伙人(0否1是)
      */
     private Integer isAgent;
     /**
-     * 性别(0女1男)
+     * 拿货方式: 0,未选择; 1,平台代发; 2,自己发货
      */
-    private Integer sex;
-
-    /*审核状态*/
+    private Integer sendType;
+    /**
+     * 审核状态(0未审核1已提交审核(审核中)2审核通过3审核不通过)
+     */
     private Integer auditStatus;
-    /*审核通过或不通过原因*/
+    /**
+     * 审核通过或不通过原因
+     */
     private String auditReason;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    /**
+     * 微信unionid,微信用户唯一标识
+     */
+    private String wxUnionid;
+    private String password;
+    /**
+     * pwd的盐
+     */
+    private String pwdSalt;
+    /**
+     * 注册来源: 0,微信注册; 1,app注册
+     */
+    private Integer registerSource;
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public Date getCreateTime() {
         return createTime;
     }
-
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
-    public String getOpenid() {
-        return openid;
+    public String getMobile() {
+        return mobile;
     }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
     }
-
-    public String getWxNkName() {
-        return wxNkName;
+    public String getUserMail() {
+        return userMail;
     }
-
-    public void setWxNkName(String wxNkName) {
-        this.wxNkName = wxNkName;
-    }
-
-    public String getWxId() {
-        return wxId;
-    }
-
-    public void setWxId(String wxId) {
-        this.wxId = wxId;
+    public void setUserMail(String userMail) {
+        this.userMail = userMail == null ? null : userMail.trim();
     }
 
     public String getWxHeadImg() {
@@ -175,204 +129,102 @@ public class ComUser implements Serializable {
         this.wxHeadImg = wxHeadImg;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getWxNkName() {
+        return wxNkName;
     }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setWxNkName(String wxNkName) {
+        this.wxNkName = wxNkName == null ? null : wxNkName.trim();
     }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public Date getAtokenExpire() {
-        return atokenExpire;
-    }
-
-    public void setAtokenExpire(Date atokenExpire) {
-        this.atokenExpire = atokenExpire;
-    }
-
-    public Date getRtokenExpire() {
-        return rtokenExpire;
-    }
-
-    public void setRtokenExpire(Date rtokenExpire) {
-        this.rtokenExpire = rtokenExpire;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
-
-    public String getIdCardFrontUrl() {
-        return idCardFrontUrl;
-    }
-
-    public void setIdCardFrontUrl(String idCardFrontUrl) {
-        this.idCardFrontUrl = idCardFrontUrl;
-    }
-
-    public String getIdCardBackUrl() {
-        return idCardBackUrl;
-    }
-
-    public void setIdCardBackUrl(String idCardBackUrl) {
-        this.idCardBackUrl = idCardBackUrl;
-    }
-
-    public Integer getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(Integer provinceId) {
-        this.provinceId = provinceId;
-    }
-
-    public String getProvinceName() {
-        return provinceName;
-    }
-
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
-    }
-
-    public Integer getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
-
-    public Integer getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getSendType() {
-        return sendType;
-    }
-
-    public void setSendType(Integer sendType) {
-        this.sendType = sendType;
-    }
-
-    public Integer getIsAgent() {
-        return isAgent;
-    }
-
-    public void setIsAgent(Integer isAgent) {
-        this.isAgent = isAgent;
-    }
-
     public Integer getSex() {
         return sex;
     }
-
     public void setSex(Integer sex) {
         this.sex = sex;
     }
-
+    public String getRealName() {
+        return realName;
+    }
+    public void setRealName(String realName) {
+        this.realName = realName == null ? null : realName.trim();
+    }
+    public String getIdCard() {
+        return idCard;
+    }
+    public void setIdCard(String idCard) {
+        this.idCard = idCard == null ? null : idCard.trim();
+    }
+    public String getIdCardFrontUrl() {
+        return idCardFrontUrl;
+    }
+    public void setIdCardFrontUrl(String idCardFrontUrl) {
+        this.idCardFrontUrl = idCardFrontUrl == null ? null : idCardFrontUrl.trim();
+    }
+    public String getIdCardBackUrl() {
+        return idCardBackUrl;
+    }
+    public void setIdCardBackUrl(String idCardBackUrl) {
+        this.idCardBackUrl = idCardBackUrl == null ? null : idCardBackUrl.trim();
+    }
+    public String getWxId() {
+        return wxId;
+    }
+    public void setWxId(String wxId) {
+        this.wxId = wxId == null ? null : wxId.trim();
+    }
+    public Integer getIsAgent() {
+        return isAgent;
+    }
+    public void setIsAgent(Integer isAgent) {
+        this.isAgent = isAgent;
+    }
+    public Integer getSendType() {
+        return sendType;
+    }
+    public void setSendType(Integer sendType) {
+        this.sendType = sendType;
+    }
     public Integer getAuditStatus() {
         return auditStatus;
     }
-
     public void setAuditStatus(Integer auditStatus) {
         this.auditStatus = auditStatus;
     }
-
     public String getAuditReason() {
         return auditReason;
     }
-
     public void setAuditReason(String auditReason) {
-        this.auditReason = auditReason;
+        this.auditReason = auditReason == null ? null : auditReason.trim();
+    }
+    public String getWxUnionid() {
+        return wxUnionid;
+    }
+    public void setWxUnionid(String wxUnionid) {
+        this.wxUnionid = wxUnionid == null ? null : wxUnionid.trim();
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
+    }
+    public String getPwdSalt() {
+        return pwdSalt;
+    }
+    public void setPwdSalt(String pwdSalt) {
+        this.pwdSalt = pwdSalt == null ? null : pwdSalt.trim();
+    }
+    public Integer getRegisterSource() {
+        return registerSource;
+    }
+    public void setRegisterSource(Integer registerSource) {
+        this.registerSource = registerSource;
     }
 
-    @Override
-    public String toString() {
-        return "ComUser{" +
-                "id=" + id +
-                ", createTime=" + createTime +
-                ", openid='" + openid + '\'' +
-                ", wxNkName='" + wxNkName + '\'' +
-                ", wxId='" + wxId + '\'' +
-                ", wxHeadImg='" + wxHeadImg + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", atokenExpire=" + atokenExpire +
-                ", rtokenExpire=" + rtokenExpire +
-                ", realName='" + realName + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", idCard='" + idCard + '\'' +
-                ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
-                ", idCardBackUrl='" + idCardBackUrl + '\'' +
-                ", provinceId=" + provinceId +
-                ", provinceName='" + provinceName + '\'' +
-                ", cityId=" + cityId +
-                ", cityName='" + cityName + '\'' +
-                ", regionId=" + regionId +
-                ", regionName='" + regionName + '\'' +
-                ", address='" + address + '\'' +
-                ", sendType=" + sendType +
-                ", isAgent=" + isAgent +
-                ", sex=" + sex +
-                ", auditStatus=" + auditStatus +
-                ", auditReason='" + auditReason + '\'' +
-                '}';
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
     }
 }

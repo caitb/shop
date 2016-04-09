@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,12 @@ public class WxPayService {
     private COrderService cOrderService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private WxUserService wxUserService;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
         UnifiedOrderReq res = null;
+        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConstants.APPID);
         try {
             String orderType = req.getOrderId().charAt(0) + "";
             res = new UnifiedOrderReq();
@@ -46,7 +50,7 @@ public class WxPayService {
             res.setMch_id(WxConstants.WX_PAY_MCHID);
             res.setNonce_str(WXBeanUtils.createGenerateStr());
             res.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
-            res.setOpenid(user.getOpenid());
+            res.setOpenid(wxUser.getOpenid());
             // PC网页或公众号内支付传"WEB"
             res.setDevice_info("WEB");
             res.setSpbill_create_ip(ip);

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.user.ComUserExtractApplyMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserExtractApply" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
-        <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
-        <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT" />
-        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
-        <result column="extract_way" property="extractWay" jdbcType="BIGINT" />
-        <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP" />
-        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
-        <result column="audit_type" property="auditType" jdbcType="INTEGER" />
-        <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
-        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
-        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
-        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
-        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="auditTypeView" property="auditTypeView" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserExtractApplyMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserExtractApply">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT"/>
+        <result column="extract_fee" property="extractFee" jdbcType="DECIMAL"/>
+        <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT"/>
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
+        <result column="extract_way" property="extractWay" jdbcType="BIGINT"/>
+        <result column="extract_time" property="extractTime" jdbcType="TIMESTAMP"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="audit_type" property="auditType" jdbcType="INTEGER"/>
+        <result column="audit_cause" property="auditCause" jdbcType="VARCHAR"/>
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR"/>
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR"/>
+        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR"/>
+        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="auditTypeView" property="auditTypeView" jdbcType="VARCHAR"/>
     </resultMap>
-    <resultMap id="ExtractApplyMap" type="com.masiis.shop.dao.beans.extract.ExtractApply" >
+    <!--<resultMap id="ExtractApplyMap" type="com.masiis.shop.dao.beans.extract.ExtractApply" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
         <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
@@ -46,15 +46,16 @@
             <result column="id_card_front_url" property="idCardFrontUrl" jdbcType="VARCHAR"/>
             <result column="id_card_back_url" property="idCardBackUrl" jdbcType="VARCHAR"/>
         </association>
-    </resultMap>
+    </resultMap>-->
 
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from com_user_extract_apply
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" useGeneratedKeys="true"
+            keyProperty="id">
         insert into com_user_extract_apply (id, com_user_id, extract_fee, 
             extractway_info_id, apply_time, extract_way, 
             extract_time, pay_time, audit_type, audit_cause,
@@ -67,9 +68,9 @@
             #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractApply">
         update
-               com_user_extract_apply
+        com_user_extract_apply
         <set>
             <if test="comUserId != null">
                 com_user_id = #{comUserId,jdbcType=BIGINT},
@@ -115,10 +116,10 @@
             </if>
         </set>
         where
-              id = #{id,jdbcType=BIGINT}
+        id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
         extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
@@ -126,14 +127,14 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
         select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
         extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
         from com_user_extract_apply
     </select>
 
-    <select id="getExtractApplyList" resultMap="ExtractApplyMap" >
+    <!--<select id="getExtractApplyList" resultMap="ExtractApplyMap" >
         SELECT
           cuea.id,
           cuea.com_user_id,cu.real_name,
@@ -145,9 +146,9 @@
           cuea.remark
         FROM com_user_extract_apply cuea
         LEFT JOIN com_user cu ON cuea.com_user_id = cu.id
-    </select>
+    </select>-->
 
-    <select id="findById" resultMap="ExtractApplyMap" >
+    <!--<select id="findById" resultMap="ExtractApplyMap" >
         SELECT
             cuea.id,
             cuea.com_user_id,cu.real_name,
@@ -166,7 +167,7 @@
         FROM com_user_extract_apply cuea
         LEFT JOIN com_user cu ON cuea.com_user_id = cu.id
         WHERE cuea.id = #{id}
-    </select>
+    </select>-->
 
 
     <update id="pass">
@@ -179,7 +180,7 @@
           update com_user_extract_apply set audit_type = 3 where id = #{id}
     </update>
 
-    <select id="selectByUserAndDate" resultMap="BaseResultMap" >
+    <select id="selectByUserAndDate" resultMap="BaseResultMap">
         select ea.id, ea.com_user_id, ea.extract_fee, ea.extractway_info_id, ea.apply_time, ea.extract_way,
                ea.extract_time, ea.pay_time, ea.audit_type, ea.audit_cause, ea.bank_card, ea.bank_name,
                ea.card_owner_name, ea.deposit_bank_name, ea.remark, d.value as auditTypeView
@@ -200,7 +201,7 @@
               and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
     </select>
 
-    <select id="selectByUserAndDateAndPageNum" resultMap="BaseResultMap" >
+    <select id="selectByUserAndDateAndPageNum" resultMap="BaseResultMap">
         select ea.id, ea.com_user_id, ea.extract_fee, ea.extractway_info_id, ea.apply_time, ea.extract_way,
                ea.extract_time, ea.pay_time, ea.audit_type, ea.audit_cause, ea.bank_card, ea.bank_name,
                ea.card_owner_name, ea.deposit_bank_name, ea.remark, d.value as auditTypeView
@@ -221,23 +222,23 @@
 
     <select id="selectByCondition" parameterType="Map" resultMap="BaseResultMap">
         select
-               id,
-               com_user_id,
-               extract_fee,
-               extractway_info_id,
-               apply_time,
-               extract_way,
-               extract_time,
-               pay_time,
-               audit_type,
-               audit_cause,
-               bank_card,
-               bank_name,
-               card_owner_name,
-               deposit_bank_name,
-               remark
+        id,
+        com_user_id,
+        extract_fee,
+        extractway_info_id,
+        apply_time,
+        extract_way,
+        extract_time,
+        pay_time,
+        audit_type,
+        audit_cause,
+        bank_card,
+        bank_name,
+        card_owner_name,
+        deposit_bank_name,
+        remark
         from
-               com_user_extract_apply
+        com_user_extract_apply
         <where>
             <if test="id != null">
                 AND id = #{id}

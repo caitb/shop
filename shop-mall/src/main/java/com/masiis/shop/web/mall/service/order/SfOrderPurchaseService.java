@@ -84,6 +84,7 @@ public class SfOrderPurchaseService {
             ComSku comSku = null;
             SfShopCartSkuDetail sfShopCartSkuDetail = new SfShopCartSkuDetail();
             comSku = skuService.getComSkuBySkuId(sfShopCart.getSkuId());
+            sfShopCartSkuDetail.setComSku(comSku);
             sfShopCartSkuDetail.setQuantity(sfShopCart.getQuantity());
             sfShopCartSkuDetail.setSkuSumPrice(comSku.getPriceRetail().multiply(new BigDecimal(sfShopCart.getQuantity())));
             sfShopCartSkuDetails.add(sfShopCartSkuDetail);
@@ -161,9 +162,77 @@ public class SfOrderPurchaseService {
         sfOrder.setOrderStatus(0);
         return null;
     }
-    private void generateSfOrderItem(Long sfOrderId){
+    /**
+     * 生成订单日志数据
+     * @author hanzengzhi
+     * @date 2016/4/9 14:39
+     */
+    private SfOrderOperationLog generateSfOrderOperationLog(SfOrderOperationLog sfOrderOperationLog,Long sfOrderId,int sfOrderStatus){
+        if (sfOrderOperationLog == null){
+            sfOrderOperationLog = new SfOrderOperationLog();
+            sfOrderOperationLog.setSfOrderId(sfOrderId);
+            sfOrderOperationLog.setRemark("创建订单");
+        }else{
+            StringBuffer sb = new StringBuffer("将订单的状态由");
+            sb.append(sfOrderOperationLog.getSfOrderStatus());
+            sb.append("改变为");
+            sb.append(sfOrderStatus);
+            sfOrderOperationLog.setRemark(sb.toString());
+        }
+        sfOrderOperationLog.setSfOrderStatus(sfOrderStatus);
+        return sfOrderOperationLog;
+    }
+    /**
+     * 生成订单商品子表数据
+     * @author hanzengzhi
+     * @date 2016/4/9 14:24
+     */
+    private void generateSfOrderItem(Long sfOrderId,SfShopCartSkuDetail sfShopCartSkuDetail){
         SfOrderItem sfOrderItem = new SfOrderItem();
         sfOrderItem.setSfOrderId(sfOrderId);
+        sfOrderItem.setSpuId(sfShopCartSkuDetail.getComSku().getSpuId());
+        sfOrderItem.setSkuId(sfShopCartSkuDetail.getComSku().getId());
+        sfOrderItem.setSkuName(sfShopCartSkuDetail.getComSku().getName());
+        sfOrderItem.setQuantity(sfShopCartSkuDetail.getQuantity());
+        sfOrderItem.setOriginalPrice(sfShopCartSkuDetail.getComSku().getPriceRetail());
+        sfOrderItem.setUnitPrice(sfShopCartSkuDetail.getComSku().getPriceRetail());
+        sfOrderItem.setTotalPrice(new BigDecimal(sfOrderItem.getQuantity()).multiply(sfOrderItem.getOriginalPrice()));
+        sfOrderItem.setIsComment(0);
+        sfOrderItem.setIsReturn(0);
+    }
+    /**
+     * 生成订单地址数据
+     * @author hanzengzhi
+     * @date 2016/4/9 14:31
+     */
+    private void generateSfOrderConsigness(Long sfOrderId,ComUserAddress comUserAddress ){
+        SfOrderConsignee  sfOrderConsignee = new SfOrderConsignee();
+        sfOrderConsignee.setSfOrderId(sfOrderId);
+        sfOrderConsignee.setUserId(comUserAddress.getUserId());
+        sfOrderConsignee.setConsignee(comUserAddress.getName());
+        sfOrderConsignee.setMobile(comUserAddress.getMobile());
+        sfOrderConsignee.setProvinceId(comUserAddress.getProvinceId());
+        sfOrderConsignee.setProvinceName(comUserAddress.getProvinceName());
+        sfOrderConsignee.setCityName(comUserAddress.getCityName());
+        sfOrderConsignee.setCityId(comUserAddress.getCityId());
+        sfOrderConsignee.setRegionId(comUserAddress.getRegionId());
+        sfOrderConsignee.setRegionName(comUserAddress.getRegionName());
+        sfOrderConsignee.setAddress(comUserAddress.getAddress());
+        sfOrderConsignee.setZip(comUserAddress.getZip());
+    }
+    /**
+     * 生成订单订单商品分润表数据
+     * @author hanzengzhi
+     * @date 2016/4/9 14:43
+     */
+    private SfOrderItemDistribution generateSfOrderItemDistribution(Long sfOrderId,Long sfOrderItemId){
+        SfOrderItemDistribution sfOrderItemDistribution = new SfOrderItemDistribution();
+        sfOrderItemDistribution.setSfOrderId(sfOrderId);
+        sfOrderItemDistribution.setSfOrderItemId(sfOrderItemId);
+        sfOrderItemDistribution.setIsCounting(0);
+        return sfOrderItemDistribution;
+    }
+    private void getDistributionInfo(Integer skuId){
 
     }
 

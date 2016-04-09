@@ -24,7 +24,7 @@ public class SfShopCartSkuDetail {
     private BigDecimal skuSumPrice;
 
     /*商品的详情信息*/
-    private List<ComSku> comSkus;
+    private ComSku comSku;
 
     public Integer getQuantity() {
         return quantity;
@@ -42,12 +42,12 @@ public class SfShopCartSkuDetail {
         this.skuSumPrice = skuSumPrice;
     }
 
-    public List<ComSku> getComSkus() {
-        return comSkus;
+    public ComSku getComSku() {
+        return comSku;
     }
 
-    public void setComSkus(List<ComSku> comSkus) {
-        this.comSkus = comSkus;
+    public void setComSku(ComSku comSku) {
+        this.comSku = comSku;
     }
 
     public Long getSfShopId() {

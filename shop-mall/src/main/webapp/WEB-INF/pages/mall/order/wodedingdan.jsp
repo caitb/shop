@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
 </head>
 <body>
@@ -281,6 +281,33 @@
                 $("li").eq(index).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
             });
+
+            function querenshouhuo(orderStatus,id){
+                $(".back").css("display","-webkit-box");
+                $(".back_shouhuo").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    orderStatus=3;
+                    $(".back_shouhuo").hide();
+                    $(".back").hide();
+
+                    var aa="querenshouhuo_"+id;
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/borderManage/closeDeal.do",
+                        data:{orderStatus:3,shipStatus:9,orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+//                            if(date.msgs){
+                            $("span[name="+aa+"]").attr("style","display:none");
+                            $("b."+aa+"").html("交易成功");
+                            location.reload(true);
+//                            }else{
+//                                alert(date.message);
+//                            }
+                        }
+                    })
+                })
+            }
             $(".sh").on("click",function(){
                 $(".back").css("display","-webkit-box");
                 $(".shouhuo").css("display","-webkit-box");

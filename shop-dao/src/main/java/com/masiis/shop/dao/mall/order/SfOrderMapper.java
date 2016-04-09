@@ -21,5 +21,5 @@ public interface SfOrderMapper {
 
     int updateByPrimaryKey(SfOrder record);
 
-    List<SfOrder> selectByUserId(Long userId,Integer orderStatus,Integer sendType);
+//    List<SfOrder> selectByUserId(Long userId,Integer orderStatus,Integer sendType);
 }

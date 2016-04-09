@@ -592,6 +592,14 @@ public class BOrderService {
                     borderSkuStockService.updateStock(pfBorder, user);
                     pfBorderMapper.updateById(pfBorder);
                     pfBorderFreightMapper.insert(pfBorderFreight);
+                    //添加订单日志
+                    PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+                    pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+                    pfBorderOperationLog.setCreateTime(new Date());
+                    pfBorderOperationLog.setPfBorderStatus(8);
+                    pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+                    pfBorderOperationLog.setRemark("订单完成");
+                    pfBorderOperationLogMapper.insert(pfBorderOperationLog);
                 }
             }
         } else if (pfBorder.getSendType() == 2) {//自己发货
@@ -604,6 +612,14 @@ public class BOrderService {
             pfBorderFreight.setShipManName(shipManName);
             pfBorderMapper.updateById(pfBorder);
             pfBorderFreightMapper.insert(pfBorderFreight);
+            //添加订单日志
+            PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+            pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+            pfBorderOperationLog.setCreateTime(new Date());
+            pfBorderOperationLog.setPfBorderStatus(8);
+            pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+            pfBorderOperationLog.setRemark("订单完成");
+            pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         }
     }
 
@@ -621,7 +637,7 @@ public class BOrderService {
             if (pfBorder.getOrderType() == 2) {//拿货
                 pfBorder.setOrderStatus(3);
                 pfBorder.setShipStatus(9);
-                borderSkuStockService.updateGetStock(pfBorder, user);
+//                borderSkuStockService.updateGetStock(pfBorder, user);
                 pfBorderMapper.updateById(pfBorder);
                 //comUserAccountService.countingByOrder(pfBorder);
             }

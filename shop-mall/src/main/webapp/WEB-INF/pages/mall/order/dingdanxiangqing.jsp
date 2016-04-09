@@ -86,7 +86,7 @@
                 <p>付款时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
                 <p>发货时间：<span><fmt:formatDate value="${orderMallDetail.sfOrder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div><c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
-            <botton class="btn" onclick="querenshouhuo('${orderMallDetail.sfOrder.id}','${orderMallDetail.sfOrder.orderStatus}') ">
+            <botton class="btn" onclick="querenshouhuo('${orderMallDetail.sfOrder.id}')">
                 确认收货
             </botton></c:if>
             <h3></h3>
@@ -116,7 +116,7 @@
 //            $(".back").css("display","-webkit-box");
 //            $(".back_que").css("display","-webkit-box");
 //        })
-        function querenshouhuo(id,orderStatus){
+        function querenshouhuo(id){
             $(".back").css("display","-webkit-box");
             $(".back_que").css("display","-webkit-box");
             $(".que_que").on("click",function(){
@@ -125,7 +125,7 @@
                 $.ajax({
                     type:"POST",
                     url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
-                    data:{orderStatus:3,orderId:id},
+                    data:{orderId:id},
                     dataType:"Json",
                     success:function(date){
                         $(".btn").html("已完成");

@@ -1,7 +1,9 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.*;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
@@ -36,31 +38,67 @@ public class SfOrderManageService {
     @Autowired
     private SfOrderMallConsigneeMapper sfOrderMallConsigneeMapper;
     @Autowired
-    private SfOrderFreightMapper sfOrderFreightMapper;
+    private SfUserRelationMapper sfUserRelationMapper;
+    @Autowired
+    private SfOrderOperationLogMapper sfOrderOperationLogMapper;
 
+    /**
+     * 订单
+     * @author muchaofeng
+     * @date 2016/4/9 17:12
+     */
     public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Integer sendType){
         return sfOrderManageMapper.selectByUserId(userId,orderStatus,sendType);
     }
+    /**
+     * 获取上级
+     * @author muchaofeng
+     * @date 2016/4/9 17:11
+     */
+    public SfUserRelation findSfUserRelationByUserId(Long userId){
+        return sfUserRelationMapper.getSfUserRelationByUserId(userId);
+    }
 
+    /**
+     * 根据订单Id获取订单
+     * @author muchaofeng
+     * @date 2016/4/9 17:12
+     */
     public SfOrder findOrderByOrderId(Long orderId){
         return sfOrderMapper.selectByPrimaryKey(orderId);
     }
-
+    /**
+     * 根据订单id找订单商品关系
+     * @author muchaofeng
+     * @date 2016/4/9 17:13
+     */
     public List<SfOrderItem> findSfOrderItemBySfOrderId(Long sfOrderId){
         return sfOrderItemMallMapper.selectBySfOrderId(sfOrderId);
     }
-
+    /**
+     * 查询图片地址
+     * @author muchaofeng
+     * @date 2016/4/9 17:14
+     */
     public ComSkuImage findComSkuImage(Integer skuId) {
         return comSkuImageMapper.selectDefaultImgBySkuId(skuId);
     }
+    /**
+     * 获取快递公司
+     * @author muchaofeng
+     * @date 2016/4/9 17:15
+     */
     public List<SfOrderFreight> findSfOrderFreight(Long orderId) {
         return sfOrderMallFreightMapper.selectByOrderId(orderId);
     }
-
+    /**
+     * 收货人信息
+     * @author muchaofeng
+     * @date 2016/4/9 17:15
+     */
     public SfOrderConsignee findSfOrderConsignee(Long orderId) {
         return sfOrderMallConsigneeMapper.selectBySfOrderId(orderId);
     }
-
     /**
      * 收货
      * @author muchaofeng
@@ -70,5 +108,12 @@ public class SfOrderManageService {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
         sfOrder.setOrderStatus(3);
         sfOrderMapper.updateByPrimaryKey(sfOrder);
+        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+        sfOrderOperationLog.setCreateTime(new Date());
+        sfOrderOperationLog.setSfOrderStatus(BOrderStatus.Complete.getCode());
+        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+        sfOrderOperationLog.setRemark("订单完成");
+        sfOrderOperationLogMapper.insert(sfOrderOperationLog);
     }
 }

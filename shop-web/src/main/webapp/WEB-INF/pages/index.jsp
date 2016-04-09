@@ -46,7 +46,7 @@
                     <p><b>1233</b><span>下级合伙人</span></p>
                     <ul>
                         <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span></h1></li>
-                        <li><p>总利润</p><h1>￥<span>${comUserAccount.costFee}</span></h1></li>
+                        <li><p>总利润</p><h1>￥<span>${comUserAccount.profitFee}</span></h1></li>
                     </ul></c:if>
                 </div><c:if test="${user.isAgent==0}">
                 <div class="index_Nlogin" >

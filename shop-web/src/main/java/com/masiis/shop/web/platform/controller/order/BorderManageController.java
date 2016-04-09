@@ -70,11 +70,8 @@ public class BorderManageController extends BaseController {
     public String closeDeal(HttpServletRequest request, @RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
-            ComUser user = getComUser(request);
-            if (user == null) {
-                throw new BusinessException("用户session丢失");
-            }
-            bOrderService.closeDeal(orderId,user);
+            PfBorder border = bOrderService.getPfBorderById(orderId);
+            bOrderService.completeBOrder(border);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -198,7 +195,6 @@ public class BorderManageController extends BaseController {
 
     /**
      * 确认发货
-     *
      * @author muchaofeng
      * @date 2016/3/20 13:40
      */

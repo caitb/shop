@@ -2,13 +2,11 @@ package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserBill;
-import com.masiis.shop.dao.po.SfOrderItemDistribution;
-import com.masiis.shop.dao.po.SfUserAccount;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
+import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +34,15 @@ public class SfUserAccountController extends BaseController {
     private SfUserAccountService userAccountService;
     @Autowired
     private SfOrderItemDistributionService sfOrderItemDistributionService;
+    @Autowired
+    private UserService userService;
     /**
      * 我的佣金首页
      * @param request
      * @auto:wbj
      * @return
      */
-    @RequestMapping(value = "/commissionHome")
+    @RequestMapping(value = "/commissionHome.shtml")
     public ModelAndView userCommission(HttpServletRequest request) throws Exception{
         log.info("进入小铺我的佣金首页");
         ComUser comUser = getComUser(request);
@@ -132,5 +132,28 @@ public class SfUserAccountController extends BaseController {
             throw new BusinessException("ajax 查询更多用户佣金记录 查询异常");
         }
         return jsonArray.toString();
+    }
+
+    /**
+     * 用户提现申请
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/withdrawRequest.shtml")
+    public ModelAndView withdrawRequest(HttpServletRequest request) throws Exception{
+        log.info("进入用户提现申请");
+        ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("用户没有登录");
+        }
+        ModelAndView mv = new ModelAndView();
+        Long userId = comUser.getId();
+        log.info("userId="+userId);
+        SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
+        ComWxUser comWxUser = userService.findComWxUserByUserId(userId);
+        mv.addObject("userAccount",userAccount);
+        mv.addObject("comWxUser",comWxUser);
+        mv.setViewName("mall/user/sf_withdrawRequest");
+        return mv;
     }
 }

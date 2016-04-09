@@ -9,23 +9,23 @@
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
-    <link rel="stylesheet" href="../css/shenqingtixian.css">
+    <link rel="stylesheet" href="${path}/static/css/pageCss/shenqingtixian.css">
 </head>
 <body>
     <header>
-              <a href="index.html"><img src="../images/xq_rt.png" alt=""></a>
+              <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>申请提现</p>            
         </header>
         <div class="wrap">
                 <div class="na">
                    <p></p>
                    <h1>
-                       <span>俺是快乐的金卡了手机打开了速度</span>
-                       <span>娶我uepqowiepowqi</span>
+                       <span>${comWxUser.nkName}</span>
+                       <span>您已绑定微信</span>
                    </h1>
                </div>
                <main>
-                   <p>您当前可提现金额为<span>￥123123123123</span></p>
+                   <p>您当前可提现金额为<span>￥${userAccount.extractableFee}</span></p>
                    <div class="sec1">
                        提现金额：￥<input type="text" placeholder="请输入提现金额">
                    </div>

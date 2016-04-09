@@ -119,4 +119,11 @@
         WHERE unionid = #{unionid,jdbcType=VARCHAR}
         AND appid = #{appid,jdbcType=VARCHAR}
     </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select id, create_time, com_user_id, unionid, openid, nk_name, sex, province, city,
+        country, head_img_url, access_token, refresh_token, atoken_expire, rtoken_expire, appid
+        from com_wx_user
+        WHERE com_user_id = #{comUserId,jdbcType=BIGINT}
+    </select>
 </mapper>

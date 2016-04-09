@@ -20,4 +20,6 @@ public interface SfOrderFreightMapper {
     List<SfOrderFreight> selectAll();
 
     int updateByPrimaryKey(SfOrderFreight record);
+
+    SfOrderFreight selectByOrderId(Long OrderId);
 }

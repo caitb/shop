@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +24,8 @@
         <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>个人信息</p>
     </header>
+    <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+    <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
     <div class="wrap">
         <nav>
             <ul>
@@ -40,24 +43,28 @@
         </nav>
         <div class="sec1">
             <p>佣金记录</p>
-            <p>共<span>${count}</span>笔记录　<a href="">查看全部></a></p>
+            <p>共<span>${totalCount}</span>笔记录</p>
         </div>
-        <c:forEach var="distribution" items="${orderItemDistributions}">
-            <div class="sec2">
-                <p>
-                    <b>￥${distribution.distributionAmount}</b>
-                    <b>nkName
-                        <span>${distribution.nkName}</span>
-                        在您的分享
-                        <a href="">${distribution.skuName}</a>
-                        中产生了购买
-                    </b>
-                </p>
-                <h1>
-                    <span><fmt:formatDate value="${distribution.orderTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-                </h1>
-            </div>
-        </c:forEach>
+        <div id="itemDistributions">
+            <c:forEach var="distribution" items="${orderItemDistributions}">
+                <div class="sec2">
+                    <p>
+                        <b>￥${distribution.distributionAmount}</b>
+                        <b>
+                            <span>${distribution.nkName}</span>
+                            在您的分享
+                            <a href="" onclick="showDetail(${distribution.skuId})">${distribution.skuName}</a>
+                            中产生了购买
+                        </b>
+                    </p>
+                    <h1>
+                        <span><fmt:formatDate value="${distribution.orderTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                    </h1>
+                </div>
+            </c:forEach>
+        </div>
+        <%--<p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId},${fn:length(orderItemDistributions)})">查看更多></a></p>--%>
+        <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
     </div>
     <div class="back_j">
         <p class="biao">绑定账号</p>

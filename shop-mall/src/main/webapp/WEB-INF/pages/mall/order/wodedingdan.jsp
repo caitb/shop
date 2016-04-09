@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
 </head>
 <body>
@@ -194,7 +194,7 @@
                                 <p><a href="chakanxiangqing.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
-                                        <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
                                         <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
                                     </p>
                                 </c:if>
@@ -204,21 +204,30 @@
                 </main>
            </div>
        </div>
-       <div class="back_que">
+        <div class="back_que" style="display: none">
                     <p>确认减库存?</p>
                     <h4>快递公司:<span><select><option>顺风</option></select></span></h4>
                     <h4>快递单号:<span><input type="text"/></span></h4>
                     <h3>发货</h3>
-                </div>
-                <div class="shouhuo">
-                    <p>收货人信息</p>
-                    <h4><span>姓　名:</span><span></span></h4>
-                    <h4><span>地　址:</span><span>阿斯科利的asdasdasdasdas将阿</span></h4>
-                    <h4><span>手机号:</span><span></span></h4>
-                    <h4><span>邮　编:</span><span></span></h4>
-                    <h3 class="close">关闭</h3>
-                </div>
-           <div class="back">
+        </div>
+        <div class="shouhuo" style="display: none">
+            <p>收货人信息</p>
+            <h4><span>姓　名:</span><span></span></h4>
+            <h4><span>地　址:</span><span>阿斯科利的asdasdasdasdas将阿</span></h4>
+            <h4><span>手机号:</span><span></span></h4>
+            <h4><span>邮　编:</span><span></span></h4>
+            <h3 class="close">关闭</h3>
+        </div>
+        <div class="back_shouhuo" style="display: none">
+           <p>确认收到货品?</p>
+           <h4>亲，请您核对商品后在操作确认收货</h4>
+
+           <h3>
+               <span class="que_qu">取消</span>
+               <span class="que_que">确认</span>
+           </h3>
+        </div>
+           <div class="back" style="display: none">
                
            </div>
        <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
@@ -281,6 +290,31 @@
                 $("li").eq(index).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
             });
+
+            function querenshouhuo(id){
+                $(".back").css("display","-webkit-box");
+                $(".back_shouhuo").css("display","-webkit-box");
+                $(".que_que").on("click",function(){
+                    $(".back_shouhuo").hide();
+                    $(".back").hide();
+                    var aa="#querenshouhuo_"+id;
+                    $.ajax({
+                        type:"POST",
+                        url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
+                        data:{orderId:id},
+                        dataType:"Json",
+                        success:function(date){
+                            $(""+aa+"").attr("style","display:none");
+                            $(""+aa+"").html("交易成功");
+                            location.reload(true);
+                        }
+                    })
+                })
+            }
+            $(".que_qu").on("click",function(){
+                $(".back_shouhuo").hide();
+                $(".back").hide();
+            })
             $(".sh").on("click",function(){
                 $(".back").css("display","-webkit-box");
                 $(".shouhuo").css("display","-webkit-box");

@@ -250,6 +250,7 @@ public class UserService {
             user.setCreateTime(new Date());
             user.setWxUnionid(userRes.getUnionid());
             user.setIsAgent(0);
+            user.setIsBinding(0);
             user.setAuditStatus(0);
             user.setSendType(0);
             user.setRegisterSource(0);

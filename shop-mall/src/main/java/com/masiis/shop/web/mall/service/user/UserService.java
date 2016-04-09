@@ -5,11 +5,9 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAddress;
-import com.masiis.shop.dao.po.PfUserCertificate;
-import com.masiis.shop.dao.po.PfUserTrial;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +30,8 @@ public class UserService {
     private PfUserTrialMapper pfUserTrialMapper;
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
+    @Resource
+    private ComWxUserMapper comWxUserMapper;
     /**
      * 根据用户id获取用户
      *
@@ -215,4 +215,7 @@ public class UserService {
         pfUserCertificateMapper.updateById(pfUserCertificate);
     }
 
+    public ComWxUser findComWxUserByUserId(Long userId){
+        return comWxUserMapper.selectByUserId(userId);
+    }
 }

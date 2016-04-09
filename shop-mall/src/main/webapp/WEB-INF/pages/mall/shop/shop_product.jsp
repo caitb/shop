@@ -51,7 +51,7 @@
         <p>总销量：<b>${skuInfo.saleNum}</b></p>
         <p>分销量：<b>${skuInfo.shareNum}</b></p>
     </div>
-    <div class="dlpople" onclick="buy()">
+    <div class="dlpople" onclick="previewBuy()">
         <p>选择： 数量</p>
         <p><img src="<%=path%>/static/images/next.png" alt=""></p>
     </div>
@@ -130,13 +130,13 @@
             <label class="jia">+</label>
         </p>
     </h1>
-    <button>下一步</button>
+    <button onclick="buy()">下一步</button>
 
 </div>
 <footer>
     <section class="sec3">
         <p class="shi"><a>分享</a></p>
-        <p style="background: #DA3600;"><a href="javascript;" onclick="buy();">立即购买</a></p>
+        <p style="background: #DA3600;"><a href="javascript;" onclick="previewBuy();">立即购买</a></p>
     </section>
 </footer>
 <script>
@@ -163,9 +163,30 @@
         $(".number").val(i)
     })
 
-    function buy(){
-
+    function previewBuy(){
+        validateCodeJS.applyTrial('applyPartner');
         $(".shoping").show();
+    }
+
+    function buy(){
+        var cartData = {};
+        cartData.shopId = "${shopId}";
+        cartData.skuId = "${skuInfo.id}";
+        cartData.quantity = i;
+        $.ajax({
+            url: "<%=basePath%>shop/addCart.do",
+            type: "post",
+            data: cartData,
+            dataType: "json",
+            success: function (data) {
+                if (data.isError == false) {
+                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                }
+                else {
+                    alert(data.message);
+                }
+            }
+        });
     }
 </script>
 </body>

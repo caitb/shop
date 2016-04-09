@@ -2,12 +2,13 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,6 +77,32 @@ public class SfShopController extends BaseController {
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
+        mav.addObject("shopId", shopId);
         return mav;
     }
+    /**
+      * @Author jjh
+      * @Date 2016/4/9 0009 下午 1:45
+      * 立即购买
+      */
+    @RequestMapping("/addCart.do")
+    @ResponseBody
+    public String addProductToCart(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestParam(required = true) Long shopId,
+                                   @RequestParam(required = true) Integer skuId,
+                                   @RequestParam(required = true) Integer quantity){
+        JSONObject object = new JSONObject();
+        try{
+            HttpSession session = request.getSession();
+            ComUser comUser = (ComUser) session.getAttribute("comUser");
+            skuService.addProductToCart(shopId,comUser.getId(),skuId,quantity);
+            object.put("isError", false);
+        }
+        catch (Exception ex){
+            object.put("isError", true);
+            object.put("message", ex.getMessage());
+        }
+        return object.toJSONString();
+    }
+
 }

@@ -8,6 +8,8 @@
 package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShopCart;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface SfShopCartMapper {
@@ -22,4 +24,6 @@ public interface SfShopCartMapper {
     int updateByPrimaryKey(SfShopCart record);
 
     List<SfShopCart>  getShopCartInfoByUserIdAndShopId(Long userId,Long sfShopId);
+
+    SfShopCart getProductInfoByUserIdAndShipIdAndSkuId(@Param("userId") Long userId, @Param("shopId") Long shopId,@Param("skuId") Integer skuId);
 }

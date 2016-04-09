@@ -13,7 +13,7 @@
   padding-left: 0;
 }
 .wrap nav ul li:last-child h2 {
-  background: url("../images/zichan_2.png") no-repeat 0;
+  background: url("/static/images/zichan_2.png") no-repeat 0;
   background-size: 12px;
 }
 .wrap nav ul li {
@@ -71,7 +71,7 @@
   text-align: center;
   font-size: 12px;
   margin-right: 10px;
-  background: url("../images/zichan_1.png") no-repeat 0;
+  background: url("/static/images/zichan_1.png") no-repeat 0;
   background-size: 12px;
   padding-left: 5px;
 }
@@ -133,9 +133,6 @@
   position: fixed;
   top: 0;
   left: 0;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
   z-index: 4;
   display: none;
 }

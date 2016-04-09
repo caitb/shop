@@ -1,3 +1,11 @@
+$(function(){
+    $(".j_qu").click(function(){
+        alert("1111");
+        $(".back").attr('style', 'display:none');
+        $(".back_j").attr('style', 'display:none');
+    });
+});
+
 /**
  * 用户提现
  */
@@ -5,6 +13,8 @@ function withdraw(userId,extractableFee){
     alert(extractableFee);
     if (extractableFee == 0){
         alert("暂无可提现额度");
+        $(".back").attr('style', 'display:block');
+        $(".back_j").attr('style', 'display:block');
         return;
     }
     //判断该用户是否已经绑定
@@ -18,7 +28,8 @@ function withdraw(userId,extractableFee){
             if(data.isTrue == "false"){
                 alert(data.message);
             }else {
-
+                $(".back").attr('style', 'display:block');
+                $(".back_j").attr('style', 'display:block');
             }
         },
         error: function(){

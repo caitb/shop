@@ -183,13 +183,13 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/4/2 14:09
      */
     @RequestMapping("/borderManagement.html")
-    public ModelAndView borderManagement(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception{
+    public ModelAndView borderManagement(HttpServletRequest request) throws Exception{
         ComUser user = getComUser(request);
         if (user == null) {
             user = userService.getUserById(1l);
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
-        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
+//        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
@@ -208,7 +208,7 @@ public class SfOrderManagerController extends BaseController {
         modelAndView.addObject("sfOrders7", sfOrders7.size());
         modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("user", user);
-        modelAndView.addObject("userPid", userPid);
+//        modelAndView.addObject("userPid", userPid);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

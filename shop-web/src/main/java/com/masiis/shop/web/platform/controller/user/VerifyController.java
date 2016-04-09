@@ -238,7 +238,7 @@ public class VerifyController extends BaseController {
                     WxUserInfo userRes = JSONObject.parseObject(infoRes, WxUserInfo.class);
                     if(userRes == null || StringUtils.isBlank(userRes.getOpenid())){
                         // 没获取到信息
-
+                        throw new BusinessException("获取微信用户信息失败,未获取到信息");
                     }
                     // 更新wxUser的信息
                     updateWxUserByRftkn(rfResBean, userRes, wxUser);

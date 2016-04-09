@@ -153,15 +153,15 @@ public class UserService {
         }
     }
 
-    /**
-     * 根据openid查询用户
-     *
-     * @param openid
-     * @return
-     */
-    public ComUser getUserByOpenid(String openid) {
-        return comUserMapper.selectByOpenid(openid);
-    }
+//    /**
+//     * 根据openid查询用户
+//     *
+//     * @param openid
+//     * @return
+//     */
+//    public ComUser getUserByOpenid(String openid) {
+//        return comUserMapper.selectByOpenid(openid);
+//    }
 
     /**
      * 创建用户

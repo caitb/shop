@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hzz on 2016/4/8.
@@ -36,6 +33,11 @@ public class SfOrderPurchaseService {
     private SfUserRelationService sfUserRelationService;
 
 
+    private BigDecimal orderSumDisAmount;//一条订单的总的分润
+    private Map<Integer,BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
+    private Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的店铺上级的分润信息
+
+
     /**
      * 获得确认订单界面，地址信息和商品信息
      * @author hanzengzhi
@@ -43,17 +45,23 @@ public class SfOrderPurchaseService {
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Map<String,Object> getConfirmOrderInfo(Long userId,Long selectedAddressId,Long sfShopId){
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //获得用户地址地址信息
             ComUserAddress comUserAddress = getUserAddressByUserId(userId,selectedAddressId);
+            map.put("comUserAddress",comUserAddress);
             //获得购物车中的商品信息
             List<SfShopCart> sfShopCarts = getShopCartInfoByUserIdAndShopId(userId,sfShopId);
+            map.put("sfShopCarts",sfShopCarts);
             //获得商品的详情信息
             List<SfShopCartSkuDetail> sfShopCartSkuDetails = getShopCartSkuBySkuId(sfShopCarts);
+            map.put("sfShopCartSkuDetails",sfShopCartSkuDetails);
             //获得购物车中商品的总价格
             BigDecimal skuTotalPrice = getShopCartSkuTotalPrice(sfShopCartSkuDetails);
+            map.put("skuTotalPrice",skuTotalPrice);
             //获得运费
             BigDecimal skuTotalShipAmount = getShopCartSkuTotalShipAmount(sfShopCarts);
+            map.put("skuTotalShipAmount",skuTotalShipAmount);
         }catch (Exception e){
 
         }
@@ -138,7 +146,64 @@ public class SfOrderPurchaseService {
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public void submitOrder(Long userId,Long selectedAddressId,Long sfShopId,String message){
         Map<String,Object> map  = getConfirmOrderInfo(userId,selectedAddressId,sfShopId);
+        ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
+        List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("sfShopCartSkuDetails");
+        BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
+        BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
+        //获得每款商品的分润信息
+        for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
+            getDisDetail(userId,sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
+        }
+        //插入订单表
+        SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
+        //插入订单
+        for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
+            //插入单子表
+            SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
+            //插入子订单分润表
+            List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
+            for (SfOrderItemDistribution  orderItemDis :itemDisList){
+                orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
+            }
+        }
 
+    }
+    /**
+     * 获得订单中一款商品的分润总额
+     * @author hanzengzhi
+     * @date 2016/4/9 17:44
+     */
+    private void getDisDetail(Long userId,Integer skuId,BigDecimal skuTotalPrice){
+        if (skuDisMap == null){
+            skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
+        }
+        if (orderSumDisAmount == null){
+            orderSumDisAmount = new BigDecimal(0);
+        }
+        if (ordItemDisMap == null){
+            ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
+        }
+        List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
+        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null);
+        for (int i = 0; i < sfUserRelations.size(); i++){
+            /*一条订单的总的分润*/
+            orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+            /*获得一款商品的店铺上级总的分润*/
+            BigDecimal skuDis = skuDisMap.get(skuId);
+            if (skuDisMap.equals(new BigDecimal(0))){
+                skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
+            }else{
+                skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+            }
+            skuDisMap.put(skuId,skuDis);
+            /*获得一款商品对应店铺上级分润信息*/
+            List<SfOrderItemDistribution> orderItemDisList = (List<SfOrderItemDistribution>)ordItemDisMap.get(sfSkuDistribution.get(i).getId());
+            if (orderItemDisList == null|| orderItemDisList.size() == 0){
+                orderItemDisList = new LinkedList<SfOrderItemDistribution>();
+            }
+            orderItemDisList.add(generateSfOrderItemDistribution(userId, sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+            ordItemDisMap.put(skuId,orderItemDisList);
+        }
     }
     /**
      * 生成订单数据
@@ -161,6 +226,7 @@ public class SfOrderPurchaseService {
         sfOrder.setModifyTime(new Date());
         sfOrder.setProductAmount(skuTotalPrice);
         sfOrder.setShipAmount(skuTotalShipAmount);
+        sfOrder.setDistributionAmount(orderSumDisAmount);
         sfOrder.setReceivableAmount(skuTotalShipAmount.add(skuTotalShipAmount));
         sfOrder.setSendType(0);
         sfOrder.setOrderType(0);
@@ -192,7 +258,7 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 14:24
      */
-    private void generateSfOrderItem(Long sfOrderId,SfShopCartSkuDetail sfShopCartSkuDetail){
+    private SfOrderItem generateSfOrderItem(Long sfOrderId,SfShopCartSkuDetail sfShopCartSkuDetail){
         SfOrderItem sfOrderItem = new SfOrderItem();
         sfOrderItem.setSfOrderId(sfOrderId);
         sfOrderItem.setSpuId(sfShopCartSkuDetail.getComSku().getSpuId());
@@ -201,9 +267,11 @@ public class SfOrderPurchaseService {
         sfOrderItem.setQuantity(sfShopCartSkuDetail.getQuantity());
         sfOrderItem.setOriginalPrice(sfShopCartSkuDetail.getComSku().getPriceRetail());
         sfOrderItem.setUnitPrice(sfShopCartSkuDetail.getComSku().getPriceRetail());
+        sfOrderItem.setDistributionAmount(skuDisMap.get(sfShopCartSkuDetail.getComSku().getId()));
         sfOrderItem.setTotalPrice(new BigDecimal(sfOrderItem.getQuantity()).multiply(sfOrderItem.getOriginalPrice()));
         sfOrderItem.setIsComment(0);
         sfOrderItem.setIsReturn(0);
+        return sfOrderItem;
     }
     /**
      * 生成订单地址数据
@@ -225,23 +293,37 @@ public class SfOrderPurchaseService {
         sfOrderConsignee.setAddress(comUserAddress.getAddress());
         sfOrderConsignee.setZip(comUserAddress.getZip());
     }
+
+    /**
+     * 生成订单订单商品分润表数据
+     * @author hanzengzhi
+     * @date 2016/4/9 18:10
+     */
+    private SfOrderItemDistribution generateSfOrderItemDistribution(Long userId,int skuDisId,BigDecimal disAmount){
+        SfOrderItemDistribution orderItemDis = new SfOrderItemDistribution();
+        orderItemDis.setUserId(userId);
+        orderItemDis.setSfSkuDistributionId(skuDisId);
+        orderItemDis.setDistributionAmount(disAmount);
+        return orderItemDis;
+    }
+
     /**
      * 生成订单订单商品分润表数据
      * @author hanzengzhi
      * @date 2016/4/9 14:43
      */
-    private SfOrderItemDistribution generateSfOrderItemDistribution(Long sfOrderId,Long sfOrderItemId){
-        SfOrderItemDistribution sfOrderItemDistribution = new SfOrderItemDistribution();
-        sfOrderItemDistribution.setSfOrderId(sfOrderId);
-        sfOrderItemDistribution.setSfOrderItemId(sfOrderItemId);
-        sfOrderItemDistribution.setIsCounting(0);
-        return sfOrderItemDistribution;
+    private SfOrderItemDistribution generateSfOrderItemDistribution(Long sfOrderId,Long sfOrderItemId,SfOrderItemDistribution  orderItemDis ){
+        orderItemDis.setSfOrderId(sfOrderId);
+        orderItemDis.setSfOrderItemId(sfOrderItemId);
+        orderItemDis.setIsCounting(0);
+        return orderItemDis;
     }
-    private void getDistributionInfo(Integer skuId){
-        List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuId(skuId);
-    }
+
+
+
     /**
      * 获得当前用户的分销关系
+     * 只找当前用户的上面的三个人。
      * @author hanzengzhi
      * @date 2016/4/9 15:56
      */
@@ -250,7 +332,7 @@ public class SfOrderPurchaseService {
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
         SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userId);
-        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null){
+        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null&&sfUserRelationList.size()<3){
             sfUserRelationList.add(sfUserRelation);
             getSfUserRelation(sfUserRelation.getUserId(),sfUserRelationList);
         }

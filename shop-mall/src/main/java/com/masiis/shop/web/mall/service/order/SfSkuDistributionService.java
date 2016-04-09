@@ -18,8 +18,13 @@ public class SfSkuDistributionService {
     @Resource
     private SfSkuDistributionMapper sfSkuDistributionMapper;
 
+    /**
+     * 根据skuId并升序排序，分销用
+     * @author hanzengzhi
+     * @date 2016/4/9 16:10
+     */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public List<SfSkuDistribution> getSfSkuDistributionBySkuId(Integer skuId){
-        return sfSkuDistributionMapper.selectBySkuId(skuId);
+    public List<SfSkuDistribution> getSfSkuDistributionBySkuIdAndSortAsc(Integer skuId){
+        return sfSkuDistributionMapper.selectBySkuIdAndSortAsc(skuId);
     }
 }

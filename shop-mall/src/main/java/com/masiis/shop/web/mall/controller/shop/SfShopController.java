@@ -1,7 +1,11 @@
 package com.masiis.shop.web.mall.controller.shop;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.ComSkuImage;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +24,9 @@ import java.util.List;
  * @auth:lzh
  */
 @RequestMapping("/shop")
-public class SfShopController {
+public class SfShopController extends BaseController {
+
+    private Log log = LogFactory.getLog(SfShopController.class);
 
     @Resource
     private SfShopService sfShopService;
@@ -28,11 +34,29 @@ public class SfShopController {
     @Resource
     private SkuService skuService;
 
+    /**
+     * 呐喊
+     * @param request
+     * @param response
+     * @param shopId
+     * @return
+     */
     @RequestMapping("/shout")
     @ResponseBody
     public Object shout(HttpServletRequest request, HttpServletResponse response, Long shopId){
 
-        return null;
+        try {
+            ComUser comUser = getComUser(request);
+
+            boolean result = sfShopService.shout(shopId, comUser.getId());
+
+            return result;
+        } catch (Exception e) {
+            log.error("呐喊失败![shopId="+shopId+"][comUser="+getComUser(request)+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
     }
 
     /**

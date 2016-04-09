@@ -131,7 +131,7 @@
                     </a>
                 </div>
                 <div class="btm">
-                    <a href="../html/xiaodianguanli.html">
+                    <a href="<%=path%>/personalInfo/personalHomePageInfo.html">
                         <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
                         <span>个人中心</span>
                     </a>

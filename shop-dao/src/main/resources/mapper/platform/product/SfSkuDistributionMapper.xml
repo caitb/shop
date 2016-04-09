@@ -60,6 +60,21 @@
         WHERE
                sku_id = #{skuId}
     </select>
+    <!--根据skuId并升序排序，分销用 start-->
+    <select id="selectBySkuIdAndSortAsc" parameterType="Integer" resultMap="BaseResultMap">
+        select
+        id,
+        sku_id,
+        sort,
+        discount,
+        remark
+        from
+        sf_sku_distribution
+        WHERE
+        sku_id = #{skuId}
+        ORDER BY sort ASC
+    </select>
+    <!--根据skuId并升序排序，分销用 end-->
 
     <!-- 保存记录 -->
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfSkuDistribution" >

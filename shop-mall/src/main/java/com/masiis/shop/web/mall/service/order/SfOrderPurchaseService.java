@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.service.order;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserAddressService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,6 +32,8 @@ public class SfOrderPurchaseService {
     private SfShopService sfShopService;
     @Resource
     private SfSkuDistributionService sfSkuDistributionService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
 
     /**
@@ -236,6 +239,22 @@ public class SfOrderPurchaseService {
     }
     private void getDistributionInfo(Integer skuId){
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuId(skuId);
+    }
+    /**
+     * 获得当前用户的分销关系
+     * @author hanzengzhi
+     * @date 2016/4/9 15:56
+     */
+    private List<SfUserRelation> getSfUserRelation(Long userId,List<SfUserRelation> sfUserRelationList ){
+        if (sfUserRelationList==null||sfUserRelationList.size()==0){
+            sfUserRelationList = new LinkedList<SfUserRelation>();
+        }
+        SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userId);
+        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null){
+            sfUserRelationList.add(sfUserRelation);
+            getSfUserRelation(sfUserRelation.getUserId(),sfUserRelationList);
+        }
+        return sfUserRelationList;
     }
 
 }

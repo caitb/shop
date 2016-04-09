@@ -32,6 +32,13 @@ public interface SfSkuDistributionMapper {
     List<SfSkuDistribution> selectBySkuId(Integer skuId);
 
     /**
+     * 根据skuId并升序排序，分销用
+     * @author hanzengzhi
+     * @date 2016/4/9 16:01
+     */
+    List<SfSkuDistribution> selectBySkuIdAndSortAsc(Integer skuId);
+
+    /**
      * 添加一条记录
      * @param sfSkuDistribution
      */

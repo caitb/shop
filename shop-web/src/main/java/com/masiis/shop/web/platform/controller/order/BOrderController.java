@@ -234,7 +234,7 @@ public class BOrderController extends BaseController {
             highProfit = highProfit.add(higherAmount.subtract(pfBorderItem.getTotalPrice()));
         }
         //获得地址
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, userAddressId, comUser.getId());
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
         if (comUserAddress != null) {
             request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
         }
@@ -445,7 +445,7 @@ public class BOrderController extends BaseController {
                                         @RequestParam(value = "bOrderId") Long bOrderId) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         ComUser comUser = getComUser(request);
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(request, selectedAddressId, comUser.getId());
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(selectedAddressId, comUser.getId());
         modelAndView.addObject("comUserAddress", comUserAddress);
         modelAndView.addObject("bOrderId", bOrderId);
         if (comUserAddress != null) {

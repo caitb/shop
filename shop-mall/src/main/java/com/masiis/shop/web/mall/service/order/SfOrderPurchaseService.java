@@ -24,6 +24,8 @@ public class SfOrderPurchaseService {
     public Map<String,Object> getConfirmOrderInfoService(Long userId,Long selectedAddressId){
         //获得用户地址地址信息
         ComUserAddress comUserAddress = getUserAddressByUserId(userId,selectedAddressId);
+        //获得购物车中的商品信息
+
         return null;
     }
 

@@ -141,7 +141,7 @@ public class UserIdentityAuthController extends BaseController {
                 object.put("isError", true);
             }
         } catch (Exception ex) {
-            if (StringUtils.isBlank(ex.getMessage())) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
             } else {
                 throw new BusinessException("网络错误", ex);

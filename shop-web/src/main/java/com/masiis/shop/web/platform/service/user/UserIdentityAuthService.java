@@ -103,8 +103,12 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             }
             return i;
-        }catch (Exception e){
-            throw new BusinessException("");
+        }catch (Exception ex){
+            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
         }
     }
 

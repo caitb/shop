@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionExtendMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.po.SfOrderItemDistribution;
@@ -32,7 +33,19 @@ public class SfOrderItemDistributionService {
         return sfOrderItemDistributionMapper.selectCountByCondition(record);
     }
 
-    public List<SfOrderItemDistribution> findCommissionRecordByUserId(Long userId){
+    /**
+     * 通过userId查询佣金记录
+     * @param userId        userId
+     * @param currentPage   当前页
+     * @param pageSize      每页数量
+     * @return
+     */
+    public List<SfOrderItemDistribution> findCommissionRecordByUserIdLimitPage(Long userId,int currentPage,int pageSize){
+        //当当前页或者每页数量为0时 不进行分页查询
+        if (currentPage == 0 || pageSize == 0){
+            return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
+        }
+        PageHelper.startPage(currentPage,pageSize);
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
     }
 }

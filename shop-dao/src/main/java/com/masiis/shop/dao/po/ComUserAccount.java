@@ -26,7 +26,7 @@ public class ComUserAccount {
      */
     private BigDecimal costFee;
     /**
-     * 总销售额
+     * 总利润
      */
     private BigDecimal profitFee;
     /**

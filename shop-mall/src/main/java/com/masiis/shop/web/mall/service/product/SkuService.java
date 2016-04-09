@@ -1,6 +1,8 @@
 package com.masiis.shop.web.mall.service.product;
 
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.mall.shop.SfShopCartMapper;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.*;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +41,12 @@ public class SkuService {
 
     @Resource
     private SfShopSkuMapper sfShopSkuMapper;
+
+    @Resource
+    private SfShopCartMapper sfShopCartMapper;
+
+    @Resource
+    private SfShopMapper sfShopMapper;
 
     public ComSku getSkuById(Integer skuId) {
         return comSkuMapper.selectByPrimaryKey(skuId);
@@ -152,5 +161,27 @@ public class SkuService {
             skuInfo.setStock(pfSkuStock.getStock());
         }
         return skuInfo;
+    }
+
+    /**
+     * jjh
+     * 添加商品到购物车
+     */
+    public void addProductToCart(Long shopId,Long userId,Integer skuId,Integer quantity)throws Exception{
+        SfShopCart ShopCart = new SfShopCart();
+        SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
+        if(sfShopCart!=null){
+            sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
+        }
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        ShopCart.setCreateTime(new Date());
+        ShopCart.setSfShopId(shopId);
+        ShopCart.setUserId(userId);
+        ShopCart.setSkuId(skuId);
+        ShopCart.setSfShopUserId(sfShop.getUserId());
+        ShopCart.setQuantity(quantity);
+        ShopCart.setIsCheck(1);
+        ShopCart.setSort(0);
+        sfShopCartMapper.insert(ShopCart);
     }
 }

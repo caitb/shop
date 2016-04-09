@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -174,5 +175,41 @@ public class SfOrderManagerController extends BaseController {
             }
         }
         return sfOrders;
+    }
+
+    /**
+     * 订单管理
+     * @author muchaofeng
+     * @date 2016/4/2 14:09
+     */
+    @RequestMapping("/borderManagement.html")
+    public ModelAndView borderManagement(HttpServletRequest request) throws Exception{
+        ComUser user = getComUser(request);
+        if (user == null) {
+            user = userService.getUserById(1l);
+        }
+        SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
+//        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+        List<SfOrder> sfOrders0 = new ArrayList<>();
+        List<SfOrder> sfOrders7 = new ArrayList<>();
+        List<SfOrder> sfOrders8 = new ArrayList<>();
+        for (SfOrder sfOrder : sfOrders) {
+            if(sfOrder.getOrderStatus() == 0) {
+                sfOrders0.add(sfOrder);//待付款
+            }else if (sfOrder.getOrderStatus() == 7 ) {
+                sfOrders7.add(sfOrder);//代发货
+            }else if (sfOrder.getOrderStatus() == 8 ) {
+                sfOrders8.add(sfOrder);//待收货
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("sfOrders0", sfOrders0.size());
+        modelAndView.addObject("sfOrders7", sfOrders7.size());
+        modelAndView.addObject("sfOrders8", sfOrders8.size());
+        modelAndView.addObject("user", user);
+//        modelAndView.addObject("userPid", userPid);
+        modelAndView.setViewName("mall/order/gerenzhongxin");
+        return modelAndView;
     }
 }

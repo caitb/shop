@@ -26,6 +26,10 @@ public class ComUserAccount {
      */
     private BigDecimal costFee;
     /**
+     * 总销售额
+     */
+    private BigDecimal profitFee;
+    /**
      * 可提现额度
      */
     private BigDecimal extractableFee;
@@ -75,6 +79,14 @@ public class ComUserAccount {
 
     public void setCostFee(BigDecimal costFee) {
         this.costFee = costFee;
+    }
+
+    public BigDecimal getProfitFee() {
+        return profitFee;
+    }
+
+    public void setProfitFee(BigDecimal profitFee) {
+        this.profitFee = profitFee;
     }
 
     public BigDecimal getExtractableFee() {
@@ -140,6 +152,7 @@ public class ComUserAccount {
                 ", comUserId=" + comUserId +
                 ", totalIncomeFee=" + totalIncomeFee +
                 ", costFee=" + costFee +
+                ", profitFee=" + profitFee +
                 ", extractableFee=" + extractableFee +
                 ", countingFee=" + countingFee +
                 ", bailFee=" + bailFee +

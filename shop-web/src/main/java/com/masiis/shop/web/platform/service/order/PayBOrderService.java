@@ -61,12 +61,6 @@ public class PayBOrderService {
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
-    private ComUserAccountService comUserAccountService;
-    @Resource
-    private ComUserAccountMapper accountMapper;
-    @Resource
-    private ComUserAccountRecordMapper recordMapper;
-    @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
@@ -74,6 +68,8 @@ public class PayBOrderService {
     private UserAddressService userAddressService;
     @Resource
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
+    @Resource
+    private BOrderService bOrderService;
 
     /**
      * 支付回调统一入口
@@ -85,9 +81,9 @@ public class PayBOrderService {
      * <2>修改订单数据
      * <3>添加订单日志
      * <4>修改用户为已代理
-     * <5>增加保证金
-     * <6>修改用户sku代理关系数据
-     * <7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
+     * <5>修改用户sku代理关系数据
+     * <6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
+     * <7>初始化库存
      */
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
@@ -133,23 +129,23 @@ public class PayBOrderService {
             comUser.setIsAgent(1);
             comUserMapper.updateByPrimaryKey(comUser);
         }
-        log.info("<5>增加保证金");
-        if (pfBorder.getBailAmount().compareTo(BigDecimal.ZERO) > 0) {
-            ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
-            ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
-            // 保存修改前的金额
-            recordS.setPrevFee(accountS.getBailFee());
-            accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
-            accountS.setCostFee(pfBorder.getPayAmount());
-            // 保存修改后的金额
-            recordS.setNextFee(accountS.getBailFee());
-            recordMapper.insert(recordS);
-            if (accountMapper.updateByIdWithVersion(accountS) == 0) {
-                throw new BusinessException("修改进货方成本账户失败!");
-            }
-        }
+//        log.info("<5>增加保证金");
+//        if (pfBorder.getBailAmount().compareTo(BigDecimal.ZERO) > 0) {
+//            ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
+//            ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
+//            // 保存修改前的金额
+//            recordS.setPrevFee(accountS.getBailFee());
+//            accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
+//            accountS.setCostFee(pfBorder.getPayAmount());
+//            // 保存修改后的金额
+//            recordS.setNextFee(accountS.getBailFee());
+//            recordMapper.insert(recordS);
+//            if (accountMapper.updateByIdWithVersion(accountS) == 0) {
+//                throw new BusinessException("修改进货方成本账户失败!");
+//            }
+//        }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
-            log.info("<6>修改用户sku代理关系数据");
+            log.info("<5>修改用户sku代理关系数据");
             PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(bOrderId, comUser.getId(), pfBorderItem.getSkuId());
             //订单类型(0代理1补货2拿货)
             if (pfUserSku != null && pfBorder.getOrderType() == 0) {
@@ -179,12 +175,26 @@ public class PayBOrderService {
                 pfUserSku.setCode(pfUserCertificate.getCode());
                 pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
             }
-
-            log.info("<7>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
+            log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
             if (pfBorder.getOrderType() == 0) {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
+            log.info("<7>初始化库存");
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            if (pfUserSkuStock == null) {
+                pfUserSkuStock = new PfUserSkuStock();
+                pfUserSkuStock.setCreateTime(new Date());
+                pfUserSkuStock.setUserId(pfBorder.getUserId());
+                pfUserSkuStock.setSpuId(pfBorderItem.getSpuId());
+                pfUserSkuStock.setSkuId(pfBorderItem.getSkuId());
+                pfUserSkuStock.setStock(0);
+                pfUserSkuStock.setFrozenStock(0);
+                pfUserSkuStock.setCustomStock(0);
+                pfUserSkuStock.setVersion(0);
+                pfUserSkuStockMapper.insert(pfUserSkuStock);
+            }
         }
+
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1) {
             //处理平台发货类型订单
@@ -200,8 +210,7 @@ public class PayBOrderService {
      * 操作详情：
      * <8>减少发货方库存 如果用户id是0操作平台库存
      * <9>增加收货方库存
-     * <10>修改订单状态为已完成
-     * <11>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项
+     * <10>订单完成处理
      */
     private void saveBOrderSendType(PfBorder pfBorder) throws Exception {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
@@ -248,32 +257,13 @@ public class PayBOrderService {
             log.info("<9>增加收货方库存");
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             //如果还没有库存信息直接初始化库存
-            if (pfUserSkuStock == null) {
-                pfUserSkuStock = new PfUserSkuStock();
-                pfUserSkuStock.setCreateTime(new Date());
-                pfUserSkuStock.setUserId(pfBorder.getUserId());
-                pfUserSkuStock.setSpuId(pfBorderItem.getSpuId());
-                pfUserSkuStock.setSkuId(pfBorderItem.getSkuId());
-                pfUserSkuStock.setStock(pfBorderItem.getQuantity());
-                pfUserSkuStock.setFrozenStock(0);
-                pfUserSkuStock.setVersion(0);
-                pfUserSkuStockMapper.insert(pfUserSkuStock);
-            } else {
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                    throw new BusinessException("增加用户平台库存失败");
-                }
+            pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
+            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                throw new BusinessException("增加用户平台库存失败");
             }
         }
-        log.info("<10>修改订单状态为已完成");
-        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
-        //修改订单拿货类型
-        if (pfBorder.getSendType() == 0) {
-            pfBorder.setSendType(1);
-        }
-        pfBorderMapper.updateById(pfBorder);
-        log.info("<11>订单完成,根据订单来计算结算和总销售额,并创建对应的账单子项");
-        comUserAccountService.countingByOrder(pfBorder);
+        log.info("<10>订单完成处理");
+        bOrderService.completeBOrder(pfBorder);
     }
 
     /**

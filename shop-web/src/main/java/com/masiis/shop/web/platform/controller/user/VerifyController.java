@@ -134,7 +134,7 @@ public class VerifyController extends BaseController {
             }
         }
         // 请求失败
-        return "redirect:/";
+        return "../../500";
     }
 
     @RequestMapping("/wxcheck")
@@ -144,29 +144,24 @@ public class VerifyController extends BaseController {
                 + request.getContextPath()+"/";
         HttpSession session = request.getSession();
         RedirectParam rp = null;
+
+        if(StringUtils.isBlank(state)) {
+            log.error("state为空,调用异常,跳转错误页面!");
+            return "../../500";
+        }
+
+        // 解析state,并验证有效性
         try{
-            if(StringUtils.isBlank(state)) {
-                log.error("state为空,调用异常!");
-                return "../../500";
-            }
-
-            // 解析state,并验证有效性
-            try{
-                rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
-            } catch (Exception e) {
-                log.error("json解析错误:" + e.getMessage());
-                rp = null;
-            }
-            if(rp == null
-                    || StringUtils.isBlank(rp.getCode())
-                    // 校验state参数完整性
-                    || !SHAUtils.encodeSHA1(rp.toString().getBytes()).equals(rp.getSignCk())) {
-                log.error("state参数不正确,调用异常!");
-                return "../../500";
-            }
-
+            rp = JSONObject.parseObject(URLDecoder.decode(state, "UTF-8"), RedirectParam.class);
         } catch (Exception e) {
-            log.error("访问参数错误,跳转错误页面!");
+            log.error("json解析错误:" + e.getMessage());
+            rp = null;
+        }
+        if(rp == null
+                || StringUtils.isBlank(rp.getCode())
+                // 校验state参数完整性
+                || !SHAUtils.encodeSHA1(rp.toString().getBytes()).equals(rp.getSignCk())) {
+            log.error("state参数不正确,调用异常,跳转错误页面!");
             return "../../500";
         }
 
@@ -190,6 +185,8 @@ public class VerifyController extends BaseController {
             if(wxUser == null){
                 throw new BusinessException("该unionid无效,需要重新对该用户授权!");
             }
+            // 从redis获取token
+            token = SpringRedisUtil.get(wxUser.getUnionid() + wxUser.getOpenid() + "_token", String.class);
             ComUser user = userService.getUserByUnionid(unionid);
             // 取得了openid和token,并进行验证有效期
             String checkTokenUrl = WxConstants.URL_CHECK_ACCESS_TOKEN

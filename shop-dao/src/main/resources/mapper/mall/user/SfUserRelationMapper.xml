@@ -45,4 +45,10 @@
         from sf_user_relation
     </select>
 
+    <select id="getSfUserRelationByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, user_id, user_pid, level, remark
+        from sf_user_relation
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

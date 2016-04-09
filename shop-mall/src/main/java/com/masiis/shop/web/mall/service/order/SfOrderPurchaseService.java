@@ -29,6 +29,8 @@ public class SfOrderPurchaseService {
     private SkuService skuService;
     @Resource
     private SfShopService sfShopService;
+    @Resource
+    private SfSkuDistributionService sfSkuDistributionService;
 
 
     /**
@@ -233,7 +235,7 @@ public class SfOrderPurchaseService {
         return sfOrderItemDistribution;
     }
     private void getDistributionInfo(Integer skuId){
-
+        List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuId(skuId);
     }
 
 }

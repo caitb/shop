@@ -20,4 +20,6 @@ public interface SfUserRelationMapper {
     List<SfUserRelation> selectAll();
 
     int updateByPrimaryKey(SfUserRelation record);
+
+    SfUserRelation getSfUserRelationByUserId(Long userId);
 }

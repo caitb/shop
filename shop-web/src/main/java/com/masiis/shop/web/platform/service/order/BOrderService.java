@@ -658,6 +658,9 @@ public class BOrderService {
         pfBorderOperationLog.setPfBorderId(pfBorder.getId());
         pfBorderOperationLog.setRemark("订单完成");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        comUserAccountService.countingByOrder(pfBorder);
+        //订单类型(0代理1补货2拿货)
+        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
+            comUserAccountService.countingByOrder(pfBorder);
+        }
     }
 }

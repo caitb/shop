@@ -63,6 +63,10 @@ public class ComUser implements Serializable{
      */
     private String wxId;
     /**
+     * 是否绑定（0否1是）
+     */
+    private Integer isBinding;
+    /**
      * 是否合伙人(0否1是)
      */
     private Integer isAgent;
@@ -214,5 +218,13 @@ public class ComUser implements Serializable{
     }
     public void setRegisterSource(Integer registerSource) {
         this.registerSource = registerSource;
+    }
+
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
     }
 }

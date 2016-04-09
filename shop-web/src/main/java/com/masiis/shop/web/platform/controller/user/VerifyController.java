@@ -30,6 +30,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by lzh on 2016/2/23.
@@ -103,46 +104,17 @@ public class VerifyController extends BaseController {
                     return "../../500";
                 }
 
-                // 检查openid是否已经存在数据库
-                List<ComWxUser> wxUsers = wxUserService.getWxUserByUnionid(userRes.getUnionid());
-                ComWxUser wxUser = null;
                 ComUser user = null;
-                if(wxUsers != null && wxUsers.size() > 0){
-                    // 有unionid
-                    user = userService.getUserByUnionid(userRes.getUnionid());
-                    if(user == null){
-                        log.error("系统数据错误,请联系管理员!");
-                        return "../../500";
-                    }
-                    wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
-                    if(wxUser != null){
-                        // 有openid,更新这个openid数据
-                        updateWxUserByActkn(res, userRes, wxUser);
-                    }
-                } else {
-                    // 无unionid,创建comuser和comwxuser
-                    user = new ComUser();
-                    user.setWxNkName(userRes.getNickname());
-                    user.setWxHeadImg(userRes.getHeadimgurl());
-                    user.setCreateTime(new Date());
-                    user.setWxUnionid(userRes.getUnionid());
-                    user.setIsAgent(0);
-                    user.setAuditStatus(0);
-                    user.setSendType(0);
-                    user.setRegisterSource(0);
-                    userService.insertComUser(user);
-                    accountService.createAccountByUser(user);
+                try{
+                    // 用户登录逻辑
+                    user = userService.signWithCreateUserByWX(res, userRes);
+                } catch (Exception e) {
+                    log.error("登录出错," + e.getMessage());
+                    return "../../500";
                 }
 
-                wxUser = createWxUserInit(res, userRes, user);
-                wxUser.setAppid(WxConstants.APPID);
-                wxUser.setComUserId(user.getId());
-                if(wxUser.getId() == null) {
-                    wxUserService.insertWxUser(wxUser);
-                } else {
-                    wxUserService.updateWxUser(wxUser);
-                }
                 log.info("userid:" + user.getId());
+
                 session.invalidate();
                 session = request.getSession();
                 // 登录
@@ -357,83 +329,5 @@ public class VerifyController extends BaseController {
         String res = AESUtils.decrypt(tar, SysConstants.COOKIE_AES_KEY);
         res = res.substring(0, res.lastIndexOf(SysConstants.COOKIE_KEY_SALT));
         return res;
-    }
-
-    /**
-     * 根据最新请求数据更新wxUser
-     *
-     * @param res
-     * @param userInfo
-     * @param wxUser
-     */
-    private void updateWxUserByActkn(AccessTokenRes res, WxUserInfo userInfo, ComWxUser wxUser) {
-        if(wxUser == null){
-            throw new BusinessException("传入目标对象为null");
-        }
-
-        wxUser.setAccessToken(res.getAccess_token());
-        Long atoken_ex = res.getExpires_in();
-        if(res.getExpires_in() == null || res.getExpires_in() <= 0){
-            atoken_ex = 7200L * 1000;
-        }
-        wxUser.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
-        wxUser.setCity(userInfo.getCity());
-        wxUser.setCountry(userInfo.getCountry());
-        wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(userInfo.getNickname());
-        wxUser.setProvince(userInfo.getProvince());
-        wxUser.setRefreshToken(res.getRefresh_token());
-        wxUser.setSex(Integer.valueOf(userInfo.getSex()));
-    }
-
-    /**
-     * 创建ComWxUser(注册微信用户)
-     *
-     * @param res
-     * @param userInfo
-     * @param user
-     * @return
-     */
-    private ComWxUser createWxUserInit(AccessTokenRes res, WxUserInfo userInfo, ComUser user) {
-        ComWxUser wxUser = new ComWxUser();
-
-        wxUser.setCreateTime(new Date());
-        wxUser.setAccessToken(res.getAccess_token());
-        Long atoken_ex = res.getExpires_in();
-        if(res.getExpires_in() == null || res.getExpires_in() <= 0){
-            atoken_ex = 7200L * 1000;
-        }
-        wxUser.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
-        wxUser.setUnionid(userInfo.getUnionid());
-        wxUser.setCity(userInfo.getCity());
-        wxUser.setCountry(userInfo.getCountry());
-        wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(userInfo.getNickname());
-        wxUser.setOpenid(userInfo.getOpenid());
-        wxUser.setProvince(userInfo.getProvince());
-        wxUser.setRefreshToken(res.getRefresh_token());
-        wxUser.setSex(Integer.valueOf(userInfo.getSex()));
-
-        return wxUser;
-    }
-
-    /**
-     * 根据openid在list获取wxuser
-     *
-     * @param openid
-     * @param wxUsers
-     * @return
-     */
-    private ComWxUser getWxUserByOpenidInList(String openid, List<ComWxUser> wxUsers) {
-        ComWxUser user = null;
-        if(StringUtils.isBlank(openid)){
-            return user;
-        }
-        for(ComWxUser ex:wxUsers){
-            if(openid.equals(ex.getOpenid())){
-                return ex;
-            }
-        }
-        return user;
     }
 }

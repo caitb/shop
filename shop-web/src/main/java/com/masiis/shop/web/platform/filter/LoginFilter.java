@@ -79,7 +79,7 @@ public class LoginFilter implements Filter{
             ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
             if (login != null
                     && StringUtils.isNotBlank(login.getId() + "")
-                    && StringUtils.isNotBlank(login.getOpenid())) {
+                    && StringUtils.isNotBlank(login.getWxUnionid())) {
                 // 后面再斟酌是否需要进行验证有效性
                 //
                 chain.doFilter(request, response);

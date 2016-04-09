@@ -58,17 +58,17 @@ public interface ComUserMapper {
 
     String findByPid(Integer pid);
 
-    /**
-     * 根据openid查询用户
-     *
-     * @param openid
-     * @return
-     */
-    ComUser selectByOpenid(String openid);
-
     List<ComUser> selectByCondition(ComUser comUser);
 
     List<ComUser> auditList(ComUser comUser);
 
     List<ComUser> selectByIds(List<Long> ids);
+
+    /**
+     * 根据unionid查询comuser
+     *
+     * @param unionid
+     * @return
+     */
+    ComUser selectByUnionid(String unionid);
 }

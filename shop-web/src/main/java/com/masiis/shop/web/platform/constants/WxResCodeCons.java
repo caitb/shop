@@ -15,6 +15,9 @@ public class WxResCodeCons {
     public static final String REQUEST_SUCCESS = "0";
     public static final String REQUEST_SUCCESS_MSG = "请求成功";
 
+    public static final String ACCESS_TOKEN_INVALID_OR_NOT_LATEST = "40001";
+    public static final String ACCESS_TOKEN_INVALID_OR_NOT_LATEST_MSG = "access_token不合法或者不是最新的";
+
     public static final String ACCESS_TOKEN_INVALID = "40014";
     public static final String ACCESS_TOKEN_INVALID_MSG = "不合法的access_token，请开发者认真比对access_token的有效性";
 

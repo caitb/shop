@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComWxUserMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComWxUser" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="unionid" property="unionid" jdbcType="VARCHAR" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="nk_name" property="nkName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="country" property="country" jdbcType="VARCHAR" />
+        <result column="head_img_url" property="headImgUrl" jdbcType="VARCHAR" />
+        <result column="access_token" property="accessToken" jdbcType="VARCHAR" />
+        <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR" />
+        <result column="atoken_expire" property="atokenExpire" jdbcType="TIMESTAMP" />
+        <result column="rtoken_expire" property="rtokenExpire" jdbcType="TIMESTAMP" />
+        <result column="appid" property="appid" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_wx_user
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComWxUser" useGeneratedKeys="true" keyProperty="id">
+        insert into com_wx_user (id, create_time, com_user_id, 
+            unionid, openid, nk_name, 
+            sex, province, city, 
+            country, head_img_url, access_token, 
+            refresh_token, atoken_expire, rtoken_expire, appid
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{comUserId,jdbcType=BIGINT}, 
+            #{unionid,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{nkName,jdbcType=VARCHAR}, 
+            #{sex,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+            #{country,jdbcType=VARCHAR}, #{headImgUrl,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
+            #{refreshToken,jdbcType=VARCHAR}, #{atokenExpire,jdbcType=TIMESTAMP}, #{rtokenExpire,jdbcType=TIMESTAMP},
+            #{appid,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComWxUser" >
+        update com_wx_user
+        set
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="comUserId != null">
+                com_user_id = #{comUserId,jdbcType=BIGINT},
+            </if>
+            <if test="unionid != null">
+                unionid = #{unionid,jdbcType=VARCHAR},
+            </if>
+            <if test="openid != null">
+                openid = #{openid,jdbcType=VARCHAR},
+            </if>
+            <if test="nkName != null">
+                nk_name = #{nkName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="headImgUrl != null">
+                head_img_url = #{headImgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="accessToken != null">
+                access_token = #{accessToken,jdbcType=VARCHAR},
+            </if>
+            <if test="refreshToken != null">
+                refresh_token = #{refreshToken,jdbcType=VARCHAR},
+            </if>
+            <if test="atokenExpire != null">
+                atoken_expire = #{atokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rtokenExpire != null">
+                rtoken_expire = #{rtokenExpire,jdbcType=TIMESTAMP},
+            </if>
+            <if test="appid != null">
+                appid = #{appid,jdbcType=VARCHAR}
+            </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, com_user_id, unionid, openid, nk_name, sex, province, city, 
+        country, head_img_url, access_token, refresh_token, atoken_expire, rtoken_expire, appid
+        from com_wx_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, com_user_id, unionid, openid, nk_name, sex, province, city, 
+        country, head_img_url, access_token, refresh_token, atoken_expire, rtoken_expire, appid
+        from com_wx_user
+    </select>
+
+    <select id="selectByUnionid" resultMap="BaseResultMap">
+        select id, create_time, com_user_id, unionid, openid, nk_name, sex, province, city,
+        country, head_img_url, access_token, refresh_token, atoken_expire, rtoken_expire, appid
+        from com_wx_user
+        WHERE unionid = #{unionid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByUnionidAndAppid" resultMap="BaseResultMap">
+        select id, create_time, com_user_id, unionid, openid, nk_name, sex, province, city,
+        country, head_img_url, access_token, refresh_token, atoken_expire, rtoken_expire, appid
+        from com_wx_user
+        WHERE unionid = #{unionid,jdbcType=VARCHAR}
+        AND appid = #{appid,jdbcType=VARCHAR}
+    </select>
+</mapper>

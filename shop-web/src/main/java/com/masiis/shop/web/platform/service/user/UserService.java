@@ -154,16 +154,6 @@ public class UserService {
     }
 
     /**
-     * 根据openid查询用户
-     *
-     * @param openid
-     * @return
-     */
-    public ComUser getUserByOpenid(String openid) {
-        return comUserMapper.selectByOpenid(openid);
-    }
-
-    /**
      * 创建用户
      *
      * @param user
@@ -215,4 +205,13 @@ public class UserService {
         pfUserCertificateMapper.updateById(pfUserCertificate);
     }
 
+    /**
+     * 根据unionid获取comuser
+     *
+     * @param unionid
+     * @return
+     */
+    public ComUser getUserByUnionid(String unionid) {
+        return comUserMapper.selectByUnionid(unionid);
+    }
 }

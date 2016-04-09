@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -37,31 +38,22 @@ public class SfUserController extends BaseController {
     @RequestMapping(value = "/checkBinding.do",method = RequestMethod.POST)
     @ResponseBody
     public String checkBinding(@RequestParam(value = "userId",required = true) Long userId,
-                               HttpServletRequest request){
+                               HttpServletRequest request) throws Exception{
 
         ComUser user = getComUser(request);
         logger.info("校验用户是否已经绑定");
         JSONObject jsonobject = new JSONObject();
 
         if (user == null){
-            jsonobject.put("isTrue","false");
-            jsonobject.put("message","用户未登录");
-            logger.info(jsonobject.toJSONString());
-            return jsonobject.toJSONString();
+            throw new BusinessException("校验用户是否已经绑定【用户未登录】");
         }
         if (user.getId() != userId){
-            jsonobject.put("isTrue","false");
-            jsonobject.put("message","用户信息错误");
-            logger.info(jsonobject.toJSONString());
-            return jsonobject.toJSONString();
+            throw new BusinessException("校验用户是否已经绑定【用户信息错误】");
         }
         //通过userId查询comuser
         user = userService.getUserById(userId);
         if (user == null){
-            jsonobject.put("isTrue","false");
-            jsonobject.put("message","用户不存在");
-            logger.info(jsonobject.toJSONString());
-            return jsonobject.toJSONString();
+            throw new BusinessException("校验用户是否已经绑定【用户不存在】");
         }
         int isBinding = user.getIsBinding();
         if (isBinding == 0){

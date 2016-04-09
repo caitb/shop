@@ -22,7 +22,7 @@
         $("<link>").attr({
           rel:"stylesheet",
           type:"text/css",
-          href:"http://"+window.location.host+"/static/css/alert.css"
+          href:"http://"+window.location.host+"/static/css/common/alert.css"
         }).appendTo("head");
   }
 })();

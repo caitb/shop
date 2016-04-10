@@ -115,7 +115,7 @@
                 AND shop_user_id = #{shopUserId}
             </if>
             <if test="createTime != null">
-                AND create_time = #{createTime}
+                AND create_time LIKE #{createTime}
             </if>
         </where>
     </select>

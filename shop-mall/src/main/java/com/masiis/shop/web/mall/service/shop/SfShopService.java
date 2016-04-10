@@ -38,7 +38,7 @@ public class SfShopService {
         Map<String, Object> condition = new HashMap<>();
         condition.put("userId", userId);
         condition.put("shopId", shopId);
-        condition.put("createTime", sdf.format(new Date()).toString());
+        condition.put("createTime", "%"+sdf.format(new Date()).toString()+"%");
 
         SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByCondition(condition);
         if(sfShopShoutLog == null){

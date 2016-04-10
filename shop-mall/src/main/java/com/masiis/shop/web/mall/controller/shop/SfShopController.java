@@ -74,7 +74,7 @@ public class SfShopController extends BaseController {
             e.printStackTrace();
         }
 
-        return "error";
+        return false;
     }
 
     @RequestMapping("/getPoster")

@@ -51,12 +51,14 @@ public class SfOrderPurchaseController extends BaseController {
      */
     @RequestMapping(value = "submitOrder.do")
     public String submitOrder(HttpServletRequest request,HttpServletResponse response,
-                              @RequestParam(value = "addressId" , required = true)Long addressId,
                               @RequestParam(value = "message" , required = false)String message,
-                              @RequestParam(value = "sfShopId",required = true) Long sfShopId,
-                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
+                              @RequestParam(value = "shopId",required = true) Long sfShopId,
+                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
+                              Model model){
         ComUser comUser = getComUser(request);
-        sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
-        return null;
+        Map<String,Object> map = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
+        model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
+        model.addAttribute("totalPrice",map.get("totalPrice"));
+        return "mall/order/zhifudingdan";
     }
 }

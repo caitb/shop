@@ -23,7 +23,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderItem" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfOrderItem" useGeneratedKeys="true" keyProperty="id">
         insert into sf_order_item (id, create_time, sf_order_id, 
             spu_id, sku_id, sku_name, 
             quantity, original_price, unit_price, 

@@ -30,6 +30,12 @@
         var shopId = $("#shopId").val();
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=mallConfirmOrder&selectedAddressId=" + selectedAddressId + "&shopId=" + shopId;
     }
+    function submitOrder(){
+        var selectedAddressId = $("#addressId").val();
+        var shopId = $("#shopId").val();
+        var message = $("#messageId").val();
+        window.location.href = "<%=path%>/orderPurchase/submitOrder.do?message="+message+"&shopId="+shopId+"&selectedAddressId="+selectedAddressId
+    }
 </script>
 <body>
     <header>
@@ -75,7 +81,7 @@
         <section class="sec4">
             <p>共支付：<span>￥ ${totalPrice}</span></p>
         </section>
-        <a href="javascript:;" class="weixin">提交订单</a>
+        <a  onclick="submitOrder()" class="weixin">提交订单</a>
     </div>
     
 </body>

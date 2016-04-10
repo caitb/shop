@@ -71,7 +71,7 @@ public class SfOrderPurchaseService {
             BigDecimal skuTotalShipAmount = getShopCartSkuTotalShipAmount(sfShopCarts);
             map.put("skuTotalShipAmount",skuTotalShipAmount);
         }catch (Exception e){
-
+            throw new BusinessException(e);
         }
         return null;
     }
@@ -231,7 +231,7 @@ public class SfOrderPurchaseService {
             if (orderItemDisList == null|| orderItemDisList.size() == 0){
                 orderItemDisList = new LinkedList<SfOrderItemDistribution>();
             }
-            orderItemDisList.add(generateSfOrderItemDistribution(userId, sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+            orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
             ordItemDisMap.put(skuId,orderItemDisList);
         }
     }

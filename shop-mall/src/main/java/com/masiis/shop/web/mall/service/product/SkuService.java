@@ -123,6 +123,16 @@ public class SkuService {
     }
 
     /**
+     * 获取小铺商品
+     * @author muchaofeng
+     * @date 2016/4/10 14:37
+     */
+    public List<SfShopSku> getSfShopSkuByShopId(Long shopId) throws Exception {
+        return sfShopSkuMapper.selectByShopId(shopId);
+    }
+
+
+    /**
      * SkuImage List 信息
      *
      * @param skuId

@@ -26,4 +26,7 @@ public class SfShopSkuService {
     public List<SfShopSku> findShopSkuByShopId(Long shopId){
         return sfShopSkuExtendMapper.selectShopviewByShopId(shopId);
     }
+    public SfShopSku findShopSkuByShopIdAndSkuId(Long shopId,Integer skuId){
+        return sfShopSkuExtendMapper.selectShopviewByShopIdAndSkuId(shopId,skuId);
+    }
 }

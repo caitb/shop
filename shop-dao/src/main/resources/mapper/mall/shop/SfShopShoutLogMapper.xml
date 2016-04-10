@@ -120,4 +120,27 @@
         </where>
     </select>
 
+    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+        select id,create_time,user_id,shop_id,shop_user_id,num,remark
+        from
+        sf_shop_shout_log
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="shopId != null">
+                AND shop_id = #{shopId}
+            </if>
+            <if test="shopUserId != null">
+                AND shop_user_id = #{shopUserId}
+            </if>
+            <if test="createTime != null">
+                AND create_time BETWEEN #{minDay} AND #{maxDay}
+            </if>
+        </where>
+    </select>
+
 </mapper>

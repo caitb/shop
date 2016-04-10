@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShopSku;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ import java.util.List;
 public interface SfShopSkuExtendMapper {
 
     List<SfShopSku> selectShopviewByShopId(Long shopId);
+
+    SfShopSku selectShopviewByShopIdAndSkuId(@Param("shopId") Long shopId,@Param("skuId") Integer skuId);
 
 }

@@ -35,24 +35,24 @@
                 </h1>
             </div>
         </div>
-        <div class="sec1" style="margin-top:5px;background:white url('<%=path%>/static/images/people.png') no-repeat 10px;  background-size: 13px;">
+        <div class="sec1" style="background:white url('<%=path%>/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px;">
             <p>手机号</p>
             <p>${comUser.mobile}</p>
         </div>
-        <div class="sec1" style="background:white url('<%=path%>/static/images/weixin.png') no-repeat 7px;  background-size: 20px;">
+        <div class="sec1" style="background:white url('<%=path%>/static/images/weixin.png') no-repeat 10px;  background-size: 20px;">
             <p>微信号</p>
             <p>已绑定 ${comUser.wxNkName}</p>
         </div>
         <div class="sec1" id = "identityAuthId" style="padding-left: 10px">
             <p>实名认证</p>
-            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
+            <p><b>${auditStatusName}</b><img src="<%=path%>/static/images/next.png" alt="" style="margin-top:4px"></p>
             <input id="auditStatusId" style="display: none" value="${comUser.auditStatus}" />
         </div>
-        <div class="sec1" id="capitalId" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 7px;  background-size: 20px;margin-bottom: 0;">
+        <div class="sec1" id="capitalId" style="background:white url('<%=path%>/static/images/qianban.png') no-repeat 10px;  background-size: 20px;margin-bottom: 0;">
             <p>我的资金</p>
             <p><b>可提现 ￥${comUserAccount.extractableFee}</b><img src="<%=path%>/static/images/next.png" alt="" style="    margin-top:4px"></p>
         </div>
-        <div class="sec1" id="bankCardId" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 7px;  background-size: 20px;">
+        <div class="sec1" id="bankCardId" style="background:white url('<%=path%>/static/images/yinh.png') no-repeat 10px;  background-size: 20px;">
             <p>我的银行卡</p>
             <p><img src="<%=path%>/static/images/next.png" alt=""></p>
         </div>
@@ -61,6 +61,28 @@
             <p><img  src="<%=path%>/static/images/next.png" alt=""></p>
         </div>
     </main>
+    <div class="bottom">
+        <footer>
+            <div class="btm">
+                <a href="index.html">
+                    <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                    <span>我是合伙人</span>
+                </a>
+            </div>
+            <div class="btm">
+                <a href="javascript:;">
+                    <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+                    <span>我的店铺</span>
+                </a>
+            </div>
+            <div class="btm" style="background: #DA3600;">
+                <a href="<%=path%>/personalInfo/personalHomePageInfo.html">
+                    <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
+                    <span>个人中心</span>
+                </a>
+            </div>
+        </footer>
+    </div>
 </div>
 </body>
 <script type="text/javascript" src="<%=path%>/static/js/personalInfo.js"></script>

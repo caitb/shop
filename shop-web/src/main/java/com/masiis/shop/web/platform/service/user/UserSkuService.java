@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,8 @@ public class UserSkuService {
     @Resource
     private CertificateMapper certificateMapper;
 
+    @Resource
+    private UserSkuService userSkuService;
     /**
      * 获取用户产品代理关系
      *
@@ -63,4 +67,43 @@ public class UserSkuService {
         return pfUserSkuMapper.selectByCondition(pfUserSku);
     }
 
+    /**
+     * @param pUser 上级合伙人
+     * @param skuId 代理的商品
+     * @author ZhaoLiang
+     * @date 2016/4/1 12:11
+     */
+    public void checkParentData(ComUser pUser, Integer skuId) throws Exception {
+        if (pUser == null) {
+            throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
+        } else {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+            if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
+                throw new BusinessException("您的推荐人还未代理此款商品");
+            }
+        }
+    }
+
+    /**
+     * @param pUser        上级合伙人
+     * @param skuId        代理的商品
+     * @param agentLevelId 自己的代理等级
+     * @author ZhaoLiang
+     * @date 2016/4/1 12:11
+     */
+    public PfUserSku checkParentData(ComUser pUser, Integer skuId, Integer agentLevelId) throws Exception {
+        PfUserSku pfUserSku = null;
+        if (pUser == null) {
+            throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
+        } else {
+            pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+            if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
+                throw new BusinessException("您的推荐人还未代理此款商品");
+            }
+            if (pfUserSku.getAgentLevelId() >= agentLevelId) {
+                throw new BusinessException("您的代理等级不能高于您的推荐人代理等级");
+            }
+        }
+        return pfUserSku;
+    }
 }

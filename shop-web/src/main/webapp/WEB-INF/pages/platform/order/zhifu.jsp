@@ -55,7 +55,7 @@
                     </div>
                 </section>
             </c:if>
-            <c:if test="${pfBorder.orderType!=1 || pfBorder.sendType!=2}">
+            <c:if test="${pfBorder.orderType==1 && pfBorder.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span><b>你已选择拿货方式，不可更改</b></p>
                     <h1>支付成功后，您的在线库存将会增加</h1>

@@ -1,0 +1,73 @@
+package com.masiis.shop.dao.beans.user;
+
+import com.masiis.shop.dao.po.SfShopSku;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+/**
+ * Created by wangbingjian on 2016/4/10.
+ */
+public class SfUserShopViewExtend {
+
+    /**
+     * 小铺名称
+     */
+    private String shopName;
+    /**
+     * 小铺描述
+     */
+    private byte[] explanation;
+    /**
+     * 用户账户保证金W
+     */
+    private BigDecimal bailFee;
+    /**
+     * 已浏览的天数
+     */
+    private Integer days;
+    /**
+     * 用户平台代理级别List
+     */
+    private List<SfShopSku> shopSkus;
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public byte[] getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(byte[] explanation) {
+        this.explanation = explanation;
+    }
+
+    public BigDecimal getBailFee() {
+        return bailFee;
+    }
+
+    public void setBailFee(BigDecimal bailFee) {
+        this.bailFee = bailFee;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
+    public List<SfShopSku> getShopSkus() {
+        return shopSkus;
+    }
+
+    public void setShopSkus(List<SfShopSku> shopSkus) {
+        this.shopSkus = shopSkus;
+    }
+}

@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.shop;
 
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -7,6 +8,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopShoutLog;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.FileNotFoundException;
@@ -19,6 +21,7 @@ import java.util.Map;
  * Created by cai_tb on 16/4/8.
  */
 @Service
+@Transactional
 public class SfShopService {
 
     @Resource
@@ -38,7 +41,7 @@ public class SfShopService {
         Map<String, Object> condition = new HashMap<>();
         condition.put("userId", userId);
         condition.put("shopId", shopId);
-        condition.put("createTime", sdf.format(new Date()).toString());
+        condition.put("createTime", "%"+sdf.format(new Date()).toString()+"%");
 
         SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByCondition(condition);
         if(sfShopShoutLog == null){
@@ -68,6 +71,42 @@ public class SfShopService {
      */
     public SfShop getSfShopById(Long id){
         return sfShopMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 判断呐喊
+     * @author muchaofeng
+     * @date 2016/4/10 10:56
+     */
+    public boolean mallShout(Long shopId, Long userId){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("shopId", shopId);
+        map.put("createTime", new Date());
+        Date minDay = DateUtil.getMinTimeofDay(new Date());
+        Date maxDay = DateUtil.getMaxTimeofDay(new Date());
+        map.put("minDay", minDay);
+        map.put("maxDay", maxDay);
+
+        SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByCondition(map);
+        if(sfShopShoutLog != null){
+            return false;
+        }else{
+            SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+            sfShop.setShoutNum(sfShop.getShoutNum()+1);
+
+            sfShopShoutLog = new SfShopShoutLog();
+            sfShopShoutLog.setCreateTime(new Date());
+            sfShopShoutLog.setNum(1);
+            sfShopShoutLog.setUserId(userId);
+            sfShopShoutLog.setShopId(shopId);
+            sfShopShoutLog.setShopUserId(sfShop.getUserId());
+
+            sfShopMapper.updateByPrimaryKey(sfShop);
+            sfShopShoutLogMapper.insert(sfShopShoutLog);
+
+            return true;
+        }
     }
 
 }

@@ -28,7 +28,7 @@
         <div>
             <p>王平的小店</p>
             <p>专营各类化妆品，欢迎大家选购！</p>
-            <img src="/images/fen.png" alt="">
+            <img src="<%=basePath%>static/images/fen.png" id="share" alt="">
         </div>
         <div>
             <p>
@@ -42,7 +42,7 @@
         <img src="<%=basePath%>static/images/admin.png" alt="">
     </div>
     <div class="banner">
-        <p>
+        <p id="shout">
             <span>已有</span>
             <span><em>1054321</em>人</span>
             <span>为ta呐喊</span>
@@ -94,25 +94,25 @@
     <footer>
         <div>
             <p class="active">
-                <span><img src="<%=basePath%>static/images/footer_x%20(3).png" alt=""></span>
+                <span><img src="<%=basePath%>static/images/footer_x(3).png" alt=""></span>
                 <span>首页</span>
             </p>
             <p>
-                <span><img src="<%=basePath%>static/images/footer%20(1).png" alt=""></span>
+                <span><img src="<%=basePath%>static/images/footer(1).png" alt=""></span>
                 <span>分享计划</span>
             </p>
             <p>
-                <span><img src="<%=basePath%>static/images/footer%20(2).png" alt=""></span>
+                <span><img src="<%=basePath%>static/images/footer(2).png" alt=""></span>
                 <span>个人中心</span>
             </p>
         </div>
     </footer>
 </div>
-<div class="back_f">
-    <h1>呐喊成功！</h1>
-    <img src="/images/qwe%20(1).png" alt="">
+<div class="back_f" id="shoutAlert">
+    <h1 id="result"></h1>
+    <img src="<%=basePath%>static/images/qwe(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-    <button>获取我的专属海报</button>
+    <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=1');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>
 <div class="back"></div>
@@ -121,7 +121,24 @@
     $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
-    })
+    });
+    $('#shout').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>shop/shout',
+            data: {shopId: 1},
+            success: function(msg){
+                if(msg == 'true'){
+                    $('#result').html('呐喊成功!');
+                }else{
+                    $('#result').html('您已呐喊过，请明天再来');
+                }
+                $('#shoutAlert').show();
+            }
+        });
+    });
+    $('#share').on('click', function(){
+        $('#shoutAlert').show();
+    });
 </script>
 </body>
 </html>

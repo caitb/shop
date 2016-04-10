@@ -28,4 +28,12 @@
         where sku.shop_id = #{shopId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectShopviewByShopIdAndSkuId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select sku.*,a.icon as icon,l.name as agentName
+        from sf_shop_sku sku
+        LEFT JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id
+        LEFT JOIN com_agent_level l on sku.agent_level_id = l.id
+        where sku.shop_id = #{shopId,jdbcType=BIGINT} AND sku.sku_id=#{skuId,jdbcType=INTEGER}
+    </select>
+
 </mapper>

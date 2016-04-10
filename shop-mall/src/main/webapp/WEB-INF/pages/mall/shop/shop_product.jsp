@@ -21,13 +21,15 @@
     <p>商品详情</p>
 </header>
 <div class="wrap">
-    <div class="na">
-        <p><img src="${comUser.wxHeadImg}" alt=""></p>
-        <h1>
-            <span>我是${comUser.wxNkName},我为麦链商城呐喊!</span>
-            <span>跟我一起：呐喊得红包，分享赚佣金</span>
-        </h1>
-    </div>
+    <c:if test=" ${not empty fromUser} ">
+        <div class="na">
+            <p><img src="${fromUser.wxHeadImg}" alt=""></p>
+            <h1>
+                <span>我是${fromUser.wxNkName},我为麦链商城呐喊!</span>
+                <span>跟我一起：呐喊得红包，分享赚佣金</span>
+            </h1>
+        </div>
+    </c:if>
     <div class="banner">
         <div class="swiper-container">
             <div class="swiper-wrapper">
@@ -189,7 +191,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>userApply/applyOK.shtml";
+                    window.location.href = "<%=basePath%>orderPurchase/getShopCartInfo.html?shopId="+cartData.shopId;
                 }
                 else {
                     alert(data.message);

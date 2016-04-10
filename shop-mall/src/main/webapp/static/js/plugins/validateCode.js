@@ -29,9 +29,11 @@
                         switch (validateCodeJS.skipPageId) {
                             case "buy":
                                 $(".shoping").show();
+                                $(".back").show();
                                 break;
                             case "share":
                                 $(".back_f").show();
+                                $(".back").show();
                                 break;
                             case "trial":
                                 window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
@@ -199,7 +201,7 @@
                     alert("绑定成功，请在当前页面继续购买");
                     break;
                 case "share":
-                    alert("绑定成功，请在当前页面继续购买");
+                    alert("绑定成功，请点击继续分享");
                     break;
                 case "trial":
                     path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;

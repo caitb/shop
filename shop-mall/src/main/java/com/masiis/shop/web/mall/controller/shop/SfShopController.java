@@ -74,7 +74,7 @@ public class SfShopController extends BaseController {
             e.printStackTrace();
         }
 
-        return "error";
+        return false;
     }
 
     @RequestMapping("/getPoster")
@@ -116,18 +116,18 @@ public class SfShopController extends BaseController {
     public ModelAndView getSkuDetail(HttpServletRequest request,
                                      HttpServletResponse response,
                                      @RequestParam(value="skuId",required = true) Integer skuId,
-                                     @RequestParam(value="shopId",required = false) Long shopId,
-                                     @RequestParam(value="userId",required = false) Long userId) throws Exception {
+                                     @RequestParam(value="shopId",required = true) Long shopId,
+                                     @RequestParam(value="fromUserId",required = false) Long fromUserId) throws Exception {
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(1L, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
-        ComUser fromUser = userService.getUserById(userId);
+        ComUser fromUser = userService.getShareUser(fromUserId);//来自分享人的信息
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
         mav.addObject("shopId", shopId);
-        mav.addObject("comUser", fromUser);//分享链接人信息
+        mav.addObject("fromUser", fromUser);//分享链接人信息
         return mav;
     }
 
@@ -152,7 +152,7 @@ public class SfShopController extends BaseController {
         catch (Exception ex){
             object.put("isError", true);
             object.put("message", ex.getMessage());
-            log.info(ex.getMessage());
+            log.error(ex.getMessage());
         }
         return object.toJSONString();
     }

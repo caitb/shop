@@ -27,6 +27,10 @@ public class SfUserShopViewExtend {
      */
     private Integer days;
     /**
+     * 小铺logo
+     */
+    private String logo;
+    /**
      * 用户平台代理级别List
      */
     private List<SfShopSku> shopSkus;
@@ -69,5 +73,13 @@ public class SfUserShopViewExtend {
 
     public void setShopSkus(List<SfShopSku> shopSkus) {
         this.shopSkus = shopSkus;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

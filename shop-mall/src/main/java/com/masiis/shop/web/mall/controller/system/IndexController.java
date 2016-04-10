@@ -45,7 +45,7 @@ public class IndexController extends BaseController {
             req.getSession().setAttribute("comUser", user);
         }
         userService.getShareUser(user.getId(),userPid);//分销关系
-//        ComUser pUser = userService.getUserById(sfUserRelation.getUserPid());
+//        ComUser pUser = userService.getUserById(userPid);
         ComUser pUser = new ComUser();
         SfShop sfShop = sfShopService.getSfShopById(shopId);
         String planation =null;

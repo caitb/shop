@@ -285,6 +285,7 @@ footer .sec3 p a {
     background: #fff;
     z-index: 10;
     border-radius: 5px;
+    display: none;
 }
 .back_f img{
     display: block;
@@ -325,6 +326,7 @@ footer .sec3 p a {
     -webkit-box-align: center;
     -webkit-box-pack: center;
     z-index: 4;
+    display: none;
 }
 .shoping{
     position: fixed;

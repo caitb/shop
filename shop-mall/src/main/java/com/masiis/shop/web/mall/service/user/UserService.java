@@ -218,4 +218,18 @@ public class UserService {
     public ComWxUser findComWxUserByUserId(Long userId){
         return comWxUserMapper.selectByUserId(userId);
     }
+
+    /**
+      * @Author jjh
+      * @Date 2016/4/10 0010 下午 4:14
+      * 来自分享人的信息
+      */
+    public ComUser getShareUser(Long fromUserId){
+        ComUser comUser = null;
+        if(fromUserId!=null){ //来自于分享链接
+            comUser = comUserMapper.selectByPrimaryKey(fromUserId);
+        }
+       return comUser;
+    }
+
 }

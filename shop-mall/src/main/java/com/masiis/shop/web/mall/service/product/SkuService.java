@@ -1,5 +1,7 @@
 package com.masiis.shop.web.mall.service.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopCartMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
@@ -24,7 +26,7 @@ import java.util.List;
 @Service
 @Transactional
 public class SkuService {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
@@ -175,6 +177,7 @@ public class SkuService {
         SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
         if(sfShopCart!=null){
             sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
+            log.info("----删除当前商品----");
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
@@ -188,5 +191,6 @@ public class SkuService {
         ShopCart.setIsCheck(1);
         ShopCart.setSort(0);
         sfShopCartMapper.insert(ShopCart);
+        log.info("----加入cart 成功----");
     }
 }

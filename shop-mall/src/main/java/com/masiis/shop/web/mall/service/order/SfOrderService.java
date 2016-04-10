@@ -21,4 +21,14 @@ public class SfOrderService {
     public int insert(SfOrder sfOrder){
         return sfOrderMapper.insert(sfOrder);
     }
+
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public SfOrder getOrderById(Long ordId){
+       return sfOrderMapper.selectByPrimaryKey(ordId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    public int update(SfOrder sfOrder){
+        return sfOrderMapper.updateByPrimaryKey(sfOrder);
+    }
 }

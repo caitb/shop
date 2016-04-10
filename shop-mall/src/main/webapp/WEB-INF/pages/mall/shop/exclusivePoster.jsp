@@ -60,37 +60,39 @@
             context.fillStyle = "#EEEEEE";
             context.fillRect(0, 0, theCanvas.width, theCanvas.height);
 
-            var userImg = new Image();
-            userImg.src = '<%=basePath%>${userImg}';
+            var imgSrcs = ['<%=basePath%>${userImg}', '<%=basePath%>${bgShop}', '<%=basePath%>${shopQRCode}'];
+            var oImgs = [];
+            for(var i in imgSrcs){
+                oImgs[i] = new Image();
+                oImgs[i].src = imgSrcs[i];
+                oImgs[i].isLoaded = false;
 
-            var bgShop = new Image();
-            bgShop.src = '<%=basePath%>${bgShop}';
-
-            var shopQRCode = new Image();
-            shopQRCode.src = '<%=basePath%>${shopQRCode}';
-
-            userImg.addEventListener('load', function(){
-
-                context.drawImage(userImg, 195, 130, 130, 130);
-
-                bgShop.addEventListener('load', function(){
-
-                    context.drawImage(bgShop, 0, 0);
-
-                    shopQRCode.addEventListener('load', function(){
-                        context.drawImage(shopQRCode, 160, 368);
-
-                        context.font = 'normal 28px Microsoft YaHei';
-                        context.textBaseline = 'top';
-                        context.strokeStyle = '#F73C8C';
-                        var text = '我是' + '${userName}';
-                        context.strokeText(text,520/2-text.length/2*28, 284);
-
-                    }, false);
-
+                oImgs[i].addEventListener('load', function(){
+                    this.isLoaded = true;
                 }, false);
 
-            }, false);
+            }
+
+            var drawTimer = setInterval(function(){
+                var isAllLoaded = true;
+                for(var i in oImgs){
+                    if(!oImgs[i].isLoaded) isAllLoaded = false;
+                }
+
+                if(isAllLoaded){
+                    context.drawImage(oImgs[0], 195, 130, 130, 130);
+                    context.drawImage(oImgs[1], 0, 0);
+                    context.drawImage(oImgs[2], 160, 368);
+
+                    context.font = 'normal 28px Microsoft YaHei';
+                    context.textBaseline = 'top';
+                    context.strokeStyle = '#F73C8C';
+                    var text = '我是' + '${userName}';
+                    context.strokeText(text,520/2-text.length/2*28, 284);
+
+                    clearInterval(drawTimer);
+                }
+            },100);
 
 
             document.getElementById('downloadPoster').onclick = function(){

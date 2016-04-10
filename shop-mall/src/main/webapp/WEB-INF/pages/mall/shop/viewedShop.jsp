@@ -1,3 +1,5 @@
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,26 +17,33 @@
 </head>
 <body>
     <header>
-              <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-                <p>浏览过的店铺</p>            
-        </header>
-        <div class="wrap">
-                <section class="sec1">
-                    <p class="photo">
-                                   <img src="${path}/static/images/haohuo.png" alt="">
-                    </p>
-                    <div>
-                        <h2>王平的小店</h2>
-                        <h1>
-                            <img src="../images/a.png" alt="">
-                            <img src="../images/b.png" alt="">
-                            <img src="../images/c.png" alt="">
-                            10000保证金
-                        </h1>
-                        <h3>主营各类化妆品，保健品等等等等等</h3>
-                        <h2><span>7</span>天前浏览过<b>点击查看></b></h2>
-                    </div>
-                </section>
-        </div>
+        <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <p>浏览过的店铺</p>
+    </header>
+    <div class="wrap">
+        <section class="sec1">
+            <c:forEach var="userShopView" items="${sfUserShopViews}">
+                <p class="photo">
+                    <img src="${path}${userShopView.logo}" alt="">
+                </p>
+                <div>
+                    <h2>${userShopView.shopName}</h2>
+                    <h1>
+                        <c:forEach items="${userShopView.shopSkus}" var="shopSku">
+                            <img src="${path}${shopSku.icon}" alt="">
+                        </c:forEach>
+                        ${userShopView.bailFee}保证金
+                    </h1>
+                    <h3>${userShopView.explanation}</h3>
+                    <c:if test="${userShopView.days == 0}">
+                        <h2><span>今天浏览过</span><b>点击查看></b></h2>
+                    </c:if>
+                    <c:if test="${userShopView.days > 0}">
+                        <h2><span>${userShopView.days}天前浏览过</span><b>点击查看></b></h2>
+                    </c:if>
+                </div>
+            </c:forEach>
+        </section>
+    </div>
 </body>
 </html>

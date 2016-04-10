@@ -24,11 +24,12 @@ function withdraw(userId,extractableFee){
         dataType:"Json",
         success:function(data){
             if(data.isTrue == "false"){
+                //先绑定用户
                 alert(data.message);
                 $(".back").attr('style', 'display:block');
                 $(".back_j").attr('style', 'display:block');
             }else {
-
+                window.location.href = basepath + "sfaccount/withdrawRequest.shtml"
             }
         },
         error: function(){

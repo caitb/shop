@@ -129,32 +129,40 @@ public class PayBOrderService {
             comUser.setIsAgent(1);
             comUserMapper.updateByPrimaryKey(comUser);
         }
-//        log.info("<5>增加保证金");
-//        if (pfBorder.getBailAmount().compareTo(BigDecimal.ZERO) > 0) {
-//            ComUserAccount accountS = accountMapper.findByUserId(pfBorder.getUserId());
-//            ComUserAccountRecord recordS = comUserAccountService.createAccountRecordByBail(pfBorder.getBailAmount(), accountS, pfBorder.getId());
-//            // 保存修改前的金额
-//            recordS.setPrevFee(accountS.getBailFee());
-//            accountS.setBailFee(accountS.getBailFee().add(pfBorder.getBailAmount()));
-//            accountS.setCostFee(pfBorder.getPayAmount());
-//            // 保存修改后的金额
-//            recordS.setNextFee(accountS.getBailFee());
-//            recordMapper.insert(recordS);
-//            if (accountMapper.updateByIdWithVersion(accountS) == 0) {
-//                throw new BusinessException("修改进货方成本账户失败!");
-//            }
-//        }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<5>修改用户sku代理关系数据");
-            PfUserSku pfUserSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(bOrderId, comUser.getId(), pfBorderItem.getSkuId());
-            //订单类型(0代理1补货2拿货)
-            if (pfUserSku != null && pfBorder.getOrderType() == 0) {
-                pfUserSku.setIsPay(1);
-                pfUserSku.setBail(pfBorderItem.getBailAmount());
-                pfUserSku.setIsCertificate(1);
-                PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(pfUserSku.getId());
+            PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
+            if (thisUS == null) {
+                thisUS = new PfUserSku();
+                thisUS.setCreateTime(new Date());
+                thisUS.setCode("");
+                PfUserSku parentUS = pfUserSkuMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                if (parentUS == null) {
+                    thisUS.setPid(0);
+                    thisUS.setUserPid(0L);
+                } else {
+                    thisUS.setPid(parentUS.getId());
+                    thisUS.setUserPid(parentUS.getUserId());
+                }
+                thisUS.setUserId(pfBorder.getUserId());
+                thisUS.setSkuId(pfBorderItem.getSkuId());
+                thisUS.setAgentLevelId(pfBorderItem.getAgentLevelId());
+                thisUS.setIsPay(1);
+                thisUS.setIsCertificate(1);
+                thisUS.setPfBorderId(pfBorder.getId());
+                thisUS.setBail(pfBorder.getBailAmount());
+                thisUS.setRemark("");
+                pfUserSkuMapper.insert(thisUS);
+                PfUserCertificate pfUserCertificate = new PfUserCertificate();
                 pfUserCertificate.setCreateTime(new Date());
-                pfUserCertificate.setStatus(1);
+                pfUserCertificate.setCode("");
+                pfUserCertificate.setPfUserSkuId(thisUS.getId());
+                pfUserCertificate.setUserId(pfBorder.getUserId());
+                pfUserCertificate.setSpuId(pfBorderItem.getSpuId());
+                pfUserCertificate.setSkuId(pfBorderItem.getSkuId());
+                pfUserCertificate.setIdCard(comUser.getIdCard());
+                pfUserCertificate.setMobile(comUser.getMobile());
+                pfUserCertificate.setWxId(pfBorderItem.getWxId());
                 pfUserCertificate.setBeginTime(new Date());
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date(System.currentTimeMillis());
@@ -162,7 +170,7 @@ public class PayBOrderService {
                 calendar.add(Calendar.YEAR, 2);
                 date = calendar.getTime();
                 pfUserCertificate.setEndTime(date);
-                pfUserCertificate.setCode(getCertificateCode(pfUserCertificate));
+                pfUserCertificate.setAgentLevelId(pfBorderItem.getAgentLevelId());
                 String name = comUser.getRealName();//申请人
                 String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
                 String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
@@ -171,9 +179,9 @@ public class PayBOrderService {
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
                 pfUserCertificate.setImgUrl(picName + ".jpg");
-                pfUserCertificateMapper.updateById(pfUserCertificate);
-                pfUserSku.setCode(pfUserCertificate.getCode());
-                pfUserSkuMapper.updateByPrimaryKey(pfUserSku);
+                pfUserCertificate.setStatus(1);
+                pfUserCertificate.setRemark("");
+                pfUserCertificateMapper.insert(pfUserCertificate);
             }
             log.info("<6>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
             if (pfBorder.getOrderType() == 0) {
@@ -343,7 +351,7 @@ public class PayBOrderService {
      */
     @Transactional
     public void updateBOrderSendType(ComUser comUser, Long bOrderId, Integer sendType, Long userAddressId) throws Exception {
-        if(sendType==0){
+        if (sendType == 0) {
             throw new BusinessException("请选择拿货方式");
         }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);

@@ -21,7 +21,7 @@
 </head>
 <body>
     <header>
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>个人信息</p>
     </header>
     <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>

@@ -21,5 +21,5 @@ public interface SfOrderItemMapper {
 
     int updateByPrimaryKey(SfOrderItem record);
 
-    List<SfOrderItem> selectBySfOrderId(Long sfOrderId);
+    List<SfOrderItem> getOrderItemByOrderId(Long sfOrderId);
 }

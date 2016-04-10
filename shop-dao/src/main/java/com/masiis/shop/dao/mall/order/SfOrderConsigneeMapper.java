@@ -20,4 +20,8 @@ public interface SfOrderConsigneeMapper {
     List<SfOrderConsignee> selectAll();
 
     int updateByPrimaryKey(SfOrderConsignee record);
+
+    /*获得订单的收货地址*/
+    SfOrderConsignee getOrdConByOrdId(Long orderId);
+
 }

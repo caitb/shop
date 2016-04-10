@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by hzz on 2016/4/10.
@@ -21,5 +22,15 @@ public class SfOrderItemService {
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public int insert(SfOrderItem sfOrderItem){
         return sfOrderItemMapper.insert(sfOrderItem);
+    }
+
+    /**
+     * 根据订单的id获得订单的详情信息
+     * @author hanzengzhi
+     * @date 2016/4/10 14:18
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public List<SfOrderItem> getOrderItemByOrderId(Long orderId){
+        return sfOrderItemMapper.getOrderItemByOrderId(orderId);
     }
 }

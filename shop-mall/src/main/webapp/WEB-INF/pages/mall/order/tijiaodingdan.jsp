@@ -16,6 +16,21 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/tijiaodingdan.css">
 </head>
+<script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var addressId = $("#addressId").val();
+        if (addressId == "") {
+            $("#xz").show();
+            $("#sec1").hide();
+        }
+    })
+    function toChooseAddressPage() {
+        var selectedAddressId = $("#addressId").val();
+        var shopId = $("#shopId").val();
+        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=mallConfirmOrder&selectedAddressId=" + selectedAddressId + "&shopId=" + shopId;
+    }
+</script>
 <body>
     <header>
           <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -30,7 +45,9 @@
         <div id="sec1">
             <section class="sec1">
                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-               <div>
+               <div onclick="toChooseAddressPage()">
+                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                    <input style="display: none" type="text" id="shopId" value="${shopId}"/>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址： <span>
                         ${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}

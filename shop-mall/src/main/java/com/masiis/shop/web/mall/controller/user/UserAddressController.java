@@ -53,7 +53,7 @@ public class UserAddressController extends BaseController {
                                    @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0") int addAddressJumpType,
                                    Model model) throws Exception {
         model.addAttribute("addAddressJumpType",addAddressJumpType);
-        return "platform/order/xinjiandizhi";
+        return "mall/user/xinjiandizhi";
     }
 
     /**
@@ -133,6 +133,7 @@ public class UserAddressController extends BaseController {
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_Id);
         request.getSession().removeAttribute(SysConstants.SESSION_ORDER_SKU_ID);
         request.getSession().removeAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
+        request.getSession().removeAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
         return redirectHead+redirectBody;
     }
 
@@ -203,14 +204,16 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
+                                      @RequestParam(value = "shopId", required = false) Integer shopId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, orderId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
         request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);
+        request.getSession().setAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID, shopId);
         model.addAttribute("addressId", selectedAddressId);
-        return "platform/order/xuanze";
+        return "mall/user/xuanze";
     }
 
 
@@ -229,7 +232,7 @@ public class UserAddressController extends BaseController {
                                       Model model)throws Exception {
         model.addAttribute("addAddressJumpType",addAddressJumpType);
         model.addAttribute("manageAddressJumpType",manageAddressJumpType);
-        return "platform/order/guanli";
+        return "mall/user/guanli";
     }
 
     /**

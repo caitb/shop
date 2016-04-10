@@ -121,10 +121,11 @@ public class UserAddressService {
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
             Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
+            Long  shopId = (Long )request.getSession().getAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId);
+                return getOrderAddress(orderType, orderId, skuId, selectedAddressId,pfUserSkuStockId,shopId);
             }
         }catch (Exception e){
             throw new BusinessException(e.getMessage());
@@ -139,7 +140,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId,Long pfUserSkuStockId,Long shopId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -154,6 +155,8 @@ public class UserAddressService {
             case SysConstants.SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE://管理商品拿货
                 getManageGoodsTakeGoodsPageAddress(sb, pfUserSkuStockId, selectedAddressId);
                 break;
+            case SysConstants.SESSION_MALL_CONFIRM_ORDER://小铺确认订单界面
+                getMallConfrimOrderPageAddress(sb, shopId, selectedAddressId);
             default:
                 break;
         }
@@ -217,6 +220,20 @@ public class UserAddressService {
         sb.append("/product/user/applySkuInfo.list?");
         if (!StringUtils.isEmpty(pfUserSkuStockId)) {
             sb.append("id=").append(pfUserSkuStockId);
+        }
+        if (!StringUtils.isEmpty(selectedAddressId)) {
+            sb.append("&selectedAddressId=").append(selectedAddressId);
+        }
+    }
+    /**
+     * 小铺确定订单界面地址
+     * @author hanzengzhi
+     * @date 2016/4/10 16:36
+     */
+    private void getMallConfrimOrderPageAddress(StringBuffer sb, Long shopId, Long selectedAddressId) {
+        sb.append("/orderPurchase/getShopCartInfo.html?");
+        if (!StringUtils.isEmpty(shopId)) {
+            sb.append("shopId=").append(shopId);
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);

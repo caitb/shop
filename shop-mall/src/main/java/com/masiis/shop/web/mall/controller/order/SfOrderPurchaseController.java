@@ -35,6 +35,7 @@ public class SfOrderPurchaseController extends BaseController {
                                                 Model model){
         ComUser comUser = getComUser(request);
         Map<String,Object> map = sfOrderPurchaseService.getConfirmOrderInfo(comUser.getId(),selectedAddressId,shopId);
+        model.addAttribute("shopId",shopId);
         model.addAttribute("comUserAddress",map.get("comUserAddress"));
         model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
         model.addAttribute("skuTotalPrice",map.get("skuTotalPrice"));

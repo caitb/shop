@@ -143,9 +143,9 @@ public class UserController extends BaseController {
     public String getPersonalInfo(HttpServletRequest request, HttpServletResponse response,
                                   Model model) {
 
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         model.addAttribute("comUser", comUser);
-        return "platform/user/gerenxinxi";
+        return "mall/user/personalInfo";
     }
 
 

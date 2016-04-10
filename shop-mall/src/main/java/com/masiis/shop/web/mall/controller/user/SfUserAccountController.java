@@ -80,7 +80,7 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("userAccount",userAccount);
         mv.addObject("totalCount",totalCount);
         mv.addObject("orderItemDistributions",list);
-        mv.setViewName("mall/user/sf_commission");
+        mv.setViewName("mall/user/sf_commissionHome");
         return mv;
     }
 

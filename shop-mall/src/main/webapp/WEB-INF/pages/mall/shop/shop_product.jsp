@@ -185,7 +185,7 @@
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
         $.ajax({
-            url: "<%=basePath%>shop/addCart.do",
+            url: "<%=basePath%>cart/addCart.do",
             type: "post",
             data: cartData,
             dataType: "json",

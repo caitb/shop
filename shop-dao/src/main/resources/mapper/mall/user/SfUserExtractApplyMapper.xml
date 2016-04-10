@@ -7,7 +7,7 @@
         <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
         <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT" />
         <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
-        <result column="extract_way" property="extractWay" jdbcType="TINYINT" />
+        <result column="extract_way" property="extractWay" jdbcType="INTEGER" />
         <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
         <result column="audit_type" property="auditType" jdbcType="INTEGER" />
         <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
@@ -32,7 +32,7 @@
             card_owner_name, deposit_bank_name, remark
             )
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL}, 
-            #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=TINYINT}, 
+            #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=INTEGER},
             #{auditTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR}, 
             #{payTime,jdbcType=TIMESTAMP}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
             #{cardOwnerName,jdbcType=VARCHAR}, #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
@@ -55,7 +55,7 @@
                 apply_time = #{applyTime,jdbcType=TIMESTAMP},
             </if>
             <if test="extractWay != null">
-                extract_way = #{extractWay,jdbcType=TINYINT},
+                extract_way = #{extractWay,jdbcType=INTEGER},
             </if>
             <if test="auditTime != null">
                 audit_time = #{auditTime,jdbcType=TIMESTAMP},

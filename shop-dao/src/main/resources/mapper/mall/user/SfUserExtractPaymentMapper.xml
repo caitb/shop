@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserExtractPaymentMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserExtractPayment" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="extract_apply_id" property="extractApplyId" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="extract_serial_num" property="extractSerialNum" jdbcType="VARCHAR" />
+        <result column="extract_way" property="extractWay" jdbcType="INTEGER" />
+        <result column="out_order_id" property="outOrderId" jdbcType="VARCHAR" />
+        <result column="amont" property="amont" jdbcType="DECIMAL" />
+        <result column="is_success" property="isSuccess" jdbcType="INTEGER" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_extract_payment
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserExtractPayment" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_user_extract_payment (id, extract_apply_id, create_time, 
+            extract_serial_num, extract_way, out_order_id, 
+            amont, is_success, pay_time, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{extractApplyId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{extractSerialNum,jdbcType=VARCHAR}, #{extractWay,jdbcType=INTEGER}, #{outOrderId,jdbcType=VARCHAR}, 
+            #{amont,jdbcType=DECIMAL}, #{isSuccess,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserExtractPayment" >
+        update sf_user_extract_payment
+        set extract_apply_id = #{extractApplyId,jdbcType=BIGINT},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            extract_serial_num = #{extractSerialNum,jdbcType=VARCHAR},
+            extract_way = #{extractWay,jdbcType=INTEGER},
+            out_order_id = #{outOrderId,jdbcType=VARCHAR},
+            amont = #{amont,jdbcType=DECIMAL},
+            is_success = #{isSuccess,jdbcType=INTEGER},
+            pay_time = #{payTime,jdbcType=TIMESTAMP},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, extract_apply_id, create_time, extract_serial_num, extract_way, out_order_id, 
+        amont, is_success, pay_time, remark
+        from sf_user_extract_payment
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, extract_apply_id, create_time, extract_serial_num, extract_way, out_order_id, 
+        amont, is_success, pay_time, remark
+        from sf_user_extract_payment
+    </select>
+
+</mapper>

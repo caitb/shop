@@ -100,24 +100,21 @@ public class SysBeanUtils {
      * @return
      */
     public static String createAccountRecordSerialNum(int type) {
-        StringBuilder res = null;
-        if (type == 0) {
-            res = new StringBuilder("LSHA");
-        } else if (type == 1) {
-            res = new StringBuilder("LSHB");
-        } else if (type == 2) {
-            res = new StringBuilder("LSHC");
-        } else if (type == 3) {
-            res = new StringBuilder("LSHD");
-        } else if (type == 4) {
-            res = new StringBuilder("LSHE");
-        } else if (type == 5) {
-            res = new StringBuilder("LSHF");
-        } else if (type == 6) {
-            res = new StringBuilder("LSHG");
-        } else {
-            res = new StringBuilder("LSHZ");
+        StringBuilder res = new StringBuilder("LSHA");
+        res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
+        for(int i = 0; i < 11; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
         }
+        return res.toString();
+    }
+
+    /**
+     * 创建小铺用户提现付款流水号
+     *
+     * @return
+     */
+    public static String createSfUserExtractPaySerialNum(){
+        StringBuilder res = new StringBuilder("LSHB");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
         for(int i = 0; i < 11; i++){
             res.append(charArrs[(int)(Math.random() * charArrs.length)]);

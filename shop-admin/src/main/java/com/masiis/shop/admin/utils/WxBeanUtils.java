@@ -1,10 +1,10 @@
-package com.masiis.shop.web.platform.utils;
+package com.masiis.shop.admin.utils;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.masiis.shop.admin.constants.wx.WxPayUserCons;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
-import com.masiis.shop.web.platform.constants.WxConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -12,10 +12,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Created by lzh on 2016/3/8.
+ * @Date:2016/4/10
+ * @auth:lzh
  */
-public class WXBeanUtils {
-    private static Logger log = Logger.getLogger(WXBeanUtils.class);
+public class WxBeanUtils {
+    private static Logger log = Logger.getLogger(WxBeanUtils.class);
 
     private final static String[] charArrs = {"A", "D", "E", "C", "H", "Y", "6", "7", "8", "9",
             "M", "N", "O", "Z", "1", "5", "P", "Q", "R", "S", "2", "3", "4", "T", "I", "J", "F",
@@ -60,9 +61,9 @@ public class WXBeanUtils {
                 if(sf != null){
                     continue;
                 }
-                String value = (String) f.get(obj);
-                if (StringUtils.isNotBlank(value)) {
-                    list.add(key + "=" + f.get(obj) + "&");
+                Object value = f.get(obj);
+                if (value != null) {
+                    list.add(key + "=" + value + "&");
                 }
             }
         } catch (IllegalAccessException e) {
@@ -76,9 +77,8 @@ public class WXBeanUtils {
             sb.append(arrayToSort[i]);
         }
         String result = sb.toString();
-        result += "key=" + WxConstants.WX_PAY_SIGN_KEY;
+        result += "key=" + WxPayUserCons.API_KEY;
         result = MD5Utils.encrypt(result).toUpperCase();
         return result;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.masiis.shop.common.util;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -17,6 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.junit.Test;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
@@ -41,7 +43,7 @@ public class HttpsUtils {
      * @param file
      */
     public HttpsUtils(String pwd, File file) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-        createClientWithPKCS12(pwd, file);
+        httpClient = createClientWithPKCS12(pwd, file);
     }
 
     private CloseableHttpClient createClientWithPKCS12(String pwd, File file) throws UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, IOException, CertificateException, KeyManagementException {
@@ -82,7 +84,7 @@ public class HttpsUtils {
             StringEntity postEntity = new StringEntity(postDataXML, "UTF-8");
             httpPost.setEntity(postEntity);
 
-            log.info("API，POST过去的数据是：");
+            log.info("POST过去的数据是：");
             log.info(postDataXML);
         }
 
@@ -108,5 +110,22 @@ public class HttpsUtils {
         }
 
         return result;
+    }
+
+    public <T> T sendPostByXMLWithParse(String url, Object xmlObj, Class<T> clazz){
+        T res = null;
+        try{
+            String result = sendPostByXML(url, xmlObj);
+            if(result == null){
+                throw new BusinessException("result is null");
+            }
+            XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+            xStream.processAnnotations(clazz);
+            res = (T) xStream.fromXML(result);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            res = null;
+        }
+        return res;
     }
 }

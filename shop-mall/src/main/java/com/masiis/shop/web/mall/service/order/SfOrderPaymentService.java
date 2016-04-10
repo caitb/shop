@@ -2,6 +2,8 @@ package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.SfOrder;
+import com.masiis.shop.dao.po.SfOrderConsignee;
+import com.masiis.shop.dao.po.SfOrderItem;
 import com.masiis.shop.dao.po.SfOrderOperationLog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hzz on 2016/4/10.
@@ -20,6 +25,10 @@ public class SfOrderPaymentService {
     private SfOrderService ordService;
     @Resource
     private SfOrderOperationLogService ordOperLogService;
+    @Resource
+    private SfOrderConsigneeService ordConService;
+    @Resource
+    private SfOrderItemService ordItemService;
 
     /**
      * 订单支付成功修改状态
@@ -33,6 +42,7 @@ public class SfOrderPaymentService {
             SfOrder order = ordService.getOrderById(orderId);
             int i = updateOrder(order);
             SfOrderOperationLog ordOperLog = ordOperLogService.getOrdOperLogByOrderId(order.getId());
+            updateOrdOperLog(ordOperLog);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -61,4 +71,53 @@ public class SfOrderPaymentService {
         ordOperLog.setSfOrderStatus(1);
         return ordOperLogService.update(ordOperLog);
     }
+
+    /**
+     * 支付成功回调
+     * @author hanzengzhi
+     * @date 2016/4/10 13:59
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public Map<String,Object> paySuccessCallBack(Long orderId){
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
+        try{
+            //订单的收货地址
+            SfOrderConsignee ordCon = getOrdConByOrdId(orderId);
+            map.put("orderConsignee",ordCon);
+            //订单信息
+            SfOrder order = getOrderById(orderId);
+            map.put("order",order);
+            //订单详情信息
+            List<SfOrderItem> orderItems = getOrderItem(orderId);
+            map.put("orderItems",orderItems);
+        }catch (Exception e){
+            throw new BusinessException(e);
+        }
+        return map;
+    }
+    /**
+     * 获得订单的收货地址
+     * @author hanzengzhi
+     * @date 2016/4/10 14:03
+     */
+    private SfOrderConsignee getOrdConByOrdId(Long orderId){
+          return ordConService.getOrdConByOrdId(orderId);
+    }
+    /**
+     * 根据订单id获得订单信息
+     * @author hanzengzhi
+     * @date 2016/4/10 14:10
+     */
+    private SfOrder getOrderById(Long orderId){
+        return ordService.getOrderById(orderId);
+    }
+    /**
+     * 根据订单id获得订单的详情信息
+     * @author hanzengzhi
+     * @date 2016/4/10 14:18
+     */
+    private List<SfOrderItem> getOrderItem(Long orderId){
+        return ordItemService.getOrderItemByOrderId(orderId);
+    }
+
 }

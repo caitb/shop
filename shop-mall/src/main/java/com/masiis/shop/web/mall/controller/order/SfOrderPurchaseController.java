@@ -34,14 +34,19 @@ public class SfOrderPurchaseController extends BaseController {
         sfOrderPurchaseService.getConfirmOrderInfo(comUser.getId(),selectedAddressId,sfShopId);
         return null;
     }
-
+    /**
+     * 提交订单
+     * @author hanzengzhi
+     * @date 2016/4/10 11:09
+     */
     @RequestMapping(value = "submitOrder.do")
     public String submitOrder(HttpServletRequest request,HttpServletResponse response,
                               @RequestParam(value = "addressId" , required = true)Long addressId,
                               @RequestParam(value = "message" , required = false)String message,
                               @RequestParam(value = "sfShopId",required = true) Long sfShopId,
                               @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
-
+        ComUser comUser = getComUser(request);
+        sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
         return null;
     }
 }

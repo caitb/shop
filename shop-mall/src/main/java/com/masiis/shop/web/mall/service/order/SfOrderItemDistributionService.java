@@ -7,6 +7,8 @@ import com.masiis.shop.dao.po.SfOrderItemDistribution;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +25,11 @@ public class SfOrderItemDistributionService {
     private SfOrderItemDistributionExtendMapper sfOrderItemDistributionExtendMapper;
 
     private final Logger log = Logger.getLogger(SfOrderItemDistributionService.class);
+
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public int insert(SfOrderItemDistribution orderItemDis){
+        return sfOrderItemDistributionMapper.insert(orderItemDis);
+    }
 
     /**
      * 根据条件查询小铺订单商品分润 数量

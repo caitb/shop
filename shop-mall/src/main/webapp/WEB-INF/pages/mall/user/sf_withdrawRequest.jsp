@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/shenqingtixian.css">
+    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="${path}/static/js/pageJs/sf_withdrawRequest.js"></script>
+    <script type="application/javascript">
+        var path = "${path}";
+        var basepath = "${basePath}";
+    </script>
 </head>
 <body>
     <header>
@@ -25,13 +32,13 @@
                    </h1>
                </div>
                <main>
-                   <p>您当前可提现金额为<span>￥${userAccount.extractableFee}</span></p>
+                   <p>您当前可提现金额为<span id="extractableFee">￥${userAccount.extractableFee}</span></p>
                    <div class="sec1">
-                       提现金额：￥<input type="text" placeholder="请输入提现金额">
+                       提现金额：￥<input id="inputAccount" name="inputAccount" type="text" placeholder="请输入提现金额">
                    </div>
                    <h1>*请确认您已关注“麦链商城”微信公众账号，否则提现提现会失败</h1>
                    <h2>为保障奖励及时到账，麦链商城采用的是微信转账形式发放。</h2>
-                   <button>确认提现</button>
+                   <button onclick="withdraw(${userAccount.userId})">确认提现</button>
                </main>
         </div>
 </body>

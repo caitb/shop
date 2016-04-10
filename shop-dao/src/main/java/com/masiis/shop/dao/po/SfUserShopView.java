@@ -7,9 +7,11 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.beans.user.SfUserShopViewExtend;
+
 import java.util.Date;
 
-public class SfUserShopView {
+public class SfUserShopView extends SfUserShopViewExtend {
 
     private Long id;
     private Date createTime;

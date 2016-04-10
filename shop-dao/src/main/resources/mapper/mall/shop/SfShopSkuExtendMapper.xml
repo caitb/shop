@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfShopSkuExtendMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopSku" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="is_sale" property="isSale" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="bail" property="bail" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
+        <result column="share_num" property="shareNum" jdbcType="BIGINT" />
+        <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="agentName" property="agentName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectShopviewByShopId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select sku.*,a.icon as icon,l.name as agentName
+            from sf_shop_sku sku
+            LEFT JOIN pf_sku_agent a on sku.agent_level_id = a.agent_level_id
+            LEFT JOIN com_agent_level l on sku.agent_level_id = l.id
+        where sku.shop_id = #{shopId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

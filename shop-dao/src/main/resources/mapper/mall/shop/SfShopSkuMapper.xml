@@ -11,7 +11,6 @@
         <result column="is_sale" property="isSale" jdbcType="INTEGER" />
         <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
         <result column="bail" property="bail" jdbcType="DECIMAL" />
-        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
         <result column="sale_num" property="saleNum" jdbcType="BIGINT" />
         <result column="share_num" property="shareNum" jdbcType="BIGINT" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
@@ -69,9 +68,16 @@
 
     <select id="selectByShopIdAndSkuId" resultMap="BaseResultMap">
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
-        bail, ship_amount, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code, remark
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and sku_id = #{skuId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByShopId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
+        bail,sale_num, share_num, qr_code, remark
+        from sf_shop_sku
+        where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = 1
     </select>
 
 </mapper>

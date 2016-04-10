@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,9 @@ public class UserService {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComWxUserMapper comWxUserMapper;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
+
     /**
      * 根据用户id获取用户
      *
@@ -218,4 +223,27 @@ public class UserService {
     public ComWxUser findComWxUserByUserId(Long userId){
         return comWxUserMapper.selectByUserId(userId);
     }
+
+    /**
+      * @Author jjh
+      * @Date 2016/4/10 0010 下午 4:14
+      * 来自分享人的信息
+      */
+    public void getShareUser(Long userId,Long userPd){
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
+        if(sfUserRelation==null){ //来自于分享链接
+            SfUserRelation sfNewUserRelation = new SfUserRelation();
+            sfNewUserRelation.setCreateTime(new Date());
+            sfNewUserRelation.setUserId(userId);
+            sfNewUserRelation.setUserPid(userPd);
+            if(sfUserPRelation==null){
+                sfNewUserRelation.setLevel(1);
+            }else{
+                sfNewUserRelation.setLevel(sfUserPRelation.getLevel()+1);
+            }
+            sfUserRelationMapper.insert(sfNewUserRelation);
+        }
+    }
+
 }

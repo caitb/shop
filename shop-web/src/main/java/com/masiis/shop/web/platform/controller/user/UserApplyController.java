@@ -71,7 +71,7 @@ public class UserApplyController extends BaseController {
         }
         if (pUserId != null && pUserId > 0) {
             ComUser pUser = userService.getUserById(pUserId);
-            checkParentData(pUser, skuId);
+            userSkuService.checkParentData(pUser, skuId);
             res.addObject("pUserId", pUserId);
         }
 
@@ -183,7 +183,7 @@ public class UserApplyController extends BaseController {
                 log.error("上级代理id不合法,pUserId:" + pUserId);
                 throw new BusinessException("上级代理id不合法!");
             }
-            checkParentData(pComUser, skuId);
+            userSkuService.checkParentData(pComUser, skuId);
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
             if (pfUserSku.getAgentLevelId() >= 3) {
                 throw new BusinessException("您的推荐人还不能发展下级代理");
@@ -235,7 +235,7 @@ public class UserApplyController extends BaseController {
             PfUserSku pfUserSku = null;
             if (StringUtils.isNotBlank(pMobile)) {
                 pUser = userService.getUserByMobile(pMobile);
-                checkParentData(pUser, skuId);
+                userSkuService.checkParentData(pUser, skuId);
             } else {
                 throw new BusinessException("手机号为空");
             }
@@ -268,43 +268,5 @@ public class UserApplyController extends BaseController {
         return modelAndView;
     }
 
-    /**
-     * @param pUser 上级合伙人
-     * @param skuId 代理的商品
-     * @author ZhaoLiang
-     * @date 2016/4/1 12:11
-     */
-    public void checkParentData(ComUser pUser, Integer skuId) throws Exception {
-        if (pUser == null) {
-            throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
-        } else {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-            if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
-                throw new BusinessException("您的推荐人还未代理此款商品");
-            }
-        }
-    }
 
-    /**
-     * @param pUser        上级合伙人
-     * @param skuId        代理的商品
-     * @param agentLevelId 自己的代理等级
-     * @author ZhaoLiang
-     * @date 2016/4/1 12:11
-     */
-    public PfUserSku checkParentData(ComUser pUser, Integer skuId, Integer agentLevelId) throws Exception {
-        PfUserSku pfUserSku = null;
-        if (pUser == null) {
-            throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
-        } else {
-            pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-            if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
-                throw new BusinessException("您的推荐人还未代理此款商品");
-            }
-            if (pfUserSku.getAgentLevelId() > agentLevelId) {
-                throw new BusinessException("您的代理等级不能高于您的推荐人代理等级");
-            }
-        }
-        return pfUserSku;
-    }
 }

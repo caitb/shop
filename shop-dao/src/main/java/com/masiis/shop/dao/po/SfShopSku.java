@@ -7,10 +7,12 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.dao.beans.product.SfShopSkuExtends;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class SfShopSku {
+public class SfShopSku extends SfShopSkuExtends {
 
     private Long id;
     private Date createTime;

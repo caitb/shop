@@ -105,4 +105,12 @@ public class SfShopCart {
     public void setIsCheck(Integer isCheck) {
         this.isCheck = isCheck;
     }
+
+    public Integer getSpuId() {
+        return spuId;
+    }
+
+    public void setSpuId(Integer spuId) {
+        this.spuId = spuId;
+    }
 }

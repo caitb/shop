@@ -57,7 +57,8 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
     <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select name
+        select id, name, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{skuId,jdbcType=INTEGER}
     </select>

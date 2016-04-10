@@ -23,4 +23,6 @@ public interface SfShopShoutLogMapper {
     int updateByPrimaryKey(SfShopShoutLog record);
 
     SfShopShoutLog selectByCondition(Map<String, Object> con);
+
+    SfShopShoutLog selectByMap(Map<String, Object> map);
 }

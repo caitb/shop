@@ -76,7 +76,7 @@ public class BOrderService {
      * @param pfBorderItems
      */
     @Transactional
-    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, List<PfUserSkuCustom> pfUserSkuCustoms) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
@@ -89,38 +89,6 @@ public class BOrderService {
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             pfBorderItem.setPfBorderId(pfBorder.getId());
             pfBorderItemMapper.insert(pfBorderItem);
-        }
-        //添加用户代理商品关系
-        if (pfUserSkuCustoms != null && pfUserSkuCustoms.size() > 0) {
-            for (PfUserSkuCustom pfUserSkuCustom : pfUserSkuCustoms) {
-                PfUserSku pfUserSku = new PfUserSku();
-                pfUserSku.setCreateTime(pfUserSkuCustom.getCreateTime());
-                pfUserSku.setCode(pfUserSkuCustom.getCode());
-                pfUserSku.setPid(pfUserSkuCustom.getPid());
-                pfUserSku.setUserId(pfUserSkuCustom.getUserId());
-                pfUserSku.setUserPid(pfUserSkuCustom.getUserPid());
-                pfUserSku.setSkuId(pfUserSkuCustom.getSkuId());
-                pfUserSku.setAgentLevelId(pfUserSkuCustom.getAgentLevelId());
-                pfUserSku.setIsPay(pfUserSkuCustom.getIsPay());
-                pfUserSku.setIsCertificate(pfUserSkuCustom.getIsCertificate());
-                pfUserSku.setBail(pfUserSkuCustom.getBail());
-                pfUserSku.setRemark(pfUserSkuCustom.getRemark());
-                pfUserSku.setPfBorderId(pfBorder.getId());
-                pfUserSkuMapper.insert(pfUserSku);
-                PfUserCertificate pfUserCertificate = new PfUserCertificate();
-                pfUserCertificate.setCode("");
-                pfUserCertificate.setCreateTime(new Date());
-                pfUserCertificate.setPfUserSkuId(pfUserSku.getId());
-                pfUserCertificate.setUserId(pfUserSkuCustom.getUserId());
-                pfUserCertificate.setSpuId(pfUserSkuCustom.getSpuId());
-                pfUserCertificate.setSkuId(pfUserSkuCustom.getSkuId());
-                pfUserCertificate.setIdCard(pfUserSkuCustom.getIdCard());
-                pfUserCertificate.setMobile(pfUserSkuCustom.getMobile());
-                pfUserCertificate.setWxId(pfUserSkuCustom.getWxId());
-                pfUserCertificate.setAgentLevelId(pfUserSkuCustom.getAgentLevelId());
-                pfUserCertificate.setStatus(0);
-                pfUserCertificateMapper.insert(pfUserCertificate);
-            }
         }
         //添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();

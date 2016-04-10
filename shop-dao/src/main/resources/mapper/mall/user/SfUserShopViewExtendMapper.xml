@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserShopViewExtendMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserShopView" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="shopName" property="shopName" jdbcType="VARCHAR" />
+        <result column="explanation" property="explanation" jdbcType="VARBINARY" />
+        <result column="bailFee" property="bailFee" jdbcType="DECIMAL"/>
+        <result column="days" property="days" jdbcType="BIGINT" />
+        <result column="logo" property="logo" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectViewedShopByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select sview.*,s.name as shopName,s.explanation explanation,a.bail_fee bailFee,TO_DAYS(SYSDATE())-TO_DAYS(sview.create_time) as days,s.logo
+	      from sf_user_shop_view sview
+	      LEFT JOIN sf_shop s on sview.shop_id = s.id and s.status = 1
+	      LEFT JOIN com_user_account a on sview.shop_user_id = a.com_user_id
+        where sview.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

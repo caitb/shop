@@ -65,6 +65,15 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <!--根据订单id 获得订单的收货地址-->
+    <select id="getOrdConByOrdId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, sf_order_id, user_id, consignee, mobile, province_id, province_name,
+        city_id, city_name, region_id, region_name, address, zip, remark
+        from sf_order_consignee
+        where sf_order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, sf_order_id, user_id, consignee, mobile, province_id, province_name, 
         city_id, city_name, region_id, region_name, address, zip, remark

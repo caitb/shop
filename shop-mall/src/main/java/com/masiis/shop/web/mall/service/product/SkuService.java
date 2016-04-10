@@ -1,5 +1,7 @@
 package com.masiis.shop.web.mall.service.product;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopCartMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
@@ -24,7 +26,7 @@ import java.util.List;
 @Service
 @Transactional
 public class SkuService {
-
+    private Log log = LogFactory.getLog(this.getClass());
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
@@ -121,6 +123,16 @@ public class SkuService {
     }
 
     /**
+     * 获取小铺商品
+     * @author muchaofeng
+     * @date 2016/4/10 14:37
+     */
+    public List<SfShopSku> getSfShopSkuByShopId(Long shopId) throws Exception {
+        return sfShopSkuMapper.selectByShopId(shopId);
+    }
+
+
+    /**
      * SkuImage List 信息
      *
      * @param skuId
@@ -154,11 +166,14 @@ public class SkuService {
         if (sfShopSku != null) {
             skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
-            skuInfo.setShipAmount(sfShopSku.getShipAmount());
         }
         PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
         if (pfSkuStock != null) {
             skuInfo.setStock(pfSkuStock.getStock());
+        }
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        if(sfShop!=null){
+            skuInfo.setShipAmount(sfShop.getShipAmount());
         }
         return skuInfo;
     }
@@ -172,16 +187,20 @@ public class SkuService {
         SfShopCart sfShopCart = sfShopCartMapper.getProductInfoByUserIdAndShipIdAndSkuId(userId,shopId,skuId);
         if(sfShopCart!=null){
             sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
+            log.info("----删除当前商品----");
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         ShopCart.setCreateTime(new Date());
         ShopCart.setSfShopId(shopId);
         ShopCart.setUserId(userId);
         ShopCart.setSkuId(skuId);
+        ShopCart.setSpuId(comSku.getSpuId());
         ShopCart.setSfShopUserId(sfShop.getUserId());
         ShopCart.setQuantity(quantity);
         ShopCart.setIsCheck(1);
         ShopCart.setSort(0);
         sfShopCartMapper.insert(ShopCart);
+        log.info("----加入cart 成功----");
     }
 }

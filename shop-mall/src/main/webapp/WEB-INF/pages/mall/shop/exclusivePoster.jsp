@@ -62,15 +62,12 @@
 
             var userImg = new Image();
             userImg.src = '<%=basePath%>${userImg}';
-            userImg.setAttribute('crossOrigin', 'anonymous');
 
             var bgShop = new Image();
             bgShop.src = '<%=basePath%>${bgShop}';
-            bgShop.setAttribute('crossOrigin', 'anonymous');
 
             var shopQRCode = new Image();
             shopQRCode.src = '<%=basePath%>${shopQRCode}';
-            shopQRCode.setAttribute('crossOrigin', 'anonymous');
 
             userImg.addEventListener('load', function(){
 
@@ -86,7 +83,7 @@
                         context.font = 'normal 28px Microsoft YaHei';
                         context.textBaseline = 'top';
                         context.strokeStyle = '#F73C8C';
-                        var text = '我是哦' + '${userName}';
+                        var text = '我是' + '${userName}';
                         context.strokeText(text,520/2-text.length/2*28, 284);
 
                     }, false);

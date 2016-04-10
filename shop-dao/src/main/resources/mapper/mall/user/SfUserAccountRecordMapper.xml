@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserAccountRecord" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="sf_user_account_id" property="sfUserAccountId" jdbcType="BIGINT" />
+        <result column="handle_serial_num" property="handleSerialNum" jdbcType="VARCHAR" />
+        <result column="handle_fee" property="handleFee" jdbcType="DECIMAL" />
+        <result column="prev_fee" property="prevFee" jdbcType="DECIMAL" />
+        <result column="next_fee" property="nextFee" jdbcType="DECIMAL" />
+        <result column="fee_type" property="feeType" jdbcType="INTEGER" />
+        <result column="source_id" property="sourceId" jdbcType="BIGINT" />
+        <result column="handle_type" property="handleType" jdbcType="INTEGER" />
+        <result column="handle_time" property="handleTime" jdbcType="TIMESTAMP" />
+        <result column="handler" property="handler" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_account_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserAccountRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_user_account_record (id, com_user_id, sf_user_account_id, 
+            handle_serial_num, handle_fee, prev_fee, 
+            next_fee, fee_type, source_id, 
+            handle_type, handle_time, handler
+            )
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{sfUserAccountId,jdbcType=BIGINT}, 
+            #{handleSerialNum,jdbcType=VARCHAR}, #{handleFee,jdbcType=DECIMAL}, #{prevFee,jdbcType=DECIMAL}, 
+            #{nextFee,jdbcType=DECIMAL}, #{feeType,jdbcType=INTEGER}, #{sourceId,jdbcType=BIGINT}, 
+            #{handleType,jdbcType=INTEGER}, #{handleTime,jdbcType=TIMESTAMP}, #{handler,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserAccountRecord" >
+        update sf_user_account_record
+        set
+            <if test="comUserId != null">
+                com_user_id = #{comUserId,jdbcType=BIGINT},
+            </if>
+            <if test="sfUserAccountId != null">
+                sf_user_account_id = #{sfUserAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="handleSerialNum != null">
+                handle_serial_num = #{handleSerialNum,jdbcType=VARCHAR},
+            </if>
+            <if test="handleFee != null">
+                handle_fee = #{handleFee,jdbcType=DECIMAL},
+            </if>
+            <if test="prevFee != null">
+                prev_fee = #{prevFee,jdbcType=DECIMAL},
+            </if>
+            <if test="nextFee != null">
+                next_fee = #{nextFee,jdbcType=DECIMAL},
+            </if>
+            <if test="feeType != null">
+                fee_type = #{feeType,jdbcType=INTEGER},
+            </if>
+            <if test="sourceId != null">
+                source_id = #{sourceId,jdbcType=BIGINT},
+            </if>
+            <if test="handleType != null">
+                handle_type = #{handleType,jdbcType=INTEGER},
+            </if>
+            <if test="handleTime != null">
+                handle_time = #{handleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="handler != null">
+                handler = #{handler,jdbcType=VARCHAR}
+            </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, com_user_id, sf_user_account_id, handle_serial_num, handle_fee, prev_fee, 
+        next_fee, fee_type, source_id, handle_type, handle_time, handler
+        from sf_user_account_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_user_id, sf_user_account_id, handle_serial_num, handle_fee, prev_fee, 
+        next_fee, fee_type, source_id, handle_type, handle_time, handler
+        from sf_user_account_record
+    </select>
+
+</mapper>

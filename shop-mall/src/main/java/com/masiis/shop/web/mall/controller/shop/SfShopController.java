@@ -45,6 +45,13 @@ public class SfShopController extends BaseController {
     @Resource
     private UserService userService;
 
+    @RequestMapping("/index")
+    public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
+        ModelAndView mav = new ModelAndView("mall/shop/index");
+
+        return mav;
+    }
+
     /**
      * 呐喊
      * @param request

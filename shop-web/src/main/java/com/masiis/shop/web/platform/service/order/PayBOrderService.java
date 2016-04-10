@@ -194,7 +194,6 @@ public class PayBOrderService {
                 pfUserSkuStockMapper.insert(pfUserSkuStock);
             }
         }
-
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1) {
             //处理平台发货类型订单
@@ -344,6 +343,9 @@ public class PayBOrderService {
      */
     @Transactional
     public void updateBOrderSendType(ComUser comUser, Long bOrderId, Integer sendType, Long userAddressId) throws Exception {
+        if(sendType==0){
+            throw new BusinessException("请选择拿货方式");
+        }
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder.getOrderStatus() != 1) {
             throw new BusinessException("订单状态有误！现在为：" + pfBorder.getOrderStatus());

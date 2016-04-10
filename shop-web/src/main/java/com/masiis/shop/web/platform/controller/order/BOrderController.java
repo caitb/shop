@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -290,6 +291,8 @@ public class BOrderController extends BaseController {
                 pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
                 pfBorderConsignee.setAddress(comUserAddress.getAddress());
                 pfBorderConsignee.setZip(comUserAddress.getZip());
+                //补货&自己发货 订单状态修改为待发货
+                pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
             }
             pfBorder.setUserMessage(userMessage);
             bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);

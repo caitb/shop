@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.mall.utils.DownloadImage;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,21 +69,22 @@ public class SfShopController extends BaseController {
 
     @RequestMapping("/getPoster")
     public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId){
-        ModelAndView mav = new ModelAndView("mall/shop/test");
+        ModelAndView mav = new ModelAndView("mall/shop/exclusivePoster");
 
         try {
             ComUser comUser = getComUser(request);
-                    comUser = comUserMapper.selectByPrimaryKey(14L);
+                    comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             String realPath = request.getServletContext().getRealPath("/");
             String posterName = comUser.getId() + ".jpg";
 
             File posterDir = new File(realPath + "static/images/shop/poster/");
             if(!posterDir.exists()) posterDir.mkdirs();
 
-            CreateParseCode.createCode(200, 200, "http://user.qzone.qq.com/469914294/infocenter?ptsig=HS-6V9QZaewwyinlkX5Fbo5VrpML-W-XBl9iYvaBtWE_", posterDir.getAbsolutePath()+"/"+posterName);
+            CreateParseCode.createCode(200, 200, "https://www.tmall.com/", posterDir.getAbsolutePath()+"/"+posterName);
+            DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
 
             mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
-            mav.addObject("userImg", comUser.getWxHeadImg());
+            mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
             mav.addObject("userName", comUser.getWxNkName());
             mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
             return mav;

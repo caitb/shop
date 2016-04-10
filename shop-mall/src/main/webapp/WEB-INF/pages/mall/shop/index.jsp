@@ -28,7 +28,7 @@
         <div>
             <p>王平的小店</p>
             <p>专营各类化妆品，欢迎大家选购！</p>
-            <img src="<%=basePath%>static/images/fen.png" alt="">
+            <img src="<%=basePath%>static/images/fen.png" id="share" alt="">
         </div>
         <div>
             <p>
@@ -135,6 +135,9 @@
                 $('#shoutAlert').show();
             }
         });
+    });
+    $('#share').on('click', function(){
+        $('#shoutAlert').show();
     });
 </script>
 </body>

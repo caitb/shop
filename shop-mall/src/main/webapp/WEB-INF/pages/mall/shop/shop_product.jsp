@@ -1,6 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -15,7 +14,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
-    <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <header>
@@ -24,10 +22,10 @@
 </header>
 <div class="wrap">
     <div class="na">
-        <p></p>
+        <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
-            <span>俺是快乐的金卡了手机打开了速度</span>
-            <span>娶我uepqowiepowqi</span>
+            <span>我是${comUser.wxNkName},我为麦链商城呐喊!</span>
+            <span>跟我一起：呐喊得红包，分享赚佣金</span>
         </h1>
     </div>
     <div class="banner">
@@ -42,16 +40,16 @@
         </div>
     </div>
     <div class="price">
-        <p>${skuInfo.name}</p>
+        <p>${skuInfo.comSku.name}</p>
         <p><span style="padding:0;">${skuInfo.slogan}</span></p>
-        <p><b>${skuInfo.priceRetail}</b></p>
+        <p><b>${skuInfo.comSku.priceRetail}</b></p>
     </div>
     <div class="dlpople">
         <p>快递：<span>${skuInfo.shipAmount}</span></p>
         <p>总销量：<b>${skuInfo.saleNum}</b></p>
         <p>分销量：<b>${skuInfo.shareNum}</b></p>
     </div>
-    <div class="dlpople" onclick="previewBuy()">
+    <div class="dlpople" onclick="validateCodeJS.applyTrial('buy')">
         <p>选择： 数量</p>
         <p><img src="<%=path%>/static/images/next.png" alt=""></p>
     </div>
@@ -96,27 +94,33 @@
     </main>
 
 </div>
-<div class="back_j">
+<div class="back_j" style="display: none">
     <p class="biao">绑定账号</p>
     <div>
-        <p>手机号：<input type="tel"></p>
-        <em>asd</em>
+        <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
     </div>
     <div class="d">
-        <p>验证码：<input type="number"><button>获取验证码</button></p>
-        <em>asd</em>
+        <p>验证码：<input type="tel" id="validateNumberDataId">
+            <button id="validateNumberId">获取验证码</button>
+        </p>
     </div>
-    <p class="tishi"></p>
-    <h1 class="j_qu">下一步</h1>
+    <p class="tishi" id="errorMessageId"></p>
+    <h1 class="j_qu" id="nextPageId">下一步</h1>
+</div>
+<div class="back_f">
+    <p>保存图片到手机，复制文案，发送图文到朋友圈，产生购买后可获得佣金</p>
+    <img src="<%=path%>/static/images/asd.JPG" alt="">
+    <b>下载图片</b>
+    <span class="close">×</span>
 </div>
 <div class="back">
 
 </div>
 <div class="shoping">
-    <img src="<%=path%>/static/images/icon_66.png" alt="">
+    <img src="${defaultSkuImage.fullImgUrl}" alt="">
     <p>
-        <span id="skuName">${skuInfo.name}</span>
-        <span id="price">${skuInfo.priceRetail}</span>
+        <span id="skuName">${skuInfo.comSku.name}</span>
+        <span id="price">${skuInfo.comSku.priceRetail}</span>
     </p>
     <h1>
         <span>库存：</span>
@@ -135,12 +139,19 @@
 </div>
 <footer>
     <section class="sec3">
-        <p class="shi"><a>分享</a></p>
-        <p style="background: #DA3600;"><a href="javascript;" onclick="previewBuy();">立即购买</a></p>
+        <p class="shi" onclick="validateCodeJS.applyTrial('share')"><a>分享</a></p>
+        <p style="background: #DA3600;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
     </section>
 </footer>
+<script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
+<script src="<%=path%>/static/js/plugins/validateCode.js"></script>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script>
-    var mySwiper = new Swiper ('.swiper-container', {
+    $(document).ready(function () {
+        validateCodeJS.initPage();
+    });
+    var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,
         autoplay: 3000,
@@ -162,16 +173,14 @@
         i++;
         $(".number").val(i)
     })
-
-    function previewBuy(){
-        validateCodeJS.applyTrial('applyPartner');
-        $(".shoping").show();
-    }
-
+    $(".close").on("click",function(){
+        $(this).parent().hide();
+        $(".back").hide();
+    })
     function buy(){
         var cartData = {};
         cartData.shopId = "${shopId}";
-        cartData.skuId = "${skuInfo.id}";
+        cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
         $.ajax({
             url: "<%=basePath%>shop/addCart.do",

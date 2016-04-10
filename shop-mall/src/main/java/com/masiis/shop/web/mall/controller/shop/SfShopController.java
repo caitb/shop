@@ -2,13 +2,15 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.DownloadImage;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
@@ -38,9 +40,10 @@ public class SfShopController extends BaseController {
     private ComUserMapper comUserMapper;
     @Resource
     private SfShopService sfShopService;
-
     @Resource
     private SkuService skuService;
+    @Resource
+    private UserService userService;
 
     /**
      * 呐喊
@@ -89,7 +92,7 @@ public class SfShopController extends BaseController {
             mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
             return mav;
         } catch (Exception e) {
-            log.error("获取专属海报失败![shopId="+shopId+"][comUser="+getComUser(request)+"]");
+            log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
             e.printStackTrace();
         }
 
@@ -102,18 +105,48 @@ public class SfShopController extends BaseController {
      * @Date 2016/4/8 0008 下午 5:50
      * 商品详情
      */
-    @RequestMapping("/detail.htmls")
-    public ModelAndView getSkuDetail(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam("skuId") Integer skuId,
-                                     @RequestParam("shopId") Long shopId) throws Exception {
-        ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
-        HttpSession session = request.getSession();
+    @RequestMapping("/detail.shtml")
+    public ModelAndView getSkuDetail(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     @RequestParam(value="skuId",required = true) Integer skuId,
+                                     @RequestParam(value="shopId",required = false) Long shopId,
+                                     @RequestParam(value="userId",required = false) Long userId) throws Exception {
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(1L, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
+        ComUser fromUser = userService.getUserById(userId);
+        ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
+        mav.addObject("shopId", shopId);
+        mav.addObject("comUser", fromUser);//分享链接人信息
         return mav;
+    }
+
+    /**
+     * @Author jjh
+     * @Date 2016/4/9 0009 下午 1:45
+     * 立即购买
+     */
+    @RequestMapping("/addCart.do")
+    @ResponseBody
+    public String addProductToCart(HttpServletRequest request, HttpServletResponse response,
+                                   @RequestParam(required = true) Long shopId,
+                                   @RequestParam(required = true) Integer skuId,
+                                   @RequestParam(required = true) Integer quantity){
+        JSONObject object = new JSONObject();
+        try{
+            HttpSession session = request.getSession();
+            ComUser comUser = (ComUser) session.getAttribute("comUser");
+            skuService.addProductToCart(1L,1L,skuId,quantity);
+            object.put("isError", false);
+        }
+        catch (Exception ex){
+            object.put("isError", true);
+            object.put("message", ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return object.toJSONString();
     }
 }

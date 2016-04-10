@@ -154,11 +154,14 @@ public class SkuService {
         if (sfShopSku != null) {
             skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
-            skuInfo.setShipAmount(sfShopSku.getShipAmount());
         }
         PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
         if (pfSkuStock != null) {
             skuInfo.setStock(pfSkuStock.getStock());
+        }
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        if(sfShop!=null){
+            skuInfo.setShipAmount(sfShop.getShipAmount());
         }
         return skuInfo;
     }
@@ -174,10 +177,12 @@ public class SkuService {
             sfShopCartMapper.deleteByPrimaryKey(sfShopCart.getId());
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         ShopCart.setCreateTime(new Date());
         ShopCart.setSfShopId(shopId);
         ShopCart.setUserId(userId);
         ShopCart.setSkuId(skuId);
+        ShopCart.setSpuId(comSku.getSpuId());
         ShopCart.setSfShopUserId(sfShop.getUserId());
         ShopCart.setQuantity(quantity);
         ShopCart.setIsCheck(1);

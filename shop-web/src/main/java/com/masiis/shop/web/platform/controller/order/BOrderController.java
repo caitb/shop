@@ -83,7 +83,7 @@ public class BOrderController extends BaseController {
             PfUserSku pfUserSku = null;
             if (pUserId != null && pUserId > 0) {
                 ComUser pUser = userService.getUserById(pUserId);
-                pfUserSku = new UserApplyController().checkParentData(pUser, skuId, levelId);
+                pfUserSku = userSkuService.checkParentData(pUser, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
             comUser = userService.getUserById(comUser.getId());

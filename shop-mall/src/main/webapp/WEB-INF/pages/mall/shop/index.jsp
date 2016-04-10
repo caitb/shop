@@ -112,7 +112,7 @@
     <h1 id="result"></h1>
     <img src="<%=basePath%>static/images/qwe(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-    <button>获取我的专属海报</button>
+    <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=1');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>
 <div class="back"></div>

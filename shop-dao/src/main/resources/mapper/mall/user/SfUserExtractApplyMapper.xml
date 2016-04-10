@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserExtractApply" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="extract_fee" property="extractFee" jdbcType="DECIMAL" />
+        <result column="extractway_info_id" property="extractwayInfoId" jdbcType="BIGINT" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="extract_way" property="extractWay" jdbcType="TINYINT" />
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+        <result column="audit_type" property="auditType" jdbcType="INTEGER" />
+        <result column="audit_cause" property="auditCause" jdbcType="VARCHAR" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+        <result column="card_owner_name" property="cardOwnerName" jdbcType="VARCHAR" />
+        <result column="deposit_bank_name" property="depositBankName" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_user_extract_apply
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserExtractApply" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_user_extract_apply (id, com_user_id, extract_fee, 
+            extractway_info_id, apply_time, extract_way, 
+            audit_time, audit_type, audit_cause, 
+            pay_time, bank_card, bank_name, 
+            card_owner_name, deposit_bank_name, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL}, 
+            #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=TINYINT}, 
+            #{auditTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR}, 
+            #{payTime,jdbcType=TIMESTAMP}, #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, 
+            #{cardOwnerName,jdbcType=VARCHAR}, #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserExtractApply" >
+        update sf_user_extract_apply
+        set
+            <if test="comUserId != null">
+                com_user_id = #{comUserId,jdbcType=BIGINT},
+            </if>
+            <if test="extractFee != null">
+                extract_fee = #{extractFee,jdbcType=DECIMAL},
+            </if>
+            <if test="extractwayInfoId != null">
+                extractway_info_id = #{extractwayInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="extractWay != null">
+                extract_way = #{extractWay,jdbcType=TINYINT},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditType != null">
+                audit_type = #{auditType,jdbcType=INTEGER},
+            </if>
+            <if test="auditCause != null">
+                audit_cause = #{auditCause,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bankCard != null">
+                bank_card = #{bankCard,jdbcType=VARCHAR},
+            </if>
+            <if test="bankName != null">
+                bank_name = #{bankName,jdbcType=VARCHAR},
+            </if>
+            <if test="cardOwnerName != null">
+                card_owner_name = #{cardOwnerName,jdbcType=VARCHAR},
+            </if>
+            <if test="depositBankName != null">
+                deposit_bank_name = #{depositBankName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR}
+            </if>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
+        audit_time, audit_type, audit_cause, pay_time, bank_card, bank_name, card_owner_name, 
+        deposit_bank_name, remark
+        from sf_user_extract_apply
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
+        audit_time, audit_type, audit_cause, pay_time, bank_card, bank_name, card_owner_name, 
+        deposit_bank_name, remark
+        from sf_user_extract_apply
+    </select>
+
+</mapper>

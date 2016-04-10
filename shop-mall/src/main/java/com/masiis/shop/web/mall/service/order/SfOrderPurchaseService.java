@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.order;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
@@ -31,7 +32,14 @@ public class SfOrderPurchaseService {
     private SfSkuDistributionService sfSkuDistributionService;
     @Resource
     private SfUserRelationService sfUserRelationService;
-
+    @Resource
+    private SfOrderService sfOrderService;
+    @Resource
+    private SfOrderItemService sfOrderItemService;
+    @Resource
+    private SfOrderItemDistributionService orderItemDisService;
+    @Resource
+    private SfOrderConsigneeService ordConService;
 
     private BigDecimal orderSumDisAmount;//一条订单的总的分润
     private Map<Integer,BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
@@ -145,28 +153,50 @@ public class SfOrderPurchaseService {
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public void submitOrder(Long userId,Long selectedAddressId,Long sfShopId,String message){
-        Map<String,Object> map  = getConfirmOrderInfo(userId,selectedAddressId,sfShopId);
-        ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
-        List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("sfShopCartSkuDetails");
-        BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
-        BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
-        //获得每款商品的分润信息
-        for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
-            getDisDetail(userId,sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
-        }
-        //插入订单表
-        SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
-        //插入订单
-        for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
-            //插入单子表
-            SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
-            //插入子订单分润表
-            List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
-            for (SfOrderItemDistribution  orderItemDis :itemDisList){
-                orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
+        try{
+            Map<String,Object> map  = getConfirmOrderInfo(userId,selectedAddressId,sfShopId);
+            ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
+            List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("sfShopCartSkuDetails");
+            BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
+            BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
+            //获得每款商品的分润信息
+            for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
+                getDisDetail(userId,sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
             }
+            //插入订单表
+            SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
+            int i = sfOrderService.insert(sfOrder);
+            if (i == 1){
+                for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
+                    //插入订单子表
+                    SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
+                    int ii = sfOrderItemService.insert(sfOrderItem);
+                    if (ii ==1){
+                        //插入子订单分润表
+                        List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
+                        for (SfOrderItemDistribution  orderItemDis :itemDisList){
+                            orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
+                            int iii = orderItemDisService.insert(orderItemDis);
+                            if (iii != 1){
+                                throw new BusinessException("插入子订单分润表失败");
+                            }
+                        }
+                    }else{
+                        throw new BusinessException("插入子订单失败");
+                    }
+                }
+            }else{
+                throw new BusinessException("插入订单失败");
+            }
+            //插入地址
+            SfOrderConsignee sfOrderConsignee = generateSfOrderConsigness(sfOrder.getId(),comUserAddress);
+            int iiii = ordConService.insert(sfOrderConsignee);
+            if (iiii != 1){
+                throw new BusinessException("插入订单地址失败");
+            }
+        }catch (Exception e){
+            throw new BusinessException(e);
         }
-
     }
     /**
      * 获得订单中一款商品的分润总额
@@ -278,7 +308,7 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 14:31
      */
-    private void generateSfOrderConsigness(Long sfOrderId,ComUserAddress comUserAddress ){
+    private SfOrderConsignee generateSfOrderConsigness(Long sfOrderId,ComUserAddress comUserAddress ){
         SfOrderConsignee  sfOrderConsignee = new SfOrderConsignee();
         sfOrderConsignee.setSfOrderId(sfOrderId);
         sfOrderConsignee.setUserId(comUserAddress.getUserId());
@@ -292,6 +322,7 @@ public class SfOrderPurchaseService {
         sfOrderConsignee.setRegionName(comUserAddress.getRegionName());
         sfOrderConsignee.setAddress(comUserAddress.getAddress());
         sfOrderConsignee.setZip(comUserAddress.getZip());
+        return sfOrderConsignee;
     }
 
     /**

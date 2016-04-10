@@ -38,6 +38,14 @@ public class PfBorderItem extends PfBorderItemExtends {
      */
     private String skuName;
     /**
+     * 代理等级id
+     */
+    private Integer agentLevelId;
+    /**
+     * 微信号
+     */
+    private String wxId;
+    /**
      * 数量
      */
     private Integer quantity;
@@ -45,6 +53,10 @@ public class PfBorderItem extends PfBorderItemExtends {
      * 销售价格
      */
     private BigDecimal originalPrice;
+    /**
+     * 折扣
+     */
+    private BigDecimal discount;
     /**
      * 购买价格
      */
@@ -124,6 +136,21 @@ public class PfBorderItem extends PfBorderItemExtends {
         this.skuName = skuName == null ? null : skuName.trim();
     }
 
+    public Integer getAgentLevelId() {
+        return agentLevelId;
+    }
+
+    public void setAgentLevelId(Integer agentLevelId) {
+        this.agentLevelId = agentLevelId;
+    }
+
+    public String getWxId() {
+        return wxId;
+    }
+    public void setWxId(String wxId) {
+        this.wxId = wxId == null ? null : wxId.trim();
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -138,6 +165,13 @@ public class PfBorderItem extends PfBorderItemExtends {
 
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
 
     public BigDecimal getUnitPrice() {

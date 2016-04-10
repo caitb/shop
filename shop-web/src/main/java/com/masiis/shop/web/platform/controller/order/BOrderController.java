@@ -137,44 +137,21 @@ public class BOrderController extends BaseController {
             pfBorderItem.setSpuId(comSku.getSpuId());
             pfBorderItem.setSkuId(comSku.getId());
             pfBorderItem.setSkuName(comSku.getName());
+            pfBorderItem.setAgentLevelId(levelId);
+            pfBorderItem.setWxId(weixinId);
             pfBorderItem.setQuantity(pfSkuAgent.getQuantity());
             pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
+            pfBorderItem.setDiscount(pfSkuAgent.getDiscount());
             pfBorderItem.setUnitPrice(unitPrice);
             pfBorderItem.setTotalPrice(totalPrice);
-            pfBorderItem.setBailAmount(pfSkuAgent.getBail());
+            pfBorderItem.setBailAmount(bailPrice);
             pfBorderItem.setIsComment(0);
             pfBorderItem.setIsReturn(0);
             orderItems.add(pfBorderItem);
-            //处理用户sku关系数据
-            List<PfUserSkuCustom> pfUserSkuCustoms = new ArrayList();
-            PfUserSkuCustom pfUserSkuCustom = null;
-            if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) == null) {
-                pfUserSkuCustom = new PfUserSkuCustom();
-                pfUserSkuCustom.setCreateTime(new Date());
-                if (pfUserSku == null) {
-                    pfUserSkuCustom.setPid(0);
-                    pfUserSkuCustom.setUserPid(0l);
-                } else {
-                    pfUserSkuCustom.setPid(pfUserSku.getId());
-                    pfUserSkuCustom.setUserPid(pfUserSku.getUserId());
-                }
-                pfUserSkuCustom.setCode("");
-                pfUserSkuCustom.setUserId(comUser.getId());
-                pfUserSkuCustom.setSkuId(comSku.getId());
-                pfUserSkuCustom.setAgentLevelId(levelId);
-                pfUserSkuCustom.setIsPay(0);
-                pfUserSkuCustom.setIsCertificate(0);
-                pfUserSkuCustom.setBail(pfSkuAgent.getBail());
-                //自定义属性
-                pfUserSkuCustom.setSpuId(comSku.getSpuId());
-                pfUserSkuCustom.setIdCard(comUser.getIdCard());
-                pfUserSkuCustom.setMobile(comUser.getMobile());
-                pfUserSkuCustom.setWxId(weixinId);
-                pfUserSkuCustoms.add(pfUserSkuCustom);
-            } else {
+            if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) != null) {
                 throw new BusinessException("此商品已经建立过代理，请通过补货增加库存。");
             }
-            Long bOrderId = bOrderService.AddBOrder(order, orderItems, pfUserSkuCustoms);
+            Long bOrderId = bOrderService.AddBOrder(order, orderItems);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {
@@ -210,9 +187,8 @@ public class BOrderController extends BaseController {
         BigDecimal highProfit = BigDecimal.ZERO;//最高利润
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-            PfUserSku userSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             //获取用户代理等级
-            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(userSku.getAgentLevelId());
+            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfBorderItem.getAgentLevelId());
             stringBuffer.append("<section class=\"sec2\" >");
             stringBuffer.append("<p class=\"photo\" >");
             stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
@@ -224,10 +200,10 @@ public class BOrderController extends BaseController {
             stringBuffer.append("</div>");
             stringBuffer.append("</section>");
             sumQuantity += pfBorderItem.getQuantity();
-            if (userSku.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
+            if (pfBorderItem.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
                 lowProfit = lowProfit.add(pfBorderItem.getTotalPrice());
             } else {
-                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), userSku.getAgentLevelId() + 1);
+                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId() + 1);
                 BigDecimal lowerAmount = pfSkuAgent.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
                 lowProfit = lowProfit.add(lowerAmount.subtract(pfBorderItem.getTotalPrice()));
             }
@@ -272,7 +248,7 @@ public class BOrderController extends BaseController {
             }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;
-            if (pfBorder.getOrderType() == 1 && pfBorder.getSendType() == 2) {
+            if (pfBorder.getSendType() == 2) {
                 if (userAddressId == null || userAddressId <= 0) {
                     throw new BusinessException("收货地址不能为空");
                 }

@@ -121,7 +121,9 @@ public class SfShopController extends BaseController {
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(1L, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
-        ComUser fromUser = userService.getShareUser(fromUserId);//来自分享人的信息
+        ComUser user = getComUser(request);
+        ComUser fromUser = userService.getUserById(fromUserId);
+        userService.getShareUser(user.getId(),fromUserId);//来自分享人的信息
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表

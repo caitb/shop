@@ -45,9 +45,14 @@ public class SfOrderPurchaseService {
     private Map<Integer,BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
     private Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的店铺上级的分润信息
 
+    private static BigDecimal skuTotalPrice = null;
+    private static Integer totalQuantity = null;
 
     /**
      * 获得确认订单界面，地址信息和商品信息
+     *
+     * 一个小铺对应一个购物车
+     *
      * @author hanzengzhi
      * @date 2016/4/8 20:55
      */
@@ -59,21 +64,23 @@ public class SfOrderPurchaseService {
             ComUserAddress comUserAddress = getUserAddressByUserId(userId,selectedAddressId);
             map.put("comUserAddress",comUserAddress);
             //获得购物车中的商品信息
-            List<SfShopCart> sfShopCarts = getShopCartInfoByUserIdAndShopId(userId,sfShopId);
-            map.put("sfShopCarts",sfShopCarts);
+            List<SfShopCart> shopCarts = getShopCartInfoByUserIdAndShopId(userId,sfShopId);
+            map.put("shopCarts",shopCarts);
             //获得商品的详情信息
-            List<SfShopCartSkuDetail> sfShopCartSkuDetails = getShopCartSkuBySkuId(sfShopCarts);
-            map.put("sfShopCartSkuDetails",sfShopCartSkuDetails);
-            //获得购物车中商品的总价格
-            BigDecimal skuTotalPrice = getShopCartSkuTotalPrice(sfShopCartSkuDetails);
+            List<SfShopCartSkuDetail> shopCartSkuDetails = getShopCartSkuBySkuId(shopCarts);
+            map.put("shopCartSkuDetails",shopCartSkuDetails);
+            //获得购物车中商品的总价格和数量
+            getShopCartSkuTotalPrice(shopCartSkuDetails);
             map.put("skuTotalPrice",skuTotalPrice);
+            map.put("totalQuantity",totalQuantity);
             //获得运费
-            BigDecimal skuTotalShipAmount = getShopCartSkuTotalShipAmount(sfShopCarts);
+            BigDecimal skuTotalShipAmount = getShopCartSkuTotalShipAmount(shopCarts);
             map.put("skuTotalShipAmount",skuTotalShipAmount);
+            map.put("totalPrice",skuTotalPrice.add(skuTotalShipAmount));
         }catch (Exception e){
             throw new BusinessException(e);
         }
-        return null;
+        return map;
     }
 
     /**
@@ -100,11 +107,9 @@ public class SfOrderPurchaseService {
      */
     private List<SfShopCartSkuDetail> getShopCartSkuBySkuId(List<SfShopCart> sfShopCarts){
         List<SfShopCartSkuDetail> sfShopCartSkuDetails = new LinkedList<SfShopCartSkuDetail>();
-        List<ComSku> comSkuList = new LinkedList<ComSku>();
         for (SfShopCart sfShopCart: sfShopCarts){
-            ComSku comSku = null;
             SfShopCartSkuDetail sfShopCartSkuDetail = new SfShopCartSkuDetail();
-            comSku = skuService.getComSkuBySkuId(sfShopCart.getSkuId());
+            ComSku comSku = skuService.getComSkuBySkuId(sfShopCart.getSkuId());
             sfShopCartSkuDetail.setComSku(comSku);
             sfShopCartSkuDetail.setQuantity(sfShopCart.getQuantity());
             sfShopCartSkuDetail.setSkuSumPrice(comSku.getPriceRetail().multiply(new BigDecimal(sfShopCart.getQuantity())));
@@ -114,16 +119,17 @@ public class SfOrderPurchaseService {
     }
 
     /**
-     * 获得购物车中所有商品的总价格
+     * 获得购物车中所有商品的总价格和数量
      * @author hanzengzhi
      * @date 2016/4/9 10:57
      */
-    private BigDecimal getShopCartSkuTotalPrice(List<SfShopCartSkuDetail> sfShopCartSkuDetails ){
-        BigDecimal skuTotalPrice = new BigDecimal(0);
+    private void getShopCartSkuTotalPrice(List<SfShopCartSkuDetail> sfShopCartSkuDetails ){
+        totalQuantity = new Integer(0);
+        skuTotalPrice = new BigDecimal(0);
         for(SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails){
-                skuTotalPrice.add(sfShopCartSkuDetail.getSkuSumPrice());
+                totalQuantity += sfShopCartSkuDetail.getQuantity();
+                skuTotalPrice = skuTotalPrice.add(sfShopCartSkuDetail.getSkuSumPrice());
         }
-        return skuTotalPrice;
     }
     /**
      * 获得购车商品的总运费
@@ -138,8 +144,8 @@ public class SfOrderPurchaseService {
             if (sfShop!= null){
                 if (!sfShopIdList.contains(sfShopCart.getSfShopId())){
                     sfShopIdList.add(sfShopCart.getSfShopId());
-                    //商品的价格乘以数量
-                    skuTotalShipAmount.add(sfShop.getShipAmount());
+                    //商品的运费
+                    skuTotalShipAmount = skuTotalShipAmount.add(sfShop.getShipAmount());
                 }
             }
         }

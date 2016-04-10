@@ -4,12 +4,14 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Created by hzz on 2016/4/8.
@@ -28,11 +30,18 @@ public class SfOrderPurchaseController extends BaseController {
      */
     @RequestMapping(value = "getShopCartInfo.html")
     public String getConfirmOrderInfoController(HttpServletRequest request, HttpServletResponse response,
-                                                @RequestParam(value = "sfShopId") Long sfShopId,
-                                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId){
+                                                @RequestParam(value = "shopId") Long shopId,
+                                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
+                                                Model model){
         ComUser comUser = getComUser(request);
-        sfOrderPurchaseService.getConfirmOrderInfo(comUser.getId(),selectedAddressId,sfShopId);
-        return null;
+        Map<String,Object> map = sfOrderPurchaseService.getConfirmOrderInfo(comUser.getId(),selectedAddressId,shopId);
+        model.addAttribute("comUserAddress",map.get("comUserAddress"));
+        model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
+        model.addAttribute("skuTotalPrice",map.get("skuTotalPrice"));
+        model.addAttribute("skuTotalShipAmount",map.get("skuTotalShipAmount"));
+        model.addAttribute("totalQuantity",map.get("totalQuantity"));
+        model.addAttribute("totalPrice",map.get("totalPrice"));
+        return "mall/order/tijiaodingdan";
     }
     /**
      * 提交订单

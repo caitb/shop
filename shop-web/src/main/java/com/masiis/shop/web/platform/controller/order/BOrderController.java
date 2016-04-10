@@ -187,9 +187,8 @@ public class BOrderController extends BaseController {
         BigDecimal highProfit = BigDecimal.ZERO;//最高利润
         for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-            PfUserSku userSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             //获取用户代理等级
-            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(userSku.getAgentLevelId());
+            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfBorderItem.getAgentLevelId());
             stringBuffer.append("<section class=\"sec2\" >");
             stringBuffer.append("<p class=\"photo\" >");
             stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
@@ -201,10 +200,10 @@ public class BOrderController extends BaseController {
             stringBuffer.append("</div>");
             stringBuffer.append("</section>");
             sumQuantity += pfBorderItem.getQuantity();
-            if (userSku.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
+            if (pfBorderItem.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
                 lowProfit = lowProfit.add(pfBorderItem.getTotalPrice());
             } else {
-                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), userSku.getAgentLevelId() + 1);
+                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId() + 1);
                 BigDecimal lowerAmount = pfSkuAgent.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
                 lowProfit = lowProfit.add(lowerAmount.subtract(pfBorderItem.getTotalPrice()));
             }

@@ -254,7 +254,7 @@ public class PayBOrderService {
     }
 
     /**
-     * 处理平台发货类型订单
+     * 处理平台拿货类型订单
      *
      * @author ZhaoLiang
      * @date 2016/3/30 14:33

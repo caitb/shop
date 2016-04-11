@@ -431,6 +431,12 @@
                             if(row.pfBorder && row.pfBorder.orderStatus == 5){
                                 return '已退款';
                             }
+                            if(row.pfBorder && row.pfBorder.orderStatus == 7){
+                                return '待发货';
+                            }
+                            if(row.pfBorder && row.pfBorder.orderStatus == 8){
+                                return '已发货';
+                            }
                         }
                     },
                     {
@@ -438,7 +444,16 @@
                         title: '支付方式',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
-                        align: 'center'
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorderPayments){
+                                var sHtm = '';
+                                for(var i in row.pfBorderPayments){
+                                    if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
+                                }
+                                return sHtm;
+                            }
+                        }
                     },
                     {
                         field: 'payStatus',
@@ -447,10 +462,10 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.orderStatus == 0){
+                            if(row.pfBorder && row.pfBorder.payStatus == 0){
                                 return '待付款';
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 1){
+                            if(row.pfBorder && row.pfBorder.payStatus == 1){
                                 return '已付款';
                             }
                         }
@@ -465,10 +480,10 @@
                             if(row.pfBorder && row.pfBorder.shipStatus == 0){
                                 return '未发货';
                             }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 1){
+                            if(row.pfBorder && row.pfBorder.shipStatus == 5){
                                 return '已发货';
                             }
-                            if(row.pfBorder && row.pfBorder.shipStatus == 2){
+                            if(row.pfBorder && row.pfBorder.shipStatus == 9){
                                 return '已收货';
                             }
                         }

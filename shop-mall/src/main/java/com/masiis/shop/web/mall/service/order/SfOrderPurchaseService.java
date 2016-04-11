@@ -177,6 +177,8 @@ public class SfOrderPurchaseService {
             SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
+                map.put("orderCode",sfOrder.getOrderCode());
+                map.put("orderId",sfOrder.getId());
                 StringBuffer sb = new StringBuffer("(");
                 for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                     //插入订单子表

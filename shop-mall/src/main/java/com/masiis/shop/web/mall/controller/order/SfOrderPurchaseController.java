@@ -59,6 +59,8 @@ public class SfOrderPurchaseController extends BaseController {
         Map<String,Object> map = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
         model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
         model.addAttribute("totalPrice",map.get("totalPrice"));
+        model.addAttribute("orderCode",map.get("orderCode"));
+        model.addAttribute("orderId",map.get("orderId"));
         return "mall/order/zhifudingdan";
     }
 }

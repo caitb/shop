@@ -15,6 +15,7 @@ public class AgentUser {
     private ComUser parentUser;
     private ComSku comSku;
     private ComAgentLevel comAgentLevel;
+    private Integer lowerLevelCount;//直接下级人数
 
     public PfUserCertificate getPfUserCertificate() {
         return pfUserCertificate;
@@ -72,6 +73,14 @@ public class AgentUser {
         this.comAgentLevel = comAgentLevel;
     }
 
+    public Integer getLowerLevelCount() {
+        return lowerLevelCount;
+    }
+
+    public void setLowerLevelCount(Integer lowerLevelCount) {
+        this.lowerLevelCount = lowerLevelCount;
+    }
+
     @Override
     public String toString() {
         return "AgentUser{" +
@@ -82,6 +91,7 @@ public class AgentUser {
                 ", parentUser=" + parentUser +
                 ", comSku=" + comSku +
                 ", comAgentLevel=" + comAgentLevel +
+                ", lowerLevelCount=" + lowerLevelCount +
                 '}';
     }
 }

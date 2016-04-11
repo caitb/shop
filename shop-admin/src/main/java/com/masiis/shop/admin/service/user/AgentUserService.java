@@ -47,26 +47,29 @@ public class AgentUserService {
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
         PageHelper.startPage(pageNumber, pageSize);
-        List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByMap(conditionMap);
-        PageInfo<PfUserCertificate> pageInfo = new PageInfo<>(pfUserCertificates);
+        List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByMap(conditionMap);
+        PageInfo<PfUserSku> pageInfo = new PageInfo<>(pfUserSkus);
 
         List<AgentUser> agentUsers = new ArrayList<>();
-        for(PfUserCertificate puc : pfUserCertificates){
+        for(PfUserSku userSku : pfUserSkus){
+            PfUserCertificate puc = pfUserCertificateMapper.selectByUserSkuId(userSku.getId());
             ComUser comUser = comUserMapper.selectByPrimaryKey(puc.getUserId());
             ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(puc.getAgentLevelId());
-            PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(puc.getPfUserSkuId());
+
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(puc.getUserId(), puc.getSkuId());
-            ComUser parentUser = comUserMapper.selectByPrimaryKey(pfUserSku.getUserPid());
+            ComUser parentUser = comUserMapper.selectByPrimaryKey(userSku.getUserPid());
+            Integer lowerLevelCount = pfUserSkuMapper.findLowerCount(userSku.getId());
 
             AgentUser agentUser = new AgentUser();
             agentUser.setComUser(comUser);
             agentUser.setComSku(comSku);
             agentUser.setComAgentLevel(comAgentLevel);
-            agentUser.setPfUserSku(pfUserSku);
+            agentUser.setPfUserSku(userSku);
             agentUser.setPfUserSkuStock(pfUserSkuStock);
             agentUser.setPfUserCertificate(puc);
             agentUser.setParentUser(parentUser);
+            agentUser.setLowerLevelCount(lowerLevelCount);
 
             agentUsers.add(agentUser);
         }

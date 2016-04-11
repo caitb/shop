@@ -181,7 +181,7 @@ public class SfOrderPayService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/paySuccessCallBack.html?orderId="+orderId);
+        wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }

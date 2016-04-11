@@ -125,7 +125,7 @@ public class SfShopController extends BaseController {
 
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
+            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
 
             Map<String, Object> dataMap = new HashMap<String, Object>();

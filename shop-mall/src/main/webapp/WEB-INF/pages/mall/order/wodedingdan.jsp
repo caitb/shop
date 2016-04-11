@@ -248,6 +248,7 @@
                        dataType:"Json",
                        success:function(data){
                            var trHtml = "";
+                           alert(data);
                            $.each(data, function(i, sfOrder) {
                                var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
                                trHtml+="<section class='sec1'>";

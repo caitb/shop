@@ -35,11 +35,13 @@
                 <p>
                     <span>麦链商城官方认证</span>
                     <span>商家已缴纳${bail}保证金</span>
-                </p><c:forEach begin="0" end="${size}" step="2" var="i">
-                <p><c:forEach items="${SfShopDetails}" begin="${i}" end="${i+1}" var="sf">
+                </p>
+                <%--<c:forEach begin="0" end="${size}" step="2" var="i">--%>
+                <p><c:forEach items="${SfShopDetails}" begin="0" end="0" var="sf">
                     <span style="background:url('<%=path%>/static/images/f.png')no-repeat 0;background-size: 14px 14px;">${sf.icon}${sf.skuName}${sf.agentLevelName}合伙人认证</span>
                     </c:forEach>
-                </p></c:forEach>
+                </p>
+                <%--</c:forEach>--%>
             </div>
             <img src="<%=path%>/static/images/admin.png" alt="">
         </div>
@@ -91,8 +93,8 @@
         <button>获取我的专属海报</button>
         <span class="close">×</span>
     </div>
-    <div class="back_ok" style="display: none">
-        <h1>您已呐喊过，请明天再来</h1>
+    <div id="no" class="back_f" style="display: none">
+        <h1>您已呐喊过，请明天再来 </h1>
         <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
         <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
         <button>获取我的专属海报</button>
@@ -118,7 +120,7 @@
                         $(".back_f").show();
                         $(".back").show();
                     } else{
-                        $(".back_ok").show();
+                        $("#no").show();
                         $(".back").show();
                     }
                 }

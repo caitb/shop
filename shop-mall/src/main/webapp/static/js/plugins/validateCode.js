@@ -38,6 +38,9 @@
                             case "trial":
                                 window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
                                 break;
+                            case "withdrawRequest":
+                                window.location.href = "/withdraw/withdrawRequest.shtml";
+                                break;
                             default:
                                 break;
                         }
@@ -206,6 +209,10 @@
                 case "trial":
                     path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
                     validateCodeJS.bindPhoneSkipParam = "?skipPage=trial&status=success&path=" + path;
+                    break;
+                case "withdrawRequest":
+                    path = "/withdraw/withdrawRequest.shtml";
+                    validateCodeJS.bindPhoneSkipParam = "?skipPage=withdrawRequest&status=success&path=" + path;
                     break;
                 default:
                     break;

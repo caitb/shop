@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/tijiaodingdan.css">
 </head>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -34,6 +35,10 @@
         var selectedAddressId = $("#addressId").val();
         var shopId = $("#shopId").val();
         var message = $("#messageId").val();
+        if(selectedAddressId ==null || selectedAddressId =="" ){
+            alert("未选择收获地址");
+            return false ;
+        }
         window.location.href = "<%=path%>/orderPurchase/submitOrder.do?message="+message+"&shopId="+shopId+"&selectedAddressId="+selectedAddressId
     }
 </script>

@@ -14,9 +14,13 @@
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
     <script type="application/javascript" src="${path}/static/js/pageJs/sf_commission.js"></script>
+    <script type="application/javascript" src="${path}/static/js/plugins/validateCode.js"></script>
     <script type="application/javascript">
         var path = "${path}";
         var basepath = "${basePath}";
+        $(document).ready(function () {
+            validateCodeJS.initPage();
+        });
     </script>
 </head>
 <body>
@@ -30,7 +34,8 @@
         <nav>
             <ul>
                 <li>
-                    <p>可提现<span onclick="withdraw(${userAccount.userId},${userAccount.extractableFee})" >申请提现</span></p>
+                    <%--<p>可提现<span onclick="withdraw(${userAccount.userId},${userAccount.extractableFee})" >申请提现</span></p>--%>
+                    <p>可提现<span onclick="validateCodeJS.applyTrial('withdrawRequest')" >申请提现</span></p>
                     <h1><span>￥</span>${userAccount.extractableFee}</h1>
                     <h2><a href="${basepath}withdraw/withdrawRecord.shtml">提现记录</a></h2>
                 </li>
@@ -66,18 +71,18 @@
         <%--<p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId},${fn:length(orderItemDistributions)})">查看更多></a></p>--%>
         <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
     </div>
-    <div class="back_j">
+    <div class="back_j" style="display: none">
         <p class="biao">绑定账号</p>
         <div>
-            <p>手机号：<input type="tel"></p>
-            <em>asd</em>
+            <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
         </div>
         <div class="d">
-            <p>验证码：<input type="number"><button>获取验证码</button></p>
-            <em>asd</em>
+            <p>验证码：<input type="tel" id="validateNumberDataId">
+                <button id="validateNumberId">获取验证码</button>
+            </p>
         </div>
-        <p class="tishi"></p>
-        <h1 class="j_qu">下一步</h1>
+        <p class="tishi" id="errorMessageId"></p>
+        <h1 class="j_qu" id="nextPageId">下一步</h1>
     </div>
     <div class="back">
     </div>

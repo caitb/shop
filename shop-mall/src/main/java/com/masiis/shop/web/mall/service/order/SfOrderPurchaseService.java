@@ -201,11 +201,12 @@ public class SfOrderPurchaseService {
                     log.info("插入订单操作日志失败");
                     throw new BusinessException("插入订单操作日志失败");
                 }
-                StringBuffer shopCartIdSB = new StringBuffer("(");
+                StringBuffer shopCartIdSB = new StringBuffer();//所有商品的字符串
                 if (sfShopCartSkuDetails != null&& sfShopCartSkuDetails.size()>0){
                     for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                         //插入订单子表
-                        shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId());
+                        //shopCartIdSB.append("'").append(sfShopCartSkuDetail.getShopCartId()).append("',");
+                        shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId()).append(",");
                         log.info("插入订单子表---start");
                         SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
                         int ii = sfOrderItemService.insert(sfOrderItem);
@@ -231,12 +232,14 @@ public class SfOrderPurchaseService {
                             throw new BusinessException("插入子订单失败");
                         }
                     }
+                    //批量删除购物车中相应的商品信息
+                    String shopCartIds = shopCartIdSB.toString();
+                    shopCartIds = shopCartIds.substring(0,shopCartIds.lastIndexOf(","));
+                    deleteShopCartById(shopCartIds);
                 }else{
                     log.info("获得购物车中的商品详情信息为null");
                     throw new BusinessException("获得购物车中的商品详情信息为null");
                 }
-                //批量删除购物车中相应的商品信息
-
             }else{
                 log.info("插入订单失败---end");
                 throw new BusinessException("插入订单失败");
@@ -388,8 +391,8 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/11 17:03
      */
-    private void deleteShopCartById(Long id){
-
+    private void deleteShopCartById(String ids){
+        sfShopCartService.deleteByIds(ids);
     }
 
     /**

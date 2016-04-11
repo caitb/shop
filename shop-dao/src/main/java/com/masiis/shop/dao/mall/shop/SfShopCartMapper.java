@@ -15,6 +15,13 @@ import java.util.List;
 public interface SfShopCartMapper {
     int deleteByPrimaryKey(Long id);
 
+    /**
+     * 批量删除购车中的商品信息
+     * @author hanzengzhi
+     * @date 2016/4/11 18:37
+     */
+    int deleteByIds(String ids);
+
     int insert(SfShopCart record);
 
     SfShopCart selectByPrimaryKey(Long id);

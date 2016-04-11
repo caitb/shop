@@ -46,13 +46,13 @@
   width: 60px;
   height: 60px;
   left: 10px;
-  bottom: 22px;
+  top: 82px;
   box-shadow: 1px 1px 1px #666;
 }
 .wrap .header div:nth-child(1) {
   background: url("/static/images/qwe%20(2).png") no-repeat;
   background-size: 100% 100%;
-  padding-top: 3em;
+  padding-top: 7em;
   color: white;
   padding-left: 5.5em;
   padding-bottom: 0.5em;
@@ -271,6 +271,7 @@
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
+  text-align: center;
 }
 .back_f img {
   display: block;

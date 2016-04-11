@@ -59,7 +59,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                 <p>
                                     <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -92,7 +92,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -125,7 +125,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -158,7 +158,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -191,7 +191,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="chakanxiangqing.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -230,7 +230,7 @@
            <div class="back" style="display: none">
                
            </div>
-       <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+       <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
        <script src="<%=path%>/static/js/common/commonAjax.js"></script>
        <script src="<%=path%>/static/js/common/jinhuoshijian.js"></script>
        <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
@@ -261,7 +261,7 @@
                                 trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >交易成功</b ></h2>";
                             }
                             $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
-                                trHtml+="<div class='shangpin'>";
+                                trHtml+="<div class=\"shangpin\">";
                                 trHtml+=" <p class=\"photo\">";
                                 trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
                                 trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";

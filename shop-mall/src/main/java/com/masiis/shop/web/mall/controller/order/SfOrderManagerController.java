@@ -99,7 +99,7 @@ public class SfOrderManagerController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("orderMallDetail", orderMallDetail);
-        modelAndView.setViewName("platform/order/dingdanxiangqing");
+        modelAndView.setViewName("mall/order/dingdanxiangqing");
         return modelAndView;
     }
 

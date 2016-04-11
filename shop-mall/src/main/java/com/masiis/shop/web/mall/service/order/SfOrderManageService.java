@@ -104,6 +104,7 @@ public class SfOrderManageService {
      * @author muchaofeng
      * @date 2016/4/1 18:12
      */
+    @Transactional
     public void deliver( Long orderId) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
         sfOrder.setOrderStatus(3);
@@ -115,5 +116,7 @@ public class SfOrderManageService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+        // 进行订单分润和代理商销售额、收入计算
+
     }
 }

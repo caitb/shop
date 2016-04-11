@@ -119,7 +119,9 @@ public class BOrderService {
     public void delivery(PfBorderFreight pfBorderFreight){
         PfBorder pfBorder = new PfBorder();
         pfBorder.setId(pfBorderFreight.getPfBorderId());
+        pfBorder.setOrderStatus(8);
         pfBorder.setShipStatus(5);
+        pfBorder.setShipTime(new Date());
 
         pfBorderFreight.setCreateTime(new Date());
 

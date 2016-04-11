@@ -57,7 +57,7 @@
         from sf_shop_cart
         where user_id = #{userId,jdbcType=BIGINT}
         AND sf_shop_id = #{sfShopId,jdbcType=BIGINT}
-        AND is_check = #{isCheck,jdbcType=BIGINT}
+        AND is_check = #{isCheck,jdbcType=INTEGER}
     </select>
     <!--根据用户id获得用户的购物车中的商品信息  end-->
     <select id="selectAll" resultMap="BaseResultMap" >

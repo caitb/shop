@@ -8,7 +8,7 @@
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="logo" property="logo" jdbcType="VARCHAR" />
-        <result column="explanation" property="explanation" jdbcType="VARBINARY" />
+        <result column="explanation" property="explanation" jdbcType="VARCHAR" />
         <result column="shout_num" property="shoutNum" jdbcType="BIGINT" />
         <result column="pageviews" property="pageviews" jdbcType="BIGINT" />
         <result column="sale_amount" property="saleAmount" jdbcType="DECIMAL" />
@@ -74,7 +74,7 @@
                 logo = #{logo,jdbcType=VARCHAR},
             </if>
             <if test="explanation != null" >
-                explanation = #{explanation,jdbcType=VARBINARY},
+                explanation = #{explanation,jdbcType=VARCHAR},
             </if>
             <if test="shoutNum != null" >
                 shout_num = #{shoutNum,jdbcType=BIGINT},

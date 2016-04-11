@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShop;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface SfShopMapper {
     int deleteByPrimaryKey(Long id);
 

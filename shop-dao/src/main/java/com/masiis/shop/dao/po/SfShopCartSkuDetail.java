@@ -11,6 +11,9 @@ import java.util.List;
  */
 public class SfShopCartSkuDetail {
 
+    /*小铺购物车主键id*/
+    private Long shopCartId;
+
     /*数量*/
     private Integer quantity;
 
@@ -25,6 +28,14 @@ public class SfShopCartSkuDetail {
 
     /*商品的详情信息*/
     private ComSku comSku;
+
+    public Long getShopCartId() {
+        return shopCartId;
+    }
+
+    public void setShopCartId(Long shopCartId) {
+        this.shopCartId = shopCartId;
+    }
 
     public Integer getQuantity() {
         return quantity;

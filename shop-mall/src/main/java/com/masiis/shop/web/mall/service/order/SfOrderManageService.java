@@ -47,8 +47,8 @@ public class SfOrderManageService {
      * @author muchaofeng
      * @date 2016/4/9 17:12
      */
-    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Integer sendType){
-        return sfOrderManageMapper.selectByUserId(userId,orderStatus,sendType);
+    public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId){
+        return sfOrderManageMapper.selectByUserId(userId,orderStatus,shopId);
     }
     /**
      * 获取上级

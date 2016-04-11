@@ -1,10 +1,8 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.po.SfOrder;
-import com.masiis.shop.dao.po.SfOrderConsignee;
-import com.masiis.shop.dao.po.SfOrderItem;
-import com.masiis.shop.dao.po.SfOrderOperationLog;
+import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +27,8 @@ public class SfOrderPaymentService {
     private SfOrderConsigneeService ordConService;
     @Resource
     private SfOrderItemService ordItemService;
+    @Resource
+    private SfOrderPaymentMapper paymentMapper;
 
     /**
      * 订单支付成功修改状态
@@ -120,4 +120,7 @@ public class SfOrderPaymentService {
         return ordItemService.getOrderItemByOrderId(orderId);
     }
 
+    public void addSfOrderPayment(SfOrderPayment payment) {
+        paymentMapper.insert(payment);
+    }
 }

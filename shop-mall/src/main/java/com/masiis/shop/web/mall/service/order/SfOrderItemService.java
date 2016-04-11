@@ -33,4 +33,8 @@ public class SfOrderItemService {
     public List<SfOrderItem> getOrderItemByOrderId(Long orderId){
         return sfOrderItemMapper.getOrderItemByOrderId(orderId);
     }
+
+    public List<SfOrderItem> getSforderItemByOrderId(Long orderId) {
+        return sfOrderItemMapper.getOrderItemByOrderId(orderId);
+    }
 }

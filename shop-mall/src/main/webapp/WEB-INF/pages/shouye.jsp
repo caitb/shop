@@ -46,7 +46,7 @@
         <div class="banner">
             <p>
                 <span>已有</span>
-                <span><em>${sfShop.shoutNum}123</em>人</span>
+                <span><em>${sfShop.shoutNum}</em>人</span>
                 <span>为ta呐喊</span>
                 <img class="shout" src="<%=path%>/static/images/an.png" alt="">
             </p>
@@ -89,7 +89,14 @@
         <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
         <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
         <button>获取我的专属海报</button>
-        <span class="close" style="display: none">×</span>
+        <span class="close">×</span>
+    </div>
+    <div class="back_ok" style="display: none">
+        <h1>您已呐喊过，请明天再来</h1>
+        <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
+        <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+        <button>获取我的专属海报</button>
+        <span class="close">×</span>
     </div>
     <div class="back"></div>
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
@@ -111,7 +118,8 @@
                         $(".back_f").show();
                         $(".back").show();
                     } else{
-                        alert("qwweqw");
+                        $(".back_ok").show();
+                        $(".back").show();
                     }
                 }
         })

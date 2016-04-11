@@ -125,4 +125,13 @@ public class SysBeanUtils {
     public static void main(String[] aa) {
         System.out.println(createAccountRecordSerialNum(0));
     }
+
+    public static String createSfAccountRecordSerialNum() {
+        StringBuilder res = new StringBuilder("LSHH");
+        res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
+        for(int i = 0; i < 11; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
+    }
 }

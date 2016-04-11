@@ -137,7 +137,7 @@
         </p>
     </h1>
     <button onclick="buy()">下一步</button>
-
+    <span class="close">×</span>
 </div>
 <footer>
     <section class="sec3">

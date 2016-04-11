@@ -203,6 +203,7 @@ public class UserService {
             if (comUser != null) {
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
+                comUser.setIsBinding(1);
                 //更新表中的信息
                 int i = comUserMapper.updatePhone(comUser);
                 if (i == 1) {

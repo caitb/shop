@@ -21,7 +21,7 @@
         delete from sf_shop where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShop" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShop" useGeneratedKeys="true" keyProperty="id">
         insert into sf_shop
                     (
                     id,
@@ -138,4 +138,24 @@
                sf_shop
     </select>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        id,
+        create_time,
+        name,
+        user_id,
+        status,
+        logo,
+        explanation,
+        shout_num,
+        pageviews,
+        sale_amount,
+        ship_amount,
+        qr_code,
+        remark
+        from
+        sf_shop
+        where
+        user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

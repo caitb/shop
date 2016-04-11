@@ -45,10 +45,6 @@ public class SfShopSku extends SfShopSkuExtends {
      */
     private BigDecimal bail;
     /**
-     * 运费，0为包邮
-     */
-    private BigDecimal shipAmount;
-    /**
      * 总销售量
      */
     private Long saleNum;
@@ -118,12 +114,6 @@ public class SfShopSku extends SfShopSkuExtends {
     }
     public void setBail(BigDecimal bail) {
         this.bail = bail;
-    }
-    public BigDecimal getShipAmount() {
-        return shipAmount;
-    }
-    public void setShipAmount(BigDecimal shipAmount) {
-        this.shipAmount = shipAmount;
     }
     public Long getSaleNum() {
         return saleNum;

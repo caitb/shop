@@ -43,5 +43,5 @@ public interface ComWxUserMapper {
     ComWxUser selectByUnionidAndAppid(@Param("unionid") String unionid,
                                       @Param("appid") String appid);
 
-    ComWxUser selectByUserId(@Param("comUserId") Long comUserId);
+    List<ComWxUser> selectByUserId(@Param("comUserId") Long comUserId);
 }

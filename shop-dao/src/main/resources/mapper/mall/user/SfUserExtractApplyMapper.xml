@@ -102,4 +102,20 @@
         from sf_user_extract_apply
     </select>
 
+    <select id="selectCountByUserAndDate" resultType="java.lang.Integer">
+      select count(id) from sf_user_extract_apply ea
+      where com_user_id = #{userid,jdbcType=BIGINT}
+      and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+      and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectListByUserAndDate" resultMap="BaseResultMap">
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
+        audit_time, audit_type, audit_cause, pay_time, bank_card, bank_name, card_owner_name,
+        deposit_bank_name, remark
+        from sf_user_extract_apply
+        where com_user_id = #{userid,jdbcType=BIGINT}
+        and apply_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+        and apply_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

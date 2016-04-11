@@ -232,7 +232,7 @@ public class UserService {
         pfUserCertificateMapper.updateById(pfUserCertificate);
     }
 
-    public ComWxUser findComWxUserByUserId(Long userId){
+    public List<ComWxUser> findComWxUserByUserId(Long userId){
         return comWxUserMapper.selectByUserId(userId);
     }
 

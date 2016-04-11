@@ -32,7 +32,7 @@
                 <li>
                     <p>可提现<span onclick="withdraw(${userAccount.userId},${userAccount.extractableFee})" >申请提现</span></p>
                     <h1><span>￥</span>${userAccount.extractableFee}</h1>
-                    <h2>提现记录</h2>
+                    <h2><a href="${basepath}withdraw/withdrawRecord.shtml">提现记录</a></h2>
                 </li>
                 <li>
                     <p>结算中：</p>

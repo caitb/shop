@@ -165,7 +165,7 @@ public class SfOrderPurchaseService {
         Map<String,Object> map = null;
         try{
             map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
-            /*ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
+            ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
             List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("shopCartSkuDetails");
             BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
@@ -177,8 +177,10 @@ public class SfOrderPurchaseService {
             SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
+                StringBuffer sb = new StringBuffer("(");
                 for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                     //插入订单子表
+                    //sb.append();
                     SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
                     int ii = sfOrderItemService.insert(sfOrderItem);
                     if (ii ==1){
@@ -195,6 +197,7 @@ public class SfOrderPurchaseService {
                         throw new BusinessException("插入子订单失败");
                     }
                 }
+                //批量删除购物车中相应的商品信息
             }else{
                 throw new BusinessException("插入订单失败");
             }
@@ -203,7 +206,7 @@ public class SfOrderPurchaseService {
             int iiii = ordConService.insert(sfOrderConsignee);
             if (iiii != 1){
                 throw new BusinessException("插入订单地址失败");
-            }*/
+            }
         }catch (Exception e){
             throw new BusinessException(e);
         }

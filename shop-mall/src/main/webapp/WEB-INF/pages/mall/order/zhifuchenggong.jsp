@@ -35,7 +35,7 @@
             <a href="#"><h2>收货人：<b>${orderConsignee.consignee}</b> <span>${orderConsignee.mobile}</span></h2></a>
             <a href="#"><p>收货地址： <span>
                 ${orderConsignee.provinceName} ${orderConsignee.cityName} ${orderConsignee.regionName} ${orderConsignee.address}
-            </span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+            </span></p></a>
         </div>
 
     </section>

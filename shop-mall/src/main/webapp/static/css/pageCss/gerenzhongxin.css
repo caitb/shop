@@ -5,7 +5,7 @@
 }
 .wrap .na {
   width: 100%;
-  background: url("/static/images/bdbanner.png") no-repeat;
+  background: url("../images/bdbanner.png") no-repeat;
   display: -webkit-box;
   margin-bottom: 5px;
   padding: 20px 10px;
@@ -51,13 +51,31 @@
   -webkit-box-pack: center;
   padding: 10px 0;
 }
+.wrap .dynmic p span:nth-child(1) {
+  height: 30px;
+}
 .wrap .dynmic p span {
   display: block;
+  position: relative;
 }
 .wrap .dynmic p span img {
   display: block;
   width: 30px;
   margin-bottom: 5px;
+}
+.wrap .dynmic p span b {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border: 1px solid #F73C8C;
+  background: #fff;
+  font-size: 12px;
+  list-style-position: 20px;
+  text-align: center;
 }
 .wrap nav {
   background: #fff;

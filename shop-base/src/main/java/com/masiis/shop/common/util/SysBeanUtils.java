@@ -100,7 +100,7 @@ public class SysBeanUtils {
      * @return
      */
     public static String createAccountRecordSerialNum(int type) {
-        StringBuilder res = new StringBuilder("LSHA");
+        StringBuilder res = new StringBuilder("LSHM");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
         for(int i = 0; i < 11; i++){
             res.append(charArrs[(int)(Math.random() * charArrs.length)]);
@@ -114,7 +114,7 @@ public class SysBeanUtils {
      * @return
      */
     public static String createSfUserExtractPaySerialNum(){
-        StringBuilder res = new StringBuilder("LSHB");
+        StringBuilder res = new StringBuilder("LSHN");
         res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
         for(int i = 0; i < 11; i++){
             res.append(charArrs[(int)(Math.random() * charArrs.length)]);
@@ -124,5 +124,14 @@ public class SysBeanUtils {
 
     public static void main(String[] aa) {
         System.out.println(createAccountRecordSerialNum(0));
+    }
+
+    public static String createSfAccountRecordSerialNum() {
+        StringBuilder res = new StringBuilder("LSHH");
+        res.append(DateUtil.Date2String(new Date(), "yyyyMMddHHmmssSSS"));
+        for(int i = 0; i < 11; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
     }
 }

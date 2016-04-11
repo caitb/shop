@@ -47,30 +47,33 @@ public class IndexController extends BaseController {
         userService.getShareUser(user.getId(),userPid);//分销关系
 //        ComUser pUser = userService.getUserById(userPid);
         ComUser pUser = new ComUser();
-        SfShop sfShop = sfShopService.getSfShopById(shopId);
+        SfShop sfShop = sfShopService.getSfShopById(1L);
         String planation =null;
 //        planation = new String(sfShop.getExplanation(), "UTF-8");
-        List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+        List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(1L);
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
-        BigDecimal bail=null;
+        BigDecimal bail=new BigDecimal(0);
+//        bail.doubleValue();
         for (SfShopSku sfShopSku:sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail= new SfShopDetail();
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
+//            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
+            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(1L,sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
 //            sfShopDetail.setShipAmount(sfShopSku.getShipAmount());//邮费
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
-
-            bail=bail.add(sfShopSku.getBail());//保证金
+            sfShopDetail.setSkuId(comSku.getId());
+            bail=sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
+        modelAndView.addObject("userPid",userPid);
         modelAndView.addObject("sfShop",sfShop);
         modelAndView.addObject("bail",bail);//保证金
         modelAndView.addObject("SfShopDetails",SfShopDetails);

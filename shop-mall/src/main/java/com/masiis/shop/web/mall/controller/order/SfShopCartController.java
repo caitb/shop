@@ -35,9 +35,9 @@ public class SfShopCartController extends BaseController {
     @RequestMapping("/addCart.do")
     @ResponseBody
     public String addProductToCart(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(required = true) Long shopId,
-                                   @RequestParam(required = true) Integer skuId,
-                                   @RequestParam(required = true) Integer quantity){
+                                   @RequestParam(value="shopId",required = true) Long shopId,
+                                   @RequestParam(value="skuId",required = true) Integer skuId,
+                                   @RequestParam(value="quantity",required = true) Integer quantity){
         JSONObject object = new JSONObject();
         try{
             ComUser user = getComUser(request);

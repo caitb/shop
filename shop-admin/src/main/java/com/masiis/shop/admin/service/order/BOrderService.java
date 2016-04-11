@@ -53,11 +53,13 @@ public class BOrderService {
         for(PfBorder pbo : pfBorders){
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
+            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(pbo.getId());
 
             Order order = new Order();
             order.setPfBorder(pbo);
             order.setComUser(comUser);
             order.setPfBorderConsignee(pfBorderConsignee);
+            order.setPfBorderPayments(pfBorderPayments);
 
             orders.add(order);
         }

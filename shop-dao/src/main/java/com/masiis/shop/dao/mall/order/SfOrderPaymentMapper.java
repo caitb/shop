@@ -20,4 +20,6 @@ public interface SfOrderPaymentMapper {
     List<SfOrderPayment> selectAll();
 
     int updateByPrimaryKey(SfOrderPayment record);
+
+    SfOrderPayment selectBySerialNum(String paySerialNum);
 }

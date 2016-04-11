@@ -11,6 +11,7 @@ import com.masiis.shop.common.util.HttpsUtils;
 import com.masiis.shop.common.util.LocalInetAddressUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
+import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractPaymentMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -54,6 +55,8 @@ public class WxPayUserService {
     private SfUserAccountMapper accountMapper;
     @Resource
     private SfUserExtractPaymentMapper paymentMapper;
+    @Resource
+    private SfUserAccountRecordMapper accountRecordMapper;
 
     /**
      * 小铺端用户提现,企业微信给用户打款method
@@ -103,6 +106,15 @@ public class WxPayUserService {
                 throw new BusinessException("账户可提现额度小于申请提现金额");
             }
 
+            // 小铺用户可提现额度减少
+            account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
+            int affectNums = accountMapper.updateByPrimaryKey(account);
+            if(affectNums == 0){
+                // update冲突,再重新查询检查一次
+                log.error("account更新失败");
+                throw new BusinessException("update冲突,请再次重试");
+            }
+
             // 组织请求数据
             WxPayUserBeanReq req = createWxPayUserBeanReqBy(apply, wxUser);
             WxPayUserBeanRes result = new HttpsUtils(WxPayUserCons.APP_MCHID, new File("F:/VS/cert01/apiclient_cert.p12"))
@@ -127,11 +139,10 @@ public class WxPayUserService {
 
             // 打款成功后的操作,加入事务
             handleAfterPayUser(account, apply, req, result, handler);
-
         } catch (Exception e) {
             log.error("用户提现打款出错," + e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
-
     }
 
     /**
@@ -146,9 +157,9 @@ public class WxPayUserService {
     @Transactional
     private void handleAfterPayUser(SfUserAccount account, SfUserExtractApply apply, WxPayUserBeanReq req,
                                     WxPayUserBeanRes result, String handler) {
-        // 小铺用户可提现额度减少
-        account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
-        accountMapper.updateByPrimaryKey(account);
+        // account变动记录
+        SfUserAccountRecord record = createSfUserAccountRecord(account, apply, handler);
+        accountRecordMapper.insert(record);
         // 修改申请记录的状态
         apply.setAuditType(SfUserExtractAuditTypeEnum.ALREADY_PAY.getCode());
         applyMapper.updateByPrimaryKey(apply);
@@ -157,6 +168,33 @@ public class WxPayUserService {
         paymentMapper.insert(payment);
     }
 
+    private SfUserAccountRecord createSfUserAccountRecord(SfUserAccount account, SfUserExtractApply apply, String handler) {
+        SfUserAccountRecord record = new SfUserAccountRecord();
+
+        record.setComUserId(account.getUserId());
+        record.setFeeType(2);
+        record.setHandleFee(apply.getExtractFee());
+        record.setHandleSerialNum(SysBeanUtils.createSfAccountRecordSerialNum());
+        record.setHandleType(0);
+        record.setHandleTime(new Date());
+        record.setSfUserAccountId(account.getId());
+        record.setSourceId(apply.getId());
+        record.setHandler(handler);
+        record.setPrevFee(account.getExtractableFee().add(apply.getExtractFee()));
+        record.setNextFee(account.getExtractableFee());
+
+        return record;
+    }
+
+    /**
+     * 根据微信打款用户请求结果和提现申请记录来创建支付记录
+     *
+     * @param req
+     * @param res
+     * @param apply
+     * @param handler
+     * @return
+     */
     private SfUserExtractPayment createSfExtractPayment(WxPayUserBeanReq req, WxPayUserBeanRes res,
                                                         SfUserExtractApply apply, String handler) {
         SfUserExtractPayment payment = new SfUserExtractPayment();

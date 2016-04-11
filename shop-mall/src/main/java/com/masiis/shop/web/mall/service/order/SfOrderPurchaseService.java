@@ -188,12 +188,16 @@ public class SfOrderPurchaseService {
                     if (ii ==1){
                         //插入子订单分润表
                         List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
-                        for (SfOrderItemDistribution  orderItemDis :itemDisList){
-                            orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
-                            int iii = orderItemDisService.insert(orderItemDis);
-                            if (iii != 1){
-                                throw new BusinessException("插入子订单分润表失败");
+                        if (itemDisList != null){
+                            for (SfOrderItemDistribution  orderItemDis :itemDisList){
+                                orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
+                                int iii = orderItemDisService.insert(orderItemDis);
+                                if (iii != 1){
+                                    throw new BusinessException("插入子订单分润表失败");
+                                }
                             }
+                        }else{
+                            throw new BusinessException("根据sku获得订单子表分润信息为null");
                         }
                     }else{
                         throw new BusinessException("插入子订单失败");

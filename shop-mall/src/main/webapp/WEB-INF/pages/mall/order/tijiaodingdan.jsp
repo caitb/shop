@@ -39,7 +39,28 @@
             alert("未选择收获地址");
             return false ;
         }
-        window.location.href = "<%=path%>/orderPurchase/submitOrder.do?message="+message+"&shopId="+shopId+"&selectedAddressId="+selectedAddressId
+        var paramJson = {
+            "message": message,
+            "shopId": shopId,
+            "selectedAddressId": selectedAddressId
+        }
+        $.ajax({
+            url: '/orderPurchase/submitOrder.do',
+            type: 'post',
+            async: false,
+            data: paramJson,
+            dataType:"json",
+            success: function (data) {
+                if (data.isSubmitOrder == "false") {
+                    alert("提交订单失败");
+                } else {
+                    window.location.href = "<%=path%>/orderPay/getOrderInfo.html?orderId="+data.sfOrderId;
+                }
+            },
+            error: function () {
+                alert("提交订单失败");
+            }
+        })
     }
 </script>
 <body>

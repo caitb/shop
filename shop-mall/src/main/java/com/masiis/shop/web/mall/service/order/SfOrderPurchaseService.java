@@ -168,9 +168,10 @@ public class SfOrderPurchaseService {
      * @date 2016/4/9 12:23
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Map<String,Object> submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
+    public Long submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
         log.info("service生成订单---start");
         Map<String,Object> map = null;
+        SfOrder sfOrder = null;
         try{
             map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
             ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
@@ -185,12 +186,10 @@ public class SfOrderPurchaseService {
             log.info("获得分润信息---end");
             //插入订单表
             log.info("插入订单---start");
-            SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
+            sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
                 log.info("插入订单成功---end");
-                map.put("orderCode",sfOrder.getOrderCode());
-                map.put("orderId",sfOrder.getId());
                 //插入订单操作操作日志
                 log.info("插入订单操作日志---start");
                 SfOrderOperationLog ordOperLog = generateSfOrderOperationLog(null,sfOrder.getId(),0);
@@ -253,11 +252,16 @@ public class SfOrderPurchaseService {
             }else{
                 log.info("插入订单成功---end");
             }
+
         }catch (Exception e){
             throw new BusinessException(e);
         }
         log.info("service生成订单---end");
-        return map;
+        if (sfOrder!=null){
+            return sfOrder.getId();
+        }else{
+            return null;
+        }
     }
     /**
      * 获得订单中一款商品的分润总额

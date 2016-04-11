@@ -27,5 +27,11 @@ import java.util.Map;
 @Service
 public class SfOrderPaymentService {
 
+    @Resource
+    private SfOrderPaymentMapper sfOrderPaymentMapper;
+
+    public int updateOrderPayment(SfOrderPayment orderPayment){
+       return sfOrderPaymentMapper.updateByPrimaryKey(orderPayment);
+    }
 
 }

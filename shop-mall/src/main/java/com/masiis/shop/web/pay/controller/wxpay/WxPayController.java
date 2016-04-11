@@ -37,10 +37,12 @@ public class WxPayController extends BaseController {
 
     @RequestMapping(value = "/wtpay")
     public String wxpayPage(HttpServletRequest request, String param) {
+        log.info("进入微信支付接口...");
         String ip = request.getRemoteAddr();
         WxPaySysParamReq req = null;
         ComUser user = null;
         try{
+            log.info("开始进行参数校验,param:" + param);
             // 参数校验
             req = checkRequestParma(req, param);
             log.info("参数校验通过");

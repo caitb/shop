@@ -78,11 +78,12 @@ public class LoginFilter implements Filter{
             log.info("uri:" + uri);
 
             ComUser login = (ComUser) session.getAttribute(SysConstants.SESSION_LOGIN_USER_NAME);
+            log.info("登录对象:" + login);
             if (login != null
                     && StringUtils.isNotBlank(login.getId() + "")
                     && StringUtils.isNotBlank(login.getWxUnionid())) {
                 // 后面再斟酌是否需要进行验证有效性
-                //
+                log.info("已经登录,登录人:" + login.getWxNkName());
                 chain.doFilter(request, response);
                 return;
             }

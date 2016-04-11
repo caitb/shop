@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
@@ -41,6 +42,8 @@ public class UserService {
     private ComUserAccountService accountService;
     @Resource
     private ComWxUserMapper wxUserMapper;
+    @Resource
+    private SfUserAccountService sfUserAccountService;
 
     /**
      * 根据用户id获取用户
@@ -257,6 +260,7 @@ public class UserService {
             user.setRegisterSource(0);
             insertComUser(user);
             accountService.createAccountByUser(user);
+            sfUserAccountService.createSfAccountByUser(user);
         }
 
         wxUser = createWxUserInit(res, userRes, user);

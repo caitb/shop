@@ -118,7 +118,7 @@ public class SfShopController extends BaseController {
                                      @RequestParam(value="skuId",required = true) Integer skuId,
                                      @RequestParam(value="shopId",required = true) Long shopId,
                                      @RequestParam(value="fromUserId",required = false) Long fromUserId) throws Exception {
-        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(1L, skuId);
+        SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);

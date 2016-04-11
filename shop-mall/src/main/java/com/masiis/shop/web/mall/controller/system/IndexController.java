@@ -64,7 +64,7 @@ public class IndexController extends BaseController {
 //            sfShopDetail.setShipAmount(sfShopSku.getShipAmount());//邮费
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
-
+            sfShopDetail.setSkuId(comSku.getId());
             bail=bail.add(sfShopSku.getBail());//保证金
 
             SfShopDetails.add(sfShopDetail);

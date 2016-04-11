@@ -62,7 +62,7 @@
                         <h3>30秒瘦脸立即见效</h3>
                         <h2>运费：<span>${sfShop.shipAmount}</span><b>￥${sd.priceRetail}</b></h2>
                         <p>
-                            <button>立即购买</button>
+                            <button onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">立即购买</button>
                         </p>
                     </div>
             </section></c:forEach>

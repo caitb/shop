@@ -60,33 +60,10 @@
         <div class="btn">
             <button class="lingqu" onclick="window.location.href='<%=basePath%>'">返回首页</button>
             <button class="lingqu"
-                    onclick="window.location.href='<%=basePath%>userCertificate/detail/?pfuId=${userSkuId}';">查看证书
+                    onclick="window.location.href='<%=basePath%>userCertificate/userList/${userId}';">查看证书
             </button>
         </div>
     </div>
 </main>
 </body>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script>
-    function submit() {
-        window.location.href = "<%=basePath%>userCertificate/setUserCertificate.shtml?userSkuId=${userSkuId}";
-        <%--var para = {};--%>
-        <%--para.pfuId = "${userSkuId}";--%>
-        <%--$.ajax({--%>
-        <%--url: "<%=basePath%>userCertificate/updatect.do",--%>
-        <%--type: "post",--%>
-        <%--data: para,--%>
-        <%--dataType: "json",--%>
-        <%--success: function (data) {--%>
-        <%--if (data.isError == false) {--%>
-        <%--window.location.href = "<%=basePath%>userApply/applyOK.shtml";--%>
-        <%--}--%>
-        <%--else {--%>
-        <%--alert(data.message);--%>
-        <%--}--%>
-        <%--}--%>
-        <%--});--%>
-    }
-</script>
 </html>

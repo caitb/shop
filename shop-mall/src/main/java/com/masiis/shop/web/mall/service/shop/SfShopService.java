@@ -88,7 +88,7 @@ public class SfShopService {
         map.put("minDay", minDay);
         map.put("maxDay", maxDay);
 
-        SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByCondition(map);
+        SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByMap(map);
         if(sfShopShoutLog != null){
             return false;
         }else{

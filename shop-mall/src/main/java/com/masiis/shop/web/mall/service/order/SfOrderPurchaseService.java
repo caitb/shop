@@ -181,44 +181,64 @@ public class SfOrderPurchaseService {
             }
             log.info("获得分润信息---end");
             //插入订单表
+            log.info("插入订单---start");
             SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
+                log.info("插入订单成功---end");
                 map.put("orderCode",sfOrder.getOrderCode());
                 map.put("orderId",sfOrder.getId());
                 StringBuffer sb = new StringBuffer("(");
-                for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
-                    //插入订单子表
-                    //sb.append();
-                    SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
-                    int ii = sfOrderItemService.insert(sfOrderItem);
-                    if (ii ==1){
-                        //插入子订单分润表
-                        List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
-                        if (itemDisList != null){
-                            for (SfOrderItemDistribution  orderItemDis :itemDisList){
-                                orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
-                                int iii = orderItemDisService.insert(orderItemDis);
-                                if (iii != 1){
-                                    throw new BusinessException("插入子订单分润表失败");
+                if (sfShopCartSkuDetails != null&& sfShopCartSkuDetails.size()>0){
+                    for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
+                        //插入订单子表
+                        //sb.append();
+                        log.info("插入订单子表---start");
+                        SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
+                        int ii = sfOrderItemService.insert(sfOrderItem);
+                        if (ii ==1){
+                            log.info("插入订单子表成功---end");
+                            //插入子订单分润表
+                            List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
+                            if (itemDisList != null){
+                                for (SfOrderItemDistribution  orderItemDis :itemDisList){
+                                    log.info("插入子订单分润表--start");
+                                    orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
+                                    int iii = orderItemDisService.insert(orderItemDis);
+                                    if (iii != 1){
+                                        log.info("插入子订单分润表失败");
+                                        throw new BusinessException("插入子订单分润表失败");
+                                    }else{
+                                        log.info("插入子订单分润表成功--end");
+                                    }
                                 }
+                            }else{
+                                log.info("根据sku获得订单子表分润信息为null");
+                                throw new BusinessException("根据sku获得订单子表分润信息为null");
                             }
                         }else{
-                            throw new BusinessException("根据sku获得订单子表分润信息为null");
+                            log.info("插入子订单失败---end");
+                            throw new BusinessException("插入子订单失败");
                         }
-                    }else{
-                        throw new BusinessException("插入子订单失败");
                     }
+                }else{
+                    log.info("获得购物车中的商品详情信息为null");
+                    throw new BusinessException("获得购物车中的商品详情信息为null");
                 }
+
                 //批量删除购物车中相应的商品信息
             }else{
+                log.info("插入订单失败---end");
                 throw new BusinessException("插入订单失败");
             }
             //插入地址
             SfOrderConsignee sfOrderConsignee = generateSfOrderConsigness(sfOrder.getId(),comUserAddress);
             int iiii = ordConService.insert(sfOrderConsignee);
             if (iiii != 1){
+                log.info("插入订单失败---end");
                 throw new BusinessException("插入订单地址失败");
+            }else{
+                log.info("插入订单成功---end");
             }
         }catch (Exception e){
             throw new BusinessException(e);

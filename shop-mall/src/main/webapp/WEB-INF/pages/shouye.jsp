@@ -17,19 +17,19 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
-    <div class="wrap">
+    <div class="wrap"><c:if test="${userPid !=null}">
         <div class="na">
                    <p>${pUser.wxHeadImg}</p>
                    <h1>
                        <span>我是${pUser.wxNkName}，我为麦链商城呐喊！</span>
                        <span>跟我一起：呐喊得红包，分享赚佣金</span>
                    </h1>
-        </div>
+        </div></c:if>
         <div class="header">
             <div>
                 <p>${sfShop.name}</p>
                 <p>${planation}</p>
-                <img src="<%=path%>/static/images/fen.png" id="share" alt="">${sfShop.logo}
+                <img src="<%=path%>/static/images/fen.png" alt="">${sfShop.logo}
             </div>
             <div>
                 <p>
@@ -44,11 +44,11 @@
             <img src="<%=path%>/static/images/admin.png" alt="">
         </div>
         <div class="banner">
-            <p id="shout">
+            <p>
                 <span>已有</span>
-                <span><em>${sfShop.shoutNum}</em>人</span>
+                <span><em>${sfShop.shoutNum}123</em>人</span>
                 <span>为ta呐喊</span>
-                <img src="<%=path%>/static/images/an.png" alt="">
+                <img class="shout" src="<%=path%>/static/images/an.png" alt="">
             </p>
         </div>
         <div class="content">
@@ -70,26 +70,26 @@
         <footer>
            <div>
                 <p class="active">
-                    <span><img src="<%=path%>/static/images/footer_x(3).png" alt=""></span>
+                    <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
                     <span>首页</span>
                 </p>
                 <p>
-                    <span><img src="<%=path%>/static/images/footer(1).png" alt=""></span>
+                    <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
                     <span>分享计划</span>
                 </p>
-                <p>
-                    <span><img src="<%=path%>/static/images/footer(2).png" alt=""></span>
-                    <span>个人中心</span>
+                <p><a href="<%=path%>/sfOrderManagerController/borderManagement.html">
+                    <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+                    <span>个人中心</span></a>
                 </p>
             </div>
         </footer>
     </div>
-    <div class="back_f" id="shoutAlert">
+    <div class="back_f" style="display: none">
         <h1>呐喊成功！</h1>
-        <img src="<%=path%>/static/images/qwe(1).png" alt="">
+        <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
         <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-        <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
-        <span class="close">×</span>
+        <button>获取我的专属海报</button>
+        <span class="close" style="display: none">×</span>
     </div>
     <div class="back"></div>
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
@@ -98,24 +98,24 @@
         $(".close").on("click",function(){
             $(this).parent().hide();
             $(".back").hide();
-        });
-        $('#shout').on('click', function(){
+        })
+        $(".shout").on("click",function(){
+            var shopId =${sfShop.id};
             $.ajax({
-                url: '<%=basePath%>shop/shout',
-                data: {shopId: 1},
-                success: function(msg){
-                    if(msg == 'true'){
-                        $('#result').html('呐喊成功!');
-                    }else{
-                        $('#result').html('您已呐喊过，请明天再来');
+                type:"POST",
+                url : "<%=path%>/shout.do",
+                data:{shopId:shopId},
+                dataType:"Json",
+                success:function(data){
+                    if(data.mallShout){
+                        $(".back_f").show();
+                        $(".back").show();
+                    } else{
+                        alert("qwweqw");
                     }
-                    $('#shoutAlert').show();
                 }
-            });
-        });
-        $('#share').on('click', function(){
-            $('#shoutAlert').show();
-        });
+        })
+        })
     </script>
 </body>
 </html>

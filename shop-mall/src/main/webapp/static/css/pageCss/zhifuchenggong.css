@@ -230,11 +230,11 @@
   -webkit-box-flex: 1;
   text-align: center;
   background: #ccc;
-  background: url("../images/icon_38.png") no-repeat 15px;
+  background: url("../../images/icon_38.png") no-repeat 15px;
   background-size: 8%;
 }
 .wrap .sec6 p:nth-child(1) {
-  background: url("../images/icon_37.png") no-repeat 15px;
+  background: url("../../images/icon_37.png") no-repeat 15px;
   background-size: 12%;
   text-indent: 5px;
 }

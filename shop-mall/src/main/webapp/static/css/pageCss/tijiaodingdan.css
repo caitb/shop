@@ -11,7 +11,7 @@
   -webkit-box-pack: center;
 }
 .wrap .xinz p {
-  background: url("../images/xz.png") no-repeat 5px;
+  background: url("../../images/xz.png") no-repeat 5px;
   text-indent: 20px;
   background-size: 10%;
 }

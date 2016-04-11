@@ -121,7 +121,7 @@ public class UserAddressService {
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
             Long  pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
-            Long  shopId = (Long )request.getSession().getAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
+            Long  shopId = (Long)request.getSession().getAttribute(SysConstants.SESSION_MALL_CONFIRM_ORDER_SHOP_ID);
             if (StringUtils.isEmpty(orderType)){
                 return indexPath;
             }else{

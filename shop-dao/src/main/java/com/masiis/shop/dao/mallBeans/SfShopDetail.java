@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  */
 
 public class SfShopDetail {
+    private Integer skuId;
     private String skuName;//商品名
     private String skuUrl;//商品首页地址
     private BigDecimal priceRetail;//销售价
@@ -80,5 +81,13 @@ public class SfShopDetail {
 
     public String getSkuUrl() {
         return skuUrl;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 }

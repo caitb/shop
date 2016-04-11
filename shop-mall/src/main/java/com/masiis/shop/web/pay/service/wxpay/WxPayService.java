@@ -8,6 +8,7 @@ import com.masiis.shop.web.mall.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.WxConstants;
 import com.masiis.shop.web.mall.service.order.SfOrderItemService;
+import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import com.masiis.shop.web.mall.service.order.SfOrderPaymentService;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
 import com.masiis.shop.web.mall.service.user.WxUserService;
@@ -35,7 +36,7 @@ public class WxPayService {
     @Resource
     private SfOrderItemService itemService;
     @Resource
-    private SfOrderPaymentService paymentService;
+    private SfOrderPayService orderPayService;
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
         UnifiedOrderReq res = null;
@@ -89,7 +90,7 @@ public class WxPayService {
             SfOrder order = sfOrderService.findByOrderCode(orderid);
             SfOrderPayment payment = createSfOrderPayment(req, res, order);
             payment.setSfOrderId(order.getId());
-            paymentService.addSfOrderPayment(payment);
+            orderPayService.addSfOrderPayment(payment);
         } else {
             throw new BusinessException("订单类型不正确!");
         }

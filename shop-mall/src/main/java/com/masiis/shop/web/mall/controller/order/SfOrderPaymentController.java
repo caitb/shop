@@ -16,42 +16,11 @@ import java.util.Map;
 
 /**
  * Created by hzz on 2016/4/10.
- *  订单支付
+ *
  */
 @Controller
 @RequestMapping(value = "orderPay")
 public class SfOrderPaymentController {
 
-    @Resource
-    private SfOrderPaymentService orderPaymentService;
 
-    /**
-     * 调用微信支付
-     * @author hanzengzhi
-     * @date 2016/4/11 10:37
-     */
-    @RequestMapping(value = "callWechatPay.do")
-    public String callWechatPay(HttpServletRequest request,HttpServletResponse response,
-                                @RequestParam(value = "orderCode",required = true) String orderCode,
-                                @RequestParam(value = "orderId",required = true) Long orderId,
-                                RedirectAttributes attrs){
-        WxPaySysParamReq wpspr = orderPaymentService.callWechatPay(request, orderCode,orderId);
-        attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
-        return "redirect:/wxpay/wtpay";
-    }
-    /**
-     * 支付成功回调
-     * @author hanzengzhi
-     * @date 2016/4/10 13:56
-     */
-    @RequestMapping(value = "paySuccessCallBack.html")
-   public String paySuccessCallBack(HttpServletRequest request, HttpServletResponse response,
-                                    @RequestParam(value = "orderId", required = true) Long orderId,
-                                    Model model){
-       Map<String,Object> map = orderPaymentService.paySuccessCallBack(orderId);
-       model.addAttribute("orderConsignee",map.get("orderConsignee"));
-       model.addAttribute("order",map.get("order"));
-       model.addAttribute("orderItems",map.get("orderItems"));
-        return "mall/order/zhifuchenggong";
-   }
 }

@@ -19,6 +19,7 @@
     </script>
 </head>
 <body>
+<input type="hidden" id="extractableFee" name="extractableFee" value="${userAccount.extractableFee}"/>
     <header>
               <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>申请提现</p>            
@@ -32,7 +33,7 @@
                    </h1>
                </div>
                <main>
-                   <p>您当前可提现金额为<span id="extractableFee">￥${userAccount.extractableFee}</span></p>
+                   <p>您当前可提现金额为<span>￥${userAccount.extractableFee}</span></p>
                    <div class="sec1">
                        提现金额：￥<input id="inputAccount" name="inputAccount" type="text" placeholder="请输入提现金额">
                    </div>

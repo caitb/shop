@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.user;
 
+import com.github.pagehelper.PageHelper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfUserExtractApply;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wangbingjian on 2016/4/10.
@@ -36,4 +38,31 @@ public class SfUserExtractApplyService {
         sfUserExtractApplyMapper.insert(apply);
     }
 
+    /**
+     * 根据用户和日期查询提现记录数量
+     * @param comUser
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    public Integer findCountByUserAndDate(ComUser comUser,Date beginDate,Date endDate){
+        return sfUserExtractApplyMapper.selectCountByUserAndDate(comUser.getId(),beginDate,endDate);
+    }
+
+    /**
+     * 根据用户和日期查询提现记录
+     * @param comUser
+     * @param beginDate
+     * @param endDate
+     * @param currentPage   当前页
+     * @param pageSize      页面数量
+     * @return
+     */
+    public List<SfUserExtractApply> findListByUserAndDate(ComUser comUser,Date beginDate,Date endDate,Integer currentPage,Integer pageSize){
+        if (currentPage == 0||currentPage == 0){
+            return sfUserExtractApplyMapper.selectListByUserAndDate(comUser.getId(),beginDate,endDate);
+        }
+        PageHelper.startPage(currentPage,pageSize);
+        return sfUserExtractApplyMapper.selectListByUserAndDate(comUser.getId(),beginDate,endDate);
+    }
 }

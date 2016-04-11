@@ -101,7 +101,7 @@
         $.ajax({
             type:"POST",
             async:true,
-            url : "<%=path%>/account/getMoreUserBill",
+            url : "<%=basePath%>account/getMoreUserBill",
             data:{year:year,month:month,paging:'N',pageTotalCount:'0'},
             dataType:"Json",
             success:function(data){

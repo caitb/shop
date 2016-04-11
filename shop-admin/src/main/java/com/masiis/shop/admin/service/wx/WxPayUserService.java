@@ -17,7 +17,6 @@ import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.po.*;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -126,22 +125,40 @@ public class WxPayUserService {
 
             log.info("微信打款成功,操作流水号:" + result.getPartner_trade_no());
 
-            // 小铺用户可提现额度减少
-            account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
-            accountMapper.updateByPrimaryKey(account);
-            // 修改申请记录的状态
-            apply.setAuditType(SfUserExtractAuditTypeEnum.ALREADY_PAY.getCode());
-            applyMapper.updateByPrimaryKey(apply);
-            // 插入提现申请支付记录
-            SfUserExtractPayment payment = createSfExtractPayment(req, result, apply);
-            paymentMapper.insert(payment);
+            // 打款成功后的操作,加入事务
+            handleAfterPayUser(account, apply, req, result, handler);
+
         } catch (Exception e) {
             log.error("用户提现打款出错," + e.getMessage());
         }
 
     }
 
-    private SfUserExtractPayment createSfExtractPayment(WxPayUserBeanReq req, WxPayUserBeanRes res, SfUserExtractApply apply) {
+    /**
+     * 微信付款给用户成功后的操作
+     *
+     * @param account
+     * @param apply
+     * @param req
+     * @param result
+     * @param handler
+     */
+    @Transactional
+    private void handleAfterPayUser(SfUserAccount account, SfUserExtractApply apply, WxPayUserBeanReq req,
+                                    WxPayUserBeanRes result, String handler) {
+        // 小铺用户可提现额度减少
+        account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
+        accountMapper.updateByPrimaryKey(account);
+        // 修改申请记录的状态
+        apply.setAuditType(SfUserExtractAuditTypeEnum.ALREADY_PAY.getCode());
+        applyMapper.updateByPrimaryKey(apply);
+        // 插入提现申请支付记录
+        SfUserExtractPayment payment = createSfExtractPayment(req, result, apply, handler);
+        paymentMapper.insert(payment);
+    }
+
+    private SfUserExtractPayment createSfExtractPayment(WxPayUserBeanReq req, WxPayUserBeanRes res,
+                                                        SfUserExtractApply apply, String handler) {
         SfUserExtractPayment payment = new SfUserExtractPayment();
 
         payment.setAmont(apply.getExtractFee());

@@ -9,6 +9,11 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.beans.wxauth.AccessTokenRes;
+import com.masiis.shop.web.mall.beans.wxauth.WxUserInfo;
+import com.masiis.shop.web.mall.constants.WxConstants;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +28,7 @@ import java.util.List;
 @Service
 @Transactional
 public class UserService {
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private ComUserMapper comUserMapper;
@@ -36,6 +42,12 @@ public class UserService {
     private ComWxUserMapper comWxUserMapper;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private ComWxUserMapper wxUserMapper;
+    @Resource
+    private ComUserAccountService accountService;
+    @Resource
+    private SfUserAccountService sfAccountService;
 
     /**
      * 根据用户id获取用户
@@ -246,4 +258,137 @@ public class UserService {
         }
     }
 
+    /**
+     * 根据unionid获取comuser
+     *
+     * @param unionid
+     * @return
+     */
+    public ComUser getUserByUnionid(String unionid) {
+        return comUserMapper.selectByUnionid(unionid);
+    }
+
+    public ComUser signWithCreateUserByWX(AccessTokenRes res, WxUserInfo userRes) {
+        // 检查openid是否已经存在数据库
+        List<ComWxUser> wxUsers = wxUserMapper.selectByUnionid(userRes.getUnionid());
+        ComWxUser wxUser = null;
+        ComUser user = null;
+        if(wxUsers != null && wxUsers.size() > 0){
+            // 有unionid
+            user = getUserByUnionid(userRes.getUnionid());
+            if(user == null){
+                log.error("系统数据错误,请联系管理员!");
+                throw new BusinessException("");
+            }
+            wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
+            if(wxUser != null){
+                // 有openid,更新这个openid数据
+                updateWxUserByActkn(res, userRes, wxUser);
+            }
+        } else {
+            // 无unionid,创建comuser和comwxuser
+            user = new ComUser();
+            user.setWxNkName(userRes.getNickname());
+            user.setWxHeadImg(userRes.getHeadimgurl());
+            user.setCreateTime(new Date());
+            user.setWxUnionid(userRes.getUnionid());
+            user.setIsAgent(0);
+            user.setIsBinding(0);
+            user.setAuditStatus(0);
+            user.setSendType(0);
+            user.setRegisterSource(0);
+            insertComUser(user);
+            accountService.createAccountByUser(user);
+            sfAccountService.createSfAccountByUser(user);
+        }
+
+        wxUser = createWxUserInit(res, userRes, user);
+        wxUser.setAppid(WxConstants.APPID);
+        wxUser.setComUserId(user.getId());
+        if(wxUser.getId() == null) {
+            wxUserMapper.insert(wxUser);
+        } else {
+            wxUserMapper.updateByPrimaryKey(wxUser);
+        }
+
+        return user;
+    }
+
+    /**
+     * 根据最新请求数据更新wxUser
+     *
+     * @param res
+     * @param userInfo
+     * @param wxUser
+     */
+    private void updateWxUserByActkn(AccessTokenRes res, WxUserInfo userInfo, ComWxUser wxUser) {
+        if(wxUser == null){
+            throw new BusinessException("传入目标对象为null");
+        }
+
+        wxUser.setAccessToken(res.getAccess_token());
+        Long atoken_ex = res.getExpires_in();
+        if(res.getExpires_in() == null || res.getExpires_in() <= 0){
+            atoken_ex = 7200L * 1000;
+        }
+        wxUser.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
+        wxUser.setCity(userInfo.getCity());
+        wxUser.setCountry(userInfo.getCountry());
+        wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
+        wxUser.setNkName(userInfo.getNickname());
+        wxUser.setProvince(userInfo.getProvince());
+        wxUser.setRefreshToken(res.getRefresh_token());
+        wxUser.setSex(Integer.valueOf(userInfo.getSex()));
+    }
+
+    /**
+     * 创建ComWxUser(注册微信用户)
+     *
+     * @param res
+     * @param userInfo
+     * @param user
+     * @return
+     */
+    private ComWxUser createWxUserInit(AccessTokenRes res, WxUserInfo userInfo, ComUser user) {
+        ComWxUser wxUser = new ComWxUser();
+
+        wxUser.setCreateTime(new Date());
+        wxUser.setAccessToken(res.getAccess_token());
+        Long atoken_ex = res.getExpires_in();
+        if(res.getExpires_in() == null || res.getExpires_in() <= 0){
+            atoken_ex = 7200L * 1000;
+        }
+        wxUser.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
+        wxUser.setUnionid(userInfo.getUnionid());
+        wxUser.setCity(userInfo.getCity());
+        wxUser.setCountry(userInfo.getCountry());
+        wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
+        wxUser.setNkName(userInfo.getNickname());
+        wxUser.setOpenid(userInfo.getOpenid());
+        wxUser.setProvince(userInfo.getProvince());
+        wxUser.setRefreshToken(res.getRefresh_token());
+        wxUser.setSex(Integer.valueOf(userInfo.getSex()));
+
+        return wxUser;
+    }
+
+    /**
+     * 根据openid在list获取wxuser
+     *
+     * @param openid
+     * @param wxUsers
+     * @return
+     */
+    private ComWxUser getWxUserByOpenidInList(String openid, List<ComWxUser> wxUsers) {
+        ComWxUser user = null;
+        if(StringUtils.isBlank(openid)){
+            return user;
+        }
+        for(ComWxUser ex:wxUsers){
+            if(openid.equals(ex.getOpenid())){
+                return ex;
+            }
+        }
+        return user;
+    }
 }

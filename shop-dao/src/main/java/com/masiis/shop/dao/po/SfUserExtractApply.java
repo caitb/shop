@@ -32,7 +32,7 @@ public class SfUserExtractApply {
     /**
      * 1,微信; 2,支付宝; 3,银行卡
      */
-    private Long extractWay;
+    private Integer extractWay;
     /**
      * 审核通过时间
      */
@@ -97,10 +97,10 @@ public class SfUserExtractApply {
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
     }
-    public Long getExtractWay() {
+    public Integer getExtractWay() {
         return extractWay;
     }
-    public void setExtractWay(Long extractWay) {
+    public void setExtractWay(Integer extractWay) {
         this.extractWay = extractWay;
     }
     public Date getAuditTime() {

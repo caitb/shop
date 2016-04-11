@@ -1,4 +1,4 @@
-package com.masiis.shop.web.mall.service.user;
+package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.po.ComUser;

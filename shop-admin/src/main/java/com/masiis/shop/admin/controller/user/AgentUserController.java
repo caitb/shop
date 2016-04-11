@@ -4,6 +4,7 @@ import com.masiis.shop.admin.service.user.AgentUserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,7 +28,8 @@ public class AgentUserController {
     private AgentUserService agentUserService;
 
     @RequestMapping("/list.shtml")
-    public String list(){
+    public String list(HttpServletRequest request, HttpServletResponse response, Model model, Integer pid){
+        model.addAttribute("pid", pid);
         return "user/agentuser/list";
     }
 
@@ -45,11 +47,12 @@ public class AgentUserController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
-                       String sortOrder){
+                       String sortOrder,
+                       Integer pid){
 
         Map<String, Object> conMap = new HashMap<>();
         try {
-
+            conMap.put("pid", pid);
             Map<String, Object> pageMap = agentUserService.listByCondition(pageNumber, pageSize, conMap);
 
             return pageMap;

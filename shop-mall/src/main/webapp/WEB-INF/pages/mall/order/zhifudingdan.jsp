@@ -27,8 +27,8 @@
                         <p>
                             商品信息：<span>${skuDetail.comSku.name}</span>
                         </p>
-                        <p>　需付款：<span>${skuDetail.skuSumPrice}</span></p>
                        </c:forEach>
+                       <p>　需付款：<span>${totalPrice}</span></p>
                     </main>
                    <button>微信支付</button>
         </div>

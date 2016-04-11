@@ -165,7 +165,7 @@ public class SfOrderPurchaseService {
         Map<String,Object> map = null;
         try{
             map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
-            ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
+            /*ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
             List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("shopCartSkuDetails");
             BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
@@ -203,7 +203,7 @@ public class SfOrderPurchaseService {
             int iiii = ordConService.insert(sfOrderConsignee);
             if (iiii != 1){
                 throw new BusinessException("插入订单地址失败");
-            }
+            }*/
         }catch (Exception e){
             throw new BusinessException(e);
         }

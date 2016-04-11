@@ -29,7 +29,7 @@ function withdraw(userId,extractableFee){
                 $(".back").attr('style', 'display:block');
                 $(".back_j").attr('style', 'display:block');
             }else {
-                window.location.href = basepath + "sfaccount/withdrawRequest.shtml"
+                window.location.href = basepath + "withdraw/withdrawRequest.shtml"
             }
         },
         error: function(){

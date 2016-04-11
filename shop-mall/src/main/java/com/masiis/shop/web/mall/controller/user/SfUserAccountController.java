@@ -2,11 +2,13 @@ package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,26 +136,4 @@ public class SfUserAccountController extends BaseController {
         return jsonArray.toString();
     }
 
-    /**
-     * 用户提现申请
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/withdrawRequest.shtml")
-    public ModelAndView withdrawRequest(HttpServletRequest request) throws Exception{
-        log.info("进入用户提现申请");
-        ComUser comUser = getComUser(request);
-        if (comUser == null){
-            throw new BusinessException("用户没有登录");
-        }
-        ModelAndView mv = new ModelAndView();
-        Long userId = comUser.getId();
-        log.info("userId="+userId);
-        SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
-        ComWxUser comWxUser = userService.findComWxUserByUserId(userId);
-        mv.addObject("userAccount",userAccount);
-        mv.addObject("comWxUser",comWxUser);
-        mv.setViewName("mall/user/sf_withdrawRequest");
-        return mv;
-    }
 }

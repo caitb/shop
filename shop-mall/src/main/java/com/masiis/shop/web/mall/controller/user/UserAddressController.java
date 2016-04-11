@@ -159,7 +159,7 @@ public class UserAddressController extends BaseController {
             model.addAttribute("addAddressJumpType",addAddressJumpType);
             model.addAttribute("manageAddressJumpType",manageAddressJumpType);
         }
-        return "platform/order/editAddress";
+        return "mall/user/editAddress";
     }
 
     /**
@@ -176,7 +176,7 @@ public class UserAddressController extends BaseController {
         String returnPage = null;
         switch (manageAddressJumpType){
             case managePageToChooseAddressPageTag: //返回到选择地址界面
-                returnPage = "platform/order/xuanze";
+                returnPage = "mall/user/xuanze";
                 Long selectedAddressId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS);
                 model.addAttribute("addressId", selectedAddressId);
                 break;
@@ -204,7 +204,7 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
-                                      @RequestParam(value = "shopId", required = false) Integer shopId,
+                                      @RequestParam(value = "shopId", required = false) Long shopId,
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);

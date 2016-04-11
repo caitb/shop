@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/zhifudingdan.css">
 </head>
+<script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
     function callWeChatPay(){
         var orderCode = $("#orderCodeId").val();

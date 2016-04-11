@@ -40,14 +40,14 @@ main .wrap .box #d_box .sf .onc {
   width: 20px;
   height: 20px;
   display: none;
-  background: url("../images/no.png") no-repeat;
+  background: url("../../images/no.png") no-repeat;
   background-size: 100% 100%;
 }
 main .wrap .box #d_box .sf .gao {
   position: absolute;
   right: 18px;
   top: 34px;
-  background: url("../images/icon_33.png") no-repeat;
+  background: url("../../images/icon_33.png") no-repeat;
   background-size: 100% 100%;
   color: white;
   padding: 2px 5px;

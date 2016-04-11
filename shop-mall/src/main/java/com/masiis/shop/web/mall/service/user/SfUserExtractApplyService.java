@@ -29,7 +29,7 @@ public class SfUserExtractApplyService {
         apply.setExtractFee(exMoney);
         apply.setExtractwayInfoId(Long.valueOf(0));//分销用户暂时没有提现方式设置，填写固定值0
         apply.setApplyTime(new Date());
-        apply.setExtractWay(Long.valueOf(1));   //默认设置为微信提现
+        apply.setExtractWay(1);   //默认设置为微信提现
         apply.setAuditType(0);      //设置为待审核状态
         apply.setAuditCause("分销用户提现申请");
         apply.setRemark("分销用户提现申请");

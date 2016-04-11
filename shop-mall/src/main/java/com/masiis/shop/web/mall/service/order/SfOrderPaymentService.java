@@ -160,4 +160,8 @@ public class SfOrderPaymentService {
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }
+
+    public SfOrderPayment findOrderPaymentBySerialNum(String paySerialNum) {
+        return paymentMapper.selectBySerialNum(paySerialNum);
+    }
 }

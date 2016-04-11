@@ -19,8 +19,6 @@ public class WxNotifyService {
 
     @Resource
     private SfOrderPaymentService paymentService;
-    @Resource
-    private SfOrderService orderService;
 
     /**
      * 处理微信支付订单异步回调业务
@@ -44,7 +42,7 @@ public class WxNotifyService {
                 }
                 log.info("处理订单开始,类型为B,支付流水号为:" + paySerialNum);
                 // 调用borderService的方法处理
-                payBOrderService.mainPayBOrder(payment, param.getTransaction_id(), rootPath);
+                paymentService.ordPaySuccModStatus(payment, param.getTransaction_id());
             } catch (Exception e) {
                 // 判断异常类型
                 if(e instanceof BusinessException && "".equals(e.getMessage())){

@@ -22,4 +22,6 @@ public interface SfShopMapper {
     List<SfShop> selectAll();
 
     int updateByPrimaryKey(SfShop record);
+
+    SfShop selectByUserId(Long userId);
 }

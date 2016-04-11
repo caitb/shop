@@ -243,9 +243,6 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("订单号错误");
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            if (!bOrderService.checkBOrderStock(pfBorder)) {
-                throw new BusinessException("订单商品库存不足");
-            }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;
             if (pfBorder.getSendType() == 2) {

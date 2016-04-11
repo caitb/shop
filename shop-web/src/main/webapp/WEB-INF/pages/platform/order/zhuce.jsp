@@ -120,11 +120,7 @@
 <script>
     var path = "<%=basePath%>";
     var skuId = "${skuId}";
-    var skuName = "${skuName}";
-    var mobile = "${mobile}";
     var pUserId = "${pUserId}";
-    var pMobile = "${pMobile}";
-    var pUserLevelId = "${pUserLevelId}";
 </script>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>

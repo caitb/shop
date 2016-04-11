@@ -26,12 +26,12 @@
         insert into sf_shop_sku (id, create_time, shop_id, 
             shop_user_id, spu_id, sku_id, 
             is_sale, agent_level_id, bail, 
-            ship_amount, sale_num, share_num, 
+            sale_num, share_num,
             qr_code, remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{shopId,jdbcType=BIGINT}, 
             #{shopUserId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
             #{isSale,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER}, #{bail,jdbcType=DECIMAL}, 
-            #{shipAmount,jdbcType=DECIMAL}, #{saleNum,jdbcType=BIGINT}, #{shareNum,jdbcType=BIGINT}, 
+            #{saleNum,jdbcType=BIGINT}, #{shareNum,jdbcType=BIGINT},
             #{qrCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
 
@@ -45,7 +45,6 @@
             is_sale = #{isSale,jdbcType=INTEGER},
             agent_level_id = #{agentLevelId,jdbcType=INTEGER},
             bail = #{bail,jdbcType=DECIMAL},
-            ship_amount = #{shipAmount,jdbcType=DECIMAL},
             sale_num = #{saleNum,jdbcType=BIGINT},
             share_num = #{shareNum,jdbcType=BIGINT},
             qr_code = #{qrCode,jdbcType=VARCHAR},
@@ -55,14 +54,14 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
-        bail, ship_amount, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code, remark
         from sf_shop_sku
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id, 
-        bail, ship_amount, sale_num, share_num, qr_code, remark
+        bail, sale_num, share_num, qr_code, remark
         from sf_shop_sku
     </select>
 

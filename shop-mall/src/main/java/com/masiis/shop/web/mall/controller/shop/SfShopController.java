@@ -88,7 +88,9 @@ public class SfShopController extends BaseController {
             File posterDir = new File(realPath + "static/images/shop/poster/");
             if(!posterDir.exists()) posterDir.mkdirs();
 
-            CreateParseCode.createCode(200, 200, "https://www.tmall.com/", posterDir.getAbsolutePath()+"/"+posterName);
+            String path = request.getContextPath();
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+            CreateParseCode.createCode(200, 200, basePath+"index?shopId="+shopId+"&userPid="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
 
             mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);

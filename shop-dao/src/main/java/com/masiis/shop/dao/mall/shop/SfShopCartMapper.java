@@ -23,7 +23,7 @@ public interface SfShopCartMapper {
 
     int updateByPrimaryKey(SfShopCart record);
 
-    List<SfShopCart>  getShopCartInfoByUserIdAndShopId(@Param("userId")Long userId,@Param("sfShopId")Long sfShopId);
+    List<SfShopCart>  getShopCartInfoByUserIdAndShopId(@Param("userId")Long userId,@Param("sfShopId")Long sfShopId,@Param("isCheck")Integer isCheck);
 
     SfShopCart getProductInfoByUserIdAndShipIdAndSkuId(@Param("userId") Long userId, @Param("shopId") Long shopId,@Param("skuId") Integer skuId);
 }

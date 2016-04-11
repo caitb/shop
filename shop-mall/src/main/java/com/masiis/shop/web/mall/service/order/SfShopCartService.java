@@ -40,8 +40,8 @@ public class SfShopCartService {
      * @author hanzengzhi
      * @date 2016/4/9 10:38
      */
-    public List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long shopId){
-        return sfShopCartMapper.getShopCartInfoByUserIdAndShopId(userId,shopId);
+    public List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long shopId,Integer isCheck){
+        return sfShopCartMapper.getShopCartInfoByUserIdAndShopId(userId,shopId,isCheck);
     }
 
     /**

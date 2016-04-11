@@ -7,6 +7,7 @@ import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserAddressService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,9 @@ import java.util.*;
  */
 @Service
 public class SfOrderPurchaseService {
+
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserAddressService userAddressService;
@@ -65,7 +69,7 @@ public class SfOrderPurchaseService {
             ComUserAddress comUserAddress = getUserAddressByUserId(userId,selectedAddressId);
             map.put("comUserAddress",comUserAddress);
             //获得购物车中的商品信息
-            List<SfShopCart> shopCarts = getShopCartInfoByUserIdAndShopId(userId,sfShopId);
+            List<SfShopCart> shopCarts = getShopCartInfoByUserIdAndShopId(userId,sfShopId,1);
             map.put("shopCarts",shopCarts);
             //获得商品的详情信息
             List<SfShopCartSkuDetail> shopCartSkuDetails = getShopCartSkuBySkuId(shopCarts);
@@ -97,8 +101,8 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 10:52
      */
-    private List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long sfShopId){
-        return sfShopCartService.getShopCartInfoByUserIdAndShopId(userId,sfShopId);
+    private List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long sfShopId,Integer isCheck){
+        return sfShopCartService.getShopCartInfoByUserIdAndShopId(userId,sfShopId,isCheck);
     }
 
     /**
@@ -162,6 +166,7 @@ public class SfOrderPurchaseService {
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Map<String,Object> submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
+        log.info("service生成订单---start");
         Map<String,Object> map = null;
         try{
             map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
@@ -170,9 +175,11 @@ public class SfOrderPurchaseService {
             BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal )map.get("skuTotalShipAmount");
             //获得每款商品的分润信息
+            log.info("获得分润信息---start");
             for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                 getDisDetail(sfShopCartSkuDetail.getSfShopUserId(),sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
             }
+            log.info("获得分润信息---end");
             //插入订单表
             SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
@@ -216,6 +223,7 @@ public class SfOrderPurchaseService {
         }catch (Exception e){
             throw new BusinessException(e);
         }
+        log.info("service生成订单---end");
         return map;
     }
     /**
@@ -235,24 +243,30 @@ public class SfOrderPurchaseService {
         }
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null);
-        for (int i = 0; i < sfUserRelations.size(); i++){
-            /*一条订单的总的分润*/
-            orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-            /*获得一款商品的店铺上级总的分润*/
-            BigDecimal skuDis = skuDisMap.get(skuId);
-            if (skuDis==null){
-                skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
-            }else{
-                skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+        if (sfUserRelations!=null){
+            log.info("获得店铺--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
+            for (int i = 0; i < sfUserRelations.size(); i++){
+                /*一条订单的总的分润*/
+                orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                /*获得一款商品的店铺上级总的分润*/
+                BigDecimal skuDis = skuDisMap.get(skuId);
+                if (skuDis==null){
+                    skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
+                }else{
+                    skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                }
+                skuDisMap.put(skuId,skuDis);
+                /*获得一款商品对应店铺上级分润信息*/
+                List<SfOrderItemDistribution> orderItemDisList = (List<SfOrderItemDistribution>)ordItemDisMap.get(skuId);
+                if (orderItemDisList == null|| orderItemDisList.size() == 0){
+                    orderItemDisList = new LinkedList<SfOrderItemDistribution>();
+                }
+                orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+                ordItemDisMap.put(skuId,orderItemDisList);
             }
-            skuDisMap.put(skuId,skuDis);
-            /*获得一款商品对应店铺上级分润信息*/
-            List<SfOrderItemDistribution> orderItemDisList = (List<SfOrderItemDistribution>)ordItemDisMap.get(skuId);
-            if (orderItemDisList == null|| orderItemDisList.size() == 0){
-                orderItemDisList = new LinkedList<SfOrderItemDistribution>();
-            }
-            orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
-            ordItemDisMap.put(skuId,orderItemDisList);
+        }else{
+            log.info("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
+            throw new BusinessException("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
         }
     }
     /**

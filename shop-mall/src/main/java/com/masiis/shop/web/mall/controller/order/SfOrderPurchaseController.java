@@ -3,6 +3,7 @@ package com.masiis.shop.web.mall.controller.order;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,11 @@ import java.util.Map;
 @RequestMapping("orderPurchase")
 public class SfOrderPurchaseController extends BaseController {
 
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private SfOrderPurchaseService sfOrderPurchaseService;
+
 
     /**
      * 获得确认订单界面，地址信息和商品信息

@@ -48,7 +48,7 @@
                         </section>
                         <section class="sec3">
                             <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}')">库存维护</p>
-                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}')">补货</p>
+                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}',${sku.id})">补货</p>
                         </section>
                     </c:forEach>
                 </div>
@@ -83,6 +83,7 @@
         <div class="back_b">
             <p>补货信息</p>
             <h4>商品:　　<span id="addsku"></span></h4>
+            <input type="text" id="addSkuId" style="display: none">
             <h4>本次最多可补货数量:　　<span id="maxStock"></span></h4>
             <h4>补货数量:　　<div>
                 <span class="jian">-</span>
@@ -160,9 +161,10 @@
         i--;
         $(".number").val(i)
     })
-    function buhuokucun(a,b){
+    function buhuokucun(a,b,d){
         $("#addsku").html(a);
         $("#maxStock").html(b);
+        $("#addSkuId").val(d);
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
     }
@@ -171,7 +173,7 @@
         $(".back_b").hide();
     })
     $(".b_que").on("click",function(){
-        var skuId = $("#skuId").val();
+        var skuId = $("#addSkuId").val();
         $.ajax({
             url: '<%=basePath%>product/user/addStock.do',
             type: 'post',

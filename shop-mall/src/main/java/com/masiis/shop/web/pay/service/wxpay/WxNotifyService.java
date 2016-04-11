@@ -3,6 +3,7 @@ package com.masiis.shop.web.pay.service.wxpay;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.SfOrderPayment;
 import com.masiis.shop.web.mall.beans.pay.wxpay.CallBackNotifyReq;
+import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import com.masiis.shop.web.mall.service.order.SfOrderPaymentService;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
 import org.apache.log4j.Logger;
@@ -18,7 +19,7 @@ public class WxNotifyService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private SfOrderPaymentService paymentService;
+    private SfOrderPayService orderPayService;
 
     /**
      * 处理微信支付订单异步回调业务
@@ -31,7 +32,7 @@ public class WxNotifyService {
         String orderType = String.valueOf(paySerialNum.charAt(0));
         if("S".equals(orderType)){
             try {
-                SfOrderPayment payment = paymentService.findOrderPaymentBySerialNum(paySerialNum);
+                SfOrderPayment payment = orderPayService.findOrderPaymentBySerialNum(paySerialNum);
                 if(payment == null){
                     throw new BusinessException("该支付流水号不存在,pay_serial_num:" + paySerialNum);
                 }
@@ -42,7 +43,7 @@ public class WxNotifyService {
                 }
                 log.info("处理订单开始,类型为B,支付流水号为:" + paySerialNum);
                 // 调用borderService的方法处理
-                paymentService.ordPaySuccModStatus(payment, param.getTransaction_id());
+                orderPayService.ordPaySuccModStatus(payment, param.getTransaction_id());
             } catch (Exception e) {
                 // 判断异常类型
                 if(e instanceof BusinessException && "".equals(e.getMessage())){

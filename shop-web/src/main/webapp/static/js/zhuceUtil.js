@@ -7,7 +7,7 @@ $(function () {
         return true;
     }
     var mobileCheckFun = function (data) {
-        var bl = true;
+        var bl = false;
         if ($('input[name="danx"]:checked').attr("class") == "shi") {
             if ($(data).val() == "") {
                 alert("手机号不能为空");
@@ -19,6 +19,10 @@ $(function () {
                 return false;
             }
             var para = {};
+            var checkLevel = $(".on");
+            if (checkLevel != null) {
+                para.agentLevel = checkLevel.attr("levelId");
+            }
             para.skuId = skuId;
             para.pMobile = $(data).val();
             $.ajax({
@@ -30,9 +34,7 @@ $(function () {
                 success: function (rdata) {
                     if (rdata && rdata.isError == false) {
                         pUserId = rdata.pUserId;
-                        var levelId = rdata.levelId;
-                        var checkLevelId = $(".dengji .on").attr("levelId");
-
+                        bl = true;
                     } else {
                         alert(rdata.message);
                         bl = false;
@@ -54,18 +56,18 @@ $(function () {
             return true;
         }
     }
-    $("#weixin").on("blur", function () {
-        if (weixinCheckFun(this)) {
-            $(this).next().hide();
-            $(this).css({"color": "black"})
-        }
-    })
-    $("#pMobile").on("blur", function () {
-        if (mobileCheckFun(this)) {
-            $(this).next().hide();
-            $(this).css({"color": "black"})
-        }
-    })
+    //$("#weixin").on("blur", function () {
+    //    if (weixinCheckFun(this)) {
+    //        $(this).next().hide();
+    //        $(this).css({"color": "black"})
+    //    }
+    //})
+    //$("#pMobile").on("blur", function () {
+    //    if (mobileCheckFun(this)) {
+    //        $(this).next().hide();
+    //        $(this).css({"color": "black"})
+    //    }
+    //})
     $("#next").click(function () {
         var n = 0;
         if (!weixinCheckFun($("#weixin"))) {
@@ -127,6 +129,9 @@ $(function () {
             }
         });
     });
+    /*
+     * 是否有推荐人
+     * */
     $("[name='danx']").on("click", function () {
         if ($(this).attr("class") == "shi") {
             $(".dengji input").attr("disabled", false)
@@ -135,17 +140,15 @@ $(function () {
             $("#hehuo").hide();
         }
     });
+    /*
+     * 选择合伙人等级
+     * */
     $(".dengji p").on("click", function () {
         $(this).addClass("on").siblings().removeClass("on")
     })
-    $(".onc").on("click", function (event) {
-        var event = event || event.window;
-        event.stopPropagation();
-        $(this).next().show();
-    })
-    $("body").on("click", function () {
-        $(".gao").hide();
-    })
+    /*
+     * 返回修改
+     * */
     $("#getBack").on("click", function (event) {
         var event = event || event.window;
         event.stopPropagation();

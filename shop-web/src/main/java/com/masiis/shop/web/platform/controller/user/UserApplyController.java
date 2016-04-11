@@ -228,14 +228,25 @@ public class UserApplyController extends BaseController {
     @RequestMapping("/checkPMobile.do")
     public String checkPMobile(HttpServletRequest request,
                                @RequestParam(value = "skuId", required = true) Integer skuId,
-                               @RequestParam(value = "pMobile", required = true) String pMobile) {
+                               @RequestParam(value = "pMobile", required = true) String pMobile,
+                               @RequestParam(value = "agentLevel", required = false) Integer agentLevel) {
         JSONObject jsonObject = new JSONObject();
         try {
+            if (skuId == null || skuId <= 0) {
+                throw new BusinessException("商品skuId有误");
+            }
+            if (StringUtils.isBlank(pMobile)) {
+                throw new BusinessException("手机号有误");
+            }
             ComUser pUser = null;
             PfUserSku pfUserSku = null;
             if (StringUtils.isNotBlank(pMobile)) {
                 pUser = userService.getUserByMobile(pMobile);
-                userSkuService.checkParentData(pUser, skuId);
+                if (agentLevel == null || agentLevel <= 0) {
+                    userSkuService.checkParentData(pUser, skuId);
+                } else {
+                    userSkuService.checkParentData(pUser, skuId, agentLevel);
+                }
             } else {
                 throw new BusinessException("手机号为空");
             }

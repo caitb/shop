@@ -81,8 +81,9 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("代理等级有误");
             }
             PfUserSku pfUserSku = null;
+            ComUser pUser = null;
             if (pUserId != null && pUserId > 0) {
-                ComUser pUser = userService.getUserById(pUserId);
+                pUser = userService.getUserById(pUserId);
                 pfUserSku = userSkuService.checkParentData(pUser, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
@@ -119,7 +120,15 @@ public class BOrderController extends BaseController {
             order.setShipManName("");
             order.setShipType(0);
             order.setShipRemark("");
-            order.setSendType(comUser.getSendType());
+            if (comUser.getSendType() == 0) {
+                if (pUser == null) {
+                    order.setSendType(comUser.getSendType());
+                } else {
+                    order.setSendType(pUser.getSendType());
+                }
+            } else {
+                order.setSendType(comUser.getSendType());
+            }
             order.setOrderType(0);
             order.setOrderStatus(0);
             order.setShipStatus(0);

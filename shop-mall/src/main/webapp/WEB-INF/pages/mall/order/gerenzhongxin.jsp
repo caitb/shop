@@ -9,8 +9,8 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-   <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="dynmic">
                     <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0">
-                        <span><img src="<%=path%>/static/images/fukuan.png" alt=""></span>
+                        <span><img src="<%=path%>/static/images/fukuan.png" alt=""><b>1</b></span>
                         <span>待付款</span></a>
                     </p>
                     <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">
@@ -68,5 +68,21 @@
                     </ul>
                 </nav>
         </div>
+        <footer>
+            <div>
+                <p>
+                    <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+                    <span>首页</span>
+                </p>
+                <p>
+                    <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
+                    <span>分享计划</span>
+                </p>
+                <p class="active">
+                    <span><img src="<%=path%>/static/images/footer_x%20(2).png" alt=""></span>
+                    <span>个人中心</span>
+                </p>
+            </div>
+        </footer>
 </body>
 </html>

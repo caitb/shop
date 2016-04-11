@@ -149,6 +149,8 @@ public class WxPayUserService {
         // 小铺用户可提现额度减少
         account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
         accountMapper.updateByPrimaryKey(account);
+        // account变动记录
+
         // 修改申请记录的状态
         apply.setAuditType(SfUserExtractAuditTypeEnum.ALREADY_PAY.getCode());
         applyMapper.updateByPrimaryKey(apply);

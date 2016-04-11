@@ -63,8 +63,8 @@
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
     <div class="sec6">
-        <p><a href="index.html">联系卖家</a></p>
-        <p><a href="gerenzhongxin.html">索要发票</a></p>
+        <p><a onclick="contactSeller()">联系卖家</a></p>
+        <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
     <div class="sec5">
         <p>关注<b>麦链商城</b>微信公众号，查看订单最新状态</p>
@@ -73,17 +73,17 @@
     </div>
 </div>
 <div class="back"></div>
-<div class="back_l">
+<div id="contactSellerDivId" class="back_l">
     <p>索要发票</p>
     <p>请联系：00000000</p>
     <button>知道了</button>
-    <span class="close">×</span>
+    <span class="close" onclick="closeContactSeller()">×</span>
 </div>
-<div class="back_l back_s">
+<div id="askForInvoiceDivId" class="back_l back_s">
     <p>联系卖家</p>
     <p>请联系：00000000</p>
     <button>知道了</button>
-    <span class="close">×</span>
+    <span onclick="closeAskForInvoice()" class="close">×</span>
 </div>
 <div class="back_f">
     <p>支付成功！</p>
@@ -95,10 +95,19 @@
 </div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
-    $(".close").on("click", function () {
-        $(this).parent().hide();
-        $(".back").hide();
-    })
+    function contactSeller(){
+        $("#contactSellerDivId").show();
+    }
+    function closeContactSeller(){
+        $("#contactSellerDivId").hide();
+    }
+    function askForInvoice(){
+        $("#askForInvoiceDivId").show();
+    }
+    function closeAskForInvoice(){
+        $("#askForInvoiceDivId").hide();
+    }
+
 </script>
 </body>
 </html>

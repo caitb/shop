@@ -108,7 +108,7 @@ public class WxPayUserService {
 
             // 小铺用户可提现额度减少
             account.setExtractableFee(account.getExtractableFee().subtract(apply.getExtractFee()));
-            int affectNums = accountMapper.updateByPrimaryKey(account);
+            int affectNums = accountMapper.updateByIdAndVersion(account);
             if(affectNums == 0){
                 // update冲突,再重新查询检查一次
                 log.error("account更新失败");

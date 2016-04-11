@@ -25,4 +25,12 @@ public interface SfUserAccountMapper {
     int updateByPrimaryKey(SfUserAccount record);
 
     SfUserAccount selectByUserId(Long userId);
+
+    /**
+     * 根据id和version更新
+     *
+     * @param account
+     * @return
+     */
+    int updateByIdAndVersion(SfUserAccount account);
 }

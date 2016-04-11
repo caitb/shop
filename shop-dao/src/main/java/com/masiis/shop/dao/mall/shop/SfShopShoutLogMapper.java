@@ -8,9 +8,12 @@
 package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShopShoutLog;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 import java.util.Map;
-
+@Repository
 public interface SfShopShoutLogMapper {
     int deleteByPrimaryKey(Long id);
 

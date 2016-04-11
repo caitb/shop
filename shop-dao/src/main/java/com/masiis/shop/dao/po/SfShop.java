@@ -36,7 +36,7 @@ public class SfShop {
     /**
      * 小铺说明
      */
-    private byte[] explanation;
+    private String explanation;
     /**
      * 呐喊次数
      */
@@ -97,10 +97,10 @@ public class SfShop {
     public void setLogo(String logo) {
         this.logo = logo == null ? null : logo.trim();
     }
-    public byte[] getExplanation() {
+    public String getExplanation() {
         return explanation;
     }
-    public void setExplanation(byte[] explanation) {
+    public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
     public Long getShoutNum() {

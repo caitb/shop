@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
@@ -70,6 +71,8 @@ public class PayBOrderService {
     private PfBorderConsigneeMapper pfBorderConsigneeMapper;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SfShopMapper sfShopMapper;
 
     /**
      * 支付回调统一入口
@@ -129,6 +132,11 @@ public class PayBOrderService {
             comUser.setIsAgent(1);
             comUserMapper.updateByPrimaryKey(comUser);
         }
+        log.info("<5>为用户生成小铺");
+        SfShop sfShop=new SfShop();
+        sfShop.setCreateTime(new Date());
+        sfShop.setStatus(1);
+        sfShop.setExplanation("");
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<5>修改用户sku代理关系数据");
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());

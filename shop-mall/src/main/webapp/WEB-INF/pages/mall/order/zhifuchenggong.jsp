@@ -41,21 +41,21 @@
     </section>
     <section class="sec2">
         <p class="photo">
-            <a href="../html/xiangqing.html">
+            <a>
                 <img src="<%=path%>/static/images/shenqing_1.png" alt="">
             </a>
         </p>
         <c:forEach items="${orderItems}" var="orderItem">
-        <div>
-            <h2>${orderItem.skuName}</h2>
-            <h3>规格：<span>默认</span></h3>
-            <h3>￥${orderItem.originalPrice}<b>x${quantity}</b></h3>
+            <div>
+                <h2>${orderItem.skuName}</h2>
+                <h3>规格：<span>默认</span></h3>
+                <h3>￥${orderItem.originalPrice}<b>x${quantity}</b></h3>
 
-        </div>
+            </div>
         </c:forEach>
     </section>
     <section class="sec3">
-        <p>买家留言： <input type="text"></p>
+        <p>买家留言：${order.userMessage}</p>
     </section>
     <section class="sec4">
         <p><b>合计：</b><span>￥${order.productAmount}</span></p>

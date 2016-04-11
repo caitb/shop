@@ -5,6 +5,7 @@ import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ import java.util.Map;
  */
 @Service
 public class SfOrderPayService {
+
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private SfOrderService ordService;
     @Resource
@@ -33,6 +37,8 @@ public class SfOrderPayService {
     private SfOrderItemService ordItemService;
     @Resource
     private SfOrderPaymentMapper paymentMapper;
+    @Resource
+    private SfOrderPaymentService ordPaymentSer;
 
     /**
      * 订单支付成功修改状态
@@ -41,28 +47,52 @@ public class SfOrderPayService {
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public void ordPaySuccModStatus(SfOrderPayment orderPayment , String outOrderId){
-        //获得订单信息
+        log.info("微信支付完进行异步回调----start");
         try{
             //更新支付订单
+            log.info("更新支付订单----start");
             orderPayment.setOutOrderId(outOrderId);
             orderPayment.setIsEnabled(1);//设置为有效
+            int i = updateOrderPayment(orderPayment);
+            if (i == 1){
+                log.info("更新支付订单成功----end");
+            }else{
+                log.info("更新支付订单失败----end");
+                throw new BusinessException("更新支付订单失败----end");
+            }
             //更新订单
             SfOrder order = ordService.getOrderById(orderPayment.getSfOrderId());
-            int i = updateOrder(order);
+            log.info("更新订单----start");
+            int ii = updateOrder(order);
+            if (ii == 1){
+                log.info("更新订单成功----end");
+            }else{
+                log.info("更新订单失败----end");
+                throw new BusinessException("更新订单失败----end");
+            }
             //更新订单操作日志
+            log.info("更新订单操作日志---start");
             SfOrderOperationLog ordOperLog = ordOperLogService.getOrdOperLogByOrderId(order.getId());
-            int ii = updateOrdOperLog(ordOperLog);
+            log.info("更新订单操作日志----start");
+            int iii = updateOrdOperLog(ordOperLog);
+            if (iii ==1 ){
+                log.info("更新订单操作日志成功----end");
+            }else{
+                log.info("更新订单操作日志失败----end");
+                throw new BusinessException("更新订单操作日志失败----end\"");
+            }
         }catch (Exception e){
             throw new BusinessException(e);
         }
+        log.info("微信支付完进行异步回调---end");
     }
     /**
      * 更新支付订单
      * @author hanzengzhi
      * @date 2016/4/11 10:34
      */
-    private void updateOrderPayment(SfOrderPayment orderPayment){
-
+    private int updateOrderPayment(SfOrderPayment orderPayment){
+        return ordPaymentSer.updateOrderPayment(orderPayment);
     }
     /**
      * 更新订单状态

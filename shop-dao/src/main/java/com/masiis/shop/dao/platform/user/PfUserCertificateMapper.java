@@ -11,6 +11,8 @@ import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface PfUserCertificateMapper {
     int deleteByPrimaryKey(Long id);
@@ -32,4 +34,6 @@ public interface PfUserCertificateMapper {
     List<PfUserCertificate> selectByCondition(PfUserCertificate pfUserCertificate);
 
     List<PfUserCertificate> selectByUserId(Long userId);
+
+    List<PfUserCertificate> selectByMap(Map<String, Object> conditionMap);
 }

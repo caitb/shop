@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/jinhuoxiangqing.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>

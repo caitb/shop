@@ -67,7 +67,7 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/3/16 15:00
      */
     @RequestMapping("/borderDetils.html")
-    public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
+    public ModelAndView borderDetils(HttpServletRequest request, Long id, Long shopId) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -109,17 +109,17 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/4/8 18:00
      */
     @RequestMapping("/stockOrder")
-    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Integer sendType) throws Exception {
+    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
         ComUser comUser = getComUser(request);
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, sendType);
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, shopId);
         String index=null;
-        if(orderStatus==null && sendType==null){
+        if(orderStatus==null){
             index="0";//全部
         }else if (orderStatus == 0) {
             index="1";//待付款
         }else if (orderStatus == 7) {
             index="2";//代发货
-        } else if (orderStatus == 8 && sendType==2){
+        } else if (orderStatus == 8){
             index="3";//待收货
         } else if (orderStatus == 3) {
             index="4";//已完成
@@ -148,7 +148,8 @@ public class SfOrderManagerController extends BaseController {
      */
     @RequestMapping("/clickSfOrderType.do")
     @ResponseBody
-    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
+    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index
+                                                                    , @RequestParam(required = true) Long shopId) {
         List<SfOrder> sfOrders=null;
         try {
             ComUser user = getComUser(request);
@@ -157,15 +158,15 @@ public class SfOrderManagerController extends BaseController {
                 request.getSession().setAttribute("comUser", user);
             }
             if(index==0){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
             }else if(index==1){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, shopId);
             }else if(index==2){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, shopId);
             }else if(index==3){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, 2);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, shopId);
             }else if(index==4){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, shopId);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

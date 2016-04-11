@@ -59,4 +59,6 @@ public interface PfUserSkuMapper {
      */
     Map<String, String> countChild(String sPIds);
 
+    List<PfUserSku> selectByMap(Map<String, Object> conditionMap);
+
 }

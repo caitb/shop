@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by JingHao on 2016/4/10 0010.
@@ -41,10 +40,11 @@ public class SfShopCartController extends BaseController {
                                    @RequestParam(required = true) Integer quantity){
         JSONObject object = new JSONObject();
         try{
-            HttpSession session = request.getSession();
-            ComUser comUser = (ComUser) session.getAttribute("comUser");
-            sfShopCartService.addProductToCart(1L, 1L, skuId, quantity);
-            object.put("isError", false);
+            ComUser user = getComUser(request);
+            if(user!=null){
+                sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
+                object.put("isError", false);
+            }
         }
         catch (Exception ex){
             object.put("isError", true);

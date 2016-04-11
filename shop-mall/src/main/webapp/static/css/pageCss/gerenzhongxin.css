@@ -5,7 +5,7 @@
 }
 .wrap .na {
   width: 100%;
-  background: url("../images/bdbanner.png") no-repeat;
+  background: url("/static/images/bdbanner.png") no-repeat;
   display: -webkit-box;
   margin-bottom: 5px;
   padding: 20px 10px;

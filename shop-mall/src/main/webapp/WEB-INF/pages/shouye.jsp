@@ -35,11 +35,13 @@
                 <p>
                     <span>麦链商城官方认证</span>
                     <span>商家已缴纳${bail}保证金</span>
-                </p><c:forEach begin="0" end="${size}" step="2" var="i">
-                <p><c:forEach items="${SfShopDetails}" begin="${i}" end="${i+1}" var="sf">
+                </p>
+                <%--<c:forEach begin="0" end="${size}" step="2" var="i">--%>
+                <p><c:forEach items="${SfShopDetails}" begin="0" end="0" var="sf">
                     <span style="background:url('<%=path%>/static/images/f.png')no-repeat 0;background-size: 14px 14px;">${sf.icon}${sf.skuName}${sf.agentLevelName}合伙人认证</span>
                     </c:forEach>
-                </p></c:forEach>
+                </p>
+                <%--</c:forEach>--%>
             </div>
             <img src="<%=path%>/static/images/admin.png" alt="">
         </div>

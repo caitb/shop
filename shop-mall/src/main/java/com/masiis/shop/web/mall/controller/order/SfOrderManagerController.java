@@ -148,8 +148,7 @@ public class SfOrderManagerController extends BaseController {
      */
     @RequestMapping("/clickSfOrderType.do")
     @ResponseBody
-    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index
-                                                                    , @RequestParam(required = true) Long shopId) {
+    public List<SfOrder> clickSfOrderType(HttpServletRequest request, @RequestParam(required = true) Integer index) {
         List<SfOrder> sfOrders=null;
         try {
             ComUser user = getComUser(request);
@@ -157,6 +156,7 @@ public class SfOrderManagerController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
+            Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
             }else if(index==1){

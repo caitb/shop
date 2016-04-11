@@ -381,10 +381,8 @@ public class BOrderController extends BaseController {
         realName = comUser.getRealName();
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
         skuName = pfBorderItems.get(0).getSkuName();
-        //获取用户商品信息
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), pfBorderItems.get(0).getSkuId());
         //获取用户代理等级
-        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfUserSku.getAgentLevelId());
+        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfBorderItems.get(0).getAgentLevelId());
         levelName = comAgentLevel.getName();
         //获取上级合伙人
         if (pfBorder.getUserPid() == 0) {
@@ -406,8 +404,8 @@ public class BOrderController extends BaseController {
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
         mav.addObject("pRealName", pRealName);
-        mav.addObject("userSkuId", pfUserSku.getId());
         mav.addObject("sendType", sendType);
+        mav.addObject("userId", pfBorder.getUserId());
         mav.setViewName("platform/order/lingquzhengshu");
         return mav;
     }

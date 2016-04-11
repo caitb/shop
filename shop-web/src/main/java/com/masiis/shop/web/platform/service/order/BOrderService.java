@@ -170,6 +170,9 @@ public class BOrderService {
         pfBorderItem.setBailAmount(BigDecimal.ZERO);
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
+        pfBorderItem.setAgentLevelId(pfUserSku.getAgentLevelId());
+        pfBorderItem.setDiscount(pfSkuAgent.getDiscount());
+        pfBorderItem.setBailAmount(BigDecimal.ZERO);
         pfBorderItemMapper.insert(pfBorderItem);
         //添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();

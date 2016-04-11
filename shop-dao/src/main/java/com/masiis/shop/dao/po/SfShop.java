@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-04-08 Created
+ * 2016-04-11 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -48,14 +48,15 @@ public class SfShop {
     /**
      * 小铺销售额
      */
-    private Long saleAmount;
+    private BigDecimal saleAmount;
+    /**
+     * 运费，0为包邮
+     */
+    private BigDecimal shipAmount;
     /**
      * 二维码图片全称(不包括路径)
      */
     private String qrCode;
-
-    /*运费*/
-    private BigDecimal shipAmount;
     /**
      * 备注
      */
@@ -101,7 +102,7 @@ public class SfShop {
         return explanation;
     }
     public void setExplanation(String explanation) {
-        this.explanation = explanation;
+        this.explanation = explanation == null ? null : explanation.trim();
     }
     public Long getShoutNum() {
         return shoutNum;
@@ -115,11 +116,17 @@ public class SfShop {
     public void setPageviews(Long pageviews) {
         this.pageviews = pageviews;
     }
-    public Long getSaleAmount() {
+    public BigDecimal getSaleAmount() {
         return saleAmount;
     }
-    public void setSaleAmount(Long saleAmount) {
+    public void setSaleAmount(BigDecimal saleAmount) {
         this.saleAmount = saleAmount;
+    }
+    public BigDecimal getShipAmount() {
+        return shipAmount;
+    }
+    public void setShipAmount(BigDecimal shipAmount) {
+        this.shipAmount = shipAmount;
     }
     public String getQrCode() {
         return qrCode;
@@ -132,13 +139,5 @@ public class SfShop {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    public BigDecimal getShipAmount() {
-        return shipAmount;
-    }
-
-    public void setShipAmount(BigDecimal shipAmount) {
-        this.shipAmount = shipAmount;
     }
 }

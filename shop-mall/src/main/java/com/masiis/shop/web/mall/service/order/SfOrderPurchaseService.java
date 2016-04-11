@@ -212,9 +212,6 @@ public class SfOrderPurchaseService {
                                         log.info("插入子订单分润表成功--end");
                                     }
                                 }
-                            }else{
-                                log.info("根据sku获得订单子表分润信息为null");
-                                throw new BusinessException("根据sku获得订单子表分润信息为null");
                             }
                         }else{
                             log.info("插入子订单失败---end");

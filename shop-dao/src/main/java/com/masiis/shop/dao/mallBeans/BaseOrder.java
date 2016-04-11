@@ -21,7 +21,7 @@ public class BaseOrder {
     /**
      * 订单商品
      */
-    private List<SfOrderItem> SfOrderItems;
+    private List<SfOrderItem> sfOrderItems;
     //private PfBorderConsignee pfBorderConsignee;
 
     public void setPidUserName(String pidUserName) {
@@ -32,16 +32,16 @@ public class BaseOrder {
         return totalQuantity;
     }
 
-    public List<SfOrderItem> getSfOrderItems() {
-        return SfOrderItems;
-    }
-
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
 
     public void setSfOrderItems(List<SfOrderItem> sfOrderItems) {
-        SfOrderItems = sfOrderItems;
+        this.sfOrderItems = sfOrderItems;
+    }
+
+    public List<SfOrderItem> getSfOrderItems() {
+        return sfOrderItems;
     }
 
     public void setTotalQuantity(Integer totalQuantity) {

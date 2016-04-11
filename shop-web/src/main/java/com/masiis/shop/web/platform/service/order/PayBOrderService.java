@@ -410,6 +410,8 @@ public class PayBOrderService {
         }
         //拿货方式(0未选择1平台代发2自己发货)
         if (sendType == 1) {
+            pfBorder.setSendType(sendType);
+            pfBorderMapper.updateById(pfBorder);
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         } else if (sendType == 2) {

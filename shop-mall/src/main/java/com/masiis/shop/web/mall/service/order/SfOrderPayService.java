@@ -73,13 +73,12 @@ public class SfOrderPayService {
             //更新订单操作日志
             log.info("更新订单操作日志---start");
             SfOrderOperationLog ordOperLog = ordOperLogService.getOrdOperLogByOrderId(order.getId());
-            log.info("更新订单操作日志----start");
             int iii = updateOrdOperLog(ordOperLog);
             if (iii ==1 ){
                 log.info("更新订单操作日志成功----end");
             }else{
                 log.info("更新订单操作日志失败----end");
-                throw new BusinessException("更新订单操作日志失败----end\"");
+                throw new BusinessException("更新订单操作日志失败----end");
             }
         }catch (Exception e){
             throw new BusinessException(e);
@@ -182,7 +181,7 @@ public class SfOrderPayService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/paySuccessCallBack.html?orderId="+orderId);
+        wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }

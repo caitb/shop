@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
@@ -278,8 +279,11 @@
 <script src="<%=basePath%>static/ace2/js/bootstrap.min.js"></script>
 
 <!-- page specific plugin scripts -->
-<script src="<%=basePath%>static/ace2/js/jquery.dataTables.min.js"></script>
-<script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js"></script>
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js"></script>
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js"></script>
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js"></script>
+<script src="<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
 
@@ -298,6 +302,12 @@
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
+            queryParams: function(params){
+                <c:if test="${pid != null}">
+                params.pid = ${pid};
+                </c:if>
+                return params;
+            },
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -418,6 +428,9 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
+                            if(row && row.pfUserSku.pid == 0){
+                                return '平台';
+                            }
                             if(row && row.parentUser && row.parentUser.realName){
                                 return row.parentUser.realName;
                             }
@@ -444,8 +457,9 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserCertificate && row.pfUserCertificate.beginTime)
-                            return new Date(row.pfUserCertificate.beginTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            if(row && row.pfUserCertificate && row.pfUserCertificate.beginTime){
+                                return new Date(row.pfUserCertificate.beginTime).pattern('yyyy-MM-dd HH:mm:ss');
+                            }
                         }
                     },
                     {
@@ -465,20 +479,18 @@
                         }
                     },
                     {
-                        field: 'lowerCount',
+                        field: 'lowerLevelCount',
                         title: '下级合伙人',
                         sortable: true,
                         //editable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            //return '<a class="xiaji" href="javascript:void(0);">'+row.lowerCount+'人</a>';
-                            return '<a href="<%=basePath%>userSku/list.shtml?pid='+row.comUser.id+'">'+row.lowerCount+'人</a>';
+                            return '<a class="lower" href="javascript:void(0);">'+row.lowerLevelCount+'人</a>';
                         },
                         events: {
-                            'click .xiaji': function(e, value, row, index){
-                                $('#table').bootstrapTable('destroy');
-                                window.location.open('<%=basePath%>userSku/list.shtml?pid=' + row.comUser.id);
+                            'click .lower': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('lower'+row.comUser.id, row.comUser.realName+'的下级合伙人', '<%=basePath%>agentUser/list.shtml?pid='+row.pfUserSku.id);
                             }
                         }
                     },
@@ -584,42 +596,44 @@
     }
 
     $(function () {
-        var scripts = [
-                    location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',
-                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',
-                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',
-                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',
-                    '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'
-                ],
-                eachSeries = function (arr, iterator, callback) {
-                    callback = callback || function () {
-                            };
-                    if (!arr.length) {
-                        return callback();
-                    }
-                    var completed = 0;
-                    var iterate = function () {
-                        iterator(arr[completed], function (err) {
-                            if (err) {
-                                callback(err);
-                                callback = function () {
-                                };
-                            }
-                            else {
-                                completed += 1;
-                                if (completed >= arr.length) {
-                                    callback(null);
-                                }
-                                else {
-                                    iterate();
-                                }
-                            }
-                        });
-                    };
-                    iterate();
-                };
+        <%--var scripts = [--%>
+                    <%--location.search.substring(1) || '<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table.min.js',--%>
+                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-export.js',--%>
+                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/tableExport.js',--%>
+                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-table-editable.js',--%>
+                    <%--'<%=basePath%>static/class/bootstrap-3.3.5-dist/js/bootstrap-editable.js'--%>
+                <%--],--%>
+                <%--eachSeries = function (arr, iterator, callback) {--%>
+                    <%--callback = callback || function () {--%>
+                            <%--};--%>
+                    <%--if (!arr.length) {--%>
+                        <%--return callback();--%>
+                    <%--}--%>
+                    <%--var completed = 0;--%>
+                    <%--var iterate = function () {--%>
+                        <%--iterator(arr[completed], function (err) {--%>
+                            <%--if (err) {--%>
+                                <%--callback(err);--%>
+                                <%--callback = function () {--%>
+                                <%--};--%>
+                            <%--}--%>
+                            <%--else {--%>
+                                <%--completed += 1;--%>
+                                <%--if (completed >= arr.length) {--%>
+                                    <%--callback(null);--%>
+                                <%--}--%>
+                                <%--else {--%>
+                                    <%--iterate();--%>
+                                <%--}--%>
+                            <%--}--%>
+                        <%--});--%>
+                    <%--};--%>
+                    <%--iterate();--%>
+                <%--};--%>
 
-        eachSeries(scripts, getScript, initTable);
+        <%--eachSeries(scripts, getScript, initTable);--%>
+
+        initTable();
     });
 
     function getScript(url, callback) {

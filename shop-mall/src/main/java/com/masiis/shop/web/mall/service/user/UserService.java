@@ -285,10 +285,12 @@ public class UserService {
                 throw new BusinessException("");
             }
             wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
+            log.info("wxUser:" + wxUser);
         }
 
         // 无unionid,创建comuser和comwxuser
         if(user == null){
+            log.info("创建新comUser");
             user = createComUser(userRes);
             insertComUser(user);
             accountService.createAccountByUser(user);
@@ -296,10 +298,12 @@ public class UserService {
         }
 
         if(wxUser == null) {
+            log.info("创建新comWxUser");
             // 无openid创建新的wxUser
             wxUser = createWxUserInit(res, userRes, user);
             wxUserMapper.insert(wxUser);
         } else {
+            log.info("更新comWxUser");
             // 有openid,更新这个openid数据
             updateWxUserByActkn(res, userRes, wxUser);
             wxUserMapper.updateByPrimaryKey(wxUser);

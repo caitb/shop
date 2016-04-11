@@ -22,7 +22,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Date:2016/4/7
@@ -105,6 +107,41 @@ public class SfShopController extends BaseController {
 
         mav.setViewName("error");
         return mav;
+    }
+
+    @RequestMapping("/getSkuPoster")
+    @ResponseBody
+    public Object getSkuPoster(HttpServletRequest request, HttpServletResponse response, Long shopId, Integer skuId){
+        //ModelAndView mav = new ModelAndView("mall/shop/skuPoster");
+
+        try {
+            ComUser comUser = getComUser(request);
+            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            String realPath = request.getServletContext().getRealPath("/");
+            String posterName = comUser.getId() + "-" + shopId + "-" + skuId + ".jpg";
+
+            File posterDir = new File(realPath + "static/images/shop/poster/");
+            if(!posterDir.exists()) posterDir.mkdirs();
+
+            String path = request.getContextPath();
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+            CreateParseCode.createCode(300, 300, basePath+"shop/detail?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
+            DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
+
+            Map<String, Object> dataMap = new HashMap<String, Object>();
+            dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);
+            dataMap.put("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
+            dataMap.put("userName", comUser.getWxNkName());
+            dataMap.put("skuName", skuService.getSkuById(skuId).getName());
+            dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
+            return dataMap;
+        } catch (Exception e) {
+            log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
+            e.printStackTrace();
+        }
+
+        //mav.setViewName("error");
+        return "error";
     }
 
     /**

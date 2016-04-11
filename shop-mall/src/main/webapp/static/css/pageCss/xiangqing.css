@@ -293,6 +293,14 @@ footer .sec3 p a {
     margin: 1em auto;
     border-radius: 5px;
 }
+
+.back_f canvas{
+    display: block;
+    width: 80%;
+    margin: 1em auto;
+    border-radius: 5px;
+}
+
 .back_f p{
     margin: 2em 10px  5px 10px;
 }

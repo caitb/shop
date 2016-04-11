@@ -191,7 +191,8 @@ public class SfOrderManagerController extends BaseController {
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
 //        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+        Long shopId =(Long) request.getSession().getAttribute("shopId");
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();

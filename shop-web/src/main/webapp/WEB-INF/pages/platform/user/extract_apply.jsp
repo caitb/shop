@@ -52,7 +52,7 @@
                     </c:otherwise>
                 </c:choose>
             <h1>
-                转出金额<input id="extractMoneyId" type="text" placeholder="输入金额" style="font-size:14px;">
+                转出金额<input id="extractMoneyId" type="tel"  placeholder="输入金额" style="font-size:14px;">
             </h1>
             <h2>您当前可提现的金额为<span>￥${extractMoney}</span></h2>
             <botton id="extractBtnId">

@@ -40,6 +40,13 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
+    <!--根据订单id获得订单的操作日志-->
+    <select id="getOrdOperLogByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, create_man, sf_order_id, sf_order_status, remark
+        from sf_order_operation_log
+        where sf_order_id = #{sfOrderId,jdbcType=BIGINT}
+    </select>
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, sf_order_id, sf_order_status, remark
         from sf_order_operation_log

@@ -40,6 +40,8 @@ public class SfOrderPurchaseService {
     @Resource
     private SfOrderService sfOrderService;
     @Resource
+    private SfOrderOperationLogService ordOperLogService;
+    @Resource
     private SfOrderItemService sfOrderItemService;
     @Resource
     private SfOrderItemDistributionService orderItemDisService;
@@ -189,6 +191,16 @@ public class SfOrderPurchaseService {
                 log.info("插入订单成功---end");
                 map.put("orderCode",sfOrder.getOrderCode());
                 map.put("orderId",sfOrder.getId());
+                //插入订单操作操作日志
+                log.info("插入订单操作日志---start");
+                SfOrderOperationLog ordOperLog = generateSfOrderOperationLog(null,sfOrder.getId(),0);
+                int _i =ordOperLogService.insert(ordOperLog);
+                if (_i == 1){
+                    log.info("插入订单操作日志成功---end");
+                }else{
+                    log.info("插入订单操作日志失败");
+                    throw new BusinessException("插入订单操作日志失败");
+                }
                 StringBuffer shopCartIdSB = new StringBuffer("(");
                 if (sfShopCartSkuDetails != null&& sfShopCartSkuDetails.size()>0){
                     for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){

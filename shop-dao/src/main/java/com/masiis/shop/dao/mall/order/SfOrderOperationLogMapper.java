@@ -17,6 +17,8 @@ public interface SfOrderOperationLogMapper {
 
     SfOrderOperationLog selectByPrimaryKey(Long id);
 
+    SfOrderOperationLog getOrdOperLogByOrderId(Long sfOrderId);
+
     List<SfOrderOperationLog> selectAll();
 
     int updateByPrimaryKey(SfOrderOperationLog record);

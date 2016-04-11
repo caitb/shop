@@ -17,9 +17,14 @@ public class SfOrderOperationLogService {
     @Resource
     private SfOrderOperationLogMapper ordOperLogMapper;
 
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
+    public int insert(SfOrderOperationLog sfOrderOperationLog){
+        return ordOperLogMapper.insert(sfOrderOperationLog);
+    }
+
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
     public SfOrderOperationLog getOrdOperLogByOrderId(Long sfOrderId){
-        return ordOperLogMapper.selectByPrimaryKey(sfOrderId);
+        return ordOperLogMapper.getOrdOperLogByOrderId(sfOrderId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)

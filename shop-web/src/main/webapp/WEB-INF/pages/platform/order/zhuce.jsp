@@ -75,7 +75,7 @@
                 <h2 style="text-indent:10px;font-weight:500;margin-bottom: 5px;">选择合伙人等级：</h2>
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
-                        <c:if test="${view.agent.agentLevelId >= pUserLevelId}">
+                        <c:if test="${view.agent.agentLevelId > pUserLevelId}">
                             <p levelId="${view.agent.agentLevelId}" agentFee="${view.agentFee}"><label>${view.level.name}</label>
                                 <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.sinFee}</span> <b>保证金：</b> <span>${view.agent.bail}</span>
                             </p>
@@ -123,8 +123,8 @@
     var pUserId = "${pUserId}";
 </script>
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<%--<script src="<%=path%>/static/js/definedAlertWindow.js"></script>--%>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/iscroll.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </html>

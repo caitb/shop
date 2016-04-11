@@ -133,8 +133,14 @@ public class PayBOrderService {
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         log.info("<4>修改用户为已代理");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        if (comUser.getIsAgent() == 0) {
-            comUser.setIsAgent(1);
+        if (comUser.getIsAgent() == 0 || pfBorder.getUserPid() != 0) {
+            if (comUser.getIsAgent() == 0) {
+                comUser.setIsAgent(1);
+            }
+            if (comUser.getSendType() == 0 && pfBorder.getUserPid() != 0) {
+                ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+                comUser.setSendType(pComUser.getSendType());
+            }
             comUserMapper.updateByPrimaryKey(comUser);
         }
         log.info("<5>为用户生成小铺");

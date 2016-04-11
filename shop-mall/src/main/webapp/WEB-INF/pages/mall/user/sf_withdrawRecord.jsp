@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
     <script type="text/javascript" src="${path}/static/js/plugins/date.js" ></script>
     <script type="text/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
     <script type="text/javascript" src="${path}/static/js/plugins/dropload.min.js"></script>
@@ -42,7 +43,7 @@
             <div id="divall">
                 <c:forEach items="${list}" var="sfUserExtractApply">
                     <div>
-                        <p><span class="sd"><fmt:formatDate value="${sfUserExtractApply.applyTime}"  type="time" pattern="MM-yyyy"/></span><span>+${sfUserExtractApply.extractFee}</span></p>
+                        <p><span class="sd"><fmt:formatDate value="${sfUserExtractApply.applyTime}"  type="time" pattern="dd"/>日</span><span>-${sfUserExtractApply.extractFee}</span></p>
                         <h1>
                             <span>微信提现</span>
                             <c:if test="${sfUserExtractApply.auditType == 0}"><span>审核中</span></c:if>
@@ -53,7 +54,8 @@
                     </div>
                 </c:forEach>
                 <%--<div class="dropload-load"><span class="loading"></span>加载中...</div>--%>
-                <p style="text-align: center;"><a href="#" onclick="getMore()">查看更多></a></p>
+                <div class="dropload-load"><span href="#" onclick="getMore()">查看更多</span></div>
+
             </div>
             <div id="datePlugin"></div>
         </div>

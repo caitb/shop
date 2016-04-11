@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/wodeyongjin.css">
+    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
     <script type="application/javascript" src="${path}/static/js/pageJs/sf_commission.js"></script>
     <script type="application/javascript" src="${path}/static/js/plugins/validateCode.js"></script>
     <script type="application/javascript">
@@ -26,7 +28,7 @@
 <body>
     <header>
         <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-                <p>个人信息</p>
+        <p>我的佣金</p>
     </header>
     <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
     <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>

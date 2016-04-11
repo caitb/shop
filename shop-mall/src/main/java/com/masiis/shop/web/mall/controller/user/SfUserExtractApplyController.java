@@ -216,6 +216,7 @@ public class SfUserExtractApplyController extends BaseController{
      * @return
      */
     @RequestMapping(value = "ajaxExtractApplyList.do",method = RequestMethod.POST)
+    @ResponseBody
     public String ajaxExtractApplyList(@RequestParam(value = "year",required = true) String year,
                                        @RequestParam(value = "month",required = true) String month,
                                        @RequestParam(value = "currentPage",required = true) Integer currentPage,
@@ -238,10 +239,10 @@ public class SfUserExtractApplyController extends BaseController{
             if (count > 0){
                 sfUserExtractApplies = sfUserExtractApplyService.findListByUserAndDate(comUser,start,end,currentPage,pageSize);
                 Integer pageNums = count%20 == 0 ? count/20 : count/20 + 1;
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd");
                 for (SfUserExtractApply sfUserExtractApply : sfUserExtractApplies){
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("date",format.format(sfUserExtractApply.getAuditTime()));
+                    jsonObject.put("date",sdf.format(sfUserExtractApply.getApplyTime())+"日");
                     jsonObject.put("extractFee",sfUserExtractApply.getExtractFee());
                     jsonObject.put("status",sfUserExtractApply.getAuditType()==0?"待审核":sfUserExtractApply.getAuditType()==1?"已拒绝":sfUserExtractApply.getAuditType()==2?"待打款":"已付款");
                     jsonObject.put("totalPage",pageNums);
@@ -252,7 +253,7 @@ public class SfUserExtractApplyController extends BaseController{
             e.printStackTrace();
             throw new BusinessException("处理数据出错");
         }
-        System.out.println("#########################"+jsonArray.toString());
+        log.info(jsonArray.toString());
         return jsonArray.toString();
     }
 }

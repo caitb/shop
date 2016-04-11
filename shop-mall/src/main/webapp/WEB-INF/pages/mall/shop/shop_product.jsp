@@ -111,8 +111,11 @@
 </div>
 <div class="back_f">
     <p>保存图片到手机，复制文案，发送图文到朋友圈，产生购买后可获得佣金</p>
-    <img src="<%=path%>/static/images/asd.JPG" alt="">
-    <b>下载图片</b>
+    <%--<img id="skuPoster" src="<%=path%>/static/images/asd.JPG" alt="">--%>
+    <canvas id="canvasOne">
+        Your browser does not support HTML5 Canvas.
+    </canvas>
+    <b id="downloadPoster">下载图片</b>
     <span class="close">×</span>
 </div>
 <div class="back">
@@ -141,7 +144,7 @@
 </div>
 <footer>
     <section class="sec3">
-        <p class="shi" onclick="validateCodeJS.applyTrial('share')"><a>分享</a></p>
+        <p class="shi" id="share"><a>分享</a></p>
         <p style="background: #DA3600;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
     </section>
 </footer>
@@ -198,6 +201,83 @@
                 }
             }
         });
+    }
+</script>
+<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>
+<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>
+<script src="<%=basePath%>static/js/plugins/base64.js"></script>
+<script type="text/javascript">
+
+    function canvasSupport() {
+        return Modernizr.canvas;
+    }
+
+    function canvasApp(userName,skuName,imgSrcs) {
+
+        if(!canvasSupport()) {
+            return;
+        }
+        var theCanvas = document.getElementById("canvasOne");
+        theCanvas.width  = 904;
+        theCanvas.height = 1200;
+        var context = theCanvas.getContext("2d");
+        context.fillStyle = "#EEEEEE";
+        context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+
+
+        var oImgs = [];
+        for(var i in imgSrcs){
+            oImgs[i] = new Image();
+            oImgs[i].src = imgSrcs[i];
+            oImgs[i].isLoaded = false;
+
+            oImgs[i].addEventListener('load', function(){
+                this.isLoaded = true;
+            }, false);
+
+        }
+
+        var drawTimer = setInterval(function(){
+            var isAllLoaded = true;
+            for(var i in oImgs){
+                if(!oImgs[i].isLoaded) isAllLoaded = false;
+            }
+
+            if(isAllLoaded){
+                context.drawImage(oImgs[0], 46, 44, 130, 130);
+                context.drawImage(oImgs[1], 0, 0);
+                context.drawImage(oImgs[2], 304, 314);
+
+                context.font = 'normal 28px Microsoft YaHei';
+                context.textBaseline = 'top';
+                context.strokeStyle = '#F73C8C';
+                context.strokeText('我是'+userName,180, 56);
+                context.strokeText('我为'+skuName+'代言!',180, 90);
+
+                clearInterval(drawTimer);
+            }
+        },100);
+
+    }
+
+    $('#share').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>shop/getSkuPoster',
+            data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},
+            success: function(data){
+                data = window.eval('(' + data + ')');
+                var baseUrl = '<%=basePath%>';
+                var imgSrcs = [baseUrl+data['userImg'], baseUrl+data['skuImg'], baseUrl+data['shopQRCode']];
+                var userName = data['userName'];
+                var skuName = data['skuName'];
+                canvasApp(userName,skuName,imgSrcs);
+                $('.back_f').show();
+            }
+        });
+    });
+
+    document.getElementById('downloadPoster').onclick = function(){
+        Canvas2Image.saveAsPNG(document.getElementById("canvasOne"));
     }
 </script>
 </body>

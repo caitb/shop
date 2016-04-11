@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/<%=path%>/sfaccount/commissionHome.shtml.css">
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
 </head>
@@ -23,7 +23,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a href="zhifu.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                   <a href="<%=path%>/sfOrderManagerController/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>我的订单</p>  
                 </header>
                 <nav>
@@ -59,7 +59,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                 <p>
                                     <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -92,7 +92,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -125,7 +125,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -158,7 +158,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button>确认收货</button></c:if>
@@ -191,7 +191,7 @@
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
                             <div class="ding">
-                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html">查看订单详情</a></p>
+                                <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
@@ -249,38 +249,38 @@
                        success:function(data){
                            var trHtml = "";
                            $.each(data, function(i, sfOrder) {
-                               alert(data);
-                               <%--var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");--%>
-                               <%--trHtml+="<section class='sec1'>";--%>
-                               <%--trHtml+="<p>时间: <span>"+time2 +"</span></p>";--%>
-                               <%--if(sfOrder.orderStatus==0){--%>
-                                   <%--trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >待付款</b ></h2>";--%>
-                               <%--}else if(sfOrder.orderStatus ==7){--%>
-                                   <%--trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >待发货</b ></h2>";--%>
-                               <%--}else if(sfOrder.orderStatus ==8){--%>
-                                   <%--trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已发货</b ></h2>";--%>
-                               <%--}else if(sfOrder.orderStatus ==8){--%>
-                                   <%--trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >交易成功</b ></h2>";--%>
-                               <%--}--%>
-                               <%--$.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {--%>
-                                   <%--trHtml+="<div class=\"shangpin\">";--%>
-                                   <%--trHtml+=" <p class=\"photo\">";--%>
-                                   <%--trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";--%>
-                                   <%--trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";--%>
-                                   <%--trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p></div></div>";--%>
-                               <%--});--%>
-                               <%--trHtml+="<h1> 共<span>"+sfOrder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+sfOrder.orderAmount+"</b>( 运费：到付)</h1>";--%>
-                               <%--trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";--%>
-                               <%--if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){--%>
-                                   <%--trHtml+="<p>";--%>
-                                   <%--if(sfOrder.orderStatus ==8 ){--%>
-                                       <%--trHtml+="<button>确认收货</button></p>";--%>
-                                   <%--}--%>
-                                   <%--if(sfOrder.orderStatus ==8 ){--%>
-                                       <%--trHtml+="<button>继续支付</button></p>";--%>
-                                   <%--}--%>
-                               <%--}--%>
-                               <%--trHtml+="</div></section>";--%>
+//                               alert(data);
+                               var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
+                               trHtml+="<section class='sec1'>";
+                               trHtml+="<p>时间: <span>"+time2 +"</span></p>";
+                               if(sfOrder.orderStatus==0){
+                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >待付款</b ></h2>";
+                               }else if(sfOrder.orderStatus ==7){
+                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >待发货</b ></h2>";
+                               }else if(sfOrder.orderStatus ==8){
+                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已发货</b ></h2>";
+                               }else if(sfOrder.orderStatus ==8){
+                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >交易成功</b ></h2>";
+                               }
+                               $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
+                                   trHtml+="<div class=\"shangpin\">";
+                                   trHtml+=" <p class=\"photo\">";
+                                   trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
+                                   trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
+                                   trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p></div></div>";
+                               });
+                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"家商品 合计：￥"+sfOrder.orderAmount+" （含运费￥50.00）</h1>";
+                               trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
+                               if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
+                                   trHtml+="<p>";
+                                   if(sfOrder.orderStatus ==8 ){
+                                       trHtml+="<button>确认收货</button></p>";
+                                   }
+                                   if(sfOrder.orderStatus ==0 ){
+                                       trHtml+="<button>继续支付</button></p>";
+                                   }
+                               }
+                               trHtml+="</div></section>";
                            });
                            $(".all").eq(index).html(trHtml);
                        }

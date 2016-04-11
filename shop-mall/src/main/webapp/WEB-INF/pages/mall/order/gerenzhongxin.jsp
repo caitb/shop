@@ -70,7 +70,7 @@
         </div>
         <footer>
             <div>
-                <p>
+                <p onclick="javascript:window.location.replace('<%=path%>/index');">
                     <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
                     <span>首页</span>
                 </p>

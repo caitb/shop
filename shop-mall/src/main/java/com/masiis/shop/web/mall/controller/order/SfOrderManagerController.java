@@ -67,7 +67,7 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/3/16 15:00
      */
     @RequestMapping("/borderDetils.html")
-    public ModelAndView borderDetils(HttpServletRequest request, Long id, Long shopId) throws Exception {
+    public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -190,8 +190,9 @@ public class SfOrderManagerController extends BaseController {
             user = userService.getUserById(1l);
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
-//        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
+        Long shopId =(Long) request.getSession().getAttribute("shopId");
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();
@@ -209,7 +210,7 @@ public class SfOrderManagerController extends BaseController {
         modelAndView.addObject("sfOrders7", sfOrders7.size());
         modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("user", user);
-//        modelAndView.addObject("userPid", userPid);
+        modelAndView.addObject("userPid", userPid);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

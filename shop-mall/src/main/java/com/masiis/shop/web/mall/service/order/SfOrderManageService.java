@@ -2,11 +2,14 @@ package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.web.mall.service.product.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +39,8 @@ public class SfOrderManageService {
     @Autowired
     private SfOrderItemMallMapper sfOrderItemMallMapper;
     @Autowired
+    private SkuService skuService;
+    @Autowired
     private SfOrderMallConsigneeMapper sfOrderMallConsigneeMapper;
     @Autowired
     private SfUserRelationMapper sfUserRelationMapper;
@@ -48,8 +53,20 @@ public class SfOrderManageService {
      * @date 2016/4/9 17:12
      */
     public List<SfOrder> findOrdersByUserId(Long userId,Integer orderStatus, Long shopId){
-        return sfOrderManageMapper.selectByUserId(userId,orderStatus,shopId);
+        List<SfOrder> sfOrders = sfOrderManageMapper.selectByUserId(userId, orderStatus, shopId);
+        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        for (SfOrder sfOrder : sfOrders) {
+            List<SfOrderItem> sfOrderItems = sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId());
+            for (SfOrderItem sfOrderItem : sfOrderItems) {
+                ComSkuImage comSkuImage = skuService.findComSkuImage(sfOrderItem.getSkuId());
+                sfOrderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
+                sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+            }
+            sfOrder.setSfOrderItems(sfOrderItems);
+        }
+        return sfOrders;
     }
+
     /**
      * 获取上级
      * @author muchaofeng

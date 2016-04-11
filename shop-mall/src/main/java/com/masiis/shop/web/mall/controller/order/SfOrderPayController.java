@@ -28,6 +28,22 @@ public class SfOrderPayController {
     @Resource
     private SfOrderPayService orderPayService;
 
+
+    /**
+     * 获得需要支付的订单的信息
+     * @author hanzengzhi
+     * @date 2016/4/11 19:39
+     */
+    @RequestMapping(value = "getOrderInfo.html")
+    public String getOrderInfo(HttpServletRequest request ,HttpServletResponse response,
+                               @RequestParam(value = "orderId",required = true)Long orderId,
+                               Model model){
+        Map<String,Object>  map =  orderPayService.getOrderInfo(orderId);
+        model.addAttribute("order",map.get("order"));
+        model.addAttribute("orderItems",map.get("orderItems"));
+        return "mall/order/zhifudingdan";
+    }
+
     /**
      * 调用微信支付
      * @author hanzengzhi

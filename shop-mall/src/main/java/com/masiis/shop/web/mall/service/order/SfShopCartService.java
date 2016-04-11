@@ -43,6 +43,14 @@ public class SfShopCartService {
     public List<SfShopCart> getShopCartInfoByUserIdAndShopId(Long userId,Long shopId,Integer isCheck){
         return sfShopCartMapper.getShopCartInfoByUserIdAndShopId(userId,shopId,isCheck);
     }
+    /**
+     * 删除购物车中的信息
+     * @author hanzengzhi
+     * @date 2016/4/11 17:05
+     */
+    public int deleteShopCartById(Long id){
+        return sfShopCartMapper.deleteByPrimaryKey(id);
+    }
 
     /**
      * jjh

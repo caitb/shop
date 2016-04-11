@@ -114,6 +114,7 @@ public class SfOrderPurchaseService {
         List<SfShopCartSkuDetail> sfShopCartSkuDetails = new LinkedList<SfShopCartSkuDetail>();
         for (SfShopCart sfShopCart: sfShopCarts){
             SfShopCartSkuDetail sfShopCartSkuDetail = new SfShopCartSkuDetail();
+            sfShopCartSkuDetail.setShopCartId(sfShopCart.getId());
             ComSku comSku = skuService.getComSkuBySkuId(sfShopCart.getSkuId());
             sfShopCartSkuDetail.setSfShopId(sfShopCart.getSfShopId());
             sfShopCartSkuDetail.setSfShopUserId(sfShopCart.getSfShopUserId());
@@ -188,11 +189,11 @@ public class SfOrderPurchaseService {
                 log.info("插入订单成功---end");
                 map.put("orderCode",sfOrder.getOrderCode());
                 map.put("orderId",sfOrder.getId());
-                StringBuffer sb = new StringBuffer("(");
+                StringBuffer shopCartIdSB = new StringBuffer("(");
                 if (sfShopCartSkuDetails != null&& sfShopCartSkuDetails.size()>0){
                     for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                         //插入订单子表
-                        //sb.append();
+                        shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId());
                         log.info("插入订单子表---start");
                         SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
                         int ii = sfOrderItemService.insert(sfOrderItem);
@@ -222,8 +223,8 @@ public class SfOrderPurchaseService {
                     log.info("获得购物车中的商品详情信息为null");
                     throw new BusinessException("获得购物车中的商品详情信息为null");
                 }
-
                 //批量删除购物车中相应的商品信息
+
             }else{
                 log.info("插入订单失败---end");
                 throw new BusinessException("插入订单失败");
@@ -318,7 +319,7 @@ public class SfOrderPurchaseService {
         sfOrder.setPayAmount(skuTotalPrice.add(skuTotalShipAmount));//支付金额
         sfOrder.setPayStatus(0);
         sfOrder.setDistributionAmount(orderSumDisAmount);
-        sfOrder.setReceivableAmount(skuTotalShipAmount.add(skuTotalShipAmount));
+        sfOrder.setReceivableAmount(skuTotalPrice.add(skuTotalShipAmount));//应收费用
         sfOrder.setSendType(0);
         sfOrder.setOrderType(0);
         sfOrder.setOrderStatus(0);
@@ -369,6 +370,16 @@ public class SfOrderPurchaseService {
         sfOrderItem.setIsReturn(0);
         return sfOrderItem;
     }
+
+    /**
+     * 提交完订单后删除购物车中相应的信息
+     * @author hanzengzhi
+     * @date 2016/4/11 17:03
+     */
+    private void deleteShopCartById(Long id){
+
+    }
+
     /**
      * 生成订单地址数据
      * @author hanzengzhi

@@ -16,6 +16,13 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/zhifudingdan.css">
 </head>
+<script>
+    function callWeChatPay(){
+        var orderCode = $("#orderCodeId").val();
+        var orderId = $("#orderId").val();
+        window.location.href = "<%=path%>/orderPay/callWechatPay.do?orderCode="+orderCode+"&orderId="+orderId;
+    }
+</script>
 <body>
     <header>
               <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -23,6 +30,8 @@
         </header>
         <div class="wrap">
                    <main>
+                       <input id="orderCodeId" value="${orderCode}" style="display: none">
+                       <input id="orderId" value="${orderId}" style="display: none">
                        <c:forEach items="${shopCartSkuDetails}" var="skuDetail">
                         <p>
                             商品信息：<span>${skuDetail.comSku.name}</span>
@@ -30,7 +39,7 @@
                        </c:forEach>
                        <p>　需付款：<span>${totalPrice}</span></p>
                     </main>
-                   <button>微信支付</button>
+                   <button onclick="callWeChatPay()">微信支付</button>
         </div>
 </body>
 </html>

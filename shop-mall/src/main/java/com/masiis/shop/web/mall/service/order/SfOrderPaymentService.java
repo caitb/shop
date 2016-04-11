@@ -3,11 +3,19 @@ package com.masiis.shop.web.mall.service.order;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import com.masiis.shop.dao.po.SfOrder;
+import com.masiis.shop.dao.po.SfOrderConsignee;
+import com.masiis.shop.dao.po.SfOrderItem;
+import com.masiis.shop.dao.po.SfOrderOperationLog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,16 +44,29 @@ public class SfOrderPaymentService {
      * @date 2016/4/10 11:21
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public void ordPaySuccModStatus(Long orderId){
+    public void ordPaySuccModStatus(SfOrderPayment orderPayment ,String outOrderId){
         //获得订单信息
         try{
-            SfOrder order = ordService.getOrderById(orderId);
+            //更新支付订单
+            orderPayment.setOutOrderId(outOrderId);
+            orderPayment.setIsEnabled(1);//设置为有效
+            //更新订单
+            SfOrder order = ordService.getOrderById(orderPayment.getSfOrderId());
             int i = updateOrder(order);
+            //更新订单操作日志
             SfOrderOperationLog ordOperLog = ordOperLogService.getOrdOperLogByOrderId(order.getId());
-            updateOrdOperLog(ordOperLog);
+            int ii = updateOrdOperLog(ordOperLog);
         }catch (Exception e){
             throw new BusinessException(e);
         }
+    }
+    /**
+     * 更新支付订单
+     * @author hanzengzhi
+     * @date 2016/4/11 10:34
+     */
+    private void updateOrderPayment(SfOrderPayment orderPayment){
+
     }
     /**
      * 更新订单状态
@@ -122,5 +143,21 @@ public class SfOrderPaymentService {
 
     public void addSfOrderPayment(SfOrderPayment payment) {
         paymentMapper.insert(payment);
+    }
+
+    /**
+     * 调用微信支付
+     * @author hanzengzhi
+     * @date 2016/4/11 10:40
+     */
+    public WxPaySysParamReq callWechatPay(HttpServletRequest request,String orderCode,Long orderId) {
+        WxPaySysParamReq wpspr = new WxPaySysParamReq();
+        wpspr.setOrderId(orderCode);
+        wpspr.setSignType("MD5");
+        wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        wpspr.setSuccessUrl(basePath + "corder/paySuccessCallBack.html?orderId="+orderId);
+        wpspr.setSign(WXBeanUtils.toSignString(wpspr));
+        return wpspr;
     }
 }

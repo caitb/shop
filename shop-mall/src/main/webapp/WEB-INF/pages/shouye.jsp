@@ -29,7 +29,7 @@
             <div>
                 <p>${sfShop.name}</p>
                 <p>${planation}</p>
-                <img src="<%=path%>/static/images/fen.png" alt="">${sfShop.logo}
+                <img src="<%=path%>/static/images/fen.png" id="share" alt="">${sfShop.logo}
             </div>
             <div>
                 <p>
@@ -50,7 +50,7 @@
                 <span>已有</span>
                 <span><em>${sfShop.shoutNum}</em>人</span>
                 <span>为ta呐喊</span>
-                <img class="shout" src="<%=path%>/static/images/an.png" alt="">
+                <img class="shout" id="shout" src="<%=path%>/static/images/an.png" alt="">
             </p>
         </div>
         <div class="content">
@@ -86,18 +86,11 @@
             </div>
         </footer>
     </div>
-    <div class="back_f" style="display: none">
-        <h1>呐喊成功！</h1>
+    <div class="back_f" id="shoutAlert" style="display: none">
+        <h1 id="result"></h1>
         <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
         <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-        <button>获取我的专属海报</button>
-        <span class="close">×</span>
-    </div>
-    <div id="no" class="back_f" style="display: none">
-        <h1>您已呐喊过，请明天再来 </h1>
-        <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-        <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-        <button>获取我的专属海报</button>
+        <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
         <span class="close">×</span>
     </div>
     <div class="back"></div>
@@ -107,25 +100,27 @@
         $(".close").on("click",function(){
             $(this).parent().hide();
             $(".back").hide();
-        })
-        $(".shout").on("click",function(){
-            var shopId =${sfShop.id};
+        });
+
+        $('#share').on('click', function(){
+            $('#shoutAlert').show();
+        });
+
+        $('#shout').on('click', function(){
             $.ajax({
-                type:"POST",
-                url : "<%=path%>/shout.do",
-                data:{shopId:shopId},
-                dataType:"Json",
-                success:function(data){
-                    if(data.mallShout){
-                        $(".back_f").show();
-                        $(".back").show();
-                    } else{
-                        $("#no").show();
-                        $(".back").show();
+                url: '<%=basePath%>shop/shout',
+                data: {shopId: 1},
+                success: function(msg){
+                    if(msg == 'true'){
+                        $('#result').html('呐喊成功!');
+                    }else{
+                        $('#result').html('您已呐喊过，请明天再来');
                     }
+                    $('#shoutAlert').show();
                 }
-        })
-        })
+            });
+        });
+
     </script>
 </body>
 </html>

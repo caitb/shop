@@ -55,16 +55,21 @@
     </div>
     <div class="content">
         <h1>在售商品</h1><c:forEach items="${SfShopDetails}" var="sd">
-        <section class="sec1">
+        <section class="sec1"
+                 onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">
             <p class="photo">
                 <img src="${sd.skuUrl}" alt="">
             </p>
+
             <div>
                 <h2>${sd.skuName}</h2>
+
                 <h3>30秒瘦脸立即见效</h3>
+
                 <h2>运费：<span>${sfShop.shipAmount}</span><b>￥${sd.priceRetail}</b></h2>
+
                 <p>
-                    <button onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">立即购买</button>
+                    <button>立即购买</button>
                 </p>
             </div>
         </section></c:forEach>

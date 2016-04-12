@@ -33,10 +33,10 @@
                     <p>选择拿货方式</p>
                 </div>
             </c:if>
-            <div class="paidan">
-                <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-                <p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>
-            </div>
+            <%--<div class="paidan">--%>
+                <%--<h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
+                <%--<p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>--%>
+            <%--</div>--%>
             <c:if test="${pfBorder.sendType==2}">
                 <div class="Type">
                     <p>拿货方式：<span>自己发货</span><b>你已选择拿货方式，不可更改</b></p>

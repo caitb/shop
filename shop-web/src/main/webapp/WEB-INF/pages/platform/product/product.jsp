@@ -119,7 +119,7 @@
         <div class="back_login" style="display:none;">
             <h2>您已合伙</h2>
             <p>您已合伙，如需要补货，请在商品管理中补货</p>
-            <h1><span id="zhidao">我知道了</span><span onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span></h1>
+            <h1><span class="zhidao">我知道了</span><span onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span></h1>
         </div>
     </div>
 </div>

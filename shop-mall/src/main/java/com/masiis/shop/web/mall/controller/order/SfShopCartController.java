@@ -44,7 +44,7 @@ public class SfShopCartController extends BaseController {
                                    @RequestParam(value="skuId",required = true) Integer skuId,
                                    @RequestParam(value="quantity",required = true) Integer quantity){
         JSONObject object = new JSONObject();
-        try{
+        try {
             ComUser user = getComUser(request);
             int useStock = skuService.checkSkuStock(skuId, quantity, shopId);
             if (useStock < 0) {
@@ -52,8 +52,7 @@ public class SfShopCartController extends BaseController {
             }
             sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
             object.put("isError", false);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             object.put("isError", true);
             object.put("message", ex.getMessage());
             log.error(ex.getMessage());

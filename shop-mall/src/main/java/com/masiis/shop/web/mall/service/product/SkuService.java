@@ -168,7 +168,7 @@ public class SkuService {
             skuInfo.setShareNum(sfShopSku.getShareNum());
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
-        if(sfShop!=null){
+        if (sfShop != null) {
             skuInfo.setShipAmount(sfShop.getShipAmount());
         }
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());

@@ -7,6 +7,7 @@ import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.*;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,9 @@ public class SkuService {
     @Resource
     private SfShopMapper sfShopMapper;
 
+    @Resource
+    private ComUserMapper comUserMapper;
+
     public ComSku getSkuById(Integer skuId) {
         return comSkuMapper.selectByPrimaryKey(skuId);
     }
@@ -56,17 +60,18 @@ public class SkuService {
     /**
      * 判断库存是否足够
      *
-     * @author ZhaoLiang
+     * @author JJH
      * @date 2016/4/1 16:19
      */
-    public int checkSkuStock(Integer skuId, int quantity, Long pUserId) {
+    public int checkSkuStock(Integer skuId, int quantity, Long shopId) {
         int n;
-        if (pUserId == 0) {
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
-            n = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
-        } else {
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUserId, skuId);
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
+        if(shopUser!=null && shopUser.getSendType().equals("1")){//平台
             n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
+        }else{
+            n = pfUserSkuStock.getCustomStock();
         }
         return n - quantity;
     }
@@ -162,13 +167,19 @@ public class SkuService {
             skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
         }
-        PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
-        if (pfSkuStock != null) {
-            skuInfo.setStock(pfSkuStock.getStock());
-        }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         if(sfShop!=null){
             skuInfo.setShipAmount(sfShop.getShipAmount());
+        }
+        ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
+        if (pfUserSkuStock != null) {
+            if (shopUser.getSendType() == 1) {//平台代发
+                skuInfo.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());
+            }
+            if (shopUser.getSendType() == 2) {//自己发货
+                skuInfo.setStock(pfUserSkuStock.getCustomStock());
+            }
         }
         return skuInfo;
     }

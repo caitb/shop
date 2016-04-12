@@ -55,7 +55,7 @@
                     </c:forEach>
                     <%--<div class="dropload-load"><span class="loading"></span>加载中...</div>--%>
                 </div>
-                <div class="dropload-load"><span href="#" onclick="getMore()">查看更多</span></div>
+                <div class="dropload-load"><span href="#" onclick="getMore()">查看更多></span></div>
             </div>
             <div id="datePlugin"></div>
         </div>

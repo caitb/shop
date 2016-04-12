@@ -139,7 +139,12 @@
             <label class="jia">+</label>
         </p>
     </h1>
-    <button onclick="buy()">下一步</button>
+    <c:if test="${skuInfo.isSale==0}">
+        <button>该商品已下架</button>
+    </c:if>
+    <c:if test="${skuInfo.isSale==1}">
+        <button onclick="buy()">下一步</button>
+    </c:if>
     <span class="close">×</span>
 </div>
 <footer>

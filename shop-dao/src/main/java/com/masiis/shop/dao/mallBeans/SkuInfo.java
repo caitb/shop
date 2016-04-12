@@ -23,6 +23,8 @@ public class SkuInfo{
 
     private String content;
 
+    private Integer isSale;
+
     public ComSku getComSku() {
         return comSku;
     }
@@ -77,5 +79,13 @@ public class SkuInfo{
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getIsSale() {
+        return isSale;
+    }
+
+    public void setIsSale(Integer isSale) {
+        this.isSale = isSale;
     }
 }

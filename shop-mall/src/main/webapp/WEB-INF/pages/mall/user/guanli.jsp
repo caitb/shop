@@ -17,6 +17,12 @@
 </head>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideToolbar');
+        WeixinJSBridge.call('hideOptionMenu');
+    })
+</script>
+<script>
     $(document).ready(function () {
         $.post("/userAddress/getUserAddressByUserId.do",
                 {

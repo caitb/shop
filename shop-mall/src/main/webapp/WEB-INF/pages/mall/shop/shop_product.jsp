@@ -244,15 +244,15 @@
             }
 
             if(isAllLoaded){
-                context.drawImage(oImgs[0], 46, 44, 130, 130);
+                context.drawImage(oImgs[0], 46, 44, 90, 90);
                 context.drawImage(oImgs[1], 0, 0);
                 context.drawImage(oImgs[2], 304, 314);
 
                 context.font = 'normal 28px Microsoft YaHei';
                 context.textBaseline = 'top';
-                context.strokeStyle = '#F73C8C';
-                context.strokeText('我是'+userName,180, 56);
-                context.strokeText('我为'+skuName+'代言!',180, 90);
+                context.strokeStyle = '#333333';
+                context.strokeText('我是'+userName,170, 56);
+                context.strokeText('我为'+skuName+'代言!',170, 90);
 
                 clearInterval(drawTimer);
             }

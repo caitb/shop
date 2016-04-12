@@ -73,7 +73,7 @@ function getExtractApplyList(year,month){
                     totalPage = arr[i].totalPage;
                 }
                 $("#totalPage").val(totalPage);
-                $("#currentPage").val(currentPage);
+                $("#currentPage").val(1);
             },
             error: function(){
                 //请求出错处理

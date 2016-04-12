@@ -136,7 +136,7 @@ public class SfShopController extends BaseController {
             dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
             return dataMap;
         } catch (Exception e) {
-            log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
+            log.error("获取专属海报失败![shopId=" + shopId + "][skuId="+skuId+"][comUser=" + getComUser(request) + "]");
             e.printStackTrace();
         }
 

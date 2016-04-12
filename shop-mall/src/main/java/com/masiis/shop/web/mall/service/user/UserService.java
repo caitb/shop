@@ -278,13 +278,11 @@ public class UserService {
         user = getUserByUnionid(userRes.getUnionid());
 
         if(wxUsers != null && wxUsers.size() > 0){
-            log.info("wxUser.size:" + wxUsers.size());
             // 有unionid
             if(user == null){
                 log.error("系统数据错误,请联系管理员!");
                 throw new BusinessException("");
             }
-            log.info("res.openid:" + res.getOpenid());
             wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
             log.info("wxUser:" + wxUser);
         }
@@ -397,12 +395,10 @@ public class UserService {
      */
     private ComWxUser getWxUserByOpenidInList(String openid, List<ComWxUser> wxUsers) {
         ComWxUser user = null;
-        log.info("getWxUserByOpenidInList.openid:" + openid);
         if(StringUtils.isBlank(openid)){
             return user;
         }
         for(ComWxUser ex:wxUsers){
-            log.info("ex.openid:" + ex.getOpenid());
             if(openid.equals(ex.getOpenid())){
                 return ex;
             }

@@ -498,7 +498,12 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-
+                            return [
+                                    '<a class="personal-info" href="javascript:void(0);">个人信息</a>',
+                                    '<a class="agent-user-info">合伙信息</a>',
+                                    '<a class="update-superior">更改上级</a>',
+                                    '<a class="upgrade">升级</a>'
+                            ].join('');
                         }
                     }
                 ]

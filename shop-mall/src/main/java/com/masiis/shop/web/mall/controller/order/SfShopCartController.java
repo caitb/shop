@@ -3,9 +3,11 @@ package com.masiis.shop.web.mall.controller.order;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfShopCartService;
+import com.masiis.shop.web.mall.service.product.SkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,9 @@ public class SfShopCartController extends BaseController {
     @Resource
     private SfShopCartService sfShopCartService;
 
+    @Resource
+    private SkuService skuService;
+
     /**
      * @Author jjh
      * @Date 2016/4/9 0009 下午 1:45
@@ -39,14 +44,15 @@ public class SfShopCartController extends BaseController {
                                    @RequestParam(value="skuId",required = true) Integer skuId,
                                    @RequestParam(value="quantity",required = true) Integer quantity){
         JSONObject object = new JSONObject();
-        try{
+        try {
             ComUser user = getComUser(request);
-            if(user!=null){
-                sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
-                object.put("isError", false);
+            int useStock = skuService.checkSkuStock(skuId, quantity, shopId);
+            if (useStock < 0) {
+                throw new BusinessException("可用库存不足！请重新选择商品数量");
             }
-        }
-        catch (Exception ex){
+            sfShopCartService.addProductToCart(shopId, user.getId(), skuId, quantity);
+            object.put("isError", false);
+        } catch (Exception ex) {
             object.put("isError", true);
             object.put("message", ex.getMessage());
             log.error(ex.getMessage());

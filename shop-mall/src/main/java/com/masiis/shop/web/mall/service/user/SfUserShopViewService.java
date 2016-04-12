@@ -25,6 +25,7 @@ public class SfUserShopViewService {
      * @param currentPage   当前页
      * @param pageSize      每页数量
      * @return
+     * @author:wbj
      */
     public List<SfUserShopView> findShopViewByUserIdByLimit(Long userId,int currentPage,int pageSize){
         logger.info("根据用户id查询浏览过的店铺");

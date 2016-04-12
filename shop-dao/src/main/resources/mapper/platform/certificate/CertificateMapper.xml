@@ -17,6 +17,7 @@
         <result column="wx_nk_name" property="ctName" jdbcType="VARCHAR"/>
         <result column="name" property="skuName" jdbcType="VARCHAR"/>
         <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT"/>
+        <result column="bail" property="bail" jdbcType="DECIMAL"/>
 
         <association column="pf_user_sku_id" property="pfUserCertificateInfo"
                      javaType="com.masiis.shop.dao.po.PfUserCertificate">
@@ -130,7 +131,7 @@
     </select>
     <select id="getCertificatesByUser" parameterType="Long" resultMap="CertificateResultMap">
         SELECT sku.name,pfku.id AS pfid,pfku.agent_level_id,pfku.is_certificate,pfku.pid,pfku.sku_id,pfku.user_id,
-        pfku.user_pid
+        pfku.user_pid,pfku.bail
         FROM pf_user_sku pfku
         LEFT JOIN com_sku sku ON sku.id = pfku.sku_id
         WHERE pfku.user_id = #{userId} AND pfku.is_pay=1

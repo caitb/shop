@@ -23,4 +23,13 @@ public class SfUserRelationService {
     public SfUserRelation getSfUserRelationByUserId(Long userId){
         return sfUserRelationMapper.getSfUserRelationByUserId(userId);
     }
+
+    /**
+     * 根据userPid获得分销账户关系
+     * @author hanzengzhi
+     * @date 2016/4/12 11:46
+     */
+    public SfUserRelation getSfUserRelationByUserPid(Long userPid){
+        return sfUserRelationMapper.getSfUserRelationByUserPid(userPid);
+    }
 }

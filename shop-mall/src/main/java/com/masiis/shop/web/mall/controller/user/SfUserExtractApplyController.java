@@ -49,8 +49,8 @@ public class SfUserExtractApplyController extends BaseController{
     /**
      * 用户提现申请
      * @param request
-     * @auth:wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "/withdrawRequest.shtml")
     public ModelAndView withdrawRequest(HttpServletRequest request) throws Exception{
@@ -81,8 +81,8 @@ public class SfUserExtractApplyController extends BaseController{
      * @param inputAccount  页面输入金额
      * @param userId        用户id
      * @param request
-     * @Auth:wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "confirmWithdraw.do")
     @ResponseBody
@@ -147,6 +147,7 @@ public class SfUserExtractApplyController extends BaseController{
      * @param request
      * @return
      * @throws Exception
+     * @author:wbj
      */
     @RequestMapping(value = "/requestSuccess.shtml")
     public ModelAndView requestSuccess(HttpServletRequest request) throws Exception{
@@ -212,8 +213,8 @@ public class SfUserExtractApplyController extends BaseController{
      * @param month
      * @param currentPage
      * @param pageSize
-     * @auth:wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "ajaxExtractApplyList.do",method = RequestMethod.POST)
     @ResponseBody

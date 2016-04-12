@@ -213,7 +213,7 @@ public class SfOrderPurchaseService {
                             log.info("插入订单子表成功---end");
                             //插入子订单分润表
                             List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
-                            if (itemDisList != null){
+                            if (itemDisList != null&&itemDisList.size()!=0){
                                 for (SfOrderItemDistribution  orderItemDis :itemDisList){
                                     log.info("插入子订单分润表--start");
                                     orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
@@ -279,8 +279,8 @@ public class SfOrderPurchaseService {
             ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
         }
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
-        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null);
-        if (sfUserRelations!=null){
+        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null,null);
+        if (sfUserRelations!=null&&sfUserRelations.size()!=0){
             log.info("获得店铺--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
             for (int i = 0; i < sfUserRelations.size(); i++){
                 /*一条订单的总的分润*/
@@ -301,9 +301,6 @@ public class SfOrderPurchaseService {
                 orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
                 ordItemDisMap.put(skuId,orderItemDisList);
             }
-        }else{
-            log.info("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
-            throw new BusinessException("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
         }
     }
     /**
@@ -456,14 +453,20 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 15:56
      */
-    private List<SfUserRelation> getSfUserRelation(Long userId,List<SfUserRelation> sfUserRelationList ){
+    private List<SfUserRelation> getSfUserRelation(Long userId,Long userPid,List<SfUserRelation> sfUserRelationList ){
         if (sfUserRelationList==null||sfUserRelationList.size()==0){
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
-        SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userId);
-        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null&&sfUserRelationList.size()<3){
+        if (userPid == null){
+            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserId(userId);
+            userPid = _userRelation.getUserPid();
+        }
+        SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userPid);
+        if (sfUserRelation!=null){
             sfUserRelationList.add(sfUserRelation);
-            getSfUserRelation(sfUserRelation.getUserId(),sfUserRelationList);
+        }
+        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null&&sfUserRelationList.size()<3){
+            getSfUserRelation(sfUserRelation.getUserId(),sfUserRelation.getUserPid(),sfUserRelationList);
         }
         return sfUserRelationList;
     }

@@ -23,6 +23,13 @@ public class SfUserExtractApplyService {
     @Autowired
     private SfUserExtractApplyMapper sfUserExtractApplyMapper;
 
+    /**
+     * 用户提现申请处理
+     * @param exMoney
+     * @param user
+     * @throws Exception
+     * @author:wbj
+     */
     @Transactional
     public void applyExtract(BigDecimal exMoney, ComUser user) throws Exception{
         logger.info("用户提现申请处理");
@@ -44,6 +51,7 @@ public class SfUserExtractApplyService {
      * @param beginDate
      * @param endDate
      * @return
+     * @author:wbj
      */
     public Integer findCountByUserAndDate(ComUser comUser,Date beginDate,Date endDate){
         return sfUserExtractApplyMapper.selectCountByUserAndDate(comUser.getId(),beginDate,endDate);
@@ -57,6 +65,7 @@ public class SfUserExtractApplyService {
      * @param currentPage   当前页
      * @param pageSize      页面数量
      * @return
+     * 用户提现申请处理
      */
     public List<SfUserExtractApply> findListByUserAndDate(ComUser comUser,Date beginDate,Date endDate,Integer currentPage,Integer pageSize){
         if (currentPage == 0||currentPage == 0){

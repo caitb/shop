@@ -49,7 +49,7 @@
             <div>
                 <h2>${orderItem.skuName}</h2>
                 <h3>规格：<span>默认</span></h3>
-                <h3>￥${orderItem.originalPrice}<b>x${quantity}</b></h3>
+                <h3>￥${orderItem.originalPrice}<b>x${orderItem.quantity}</b></h3>
 
             </div>
         </c:forEach>
@@ -65,11 +65,6 @@
     <div class="sec6">
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
-    </div>
-    <div class="sec5">
-        <p>关注<b>麦链商城</b>微信公众号，查看订单最新状态</p>
-        <button>立即分享</button>
-        <p>分享给好友，产生交易后可以的现金奖励哦！</p>
     </div>
 </div>
 <div class="back"></div>
@@ -88,7 +83,7 @@
 <div id="shareDivId"class="back_f">
     <p>支付成功！</p>
     <p>关注麦链商城微信公众账号，查看订单最新状态</p>
-    <img src="<%=path%>/static/images/chanpin%20(2).png" alt="">
+    <img src="<%=path%>/static/images/wx.jpg" alt="">
     <p>长按识别二维码</p>
     <p>或微信搜索“麦链商城”公众账号，关注麦链商城微信公众账号</p>
     <span onclick="closeShare()" class="close">×</span>
@@ -97,15 +92,19 @@
 <script>
     function contactSeller(){
         $("#contactSellerDivId").show();
+        $(".back").show();
     }
     function closeContactSeller(){
         $("#contactSellerDivId").hide();
+        $(".back").hide();
     }
     function askForInvoice(){
         $("#askForInvoiceDivId").show();
+        $(".back").show();
     }
     function closeAskForInvoice(){
         $("#askForInvoiceDivId").hide();
+        $(".back").hide();
     }
     function closeShare(){
         $("#shareDivId").hide();

@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
@@ -48,6 +49,8 @@ public class UserService {
     private ComUserAccountService accountService;
     @Resource
     private SfUserAccountService sfAccountService;
+    @Resource
+    private SfShopMapper sfShopMapper;
 
     /**
      * 根据用户id获取用户
@@ -236,26 +239,30 @@ public class UserService {
     public List<ComWxUser> findComWxUserByUserId(Long userId){
         return comWxUserMapper.selectByUserId(userId);
     }
-
     /**
-      * @Author jjh
-      * @Date 2016/4/10 0010 下午 4:14
-      * 来自分享人的信息
-      */
-    public void getShareUser(Long userId,Long userPd){
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
-        if(sfUserRelation==null){ //来自于分享链接
-            SfUserRelation sfNewUserRelation = new SfUserRelation();
-            sfNewUserRelation.setCreateTime(new Date());
-            sfNewUserRelation.setUserId(userId);
-            sfNewUserRelation.setUserPid(userPd);
-            if(sfUserPRelation==null){
-                sfNewUserRelation.setLevel(1);
-            }else{
-                sfNewUserRelation.setLevel(sfUserPRelation.getLevel()+1);
+     * 来自分享人的信息
+     * @author muchaofeng
+     * @date 2016/4/12 12:03
+     */
+    public void getShareUser(Long userId,Long userPd,Long shopId){
+//        SfShop sfShop = sfShopMapper.selectByUserIdAndShopId(userId,shopId);
+        if(sfShopMapper.selectByUserIdAndShopId(userId,shopId)==null){
+            if(!userId.equals(userPd)){
+                SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+                SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
+                if(sfUserRelation==null){ //来自于分享链接
+                    SfUserRelation sfNewUserRelation = new SfUserRelation();
+                    sfNewUserRelation.setCreateTime(new Date());
+                    sfNewUserRelation.setUserId(userId);
+                    sfNewUserRelation.setUserPid(userPd);
+                    if(sfUserPRelation==null){
+                        sfNewUserRelation.setLevel(1);
+                    }else{
+                        sfNewUserRelation.setLevel(sfUserPRelation.getLevel()+1);
+                    }
+                    sfUserRelationMapper.insert(sfNewUserRelation);
+                }
             }
-            sfUserRelationMapper.insert(sfNewUserRelation);
         }
     }
 

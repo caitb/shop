@@ -91,6 +91,7 @@ public class ProductService {
      */
     public Product applyTrialToPageService(Integer skuId) {
         Product product = new Product();
+        product.setId(skuId);
         try {
            ComSku comSku = comSkuMapper.selectById(skuId);
             if (comSku != null){

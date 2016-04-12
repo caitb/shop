@@ -55,8 +55,7 @@
     </div>
     <div class="content">
         <h1>在售商品</h1><c:forEach items="${SfShopDetails}" var="sd">
-        <section class="sec1"
-                 onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">
+        <section class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">
             <p class="photo">
                 <img src="${sd.skuUrl}" alt="">
             </p>
@@ -80,13 +79,13 @@
                 <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
                 <span>首页</span>
             </p>
-            <p>
+            <p onclick="javascript:window.location.replace('<%=path%>/share.html');">
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
                 <span>分享计划</span>
             </p>
-            <p><a href="<%=path%>/sfOrderManagerController/borderManagement.html">
+            <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderManagement.html');" >
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-                <span>个人中心</span></a>
+                <span>个人中心</span>
             </p>
         </div>
     </footer>

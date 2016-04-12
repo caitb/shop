@@ -251,6 +251,12 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("订单号错误");
             }
             PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            //校验库存
+            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
+            for (PfBorderItem pfBorderItem : pfBorderItems) {
+                ComUser comUser = userService.getUserById(pfBorder.getUserPid());
+                userSkuService.checkParentData(comUser, pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
+            }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;
             if (pfBorder.getSendType() == 2) {

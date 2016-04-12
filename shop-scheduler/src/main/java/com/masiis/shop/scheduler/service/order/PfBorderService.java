@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.service.order;
 
+import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
@@ -11,7 +12,6 @@ import com.masiis.shop.scheduler.service.user.ComUserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -34,6 +34,8 @@ public class PfBorderService {
     private PfBorderItemMapper pfBorderItemMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
 
 
     public List<PfBorder> findListByStatusAndDate(Date expiraTime, Integer orderStatus, Integer payStatus) {
@@ -95,22 +97,24 @@ public class PfBorderService {
      */
     @Transactional
     public void confirmOrderReceive(PfBorder bOrder) {
-        ComUser user = null;
-        // 3是已完成状态
-        Integer orderStatus = 3;
-        Integer shipStatus = 9;
-        if (bOrder.getSendType() == 1) {//平台代发
-            if (bOrder.getOrderType() == 2) {//拿货
-                bOrder.setOrderStatus(orderStatus);
-                bOrder.setShipStatus(shipStatus);
-                updateGetStock(bOrder, user);
-                updateBOrder(bOrder);
-                comUserAccountService.countingByOrder(bOrder);
-            }
-        } else if (bOrder.getSendType() == 1) {//自己发货
-            bOrder.setOrderStatus(orderStatus);
-            bOrder.setShipStatus(shipStatus);
-            updateBOrder(bOrder);
+        if (bOrder == null) {
+            throw new BusinessException("订单为空对象");
+        }
+        if (bOrder.getPayStatus() != 1) {
+            throw new BusinessException("订单还未支付怎么能完成呢？");
+        }
+        bOrder.setOrderStatus(BOrderStatus.Complete.getCode());
+        borderMapper.updateById(bOrder);
+        //添加订单日志
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateMan(bOrder.getUserId());
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderStatus(BOrderStatus.Complete.getCode());
+        pfBorderOperationLog.setPfBorderId(bOrder.getId());
+        pfBorderOperationLog.setRemark("订单完成");
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        //订单类型(0代理1补货2拿货)
+        if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(bOrder);
         }
     }

@@ -18,6 +18,7 @@
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
     document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        alert("111111");
         WeixinJSBridge.call('hideToolbar');
         WeixinJSBridge.call('hideOptionMenu');
     })

@@ -319,7 +319,6 @@ public class UserService {
      *
      * @param res
      * @param userInfo
-     * @param user
      * @return
      */
     private ComWxUser createWxUserInit(AccessTokenRes res, WxUserInfo userInfo, ComUser user) {
@@ -341,6 +340,8 @@ public class UserService {
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
+        wxUser.setAppid(WxConstants.APPID);
+        wxUser.setComUserId(user.getId());
 
         return wxUser;
     }

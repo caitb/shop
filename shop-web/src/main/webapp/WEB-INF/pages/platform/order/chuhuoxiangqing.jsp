@@ -136,10 +136,6 @@
     //        var myScroll = new IScroll("main",{
     //                 preventDefault: false
     //            })
-$(document).ready(function(){
-    alert(12312412312);
-
-})
     $(".fah").on("click", function () {
         $(".back").show();
         $(".back_que").css("display", "-webkit-box");

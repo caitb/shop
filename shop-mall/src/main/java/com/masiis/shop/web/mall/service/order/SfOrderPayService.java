@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by hzz on 2016/4/11.
@@ -39,6 +36,27 @@ public class SfOrderPayService {
     private SfOrderPaymentMapper paymentMapper;
     @Resource
     private SfOrderPaymentService ordPaymentSer;
+
+    /**
+     * 获得需要支付的订单的信息
+     * @author hanzengzhi
+     * @date 2016/4/11 19:45
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public Map<String,Object> getOrderInfo(Long orderId){
+        Map<String,Object> map = new HashMap<String, Object>();
+        SfOrder order = getOrderById(orderId);
+        if (order == null){
+            throw new BusinessException("跳转到支付页面获取订单失败");
+        }
+        List<SfOrderItem> orderItems = getOrderItem(orderId);
+        if (orderItems == null){
+            throw new BusinessException("跳转到支付页面获取子订单详情失败");
+        }
+        map.put("order",order);
+        map.put("orderItems",orderItems);
+        return map;
+    }
 
     /**
      * 订单支付成功修改状态

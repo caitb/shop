@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/querenshenqing.css">
+    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
     <style>
         a{
             background: url("${path}/static/images/icon_37.png") no-repeat 0;

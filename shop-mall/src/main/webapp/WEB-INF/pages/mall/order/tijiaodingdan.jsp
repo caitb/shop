@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/tijiaodingdan.css">
 </head>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -34,7 +35,32 @@
         var selectedAddressId = $("#addressId").val();
         var shopId = $("#shopId").val();
         var message = $("#messageId").val();
-        window.location.href = "<%=path%>/orderPurchase/submitOrder.do?message="+message+"&shopId="+shopId+"&selectedAddressId="+selectedAddressId
+        if(selectedAddressId ==null || selectedAddressId =="" ){
+            alert("未选择收获地址");
+            return false ;
+        }
+        var paramJson = {
+            "message": message,
+            "shopId": shopId,
+            "selectedAddressId": selectedAddressId
+        }
+        $.ajax({
+            url: '/orderPurchase/submitOrder.do',
+            type: 'post',
+            async: false,
+            data: paramJson,
+            dataType:"json",
+            success: function (data) {
+                if (data.isSubmitOrder == "false") {
+                    alert("提交订单失败");
+                } else {
+                    window.location.href = "<%=path%>/orderPay/getOrderInfo.html?orderId="+data.sfOrderId;
+                }
+            },
+            error: function () {
+                alert("提交订单失败");
+            }
+        })
     }
 </script>
 <body>

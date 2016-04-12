@@ -1,5 +1,4 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,9 +9,11 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/shenqingtixian.css">
+    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
     <script type="application/javascript" src="${path}/static/js/pageJs/sf_withdrawRequest.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
     <script type="application/javascript">
         var path = "${path}";
         var basepath = "${basePath}";

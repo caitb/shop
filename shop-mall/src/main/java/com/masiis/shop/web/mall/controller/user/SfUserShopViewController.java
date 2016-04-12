@@ -34,8 +34,8 @@ public class SfUserShopViewController extends BaseController {
     /**
      * 用户查看浏览过的店铺
      * @param request
-     * @auth wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "home.shtml")
     public ModelAndView viewedShop(HttpServletRequest request) throws Exception{

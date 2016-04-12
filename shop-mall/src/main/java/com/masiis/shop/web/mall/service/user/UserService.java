@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
@@ -48,6 +49,8 @@ public class UserService {
     private ComUserAccountService accountService;
     @Resource
     private SfUserAccountService sfAccountService;
+    @Resource
+    private SfShopMapper sfShopMapper;
 
     /**
      * 根据用户id获取用户
@@ -203,6 +206,7 @@ public class UserService {
             if (comUser != null) {
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
+                comUser.setIsBinding(1);
                 //更新表中的信息
                 int i = comUserMapper.updatePhone(comUser);
                 if (i == 1) {
@@ -235,26 +239,30 @@ public class UserService {
     public List<ComWxUser> findComWxUserByUserId(Long userId){
         return comWxUserMapper.selectByUserId(userId);
     }
-
     /**
-      * @Author jjh
-      * @Date 2016/4/10 0010 下午 4:14
-      * 来自分享人的信息
-      */
-    public void getShareUser(Long userId,Long userPd){
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
-        if(sfUserRelation==null){ //来自于分享链接
-            SfUserRelation sfNewUserRelation = new SfUserRelation();
-            sfNewUserRelation.setCreateTime(new Date());
-            sfNewUserRelation.setUserId(userId);
-            sfNewUserRelation.setUserPid(userPd);
-            if(sfUserPRelation==null){
-                sfNewUserRelation.setLevel(1);
-            }else{
-                sfNewUserRelation.setLevel(sfUserPRelation.getLevel()+1);
+     * 来自分享人的信息
+     * @author muchaofeng
+     * @date 2016/4/12 12:03
+     */
+    public void getShareUser(Long userId,Long userPd,Long shopId){
+//        SfShop sfShop = sfShopMapper.selectByUserIdAndShopId(userId,shopId);
+        if(sfShopMapper.selectByUserIdAndShopId(userId,shopId)==null){
+            if(!userId.equals(userPd)){
+                SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+                SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
+                if(sfUserRelation==null){ //来自于分享链接
+                    SfUserRelation sfNewUserRelation = new SfUserRelation();
+                    sfNewUserRelation.setCreateTime(new Date());
+                    sfNewUserRelation.setUserId(userId);
+                    sfNewUserRelation.setUserPid(userPd);
+                    if(sfUserPRelation==null){
+                        sfNewUserRelation.setLevel(1);
+                    }else{
+                        sfNewUserRelation.setLevel(sfUserPRelation.getLevel()+1);
+                    }
+                    sfUserRelationMapper.insert(sfNewUserRelation);
+                }
             }
-            sfUserRelationMapper.insert(sfNewUserRelation);
         }
     }
 
@@ -268,48 +276,60 @@ public class UserService {
         return comUserMapper.selectByUnionid(unionid);
     }
 
+    @Transactional
     public ComUser signWithCreateUserByWX(AccessTokenRes res, WxUserInfo userRes) {
         // 检查openid是否已经存在数据库
         List<ComWxUser> wxUsers = wxUserMapper.selectByUnionid(userRes.getUnionid());
         ComWxUser wxUser = null;
         ComUser user = null;
+        user = getUserByUnionid(userRes.getUnionid());
+
         if(wxUsers != null && wxUsers.size() > 0){
             // 有unionid
-            user = getUserByUnionid(userRes.getUnionid());
             if(user == null){
                 log.error("系统数据错误,请联系管理员!");
                 throw new BusinessException("");
             }
             wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
-            if(wxUser != null){
-                // 有openid,更新这个openid数据
-                updateWxUserByActkn(res, userRes, wxUser);
-            }
-        } else {
-            // 无unionid,创建comuser和comwxuser
-            user = new ComUser();
-            user.setWxNkName(userRes.getNickname());
-            user.setWxHeadImg(userRes.getHeadimgurl());
-            user.setCreateTime(new Date());
-            user.setWxUnionid(userRes.getUnionid());
-            user.setIsAgent(0);
-            user.setIsBinding(0);
-            user.setAuditStatus(0);
-            user.setSendType(0);
-            user.setRegisterSource(0);
+            log.info("wxUser:" + wxUser);
+        }
+
+        // 无unionid,创建comuser和comwxuser
+        if(user == null){
+            log.info("创建新comUser");
+            user = createComUser(userRes);
             insertComUser(user);
             accountService.createAccountByUser(user);
             sfAccountService.createSfAccountByUser(user);
         }
 
-        wxUser = createWxUserInit(res, userRes, user);
-        wxUser.setAppid(WxConstants.APPID);
-        wxUser.setComUserId(user.getId());
-        if(wxUser.getId() == null) {
+        if(wxUser == null) {
+            log.info("创建新comWxUser");
+            // 无openid创建新的wxUser
+            wxUser = createWxUserInit(res, userRes, user);
             wxUserMapper.insert(wxUser);
         } else {
+            log.info("更新comWxUser");
+            // 有openid,更新这个openid数据
+            updateWxUserByActkn(res, userRes, wxUser);
             wxUserMapper.updateByPrimaryKey(wxUser);
         }
+
+        return user;
+    }
+
+    private ComUser createComUser(WxUserInfo userRes) {
+        ComUser user = new ComUser();
+
+        user.setWxNkName(userRes.getNickname());
+        user.setWxHeadImg(userRes.getHeadimgurl());
+        user.setCreateTime(new Date());
+        user.setWxUnionid(userRes.getUnionid());
+        user.setIsAgent(0);
+        user.setIsBinding(0);
+        user.setAuditStatus(0);
+        user.setSendType(0);
+        user.setRegisterSource(0);
 
         return user;
     }
@@ -346,7 +366,6 @@ public class UserService {
      *
      * @param res
      * @param userInfo
-     * @param user
      * @return
      */
     private ComWxUser createWxUserInit(AccessTokenRes res, WxUserInfo userInfo, ComUser user) {
@@ -368,6 +387,8 @@ public class UserService {
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
+        wxUser.setAppid(WxConstants.APPID);
+        wxUser.setComUserId(user.getId());
 
         return wxUser;
     }

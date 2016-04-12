@@ -45,7 +45,7 @@ function getExtractApplyList(year,month){
                     var arr=eval(data);
                     for(var i=0;i<arr.length;i++)
                     {
-                        $("#divall").append("<div><p><span class='sd'>"+month+"-"+arr[i].date+"</span><span>"+year+"</span><span>+"+arr[i].extractFee+"</span></p><h1><span>微信提现</span><span>"+arr[i].status+"</span></h1></div>");
+                        $("#divall").append("<div><p><span class='sd'>"+arr[i].date+"</span><span>-"+arr[i].extractFee+"</span></p><h1><span>微信提现</span><span>"+arr[i].status+"</span></h1></div>");
                     }
                     $("#currentPage").val(currentPage + 1);
                 },
@@ -69,11 +69,11 @@ function getExtractApplyList(year,month){
                 var arr=eval(data);
                 for(var i=0;i<arr.length;i++)
                 {
-                    $("#divall").append("<div><p><span class='sd'>"+month+"-"+arr[i].date+"</span><span>"+year+"</span><span>+"+arr[i].extractFee+"</span></p><h1><span>微信提现</span><span>"+arr[i].status+"</span></h1></div>");
+                    $("#divall").append("<div><p><span class='sd'>"+arr[i].date+"</span><span>-"+arr[i].extractFee+"</span></p><h1><span>微信提现</span><span>"+arr[i].status+"</span></h1></div>");
                     totalPage = arr[i].totalPage;
                 }
                 $("#totalPage").val(totalPage);
-                $("#currentPage").val(currentPage);
+                $("#currentPage").val(1);
             },
             error: function(){
                 //请求出错处理

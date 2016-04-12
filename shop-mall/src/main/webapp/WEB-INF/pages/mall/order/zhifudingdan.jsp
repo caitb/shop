@@ -23,22 +23,27 @@
         var orderId = $("#orderId").val();
         window.location.href = "<%=path%>/orderPay/callWechatPay.do?orderCode="+orderCode+"&orderId="+orderId;
     }
+    function returnPage(){
+        window.location.href = "<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0";
+    }
 </script>
 <body>
     <header>
-              <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a onclick="returnPage()">
+                  <img src="<%=path%>/static/images/xq_rt.png" alt="">
+              </a>
                 <p>付款详情</p>            
         </header>
         <div class="wrap">
                    <main>
-                       <input id="orderCodeId" value="${orderCode}" style="display: none">
-                       <input id="orderId" value="${orderId}" style="display: none">
-                       <c:forEach items="${shopCartSkuDetails}" var="skuDetail">
+                       <input id="orderCodeId" value="${order.orderCode}" style="display: none">
+                       <input id="orderId" value="${order.id}" style="display: none">
+                       <c:forEach items="${orderItems}" var="orderItem">
                         <p>
-                            商品信息：<span>${skuDetail.comSku.name}</span>
+                            商品信息：<span>${orderItem.skuName}</span>
                         </p>
                        </c:forEach>
-                       <p>　需付款：<span>${totalPrice}</span></p>
+                       <p>　需付款：<span>${order.receivableAmount}</span></p>
                     </main>
                    <button onclick="callWeChatPay()">微信支付</button>
         </div>

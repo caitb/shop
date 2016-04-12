@@ -45,21 +45,21 @@
                 </div>
                 <nav>
                     <ul>
-                        <li>
+                        <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/commissionHome.shtml');">
                             <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
                         <span>我的佣金</span>
                         </li>
-                        <li>
+                        <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.do');">
                             <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
                         <span>个人信息</span>
                         </li>
-                        <li>
+                        <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
                             <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
                         <span>浏览过的店铺</span>
                         </li>
                     </ul>
                     <ul>
-                        <li>
+                        <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
                             <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
                             <span>地址管理</span>
                         </li>

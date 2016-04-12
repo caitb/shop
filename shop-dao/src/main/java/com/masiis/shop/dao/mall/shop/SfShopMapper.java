@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.mall.shop;
 
 import com.masiis.shop.dao.po.SfShop;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface SfShopMapper {
     int updateByPrimaryKey(SfShop record);
 
     SfShop selectByUserId(Long userId);
+
+    SfShop selectByUserIdAndShopId(@Param("userId") Long userId,@Param("shopId") Long shopId);
 }

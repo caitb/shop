@@ -63,42 +63,49 @@
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
     <div class="sec6">
-        <p><a href="index.html">联系卖家</a></p>
-        <p><a href="gerenzhongxin.html">索要发票</a></p>
-    </div>
-    <div class="sec5">
-        <p>关注<b>麦链商城</b>微信公众号，查看订单最新状态</p>
-        <button>立即分享</button>
-        <p>分享给好友，产生交易后可以的现金奖励哦！</p>
+        <p><a onclick="contactSeller()">联系卖家</a></p>
+        <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
 </div>
 <div class="back"></div>
-<div class="back_l">
+<div id="contactSellerDivId" class="back_l">
     <p>索要发票</p>
     <p>请联系：00000000</p>
-    <button>知道了</button>
-    <span class="close">×</span>
+    <button  onclick="closeContactSeller()">知道了</button>
+    <span class="close" onclick="closeContactSeller()">×</span>
 </div>
-<div class="back_l back_s">
+<div id="askForInvoiceDivId" class="back_l back_s">
     <p>联系卖家</p>
     <p>请联系：00000000</p>
-    <button>知道了</button>
-    <span class="close">×</span>
+    <button onclick="closeAskForInvoice()">知道了</button>
+    <span onclick="closeAskForInvoice()" class="close">×</span>
 </div>
-<div class="back_f">
+<div id="shareDivId"class="back_f">
     <p>支付成功！</p>
     <p>关注麦链商城微信公众账号，查看订单最新状态</p>
-    <img src="<%=path%>/static/images/chanpin%20(2).png" alt="">
+    <img src="<%=path%>/static/images/wx.jpg" alt="">
     <p>长按识别二维码</p>
     <p>或微信搜索“麦链商城”公众账号，关注麦链商城微信公众账号</p>
-    <span class="close">×</span>
+    <span onclick="closeShare()" class="close">×</span>
 </div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
-    $(".close").on("click", function () {
-        $(this).parent().hide();
-        $(".back").hide();
-    })
+    function contactSeller(){
+        $("#contactSellerDivId").show();
+    }
+    function closeContactSeller(){
+        $("#contactSellerDivId").hide();
+    }
+    function askForInvoice(){
+        $("#askForInvoiceDivId").show();
+    }
+    function closeAskForInvoice(){
+        $("#askForInvoiceDivId").hide();
+    }
+    function closeShare(){
+        $("#shareDivId").hide();
+    }
+
 </script>
 </body>
 </html>

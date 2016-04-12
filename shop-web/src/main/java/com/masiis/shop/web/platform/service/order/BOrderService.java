@@ -187,15 +187,15 @@ public class BOrderService {
 
     /**
      * 添加拿货订单
-     *
      * @param userId   用户id
      * @param skuId    商品id
      * @param quantity 拿货数量
      * @param message  用户留言
-     *                 <1>处理订单数据
-     *                 <2>添加订单日志
-     *                 <3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
-     *                 <4>添加订单地址信息
+     * <1>处理订单数据
+     * <2>添加订单日志
+     * <3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
+     * <4>添加订单地址信息
+     * @auth:wbj
      * @return
      * @throws Exception
      */
@@ -240,9 +240,10 @@ public class BOrderService {
         order.setShipAmount(BigDecimal.ZERO);
         order.setPayAmount(BigDecimal.ZERO);
         order.setShipType(0);
-        order.setOrderStatus(7);    //待发货
+        order.setSendType(comUser.getSendType());
+        order.setOrderStatus(BOrderStatus.WaitShip.getCode());    //待发货
         order.setShipStatus(0);
-        order.setPayStatus(7);      //待发货
+        order.setPayStatus(1);      //已支付
         order.setIsShip(0);
         order.setIsReplace(0);
         order.setIsReceipt(0);

@@ -121,6 +121,9 @@ public class UserController extends BaseController {
             case "trial":
                 model.addAttribute("message", "自动跳转到支付页面...");
                 break;
+            case "withdrawRequest":
+                model.addAttribute("message", "自动跳转到提现申请页面...");
+                break;
             default:
                 break;
         }

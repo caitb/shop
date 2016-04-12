@@ -44,12 +44,12 @@ public class SfShopCartService {
         return sfShopCartMapper.getShopCartInfoByUserIdAndShopId(userId,shopId,isCheck);
     }
     /**
-     * 删除购物车中的信息
+     * 批量删除购物车中的信息
      * @author hanzengzhi
      * @date 2016/4/11 17:05
      */
-    public int deleteShopCartById(Long id){
-        return sfShopCartMapper.deleteByPrimaryKey(id);
+    public int deleteByIds(String ids){
+        return sfShopCartMapper.deleteByIds(ids);
     }
 
     /**

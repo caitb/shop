@@ -32,8 +32,8 @@ public class SfUserController extends BaseController {
      * 校验用户是否已经绑定
      * @param userId       //用户id
      * @param request
-     * @auth:wangbingjian
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "/checkBinding.do",method = RequestMethod.POST)
     @ResponseBody

@@ -109,17 +109,17 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/4/8 18:00
      */
     @RequestMapping("/stockOrder")
-    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Integer sendType) throws Exception {
+    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
         ComUser comUser = getComUser(request);
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, sendType);
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, shopId);
         String index=null;
-        if(orderStatus==null && sendType==null){
+        if(orderStatus==null){
             index="0";//全部
         }else if (orderStatus == 0) {
             index="1";//待付款
         }else if (orderStatus == 7) {
             index="2";//代发货
-        } else if (orderStatus == 8 && sendType==2){
+        } else if (orderStatus == 8){
             index="3";//待收货
         } else if (orderStatus == 3) {
             index="4";//已完成
@@ -156,16 +156,17 @@ public class SfOrderManagerController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
+            Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
             }else if(index==1){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, shopId);
             }else if(index==2){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, shopId);
             }else if(index==3){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, 2);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, shopId);
             }else if(index==4){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, shopId);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -189,8 +190,9 @@ public class SfOrderManagerController extends BaseController {
             user = userService.getUserById(1l);
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
-//        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
+        ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
+        Long shopId =(Long) request.getSession().getAttribute("shopId");
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();
@@ -208,7 +210,7 @@ public class SfOrderManagerController extends BaseController {
         modelAndView.addObject("sfOrders7", sfOrders7.size());
         modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("user", user);
-//        modelAndView.addObject("userPid", userPid);
+        modelAndView.addObject("userPid", userPid);
         modelAndView.setViewName("mall/order/gerenzhongxin");
         return modelAndView;
     }

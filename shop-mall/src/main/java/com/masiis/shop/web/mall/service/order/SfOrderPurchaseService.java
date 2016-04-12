@@ -168,9 +168,10 @@ public class SfOrderPurchaseService {
      * @date 2016/4/9 12:23
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Map<String,Object> submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
+    public Long submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
         log.info("service生成订单---start");
         Map<String,Object> map = null;
+        SfOrder sfOrder = null;
         try{
             map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
             ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
@@ -185,12 +186,10 @@ public class SfOrderPurchaseService {
             log.info("获得分润信息---end");
             //插入订单表
             log.info("插入订单---start");
-            SfOrder sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
+            sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
                 log.info("插入订单成功---end");
-                map.put("orderCode",sfOrder.getOrderCode());
-                map.put("orderId",sfOrder.getId());
                 //插入订单操作操作日志
                 log.info("插入订单操作日志---start");
                 SfOrderOperationLog ordOperLog = generateSfOrderOperationLog(null,sfOrder.getId(),0);
@@ -201,11 +200,12 @@ public class SfOrderPurchaseService {
                     log.info("插入订单操作日志失败");
                     throw new BusinessException("插入订单操作日志失败");
                 }
-                StringBuffer shopCartIdSB = new StringBuffer("(");
+                StringBuffer shopCartIdSB = new StringBuffer();//所有商品的字符串
                 if (sfShopCartSkuDetails != null&& sfShopCartSkuDetails.size()>0){
                     for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
                         //插入订单子表
-                        shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId());
+                        //shopCartIdSB.append("'").append(sfShopCartSkuDetail.getShopCartId()).append("',");
+                        shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId()).append(",");
                         log.info("插入订单子表---start");
                         SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(),sfShopCartSkuDetail);
                         int ii = sfOrderItemService.insert(sfOrderItem);
@@ -213,7 +213,7 @@ public class SfOrderPurchaseService {
                             log.info("插入订单子表成功---end");
                             //插入子订单分润表
                             List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
-                            if (itemDisList != null){
+                            if (itemDisList != null&&itemDisList.size()!=0){
                                 for (SfOrderItemDistribution  orderItemDis :itemDisList){
                                     log.info("插入子订单分润表--start");
                                     orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(),sfOrderItem.getId(),orderItemDis);
@@ -231,12 +231,14 @@ public class SfOrderPurchaseService {
                             throw new BusinessException("插入子订单失败");
                         }
                     }
+                    //批量删除购物车中相应的商品信息
+                    String shopCartIds = shopCartIdSB.toString();
+                    shopCartIds = shopCartIds.substring(0,shopCartIds.lastIndexOf(","));
+                    deleteShopCartById(shopCartIds);
                 }else{
                     log.info("获得购物车中的商品详情信息为null");
                     throw new BusinessException("获得购物车中的商品详情信息为null");
                 }
-                //批量删除购物车中相应的商品信息
-
             }else{
                 log.info("插入订单失败---end");
                 throw new BusinessException("插入订单失败");
@@ -250,11 +252,16 @@ public class SfOrderPurchaseService {
             }else{
                 log.info("插入订单成功---end");
             }
+
         }catch (Exception e){
             throw new BusinessException(e);
         }
         log.info("service生成订单---end");
-        return map;
+        if (sfOrder!=null){
+            return sfOrder.getId();
+        }else{
+            return null;
+        }
     }
     /**
      * 获得订单中一款商品的分润总额
@@ -272,8 +279,8 @@ public class SfOrderPurchaseService {
             ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
         }
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
-        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null);
-        if (sfUserRelations!=null){
+        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null,null);
+        if (sfUserRelations!=null&&sfUserRelations.size()!=0){
             log.info("获得店铺--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
             for (int i = 0; i < sfUserRelations.size(); i++){
                 /*一条订单的总的分润*/
@@ -294,9 +301,6 @@ public class SfOrderPurchaseService {
                 orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
                 ordItemDisMap.put(skuId,orderItemDisList);
             }
-        }else{
-            log.info("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
-            throw new BusinessException("获得店铺--id为"+userId+"---的上级关系出错为---"+null);
         }
     }
     /**
@@ -388,8 +392,8 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/11 17:03
      */
-    private void deleteShopCartById(Long id){
-
+    private void deleteShopCartById(String ids){
+        sfShopCartService.deleteByIds(ids);
     }
 
     /**
@@ -449,14 +453,20 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 15:56
      */
-    private List<SfUserRelation> getSfUserRelation(Long userId,List<SfUserRelation> sfUserRelationList ){
+    private List<SfUserRelation> getSfUserRelation(Long userId,Long userPid,List<SfUserRelation> sfUserRelationList ){
         if (sfUserRelationList==null||sfUserRelationList.size()==0){
             sfUserRelationList = new LinkedList<SfUserRelation>();
         }
-        SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userId);
-        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null&&sfUserRelationList.size()<3){
+        if (userPid == null){
+            SfUserRelation _userRelation = sfUserRelationService.getSfUserRelationByUserId(userId);
+            userPid = _userRelation.getUserPid();
+        }
+        SfUserRelation sfUserRelation =   sfUserRelationService.getSfUserRelationByUserId(userPid);
+        if (sfUserRelation!=null){
             sfUserRelationList.add(sfUserRelation);
-            getSfUserRelation(sfUserRelation.getUserId(),sfUserRelationList);
+        }
+        if (sfUserRelation!=null && sfUserRelation.getUserPid()!=null&&sfUserRelationList.size()<3){
+            getSfUserRelation(sfUserRelation.getUserId(),sfUserRelation.getUserPid(),sfUserRelationList);
         }
         return sfUserRelationList;
     }

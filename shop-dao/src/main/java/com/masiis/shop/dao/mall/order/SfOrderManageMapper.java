@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface SfOrderManageMapper {
-    List<SfOrder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
+    List<SfOrder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("shopId") Long shopId);
 }

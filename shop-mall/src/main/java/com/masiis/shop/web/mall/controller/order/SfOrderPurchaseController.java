@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.controller.order;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -53,18 +55,21 @@ public class SfOrderPurchaseController extends BaseController {
      * @author hanzengzhi
      * @date 2016/4/10 11:09
      */
+    @ResponseBody
     @RequestMapping(value = "submitOrder.do")
     public String submitOrder(HttpServletRequest request,HttpServletResponse response,
                               @RequestParam(value = "message" , required = false)String message,
                               @RequestParam(value = "shopId",required = true) Long sfShopId,
-                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
-                              Model model){
+                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
+        JSONObject obj = new JSONObject();
         ComUser comUser = getComUser(request);
-        Map<String,Object> map = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
-        model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
-        model.addAttribute("totalPrice",map.get("totalPrice"));
-        model.addAttribute("orderCode",map.get("orderCode"));
-        model.addAttribute("orderId",map.get("orderId"));
-        return "mall/order/zhifudingdan";
+        Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
+        if (orderId != null){
+            obj.put("isSubmitOrder","true");
+            obj.put("sfOrderId",orderId);
+        }else{
+            obj.put("isSubmitOrder","false");
+        }
+        return obj.toJSONString();
     }
 }

@@ -19,6 +19,11 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
+    <delete id="deleteByIds" parameterType="java.lang.String" >
+        delete from sf_shop_cart
+        where id IN ( #{ids,jdbcType=VARCHAR} )
+    </delete>
+
     <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopCart" >
         insert into sf_shop_cart (id, create_time, user_id, 
             sf_shop_id, sf_shop_user_id,spu_id, sku_id,
@@ -60,6 +65,9 @@
         AND is_check = #{isCheck,jdbcType=INTEGER}
     </select>
     <!--根据用户id获得用户的购物车中的商品信息  end-->
+
+
+
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, user_id, sf_shop_id, sf_shop_user_id, spu_id ,sku_id, quantity, sort,
         is_check

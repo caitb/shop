@@ -45,26 +45,22 @@ public class IndexController extends BaseController {
             req.getSession().setAttribute("comUser", user);
         }
         req.getSession().setAttribute("shopId", shopId);
-        userService.getShareUser(user.getId(),userPid);//分销关系
+        userService.getShareUser(user.getId(),userPid,shopId);//分销关系
 //        ComUser pUser = userService.getUserById(userPid);
         ComUser pUser = new ComUser();
         SfShop sfShop = sfShopService.getSfShopById(1L);
-//        String planation =null;
-//        planation = new String(sfShop.getExplanation(), "UTF-8");
         List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(1L);
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
         BigDecimal bail=new BigDecimal(0);
-//        bail.doubleValue();
         for (SfShopSku sfShopSku:sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail= new SfShopDetail();
-//            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(1L,sfShopSku.getSkuId());
+            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
+//            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(1L,sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
-//            sfShopDetail.setShipAmount(sfShopSku.getShipAmount());//邮费
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
@@ -78,8 +74,6 @@ public class IndexController extends BaseController {
         modelAndView.addObject("sfShop",sfShop);
         modelAndView.addObject("bail",bail);//保证金
         modelAndView.addObject("SfShopDetails",SfShopDetails);
-        modelAndView.addObject("size",SfShopDetails.size());
-//        modelAndView.addObject("planation",planation);
         modelAndView.setViewName("shouye");
         return modelAndView;
     }

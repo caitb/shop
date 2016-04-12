@@ -66,11 +66,6 @@
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
-    <div class="sec5">
-        <p>关注<b>麦链商城</b>微信公众号，查看订单最新状态</p>
-        <button>立即分享</button>
-        <p>分享给好友，产生交易后可以的现金奖励哦！</p>
-    </div>
 </div>
 <div class="back"></div>
 <div id="contactSellerDivId" class="back_l">

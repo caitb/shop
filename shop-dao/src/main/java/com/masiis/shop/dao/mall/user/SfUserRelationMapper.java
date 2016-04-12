@@ -22,4 +22,6 @@ public interface SfUserRelationMapper {
     int updateByPrimaryKey(SfUserRelation record);
 
     SfUserRelation getSfUserRelationByUserId(Long userId);
+
+    SfUserRelation getSfUserRelationByUserPid(Long userPid);
 }

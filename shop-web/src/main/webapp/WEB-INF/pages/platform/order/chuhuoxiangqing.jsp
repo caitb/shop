@@ -136,24 +136,19 @@
     //        var myScroll = new IScroll("main",{
     //                 preventDefault: false
     //            })
-
     $(".fah").on("click", function () {
         $(".back").show();
         $(".back_que").css("display", "-webkit-box");
     })
 
     $("#faHuo").on("click", function () {
-        alert("1111");
         $(".back_que").hide();
-        alert("222");
         $(".back").hide();
-        alert("333");
         var shipManId = $("#select option:selected").val();
         var shipManName = $("#select option:selected").text();
-        alert(shipManId);
-        alert(shipManName);
         var freight = $("#input").val();
         var borderId = ${borderDetail.pfBorder.id};
+        alert("asdas");
         $.ajax({
             type: "POST",
             url: "/borderManage/deliver.do",

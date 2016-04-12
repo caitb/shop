@@ -548,6 +548,9 @@ public class BOrderService {
     @Transactional
     public void deliver(String shipManName, Long orderId, String freight, String shipManId, ComUser user) throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
+        if(pfBorder.getSendType() == 0){
+            throw new BusinessException("请选择发货方式");
+        }
         if (pfBorder.getSendType() == 1) {//平台代发
             if (pfBorder.getOrderType() == 2) {//拿货
                 if (freight == null || freight == "") {

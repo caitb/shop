@@ -410,7 +410,7 @@
                                 StatusName="待发货";
                             }else if(pfBorder.orderStatus ==8){
                                 StatusName="已发货";
-                            }else if(pfBorder.orderStatus ==8){
+                            }else if(pfBorder.orderStatus ==3){
                                 StatusName="交易成功";
                             }
                             trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";

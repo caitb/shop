@@ -60,7 +60,7 @@ public class BorderManageController extends BaseController {
     private BorderSkuStockService borderSkuStockService;
 
     /**
-     * 确认收货（异步）
+     * 确认收货
      *
      * @author muchaofeng
      * @date 2016/3/20 13:40
@@ -161,7 +161,7 @@ public class BorderManageController extends BaseController {
             }else if(index==2){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
             }else if(index==3){
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, 2);
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
             }else if(index==4){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
             }else if(index==5){
@@ -361,7 +361,7 @@ public class BorderManageController extends BaseController {
             index="0";//全部
         }else if (orderStatus == 0) {
             index="1";//待付款
-        }else if (orderStatus == 8 && sendType==2){
+        }else if (orderStatus == 8 ){
             index="3";//待收货
         }else if (orderStatus == 7) {
             index="2";//代发货
@@ -419,7 +419,7 @@ public class BorderManageController extends BaseController {
         }else if (orderStatus == 7) {
             index="2";//代发货
             borderNum = pfBorders.size();
-        } else if (orderStatus == 8 && sendType==2){
+        } else if (orderStatus == 8 ){
             index="3";//待收货
         }else if (orderStatus == 3) {
             index="4";//已完成
@@ -568,7 +568,7 @@ public class BorderManageController extends BaseController {
                 pfBorders0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 7 ) {
                 pfBorders10.add(pfBord);//代发货
-            } else if (pfBord.getOrderStatus() == 8 && pfBord.getShipStatus() == 5) {
+            } else if (pfBord.getOrderStatus() == 8 ) {
                 pfBorders15.add(pfBord);//待收货
             } else if (pfBord.getOrderStatus() == 3) {
                 pfBorders3.add(pfBord);//已完成

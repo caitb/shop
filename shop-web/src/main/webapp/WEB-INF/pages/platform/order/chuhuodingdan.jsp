@@ -78,7 +78,7 @@
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
                                 <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
                                 <c:when test="${pb.orderStatus ==7}">
-                                <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                             </div>
                         </section></c:forEach>
                     </div>
@@ -330,10 +330,10 @@
        <script src="<%=path%>/static/js/jinhuoshijian.js"></script>
        <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
        <script>
-               $('body').on('touchmove', function (event) {
-                   var event=event||event.window;
-                   event.prevtDefault();
-               });
+//               $('body').on('touchmove', function (event) {
+//                   var event=event||event.window;
+//                   event.prevtDefault();
+//               });
                function shouhuorenxinxi(a,b,c,d){
                    $(".back").css("display","-webkit-box");
                    $(".shouhuo").css("display","-webkit-box");
@@ -361,10 +361,8 @@
                            dataType:"Json",
                            success:function(data){
                                var trHtml = "";
-                               var orderStatusName="";
                                var StatusName="";
                                var orderTypeName="";
-                               var sendTypeName="";
                                $.each(data, function(i, pfBorder) {
                                    var time2 = new Date(pfBorder.createTime).Format("yyyy-MM-dd hh:mm");
                                    trHtml+="<section class=\"sec1\">";
@@ -377,7 +375,7 @@
                                        StatusName="待发货";
                                    }else if(pfBorder.orderStatus ==8){
                                        StatusName="已发货";
-                                   }else if(pfBorder.orderStatus ==8){
+                                   }else if(pfBorder.orderStatus ==3){
                                        StatusName="交易成功";
                                    }
                                    trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class=\"fahuo_"+pfBorder.id+"\">"+StatusName+"</b ></h2>";
@@ -400,15 +398,19 @@
                                    }
                                    trHtml+="<b>类型：</b><span>"+pfBorder.pidUserName+"</span></h1>";
                                    trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/deliveryBorderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
-                                   if(pfBorder.payStatus ==1){
-                                       trHtml+="<p class=\"sh\" onclick=\"shouhuorenxinxi(\""+pfBorder.pfBorderConsignee.consignee+"\",\""+pfBorder.pfBorderConsignee.provinceName+" "+pfBorder.pfBorderConsignee.cityName+" "+pfBorder.pfBorderConsignee.regionName+" "+pfBorder.pfBorderConsignee.address+" \",\""+pfBorder.pfBorderConsignee.mobile+"\",\""+pfBorder.pfBorderConsignee.zip+"\")\">收货人信息</p>";
+                                   if(pfBorder.payStatus ==1 ){
+                                       if(pfBorder.pfBorderConsignee != null){
+                                           trHtml+="<p class=\"sh\" onclick=\"shouhuorenxinxi(\""+pfBorder.pfBorderConsignee.consignee+"\",\""+pfBorder.pfBorderConsignee.provinceName+" "+pfBorder.pfBorderConsignee.cityName+" "+pfBorder.pfBorderConsignee.regionName+" "+pfBorder.pfBorderConsignee.address+" \",\""+pfBorder.pfBorderConsignee.mobile+"\",\""+pfBorder.pfBorderConsignee.zip+"\")\">收货人信息</p>";
+                                       }else{
+                                           trHtml+="";
+                                       }
                                    }else{
                                        trHtml+="";
                                    }
                                    if(pfBorder.orderStatus ==6){
                                        trHtml+="<p>处理排单</p>";
                                    }else if(pfBorder.orderStatus ==7){
-                                       trHtml+="<span class=\"fa\" name=\"fahuo_"+pfBorder.id+"\" onclick=\"fahuo(\""+pfBorder.id+" \")\">发货</span>";
+                                       trHtml+="<span class=\"fa\" name=\"fahuo_"+pfBorder.id+"\" onclick=\"fahuo('"+pfBorder.id+"')\">发货</span>";
                                    }else{
                                        trHtml+="";
                                    }
@@ -431,7 +433,6 @@
                        var shipManName = $("#select option:selected").text();
                        var freight = $("#input").val();
                        var aa="fahuo_"+id;
-                       alert(shipManName);
                        $.ajax({
                            type:"POST",
                            url : "<%=path%>/borderManage/deliver.do",

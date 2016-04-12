@@ -48,7 +48,7 @@
                         </section>
                         <section class="sec3">
                             <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}')">库存维护</p>
-                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.stock}',${sku.id})">补货</p>
+                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}',${sku.id})">补货</p>
                         </section>
                     </c:forEach>
                 </div>

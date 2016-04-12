@@ -15,6 +15,13 @@
         <result column="logo" property="logo" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(1)
+	      from sf_user_shop_view sview
+	      LEFT JOIN sf_shop s on sview.shop_id = s.id and s.status = 1
+	      LEFT JOIN com_user_account a on sview.shop_user_id = a.com_user_id
+        where sview.user_id = #{userId,jdbcType=BIGINT}
+    </select>
     <select id="selectViewedShopByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select sview.*,s.name as shopName,s.explanation explanation,a.bail_fee bailFee,TO_DAYS(SYSDATE())-TO_DAYS(sview.create_time) as days,s.logo
 	      from sf_user_shop_view sview

@@ -23,10 +23,15 @@
         var orderId = $("#orderId").val();
         window.location.href = "<%=path%>/orderPay/callWechatPay.do?orderCode="+orderCode+"&orderId="+orderId;
     }
+    function returnPage(){
+        window.location.href = "<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0";
+    }
 </script>
 <body>
     <header>
-              <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+              <a onclick="returnPage()">
+                  <img src="<%=path%>/static/images/xq_rt.png" alt="">
+              </a>
                 <p>付款详情</p>            
         </header>
         <div class="wrap">

@@ -4,7 +4,9 @@ import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.SfOrder;
 import com.masiis.shop.dao.po.SfUserAccount;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
@@ -25,9 +27,13 @@ public class SfUserAccountService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private SfUserAccountMapper userAccountMapper;
+    private SfUserAccountMapper sfUserAccountMapper;
     @Resource
     private SfOrderMapper orderMapper;
+    @Resource
+    private UserService userService;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
 
     /**
      * 根据用户id查询分销用户账户表
@@ -35,7 +41,7 @@ public class SfUserAccountService {
      * @return
      */
     public SfUserAccount findAccountByUserId(Long userId){
-        return userAccountMapper.selectByUserId(userId);
+        return sfUserAccountMapper.selectByUserId(userId);
     }
 
     /**
@@ -52,7 +58,7 @@ public class SfUserAccountService {
         account.setUserId(user.getId());
         account.setVersion(0L);
 
-        userAccountMapper.insert(account);
+        sfUserAccountMapper.insert(account);
     }
 
     /**
@@ -72,12 +78,30 @@ public class SfUserAccountService {
                 log.error("订单类型不匹配");
                 throw new BusinessException();
             }
-            if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_SHIPED.getCode().intValue()){
+            if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_SHIPED.getCode().intValue()
+                    || order.getPayStatus() != 1){
                 log.error("订单状态不匹配,订单不是" + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
                 throw new BusinessException("订单状态不匹配,订单不是"
                         + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
             }
 
+            // 计算店主的各种钱
+            //  获取店主用户
+            ComUser shopKeeper = userService.getUserById(order.getShopUserId());
+            // 计算店主待结算中金额(减去分润,减去运费)
+            BigDecimal countFee = null;
+            if(order.getSendType() == 1){
+                countFee = order.getPayAmount()
+                        .subtract(order.getDistributionAmount()).subtract(order.getShipAmount());
+            } else if(order.getSendType() == 2){
+                countFee = order.getPayAmount().subtract(order.getDistributionAmount());
+            } else {
+                throw new BusinessException("不合法的拿货方式");
+            }
+            // 店主account
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
+            // 计算店主此次总利润
+            // 计算分销订单的分润
 
         } catch (Exception e) {
 

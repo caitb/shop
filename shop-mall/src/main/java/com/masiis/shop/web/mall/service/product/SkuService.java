@@ -169,17 +169,16 @@ public class SkuService {
             skuInfo.setIsSale(sfShopSku.getIsSale());
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
-        if (sfShop != null) {
-            skuInfo.setShipAmount(sfShop.getShipAmount());
-        }
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
-        if (pfUserSkuStock != null) {
+        if (pfUserSkuStock != null && sfShop != null) {
             if (shopUser.getSendType() == 1) {//平台代发
                 skuInfo.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());
+
             }
             if (shopUser.getSendType() == 2) {//自己发货
                 skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                skuInfo.setShipAmount(sfShop.getShipAmount());
             }
         }
         return skuInfo;

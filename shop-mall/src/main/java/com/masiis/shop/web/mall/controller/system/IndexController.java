@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -9,6 +10,7 @@ import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -78,18 +80,44 @@ public class IndexController extends BaseController {
         return modelAndView;
     }
 
+    /**
+     * 呐喊
+     * @author muchaofeng
+     * @date 2016/4/12 17:05
+     */
+
     @RequestMapping("/shout.do")
     @ResponseBody
-    public String shout(HttpServletRequest req,Long shopId)throws Exception{
+    public String shout(HttpServletRequest req,Long shopId){
         JSONObject json = new JSONObject();
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-        boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
-        json.put("mallShout",mallShout);
+        try {
+            boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
+            json.put("mallShout",mallShout);
+        } catch (Exception ex) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                throw new BusinessException(ex.getMessage(), ex);
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
+        }
         return json.toJSONString();
     }
+
+
+    /**
+     * 分享
+     * @author muchaofeng
+     * @date 2016/4/12 17:05
+     */
+    @RequestMapping("/share.html")
+    public String share(HttpServletRequest req)throws Exception{
+        return "mall/shop/fenxiangjihua";
+    }
+
 
 }

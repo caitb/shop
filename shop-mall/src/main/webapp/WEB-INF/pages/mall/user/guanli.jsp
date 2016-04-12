@@ -17,6 +17,12 @@
 </head>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideToolbar');
+        WeixinJSBridge.call('hideOptionMenu');
+    });
+</script>
+<script>
     $(document).ready(function () {
         $.post("/userAddress/getUserAddressByUserId.do",
                 {
@@ -72,7 +78,6 @@
                 <header class="xq_header">
                    <a onclick="returnToPage()" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>管理收货地址</p>
-                        <h2 class="gl" onclick="returnToPage()">完成</h2>
                 </header>
                 <div class="xinz">
                     <p><a href="<%=path%>/userAddress/toAddAddressPage.html?addAddressJumpType=${addAddressJumpType}">新增收货地址</a></p>

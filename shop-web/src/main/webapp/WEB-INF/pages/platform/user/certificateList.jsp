@@ -38,7 +38,7 @@
                             <div class="small">
                                 <div class="left">
                                     <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
-                                    <h1>合伙人等级：<span>高级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
+                                    <h1>合伙人等级：<span>高级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>
                                 </div>
                                 <div class="right">
                                     <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>
@@ -55,7 +55,7 @@
                             <div class="small">
                                 <div class="left">
                                     <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
-                                    <h1>合伙人等级：<span>中级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
+                                    <h1>合伙人等级：<span>中级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>
                                 </div>
                                 <div class="right">
                                     <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>
@@ -72,7 +72,7 @@
                             <div class="small">
                                 <div class="left">
                                     <p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>
-                                    <h1>合伙人等级：<span>初级合伙人</span>保证金：<span>${cet.bail}</span>元</h1>
+                                    <h1>合伙人等级：<span>初级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>
                                 </div>
                                 <div class="right">
                                     <p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>

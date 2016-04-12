@@ -1,6 +1,5 @@
 $(function(){
     $(".j_qu").click(function(){
-        alert("1111");
         $(".back").attr('style', 'display:none');
         $(".back_j").attr('style', 'display:none');
     });
@@ -29,6 +28,7 @@ function withdraw(userId,extractableFee){
                 $(".back").attr('style', 'display:block');
                 $(".back_j").attr('style', 'display:block');
             }else {
+                fullShow();
                 window.location.href = basepath + "withdraw/withdrawRequest.shtml"
             }
         },
@@ -82,12 +82,4 @@ function viewMore(userId){
             }
         });
     }
-}
-
-/**
- * 展示商品详情
- * @param skuId
- */
-function showDetail(skuId){
-
 }

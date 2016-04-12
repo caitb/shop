@@ -41,8 +41,8 @@ public class SfUserAccountController extends BaseController {
     /**
      * 我的佣金首页
      * @param request
-     * @auto:wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "/commissionHome.shtml")
     public ModelAndView userCommission(HttpServletRequest request) throws Exception{
@@ -92,8 +92,8 @@ public class SfUserAccountController extends BaseController {
      * @param count
      * @param userId
      * @param request
-     * @auto:wbj
      * @return
+     * @author:wbj
      */
     @RequestMapping(value = "/moreCommission.do")
     @ResponseBody

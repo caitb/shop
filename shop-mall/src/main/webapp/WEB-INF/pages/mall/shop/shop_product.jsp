@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>商品详情</p>
 </header>
 <div class="wrap">

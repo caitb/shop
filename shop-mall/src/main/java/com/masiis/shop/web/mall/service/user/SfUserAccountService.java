@@ -5,10 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.SfOrder;
-import com.masiis.shop.dao.po.SfUserAccount;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.service.order.SfOrderService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,11 +97,21 @@ public class SfUserAccountService {
             }
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
+            // 创建店主结算中金额变动记录
+            ComUserAccountRecord pfCountRecord = createComUserAccountRecordBySfOrder(order, countFee);
+            pfCountRecord.setPrevFee(comUserAccount.getCountingFee());
+            comUserAccount.setCountingFee(comUserAccount.getCountingFee().add(countFee));
+            pfCountRecord.setNextFee(comUserAccount.getCountingFee());
+            // 创建
             // 计算店主此次总利润
             // 计算分销订单的分润
 
         } catch (Exception e) {
 
         }
+    }
+
+    private ComUserAccountRecord createComUserAccountRecordBySfOrder(SfOrder order, BigDecimal countFee) {
+        return null;
     }
 }

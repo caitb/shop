@@ -49,7 +49,7 @@ public class IndexController extends BaseController {
 //        ComUser pUser = userService.getUserById(userPid);
         ComUser pUser = new ComUser();
         SfShop sfShop = sfShopService.getSfShopById(1L);
-        String planation =null;
+//        String planation =null;
 //        planation = new String(sfShop.getExplanation(), "UTF-8");
         List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(1L);
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
@@ -79,7 +79,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("bail",bail);//保证金
         modelAndView.addObject("SfShopDetails",SfShopDetails);
         modelAndView.addObject("size",SfShopDetails.size());
-        modelAndView.addObject("planation",planation);
+//        modelAndView.addObject("planation",planation);
         modelAndView.setViewName("shouye");
         return modelAndView;
     }

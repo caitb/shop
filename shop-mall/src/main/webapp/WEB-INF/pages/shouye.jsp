@@ -28,8 +28,8 @@
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
-            <p>${planation}</p>
-            <img src="<%=path%>/static/images/fen.png" alt="">${sfShop.logo}
+            <p>${sfShop.explanation}</p>
+            <img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">${sfShop.logo}
         </div>
         <div>
             <p>
@@ -90,14 +90,20 @@
     <h1>呐喊成功！</h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-    <button>获取我的专属海报</button>
+    <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>
 <div id="no" class="back_f" style="display: none">
     <h1>您已呐喊过，请明天再来 </h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
-    <button>获取我的专属海报</button>
+    <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
+    <span class="close">×</span>
+</div>
+<div id="fen" class="back_f" style="display: none">
+    <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
+    <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>
 <div class="back"></div>
@@ -107,6 +113,10 @@
     $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
+    })
+    $("#fenxiang").on("click",function(){
+        $("#fen").show();
+        $(".back").show();
     })
     $(".shout").on("click",function(){
         var shopId =${sfShop.id};

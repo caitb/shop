@@ -59,7 +59,7 @@
                         </li>
                     </ul>
                     <ul>
-                        <li>
+                        <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
                             <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
                             <span>地址管理</span>
                         </li>

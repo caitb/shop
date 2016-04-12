@@ -36,6 +36,7 @@ public class UserAddressController extends BaseController {
     private static  final  int managePageToChooseAddressPageTag = 0;
     //管理地址跳转到个人中心界面
     private static  final  int managePageToPersonalInfoPageTag = 1;
+
     //新增地址增加完跳转到订单界面
     public static final int addAddressPageToOrderPage = 0;
     //新增地址增加完跳转到管理地址界面
@@ -174,6 +175,7 @@ public class UserAddressController extends BaseController {
                                                        @RequestParam(value = "manageAddressJumpType",required = true,defaultValue = "0")int manageAddressJumpType,
                                                        Model model)throws Exception {
         String returnPage = null;
+        String basePath = null;
         switch (manageAddressJumpType){
             case managePageToChooseAddressPageTag: //返回到选择地址界面
                 returnPage = "mall/user/xuanze";
@@ -181,8 +183,8 @@ public class UserAddressController extends BaseController {
                 model.addAttribute("addressId", selectedAddressId);
                 break;
             case managePageToPersonalInfoPageTag:  //返回到到个人中心
-                String basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
-                returnPage = "redirect:" + basePath +"/personalInfo/personalHomePageInfo.html";
+                basePath = request.getScheme() + "://"+ request.getServerName() + ":" + request.getServerPort();
+                returnPage = "redirect:" + basePath +"/sfOrderManagerController/borderManagement.html";
                 break;
             default://返回到选择地址界面
                 break;

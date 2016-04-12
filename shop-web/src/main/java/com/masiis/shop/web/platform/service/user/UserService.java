@@ -43,7 +43,7 @@ public class UserService {
     @Resource
     private ComWxUserMapper wxUserMapper;
     @Resource
-    private SfUserAccountService sfUserAccountService;
+    private SfUserAccountService sfAccountService;
 
     /**
      * 根据用户id获取用户
@@ -229,48 +229,60 @@ public class UserService {
         return comUserMapper.selectByUnionid(unionid);
     }
 
+    @Transactional
     public ComUser signWithCreateUserByWX(AccessTokenRes res, WxUserInfo userRes) {
         // 检查openid是否已经存在数据库
         List<ComWxUser> wxUsers = wxUserMapper.selectByUnionid(userRes.getUnionid());
         ComWxUser wxUser = null;
         ComUser user = null;
+        user = getUserByUnionid(userRes.getUnionid());
+
         if(wxUsers != null && wxUsers.size() > 0){
             // 有unionid
-            user = getUserByUnionid(userRes.getUnionid());
             if(user == null){
                 log.error("系统数据错误,请联系管理员!");
                 throw new BusinessException("");
             }
             wxUser = getWxUserByOpenidInList(res.getOpenid(), wxUsers);
-            if(wxUser != null){
-                // 有openid,更新这个openid数据
-                updateWxUserByActkn(res, userRes, wxUser);
-            }
-        } else {
-            // 无unionid,创建comuser和comwxuser
-            user = new ComUser();
-            user.setWxNkName(userRes.getNickname());
-            user.setWxHeadImg(userRes.getHeadimgurl());
-            user.setCreateTime(new Date());
-            user.setWxUnionid(userRes.getUnionid());
-            user.setIsAgent(0);
-            user.setIsBinding(0);
-            user.setAuditStatus(0);
-            user.setSendType(0);
-            user.setRegisterSource(0);
-            insertComUser(user);
-            accountService.createAccountByUser(user);
-            sfUserAccountService.createSfAccountByUser(user);
+            log.info("wxUser:" + wxUser);
         }
 
-        wxUser = createWxUserInit(res, userRes, user);
-        wxUser.setAppid(WxConstants.APPID);
-        wxUser.setComUserId(user.getId());
-        if(wxUser.getId() == null) {
+        // 无unionid,创建comuser和comwxuser
+        if(user == null){
+            log.info("创建新comUser");
+            user = createComUser(userRes);
+            insertComUser(user);
+            accountService.createAccountByUser(user);
+            sfAccountService.createSfAccountByUser(user);
+        }
+
+        if(wxUser == null) {
+            log.info("创建新comWxUser");
+            // 无openid创建新的wxUser
+            wxUser = createWxUserInit(res, userRes, user);
             wxUserMapper.insert(wxUser);
         } else {
+            log.info("更新comWxUser");
+            // 有openid,更新这个openid数据
+            updateWxUserByActkn(res, userRes, wxUser);
             wxUserMapper.updateByPrimaryKey(wxUser);
         }
+
+        return user;
+    }
+
+    private ComUser createComUser(WxUserInfo userRes) {
+        ComUser user = new ComUser();
+
+        user.setWxNkName(userRes.getNickname());
+        user.setWxHeadImg(userRes.getHeadimgurl());
+        user.setCreateTime(new Date());
+        user.setWxUnionid(userRes.getUnionid());
+        user.setIsAgent(0);
+        user.setIsBinding(0);
+        user.setAuditStatus(0);
+        user.setSendType(0);
+        user.setRegisterSource(0);
 
         return user;
     }

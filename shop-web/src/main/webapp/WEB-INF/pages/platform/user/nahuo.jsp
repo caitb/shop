@@ -73,21 +73,21 @@
                 <em>拿货数量：</em><b><span class="jian">-</span><input type="text" value="1" class="number">
                 <span class="jia">+</span></b>
             </p>
-            <p><span>注</span>您的剩余库存可发展夏季合伙人的数量为1~${lowerCount}</p>
+            <p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>
         </section>
         <section class="sec5">
             <div>
                 <h1>说明</h1>
-                <p>您申请的货物将由您自行保管；<br/>您只能使用再现库存发展夏季合伙人，您得体的货物不再支持在线和活人的发展</p>
+                <p>您申请的货物将由您自行保管；<br/>您只能使用在线库存发展下级合伙人，您得到的货物不再支持在线人合伙的发展</p>
             </div>
             <input type="checkbox" id="active">
-            <label for="active"><b>拿货风险：</b>请确认以了解申请拿货的部分不能继续发展下线，货物有我仔细销售</label>
+            <label for="active"><b>拿货风险：</b>请确认以了解申请拿货的部分不能继续发展下线，货物又我自行销售</label>
             <button onclick="submit();">确认拿货</button>
         </section>
     </main>
 </div>
 <div class="back_que">
-    <p>确认减库存?</p>
+    <p>确认拿货?</p>
     <h4><b>在线库存:</b><span id="currentStock">${productInfo.stock}</span></h4>
     <h4><b>拿货数量:</b><span id="applyStock"></span></h4>
     <h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>
@@ -124,7 +124,12 @@
         var checked = document.getElementById("active").checked;
         var currentStock = $("#currentStock").text();
         var levelStock = $("#levelStock").val();
-        var afterLowerCount =(currentStock-i)/levelStock
+        var afterLowerCount =(currentStock-i)/levelStock;
+        //地址
+        var addressId = $("#addressId").val();
+        if(addressId===undefined || addressId==""){
+            alert("请输入拿货地址！");
+        }
         if(checked==true){
             if (afterLowerCount >= 0) {
                 $(".back").css("display", "-webkit-box");

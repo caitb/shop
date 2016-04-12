@@ -21,21 +21,10 @@
     <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
-<%--<div class="kang">
-    <a href="<%=path%>/product/${skuId}">
-        <p class="photo">
-            <img src="${skuImg}">
-        </p>
-        <div>
-            <h2>${skuName}</h2>
-            <p>${slogan}</p>
-        </div>
-    </a>
-</div>--%>
-<div class="paidan" style="display: none;">
-    <h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-    <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-</div>
+<%--<div class="paidan" style="display: none;">--%>
+<%--<h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
+<%--<p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>--%>
+<%--</div>--%>
 <div class="biao">
     <h1>申请条件</h1>
     <table>
@@ -62,7 +51,8 @@
                         <td><span style="color: #FF5200">审核中</span></td>
                     </c:if>
                     <c:if test="${user.auditStatus == 0}">
-                        <td><a href="javascript:void(0);" onclick="goVerified();" style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                        <td><a href="javascript:void(0);" onclick="goVerified();"
+                               style="color: #FF5200;text-decoration: underline">去完成</a></td>
                     </c:if>
                 </c:otherwise>
             </c:choose>
@@ -211,29 +201,29 @@
         window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
 
-    $("#goToNext").on("click", function(){
+    $("#goToNext").on("click", function () {
         var auditStatus = "${user.auditStatus}";
-        if(auditStatus == 2){
+        if (auditStatus == 2) {
             window.location.href = "<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
-        } else if(auditStatus == 1){
+        } else if (auditStatus == 1) {
             alert("您的实名认证正在审核中,请耐心等候!");
-        } else if(auditStatus == 0){
+        } else if (auditStatus == 0) {
             $("#realNameVerifyDiv").show();
         }
     });
 
-    $("#quxiao").on("click", function(){
+    $("#quxiao").on("click", function () {
         $("#realNameVerifyDiv").hide();
     });
 
     $(".down").toggle(function () {
-        $(this).attr("src","<%=path%>/static/images/top.png")
-        $(this).parent().css("borderBottom","none")
-        $(this).parent().next().css("display","-webkit-box");
+        $(this).attr("src", "<%=path%>/static/images/top.png")
+        $(this).parent().css("borderBottom", "none")
+        $(this).parent().next().css("display", "-webkit-box");
     }, function () {
-        $(this).attr("src","<%=path%>/static/images/down.png")
+        $(this).attr("src", "<%=path%>/static/images/down.png")
         $(this).parent().next().hide();
-        $(this).parent().css("borderBottom","1px solid #f6f6f6")
+        $(this).parent().css("borderBottom", "1px solid #f6f6f6")
     })
 </script>
 </html>

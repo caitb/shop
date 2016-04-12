@@ -185,7 +185,7 @@ public class PayBOrderService {
                 log.info("<7>修改用户sku代理关系数据");
                 thisUS = new PfUserSku();
                 thisUS.setCreateTime(new Date());
-                thisUS.setCode("");
+
                 PfUserSku parentUS = pfUserSkuMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 if (parentUS == null) {
                     thisUS.setPid(0);
@@ -202,11 +202,8 @@ public class PayBOrderService {
                 thisUS.setPfBorderId(pfBorder.getId());
                 thisUS.setBail(pfBorder.getBailAmount());
                 thisUS.setRemark("");
-                pfUserSkuMapper.insert(thisUS);
                 PfUserCertificate pfUserCertificate = new PfUserCertificate();
                 pfUserCertificate.setCreateTime(new Date());
-                pfUserCertificate.setCode("");
-                pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setUserId(pfBorder.getUserId());
                 pfUserCertificate.setSpuId(pfBorderItem.getSpuId());
                 pfUserCertificate.setSkuId(pfBorderItem.getSkuId());
@@ -231,6 +228,11 @@ public class PayBOrderService {
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificate.setStatus(1);
                 pfUserCertificate.setRemark("");
+                String code = getCertificateCode(pfUserCertificate);
+                thisUS.setCode(code);
+                pfUserSkuMapper.insert(thisUS);
+                pfUserCertificate.setPfUserSkuId(thisUS.getId());
+                pfUserCertificate.setCode(code);
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
             log.info("<8>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
@@ -336,7 +338,7 @@ public class PayBOrderService {
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
         String value1 = certificateInfo.getAgentLevelId().toString();
         String value2 = String.format("%04d", certificateInfo.getSkuId());
-        String value3 = String.format("%04d", certificateInfo.getId());
+        String value3 = String.format("%04d", certificateInfo.getUserId());
         certificateCode = Code.append(value1).append(value2).append(value).append(value3).toString();
         return certificateCode;
     }

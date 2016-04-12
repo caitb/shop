@@ -30,6 +30,7 @@ function withdraw(userId){
             if(data.isTrue == "false"){
                 alert(data.message);
             }else {
+                fullShow();
                 window.location.href = basepath + data.resUrl;
             }
         },

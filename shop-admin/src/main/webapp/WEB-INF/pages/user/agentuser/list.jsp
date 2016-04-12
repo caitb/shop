@@ -500,10 +500,15 @@
                         formatter: function(value, row, index){
                             return [
                                     '<a class="personal-info" href="javascript:void(0);">个人信息</a>',
-                                    '<a class="agent-user-info">合伙信息</a>',
-                                    '<a class="update-superior">更改上级</a>',
-                                    '<a class="upgrade">升级</a>'
+                                    '&nbsp;&nbsp;<a class="agent-user-info">合伙信息</a>',
+                                    '&nbsp;&nbsp;<a class="update-superior">更改上级</a>',
+                                    '&nbsp;&nbsp;<a class="upgrade">升级</a>'
                             ].join('');
+                        },
+                        events: {
+                            'click .personal-info': function (e, value, row, index) {
+                                parent.window.$('#myTabbable').add('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
+                            }
                         }
                     }
                 ]

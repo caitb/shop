@@ -76,7 +76,7 @@ CommonPerson.Base.LoadingPic = {
     //显示全屏Loading图
     FullScreenShow: function (msg) {
         if (msg === undefined) {
-            msg = "数据加载中, 请稍等...";
+            msg = "加载中...";
         }
 
         if ($("#div_loadingImg").length == 0) {
@@ -84,7 +84,7 @@ CommonPerson.Base.LoadingPic = {
         }
         if (this.operation.loadingCount < 1) {
             this.operation.timeTest = setTimeout(function () {
-                $("#div_loadingImg").append("<div id='loadingPage_bg' class='loadingPage_bg1'></div><div id='loadingPage'>" + msg + "</div>");
+                $("#div_loadingImg").append("<div id='loadingPage_bg' class='loadingPage_bg1'></div><div id='loadingPage'><p>" + msg + "</p></div>");
                 $("#loadingPage_bg").height($(top.window.document).height()).width($(top.window.document).width());
             }, 100);
         }
@@ -156,7 +156,7 @@ CommonPerson.Base.LoadingPic = {
 
 }
 function fullHide() {
-    CommonPerson.Base.LoadingPic.FullScreenHide();
+    CommonPerson.n.LoadingPic.FullScreenHide();
 }
 
 function fullShow() {

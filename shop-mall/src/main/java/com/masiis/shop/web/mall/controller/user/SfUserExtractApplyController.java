@@ -84,7 +84,7 @@ public class SfUserExtractApplyController extends BaseController{
      * @return
      * @author:wbj
      */
-    @RequestMapping(value = "confirmWithdraw.do")
+    @RequestMapping(value = "/confirmWithdraw.do")
     @ResponseBody
     public String confirmWithdraw(@RequestParam(value = "inputAccount",required = true) String inputAccount,
                                   @RequestParam(value = "userId",required = true) Long userId,
@@ -216,7 +216,7 @@ public class SfUserExtractApplyController extends BaseController{
      * @return
      * @author:wbj
      */
-    @RequestMapping(value = "ajaxExtractApplyList.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxExtractApplyList.do",method = RequestMethod.POST)
     @ResponseBody
     public String ajaxExtractApplyList(@RequestParam(value = "year",required = true) String year,
                                        @RequestParam(value = "month",required = true) String month,

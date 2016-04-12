@@ -113,8 +113,7 @@ public class ProductController extends BaseController {
                                   @RequestParam(required = true) Integer skuId) {
         JSONObject object = new JSONObject();
         try {
-            HttpSession session = request.getSession();
-            ComUser comUser = (ComUser) session.getAttribute("comUser");
+            ComUser comUser = getComUser(request);
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);//代理关系
             int usableStock = skuService.checkSkuStock(skuId, stock, pfUserSku.getUserPid() == null ? 0 : pfUserSku.getUserPid());
             if (usableStock < 0) {

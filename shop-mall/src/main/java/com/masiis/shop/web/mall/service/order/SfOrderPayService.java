@@ -81,7 +81,7 @@ public class SfOrderPayService {
             //更新订单
             SfOrder order = ordService.getOrderById(orderPayment.getSfOrderId());
             log.info("更新订单----start");
-            int ii = updateOrder(order);
+            int ii = updateOrder(order,orderPayment);
             if (ii == 1){
                 log.info("更新订单成功----end");
             }else{
@@ -116,11 +116,13 @@ public class SfOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/10 11:47
      */
-    private int updateOrder(SfOrder order){
+    private int updateOrder(SfOrder order,SfOrderPayment orderPayment){
         order.setModifyTime(new Date());
         order.setPayTime(new Date());
         order.setOrderStatus(7);//待发货
         order.setPayStatus(1);//已支付
+        order.setReceivableAmount(order.getReceivableAmount().subtract(orderPayment.getAmount()));//应收费用
+        order.setPayAmount(order.getPayAmount().add(orderPayment.getAmount()));
         return  ordService.update(order);
     }
     /**

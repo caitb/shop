@@ -40,7 +40,7 @@
                     </li>
                 </ul>
                 <ul>
-                <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=8&sendType=2">
+                <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=8">
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorders8 !=0}"><span>${pfBorders8}</span></c:if></h1>
                     <h1>需要我收货</h1></a>
                 </li>
@@ -67,7 +67,7 @@
                     </li>
                 </ul>
                 <ul>
-                <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=8&sendType=2">
+                <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=8">
                     <h1><img src="<%=path%>/static/images/shouhuo.png" alt=""><c:if test="${pfBorderps8 !=0}"><span>${pfBorderps8}</span></c:if></h1>
                     <h1>需要对方收货</h1></a>
                 </li>

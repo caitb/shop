@@ -37,4 +37,12 @@ public class SfUserShopViewService {
         return sfUserShopViewExtendMapper.selectViewedShopByUserId(userId);
     }
 
+    /**
+     * 查询总数
+     * @param userId
+     * @return
+     */
+    public Integer findCountByUserId(Long userId){
+        return sfUserShopViewExtendMapper.selectCountByUserId(userId);
+    }
 }

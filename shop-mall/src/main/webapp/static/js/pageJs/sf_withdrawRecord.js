@@ -37,7 +37,6 @@ function getExtractApplyList(year,month){
         }else {
             $.ajax({
                 type:"POST",
-                async:true,
                 url : basepath + "withdraw/ajaxExtractApplyList.do",
                 data:{year:year, month:month, currentPage:currentPage + 1, pageSize:20},
                 dataType:"Json",

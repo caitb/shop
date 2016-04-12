@@ -49,7 +49,7 @@
             <div>
                 <h2>${orderItem.skuName}</h2>
                 <h3>规格：<span>默认</span></h3>
-                <h3>￥${orderItem.originalPrice}<b>x${quantity}</b></h3>
+                <h3>￥${orderItem.originalPrice}<b>x${orderItem.quantity}</b></h3>
 
             </div>
         </c:forEach>
@@ -92,15 +92,19 @@
 <script>
     function contactSeller(){
         $("#contactSellerDivId").show();
+        $(".back").show();
     }
     function closeContactSeller(){
         $("#contactSellerDivId").hide();
+        $(".back").hide();
     }
     function askForInvoice(){
         $("#askForInvoiceDivId").show();
+        $(".back").show();
     }
     function closeAskForInvoice(){
         $("#askForInvoiceDivId").hide();
+        $(".back").hide();
     }
     function closeShare(){
         $("#shareDivId").hide();

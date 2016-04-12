@@ -16,15 +16,13 @@
     $("body").append(_html);
       $("body").append(_back);
   }
-  var hideWindow = function(event){
+  var hideWindow = function(){
         $('.alert').fadeIn("slow").delay(2000)/*.fadeOut("slow", function(){
           $('.alert').remove();
         });*/
       $(".layer").fadeIn("slow")/*.delay(2000).fadeOut("slow", function(){
           $('.layer').remove();
       });*/
-      var event=event||event.window;
-      event.stopPropagation();
       }
   var loadCssFile = function(){
         $("<link>").attr({

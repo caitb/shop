@@ -29,6 +29,8 @@ public class ProductService {
     @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
+    private ComSkuMapper comSkuMapper;
+    @Resource
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
     private ProductSimpleMapper productSimpleMapper;
@@ -88,12 +90,13 @@ public class ProductService {
      * @date 2016/3/5 16:19
      */
     public Product applyTrialToPageService(Integer skuId) {
-        Product product = null;
+        Product product = new Product();
         try {
-            product = getSkuDetails(skuId.toString());
-            if (product != null) {
+           ComSku comSku = comSkuMapper.selectById(skuId);
+            if (comSku != null){
+                product.setName(comSku.getName());
                 //获取运费
-                ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
+                ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
                 if (comSpu != null) {
                     //获取默认图片
                     ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(skuId);

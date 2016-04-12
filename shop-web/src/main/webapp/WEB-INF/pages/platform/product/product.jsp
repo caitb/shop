@@ -206,6 +206,7 @@
     $(".zhidao").on("click",function(){
         $(".back").css("display","none");
         $(".back_q").hide();
+        $(".back_login").hide();
     })
   function gotoBuhuo(){
       $(".back").css("display","-webkit-box");

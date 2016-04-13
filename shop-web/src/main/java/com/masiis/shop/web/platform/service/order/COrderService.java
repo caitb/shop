@@ -330,7 +330,7 @@ public class COrderService {
                 pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
                 pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
             }
-            pfCorder.setPayTime(new Date());
+            pfCorder.setPayTime(pfCorderPayment.getCreateTime());
             pfCorder.setPayStatus(1);//已付款
             pfCorder.setOrderStatus(1);//已付款
             pfCorderMapper.updateById(pfCorder);

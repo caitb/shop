@@ -36,7 +36,6 @@
 </script>
 <body>
 <header class="xq_header">
-    <input id="skuId" style="display: none" type="text" value="${product.id}"/>
     <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>确认订单</p>
 </header>
@@ -51,6 +50,7 @@
         <section class="sec1">
             <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
             <div onclick="toChooseAddressPage()">
+                <input id="skuId" style="display: none" type="text" value="${product.id}"/>
                 <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                 <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                 <a href="#"><p>收货地址：

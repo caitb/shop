@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.service.order;
+package com.masiis.shop.scheduler.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -8,7 +8,6 @@ import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillMapper;
 import com.masiis.shop.dao.po.*;
-import org.apache.ibatis.builder.BuilderException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

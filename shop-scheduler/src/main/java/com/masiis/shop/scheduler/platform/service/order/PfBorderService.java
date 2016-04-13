@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.service.order;
+package com.masiis.shop.scheduler.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -8,7 +8,7 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.scheduler.service.user.ComUserAccountService;
+import com.masiis.shop.scheduler.platform.service.user.ComUserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

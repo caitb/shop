@@ -18,14 +18,14 @@
 <body>
 <div class="wrap">
     <div class="na">
-        <p></p>
+        <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
-            <span>王平，欢迎登陆~</span>
+            <span>${comUser.realName}，欢迎登陆~</span>
         </h1>
     </div>
     <div class="header">
         <div>
-            <p>王平的小店</p>
+            <p>${sfShop.name}</p>
             <span>分享</span>
         </div>
         <div>
@@ -33,7 +33,7 @@
                 <span>麦链商城光放认证</span>
             </p>
         </div>
-        <img src="<%=basePath%>static/images/admin.png" alt="">
+        <img src="${sfShop.logo}" alt="">
         <nav>
             <p><span>1233</span><span>店铺总销售额</span></p>
             <p><span>1233</span><span>店铺总销售额</span></p>

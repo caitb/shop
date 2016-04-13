@@ -20,16 +20,19 @@
     <a href="zhifu.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>店铺设置</p>
 </header>
+<form action="<%=basePath%>shop/manage/updateShop" method="post">
 <div class="wrap">
     <p>
         <label for="">店铺名称</label>
-        <input type="text">
+        <input type="hidden" name="id" value="${sfShop.id}">
+        <input type="text" name="name" value="${sfShop.name}">
     </p>
     <p>
         <label for="">店铺介绍</label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <textarea name="explanation" value="${sfShop.explanation}" id="" cols="30" rows="10"></textarea>
     </p>
-    <button>保存</button>
+    <button type="submit">保存</button>
 </div>
+</form>
 </body>
 </html>

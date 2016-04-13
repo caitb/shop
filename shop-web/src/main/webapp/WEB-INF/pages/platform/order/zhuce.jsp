@@ -10,6 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
+    <%@ include file="/head.jsp" %>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/zhuce.css">
@@ -17,7 +18,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
-<%@ include file="/head.jsp" %>
 <div class="wrap">
     <div id="box">
         <header class="xq_header">

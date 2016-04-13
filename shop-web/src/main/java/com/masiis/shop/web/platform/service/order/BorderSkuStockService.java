@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.order.StockManage;
+import com.masiis.shop.dao.mall.order.SfOrderItemMallMapper;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
@@ -32,6 +34,12 @@ public class BorderSkuStockService {
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private SfOrderItemMallMapper sfOrderItemMallMapper;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private ComUserMapper comUserMapper;
 
     /**
      * 更新出货库存
@@ -64,6 +72,50 @@ public class BorderSkuStockService {
                     }
                 } else {
                     throw new BusinessException(pfBorderItem.getSkuName() + "当前库存异常");
+                }
+            }
+        }
+    }
+
+    /**
+     * 更新出货库存
+     *
+     * @author muchaofeng
+     * @date 2016/3/21 14:35
+     */
+    public  void  updateOrderStock(SfOrder sfOrder, ComUser user) {
+        PfUserSkuStock pfUserSkuStock = null;
+        PfSkuStock pfSkuStock = null;
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
+        if(sfUserRelation==null){
+            throw new BusinessException("用户关系异常");
+        }
+        ComUser userPid = comUserMapper.selectByPrimaryKey(sfUserRelation.getUserPid());
+        if(userPid==null){
+            throw new BusinessException("用户上级为空");
+        }
+        for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
+            if (userPid.getId() == 0) {
+                pfSkuStock = pfSkuStockMapper.selectBySkuId(sfOrderItem.getSkuId());
+                if (pfSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
+                    pfSkuStock.setStock(pfSkuStock.getStock() - sfOrderItem.getQuantity());
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - sfOrderItem.getQuantity());
+                    if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
+                        throw new BusinessException("并发修改库存失败");
+                    }
+                } else {
+                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+                }
+            } else {
+                pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
+                if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
+                    pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity());
+                    pfUserSkuStock.setStock(pfUserSkuStock.getStock() - sfOrderItem.getQuantity());
+                    if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+                        throw new BusinessException("并发修改库存失败");
+                    }
+                } else {
+                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
                 }
             }
         }

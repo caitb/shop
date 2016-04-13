@@ -89,6 +89,19 @@ public class SfShopManageController extends BaseController {
     public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("mall/shop/manage/setupFreight");
 
+        SfShop sfShop = null;
+        try {
+            ComUser comUser = getComUser(request);
+            sfShop = sfShopMapper.selectByUserId(comUser.getId());
+
+            mav.addObject("sfShop", sfShop);
+
+            return mav;
+        } catch (Exception e) {
+            log.error("去运费设置页面失败![sfShop="+sfShop+"]");
+            e.printStackTrace();
+        }
+
         return mav;
     }
 }

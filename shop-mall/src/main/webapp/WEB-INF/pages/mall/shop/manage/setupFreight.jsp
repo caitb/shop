@@ -13,75 +13,36 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/reset.css">
-    <style>
-        .wrap{
-            background: #fff;
-        }
-        .wrap>img{
-            display: block;
-            width: 90%;
-            margin: 1em auto 1em auto;
-            border-radius: 5px;
-            box-shadow:1px 2px 2px 1px #ccc;
-        }
-        b{
-            display: block;
-            text-align: center;
-            color: #F73C8C;
-            width: 100%;
-        }
-        .wrap div{
-            display: -webkit-box;
-            padding: 10px;
-        }
-        .wrap div>p{
-            padding-top: 10px;
-        }
-        .wrap div h1{
-            text-indent: 25px;
-            margin-left: 10px;
-        }
-        .wrap div h1 p{
-            background: url("<%=basePath%>static/images/icon_14.png") no-repeat 0;
-            background-size: 15px;
-            padding: 10px 0;
-        }
-        .active{
-            background: url("<%=basePath%>static/images/guanli.png") no-repeat 0;
-            background-size: 15px;
-        }
-        .wrap div input{
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            padding: 5px 0;
-        }
-        button{
-            background: #ED6734;
-            width: 60%;
-            line-height: 30px;
-            margin-left: 20%;
-            margin-top: 4em;
-            color: white;
-            border-radius: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/yunfeishezhi.css">
 </head>
 <body>
 <header>
-    <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>运费设置</p>
 </header>
-<form action="<%=basePath%>shop/manage/updateShop" method="post">
-<div class="wrap">
-    <div>
-        <p><span>运费设置</span></p>
-        <h1>
-            <p><input type="radio" name="shipAmount" <c:if test="" ><label for="">包邮</label></p>
-            <p><input type="text" placeholder="　　请输入金额"></p>
-        </h1>
+<form id="freightForm" action="<%=basePath%>shop/manage/updateShop" method="post">
+    <input type="hidden" name="id" value="${sfShop.id}">
+    <input type="hidden" name="shipAmount" value="${sfShop.shipAmount}">
+    <div class="wrap">
+        <div>
+            <p><span>运费设置</span></p>
+            <h1>
+                <p class="btn <c:if test="${sfShop.shipAmount <= 0}">active</c:if>"><input type="hidden" name="shipAmount0" value="0"><label for="">包邮</label></p>
+                <p class="btn <c:if test="${sfShop.shipAmount > 0}">active</c:if>"><input type="text" name="shipAmount1" value="${sfShop.shipAmount}" placeholder="　　请输入金额"></p>
+            </h1>
+        </div>
+        <button type="submit" id="save">保存</button>
     </div>
-    <button>返回</button>
-</div>
 </form>
 </body>
+<script src="<%=basePath%>static/js/plugins/jquery-1.8.3.min.js"></script>
+<script>
+    $(".btn").on("click",function(){
+        $(this).addClass("active").siblings().removeClass("active");
+    });
+    $('#freightForm').submit(function(){
+        $('input[name="shipAmount"]').val($('p.btn.active').children('input').val());
+        return true;
+    });
+</script>
 </html>

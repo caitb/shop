@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <a href="zhifu.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>店铺设置</p>
 </header>
 <form action="<%=basePath%>shop/manage/updateShop" method="post">

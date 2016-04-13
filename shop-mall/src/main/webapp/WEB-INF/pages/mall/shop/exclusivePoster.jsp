@@ -112,7 +112,7 @@
         Your browser does not support HTML5 Canvas.
     </canvas>
     <img src="${shopPoster}" />
-    <b id="downloadPoster">保存到手机</b>
+    <b id="downloadPoster2">长按图片保存海报</b>
 </div>
 </body>
 </html>

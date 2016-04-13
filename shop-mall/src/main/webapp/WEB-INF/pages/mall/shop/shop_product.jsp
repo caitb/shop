@@ -117,8 +117,8 @@
 </div>
 <div class="back_f">
     <p>保存图片到手机，复制文案，发送图文到朋友圈，产生购买后可获得佣金</p>
-    <%--<img id="skuPoster" src="<%=path%>/static/images/asd.JPG" alt="">--%>
-    <canvas id="canvasOne">
+    <img id="skuPoster" src="<%=path%>/static/images/asd.JPG" alt="">
+    <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
     </canvas>
     <b id="downloadPoster">下载图片</b>
@@ -277,11 +277,13 @@
             data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},
             success: function(data){
                 data = window.eval('(' + data + ')');
-                var baseUrl = '<%=basePath%>';
-                var imgSrcs = [baseUrl+data['userImg'], baseUrl+data['skuImg'], baseUrl+data['shopQRCode']];
-                var userName = data['userName'];
-                var skuName = data['skuName'];
-                canvasApp(userName,skuName,imgSrcs);
+                <%--var baseUrl = '<%=basePath%>';--%>
+                <%--var imgSrcs = [baseUrl+data['userImg'], baseUrl+data['skuImg'], baseUrl+data['shopQRCode']];--%>
+                <%--var userName = data['userName'];--%>
+                <%--var skuName = data['skuName'];--%>
+                <%--canvasApp(userName,skuName,imgSrcs);--%>
+
+                $('#skuPoster').attr('src', data['skuPoster']);
                 $('.back_f').show();
             }
         });

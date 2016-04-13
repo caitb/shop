@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.service.user;
+package com.masiis.shop.scheduler.platform.service.user;
 
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;

@@ -1,17 +1,16 @@
-package com.masiis.shop.scheduler.business.order;
+package com.masiis.shop.scheduler.platform.business.order;
 
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.scheduler.service.order.PfBorderService;
+import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**

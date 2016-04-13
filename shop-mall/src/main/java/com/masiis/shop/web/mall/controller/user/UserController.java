@@ -93,7 +93,7 @@ public class UserController extends BaseController {
                             @RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
         try {
-            ComUser comUser = userService.bindPhone(request, phone);
+            ComUser comUser = userService.bindPhone(getComUser(request), phone);
             if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
                 obj.put("isError", false);
             } else {

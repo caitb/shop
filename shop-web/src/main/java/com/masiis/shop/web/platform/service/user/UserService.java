@@ -181,24 +181,16 @@ public class UserService {
      * @author hanzengzhi
      * @date 2016/3/16 13:57
      */
-    public ComUser bindPhone(HttpServletRequest request, String phone) throws Exception {
-        ComUser comUser = null;
-        JSONObject jsonObject = new JSONObject();
+    public ComUser bindPhone(ComUser comUser, String phone) throws Exception {
         try {
-            comUser = getComUser(request);
+            if (comUser == null) {
+                throw new BusinessException("用户对象为空");
+            }
             if (comUser != null) {
-                comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);
                 comUser.setIsBinding(1);
                 //更新表中的信息
-                int i = comUserMapper.updatePhone(comUser);
-                if (i == 1) {
-                    //更新session缓存中的中user
-                    request.getSession().removeAttribute("comUser");
-                    request.getSession().setAttribute("comUser", comUser);
-                } else {
-                    throw new Exception("更新用户信息失败");
-                }
+                comUserMapper.updatePhone(comUser);
             } else {
                 throw new Exception("查询用户信息失败");
             }

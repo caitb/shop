@@ -95,7 +95,6 @@
         }
 
         if (!isTrial(skuId)){
-            alert("aaa");
             var trialReason = $("#trialReasonId").val();
             window.location.href = "/corder/trialApplyPay.do?skuId="+skuId+"&addressId="+addressId+"&reason="+trialReason;
         }
@@ -109,9 +108,7 @@
             data: {"skuId": skuId},
             success: function (data) {
                 var dataObj = eval("(" + data + ")");//转换为json对象
-                alert(dataObj);
                 if (dataObj!=null&&dataObj!="") {
-                    alert("2222");
                     if (dataObj[0].payStatus==1){
                         alert("订单已支付无需再次支付");
                         bl = true;
@@ -119,7 +116,6 @@
                 }
             }
         });
-        alert(bl);
         return bl;
     }
 </script>

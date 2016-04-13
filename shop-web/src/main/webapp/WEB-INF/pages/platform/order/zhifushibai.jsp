@@ -1,9 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -11,11 +7,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/zhifuchenggong.css">
-    <script src="<%=path%>/static/js/iscroll.js"></script>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/zhifuchenggong.css">
 </head>
 <body>
 <div class="wrap">
@@ -24,13 +17,13 @@
             <p>支付失败</p>
         </header>
         <div class="tai">
-            <img src="<%=path%>/static/images/icon_65.png" alt="">
+            <img src="${path}/static/images/icon_65.png" alt="">
             <h1>支付失败！</h1>
             <p>您的订单支付失败</p>
         </div>
         <section class="sec1">
 
-            <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+            <img src="${path}/static/images/zhifu_ad.png" alt="">
             <div>
                 <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                 <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span></p></a>
@@ -39,8 +32,8 @@
         </section>
         <section class="sec2">
             <p class="photo">
-                <a href="<%=path%>/static/html/xiangqing.html">
-                    <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                <a href="${path}/static/html/xiangqing.html">
+                    <img src="${path}/static/images/shenqing_1.png" alt="">
                 </a>
             </p>
             <div>

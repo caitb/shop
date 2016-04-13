@@ -1,9 +1,5 @@
-<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -11,32 +7,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/zhifushiyong.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/zhifushiyong.css">
 </head>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/checkUtil.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-<script>
-    $(document).ready(function () {
-        var addressId = $("#addressId").val();
-        if (addressId == "") {
-            $("#xz").show();
-            $("#sec1").hide();
-        }
-    })
-    function toChooseAddressPage() {
-        var selectedAddressId = $("#addressId").val();
-        var skuId = $("#skuId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId=" + selectedAddressId + "&skuId=" + skuId;
-    }
-</script>
 <body>
 <header class="xq_header">
-    <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>确认订单</p>
 </header>
 <main>
@@ -48,14 +24,14 @@
 
     <div id="sec1">
         <section class="sec1">
-            <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+            <img src="${path}/static/images/zhifu_ad.png" alt="">
             <div onclick="toChooseAddressPage()">
                 <input id="skuId" style="display: none" type="text" value="${product.id}"/>
                 <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                 <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                 <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                        </span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+                        </span><img src="${path}/static/images/next.png" alt=""></p></a>
             </div>
         </section>
     </div>
@@ -81,6 +57,24 @@
     <a href="javascript:weChatPay();" class="weixin">微信支付</a>
 </main>
 </body>
+
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/checkUtil.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script>
+    $(document).ready(function () {
+        var addressId = $("#addressId").val();
+        if (addressId == "") {
+            $("#xz").show();
+            $("#sec1").hide();
+        }
+    })
+    function toChooseAddressPage() {
+        var selectedAddressId = $("#addressId").val();
+        var skuId = $("#skuId").val();
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=zhifushiyong&selectedAddressId=" + selectedAddressId + "&skuId=" + skuId;
+    }
+</script>
 <script>
     function weChatPay() {
         var addressId = $("#addressId").val();

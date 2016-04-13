@@ -1,27 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/checkUtil.js"></script>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/xinjiandizhi.css">
 </head>
 <body>
 <main>
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
-                <a href="<%=path%>/userAddress/toManageAddressPage.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                <a href="${path}/userAddress/toManageAddressPage.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>编辑收货地址</p>
             </header>
             <div id="d_box">
@@ -76,8 +69,10 @@
         </a>
     </div>
 </main>
-<script src="<%=path%>/static/js/comArea.js"></script>
-<script src="<%=path%>/static/js/address.js"></script>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/checkUtil.js"></script>
+<script src="${path}/static/js/comArea.js"></script>
+<script src="${path}/static/js/address.js"></script>
 <script>
     comAreaJS.init("edit");
     addressJS.init();

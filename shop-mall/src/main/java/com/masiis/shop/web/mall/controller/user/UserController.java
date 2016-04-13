@@ -45,7 +45,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/isBindPhone.do")
     @ResponseBody
     public String isBindPhone(HttpServletRequest request, HttpServletResponse response) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
             return "true";
         } else {
@@ -93,7 +93,7 @@ public class UserController extends BaseController {
                             @RequestParam(value = "phone", required = true) String phone) {
         JSONObject obj = new JSONObject();
         try {
-            ComUser comUser = userService.bindPhone(request, phone);
+            ComUser comUser = userService.bindPhone(getComUser(request), phone);
             if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
                 obj.put("isError", false);
             } else {

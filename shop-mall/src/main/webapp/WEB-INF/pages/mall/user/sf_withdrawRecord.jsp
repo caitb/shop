@@ -8,7 +8,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
-    <title>麦链商城</title>
+    <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/tixianjilu.css">

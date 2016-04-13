@@ -5,3 +5,7 @@
 <%-- 公用变量,用${}来获取 --%>
 <c:set var="path" value="${request.contextPath}" />
 <c:set var="basepath" value="${request.scheme}://${request.serverName}:${request.serverPort()}${path}/" />
+<link rel="stylesheet" href="<%=path%>/static/css/base.css">
+<link rel="stylesheet" href="<%=path%>/static/css/reset.css">
+<link rel="stylesheet" href="<%=path%>/static/css/header.css">
+<link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>

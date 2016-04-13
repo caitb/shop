@@ -205,6 +205,7 @@
     }
 
     $("#nextPageId").bind("onclick", function () {
+        $(this).html("请稍后...");
         window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
 

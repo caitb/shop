@@ -168,12 +168,12 @@ public class SfOrderPurchaseService {
      * @date 2016/4/9 12:23
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public Long submitOrder(Long userId,Long selectedAddressId,Long shopId,String message){
+    public Long submitOrder(Long purchaseUserId,Long selectedAddressId,Long shopId,String message){
         log.info("service生成订单---start");
         Map<String,Object> map = null;
         SfOrder sfOrder = null;
         try{
-            map = getConfirmOrderInfo(userId,selectedAddressId,shopId);
+            map = getConfirmOrderInfo(purchaseUserId,selectedAddressId,shopId);
             ComUserAddress comUserAddress = (ComUserAddress)map.get("comUserAddress");
             List<SfShopCartSkuDetail> sfShopCartSkuDetails  = (List<SfShopCartSkuDetail> )map.get("shopCartSkuDetails");
             BigDecimal skuTotalPrice  = (BigDecimal )map.get("skuTotalPrice");
@@ -181,12 +181,12 @@ public class SfOrderPurchaseService {
             //获得每款商品的分润信息
             log.info("获得分润信息---start");
             for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
-                getDisDetail(userId,sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
+                getDisDetail(purchaseUserId,sfShopCartSkuDetail.getSfShopUserId(),sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
             }
             log.info("获得分润信息---end");
             //插入订单表
             log.info("插入订单---start");
-            sfOrder = generateSfOrder(userId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
+            sfOrder = generateSfOrder(purchaseUserId,sfShopCartSkuDetails,message,skuTotalPrice,skuTotalShipAmount);
             int i = sfOrderService.insert(sfOrder);
             if (i == 1){
                 log.info("插入订单成功---end");
@@ -268,7 +268,7 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 17:44
      */
-    private void getDisDetail(Long userId,Integer skuId,BigDecimal skuTotalPrice){
+    private void getDisDetail(Long purchaseUserId,Long shopUserId,Integer skuId,BigDecimal skuTotalPrice){
         if (skuDisMap == null){
             skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
         }
@@ -279,9 +279,10 @@ public class SfOrderPurchaseService {
             ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
         }
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
-        List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null,null);
+        /*获得当前用户的分销关系*/
+        List<SfUserRelation> sfUserRelations = getSfUserRelation(purchaseUserId,null,null);
         if (sfUserRelations!=null&&sfUserRelations.size()!=0){
-            log.info("获得购买人--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
+            log.info("获得购买人--id为"+purchaseUserId+"---的上级关系共有---"+sfUserRelations.size());
             for (int i = 0; i < sfUserRelations.size(); i++){
                 /*一条订单的总的分润*/
                 orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
@@ -298,7 +299,9 @@ public class SfOrderPurchaseService {
                 if (orderItemDisList == null|| orderItemDisList.size() == 0){
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
-                orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+                if (!purchaseUserId.equals(sfUserRelations.get(0).getUserId())){
+                    orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(),skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+                }
                 ordItemDisMap.put(skuId,orderItemDisList);
             }
         }
@@ -308,12 +311,12 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 14:03
      */
-    private SfOrder generateSfOrder(Long userId,
+    private SfOrder generateSfOrder(Long purchaseUserId,
                                     List<SfShopCartSkuDetail> sfShopCartSkuDetails, String message,
                                     BigDecimal skuTotalPrice, BigDecimal skuTotalShipAmount){
         SfShopCartSkuDetail sfShopCartSkuDetail = null;
         SfOrder  sfOrder = new SfOrder();
-        sfOrder.setUserId(userId);
+        sfOrder.setUserId(purchaseUserId);
         if (sfShopCartSkuDetails!=null&&sfShopCartSkuDetails.size()>0){
             sfShopCartSkuDetail = sfShopCartSkuDetails.get(0);
             sfOrder.setShopId(sfShopCartSkuDetail.getSfShopId());
@@ -322,7 +325,7 @@ public class SfOrderPurchaseService {
             sfOrder.setShopUserId(sfShopCartSkuDetail.getSfShopUserId());
         }
         sfOrder.setCreateTime(new Date());
-        sfOrder.setCreateMan(userId);
+        sfOrder.setCreateMan(purchaseUserId);
         sfOrder.setOrderCode(OrderMakeUtils.makeOrder("S"));
         sfOrder.setOrderAmount(skuTotalPrice.add(skuTotalShipAmount));//订单费用
         sfOrder.setUserMessage(message);

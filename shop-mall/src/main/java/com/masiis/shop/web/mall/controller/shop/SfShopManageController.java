@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.controller.shop;
 
+import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -28,6 +29,8 @@ public class SfShopManageController extends BaseController {
     private ComUserMapper comUserMapper;
     @Resource
     private SfShopMapper sfShopMapper;
+    @Resource
+    private SfOrderMapper sfOrderMapper;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
@@ -39,9 +42,11 @@ public class SfShopManageController extends BaseController {
             comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
+            Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId());
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
+            mav.addObject("orderCount", orderCount);
 
             return mav;
         } catch (Exception e) {

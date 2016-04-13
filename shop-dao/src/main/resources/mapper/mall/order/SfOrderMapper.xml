@@ -137,4 +137,8 @@
         where order_code = #{orderCode,jdbcType=VARCHAR}
     </select>
 
+    <select id="countByShopId" parameterType="Long" resultType="Integer">
+        SELECT count(1) FROM sf_order WHERE shop_id = #{shopId}
+    </select>
+
 </mapper>

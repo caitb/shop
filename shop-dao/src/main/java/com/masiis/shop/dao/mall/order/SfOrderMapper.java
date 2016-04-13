@@ -23,5 +23,11 @@ public interface SfOrderMapper {
 
     SfOrder selectByOrderCode(String orderCode);
 
-//    List<SfOrder> selectByUserId(Long userId,Integer orderStatus,Integer sendType);
+    /**
+     * 统计店铺订单量
+     * @param shopId
+     * @return
+     */
+    Integer countByShopId(Long shopId);
+
 }

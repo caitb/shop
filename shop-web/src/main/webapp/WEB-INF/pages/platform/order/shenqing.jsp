@@ -1,28 +1,21 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/shenqing.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/shenqing.css">
 </head>
 <body>
 <header class="xq_header">
-    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
 <%--<div class="paidan" style="display: none;">--%>
-<%--<h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
+<%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
 <%--<p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>--%>
 <%--</div>--%>
 <div class="biao">
@@ -69,12 +62,12 @@
         <h1>合伙人特权</h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shenqing_3.png" alt="">
+        <img src="${path}/static/images/shenqing_3.png" alt="">
         <div>
             <h2>独立店铺</h2>
             <p>拥有自己的独立店铺进行推广装修等</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -84,12 +77,12 @@
         </h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shenqing_4.png" alt="">
+        <img src="${path}/static/images/shenqing_4.png" alt="">
         <div>
             <h2>寻找合伙人</h2>
             <p>可以用采购价格购买商品，赚取利差</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -99,12 +92,12 @@
         </h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shenqing_5.png" alt="">
+        <img src="${path}/static/images/shenqing_5.png" alt="">
         <div>
             <h2>推广渠道</h2>
             <p>平台提供多样的推广渠道编辑推广自己商品</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -114,12 +107,12 @@
         </h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shenqing_6.png" alt="">
+        <img src="${path}/static/images/shenqing_6.png" alt="">
         <div>
             <h2>团队管理</h2>
             <p>提供完善的售后和团队管理工具</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -129,12 +122,12 @@
         </h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shenqing_7.png" alt="">
+        <img src="${path}/static/images/shenqing_7.png" alt="">
         <div>
             <h2>平台补助</h2>
             <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -144,12 +137,12 @@
         </h1>
     </div>
     <section class="sec1">
-        <img src="<%=path%>/static/images/shouquan.png" alt="">
+        <img src="${path}/static/images/shouquan.png" alt="">
         <div>
             <h2>授权证书</h2>
             <p style="margin-right:10px;">官方的授权证书证明你的身份</p>
         </div>
-        <img src="<%=path%>/static/images/down.png" alt="" class="down">
+        <img src="${path}/static/images/down.png" alt="" class="down">
     </section>
     <div>
         <p></p>
@@ -190,29 +183,26 @@
 
 </div>
 </body>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-<script src="<%=path%>/static/js/iscroll.js"></script>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
     function goVerified() {
         var para = "?";
-        para += "goToURL=" + encodeURIComponent("<%=basePath%>userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
-        window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
+        para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
+        window.location.href = "${basePath}user/userVerified.shtml" + para;
     }
     function reSubmitIdentityAuth(){
-        window.location.href = "<%=basePath%>identityAuth/toInentityAuthPage.html?auditStatus=3";
+        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
     }
 
     $("#nextPageId").bind("onclick", function () {
         $(this).html("请稍后...");
-        window.location.href = "<%=basePath%>userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+        window.location.href = "${basePath}userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
 
     $("#goToNext").on("click", function () {
         var auditStatus = "${user.auditStatus}";
         if (auditStatus == 2) {
-            window.location.href = "<%=path%>/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
         } else if (auditStatus == 1) {
             alert("您的实名认证正在审核中,请耐心等候!");
         } else if (auditStatus == 0) {
@@ -225,11 +215,11 @@
     });
 
     $(".down").toggle(function () {
-        $(this).attr("src", "<%=path%>/static/images/top.png")
+        $(this).attr("src", "${path}/static/images/top.png")
         $(this).parent().css("borderBottom", "none")
         $(this).parent().next().css("display", "-webkit-box");
     }, function () {
-        $(this).attr("src", "<%=path%>/static/images/down.png")
+        $(this).attr("src", "${path}/static/images/down.png")
         $(this).parent().next().hide();
         $(this).parent().css("borderBottom", "1px solid #f6f6f6")
     })

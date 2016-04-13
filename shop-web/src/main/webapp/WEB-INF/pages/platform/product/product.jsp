@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>麦链合伙人</title>
-    <%@include file="/head.jsp" %>
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">

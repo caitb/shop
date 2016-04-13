@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
-<%--<%@ include file="../../common.jsp" %>--%>
+<%@ include file="/head.jsp" %>
 <div class="wrap">
     <div id="box">
         <header class="xq_header">

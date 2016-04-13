@@ -80,11 +80,7 @@ public class BOrderController extends BaseController {
             if (levelId <= 0) {
                 throw new BusinessException("代理等级有误");
             }
-            PfUserSku pfUserSku = null;
             ComUser pUser = null;
-            if (pUserId != null && pUserId > 0) {
-                pfUserSku = userSkuService.checkParentData(pUserId, skuId, levelId);
-            }
             ComUser comUser = getComUser(request);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);

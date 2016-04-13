@@ -10,7 +10,7 @@
 <html>
 <head>
     <title>麦链商城</title>
-    <%--<%@include file="/WEB-INF/pages/common.jsp" %>--%>
+    <%@include file="/head.jsp" %>
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/xiangqing.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
@@ -20,7 +20,8 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;"onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+                                                                               alt=""></a>
             <p>我要成为合伙人</p>
         </header>
         <div class="banner">
@@ -37,14 +38,16 @@
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：超过${productDetails.agentNum}</span></p>
+            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：超过${productDetails.agentNum}</span>
+            </p>
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
         <div class="dlpople">
             <p>库存</p>
             <c:choose>
                 <c:when test="${productDetails.stock==0 || productDetails.isQueue==1}">
-                    <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b></p>
+                    <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
+                    </p>
                 </c:when>
                 <c:otherwise>
                     <p><span>${productDetails.stock}件</span></p>
@@ -76,23 +79,32 @@
             </ul>
         </nav>
         <main>
-            <h1 style="background:white url('<%=path%>/static/images/xiangqing_1.png') no-repeat 10px;background-size: 15px;"><a name="1f">品牌介绍</a></h1>
+            <h1 style="background:white url('<%=path%>/static/images/xiangqing_1.png') no-repeat 10px;background-size: 15px;">
+                <a name="1f">品牌介绍</a></h1>
             <img src="${productDetails.logoUrl}" alt="">
             <p>${productDetails.brand}</p>
-                <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;"><a name="2f">商业政策</a></h1>
-                <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
-                <p>好赚钱啊，特别赚钱，特别牛x的一款产品</p>
-                <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;"><a name="3f">商品详情</a></h1>
-                <p>${productDetails.content}</p>
+            <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;">
+                <a name="2f">商业政策</a></h1>
+            <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+            <p>好赚钱啊，特别赚钱，特别牛x的一款产品</p>
+            <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;">
+                <a name="3f">商品详情</a></h1>
+            <p>${productDetails.content}</p>
         </main>
         <div class="fixe">
-        <div class="left">
-            <ul>
-                <li><a href="#1f" style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 15px;">品牌介绍</a></li>
-                <li><a href="#2f"  style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 15px;">商业政策</a></li>
-                <li><a href="#3f"  style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 15px;">商品详情</a></li>
-            </ul>
-        </div>
+            <div class="left">
+                <ul>
+                    <li><a href="#1f"
+                           style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 15px;">品牌介绍</a>
+                    </li>
+                    <li><a href="#2f"
+                           style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 15px;">商业政策</a>
+                    </li>
+                    <li><a href="#3f"
+                           style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 15px;">商品详情</a>
+                    </li>
+                </ul>
+            </div>
             <span class="btn">—</span>
         </div>
         <div class="back_j" style="display: none">
@@ -119,7 +131,9 @@
         <div class="back_login" style="display:none;">
             <h2>您已合伙</h2>
             <p>您已合伙，如需要补货，请在商品管理中补货</p>
-            <h1><span class="zhidao">我知道了</span><span onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span></h1>
+            <h1><span class="zhidao">我知道了</span><span
+                    onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
+            </h1>
         </div>
     </div>
 </div>
@@ -133,12 +147,12 @@
             </p>
         </c:if>
         <c:if test="${empty pfUserSku}"><!--未代理><-->
-            <p style="background: #DA3600;"><a onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
-            </p>
+        <p style="background: #DA3600;"><a onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
+        </p>
         </c:if>
         <c:if test="${not empty pfUserSku && pfUserSku.isPay==0}"><!--未支付><-->
-            <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pfUserSku.pfBorderId}">申请合伙人</a>
-            </p>
+        <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pfUserSku.pfBorderId}">申请合伙人</a>
+        </p>
         </c:if>
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
             <p style="background: #DA3600;" onclick="gotoBuhuo()">您已合伙</p>
@@ -161,37 +175,37 @@
         // 如果需要分页器
         pagination: '.swiper-pagination'
     })
-    $(".b_qu").on("click",function(){
-        $(".back").css("display","none");
+    $(".b_qu").on("click", function () {
+        $(".back").css("display", "none");
         $(".back_b").hide();
     })
-    $(".b_que").on("click",function(){
+    $(".b_que").on("click", function () {
         var skuId = $("#skuId").val();
         $.ajax({
             url: '<%=basePath%>product/user/addStock',
             type: 'post',
-            data: {stock:i,skuId:skuId},
+            data: {stock: i, skuId: skuId},
             dataType: 'json',
             success: function (data) {
-                if(data['isError'] == false){
-                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
-                }else{
+                if (data['isError'] == false) {
+                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId=" + data.orderCode + "";
+                } else {
                     alert(data['message']);
                 }
             }
         });
     })
-    $(".btn").toggle(function(){
+    $(".btn").toggle(function () {
         $(this).parent().animate({
-            width:"90%"
+            width: "90%"
         })
         $(".fixe").addClass("active");
         $(this).addClass("on").delay(3000).removeClass("on")
         $(".left").show()
         $(this).html("+")
-    },function () {
+    }, function () {
         $(this).parent().animate({
-            width:"50px"
+            width: "50px"
         })
         $(this).prev().hide()
         $(".fixe").removeClass("active");
@@ -199,19 +213,19 @@
         $(".left").hide()
         $(this).html("—")
     })
-    $(".paidan").on("click",function(){
-        $(".back").css("display","-webkit-box");
+    $(".paidan").on("click", function () {
+        $(".back").css("display", "-webkit-box");
         $(".back_q").show();
     })
-    $(".zhidao").on("click",function(){
-        $(".back").css("display","none");
+    $(".zhidao").on("click", function () {
+        $(".back").css("display", "none");
         $(".back_q").hide();
         $(".back_login").hide();
     })
-  function gotoBuhuo(){
-      $(".back").css("display","-webkit-box");
-      $(".back_login").show();
-  }
+    function gotoBuhuo() {
+        $(".back").css("display", "-webkit-box");
+        $(".back_login").show();
+    }
 </script>
 </body>
 </html>

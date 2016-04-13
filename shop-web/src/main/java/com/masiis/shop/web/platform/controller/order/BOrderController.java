@@ -83,8 +83,7 @@ public class BOrderController extends BaseController {
             PfUserSku pfUserSku = null;
             ComUser pUser = null;
             if (pUserId != null && pUserId > 0) {
-                pUser = userService.getUserById(pUserId);
-                pfUserSku = userSkuService.checkParentData(pUser, skuId, levelId);
+                pfUserSku = userSkuService.checkParentData(pUserId, skuId, levelId);
             }
             ComUser comUser = getComUser(request);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
@@ -254,8 +253,7 @@ public class BOrderController extends BaseController {
             //校验库存
             List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-                ComUser comUser = userService.getUserById(pfBorder.getUserPid());
-                userSkuService.checkParentData(comUser, pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
+                userSkuService.checkParentData(pfBorder.getUserPid(), pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
             }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;

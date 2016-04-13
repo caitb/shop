@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
-
+<%--<%@ include file="../../common.jsp" %>--%>
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
@@ -25,16 +25,16 @@
                                                                               alt=""></a>
             <p>申请合伙人</p>
         </header>
-                <div class="xinxi">
-                    <p>注册信息</p>
-                    <p>支付订单</p>
-                    <p>选择拿货方式</p>
-                </div>
+        <div class="xinxi">
+            <p>注册信息</p>
+            <p>支付订单</p>
+            <p>选择拿货方式</p>
+        </div>
         <%--<div class="paidan" style="display: none">--%>
-            <%--<h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
-            <%--<p style="color: #FF5200">--%>
-                <%--*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货--%>
-            <%--</p>--%>
+        <%--<h1><img src="<%=path%>/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
+        <%--<p style="color: #FF5200">--%>
+        <%--*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货--%>
+        <%--</p>--%>
         <%--</div>--%>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
@@ -46,7 +46,7 @@
                         <input type="text" class="wei" id="weixin" name="weixin"/>
                         <span class="onc"></span><b class="gao"></b>
                     </p>
-                        <h1>*此微信号将在授权证书上显示</h1>
+                    <h1>*此微信号将在授权证书上显示</h1>
                 </div>
             </section>
             <section class="sec2">
@@ -76,8 +76,10 @@
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId > pUserLevelId}">
-                            <p levelId="${view.agent.agentLevelId}" agentFee="${view.agentFee}"><label>${view.level.name}</label>
-                                <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.sinFee}</span> <b>保证金：</b> <span>${view.agent.bail}</span>
+                            <p levelId="${view.agent.agentLevelId}" agentFee="${view.agentFee}">
+                                <label>${view.level.name}</label>
+                                <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.sinFee}</span>
+                                <b>保证金：</b> <span>${view.agent.bail}</span>
                             </p>
                         </c:if>
                     </c:forEach>
@@ -117,14 +119,11 @@
     </div>
 </div>
 </body>
+<%@ include file="/foot.jsp" %>
 <script>
     var path = "<%=basePath%>";
     var skuId = "${skuId}";
     var pUserId = "${pUserId}";
 </script>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<%--<script src="<%=path%>/static/js/definedAlertWindow.js"></script>--%>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/iscroll.js"></script>
 <script src="<%=path%>/static/js/zhuceUtil.js"></script>
 </html>

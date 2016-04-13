@@ -46,10 +46,12 @@ public class IndexController extends BaseController {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
+        shopId=4L;
+        userPid=14L;
         req.getSession().setAttribute("shopId", shopId);
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
-//        ComUser pUser = userService.getUserById(userPid);
-        ComUser pUser = new ComUser();
+        ComUser pUser = userService.getUserById(userPid);
+//        ComUser pUser = new ComUser();
         SfShop sfShop =null;
         List<SfShopSku> sfShopSkus =null;
         if(shopId==null){
@@ -84,6 +86,7 @@ public class IndexController extends BaseController {
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
+        modelAndView.addObject("user", user);
         modelAndView.addObject("userPid",userPid);
         modelAndView.addObject("sfShop",sfShop);
         modelAndView.addObject("bail",bail);//保证金

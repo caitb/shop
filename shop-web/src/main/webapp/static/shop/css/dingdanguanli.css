@@ -53,7 +53,6 @@
   background: white;
 }
 .wrap .box main .all .sec1 > p {
-  width: 100%;
   line-height: 25px;
   font-size: 12px;
   color: #A5A5A5;
@@ -61,6 +60,18 @@
   text-indent: 10px;
 }
 .wrap .box main .all .sec1 > p span {
+  font-size: 12px;
+}
+.wrap .box main .all .sec1 .money {
+  text-align: right;
+  padding-right: 10px;
+  color: #333;
+  background: #fff;
+}
+.wrap .box main .all .sec1 .money span:nth-child(1) {
+  margin-right: 15px;
+}
+.wrap .box main .all .sec1 .money b {
   font-size: 12px;
 }
 .wrap .box main .all .sec1 > h1 {

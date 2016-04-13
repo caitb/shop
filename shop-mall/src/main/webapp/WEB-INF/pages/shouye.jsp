@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
-<div class="wrap"><c:if test="${userPid !=null}">
+<div class="wrap"><c:if test="${pUser.id!=user.id && pUser.id != sfShop.id && userPid !=null}">
     <div class="na">
         <p>${pUser.wxHeadImg}</p>
         <h1>

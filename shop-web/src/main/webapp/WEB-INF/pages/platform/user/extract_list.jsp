@@ -14,7 +14,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
-    <title>麦链商城</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">

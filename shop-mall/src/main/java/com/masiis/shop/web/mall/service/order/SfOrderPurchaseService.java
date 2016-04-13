@@ -50,7 +50,7 @@ public class SfOrderPurchaseService {
 
     private static BigDecimal orderSumDisAmount;//一条订单的总的分润
     private static Map<Integer,BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
-    private static Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的店铺上级的分润信息
+    private static Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的购买上级的分润信息
 
     private static BigDecimal skuTotalPrice = null;
     private static Integer totalQuantity = null;
@@ -181,7 +181,7 @@ public class SfOrderPurchaseService {
             //获得每款商品的分润信息
             log.info("获得分润信息---start");
             for (SfShopCartSkuDetail sfShopCartSkuDetail: sfShopCartSkuDetails){
-                getDisDetail(sfShopCartSkuDetail.getSfShopUserId(),sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
+                getDisDetail(userId,sfShopCartSkuDetail.getComSku().getId(),sfShopCartSkuDetail.getSkuSumPrice());
             }
             log.info("获得分润信息---end");
             //插入订单表
@@ -281,11 +281,11 @@ public class SfOrderPurchaseService {
         List<SfSkuDistribution> sfSkuDistribution =  sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         List<SfUserRelation> sfUserRelations = getSfUserRelation(userId,null,null);
         if (sfUserRelations!=null&&sfUserRelations.size()!=0){
-            log.info("获得店铺--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
+            log.info("获得购买人--id为"+userId+"---的上级关系共有---"+sfUserRelations.size());
             for (int i = 0; i < sfUserRelations.size(); i++){
                 /*一条订单的总的分润*/
                 orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                /*获得一款商品的店铺上级总的分润*/
+                /*获得一款商品的购买人上级总的分润*/
                 BigDecimal skuDis = skuDisMap.get(skuId);
                 if (skuDis==null){
                     skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
@@ -293,7 +293,7 @@ public class SfOrderPurchaseService {
                     skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                 }
                 skuDisMap.put(skuId,skuDis);
-                /*获得一款商品对应店铺上级分润信息*/
+                /*获得一款商品对应购买上级分润信息*/
                 List<SfOrderItemDistribution> orderItemDisList = (List<SfOrderItemDistribution>)ordItemDisMap.get(skuId);
                 if (orderItemDisList == null|| orderItemDisList.size() == 0){
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();

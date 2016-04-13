@@ -201,7 +201,7 @@
         window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
     }
     function reSubmitIdentityAuth(){
-        window.location.href = "<%=basePath%>identityAuth/toInentityAuthPage.html";
+        window.location.href = "<%=basePath%>identityAuth/toInentityAuthPage.html?auditStatus=3";
     }
 
     $("#nextPageId").bind("onclick", function () {

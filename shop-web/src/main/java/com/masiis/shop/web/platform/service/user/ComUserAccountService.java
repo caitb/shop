@@ -118,13 +118,11 @@ public class ComUserAccountService {
                 BigDecimal discountAh = BigDecimal.ZERO;
                 BigDecimal sumProfitFee = BigDecimal.ZERO;
                 for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(order.getId())) {
-                    userSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getUserId(), pfBorderItem.getSkuId());
-                    skuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), userSku.getAgentLevelId());
                     pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
                     pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
-                    discountAh = skuAgent.getDiscount().subtract(pSkuAgent.getDiscount());
+                    discountAh = pfBorderItem.getDiscount().subtract(pSkuAgent.getDiscount());
                     if (discountAh.compareTo(BigDecimal.ZERO) > 0) {
-                        BigDecimal profitFee = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(discountAh);
+                        BigDecimal profitFee = pfBorderItem.getTotalPrice().multiply(discountAh);
                         sumProfitFee = sumProfitFee.add(profitFee);
                     }
                 }

@@ -197,10 +197,10 @@ public class UserAddressService {
         //跳转到支付界面
         sb.append("/border/payBOrder.shtml?");
         if (!StringUtils.isEmpty(orderId)) {
-            sb.append("bOrderId=").append(orderId);
+            sb.append("bOrderId=").append(orderId).append("&");
         }
         if (!StringUtils.isEmpty(selectedAddressId)) {
-            sb.append("&userAddressId=").append(selectedAddressId);
+            sb.append("userAddressId=").append(selectedAddressId);
         }
     }
 

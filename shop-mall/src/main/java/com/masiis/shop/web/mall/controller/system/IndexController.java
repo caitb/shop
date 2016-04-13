@@ -46,8 +46,8 @@ public class IndexController extends BaseController {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-        shopId=4L;
-        userPid=14L;
+//        shopId=4L;
+//        userPid=14L;
         req.getSession().setAttribute("shopId", shopId);
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);

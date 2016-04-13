@@ -295,7 +295,7 @@ public class COrderService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "orderPay/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;

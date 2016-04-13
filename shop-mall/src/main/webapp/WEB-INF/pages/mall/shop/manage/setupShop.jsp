@@ -29,7 +29,7 @@
     </p>
     <p>
         <label for="">店铺介绍</label>
-        <textarea name="explanation" value="${sfShop.explanation}" id="" cols="30" rows="10"></textarea>
+        <textarea name="explanation" value="${sfShop.explanation}" id="" cols="30" rows="10">${sfShop.explanation}</textarea>
     </p>
     <button type="submit">保存</button>
 </div>

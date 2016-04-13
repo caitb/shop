@@ -71,15 +71,17 @@
     <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>运费设置</p>
 </header>
+<form action="<%=basePath%>shop/manage/updateShop" method="post">
 <div class="wrap">
     <div>
         <p><span>运费设置</span></p>
         <h1>
-            <p><label for="">包邮</label></p>
+            <p><input type="radio" name="shipAmount" <c:if test="" ><label for="">包邮</label></p>
             <p><input type="text" placeholder="　　请输入金额"></p>
         </h1>
     </div>
     <button>返回</button>
 </div>
+</form>
 </body>
 </html>

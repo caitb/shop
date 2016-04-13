@@ -18,9 +18,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="<%=path%>/static/css/nahuo.css">
 </head>
 <body>
@@ -112,9 +110,7 @@
         </div>
     </div>
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
     var sendType = 0;
     $(document).ready(function () {

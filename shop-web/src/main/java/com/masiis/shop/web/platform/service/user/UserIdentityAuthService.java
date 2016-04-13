@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by hzz on 2016/3/30.
@@ -54,12 +55,31 @@ public class UserIdentityAuthService {
     private void loadIdCardFromOSSToLocal(HttpServletRequest request,ComUser comUser){
         identityAuthRealPath = getIdentityAuthRealPath(request);
         //OSS下载到本地服务器
+        isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
+        isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());
     }
+    /*判断文件路径是否存在，如不存在则重新创建*/
+    private void isExistFile(String path){
+        File file=new File(path);
+        if(!file.exists())
+        {
+            try {
+                // 如果路径不存在,则创建
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public String getIdentityAuthRealPath(HttpServletRequest request){
         if (StringUtils.isEmpty(identityAuthRealPath)){
             String rootPath = request.getServletContext().getRealPath("/");

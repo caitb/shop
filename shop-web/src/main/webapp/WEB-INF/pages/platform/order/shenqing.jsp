@@ -50,6 +50,10 @@
                     <c:if test="${user.auditStatus == 1}">
                         <td><span style="color: #FF5200">审核中</span></td>
                     </c:if>
+                    <c:if test="${user.auditStatus == 3}">
+                        <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
+                               style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
+                    </c:if>
                     <c:if test="${user.auditStatus == 0}">
                         <td><a href="javascript:void(0);" onclick="goVerified();"
                                style="color: #FF5200;text-decoration: underline">去完成</a></td>
@@ -195,6 +199,9 @@
         var para = "?";
         para += "goToURL=" + encodeURIComponent("<%=basePath%>userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
         window.location.href = "<%=basePath%>user/userVerified.shtml" + para;
+    }
+    function reSubmitIdentityAuth(){
+        window.location.href = "<%=basePath%>identityAuth/toInentityAuthPage.html";
     }
 
     $("#nextPageId").bind("onclick", function () {

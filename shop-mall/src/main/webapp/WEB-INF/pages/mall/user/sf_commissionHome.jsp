@@ -11,18 +11,6 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/wodeyongjin.css">
     <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="application/javascript" src="${path}/static/js/pageJs/sf_commission.js"></script>
-    <script type="application/javascript" src="${path}/static/js/plugins/validateCode.js"></script>
-    <script type="application/javascript">
-        var path = "${path}";
-        var basepath = "${basePath}";
-        $(document).ready(function () {
-            validateCodeJS.initPage();
-        });
-    </script>
 </head>
 <body>
     <header>
@@ -87,5 +75,17 @@
     </div>
     <div class="back">
     </div>
+    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
+    <script type="application/javascript" src="${path}/static/js/pageJs/sf_commission.js"></script>
+    <script type="application/javascript" src="${path}/static/js/plugins/validateCode.js"></script>
+    <script type="application/javascript">
+        var path = "${path}";
+        var basepath = "${basePath}";
+        $(document).ready(function () {
+            validateCodeJS.initPage();
+        });
+    </script>
 </body>
 </html>

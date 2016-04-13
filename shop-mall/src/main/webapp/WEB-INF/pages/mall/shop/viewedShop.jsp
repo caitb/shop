@@ -10,13 +10,6 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/liulanguodedianpu.css">
     <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="application/javascript">
-        var path = "${path}";
-        var basepath = "${basePath}";
-    </script>
 </head>
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
@@ -53,5 +46,13 @@
         </section>
         <p style="text-align: center;"><a href="#" onclick="showMore()">查看更多></a></p>
     </div>
+<script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
+<script type="application/javascript" src="${path}/static/js/pageJs/viewedShop.js"></script>
+<script type="application/javascript">
+    var path = "${path}";
+    var basepath = "${basePath}";
+</script>
 </body>
 </html>

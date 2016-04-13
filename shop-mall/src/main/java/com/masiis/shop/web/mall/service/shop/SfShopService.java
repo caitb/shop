@@ -109,4 +109,12 @@ public class SfShopService {
         }
     }
 
+    /**
+     * 根据小铺归属人查询小铺信息
+     * @param userId
+     * @return
+     */
+    public SfShop getSfShopByUserId(Long userId){
+        return sfShopMapper.selectByUserId(userId);
+    }
 }

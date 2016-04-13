@@ -89,6 +89,33 @@ public enum UserAccountRecordFeeType {
         public String getDesc() {
             return "订单计入总利润额";
         }
+    },
+    SF_AddCountingFee {
+        public Integer getCode() {
+            return 9;
+        }
+
+        public String getDesc() {
+            return "小铺订单入账";
+        }
+    },
+    SF_AddTotalIncomeFee {
+        public Integer getCode() {
+            return 10;
+        }
+
+        public String getDesc() {
+            return "小铺订单计入总销售额";
+        }
+    },
+    SF_AddProfitFee {
+        public Integer getCode() {
+            return 11;
+        }
+
+        public String getDesc() {
+            return "小铺订单计入总利润";
+        }
     };
 
     public abstract Integer getCode();

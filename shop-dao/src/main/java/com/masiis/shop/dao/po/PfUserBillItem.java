@@ -12,7 +12,7 @@ import com.masiis.shop.dao.beans.order.PfBorderItemExtends;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PfUserBillItem extends PfBorderItemExtends {
+public class PfUserBillItem {
 
     private Long id;
     /**

@@ -23,4 +23,11 @@ public interface SfOrderItemDistributionMapper {
 
     int selectCountByCondition(SfOrderItemDistribution record);
 
+    /**
+     * 根据orderitemid来查询商品分润记录
+     *
+     * @param itemId
+     * @return
+     */
+    List<SfOrderItemDistribution> selectBySfOrderItemId(Long itemId);
 }

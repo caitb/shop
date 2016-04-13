@@ -10,6 +10,7 @@ import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,8 @@ public class SfOrderManageService {
     @Autowired
     private SfOrderMapper sfOrderMapper;
     @Autowired
+    private SfOrderConsigneeMapper sfOrderConsigneeMapper;
+    @Autowired
     private ComSkuImageMapper comSkuImageMapper;
     @Autowired
     private SfOrderMallFreightMapper sfOrderMallFreightMapper;
@@ -46,6 +49,8 @@ public class SfOrderManageService {
     private SfUserRelationMapper sfUserRelationMapper;
     @Autowired
     private SfOrderOperationLogMapper sfOrderOperationLogMapper;
+    @Autowired
+    private SfUserAccountService sfUserAccountService;
 
     /**
      * 订单
@@ -66,6 +71,7 @@ public class SfOrderManageService {
         }
         return sfOrders;
     }
+
 
     /**
      * 获取上级
@@ -134,6 +140,6 @@ public class SfOrderManageService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         // 进行订单分润和代理商销售额、收入计算
-
+        sfUserAccountService.countingSfOrder(sfOrder);
     }
 }

@@ -190,6 +190,9 @@ public class SfOrderManagerController extends BaseController {
             user = userService.getUserById(1l);
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
+        if(sfUserRelation==null){
+            throw new BusinessException("用户关系异常");
+        }
         ComUser userPid = userService.getUserById(sfUserRelation.getUserPid());
         Long shopId =(Long) request.getSession().getAttribute("shopId");
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);

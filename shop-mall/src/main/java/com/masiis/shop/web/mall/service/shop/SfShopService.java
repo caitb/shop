@@ -80,6 +80,7 @@ public class SfShopService {
      */
     public boolean mallShout(Long shopId, Long userId){
         Map<String, Object> map = new HashMap<>();
+
         map.put("userId", userId);
         map.put("shopId", shopId);
         map.put("createTime", new Date());

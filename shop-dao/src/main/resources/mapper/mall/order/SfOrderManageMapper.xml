@@ -56,4 +56,23 @@
             AND shop_id = #{shopId,jdbcType=BIGINT}
         </if>
     </select>
+
+    <select id="selectByShopUserId" resultMap="BaseResultMap">
+        select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
+        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount,
+        pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
+        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        from sf_order
+        where
+        <if test="shopUserId != null">
+            shop_user_id = #{shopUserId,jdbcType=BIGINT}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+        <if test="shopId != null">
+            AND shop_id = #{shopId,jdbcType=BIGINT}
+        </if>
+    </select>
 </mapper>

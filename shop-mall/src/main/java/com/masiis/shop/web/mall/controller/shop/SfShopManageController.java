@@ -24,4 +24,18 @@ public class SfShopManageController {
 
         return mav;
     }
+
+    @RequestMapping("/setupShop")
+    public ModelAndView setupShop(HttpServletRequest request, HttpServletResponse response){
+        ModelAndView mav = new ModelAndView("mall/shop/manage/setupShop");
+
+        return mav;
+    }
+
+    @RequestMapping("/setupFreight")
+    public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
+        ModelAndView mav = new ModelAndView("mall/shop/manage/setupFreight");
+
+        return mav;
+    }
 }

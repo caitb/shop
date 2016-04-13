@@ -43,11 +43,11 @@
     <nav>
         <p><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
         <p><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
-        <p><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
     </nav>
     <nav style="margin:0;">
         <p><span><img src="<%=basePath%>static/images/nav4.jpg" alt=""></span><span>分销记录</span></p>
-        <p><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>运费模板</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupFreight');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>运费模板</span></p>
         <p></p>
     </nav>
 </div>

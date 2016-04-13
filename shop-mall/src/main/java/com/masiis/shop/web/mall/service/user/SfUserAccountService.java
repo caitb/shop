@@ -130,12 +130,6 @@ public class SfUserAccountService {
 
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
-            // 创建店主结算中金额变动记录
-            /*ComUserAccountRecord pfCountRecord = createComUserAccountRecordBySfOrder(order, countFee,
-                    UserAccountRecordFeeType.SF_AddCountingFee.getCode(), comUserAccount);
-            pfCountRecord.setPrevFee(comUserAccount.getCountingFee());
-            comUserAccount.setCountingFee(comUserAccount.getCountingFee().add(countFee));
-            pfCountRecord.setNextFee(comUserAccount.getCountingFee());*/
             // 插入店主pf_user_bill_item
             PfUserBillItem billItem = createPfUserBillItemBySfOrder(order, shopKeeper, countFee);
             billItemMapper.insert(billItem);

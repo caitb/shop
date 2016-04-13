@@ -166,13 +166,16 @@ public class PayBOrderService {
             sfShopMapper.insert(sfShop);
         }
         log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = new SfUserRelation();
-        sfUserRelation.setCreateTime(new Date());
-        sfUserRelation.setUserPid(0l);
-        sfUserRelation.setUserId(comUser.getId());
-        sfUserRelation.setLevel(1);
-        sfUserRelation.setRemark("代理人初始分销关系");
-        sfUserRelationMapper.insert(sfUserRelation);
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
+        if (sfUserRelation == null) {
+            sfUserRelation = new SfUserRelation();
+            sfUserRelation.setCreateTime(new Date());
+            sfUserRelation.setUserPid(0l);
+            sfUserRelation.setUserId(comUser.getId());
+            sfUserRelation.setLevel(1);
+            sfUserRelation.setRemark("代理人初始分销关系");
+            sfUserRelationMapper.insert(sfUserRelation);
+        }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {

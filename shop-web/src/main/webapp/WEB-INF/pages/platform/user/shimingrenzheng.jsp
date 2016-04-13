@@ -1,10 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,19 +7,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/tijiaosq.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
-    <link rel="stylesheet" href="<%=path%>/static/css/fakeLoader.css"/>
+    <title>麦链合伙人</title>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/tijiaosq.css">
+    <link rel="stylesheet" href="${path}/static/css/fakeLoader.css"/>
 </head>
 <body>
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="${path}/static/images/xq_rt.png"
                                                                               alt=""></a>
             <p>实名认证</p>
         </header>
@@ -49,12 +41,12 @@
                        style="display: none;">
                 <label class="zheng">
                     <div class="fakeloader0"></div>
-                    <img src="<%=path%>/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
+                    <img src="${path}/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
                          onclick="F_Open_dialog(0)">
                 </label>
                 <label class="fan" style="margin-left:10px;">
                     <div class="fakeloader1"></div>
-                    <img src="<%=path%>/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
+                    <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                 </label>
             </div>
@@ -64,12 +56,9 @@
     </div>
 </div>
 </body>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"/>
-<script src="<%=path%>/static/js/iscroll.js"></script>
-<script src="<%=path%>/static/js/ajaxfileupload.js"></script>
-<script src="<%=path%>/static/js/fakeLoader.js"></script>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/ajaxfileupload.js"></script>
+<script src="${path}/static/js/fakeLoader.js"></script>
 <script>
     var checkImg = 0;
     function F_Open_dialog(data) {
@@ -92,7 +81,7 @@
             top: $(selector).position().top
         });
         $.ajaxFileUpload({
-            url: "<%=basePath%>userCertificate/idCardImgUpload.do",
+            url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
             type: "POST",
             secureuri: false,
@@ -102,7 +91,7 @@
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
                     if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "<%=path%>" + data.imgPath);
+                        $("#idCardFront").attr("src", "${path}" + data.imgPath);
                         $('#idCardFront').load(function(){
                             $(".fakeloader"+checkImg).fakeLoader({
                                 timeToHide:0,
@@ -115,7 +104,7 @@
                             });
                         });
                     } else {
-                        $("#idCardBack").attr("src", "<%=path%>" + data.imgPath);
+                        $("#idCardBack").attr("src", "${path}" + data.imgPath);
                         $('#idCardBack').load(function(){
                             $(".fakeloader"+checkImg).fakeLoader({
                                 timeToHide:0,
@@ -161,13 +150,13 @@
         paraData.idCardBackUrl = bCardUrl;
         paraData.type = 0;
         $.ajax({
-            url: "<%=basePath%>identityAuth/sumbitAudit.do",
+            url: "${path}/identityAuth/sumbitAudit.do",
             type: "post",
             data: paraData,
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=path%>/identityAuth/toWaitIdentityPage.html";
+                    window.location.href = "${path}/identityAuth/toWaitIdentityPage.html";
                 }
                 else {
                     alert(data.message);

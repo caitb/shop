@@ -4,20 +4,12 @@
 <head>
    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-    <title>麦链商城</title>
+    <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/shenqingtixian.css">
     <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/pageJs/sf_withdrawRequest.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="application/javascript">
-        var path = "${path}";
-        var basepath = "${basePath}";
-    </script>
 </head>
 <body>
 <input type="hidden" id="extractableFee" name="extractableFee" value="${userAccount.extractableFee}"/>
@@ -43,5 +35,13 @@
                    <button onclick="withdraw(${userAccount.userId})">确认提现</button>
                </main>
         </div>
+<script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/pageJs/sf_withdrawRequest.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
+<script type="application/javascript">
+    var path = "${path}";
+    var basepath = "${basePath}";
+</script>
 </body>
 </html>

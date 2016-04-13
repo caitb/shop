@@ -1,20 +1,13 @@
-package com.masiis.shop.scheduler.business.order;
+package com.masiis.shop.scheduler.platform.business.order;
 
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
-import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserBillMapper;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfUserBill;
-import com.masiis.shop.dao.po.PfUserBillItem;
-import com.masiis.shop.scheduler.service.order.PfBorderService;
-import com.masiis.shop.scheduler.service.order.PfUserBillItemService;
-import com.masiis.shop.scheduler.service.order.PfUserBillService;
-import com.masiis.shop.scheduler.service.user.ComUserService;
+import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
+import com.masiis.shop.scheduler.platform.service.order.PfUserBillItemService;
+import com.masiis.shop.scheduler.platform.service.order.PfUserBillService;
+import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 

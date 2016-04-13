@@ -1,21 +1,88 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/guanli.css">
+    <title>麦链合伙人</title>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/zhifu.css">
+    <link rel="stylesheet" href="${path}/static/css/guanli.css">
 </head>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<body>
+   <main>
+       <div class="wrap">
+           <div class="box">
+                <header class="xq_header">
+                   <a onclick="returnToPage()" ><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                        <p>管理收货地址</p>
+                </header>
+                <div class="xinz">
+                    <p><a href="${path}/userAddress/toAddAddressPage.html?addAddressJumpType=${addAddressJumpType}">新增收货地址</a></p>
+                    <input id="defaultAddressId" style="display:none;" value=""/>
+                </div>
+               <input id="addAddressJumpTypeId" style="display: none" value="${addAddressJumpType}"/>
+               <input id="manageAddressJumpTypeId" style="display: none" value="${manageAddressJumpType}"/>
+                 <section class="pp">
+                        <h1>您还没有收货地址</h1>
+                        <p>请添加新地址</p>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script>
+    function settingDefaultAddress(ids){
+        $.post("/userAddress/settingDefaultAddress.do",{
+            "id":ids
+        },function(data){
+            if (data){
+                $('p[id^="p_"]').removeClass("pon");
+                $("#p_"+ids+"").addClass("pon");
+                $("#defaultAddressId").val(ids);
+            }else{
+                alert("设置默认地址失败");
+            }
+        })
+    }
+    function deleteAddress(id){
+        var defaultAddressId = $("#defaultAddressId").val();
+        if(confirm("确定要删除地址?")){
+            $.post("/userAddress/deleteUserAddressById.do",{
+                "id":id,
+                "defaultAddressId":defaultAddressId
+            },function(data){
+                if(data==-1){
+                    //删除的不是默认地址
+                    $("#selection_"+id+"").remove();
+                }else  if (data!=0&&data!=-1){
+                    //删除的是默认地址，将最新的地址设置为默认地址
+                    $("#selection_"+id+"").remove();
+                    $("#p_"+data+"").addClass("pon");
+                }else{
+                    //删除地址失败
+                    alert("删除失败");
+                }
+                if ($(".sec1").length==0){
+                    //显示没有收获地址的提示信息
+                    $(".pp").css("display","-webkit-box");
+                }
+            })
+        }
+    }
+    function editAddress(id){
+        var addAddressJumpType = $("#addAddressJumpTypeId").val();
+        var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+        window.location.href = "${path}/userAddress/toEditAddress.html?id="+id+"&addAddressJumpType="+addAddressJumpType+"&manageAddressJumpType="+manageAddressJumpType;
+    }
+    function returnToPage(){
+        var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+        window.location.href ="${path}/userAddress/manageAddressPageToChooseAddressPage.html?manageAddressJumpType="+manageAddressJumpType;
+    }
+</script>
 <script>
     $(document).ready(function () {
         $.post("/userAddress/getUserAddressByUserId.do",
@@ -60,80 +127,8 @@
                     }
                 })
     })
-
     function complete(){
         window.location.href="/userAddress/manageAddressPageToChooseAddressPage.html";
     }
 </script>
-<body>
-   <main>
-       <div class="wrap">
-           <div class="box">
-                <header class="xq_header">
-                   <a onclick="returnToPage()" ><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>管理收货地址</p>
-                </header>
-                <div class="xinz">
-                    <p><a href="<%=path%>/userAddress/toAddAddressPage.html?addAddressJumpType=${addAddressJumpType}">新增收货地址</a></p>
-                    <input id="defaultAddressId" style="display:none;" value=""/>
-                </div>
-               <input id="addAddressJumpTypeId" style="display: none" value="${addAddressJumpType}"/>
-               <input id="manageAddressJumpTypeId" style="display: none" value="${manageAddressJumpType}"/>
-                 <section class="pp">
-                        <h1>您还没有收货地址</h1>
-                        <p>请添加新地址</p>
-                </section>
-            </div>
-        </div>
-    </main>
-    <script>
-        function settingDefaultAddress(ids){
-            $.post("/userAddress/settingDefaultAddress.do",{
-                "id":ids
-            },function(data){
-                if (data){
-                    $('p[id^="p_"]').removeClass("pon");
-                    $("#p_"+ids+"").addClass("pon");
-                    $("#defaultAddressId").val(ids);
-                }else{
-                    alert("设置默认地址失败");
-                }
-            })
-        }
-        function deleteAddress(id){
-            var defaultAddressId = $("#defaultAddressId").val();
-            if(confirm("确定要删除地址?")){
-                $.post("/userAddress/deleteUserAddressById.do",{
-                    "id":id,
-                    "defaultAddressId":defaultAddressId
-                },function(data){
-                    if(data==-1){
-                        //删除的不是默认地址
-                        $("#selection_"+id+"").remove();
-                    }else  if (data!=0&&data!=-1){
-                        //删除的是默认地址，将最新的地址设置为默认地址
-                        $("#selection_"+id+"").remove();
-                        $("#p_"+data+"").addClass("pon");
-                    }else{
-                        //删除地址失败
-                        alert("删除失败");
-                    }
-                    if ($(".sec1").length==0){
-                        //显示没有收获地址的提示信息
-                        $(".pp").css("display","-webkit-box");
-                    }
-                })
-            }
-        }
-        function editAddress(id){
-            var addAddressJumpType = $("#addAddressJumpTypeId").val();
-            var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
-            window.location.href = "<%=path%>/userAddress/toEditAddress.html?id="+id+"&addAddressJumpType="+addAddressJumpType+"&manageAddressJumpType="+manageAddressJumpType;
-        }
-        function returnToPage(){
-            var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
-            window.location.href ="<%=path%>/userAddress/manageAddressPageToChooseAddressPage.html?manageAddressJumpType="+manageAddressJumpType;
-        }
-    </script>
-</body>
 </html>

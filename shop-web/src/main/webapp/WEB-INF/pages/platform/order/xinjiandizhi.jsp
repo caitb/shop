@@ -1,78 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链商城</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/xinjiandizhi.css">
-    <script src="<%=path%>/static/js/commonjs.js"></script>
-    <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/static/js/checkUtil.js"></script>
-    <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+    <title>麦链合伙人</title>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/xinjiandizhi.css">
 </head>
-<script>
-    /*    var promise =  $.Deferred().promise();
-     function saveAddress() {
-     var paramJson = addressJS.getJsonParam();
-     if (promise.state()=="pending"){
-     promise = $.ajax({
-     url: '/userAddress/addOrUpdateAddress.do',
-     type: 'post',
-     async: false,
-     data: paramJson,
-     success: function (data) {
-     if (data == "false") {
-     alert("新增地址失败");
-     } else {
-     window.location.href = data;
-     }
-     },
-     error: function () {
-     }
-     });
-     }
-     promise.then()
-     }*/
-
-
-    function saveAddress() {
-        var paramJson = addressJS.getJsonParam();
-        if (addressJS.validateAddressInfo(paramJson)) {
-            $.ajax({
-                url: '/userAddress/addOrUpdateAddress.do',
-                type: 'post',
-                async: false,
-                data: paramJson,
-                success: function (data) {
-                    if (data == "false") {
-                        alert("新增地址失败");
-                    } else {
-                        window.location.href = data;
-                    }
-                },
-                error: function () {
-                }
-            })
-        }
-    }
-
-
-</script>
 <body>
 <main>
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
                 <a href="javascript:;" onClick="javascript:history.back(-1);"><img
-                        src="<%=path%>/static/images/xq_rt.png"
+                        src="${path}/static/images/xq_rt.png"
                         alt=""></a>
                 <p>新建收货地址</p>
             </header>
@@ -122,11 +65,60 @@
         </a>
     </div>
 </main>
-<script src="<%=path%>/static/js/comArea.js"></script>
-<script src="<%=path%>/static/js/address.js"></script>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/checkUtil.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/comArea.js"></script>
+<script src="${path}/static/js/address.js"></script>
 <script>
     comAreaJS.init("add");
     addressJS.init();
+</script>
+<script>
+    /*    var promise =  $.Deferred().promise();
+     function saveAddress() {
+     var paramJson = addressJS.getJsonParam();
+     if (promise.state()=="pending"){
+     promise = $.ajax({
+     url: '/userAddress/addOrUpdateAddress.do',
+     type: 'post',
+     async: false,
+     data: paramJson,
+     success: function (data) {
+     if (data == "false") {
+     alert("新增地址失败");
+     } else {
+     window.location.href = data;
+     }
+     },
+     error: function () {
+     }
+     });
+     }
+     promise.then()
+     }*/
+
+
+    function saveAddress() {
+        var paramJson = addressJS.getJsonParam();
+        if (addressJS.validateAddressInfo(paramJson)) {
+            $.ajax({
+                url: '/userAddress/addOrUpdateAddress.do',
+                type: 'post',
+                async: false,
+                data: paramJson,
+                success: function (data) {
+                    if (data == "false") {
+                        alert("新增地址失败");
+                    } else {
+                        window.location.href = data;
+                    }
+                },
+                error: function () {
+                }
+            })
+        }
+    }
 </script>
 </body>
 </html>

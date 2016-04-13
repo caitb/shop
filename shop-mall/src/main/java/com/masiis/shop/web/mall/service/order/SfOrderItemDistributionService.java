@@ -1,6 +1,9 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.dao.beans.order.SfDistributionPerson;
+import com.masiis.shop.dao.beans.order.SfDistributionRecord;
+import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionExtendMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.po.SfOrderItemDistribution;
@@ -23,6 +26,8 @@ public class SfOrderItemDistributionService {
     private SfOrderItemDistributionMapper sfOrderItemDistributionMapper;
     @Autowired
     private SfOrderItemDistributionExtendMapper sfOrderItemDistributionExtendMapper;
+    @Autowired
+    private SfDistributionRecordMapper sfDistributionRecordMapper;
 
     private final Logger log = Logger.getLogger(SfOrderItemDistributionService.class);
 
@@ -54,5 +59,32 @@ public class SfOrderItemDistributionService {
         }
         PageHelper.startPage(currentPage,pageSize);
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
+    }
+
+    /**
+     * 查询分销记录总数和总参与人数
+     * @param userId
+     * @return
+     */
+    public SfDistributionRecord findCountSfDistributionRecord(Long userId){
+        return sfDistributionRecordMapper.selectCountByUserId(userId);
+    }
+
+    /**
+     * 查询分销记录list
+     * @param userId
+     * @return
+     */
+    public List<SfDistributionRecord> findListSfDistributionRecord(Long userId){
+        return sfDistributionRecordMapper.selectListByUserId(userId);
+    }
+
+    /**
+     * 根据订单商品子表 id查询分润人信息
+     * @param itemId
+     * @return
+     */
+    public List<SfDistributionPerson> findListSfDistributionPerson(Long itemId){
+        return sfDistributionRecordMapper.selectListSfDistributionPersonByItemId(itemId);
     }
 }

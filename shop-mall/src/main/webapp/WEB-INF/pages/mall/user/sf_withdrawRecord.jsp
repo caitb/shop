@@ -8,24 +8,13 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
-    <title>麦链商城</title>
+    <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/tixianjilu.css">
     <link rel="stylesheet" href="${path}/static/css/common/common.css">
     <link rel="stylesheet" href="${path}/static/css/common/dropload.css">
     <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="text/javascript" src="${path}/static/js/plugins/date.js" ></script>
-    <script type="text/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
-    <script type="text/javascript" src="${path}/static/js/plugins/dropload.min.js"></script>
-    <script type="text/javascript" src="${path}/static/js/pageJs/sf_withdrawRecord.js"></script>
-    <script type="text/javascript">
-        var path = "${path}";
-        var basepath = "${basepath}";
-    </script>
 </head>
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
@@ -60,5 +49,16 @@
             <div id="datePlugin"></div>
         </div>
      </div>
+<script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
+<script type="text/javascript" src="${path}/static/js/plugins/date.js" ></script>
+<script type="text/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
+<script type="text/javascript" src="${path}/static/js/plugins/dropload.min.js"></script>
+<script type="text/javascript" src="${path}/static/js/pageJs/sf_withdrawRecord.js"></script>
+<script type="text/javascript">
+    var path = "${path}";
+    var basepath = "${basepath}";
+</script>
 </body>
 </html>

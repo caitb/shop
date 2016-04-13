@@ -2,6 +2,7 @@ package com.masiis.shop.dao.mallBeans;
 
 import com.masiis.shop.dao.po.PfBorderConsignee;
 import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.SfOrderConsignee;
 import com.masiis.shop.dao.po.SfOrderItem;
 
 import java.util.List;
@@ -22,7 +23,15 @@ public class BaseOrder {
      * 订单商品
      */
     private List<SfOrderItem> sfOrderItems;
-    //private PfBorderConsignee pfBorderConsignee;
+    private SfOrderConsignee sfOrderConsignee;
+
+    public SfOrderConsignee getSfOrderConsignee() {
+        return sfOrderConsignee;
+    }
+
+    public void setSfOrderConsignee(SfOrderConsignee sfOrderConsignee) {
+        this.sfOrderConsignee = sfOrderConsignee;
+    }
 
     public void setPidUserName(String pidUserName) {
         this.pidUserName = pidUserName;

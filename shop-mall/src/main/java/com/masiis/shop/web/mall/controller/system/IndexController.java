@@ -46,12 +46,26 @@ public class IndexController extends BaseController {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
+        shopId=4L;
+        userPid=14L;
         req.getSession().setAttribute("shopId", shopId);
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
-//        ComUser pUser = userService.getUserById(userPid);
-        ComUser pUser = new ComUser();
-        SfShop sfShop = sfShopService.getSfShopById(1L);
-        List<SfShopSku> sfShopSkus = skuService.getSfShopSkuByShopId(1L);
+        ComUser pUser = userService.getUserById(userPid);
+//        ComUser pUser = new ComUser();
+        SfShop sfShop =null;
+        List<SfShopSku> sfShopSkus =null;
+        if(shopId==null){
+            throw new BusinessException("shopId不能为空");
+//            sfShop = sfShopService.getSfShopById(1L);
+//            sfShopSkus = skuService.getSfShopSkuByShopId(1L);
+        }else{
+            sfShop = sfShopService.getSfShopById(shopId);
+            if(sfShop==null){
+                throw new BusinessException("进入方式异常，请联系管理员");
+            }
+            sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+        }
+
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
         BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku:sfShopSkus) {
@@ -72,6 +86,7 @@ public class IndexController extends BaseController {
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
+        modelAndView.addObject("user", user);
         modelAndView.addObject("userPid",userPid);
         modelAndView.addObject("sfShop",sfShop);
         modelAndView.addObject("bail",bail);//保证金

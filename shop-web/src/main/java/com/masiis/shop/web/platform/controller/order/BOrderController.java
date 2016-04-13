@@ -80,12 +80,7 @@ public class BOrderController extends BaseController {
             if (levelId <= 0) {
                 throw new BusinessException("代理等级有误");
             }
-            PfUserSku pfUserSku = null;
-            ComUser pUser = null;
-            if (pUserId != null && pUserId > 0) {
-                pUser = userService.getUserById(pUserId);
-                pfUserSku = userSkuService.checkParentData(pUser, skuId, levelId);
-            }
+            userSkuService.checkParentData(pUserId, skuId, levelId);
             ComUser comUser = getComUser(request);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
@@ -120,6 +115,7 @@ public class BOrderController extends BaseController {
             order.setShipType(0);
             order.setShipRemark("");
             if (comUser.getSendType() == 0) {
+                ComUser pUser = userService.getUserById(pUserId);
                 if (pUser == null) {
                     order.setSendType(comUser.getSendType());
                 } else {
@@ -254,8 +250,7 @@ public class BOrderController extends BaseController {
             //校验库存
             List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-                ComUser comUser = userService.getUserById(pfBorder.getUserPid());
-                userSkuService.checkParentData(comUser, pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
+                userSkuService.checkParentData(pfBorder.getUserPid(), pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
             }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;

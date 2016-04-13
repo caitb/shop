@@ -70,8 +70,7 @@ public class UserApplyController extends BaseController {
             throw new BusinessException("sku不合法,系统不存在该sku");
         }
         if (pUserId != null && pUserId > 0) {
-            ComUser pUser = userService.getUserById(pUserId);
-            userSkuService.checkParentData(pUser, skuId);
+            userSkuService.checkParentData(pUserId, skuId);
             res.addObject("pUserId", pUserId);
         }
 
@@ -178,12 +177,7 @@ public class UserApplyController extends BaseController {
         // 上级代理等级id(0表示没有上级推荐)
         Integer pUserLevelId = 0;
         if (pUserId != null && pUserId > 0) {
-            ComUser pComUser = userService.getUserById(pUserId);
-            if (pComUser == null) {
-                log.error("上级代理id不合法,pUserId:" + pUserId);
-                throw new BusinessException("上级代理id不合法!");
-            }
-            userSkuService.checkParentData(pComUser, skuId);
+            userSkuService.checkParentData(pUserId, skuId);
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
             if (pfUserSku.getAgentLevelId() >= 3) {
                 throw new BusinessException("您的推荐人还不能发展下级代理");
@@ -243,9 +237,9 @@ public class UserApplyController extends BaseController {
             if (StringUtils.isNotBlank(pMobile)) {
                 pUser = userService.getUserByMobile(pMobile);
                 if (agentLevel == null || agentLevel <= 0) {
-                    userSkuService.checkParentData(pUser, skuId);
+                    userSkuService.checkParentData(pUser.getId(), skuId);
                 } else {
-                    userSkuService.checkParentData(pUser, skuId, agentLevel);
+                    userSkuService.checkParentData(pUser.getId(), skuId, agentLevel);
                 }
             } else {
                 throw new BusinessException("手机号为空");

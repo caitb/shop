@@ -104,6 +104,7 @@ public class ProductService {
                     List<ComSkuImage> comSkuImages = new ArrayList<ComSkuImage>();
                     comSkuImages.add(comSkuImage);
                     product.setShipAmount(comSpu.getShipAmount());
+                    product.setComSkuImages(comSkuImages);
                 }
             }
         } catch (Exception e) {

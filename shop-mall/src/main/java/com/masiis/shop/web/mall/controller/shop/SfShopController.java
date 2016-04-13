@@ -13,6 +13,7 @@ import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.DownloadImage;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -142,6 +143,13 @@ public class SfShopController extends BaseController {
 
         //mav.setViewName("error");
         return "error";
+    }
+
+    @RequestMapping("/sharePlan")
+    public String sharePlan(HttpServletRequest request, HttpServletResponse response, Model model, Integer shopId){
+        model.addAttribute("shopId", shopId);
+
+        return "mall/shop/sharePlan";
     }
 
     /**

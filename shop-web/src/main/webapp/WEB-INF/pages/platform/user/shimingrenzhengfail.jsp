@@ -43,7 +43,7 @@
             </div>
             <div class="sf">
                 身份证号：
-                <input type="text" id="idCard" name="idCard" value="${comUser.wxId}">
+                <input type="text" id="idCard" name="idCard" value="${comUser.idCard}">
             </div>
             <div class="sf" style="border-bottom:none;">
                 身份证照片：

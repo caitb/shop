@@ -5,12 +5,12 @@ html {
   height: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  background: #f6f6f6;
+  background: #EEEEEE;
 }
 body header,
 html header {
   width: 100%;
-  background: white;
+  background: #fff;
   display: -webkit-box;
   position: relative;
   margin-bottom: 5px;
@@ -65,58 +65,44 @@ html .wrap {
 }
 body footer,
 html footer {
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 -2px 0 #cdcdcd;
+  background: white;
 }
 body footer div,
 html footer div {
   width: 100%;
   display: -webkit-box;
 }
-body footer div p,
-html footer div p {
+body footer div a,
+html footer div a {
   -webkit-box-flex: 1;
   display: -webkit-box;
   width: 1px;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
+  background: #F74A10;
 }
-body footer div p span,
-html footer div p span {
+body footer div a span,
+html footer div a span {
   display: block;
+  color: white;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
 }
-body footer div p span img,
-html footer div p span img {
+body footer div a span img,
+html footer div a span img {
   display: block;
-  width: 25px;
+  width: 50%;
   margin-top: 5px;
+}
+body footer div a span:nth-child(1),
+html footer div a span:nth-child(1) {
+  height: 30px;
 }
 body footer div .active,
 html footer div .active {
-  color: #7D11F7;
-  background: url("/static/images/active.png") no-repeat;
-  background-size: 100% 100%;
-}
-.xinz {
-  width: 100%;
-  height: 40px;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  display: -moz-box;
-  -moz-box-align: center;
-  background: white;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-}
-.xinz p {
-  background: url("/static/images/xz.png") no-repeat 5px;
-  text-indent: 20px;
-  background-size: 10%;
-}
-.xinz p a {
-  color: #999999;
+  background: #DA3700;
 }

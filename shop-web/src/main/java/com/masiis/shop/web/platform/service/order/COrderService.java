@@ -295,7 +295,7 @@ public class COrderService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "orderPay/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
         wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
@@ -330,7 +330,7 @@ public class COrderService {
                 pfCorder.setReceivableAmount(pfCorder.getReceivableAmount().subtract(payAmount));
                 pfCorder.setPayAmount(pfCorder.getPayAmount().add(payAmount));
             }
-            pfCorder.setPayTime(new Date());
+            pfCorder.setPayTime(pfCorderPayment.getCreateTime());
             pfCorder.setPayStatus(1);//已付款
             pfCorder.setOrderStatus(1);//已付款
             pfCorderMapper.updateById(pfCorder);

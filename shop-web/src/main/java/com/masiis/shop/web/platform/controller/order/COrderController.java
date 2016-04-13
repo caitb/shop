@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.product.Product;
+import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import com.masiis.shop.dao.po.PfCorder;
@@ -41,8 +42,17 @@ public class COrderController extends BaseController {
     @Resource
     private ProductService productService;
 
+    @Resource
+    PfCorderPaymentMapper pfCorderPaymentMapper;
 
     private Logger log = Logger.getLogger(this.getClass());
+
+
+/*    @RequestMapping(value = "testUpdatePayTime")
+    public void testUpdatePayTime(HttpServletRequest request,HttpServletResponse response){
+
+    }*/
+
 
     /**
      * 跳转到使用申请成功界面

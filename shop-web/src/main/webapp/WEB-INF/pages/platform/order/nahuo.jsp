@@ -108,7 +108,7 @@
                 <div class="xuan" onclick="toChooseAddressPage()"><h1>选择收获地址<span></span></h1></div>
                 <p>*选择后，您的其他合伙商品将使用同一种方式，不可更改</p>
             </div>
-            <button onclick="submit()">确定</button>
+            <button onclick="submit(this)">确定</button>
         </div>
     </div>
 </div>
@@ -157,7 +157,10 @@
         window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=takeGoods&selectedAddressId=" + selectedAddressId + "&orderId=" + bOrderId;
     }
 
-    function submit() {
+    function submit(para) {
+        if ($(para).html() == "正在提交...") {
+            return;
+        }
         if (sendType == 0) {
             alert("请选择拿货方式");
             return;
@@ -172,6 +175,7 @@
             data: paraData,
             dataType: "json",
             success: function (data) {
+                $(para).html("正在提交...");
                 if (data.isError == false) {
                     window.location.href = "<%=basePath%>border/payBOrdersSuccess.shtml?bOrderId=" + paraData.bOrderId;
                 }

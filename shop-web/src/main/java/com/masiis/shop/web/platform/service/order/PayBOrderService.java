@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
@@ -76,6 +77,8 @@ public class PayBOrderService {
     private SfShopMapper sfShopMapper;
     @Resource
     private SfShopSkuMapper sfShopSkuMapper;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
 
     /**
      * 支付回调统一入口
@@ -88,10 +91,11 @@ public class PayBOrderService {
      * <3>添加订单日志
      * <4>修改用户为已代理
      * <5>为用户生成小铺
-     * <6>为小铺生成商品
-     * <7>修改用户sku代理关系数据
-     * <8>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
-     * <9>初始化库存
+     * <6>初始化分销关系
+     * <7>为小铺生成商品
+     * <8>修改用户sku代理关系数据
+     * <9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
+     * <10>初始化库存
      */
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
@@ -161,10 +165,18 @@ public class PayBOrderService {
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
         }
+        log.info("<6>初始化分销关系");
+        SfUserRelation sfUserRelation = new SfUserRelation();
+        sfUserRelation.setCreateTime(new Date());
+        sfUserRelation.setUserPid(0l);
+        sfUserRelation.setUserId(comUser.getId());
+        sfUserRelation.setLevel(1);
+        sfUserRelation.setRemark("代理人初始分销关系");
+        sfUserRelationMapper.insert(sfUserRelation);
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {
-                log.info("<6>为小铺生成商品");
+                log.info("<7>为小铺生成商品");
                 SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(sfShop.getId(), pfBorderItem.getSkuId());
                 if (sfShopSku == null) {
                     sfShopSku = new SfShopSku();
@@ -182,7 +194,7 @@ public class PayBOrderService {
                     sfShopSku.setRemark("");
                     sfShopSkuMapper.insert(sfShopSku);
                 }
-                log.info("<7>修改用户sku代理关系数据");
+                log.info("<8>修改用户sku代理关系数据");
                 thisUS = new PfUserSku();
                 thisUS.setCreateTime(new Date());
 
@@ -235,11 +247,11 @@ public class PayBOrderService {
                 pfUserCertificate.setCode(code);
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
-            log.info("<8>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
+            log.info("<9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");
             if (pfBorder.getOrderType() == 0) {
                 pfSkuStatisticMapper.updateAgentNumBySkuId(pfBorderItem.getSkuId());
             }
-            log.info("<9>初始化库存");
+            log.info("<10>初始化库存");
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             if (pfUserSkuStock == null) {
                 pfUserSkuStock = new PfUserSkuStock();

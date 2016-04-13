@@ -108,7 +108,6 @@
         if ($(para).html() == "正在提交...") {
             return;
         }
-        $(para).html("正在提交...");
         var sendType =${pfBorder.sendType};
         var orderType =${pfBorder.orderType};
         if (orderType == 1 && sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {
@@ -126,6 +125,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
+                    $(para).html("正在提交...");
                     window.location.href = "<%=basePath%>border/payBOrderReady.shtml?bOrderId=" + paraData.bOrderId;
                 }
             }

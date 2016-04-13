@@ -8,8 +8,11 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserRelation;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import java.util.List;
+@Repository
 public interface SfUserRelationMapper {
     int deleteByPrimaryKey(Long id);
 

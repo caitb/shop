@@ -102,58 +102,6 @@ CommonPerson.Base.LoadingPic = {
         }
     },
 
-    ////显示局部Loading图
-    //PartShow: function (parentContainerID, url, msg) {
-    //    $("#" + parentContainerID.replace("#", "").replace(".", "") + "_loadingImg").remove();
-    //    var imgUrl = '';//图片路径
-    //    if (url) {  //如果url值存在就启用赋值的图片路径
-    //        imgUrl = url;
-    //    } else {     //否则就启用默认图片路径
-    //        imgUrl = this.operation.loadingImgUrl;
-    //    }
-    //
-    //    if (msg === undefined) {
-    //        msg = "此部分数据正在加载中, 请稍等...";
-    //    }
-    //
-    //    var htmlText = ' <div id="' + parentContainerID + '_loadingImg" class="loadingPage_bg"><div style="display: block; font-weight: bold; font-size: 12px; color: #595959; height: 28px; left: 50%; line-height: 27px; padding: 10px 10px 10px 50px; width: 240px; z-index: 111; background: url(img/loading.gif) no-repeat scroll 12px center #FFFFFF; border: 2px solid #86A5AD;">' + msg + '</div></div>'
-    //    $("#" + parentContainerID).append(htmlText);
-    //},
-    //
-    ////局部隐藏loading图
-    //PartHide: function (parentContainerID) {
-    //    $("#" + parentContainerID.replace("#", "").replace(".", "") + "_loadingImg").remove();
-    //},
-
-    ////显示局部Loading图(遮罩层只有图片)
-    //PartOnlyImgShow: function (parentContainerID, url) {
-    //    $("#" + parentContainerID.replace("#", "").replace(".", "") + "_zhezhao").remove();
-    //    //计算图片中心点到容器
-    //    var parentContainer = $("#" + parentContainerID);
-    //    var imgTop = parentContainer.height() / 2 - this.operation.loadingImgHeight / 2;
-    //    var imgLeft = parentContainer.width() / 2 - this.operation.loadingImgWidth / 2;
-    //
-    //    var imgUrl = '';//图片路径
-    //    if (url) {  //如果url值存在就启用赋值的图片路径
-    //        imgUrl = url;
-    //    } else {     //否则就启用默认图片路径
-    //        imgUrl = this.operation.loadingImgUrl;
-    //    }
-    //
-    //    var htmlText = '<div id="' + parentContainerID.replace("#", "").replace(".", "") + '_zhezhao" class="loadingPage_bg" style="margin:10px;display:block;position: absolute; width:' + parentContainer.width() + 'px; border: 1px solid #D6E9F1; z-index:1002;"><img style="position: absolute; top:' + imgTop + 'px; left:' + imgLeft + 'px; border: 1px solid #D6E9F1;" src="' + imgUrl + '"/> </div>'
-    //    $("body").append(htmlText);
-    //
-    //    var zhezhao = $("#" + parentContainerID.replace("#", "").replace(".", "") + "_zhezhao");
-    //    zhezhao.css("top", parentContainer.offset().top + "px");
-    //    zhezhao.css("left", parentContainer.offset().left + "px");
-    //    zhezhao.css("width", parentContainer.width() + "px");
-    //},
-    //
-    ////局部隐藏loading图(遮罩层只有图片)
-    //PartOnlyImgHide: function (parentContainerID) {
-    //    $("#" + parentContainerID.replace("#", "").replace(".", "") + "_zhezhao").remove();
-    //}
-
 }
 function fullHide() {
     CommonPerson.Base.LoadingPic.FullScreenHide();

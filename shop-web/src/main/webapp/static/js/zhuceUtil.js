@@ -97,10 +97,10 @@ $(function () {
         $(".back").show();
     });
     $("#submit").click(function (event) {
-        if ($(this).html() == "正在提交...") {
+        var thisObj=$(this);
+        if (thisObj.html() == "正在提交...") {
             return;
         }
-        $(this).html("正在提交...");
         var event = event || event.window;
         event.stopPropagation();
         var paraData = {};
@@ -116,6 +116,7 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
+                    thisObj.html("正在提交...");
                     var param = "?";
                     param += "bOrderId=" + data.bOrderId;
                     window.location.href = path + "border/payBOrder.shtml" + param;

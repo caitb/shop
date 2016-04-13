@@ -35,6 +35,8 @@ public class UserSkuService {
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private UserService userService;
 
     /**
      * 获取用户产品代理关系
@@ -76,12 +78,18 @@ public class UserSkuService {
     }
 
     /**
-     * @param pUser 上级合伙人
+     * @param pUserId 上级合伙人id
      * @param skuId 代理的商品
      * @author ZhaoLiang
      * @date 2016/4/1 12:11
      */
-    public void checkParentData(ComUser pUser, Integer skuId) throws Exception {
+    public void checkParentData(Long pUserId, Integer skuId) throws Exception {
+        if (pUserId == null) {
+            throw new BusinessException(" 上级用户id不合法!");
+        } else if (pUserId <= 0) {
+            return;
+        }
+        ComUser pUser = userService.getUserById(pUserId);
         if (pUser == null) {
             throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
         } else {
@@ -93,14 +101,18 @@ public class UserSkuService {
     }
 
     /**
-     * @param pUser        上级合伙人
+     * @param pUserId      上级合伙人id
      * @param skuId        代理的商品
      * @param agentLevelId 自己的代理等级
      * @author ZhaoLiang
      * @date 2016/4/1 12:11
      */
-    public PfUserSku checkParentData(ComUser pUser, Integer skuId, Integer agentLevelId) throws Exception {
+    public PfUserSku checkParentData(Long pUserId, Integer skuId, Integer agentLevelId) throws Exception {
+        if (pUserId == null || pUserId <= 0) {
+            return null;
+        }
         PfUserSku pfUserSku = null;
+        ComUser pUser = userService.getUserById(pUserId);
         if (pUser == null) {
             throw new BusinessException(" 您的推荐人还未注册，请联系您的推荐人先注册!");
         } else {

@@ -35,7 +35,7 @@
         </div>
         <img src="${sfShop.logo}" alt="">
         <nav>
-            <p><span>1233</span><span>店铺总订单</span></p>
+            <p><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
             <p><span>1233</span><span>店铺总参与人数</span></p>
         </nav>
@@ -57,11 +57,11 @@
             <span><img src="<%=basePath%>static/images/footer1.jpg" alt=""></span>
             <span>首页</span>
         </a>
-        <a>
-            <span><img src="<%=basePath%>static/images/footer2.jpg" alt=""></span>
-            <span>分享计划</span>
-        </a>
         <a class="active">
+            <span><img src="<%=basePath%>static/images/footer2.jpg" alt=""></span>
+            <span>我的店铺</span>
+        </a>
+        <a>
             <span><img src="<%=basePath%>static/images/footer3.jpg" alt=""></span>
             <span>个人中心</span>
         </a>

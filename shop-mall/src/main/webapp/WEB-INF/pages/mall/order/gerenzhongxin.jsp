@@ -31,36 +31,36 @@
                 </div>
                 <div class="dynmic">
                     <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0">
-                        <span><img src="<%=path%>/static/images/fukuan.png" alt=""><b>${sfOrders0}</b></span>
+                        <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><b>${sfOrders0}</b></span>
                         <span>待付款</span></a>
                     </p>
                     <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">
-                        <span><img src="<%=path%>/static/images/fukuan.png" alt=""></span>
+                        <span><img src="<%=path%>/static/images/geren%20(3).png" alt=""></span>
                         <span>待发货</span></a>
                     </p>
                     <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=8">
-                        <span><img src="<%=path%>/static/images/fukuan.png" alt=""></span>
+                        <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" style="width: 29px;"></span>
                         <span>待收货</span></a>
                     </p>
                 </div>
                 <nav>
                     <ul>
                         <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/commissionHome.shtml');">
-                            <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
+                            <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
                         <span>我的佣金</span>
                         </li>
                         <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.do');">
-                            <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
+                            <span><img src="<%=path%>/static/images/geren2%20(2).png" alt=""></span>
                         <span>个人信息</span>
                         </li>
                         <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
-                            <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
+                            <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
                         <span>浏览过的店铺</span>
                         </li>
                     </ul>
                     <ul>
                         <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
-                            <span><img src="<%=path%>/static/images/icon_18.png" alt=""></span>
+                            <span><img src="<%=path%>/static/images/geren2%20(1).png" alt=""></span>
                             <span>地址管理</span>
                         </li>
                         <li></li>

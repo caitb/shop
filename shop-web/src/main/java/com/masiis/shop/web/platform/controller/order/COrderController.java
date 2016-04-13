@@ -214,7 +214,7 @@ public class COrderController extends BaseController {
      * @date 2016/3/19 15:06
      */
     private Model getOrderInfo(HttpServletRequest request, Model model, Integer skuId, Long selectedAddressId) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         Long userId = null;
         if (comUser != null) {
             userId = comUser.getId();

@@ -49,7 +49,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/isBindPhone.do")
     @ResponseBody
     public String isBindPhone(HttpServletRequest request, HttpServletResponse response) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
             return "true";
         } else {
@@ -147,7 +147,7 @@ public class UserController extends BaseController {
     public String getPersonalInfo(HttpServletRequest request, HttpServletResponse response,
                                   Model model) {
 
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         model.addAttribute("comUser", comUser);
         return "platform/user/gerenxinxi";
     }

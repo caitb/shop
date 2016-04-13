@@ -185,7 +185,7 @@ public class UserService {
         ComUser comUser = null;
         JSONObject jsonObject = new JSONObject();
         try {
-            comUser = (ComUser) request.getSession().getAttribute("comUser");
+            comUser = getComUser(request);
             if (comUser != null) {
                 comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
                 comUser.setMobile(phone);

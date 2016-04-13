@@ -318,7 +318,7 @@ public class UserAddressController extends BaseController {
                                          HttpServletResponse response,
                                          @RequestParam(value = "id", required = true) Long id) {
         try{
-            ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+            ComUser comUser = getComUser(request);
             Long userId = null;
             if (comUser != null) {
                 userId = comUser.getId();

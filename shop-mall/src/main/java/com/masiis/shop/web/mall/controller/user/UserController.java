@@ -45,7 +45,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/isBindPhone.do")
     @ResponseBody
     public String isBindPhone(HttpServletRequest request, HttpServletResponse response) {
-        ComUser comUser = (ComUser) request.getSession().getAttribute("comUser");
+        ComUser comUser = getComUser(request);
         if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
             return "true";
         } else {

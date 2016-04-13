@@ -156,7 +156,7 @@ CommonPerson.Base.LoadingPic = {
 
 }
 function fullHide() {
-    CommonPerson.n.LoadingPic.FullScreenHide();
+    CommonPerson.Base.LoadingPic.FullScreenHide();
 }
 
 function fullShow() {

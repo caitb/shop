@@ -47,9 +47,6 @@ public class SfOrderController extends BaseController {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
-            if (user == null) {
-                user = userService.getUserById(1l);
-            }
             sfOrderService.deliver(shipManName,orderId,freight,shipManId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

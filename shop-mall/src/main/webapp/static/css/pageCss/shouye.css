@@ -131,12 +131,10 @@
 }
 .wrap .content {
   width: 100%;
-  background: #fff;
 }
 .wrap .content > h1 {
-  margin: 0 10px;
-  padding: 10px 0;
-  background: url("/static/images/zaishou.png") no-repeat 0px;
+  padding: 10px;
+  background:white url("/static/images/zaishou.png") no-repeat 10px;
   background-size: 15px;
   text-indent: 20px;
   color: #333333;

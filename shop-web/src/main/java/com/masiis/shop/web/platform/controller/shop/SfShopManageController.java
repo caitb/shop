@@ -50,6 +50,12 @@ public class SfShopManageController extends BaseController {
     @Resource
     private SkuService skuService;
 
+    /**
+     * 店铺管理首页
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/shop/manage/index");
@@ -78,6 +84,12 @@ public class SfShopManageController extends BaseController {
         return mav;
     }
 
+    /**
+     * 店铺设置
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/setupShop")
     public ModelAndView setupShop(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/shop/manage/setupShop");
@@ -100,6 +112,13 @@ public class SfShopManageController extends BaseController {
         return mav;
     }
 
+    /**
+     * 更新店铺
+     * @param request
+     * @param response
+     * @param sfShop
+     * @return
+     */
     @RequestMapping("/updateShop")
     public String updateShop(HttpServletRequest request, HttpServletResponse response, SfShop sfShop){
 
@@ -112,6 +131,12 @@ public class SfShopManageController extends BaseController {
         return "redirect:/shop/manage/index";
     }
 
+    /**
+     * 设置运费
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/setupFreight")
     public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
         ModelAndView mav = new ModelAndView("platform/shop/manage/setupFreight");
@@ -132,6 +157,13 @@ public class SfShopManageController extends BaseController {
         return mav;
     }
 
+    /**
+     * 获取店铺海报
+     * @param request
+     * @param response
+     * @param shopId
+     * @return
+     */
     @RequestMapping("/getPoster")
     public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId){
         ModelAndView mav = new ModelAndView("platform/shop/exclusivePoster");
@@ -215,6 +247,14 @@ public class SfShopManageController extends BaseController {
         }
     }
 
+    /**
+     * 获取商品海报
+     * @param request
+     * @param response
+     * @param shopId
+     * @param skuId
+     * @return
+     */
     @RequestMapping("/getSkuPoster")
     @ResponseBody
     public Object getSkuPoster(HttpServletRequest request, HttpServletResponse response, Long shopId, Integer skuId){

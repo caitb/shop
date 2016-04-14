@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/shop/css/fenxiaojilu.css">
     <link rel="stylesheet" href="<%=path%>/static/css/main.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
+
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
@@ -67,6 +68,8 @@
     var basepath = "<%=basePath%>";
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){
+            $("#year").val(year);
+            $("#month").val(month);
             turnMonth(year,month);
         });
         $('#endTime').date({theme:"datetime"});

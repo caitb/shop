@@ -46,7 +46,7 @@
         </nav>
     </div>
     <nav>
-        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&&isSale=1');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/foot_icon%20(3).png" alt=""></span><span>合伙人订单</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/foot_icon%20(2).png" alt=""></span><span>店铺设置</span></p>
     </nav>
@@ -56,21 +56,6 @@
         <p></p>
     </nav>
 </div>
-<footer>
-    <div>
-        <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
-            <span>首页</span>
-        </p>
-        <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
-            <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-            <span>分享计划</span>
-        </p>
-        <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderManagement.html');" >
-            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-            <span>个人中心</span>
-        </p>
-    </div>
-</footer>
+<c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 </html>

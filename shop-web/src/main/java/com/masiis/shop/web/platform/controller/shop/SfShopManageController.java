@@ -64,7 +64,7 @@ public class SfShopManageController extends BaseController {
 
         try {
             comUser = getComUser(request);
-            comUser = comUserMapper.selectByPrimaryKey(15L);
+            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 

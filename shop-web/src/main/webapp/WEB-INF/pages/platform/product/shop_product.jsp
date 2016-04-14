@@ -50,6 +50,28 @@
                 </div>
                 </c:forEach>
             </section>
+
+        <section class="all" style="display: none;">
+            <c:forEach items="${skuInfoList}" var="sku">
+                <div class="sec1">
+                    <img src="${sku.comSkuImage.fullImgUrl}" alt="">
+
+                    <div>
+                        <h1>${sku.comSku.name}</h1>
+
+                        <p>${sku.comSku.priceMarket}</p>
+
+                        <p>已售：<span>${sku.saleNum}</span> 库存<span>${sku.stock}</span></p>
+                    </div>
+                </div>
+                <div class="sec2">
+                    <p onclick="xiajia('${sku.shopSkuId}')">下架</p>
+
+                    <p onclick="share('${sku.comSku.id}')">分享</p>
+                </div>
+            </c:forEach>
+        </section>
+
     </main>
 </div>
 <div class="back_que"style="display: none">
@@ -90,7 +112,6 @@
             success: function (data) {
                 var trHtml = "";
                 $.each(data.skuInfoList, function(i, sku){
-                    trHtml+="<section class=\"all\" style=\"display: block;\">";
                     trHtml+="<div class=\"sec1\">";
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
@@ -103,9 +124,8 @@
                     trHtml+="<p onclick=\"xiajia('"+sku.shopSkuId+"')\">下架</p>";
                     trHtml+="<p onclick=\"share('"+sku.comSku.id+"')\">分享</p>";
                     trHtml+="</div>";
-                    trHtml+="</section>";
                 });
-                $(".all").eq(0).html(trHtml);
+                $(".all").eq(0).empty().html(trHtml);
             }
         });
     })
@@ -122,7 +142,6 @@
             success: function (data) {
                 var trHtml = "";
                 $.each(data.skuInfoList, function(i, sku){
-                    trHtml+="<section class=\"all\" style=\"display: block;\">";
                     trHtml+="<div class=\"sec1\">";
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
@@ -135,9 +154,8 @@
                     trHtml+="<p onclick=\"shangjia('"+sku.shopSkuId+"')\">上架</p>";
                     trHtml+="<p><a href=\"<%=basePath%>product/"+sku.comSku.id+"\">预览</a></p>";
                     trHtml+="</div>";
-                    trHtml+="</section>";
                 });
-                $(".all").eq(1).html(trHtml);
+                $(".all").eq(1).empty().html(trHtml);
             }
         });
 

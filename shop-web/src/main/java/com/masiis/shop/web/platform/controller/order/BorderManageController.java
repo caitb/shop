@@ -480,8 +480,8 @@ public class BorderManageController extends BaseController {
             if(pfUserSkuStock!=null){
                 stockNum=stockNum+pfUserSkuStock.getStock();
             }else{
-                pfUserSkuStock.setStock(0);
-                stockNum=stockNum+pfUserSkuStock.getStock();
+//                pfUserSkuStock.setStock(0);
+                stockNum=stockNum+0;
             }
         }
         //快递公司信息

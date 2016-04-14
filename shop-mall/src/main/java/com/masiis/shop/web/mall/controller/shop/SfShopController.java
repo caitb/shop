@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
@@ -249,6 +250,10 @@ public class SfShopController extends BaseController {
         SfShop sfShop =sfShopService.getSfShopById(shopId);
         if(sfShop==null){
             throw new BusinessException("该店铺不存在！");
+        }
+        ComSku comSku = skuService.getSkuById(skuId);
+        if(comSku==null){
+            throw new BusinessException("该商品不存在！");
         }
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);

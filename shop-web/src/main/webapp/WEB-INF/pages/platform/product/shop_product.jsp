@@ -51,27 +51,6 @@
                 </c:forEach>
             </section>
 
-        <section class="all" style="display: none;">
-            <c:forEach items="${skuInfoList}" var="sku">
-                <div class="sec1">
-                    <img src="${sku.comSkuImage.fullImgUrl}" alt="">
-
-                    <div>
-                        <h1>${sku.comSku.name}</h1>
-
-                        <p>${sku.comSku.priceMarket}</p>
-
-                        <p>已售：<span>${sku.saleNum}</span> 库存<span>${sku.stock}</span></p>
-                    </div>
-                </div>
-                <div class="sec2">
-                    <p onclick="xiajia('${sku.shopSkuId}')">下架</p>
-
-                    <p onclick="share('${sku.comSku.id}')">分享</p>
-                </div>
-            </c:forEach>
-        </section>
-
     </main>
 </div>
 <div class="back_que"style="display: none">
@@ -102,7 +81,7 @@
     $("#onsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
-        $(".all").eq(0).show().siblings().hide();
+        $(".sec1").show().siblings().hide();
         $.ajax({//上架中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -125,14 +104,13 @@
                     trHtml+="<p onclick=\"share('"+sku.comSku.id+"')\">分享</p>";
                     trHtml+="</div>";
                 });
-                $(".all").eq(0).empty().html(trHtml);
+                $(".all").empty().html(trHtml);
             }
         });
     })
     $("#outsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
-        $(".all").eq(1).show().siblings().hide();
         $.ajax({//仓库中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -155,7 +133,7 @@
                     trHtml+="<p><a href=\"<%=basePath%>product/"+sku.comSku.id+"\">预览</a></p>";
                     trHtml+="</div>";
                 });
-                $(".all").eq(1).empty().html(trHtml);
+                $(".all").empty().html(trHtml);
             }
         });
 

@@ -71,6 +71,7 @@ public class SfOrderPayController {
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));
+        model.addAttribute("userPid",map.get("userPid"));
         return "mall/order/zhifuchenggong";
     }
 

@@ -5,6 +5,7 @@ import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class SfOrderPayService {
     private SfOrderPaymentService ordPaymentSer;
     @Resource
     private PfUserSkuStockService skuStockService;
+    @Resource
+    private SfUserRelationService sfUserRelationService;
 
     /**
      * 获得需要支付的订单的信息
@@ -182,7 +185,9 @@ public class SfOrderPayService {
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems",orderItems);
-            //
+            //获得用户的分销关系的父id
+            Long userPid = getUserPid(order.getUserId());
+            map.put("userPid",userPid);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -211,6 +216,20 @@ public class SfOrderPayService {
      */
     private List<SfOrderItem> getOrderItem(Long orderId){
         return ordItemService.getOrderItemByOrderId(orderId);
+    }
+
+    /**
+     * 获得购买人的分销关系
+     * @author hanzengzhi
+     * @date 2016/4/14 16:29
+     */
+    private Long getUserPid(Long userId){
+        SfUserRelation userRelation = sfUserRelationService.getSfUserRelationByUserId(userId);
+        if (userRelation==null){
+            throw new BusinessException("支付成功后获得分销关系为null");
+        }else{
+           return userRelation.getUserPid();
+        }
     }
 
     public void addSfOrderPayment(SfOrderPayment payment) {

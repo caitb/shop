@@ -15,7 +15,7 @@ import java.util.Date;
  * Created by lzh on 2016/3/23.
  */
 @Component
-public class OrderTask {
+public class PfOrderTask {
     private Logger log =  Logger.getLogger(this.getClass());
 
     @Resource

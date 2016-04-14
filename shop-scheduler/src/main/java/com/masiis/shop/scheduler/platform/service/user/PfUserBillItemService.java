@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.platform.service.order;
+package com.masiis.shop.scheduler.platform.service.user;
 
 import org.springframework.stereotype.Service;
 

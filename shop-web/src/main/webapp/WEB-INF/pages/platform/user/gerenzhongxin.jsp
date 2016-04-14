@@ -43,7 +43,7 @@
 <div class="bottom">
     <footer>
         <div class="btm">
-            <a href="javascript:;">
+            <a href="<%=path%>/index">
                 <span><img src="<%=path%>/images/shouye_footer.png" alt=""></span>
                 <span>首页</span>
             </a>

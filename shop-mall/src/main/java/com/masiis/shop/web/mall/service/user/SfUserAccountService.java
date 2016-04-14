@@ -128,14 +128,15 @@ public class SfUserAccountService {
                 throw new BusinessException("不合法的拿货方式");
             }
 
+            log.info("计算店主的");
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
             // 插入店主pf_user_bill_item
             PfUserBillItem billItem = createPfUserBillItemBySfOrder(order, shopKeeper, countFee);
             billItemMapper.insert(billItem);
 
-            // 计算店主此次总销售额
-            ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, countFee,
+            // 计算店主此次总销售额(利润和运费也算销售额)
+            ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
                     UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(countFee));

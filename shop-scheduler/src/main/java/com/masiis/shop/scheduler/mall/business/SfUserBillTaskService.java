@@ -1,12 +1,11 @@
-package com.masiis.shop.scheduler.platform.business.order;
+package com.masiis.shop.scheduler.mall.business;
 
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.scheduler.platform.service.order.PfBorderService;
-import com.masiis.shop.scheduler.platform.service.user.PfUserBillItemService;
-import com.masiis.shop.scheduler.platform.service.user.PfUserBillService;
+import com.masiis.shop.scheduler.mall.service.order.SfOrderService;
+import com.masiis.shop.scheduler.mall.service.user.SfUserBillService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -18,26 +17,22 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
- * Created by lzh on 2016/3/23.
+ * @Date:2016/4/14
+ * @auth:lzh
  */
 @Service
-public class PfUserBillTaskService {
+public class SfUserBillTaskService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private PfBorderService orderService;
+    private SfOrderService sfOrderService;
     @Resource
-    private PfUserBillService billService;
-    @Resource
-    private PfUserBillItemService itemService;
+    private SfUserBillService billService;
     @Resource
     private ComUserService userService;
 
-    /**
-     * 创建每日结算账单
-     */
-    public void createPfUserBillByDaily() {
-        // 账单创建日期
+    public void createSfUserBillByDaily() {
+// 账单创建日期
         Date billCreateTime = new Date();
         // 获取结算日(当前时间前一天)
         final Date balanceDate = DateUtil.getDateNextdays(-1);
@@ -78,11 +73,5 @@ public class PfUserBillTaskService {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
-    }
-
-    public static void main(String[] a) {
-        //System.out.println(getCountDay(new Date()));
-        //System.out.println(DateUtil.getDateNextdays(getCountDay(new Date()), 1));
-        System.out.println(DateUtil.getDateNextdays(-1));
     }
 }

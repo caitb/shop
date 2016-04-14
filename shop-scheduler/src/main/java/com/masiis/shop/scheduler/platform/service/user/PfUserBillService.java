@@ -1,7 +1,8 @@
-package com.masiis.shop.scheduler.platform.service.order;
+package com.masiis.shop.scheduler.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
@@ -34,6 +35,8 @@ public class PfUserBillService {
     private ComUserAccountMapper accountMapper;
     @Resource
     private ComUserAccountRecordMapper recordMapper;
+    @Resource
+    private SfOrderMapper sfOrderMapper;
 
     @Transactional
     public void createBillByUserAndDate(ComUser user, Date start, Date end, Date balanceDate) {
@@ -67,6 +70,9 @@ public class PfUserBillService {
                     borderMapper.updateByPrimaryKey(order);
                 } else if(item.getOrderType().intValue() == 1){
                     // 分销订单
+                    SfOrder order = sfOrderMapper.selectByPrimaryKey(item.getPfBorderId());
+                    order.setIsCounting(1);
+                    sfOrderMapper.updateByPrimaryKey(order);
                 }
             }
             // 修改账单状态

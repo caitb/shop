@@ -9,6 +9,7 @@ package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderPayment;
 import java.util.List;
+import java.util.Map;
 
 public interface SfOrderPaymentMapper {
     int deleteByPrimaryKey(Long id);
@@ -24,4 +25,6 @@ public interface SfOrderPaymentMapper {
     List<SfOrderPayment> selectBySfOrderId(Long sfOrderId);
 
     SfOrderPayment selectBySerialNum(String paySerialNum);
+
+    List<SfOrderPayment> selectByCondition(SfOrderPayment sfOrderPayment);
 }

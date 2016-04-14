@@ -12,6 +12,7 @@ import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,8 +40,10 @@ public class IndexController extends BaseController {
     @Resource
     private SfShopSkuService sfShopSkuService;
 
-    @RequestMapping("/index")
-    public ModelAndView index(HttpServletRequest req,Long shopId,Long userPid)throws Exception{
+    @RequestMapping("/{shopId}/{userPid}/shop.shtml")
+    public ModelAndView index(HttpServletRequest req,
+                              @PathVariable("shopId") Long shopId,
+                              @PathVariable("userPid") Long userPid)throws Exception{
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);

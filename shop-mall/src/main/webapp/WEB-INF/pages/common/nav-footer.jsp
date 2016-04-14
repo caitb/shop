@@ -12,7 +12,7 @@
             <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
-        <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
             <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
             <span>分享计划</span>
         </p>

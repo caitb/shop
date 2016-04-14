@@ -85,7 +85,7 @@
 <div id="shareDivId"class="back_f">
     <p>支付成功！</p>
     <p>关注麦链商城微信公众账号，查看订单最新状态</p>
-    <img src="<%=path%>/static/images/wx.jpg" alt="">
+    <img src="<%=path%>/static/images/mailianshangcheng.jpg" alt="">
     <p>长按识别二维码</p>
     <p>或微信搜索“麦链商城”公众账号，关注麦链商城微信公众账号</p>
     <span onclick="closeShare()" class="close">×</span>

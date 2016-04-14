@@ -58,11 +58,14 @@ public class OrderService {
             ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
             SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
             List<SfOrderFreight> sfOrderFreights = sfOrderFreightMapper.selectByOrderId(sfOrder.getId());
+            List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(sfOrder.getId());
 
             Order order = new Order();
             order.setComUser(comUser);
+            order.setSfOrder(sfOrder);
             order.setSfOrderConsignee(sfOrderConsignee);
             order.setSfOrderFreights(sfOrderFreights);
+            order.setSfOrderPayments(sfOrderPayments);
 
             orders.add(order);
         }

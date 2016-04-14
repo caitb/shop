@@ -52,7 +52,11 @@
             dataType:"json",
             success: function (data) {
                 if (data.isSubmitOrder == "false") {
-                    alert("提交订单失败");
+                    if(data.sfOrderId==-1){
+                        alert("库存不足");
+                    }else{
+                        alert("提交订单失败");
+                    }
                 } else {
                     window.location.href = "<%=path%>/orderPay/getOrderInfo.html?orderId="+data.sfOrderId;
                 }

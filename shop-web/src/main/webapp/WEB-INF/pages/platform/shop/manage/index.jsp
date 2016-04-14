@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" <c:if test="${comUser.isAgent==0}">style="display: none;"</c:if> >
     <div class="na">
         <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
@@ -56,6 +56,11 @@
         <p></p>
     </nav>
 </div>
+<c:if test="${comUser.isAgent==0}">
+    <div class="wrap_no">
+        <p>您还不是合伙人，去<a href="">好货市场</a>看看吧~</p>
+    </div>
+</c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 </html>

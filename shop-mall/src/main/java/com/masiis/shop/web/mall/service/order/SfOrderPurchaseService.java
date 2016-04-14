@@ -267,7 +267,7 @@ public class SfOrderPurchaseService {
                     log.info("插入订单成功---end");
                 }
             } else {
-                return -1L;
+                return -1L;//库存不足
             }
         } catch (Exception e) {
             throw new BusinessException(e);

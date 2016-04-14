@@ -124,3 +124,36 @@ a {
   background-size: 12px 12px;
   /*-webkit-box-shadow:0 1px 1px #F74A11;   */
 }
+
+.bottom{
+    position: fixed;
+    bottom: 0;
+    width:100%;
+}
+.bottom footer{
+  display: -webkit-box;
+  width:100%;
+  height:3.5rem;
+  background: #F74A11;
+}
+footer .btm{
+  width:1px;
+  -webkit-box-flex:1;
+}
+footer .btm a{
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack:center;
+}
+footer .btm span{
+  display: block;
+  font-size:12px;
+  color: #fff;
+}
+footer .btm span :nth-child(1){
+  height:25px;
+}
+footer .btm span img{
+  margin-top: 5px;
+}

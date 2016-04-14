@@ -92,7 +92,7 @@
         </div>
     </footer>
 </div>
-<div class="back_f" style="display: none">
+<div id="ok" class="back_f" style="display: none">
     <h1>呐喊成功！</h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
@@ -134,7 +134,7 @@
             dataType:"Json",
             success:function(data){
                 if(data.mallShout){
-                    $(".back_f").show();
+                    $("#ok").show();
                     $(".back").show();
                 } else{
                     $("#no").show();

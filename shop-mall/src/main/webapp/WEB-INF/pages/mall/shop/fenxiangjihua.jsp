@@ -47,7 +47,7 @@
         </div>
         <footer>
            <div>
-                <p onclick="javascript:window.location.replace('<%=path%>/index');">
+                <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
                     <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
                     <span>首页</span>
                 </p>

@@ -27,8 +27,6 @@ public class SfOrderItemDistributionService {
     private SfOrderItemDistributionMapper sfOrderItemDistributionMapper;
     @Autowired
     private SfOrderItemDistributionExtendMapper sfOrderItemDistributionExtendMapper;
-    @Autowired
-    private SfDistributionRecordMapper sfDistributionRecordMapper;
 
     private final Logger log = Logger.getLogger(SfOrderItemDistributionService.class);
 
@@ -60,42 +58,5 @@ public class SfOrderItemDistributionService {
         }
         PageHelper.startPage(currentPage,pageSize);
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
-    }
-
-    /**
-     * 查询分销记录总数和总参与人数
-     * @param userId
-     * @return
-     */
-    public SfDistributionRecord findCountSfDistributionRecord(Long userId){
-        return sfDistributionRecordMapper.selectCountByUserId(userId);
-    }
-
-    /**
-     * 询分销记录list
-     * @param userid
-     * @param start
-     * @param end
-     * @param currentPage
-     * @param pageSize
-     * @return
-     */
-    public List<SfDistributionRecord> findListSfDistributionRecordLimit(Long userid, Date start, Date end, Integer currentPage, Integer pageSize){
-        if (currentPage == 0||currentPage == 0){
-            return sfDistributionRecordMapper.selectListByUserIdLimt(userid,start,end);
-        }
-        PageHelper.startPage(currentPage,pageSize);
-        return sfDistributionRecordMapper.selectListByUserIdLimt(userid,start,end);
-    }
-    public Integer findCountSfDistributionRecordLimit(Long userid, Date start, Date end){
-        return sfDistributionRecordMapper.selectCountByUserIdLimit(userid,start,end);
-    }
-    /**
-     * 根据订单商品子表 id查询分润人信息
-     * @param itemId
-     * @return
-     */
-    public List<SfDistributionPerson> findListSfDistributionPerson(Long itemId){
-        return sfDistributionRecordMapper.selectListSfDistributionPersonByItemId(itemId);
     }
 }

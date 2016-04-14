@@ -113,7 +113,7 @@
         $(".back").hide();
     }
     function returnHomePage(){
-        window.location.href="mall.qc.iimai.com/${order.shopId}/${userPid}/shop.shtml";
+        window.location.href="http://mall.qc.iimai.com/${order.shopId}/${userPid}/shop.shtml";
     }
 </script>
 </body>

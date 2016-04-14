@@ -67,8 +67,6 @@
     var basepath = "<%=basePath%>";
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){
-            $("#year").val(year);
-            $("#month").val(month);
             turnMonth(year,month);
         });
         $('#endTime').date({theme:"datetime"});

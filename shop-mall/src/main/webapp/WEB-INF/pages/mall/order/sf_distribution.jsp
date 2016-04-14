@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,61 +11,65 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/fenxiaojilu.css">
     <link rel="stylesheet" href="${path}/static/css/common/common.css">
+    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
 </head>
 <body>
+<input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
+<input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="year" name="year" value="${year}"/>
+<input type="hidden" id="month" name="month" value="${month}"/>
     <header>
             <a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>订单详情</p>  
     </header>
     <div class="wrap">
        <div class="index_login">
-            <p><b>1233</b><span>参与人次</span></p>
+            <p><b>${sumLevel}</b><span>参与人次</span></p>
             <ul>
-                <li><p>总销售额</p><h1>￥<span>10,000,000</span>.00</h1></li>
-                <li><p>发放佣金</p><h1>￥<span>10,000,000</span>.00</h1></li>
+                <li><p>总销售额</p><h1>￥<span>${sfShop.saleAmount}</span></h1></li>
+                <li><p>发放佣金</p><h1>￥<span>${distributionAmount}</span></h1></li>
             </ul>
        </div>
        <div class="sec1" id="sec1">
-                <p>分销记录：<label for="beginTime"><b>2016</b>年<b>1</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <p>分销记录：<label for="beginTime"><b>${year}</b>年<b>${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
                 <div id="divall">
-                    <div>
-                        <p><span><b>18</b>人参加</span><span>抗引力-瘦脸精华</span><span>查看订单></span></p>
-                        <h1><span>22日</span><span>购买人：张三</span><span>￥228.00</span></h1>
-                        <h1><span><b>3</b>人分佣</span><span>￥2580.00</span><span>奋勇明细></span></h1>
-                    </div>
-                    <div>
-                        <p><span><b>18</b>人参加</span><span>抗引力-瘦脸精华</span><span>查看订单></span></p>
-                        <h1><span>22日</span><span>购买人：张三</span><span>￥228.00</span></h1>
-                        <h1><span><b>3</b>人分佣</span><span>￥2580.00</span><span>奋勇明细></span></h1>
-                    </div>
+                    <c:forEach var="sfDistributionRecord" items="${sfDistributionRecords}">
+                        <c:set var="count" value="0"></c:set>
+                        <c:forEach items="${sfDistributionRecord.sfDistributionPersons }" var="item">
+                            <c:set var="count" value="${count+item.amount }"></c:set>
+                        </c:forEach>
+                        <div class="record">
+                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>抗引力-瘦脸精华</span><span>查看订单></span></p>
+                            <h1><span><fmt:formatDate value="${sfDistributionRecord.createTime}"  type="time" pattern="dd"/>日</span><span>购买人：${sfDistributionRecord.wxNkName}</span><span>￥${sfDistributionRecord.orderAmount}</span></h1>
+                            <h1><span><b>${ fn:length(sfDistributionRecord.sfDistributionPersons) }</b>人分佣</span><span>￥${count}</span><span onclick="showDetails(${sfDistributionRecord.sfDistributionPersons})">分佣明细></span></h1>
+                        </div>
+                    </c:forEach>
                 </div>
+                <p style="text-align: center;"><a href="#" onclick="showMore()">查看更多></a></p>
             </div>
     </div>
     <div id="datePlugin"></div>
     <div class="back"></div>
     <div class="back_f">
-        <div>
-            <p>王平:</p>
-            <p>$123.00</p>
-        </div>
-        <div>
-            <p>jaliikkdll:</p>
-            <p>$123.00</p>
-        </div>
-        <div>
-            <p>晴晴晴，天:</p>
-            <p>$123.00</p>
-        </div>
-        <button>知道了</button>
+
     </div>
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="text/javascript" src="${path}/static/js/plugins/date.js" ></script>
-    <script type="text/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
+    <script type="application/javascript" src="${path}/static/js/plugins/date.js" ></script>
+    <script type="application/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
+    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
+    <script type="application/javascript" src="${path}/static/js/pageJs/sf_distribution.js"></script>
     <script>
-            $(function(){
-                $('#beginTime').date();
-                $('#endTime').date({theme:"datetime"});
+        var path = "${path}";
+        var basepath = "${basepath}";
+        $(function(){
+            $('#beginTime').date(undefined,undefined,undefined,function(year, month){
+                $("#year").val(year);
+                $("#month").val(month);
+                turnMonth(year,month);
             });
+            $('#endTime').date({theme:"datetime"});
+        });
     </script>
 </body>
 </html>

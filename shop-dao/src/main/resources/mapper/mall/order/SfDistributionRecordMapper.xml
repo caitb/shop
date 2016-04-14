@@ -15,6 +15,7 @@
     <resultMap id="BaseCountResultMap" type="com.masiis.shop.dao.beans.order.SfDistributionRecord" >
         <result column="count" property="count" jdbcType="INTEGER" />
         <result column="sumLevel" property="sumLevel" jdbcType="INTEGER" />
+        <result column="distributionAmount" property="distributionAmount" jdbcType="DECIMAL" />
     </resultMap>
 
     <resultMap id="BaseSfDistributionPersonResultMap" type="com.masiis.shop.dao.beans.order.SfDistributionPerson" >
@@ -23,23 +24,36 @@
         <result column="amount" property="amount" jdbcType="DECIMAL" />
     </resultMap>
 
-    <select id="selectListByUserId" resultMap="BaseResultMap" >
+    <select id="selectListByUserIdLimt" resultMap="BaseResultMap" >
         select ord.id as orderId,ord.pay_amount as orderAmount,u.wx_nk_name as wxNkName,item.id as itemId,item.sku_id as skuId,item.sku_name as skuName,
                 re.level as level,item.create_time as createTime
         from sf_order ord
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id
             LEFT JOIN com_user u on ord.user_id = u.id
-        where ord.shop_user_id = #{0} and ord.is_counting = 0
+        where ord.shop_user_id = #{userid,jdbcType=BIGINT} and ord.is_counting = 1
+        and item.create_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and item.create_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
     </select>
 
-    <select id="selectCountByUserId" resultMap="BaseCountResultMap">
+    <select id="selectCountByUserIdLimit" resultType="java.lang.Integer" >
         select count(*) as count ,sum(re.level) as sumLevel
         from sf_order ord
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id
             LEFT JOIN com_user u on ord.user_id = u.id
-        where ord.shop_user_id = #{0} and ord.is_counting = 0
+        where ord.shop_user_id = #{userid,jdbcType=BIGINT} and ord.is_counting = 1
+        and item.create_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and item.create_time <![CDATA[<=]]> #{end,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="selectCountByUserId" resultMap="BaseCountResultMap">
+        select count(*) as count ,sum(re.level) as sumLevel ,sum(item.distribution_amount) as distributionAmount
+        from sf_order ord
+            LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
+            LEFT JOIN sf_user_relation re on ord.user_id = re.user_id
+            LEFT JOIN com_user u on ord.user_id = u.id
+        where ord.shop_user_id = #{0} and ord.is_counting = 1
     </select>
 
     <select id="selectCount" resultType="java.lang.Integer">
@@ -48,7 +62,7 @@
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id
             LEFT JOIN com_user u on ord.user_id = u.id
-        where ord.shop_user_id = #{0} and ord.is_counting = 0
+        where ord.shop_user_id = #{0} and ord.is_counting = 1
     </select>
 
     <select id="selectListSfDistributionPersonByItemId" resultMap="BaseSfDistributionPersonResultMap">
@@ -57,5 +71,6 @@
             LEFT JOIN com_user u on item.user_id = u.id
             LEFT JOIN sf_sku_distribution skud on item.sf_sku_distribution_id = skud.id
         where item.sf_order_item_id = #{0}
+        ORDER BY skud.sort asc
     </select>
 </mapper>

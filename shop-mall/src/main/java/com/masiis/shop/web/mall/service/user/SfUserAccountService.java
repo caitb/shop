@@ -131,9 +131,17 @@ public class SfUserAccountService {
             log.info("计算店主的");
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
+
             // 插入店主pf_user_bill_item
             PfUserBillItem billItem = createPfUserBillItemBySfOrder(order, shopKeeper, countFee);
             billItemMapper.insert(billItem);
+
+            // 计算订单结算中金额计入到account中
+            ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
+                    UserAccountRecordFeeType.SF_AddCountingFee.getCode(), comUserAccount);
+            countRecord.setPrevFee(comUserAccount.getCountingFee());
+            comUserAccount.setCountingFee(comUserAccount.getCountingFee().add(countFee));
+            countRecord.setNextFee(comUserAccount.getCountingFee());
 
             // 计算店主此次总销售额(利润和运费也算销售额)
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
@@ -177,6 +185,7 @@ public class SfUserAccountService {
                 throw new BusinessException("小铺店主account修改失败!");
             }
             // 插入变动记录
+            comUserAccountRecordMapper.insert(countRecord);
             comUserAccountRecordMapper.insert(pfIncomeRecord);
             comUserAccountRecordMapper.insert(pfprofitRecord);
 
@@ -186,6 +195,14 @@ public class SfUserAccountService {
                 SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserId);
                 SfUserBillItem sfBillItem = createSfUserBillItem(order, sfUserAccount, fee);
                 sfBillItemMapper.insert(sfBillItem);
+                // 计算分润用户结算中变动
+                SfUserAccountRecord sfRecord = createSfUserAccountRecordByAccount(sfUserAccount,
+                        fee, shopKeeper, order);
+                sfRecord.setPrevFee(sfUserAccount.getCountingFee());
+                sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(fee));
+                sfRecord.setNextFee(sfUserAccount.getCountingFee());
+                sfRecordMapper.insert(sfRecord);
+                sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
             }
         } catch (Exception e) {
             log.error(e.getMessage());

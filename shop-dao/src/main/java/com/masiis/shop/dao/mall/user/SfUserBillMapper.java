@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserBill;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface SfUserBillMapper {
     int deleteByPrimaryKey(Long id);
 

@@ -8,8 +8,12 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserBillItem;
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.List;
+@Repository
 public interface SfUserBillItemMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -20,4 +24,8 @@ public interface SfUserBillItemMapper {
     List<SfUserBillItem> selectAll();
 
     int updateByPrimaryKey(SfUserBillItem record);
+
+    List<SfUserBillItem> selectByUserAndDate(@Param("userId") Long userId,
+                                             @Param("start") Date start,
+                                             @Param("end") Date end);
 }

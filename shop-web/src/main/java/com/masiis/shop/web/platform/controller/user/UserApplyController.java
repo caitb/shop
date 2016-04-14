@@ -37,9 +37,6 @@ import java.util.List;
 @RequestMapping("/userApply")
 public class UserApplyController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
-
-    @Resource
-    private ProductService productService;
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -70,6 +67,7 @@ public class UserApplyController extends BaseController {
             throw new BusinessException("sku不合法,系统不存在该sku");
         }
         if (pUserId != null && pUserId > 0) {
+            //校验上级合伙人数据是否合法
             userSkuService.checkParentData(pUserId, skuId);
             res.addObject("pUserId", pUserId);
         }
@@ -81,68 +79,6 @@ public class UserApplyController extends BaseController {
         res.setViewName("platform/order/shenqing");
         return res;
     }
-
-    /**
-     * 合伙人注册
-     *
-     * @author ZhaoLiang再次
-     * @date 2016/3/5 14:27
-     *//*
-    @RequestMapping("/register.shtml")
-    public ModelAndView partnersRegister(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         @RequestParam(value = "skuId", required = true) Integer skuId,
-                                         @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        ComUser comUser = getComUser(request);
-        //获取商品信息
-        ComSku comSku = skuService.getSkuById(skuId);
-        //获取商品代理信息
-        List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
-        int levelID = 0;
-        if (pUserId != null && pUserId > 0) {
-            ComUser pComUser = userService.getUserById(pUserId);
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-            checkParentData(pComUser, skuId);
-            levelID = pfUserSku.getAgentLevelId();
-        }
-        //获取代理信息
-        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
-        StringBuffer sb = new StringBuffer();
-        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
-            if (pfSkuAgent.getAgentLevelId() > levelID) {
-                if (pfSkuAgent.getAgentLevelId() == 1) {
-                    sb.append("<p class='on' levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                } else {
-                    sb.append("<p levelId='" + pfSkuAgent.getAgentLevelId() + "'>");
-                }
-                for (ComAgentLevel comAgentLevel : comAgentLevels) {
-                    if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
-                        sb.append("<label name='levelName' style='font-size: 12px;'>" + comAgentLevel.getName() + "</label>");
-                    }
-                }
-                BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
-                amount = amount.setScale(2, RoundingMode.HALF_DOWN);
-                sb.append("<b style='padding-left: 10px;'>商品数量:</b> <span name='quantity'>" + pfSkuAgent.getQuantity() + "</span>");
-                sb.append("<b style='padding-left: 10px;'>金额:</b> <span name='amount'>" + amount + "</span>");
-                sb.append("</p>");
-            }
-        }
-        if (StringUtils.isBlank(sb.toString())) {
-            throw new BusinessException("您的推荐人还不能发展下级代理");
-        }
-        mv.addObject("agentInfo", sb.toString());
-        mv.addObject("skuId", comSku.getId());
-        mv.addObject("skuName", comSku.getName());
-        mv.addObject("pUserId", pUserId);
-        if (pUserId != null && pUserId > 0) {
-            mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
-        } else {
-            mv.addObject("pWxNkName", "");
-        }
-        mv.setViewName("platform/order/zhuce");
-        return mv;
-    }*/
 
     /**
      * 合伙人注册
@@ -177,12 +113,12 @@ public class UserApplyController extends BaseController {
         // 上级代理等级id(0表示没有上级推荐)
         Integer pUserLevelId = 0;
         if (pUserId != null && pUserId > 0) {
-            userSkuService.checkParentData(pUserId, skuId);
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
-            if (pfUserSku.getAgentLevelId() >= 3) {
+            //校验上级合伙人数据是否合法
+            PfUserSku parentUS = userSkuService.checkParentData(pUserId, skuId);
+            if (parentUS.getAgentLevelId() == 3) {
                 throw new BusinessException("您的推荐人还不能发展下级代理");
             }
-            pUserLevelId = pfUserSku.getAgentLevelId();
+            pUserLevelId = parentUS.getAgentLevelId();
         }
 
         // 创建该sku代理商的代理门槛信息
@@ -233,22 +169,23 @@ public class UserApplyController extends BaseController {
                 throw new BusinessException("手机号有误");
             }
             ComUser pUser = null;
-            PfUserSku pfUserSku = null;
             if (StringUtils.isNotBlank(pMobile)) {
                 pUser = userService.getUserByMobile(pMobile);
+                if (pUser == null) {
+                    throw new BusinessException("此手机号还没有注册");
+                }
                 if (agentLevel == null || agentLevel <= 0) {
+                    //校验上级合伙人数据是否合法
                     userSkuService.checkParentData(pUser.getId(), skuId);
                 } else {
+                    //校验上级合伙人数据是否合法
                     userSkuService.checkParentData(pUser.getId(), skuId, agentLevel);
                 }
             } else {
                 throw new BusinessException("手机号为空");
             }
-            pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
-
             jsonObject.put("isError", false);
             jsonObject.put("pUserId", pUser.getId());
-            jsonObject.put("levelId", pfUserSku.getAgentLevelId());
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 jsonObject.put("isError", true);

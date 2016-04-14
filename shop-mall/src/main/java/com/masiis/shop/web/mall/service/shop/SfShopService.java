@@ -1,5 +1,6 @@
 package com.masiis.shop.web.mall.service.shop;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
@@ -7,10 +8,12 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfShopShoutLog;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.awt.image.BufferStrategy;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +26,7 @@ import java.util.Map;
 @Service
 @Transactional
 public class SfShopService {
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private ComUserMapper comUserMapper;
@@ -79,35 +83,42 @@ public class SfShopService {
      * @date 2016/4/10 10:56
      */
     public boolean mallShout(Long shopId, Long userId){
-        Map<String, Object> map = new HashMap<>();
+        try{
+            Map<String, Object> map = new HashMap<>();
 
-        map.put("userId", userId);
-        map.put("shopId", shopId);
-        map.put("createTime", new Date());
-        Date minDay = DateUtil.getMinTimeofDay(new Date());
-        Date maxDay = DateUtil.getMaxTimeofDay(new Date());
-        map.put("minDay", minDay);
-        map.put("maxDay", maxDay);
+            map.put("userId", userId);
+            map.put("shopId", shopId);
+            map.put("createTime", new Date());
+            Date minDay = DateUtil.getMinTimeofDay(new Date());
+            Date maxDay = DateUtil.getMaxTimeofDay(new Date());
+            map.put("minDay", minDay);
+            map.put("maxDay", maxDay);
 
-        SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByMap(map);
-        if(sfShopShoutLog != null){
-            return false;
-        }else{
-            SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
-            sfShop.setShoutNum(sfShop.getShoutNum()+1);
+            log.info("mallShout进入了。。。");
+            SfShopShoutLog sfShopShoutLog = sfShopShoutLogMapper.selectByMap(map);
+            if(sfShopShoutLog != null){
+                log.info("用户已经呐喊过。。。");
+                return false;
+            }else{
+                log.info("用户未呐喊。。。");
+                SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+                sfShop.setShoutNum(sfShop.getShoutNum()+1);
 
-            sfShopShoutLog = new SfShopShoutLog();
-            sfShopShoutLog.setCreateTime(new Date());
-            sfShopShoutLog.setNum(1);
-            sfShopShoutLog.setUserId(userId);
-            sfShopShoutLog.setShopId(shopId);
-            sfShopShoutLog.setShopUserId(sfShop.getUserId());
+                sfShopShoutLog = new SfShopShoutLog();
+                sfShopShoutLog.setCreateTime(new Date());
+                sfShopShoutLog.setNum(1);
+                sfShopShoutLog.setUserId(userId);
+                sfShopShoutLog.setShopId(shopId);
+                sfShopShoutLog.setShopUserId(sfShop.getUserId());
 
-            sfShopMapper.updateByPrimaryKey(sfShop);
-            sfShopShoutLogMapper.insert(sfShopShoutLog);
-
-            return true;
+                sfShopMapper.updateByPrimaryKey(sfShop);
+                sfShopShoutLogMapper.insert(sfShopShoutLog);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new BusinessException(e);
         }
+        return true;
     }
 
     /**

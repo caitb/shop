@@ -120,7 +120,7 @@
         </where>
     </select>
 
-    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+    <select id="selectByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
         select id,create_time,user_id,shop_id,shop_user_id,num,remark
         from
         sf_shop_shout_log

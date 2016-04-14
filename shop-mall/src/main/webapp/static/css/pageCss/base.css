@@ -69,7 +69,7 @@ html footer {
   bottom: 0;
   width: 100%;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 -2px 0 #cdcdcd;
+  -webkit-box-shadow: 0 0 8px 0px rgba(0,0,0,0.1);
 }
 body footer div,
 html footer div {

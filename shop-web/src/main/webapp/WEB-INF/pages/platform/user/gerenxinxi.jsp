@@ -56,13 +56,13 @@
     <div class="bottom">
         <footer>
             <div class="btm">
-                <a href="index.html">
+                <a href="${path}/index">
                     <span><img src="${path}/static/images/footer%20(2).png" alt=""></span>
                     <span>我是合伙人</span>
                 </a>
             </div>
             <div class="btm">
-                <a href="javascript:;">
+                <a href="${path}/shop/manage/index">
                     <span><img src="${path}/static/images/footer%20(3).png" alt=""></span>
                     <span>我的店铺</span>
                 </a>

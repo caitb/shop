@@ -5,12 +5,10 @@ import com.masiis.shop.common.enums.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.user.PfUserSkuCustom;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.controller.user.UserApplyController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.PayBOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
@@ -67,7 +65,6 @@ public class BOrderController extends BaseController {
     @ResponseBody
     @RequestMapping("/add.do")
     public String addBOrder(HttpServletRequest request,
-                            HttpServletResponse response,
                             @RequestParam(value = "weixinId", required = true) String weixinId,
                             @RequestParam(value = "skuId", required = true) Integer skuId,
                             @RequestParam(value = "levelId", required = true) Integer levelId,
@@ -80,7 +77,9 @@ public class BOrderController extends BaseController {
             if (levelId <= 0) {
                 throw new BusinessException("代理等级有误");
             }
-            userSkuService.checkParentData(pUserId, skuId, levelId);
+            if (pUserId != null && pUserId > 0) {
+                userSkuService.checkParentData(pUserId, skuId, levelId);
+            }
             ComUser comUser = getComUser(request);
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
@@ -105,7 +104,7 @@ public class BOrderController extends BaseController {
             }
             order.setSupplierId(0);
             order.setReceivableAmount(totalPrice.add(bailPrice));
-            order.setOrderAmount(totalPrice.add(bailPrice));//运费到付，商品总价即订单总金额
+            order.setOrderAmount(totalPrice.add(bailPrice));
             order.setBailAmount(bailPrice);
             order.setProductAmount(totalPrice);
             order.setShipAmount(BigDecimal.ZERO);
@@ -114,6 +113,7 @@ public class BOrderController extends BaseController {
             order.setShipManName("");
             order.setShipType(0);
             order.setShipRemark("");
+            //确定订单的拿货方式
             if (comUser.getSendType() == 0) {
                 ComUser pUser = userService.getUserById(pUserId);
                 if (pUser == null) {
@@ -250,7 +250,9 @@ public class BOrderController extends BaseController {
             //校验库存
             List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-                userSkuService.checkParentData(pfBorder.getUserPid(), pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
+                if (pfBorder.getUserPid() > 0) {
+                    userSkuService.checkParentData(pfBorder.getUserPid(), pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
+                }
             }
             //拿货方式(0未选择1平台代发2自己发货)
             PfBorderConsignee pfBorderConsignee = null;

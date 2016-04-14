@@ -1,17 +1,22 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>s
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-    <title>Document</title>
-    <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/fenxiaojilu.css">
-    <link rel="stylesheet" href="${path}/static/css/common/common.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
+    <title>分销记录</title>
+    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/shop/css/fenxiaojilu.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/main.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
@@ -19,8 +24,8 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-            <a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>订单详情</p>  
+            <a href="javascript:window.location.replace('${basePath}shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <p>分销记录</p>
     </header>
     <div class="wrap">
        <div class="index_login">
@@ -39,7 +44,7 @@
                             <c:set var="count" value="${count+item.amount }"></c:set>
                         </c:forEach>
                         <div class="record">
-                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>抗引力-瘦脸精华</span><span>查看订单></span></p>
+                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>${sfDistributionRecord.skuName}</span><span>查看订单></span></p>
                             <h1><span><fmt:formatDate value="${sfDistributionRecord.createTime}"  type="time" pattern="dd"/>日</span><span>购买人：${sfDistributionRecord.wxNkName}</span><span>￥${sfDistributionRecord.orderAmount}</span></h1>
                             <h1><span><b>${ fn:length(sfDistributionRecord.sfDistributionPersons) }</b>人分佣</span><span>￥${count}</span><span onclick="showDetails(${sfDistributionRecord.sfDistributionPersons})">分佣明细></span></h1>
                         </div>
@@ -50,26 +55,24 @@
     </div>
     <div id="datePlugin"></div>
     <div class="back"></div>
-    <div class="back_f">
-
-    </div>
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/plugins/date.js" ></script>
-    <script type="application/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="application/javascript" src="${path}/static/js/pageJs/sf_distribution.js"></script>
-    <script>
-        var path = "${path}";
-        var basepath = "${basepath}";
-        $(function(){
-            $('#beginTime').date(undefined,undefined,undefined,function(year, month){
-                $("#year").val(year);
-                $("#month").val(month);
-                turnMonth(year,month);
-            });
-            $('#endTime').date({theme:"datetime"});
+    <div class="back_f"></div>
+<script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/date.js" ></script>
+<script type="application/javascript" src="${path}/static/js/iscroll.js" ></script>
+<script type="application/javascript" src="${path}/static/js/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/definedAlertWindow.js"></script>
+<script type="application/javascript" src="${path}/static/js/sf_distribution.js"></script>
+<script>
+    var path = "<%=path%>";
+    var basepath = "<%=basePath%>";
+    $(function(){
+        $('#beginTime').date(undefined,undefined,undefined,function(year, month){
+            $("#year").val(year);
+            $("#month").val(month);
+            turnMonth(year,month);
         });
-    </script>
+        $('#endTime').date({theme:"datetime"});
+    });
+</script>
 </body>
 </html>

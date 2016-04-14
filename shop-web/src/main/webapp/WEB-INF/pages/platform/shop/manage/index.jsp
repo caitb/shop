@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Document</title>
+    <title>麦链麦链商城</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
@@ -30,42 +30,35 @@
         </div>
         <div>
             <p>
-                <span>麦链商城光放认证</span>
+                <span>${sfShop.explanation}</span>
             </p>
         </div>
         <img src="${sfShop.logo}" alt="">
         <nav>
             <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
-            <p><span>${sumLevel}</span><span>店铺总参与人数</span></p>
+            <p><span>
+                <c:if test="${sumLevel == null}">0</c:if>
+                <c:if test="${sumLevel != null}">${sumLevel}</c:if>
+               </span>
+                <span>店铺总参与人数</span>
+            </p>
         </nav>
     </div>
     <nav>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
-        <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>店铺订单</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
     </nav>
     <nav style="margin:0;">
-        <p><span><img src="<%=basePath%>static/images/nav4.jpg" alt=""></span><span>分销记录</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>distribution/distribution.shtml');"><span><img src="<%=basePath%>static/images/nav4.jpg" alt=""></span><span>分销记录</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupFreight');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>运费模板</span></p>
         <p></p>
     </nav>
 </div>
-<footer>
-    <div>
-        <a>
-            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-            <span>首页</span>
-        </a>
-        <a class="active">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
-            <span>我的店铺</span>
-        </a>
-        <a>
-            <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-            <span>个人中心</span>
-        </a>
-    </div>
-</footer>
+<div class="wrap_no" <c:if test="${sfShop == null}">style="display: block"</c:if> >
+    <p>您还不是合伙人，去<a href="">好货市场</a>看看吧~</p>
+</div>
+<c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 </html>

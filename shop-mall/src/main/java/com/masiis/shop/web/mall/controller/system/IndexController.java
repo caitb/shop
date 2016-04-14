@@ -43,15 +43,75 @@ public class IndexController extends BaseController {
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
                               @PathVariable("shopId") Long shopId,
-                              @PathVariable("userPid") Long userPid)throws Exception{
+                              @PathVariable("userPid") Long userPid
+    )throws Exception{
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-//        shopId=4L;
-//        userPid=14L;
-        req.getSession().setAttribute("shopId", shopId);
+            req.getSession().setAttribute("userPid", userPid);
+            req.getSession().setAttribute("shopId", shopId);
+
+        userService.getShareUser(user.getId(),userPid,shopId);//分销关系
+        ComUser pUser = userService.getUserById(userPid);
+        SfShop sfShop =null;
+        List<SfShopSku> sfShopSkus =null;
+        if(shopId==null){
+            throw new BusinessException("shopId不能为空");
+        }else{
+            sfShop = sfShopService.getSfShopById(shopId);
+            if(sfShop==null){
+                throw new BusinessException("进入方式异常，请联系管理员");
+            }
+            sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
+        }
+
+        List<SfShopDetail> SfShopDetails = new ArrayList<>();
+        BigDecimal bail=new BigDecimal(0);
+        for (SfShopSku sfShopSku:sfShopSkus) {
+            ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
+            ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
+            SfShopDetail sfShopDetail= new SfShopDetail();
+            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
+            sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
+            sfShopDetail.setSkuName(comSku.getName());
+            sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
+            sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
+            sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
+            sfShopDetail.setSkuId(comSku.getId());
+            bail=sfShopSku.getBail().add(bail);//保证金
+
+            SfShopDetails.add(sfShopDetail);
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("pUser", pUser);
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("userPid",userPid);
+        modelAndView.addObject("sfShop",sfShop);
+        modelAndView.addObject("bail",bail);//保证金
+        modelAndView.addObject("SfShopDetails",SfShopDetails);
+        modelAndView.setViewName("shouye");
+        return modelAndView;
+    }
+
+    @RequestMapping("/index")
+    public ModelAndView myindex(HttpServletRequest req,
+                              Long shopId,Long userPid)throws Exception{
+        ComUser user = getComUser(req);
+        if (user == null) {
+            user = userService.getUserById(1l);
+            req.getSession().setAttribute("comUser", user);
+        }
+        shopId=4L;
+        userPid=14L;
+        if(req.getSession().getAttribute("userPid")==null){
+            req.getSession().setAttribute("userPid", userPid);
+        }
+        if(req.getSession().getAttribute("shopId")==null){
+            req.getSession().setAttribute("shopId", shopId);
+        }
+
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 //        ComUser pUser = new ComUser();

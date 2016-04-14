@@ -85,7 +85,7 @@
   float: right;
   margin-right: 10px;
   color: #F74911;
-  background: url("../images/zichan_3.png") no-repeat 100%;
+  background: url("/static/images/zichan_3.png") no-repeat 100%;
   background-size: 14px;
   padding-right: 15px;
   font-size: 14px;

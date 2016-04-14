@@ -1,4 +1,4 @@
-package com.masiis.shop.web.mall.controller.order;
+package com.masiis.shop.web.platform.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -7,9 +7,9 @@ import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.shop.SfOrderItemDistributionService;
+import com.masiis.shop.web.platform.service.shop.SfShopService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,7 +62,6 @@ public class SfOrderItemDistributionController extends BaseController {
         Integer sumLevel = sfCount.getSumLevel();
         logger.info("sumLevel:"+sumLevel);
         BigDecimal distributionAmount = sfCount.getDistributionAmount();
-        List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
         if (count == 0){
             mv.addObject("sumLevel",0);
             mv.addObject("totalCount",0);
@@ -73,6 +72,7 @@ public class SfOrderItemDistributionController extends BaseController {
             Integer num = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
             totalPage = num%10 == 0 ? num/10 : num/10 + 1;
             List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,1,10);
+            List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
             for (SfDistributionRecord sfDistributionRecord : sflist){
                 List<SfDistributionPerson> persons = sfOrderItemDistributionService.findListSfDistributionPerson(sfDistributionRecord.getItemId());
                 sfDistributionRecord.setSfDistributionPersons(persons);
@@ -81,6 +81,7 @@ public class SfOrderItemDistributionController extends BaseController {
             mv.addObject("sumLevel",sumLevel);
             mv.addObject("totalCount",count);
             mv.addObject("distributionAmount",distributionAmount);
+            mv.addObject("sfDistributionRecords",sfDistributionRecords);
             logger.info("sfDistributionRecords.size()="+sfDistributionRecords.size());
         }
         SfShop sfShop = sfShopService.getSfShopByUserId(userId);
@@ -101,8 +102,7 @@ public class SfOrderItemDistributionController extends BaseController {
         mv.addObject("totalPage",totalPage);
         mv.addObject("currentPage",1);
         mv.addObject("sfShop",sfShop);
-        mv.addObject("sfDistributionRecords",sfDistributionRecords);
-        mv.setViewName("mall/order/sf_distribution");
+        mv.setViewName("platform/shop/sf_distribution");
         return mv;
     }
 

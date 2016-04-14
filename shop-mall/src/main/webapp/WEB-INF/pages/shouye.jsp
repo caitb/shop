@@ -14,6 +14,7 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
@@ -29,7 +30,7 @@
         <div>
             <p>${sfShop.name}</p>
             <p>${sfShop.explanation}</p>
-            <img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">${sfShop.logo}
+            <img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">
         </div>
         <div>
             <p>
@@ -43,14 +44,15 @@
             </p>
             <%--</c:forEach>--%>
         </div>
+        <%--<img src="${sfShop.logo}" alt="">--%>
         <img src="<%=path%>/static/images/admin.png" alt="">
     </div>
     <div class="banner">
-        <p>
+        <p  class="shout">
             <span>已有</span>
             <span><em>${sfShop.shoutNum}</em>人</span>
             <span>为ta呐喊</span>
-            <img class="shout" src="<%=path%>/static/images/an.png" alt="">
+            <img src="<%=path%>/static/images/an.png" alt="">
         </p>
     </div>
     <div class="content">
@@ -75,7 +77,7 @@
     </div>
     <footer>
         <div>
-            <p class="active">
+            <p class="active" onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
                 <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
                 <span>首页</span>
             </p>
@@ -90,7 +92,7 @@
         </div>
     </footer>
 </div>
-<div class="back_f" style="display: none">
+<div id="ok" class="back_f" style="display: none">
     <h1>呐喊成功！</h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
@@ -113,6 +115,7 @@
 <div class="back"></div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+<script src="<%=path%>/static/js/common/commonAjax.js"></script>
 <script>
     $(".close").on("click",function(){
         $(this).parent().hide();
@@ -131,7 +134,7 @@
             dataType:"Json",
             success:function(data){
                 if(data.mallShout){
-                    $(".back_f").show();
+                    $("#ok").show();
                     $(".back").show();
                 } else{
                     $("#no").show();

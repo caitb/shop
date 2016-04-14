@@ -56,6 +56,9 @@
         <p></p>
     </nav>
 </div>
+<div class="wrap_no" <c:if test="${sfShop == null}">style="display: block"</c:if> >
+    <p>您还不是合伙人，去<a href="">好货市场</a>看看吧~</p>
+</div>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 </html>

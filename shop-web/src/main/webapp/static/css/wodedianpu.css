@@ -113,3 +113,20 @@
   display: block;
   width: 40%;
 }
+
+.wrap_no {
+  display: -webkit-box;
+  -webkit-box-flex: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  /* display: none; */
+}
+.wrap_no p {
+  margin-bottom: 100px;
+  font-size: 14px;
+}
+.wrap_no p a {
+  text-decoration: underline;
+  color: #ff5200;
+}

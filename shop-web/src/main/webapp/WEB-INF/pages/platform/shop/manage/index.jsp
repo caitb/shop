@@ -18,10 +18,12 @@
 <body>
 <div class="wrap" <c:if test="${comUser.isAgent==0}">style="display: none;"</c:if> >
     <div class="na">
-        <p><img src="${comUser.wxHeadImg}" alt=""></p>
+<%--        <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
             <span>${comUser.realName}，欢迎登陆~</span>
-        </h1>
+        </h1>--%>
+        <h1>店铺地址：<span>http://mall.iimai.com//1/shop.html</span></h1>
+        <p><b>复制</b></p>
     </div>
     <div class="header">
         <div>

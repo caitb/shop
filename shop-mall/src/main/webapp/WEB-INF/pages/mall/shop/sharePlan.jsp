@@ -44,6 +44,21 @@
         获取我的专属海报
     </button>
 </div>
-<c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
+<footer>
+    <div>
+        <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
+            <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
+            <span>首页</span>
+        </p>
+        <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
+            <span><img src="<%=path%>/static/images/footer_x%20(1).png" alt=""></span>
+            <span>分享计划</span>
+        </p>
+        <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderManagement.html');" >
+            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
+            <span>个人中心</span>
+        </p>
+    </div>
+</footer>
 </body>
 </html>

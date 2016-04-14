@@ -49,9 +49,10 @@
                 <div class="main">
                     <div class="title"><img src="<%=path%>/static/images/haohuo_1.png" alt="">好货推荐</div>
                     <c:forEach items="${indexComS}"  var="Sku">
+                        <a href="/product/${Sku.skuId}">
                         <section class="sec1">
-                            <p class="photo"><a href="/product/${Sku.id}">
-                                <img src="${Sku.imgUrl}" alt=""></a>
+                            <p class="photo">
+                                <img src="${Sku.imgUrl}" alt="">
                             </p>
                             <div>
                                 <h2>${Sku.comSku.name}</h2>
@@ -61,52 +62,13 @@
                                 <h3>试用费用：<span>${Sku.shipAmount}</span>元</h3>
                                 <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
                             </div>
-
-
                         </section>
                         <h2>
                             超过<span>${Sku.agentNum}</span>人合伙
                             <c:if test="${user.isAgent!=1}"><button>我要合伙</button></c:if>
                             <c:if test="${user.isAgent==1}"><button>您已合伙</button></c:if>
-                        </h2>
+                        </h2></a>
                     </c:forEach>
-                    <%--<section class="sec1">--%>
-                        <%--<p class="photo">--%>
-                                <%--<img src="<%=path%>/static/images/haohuo.png" alt="">--%>
-                        <%--</p>--%>
-                        <%--<div>--%>
-                            <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                            <%--<h3>试用费用：<span>默认</span>元</h3>--%>
-                            <%--<h3>保 证 金：<span>默认</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥298.00</b></h3>--%>
-                            <%--<h2>超过<span>9999</span>人合伙<b>最好利润50%</b></h2>--%>
-                        <%--</div>--%>
-                <%--</section>--%>
-                </section>
-                </section>
-                </section>
-                </section>
-                <%--<section class="sec1">--%>
-                        <%--<p class="photo">--%>
-                                <%--<img src="<%=path%>/static/images/haohuo.png" alt="">--%>
-                        <%--</p>--%>
-                        <%--<div>--%>
-                            <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                            <%--<h3>试用费用：<span>默认</span>元</h3>--%>
-                            <%--<h3>保 证 金：<span>默认</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥298.00</b></h3>--%>
-                            <%--<h2>超过<span>9999</span>人合伙<b>最好利润50%</b></h2>--%>
-                        <%--</div>--%>
-                <%--</section>--%>
-                <%--<section class="sec1">--%>
-                        <%--<p class="photo">--%>
-                                <%--<img src="<%=path%>/static/images/haohuo.png" alt="">--%>
-                        <%--</p>--%>
-                        <%--<div>--%>
-                            <%--<h2>抗引力——快速瘦脸精华</h2>--%>
-                            <%--<h3>试用费用：<span>默认</span>元</h3>--%>
-                            <%--<h3>保 证 金：<span>默认</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥298.00</b></h3>--%>
-                            <%--<h2>超过<span>9999</span>人合伙<b>最好利润50%</b></h2>--%>
-                        <%--</div>--%>
-                <%--</section>--%>
                 </div>
             </div>
         </div>

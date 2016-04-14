@@ -325,6 +325,7 @@ body footer .sec3 p a {
     background: #f0f0f0;
     overflow: hidden;
     display: -webkit-box;
+    z-index: 11;
 }
 .active{
     border-bottom-left-radius: 0px;

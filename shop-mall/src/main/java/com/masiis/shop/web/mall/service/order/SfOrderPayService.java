@@ -104,7 +104,7 @@ public class SfOrderPayService {
                 log.info("更新订单操作日志失败----end");
                 throw new BusinessException("更新订单操作日志失败----end");
             }
-            //获得订单子表详情信息
+            //更新库存
             log.info("支付成功更新库存---start");
             List<SfOrderItem> orderItems = ordItemService.getOrderItemByOrderId(order.getId());
             if (orderItems!=null&&orderItems.size()!=0){
@@ -162,7 +162,11 @@ public class SfOrderPayService {
             log.info("更新库存shopUserId---"+order.getShopUserId()+"商品skuId----"+orderItem.getSkuId()+"之前冻结库存----"+skuStock.getFrozenStock());
             skuStock.setFrozenStock(skuStock.getFrozenStock()+orderItem.getQuantity());
             log.info("更新库存shopUserId---"+order.getShopUserId()+"商品skuId----"+orderItem.getSkuId()+"之后冻结库存----"+skuStock.getFrozenStock());
-            skuStockService.update(skuStock);
+            int i= skuStockService.update(skuStock);
+            if (i == 0){
+                log.info("更新库存shopUserId---"+order.getShopUserId()+"商品skuId----"+orderItem.getSkuId()+"失败");
+                throw new BusinessException("更新冻结库存失败");
+            }
         }
     }
 

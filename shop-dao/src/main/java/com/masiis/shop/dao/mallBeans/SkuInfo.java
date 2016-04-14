@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.mallBeans;
 
 import com.masiis.shop.dao.po.ComSku;
+import com.masiis.shop.dao.po.ComSkuImage;
 
 import java.math.BigDecimal;
 
@@ -24,6 +25,10 @@ public class SkuInfo{
     private String content;
 
     private Integer isSale;
+
+    private ComSkuImage comSkuImage;
+
+    private Long shopSkuId;
 
     public ComSku getComSku() {
         return comSku;
@@ -87,5 +92,21 @@ public class SkuInfo{
 
     public void setIsSale(Integer isSale) {
         this.isSale = isSale;
+    }
+
+    public ComSkuImage getComSkuImage() {
+        return comSkuImage;
+    }
+
+    public void setComSkuImage(ComSkuImage comSkuImage) {
+        this.comSkuImage = comSkuImage;
+    }
+
+    public Long getShopSkuId() {
+        return shopSkuId;
+    }
+
+    public void setShopSkuId(Long shopSkuId) {
+        this.shopSkuId = shopSkuId;
     }
 }

@@ -26,7 +26,7 @@
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
-            <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
+            <span>分享</span>
         </div>
         <div>
             <p>
@@ -41,7 +41,7 @@
         </nav>
     </div>
     <nav>
-        <p><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
     </nav>
@@ -54,15 +54,15 @@
 <footer>
     <div>
         <a>
-            <span><img src="<%=basePath%>static/images/footer1.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
             <span>首页</span>
         </a>
         <a class="active">
-            <span><img src="<%=basePath%>static/images/footer2.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>我的店铺</span>
         </a>
         <a>
-            <span><img src="<%=basePath%>static/images/footer3.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
             <span>个人中心</span>
         </a>
     </div>

@@ -34,7 +34,7 @@ public class SfShopManageController extends BaseController {
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("mall/shop/manage/index");
+        ModelAndView mav = new ModelAndView("platform/shop/manage/index");
         ComUser comUser = null;
         SfShop sfShop = null;
 
@@ -58,7 +58,7 @@ public class SfShopManageController extends BaseController {
 
     @RequestMapping("/setupShop")
     public ModelAndView setupShop(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("mall/shop/manage/setupShop");
+        ModelAndView mav = new ModelAndView("platform/shop/manage/setupShop");
         ComUser comUser = null;
         SfShop sfShop = null;
         try {
@@ -92,7 +92,7 @@ public class SfShopManageController extends BaseController {
 
     @RequestMapping("/setupFreight")
     public ModelAndView setupFreight(HttpServletRequest request, HttpServletResponse response){
-        ModelAndView mav = new ModelAndView("mall/shop/manage/setupFreight");
+        ModelAndView mav = new ModelAndView("platform/shop/manage/setupFreight");
 
         SfShop sfShop = null;
         try {

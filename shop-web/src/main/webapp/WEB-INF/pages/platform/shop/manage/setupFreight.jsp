@@ -35,7 +35,7 @@
     </div>
 </form>
 </body>
-<script src="<%=basePath%>static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
     $(".btn").on("click",function(){
         $(this).addClass("active").siblings().removeClass("active");

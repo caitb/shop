@@ -18,7 +18,7 @@
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
             <a href="javascript:window.location.replace('${basePath}shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>订单详情</p>  
+            <p>分销记录</p>
     </header>
     <div class="wrap">
        <div class="index_login">

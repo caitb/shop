@@ -56,21 +56,6 @@
         <p></p>
     </nav>
 </div>
-<footer>
-    <div>
-        <a href="<%=basePath%>index">
-            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-            <span>首页</span>
-        </a>
-        <a class="active" href="<%=basePath%>shop/manage/index">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
-            <span>我的店铺</span>
-        </a>
-        <a href="<%=basePath%>personalInfo/personalHomePageInfo.html">
-            <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-            <span>个人中心</span>
-        </a>
-    </div>
-</footer>
+<c:import url="../../nav-footer.jsp"></c:import>
 </body>
 </html>

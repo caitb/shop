@@ -3,8 +3,10 @@ package com.masiis.shop.web.mall.controller.base;
 import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.log4j.Logger;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -22,6 +24,10 @@ public class BaseController {
     public final static String DATA = "data";
 
     private Logger log = Logger.getLogger(this.getClass());
+
+    @Resource
+    private UserService userService;
+
 
     /**
      * 获取IP地址
@@ -104,6 +110,7 @@ public class BaseController {
         if (user == null) {
             return null;
         }
+        user = userService.getUserById(user.getId());
         return user;
     }
 

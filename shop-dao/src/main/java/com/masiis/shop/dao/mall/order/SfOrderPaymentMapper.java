@@ -21,5 +21,7 @@ public interface SfOrderPaymentMapper {
 
     int updateByPrimaryKey(SfOrderPayment record);
 
+    List<SfOrderPayment> selectBySfOrderId(Long sfOrderId);
+
     SfOrderPayment selectBySerialNum(String paySerialNum);
 }

@@ -6,6 +6,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/user")
 public class UserController extends BaseController {
 
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private UserService userService;
 
@@ -34,7 +37,6 @@ public class UserController extends BaseController {
         return "";
     }
 
-    private final static com.alibaba.druid.support.logging.Log log = LogFactory.getLog(UserController.class);
 
     /**
      * 判断用户是否绑定了手机号

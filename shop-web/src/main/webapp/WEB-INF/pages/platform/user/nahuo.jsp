@@ -38,21 +38,28 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>申请拿货</p>
     </header>
     <main>
-        <section class="sec1">
-            <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
-            <div onclick="toChooseAddressPage()">
-                <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
-                <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                <a href="#"><p>收货地址：
+        <div id="xz" style="display: none" onclick="toChooseAddressPage()">
+            <div class="xinz">
+                <p>选择收货地址</p>
+            </div>
+        </div>
+        <div id="sec1">
+            <section class="sec1">
+                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                <div onclick="toChooseAddressPage()">
+                    <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
+                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                    <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
                         </span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
-            </div>
-        </section>
+                </div>
+            </section>
+        </div>
         <section class="sec2">
             <p class="photo">
                 <img src="${comSkuImage}" alt="">
@@ -60,7 +67,9 @@
             <div>
                 <h2>${comSku.name}</h2>
                 <h3>规格：<span>默认</span></h3>
-                <p>零售价：<span>${comSku.priceRetail}</span><b style="float:right; margin-right:10px;font-size:12px;">合伙价：<b style="font-size:12px; color:#FF5200">${comSku.priceRetail}</b></b></p>
+                <p>零售价：<span>${comSku.priceRetail}</span><b
+                        style="float:right; margin-right:10px;font-size:12px;">合伙价：<b
+                        style="font-size:12px; color:#FF5200">${comSku.priceRetail}</b></b></p>
             </div>
         </section>
         <section class="sec3">
@@ -101,36 +110,36 @@
 
 </div>
 <script type="text/javascript">
-    var i=1;
-    $(".number").on("change",function(){
-        i=$(this).val();
+    var i = 1;
+    $(".number").on("change", function () {
+        i = $(this).val();
     })
-    $(".jian").on("click",function(){
-        if(i<=1){
+    $(".jian").on("click", function () {
+        if (i <= 1) {
             return false;
         }
         i--;
         $(".number").val(i)
     })
-    $(".jia").on("click",function(){
+    $(".jia").on("click", function () {
         i++;
         $(".number").val(i)
     })
-    $(".que_qu").on("click",function(){
-        $(".back").css("display","none");
+    $(".que_qu").on("click", function () {
+        $(".back").css("display", "none");
         $(".back_que").hide();
     })
     function submit() {
         var checked = document.getElementById("active").checked;
         var currentStock = $("#currentStock").text();
         var levelStock = $("#levelStock").val();
-        var afterLowerCount =(currentStock-i)/levelStock;
+        var afterLowerCount = (currentStock - i) / levelStock;
         //地址
         var addressId = $("#addressId").val();
-        if(addressId===undefined || addressId==""){
+        if (addressId === undefined || addressId == "") {
             alert("请输入拿货地址！");
         }
-        if(checked==true){
+        if (checked == true) {
             if (afterLowerCount >= 0) {
                 $(".back").css("display", "-webkit-box");
                 $(".back_que").show();
@@ -139,7 +148,7 @@
             } else {
                 alert("在线库存不足!");
             }
-        }else{
+        } else {
             alert("请确认拿货风险!");
         }
     }
@@ -159,7 +168,7 @@
                     window.location.href = "<%=basePath%>borderManage/borderDetils.html?id=" + data.borderId;
                 }
                 else {
-                    $(".back").css("display","none");
+                    $(".back").css("display", "none");
                     $(".back_que").hide();
                     alert(data.message);
                 }

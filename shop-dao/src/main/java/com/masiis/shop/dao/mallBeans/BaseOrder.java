@@ -14,6 +14,7 @@ import java.util.List;
 
 public class BaseOrder {
     private String imgUrl;//图片地址
+    private String orderSkuStatus;
     /**
      * 数量
      */
@@ -24,6 +25,14 @@ public class BaseOrder {
      */
     private List<SfOrderItem> sfOrderItems;
     private SfOrderConsignee sfOrderConsignee;
+
+    public void setOrderSkuStatus(String orderSkuStatus) {
+        this.orderSkuStatus = orderSkuStatus;
+    }
+
+    public String getOrderSkuStatus() {
+        return orderSkuStatus;
+    }
 
     public SfOrderConsignee getSfOrderConsignee() {
         return sfOrderConsignee;

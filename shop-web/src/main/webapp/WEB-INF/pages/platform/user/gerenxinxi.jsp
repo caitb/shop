@@ -48,7 +48,7 @@
             <p>我的银行卡</p>
             <p><img src="${path}/static/images/next.png" alt=""></p>
         </div>
-        <div  id="addressManageId" class="sec1" style="padding-left: 10px">
+        <div  id="addressManageId" class="sec1" style="padding-left: 10px;margin-bottom: 20px;">
             <p>地址管理</p>
             <p><img  src="${path}/static/images/next.png" alt=""></p>
         </div>

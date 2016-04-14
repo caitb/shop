@@ -41,6 +41,16 @@ public class SfOrderService {
     @Autowired
     private SkuService skuService;
 
+
+    /**
+     * 通过订单Id获取订单
+     * @author muchaofeng
+     * @date 2016/4/13 19:59
+     */
+    public SfOrder findSforderByorderId(Long id){
+        return sfOrderMapper.selectByPrimaryKey(id);
+    }
+
    /**
     * 小铺订单
     * @author muchaofeng
@@ -72,30 +82,29 @@ public class SfOrderService {
         if(sfOrder.getSendType() == 0){
             throw new BusinessException("请选择发货方式");
         }
+        if (freight == null || freight == "") {
+            throw new BusinessException("请重新输入快递单号");
+        }
         if (sfOrder.getSendType() == 1) {//平台代发
-                if (freight == null || freight == "") {
-                    throw new BusinessException("请重新输入快递单号");
-                } else {
-                    sfOrder.setShipStatus(5);
-                    sfOrder.setOrderStatus(8);
-                    SfOrderFreight sforderFreight = new SfOrderFreight();
-                    sforderFreight.setCreateTime(new Date());
-                    sforderFreight.setShipManId(Integer.parseInt(shipManId));
-                    sforderFreight.setSfOrderId(orderId);
-                    sforderFreight.setFreight(freight);
-                    sforderFreight.setShipManName(shipManName);
-                    borderSkuStockService.updateOrderStock(sfOrder, user);
-                    sfOrderMapper.updateByPrimaryKey(sfOrder);
-                    sfOrderFreightMapper.insert(sforderFreight);
-                    //添加订单日志
-                    SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
-                    sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
-                    sfOrderOperationLog.setCreateTime(new Date());
-                    sfOrderOperationLog.setSfOrderStatus(8);
-                    sfOrderOperationLog.setSfOrderId(sfOrder.getId());
-                    sfOrderOperationLog.setRemark("订单完成");
-                    sfOrderOperationLogMapper.insert(sfOrderOperationLog);
-                }
+            sfOrder.setShipStatus(5);
+            sfOrder.setOrderStatus(8);
+            SfOrderFreight sforderFreight = new SfOrderFreight();
+            sforderFreight.setCreateTime(new Date());
+            sforderFreight.setShipManId(Integer.parseInt(shipManId));
+            sforderFreight.setSfOrderId(orderId);
+            sforderFreight.setFreight(freight);
+            sforderFreight.setShipManName(shipManName);
+            borderSkuStockService.updateOrderStock(sfOrder, user);
+            sfOrderMapper.updateByPrimaryKey(sfOrder);
+            sfOrderFreightMapper.insert(sforderFreight);
+            //添加订单日志
+            SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+            sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+            sfOrderOperationLog.setCreateTime(new Date());
+            sfOrderOperationLog.setSfOrderStatus(8);
+            sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+            sfOrderOperationLog.setRemark("订单完成");
+            sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);

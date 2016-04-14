@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface SfShopSkuMapper {
     int deleteByPrimaryKey(Long id);
@@ -27,5 +28,7 @@ public interface SfShopSkuMapper {
     SfShopSku selectByShopIdAndSkuId(@Param("shopId") Long shopId, @Param("skuId") Integer skuId);
 
     List<SfShopSku> selectByShopId(Long shopId);
+
+    List<SfShopSku> selectByShopIdAndSaleType(@Param("shopId") Long shopId, @Param("isSale") Integer isSale);
 
 }

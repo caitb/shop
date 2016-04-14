@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Document</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
 </head>
 <body>
@@ -35,14 +35,14 @@
         </div>
         <img src="${sfShop.logo}" alt="">
         <nav>
-            <p><span>${orderCount}</span><span>店铺总订单</span></p>
+            <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
             <p><span>${sumLevel}</span><span>店铺总参与人数</span></p>
         </nav>
     </div>
     <nav>
-        <p><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
-        <p><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
     </nav>
     <nav style="margin:0;">
@@ -54,15 +54,15 @@
 <footer>
     <div>
         <a>
-            <span><img src="<%=basePath%>static/images/footer1.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
             <span>首页</span>
         </a>
         <a class="active">
-            <span><img src="<%=basePath%>static/images/footer2.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>我的店铺</span>
         </a>
         <a>
-            <span><img src="<%=basePath%>static/images/footer3.jpg" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
             <span>个人中心</span>
         </a>
     </div>

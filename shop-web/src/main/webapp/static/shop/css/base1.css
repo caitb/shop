@@ -3,11 +3,56 @@ html,
 body {
   width: 100%;
   height: 100%;
-  background: #F3F4F5;
+  background: #F6F6F6;
   min-width: 320px;
 }
 a {
   -webkit-tap-highlight-color: transparent;
+}
+.bottom {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index:5;
+}
+.bottom footer {
+  width: 100%;
+  height: 3.5rem;
+  display: -webkit-box;
+  display: -moz-box;
+  overflow: hidden;
+}
+.bottom footer .btm {
+  width: 1px;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  background: #F74A11;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+}
+.bottom footer .btm span {
+  display: block;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  text-align: center;
+  line-height: 25px;
+  color: white;
+  font-size: 14px;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+}
+.bottom footer .btm span img {
+  display: block;
+  height: 20px;
+  margin-top: 3px;
 }
 .xinz {
   width: 100%;
@@ -21,7 +66,7 @@ a {
   -moz-box-pack: center;
 }
 .xinz p {
-  background: url("../images/xz.png") no-repeat 5px;
+  background: url("/static/images/xz.png") no-repeat 5px;
   text-indent: 20px;
   background-size: 10%;
 }
@@ -99,12 +144,12 @@ a {
   padding-left: 2px;
 }
 #header .header_bottom #header_right h2 span:nth-child(1) {
-  background: url("../images/icon_02.png") no-repeat 1px;
+  background: url("/static/images/icon_02.png") no-repeat 1px;
   background-size: 12px 12px;
   margin-right: 8px;
 }
 #header .header_bottom #header_right h2 span:nth-child(2) {
-  background: url("../images/icon_03.png") no-repeat 1px;
+  background: url("/static/images/icon_03.png") no-repeat 1px;
   background-size: 12px 12px;
 }
 #header .header_bottom #add {
@@ -120,40 +165,7 @@ a {
   text-indent: 15px;
   line-height: 22px;
   font-size: 12px;
-  background: #f74a11 url("../images/icon_04.png") no-repeat 8px;
+  background: #f74a11 url("/static/images/icon_04.png") no-repeat 8px;
   background-size: 12px 12px;
   /*-webkit-box-shadow:0 1px 1px #F74A11;   */
-}
-
-.bottom{
-    position: fixed;
-    bottom: 0;
-    width:100%;
-}
-.bottom footer{
-  display: -webkit-box;
-  width:100%;
-  height:3.5rem;
-  background: #F74A11;
-}
-footer .btm{
-  width:1px;
-  -webkit-box-flex:1;
-}
-footer .btm a{
-  display: -webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-box-align: center;
-  -webkit-box-pack:center;
-}
-footer .btm span{
-  display: block;
-  font-size:12px;
-  color: #fff;
-}
-footer .btm span :nth-child(1){
-  height:25px;
-}
-footer .btm span img{
-  margin-top: 5px;
 }

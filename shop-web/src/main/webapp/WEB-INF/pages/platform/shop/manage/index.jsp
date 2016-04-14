@@ -56,6 +56,6 @@
         <p></p>
     </nav>
 </div>
-<c:import url="../../nav-footer.jsp"></c:import>
+<c:import url="../../../common/nav-footer.jsp"></c:import>
 </body>
 </html>

@@ -16,7 +16,7 @@
 </head>
 <body>
 <header>
-    <a href="index.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a></a>
     <p>支付成功</p>
 </header>
 <div class="wrap">

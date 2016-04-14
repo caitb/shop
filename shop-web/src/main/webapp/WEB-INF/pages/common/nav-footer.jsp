@@ -9,7 +9,7 @@
     <div>
         <a href="<%=basePath%>index">
             <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-            <span>首页</span>
+            <span>我是合伙人</span>
         </a>
         <a class="active" href="<%=basePath%>shop/manage/index">
             <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>

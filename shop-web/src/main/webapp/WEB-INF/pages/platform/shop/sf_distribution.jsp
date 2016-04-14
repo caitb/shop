@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/shop/css/fenxiaojilu.css">
     <link rel="stylesheet" href="<%=path%>/static/css/main.css">
     <link rel="stylesheet" href="<%=path%>/static/css/common.css">
-
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css"/>
 </head>
 <body>
@@ -45,7 +44,7 @@
                             <c:set var="count" value="${count+item.amount }"></c:set>
                         </c:forEach>
                         <div class="record">
-                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>${sfDistributionRecord.skuName}</span><span>查看订单></span></p>
+                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>${sfDistributionRecord.skuName}</span><span onclick="viewOrder(${sfDistributionRecord.orderId})">查看订单></span></p>
                             <h1><span><fmt:formatDate value="${sfDistributionRecord.createTime}"  type="time" pattern="dd"/>日</span><span>购买人：${sfDistributionRecord.wxNkName}</span><span>￥${sfDistributionRecord.orderAmount}</span></h1>
                             <h1><span><b>${ fn:length(sfDistributionRecord.sfDistributionPersons) }</b>人分佣</span><span>￥${count}</span><span onclick="showDetails(${sfDistributionRecord.sfDistributionPersons})">分佣明细></span></h1>
                         </div>
@@ -65,7 +64,7 @@
 <script type="application/javascript" src="${path}/static/js/sf_distribution.js"></script>
 <script>
     var path = "<%=path%>";
-    var basepath = "<%=basePath%>";
+    var basePath = "<%=basePath%>";
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){
             $("#year").val(year);

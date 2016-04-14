@@ -26,7 +26,7 @@ function showMore() {
     if (currentPage < totalPage) {
         $.ajax({
             type: "POST",
-            url: basepath + "distribution/moreDistribution.do",
+            url: basePath + "distribution/moreDistribution.do",
             data: {currentPage: currentPage, count: count, year: year, month: month},
             dataType: "Json",
             success: function (data) {
@@ -55,7 +55,7 @@ function turnMonth(year,month){
     }
     $.ajax({
         type: "POST",
-        url: basepath + "distribution/moreDistribution.do",
+        url: basePath + "distribution/moreDistribution.do",
         data: {currentPage: 0, count: 0, year: year, month: month},
         dataType: "Json",
         success: function (data) {
@@ -74,5 +74,12 @@ function turnMonth(year,month){
             alert("请求出错，请稍后再试");
         }
     });
+}
+
+function viewOrder(orderId){
+    if (orderId == ""){
+        return;
+    }
+    window.location.href = basePath + "borderManage/borderDetils.html?id=" + orderId;
 }
 

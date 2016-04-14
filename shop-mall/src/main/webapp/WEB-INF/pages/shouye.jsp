@@ -14,6 +14,7 @@
     <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
@@ -114,6 +115,7 @@
 <div class="back"></div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+<script src="<%=path%>/static/js/common/commonAjax.js"></script>
 <script>
     $(".close").on("click",function(){
         $(this).parent().hide();

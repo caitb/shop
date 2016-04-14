@@ -110,6 +110,7 @@ public class SfShopController extends BaseController {
             //画专属海报
             String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
             String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg";
+            String content = "我是"+comUser.getWxNkName();
             Map<String, Integer> positionMap = new HashMap<>();
             positionMap.put("headImg-left", 195);
             positionMap.put("headImg-top", 130);
@@ -117,8 +118,9 @@ public class SfShopController extends BaseController {
             positionMap.put("bgImg-top", 0);
             positionMap.put("qrCodeImg-left", 160);
             positionMap.put("qrCodeImg-top", 368);
+            positionMap.put("content-left", 520/2-content.length()/2*28-(content.length()%2*14));
             positionMap.put("content-top", 306);
-            drawPoster(headImgPath, qrCodePath, bgPath, "我是"+comUser.getWxNkName(), shopPosterPath, positionMap);
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(247,60,140));
 
             mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
             mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
@@ -135,7 +137,7 @@ public class SfShopController extends BaseController {
         return mav;
     }
 
-    private void drawPoster(String headImgPath, String qrCodePath, String bgPath, String content, String shopPosterPath, Map<String, Integer> positionMap){
+    private void drawPoster(String headImgPath, String qrCodePath, String bgPath, String[] content, String shopPosterPath, Map<String, Integer> positionMap, Font font, Color color){
         ImageIcon headImgIcon = new ImageIcon(headImgPath);
         ImageIcon qrCodeIcon = new ImageIcon(qrCodePath);
         ImageIcon bgIcon = new ImageIcon(bgPath);
@@ -152,9 +154,11 @@ public class SfShopController extends BaseController {
         g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);
         g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), null);
 
-        g.setFont(new Font("雅黑", Font.PLAIN, 28));
-        g.setColor(new Color(247,60,140));
-        g.drawString(content, width/2-content.length()/2*28-(content.length()%2*14), positionMap.get("content-top"));
+        g.setFont(font);
+        g.setColor(color);
+        for(int i=0; i<content.length; i++){
+            g.drawString(content[i], positionMap.get("content-left"), positionMap.get("content-top")+(font.getSize()+15)*i);
+        }
         g.dispose();
 
         try {
@@ -200,8 +204,10 @@ public class SfShopController extends BaseController {
             positionMap.put("bgImg-top", 0);
             positionMap.put("qrCodeImg-left", 304);
             positionMap.put("qrCodeImg-top", 314);
-            positionMap.put("content-top", 56);
-            drawPoster(headImgPath, qrCodePath, bgPath, "我是"+comUser.getWxNkName(), skuPosterPath, positionMap);
+            positionMap.put("content-left", 170);
+            positionMap.put("content-top", 76);
+            String skuName = skuService.getSkuById(skuId).getName();
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
             dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);

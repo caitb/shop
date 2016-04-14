@@ -48,6 +48,11 @@ function showMore() {
 }
 
 function turnMonth(year,month){
+    var yearLast = $("#year").val();
+    var monthLast = $("#month").val();
+    if (yearLast == year && monthLast == month){
+        return;
+    }
     $.ajax({
         type: "POST",
         url: basepath + "distribution/moreDistribution.do",
@@ -61,6 +66,8 @@ function turnMonth(year,month){
                 $("#divall").html(data.message);
             }
             $("#currentPage").val(1);
+            $("#year").val(year);
+            $("#month").val(month);
         },
         error: function () {
             //请求出错处理

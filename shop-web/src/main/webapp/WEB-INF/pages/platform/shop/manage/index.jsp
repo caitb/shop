@@ -30,7 +30,7 @@
         </div>
         <div>
             <p>
-                <span>麦链商城光放认证</span>
+                <span>${sfShop.explanation}</span>
             </p>
         </div>
         <img src="${sfShop.logo}" alt="">

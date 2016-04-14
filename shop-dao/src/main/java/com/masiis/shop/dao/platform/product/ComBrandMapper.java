@@ -2,12 +2,14 @@ package com.masiis.shop.dao.platform.product;
 
 import com.masiis.shop.dao.po.ComBrand;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by cai_tb on 16/3/5.
  */
+@Repository
 public interface ComBrandMapper {
 
     /**

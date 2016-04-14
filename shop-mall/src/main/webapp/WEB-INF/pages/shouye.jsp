@@ -73,22 +73,7 @@
             </div>
         </section></c:forEach>
     </div>
-    <footer>
-        <div>
-            <p class="active">
-                <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
-                <span>首页</span>
-            </p>
-            <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
-                <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>分享计划</span>
-            </p>
-            <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderManagement.html');" >
-                <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
-                <span>个人中心</span>
-            </p>
-        </div>
-    </footer>
+<c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </div>
 <div class="back_f" style="display: none">
     <h1>呐喊成功！</h1>

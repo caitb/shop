@@ -13,11 +13,15 @@
                         var jsonData = eval(result);
                         if (jsonData != null) {
                             var appendString = "";
+                            var bankCard = "";
                             $.each(jsonData, function (i, item) {
+                                bankCard = jsonData[i].bankCard;
                                 appendString += "<div class=\"sec1\" id=\"sec1_" + jsonData[i].id + "\">";
                                 appendString += "<span><img src= '" + jsonData[i].cardImg + "' alt=\"\"></span>";
                                 appendString += "<p><span><em>" + jsonData[i].bankName + "</em></span>";
-                                appendString += " <span>持卡人:<b>" + jsonData[i].cardOwnerName + "</b>卡号:<b>" + jsonData[i].bankCard + "</b></span></p>";
+                                appendString += " <span>持卡人:<b>" + jsonData[i].cardOwnerName + "</b>卡号:<b>" + bankCard.substr(0,4);
+                                appendString += "***********";
+                                appendString += bankCard.substr(bankCard.length -4)+"</b></span></p>";
                                 appendString += "<h1 onclick=bankCardJS.deleteBankCard(" + jsonData[i].id + ") class=\"remove\"><img src=\"\\static\\images\\delete.png \" alt=\"\"></h1></div>";
                             })
                             $("#chooseBankCardId").empty();

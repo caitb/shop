@@ -36,40 +36,34 @@
   height: 60px;
   left: 10px;
   bottom: 75px;
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  box-shadow: 1px 1px 1px #666;
   border-radius: 30px;
   overflow: hidden;
 }
 .wrap .header div:nth-child(1) {
-  background: url("/static/images/bdbanner.png") no-repeat;
+  background: url("../images/bdbanner.png") no-repeat;
   background-size: 100% 100%;
-  padding-top: 6em;
+  padding-top: 4em;
   color: white;
   padding-left: 5.5em;
-  padding-bottom: 0.5em;
+  padding-bottom: 1.5em;
   position: relative;
 }
-.wrap .header div:nth-child(1) span {
+.wrap .header div:nth-child(1) > span {
   display: block;
   width: 50px;
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 24px;
   background: #EFA109;
   text-align: center;
 }
-.wrap .header div:nth-child(2) {
-  padding-left: 5.5em;
-  background: #fff;
-  padding-bottom: 2em;
-}
-.wrap .header div:nth-child(2) p {
-  color: #8A8A8A;
+.wrap .header div:nth-child(1) p span {
+  font-size: 12px;
 }
 .wrap .header nav {
   display: -webkit-box;
   width: 100%;
-  box-shadow: 0px 4px 6px -2px rgba(0,0,0,0.2);
 }
 .wrap .header nav p {
   width: 1px;
@@ -85,14 +79,12 @@
   display: block;
   color: #5A5A5A;
   margin: 2px 0;
-  font-size:12px;
 }
 .wrap > nav {
   display: -webkit-box;
   width: 100%;
   background: #fff;
   margin-top: 10px;
-  border-bottom:1px solid #f6f6f6;
 }
 .wrap > nav p {
   width: 1px;
@@ -101,34 +93,35 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   -webkit-box-flex: 1;
-  border-right:1px solid #f6f6f6;
-  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
 }
 .wrap > nav p span {
   display: block;
   color: #666;
-  margin: 2px 0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  font-size:12px;
-}
-.wrap > nav p span:nth-child(1){
-  height:30px;
 }
 .wrap > nav p span img {
   display: block;
-  width: 40%;
+  width: 50%;
 }
-
+.wrap > nav p span:nth-child(1) {
+  height: 40px;
+  margin-top: 22px;
+}
+.wrap > nav p span:nth-child(2) {
+  margin-bottom: 14px;
+}
 .wrap_no {
   display: -webkit-box;
   -webkit-box-flex: 1;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
   -webkit-box-pack: center;
-  /* display: none; */
+  display: none;
 }
 .wrap_no p {
   margin-bottom: 100px;
@@ -137,4 +130,55 @@
 .wrap_no p a {
   text-decoration: underline;
   color: #ff5200;
+}
+.back_f {
+  width: 90%;
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  background: #fff;
+  z-index: 10;
+  border-radius: 5px;
+  display: none;
+}
+.back_f img {
+  display: block;
+  width: 80%;
+  margin: 1em auto;
+  border-radius: 5px;
+}
+.back_f p {
+  margin: 2em 10px  5px 10px;
+}
+.back_f span {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  position: absolute;
+  text-align: center;
+  background: #fff;
+  line-height: 28px;
+  top: -15px;
+  right: -15px;
+  font-size: 20px;
+}
+.back_f b {
+  display: block;
+  text-align: center;
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+.back {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  z-index: 4;
+  display: none;
 }

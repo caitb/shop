@@ -61,12 +61,13 @@
         <span class="que_que" onclick="applyxiajia()">我确认下架</span>
     </h3>
 </div>
-<div class="back_f" style="display: none">
+<div class="back_f">
     <p>保存图片到手机，复制文案，发送图文到朋友圈，产生购买后可获得佣金</p>
-    <canvas id="canvasOne">
+    <img id="skuPoster" src="<%=path%>/static/images/asd.JPG" alt="">
+    <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
     </canvas>
-    <b id="downloadPoster">下载图片</b>
+    <b id="downloadPoster">长按图片保存海报</b>
     <span class="close">×</span>
 </div>
 <div class="back">
@@ -132,7 +133,7 @@
                     trHtml+="</div>";
                     trHtml+="<div class=\"sec2\">";
                     trHtml+="<p onclick=\"shangjia('"+sku.shopSkuId+"')\">上架</p>";
-                    trHtml+="<p>预览</p>";
+                    trHtml+="<p><a href=\"<%=basePath%>product/"+sku.comSku.id+"\">预览</a></p>";
                     trHtml+="</div>";
                     trHtml+="</section>";
                 });
@@ -192,10 +193,9 @@
         $(".back").hide();
     })
 </script>
-<!-->分享商品<!-->
 <script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>
-<script src="<%=basePath%>static/shop/js/plugins/canvas2image.js"></script>
-<script src="<%=basePath%>static/shop/js/plugins/base64.js"></script>
+<script src="<%=path%>/static/shop/js/plugins/canvas2image.js"></script>
+<script src="<%=path%>/static/shop/js/plugins/base64.js"></script>
 <script type="text/javascript">
 
     function canvasSupport() {
@@ -251,16 +251,13 @@
     }
      function share(skuId){
          $.ajax({
-             url: '<%=basePath%>shop/getSkuPoster',
+             url: '<%=basePath%>shop/manage/getSkuPoster',
              data: {shopId: ${shopId}, skuId: skuId},
              success: function(data){
                  data = window.eval('(' + data + ')');
-                 var baseUrl = '<%=basePath%>';
-                 var imgSrcs = [baseUrl+data['userImg'], baseUrl+data['skuImg'], baseUrl+data['shopQRCode']];
-                 var userName = data['userName'];
-                 var skuName = data['skuName'];
-                 canvasApp(userName,skuName,imgSrcs);
+                 $('#skuPoster').attr('src', data['skuPoster']);
                  $('.back_f').show();
+                 $('.back').show();
              }
          });
      }

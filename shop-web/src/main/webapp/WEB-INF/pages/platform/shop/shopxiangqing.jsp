@@ -77,11 +77,14 @@
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==0}">
                     <span>未处理</span>
                 </c:if>
-                <c:if test="${orderMallDetail.sfOrder.orderStatus==1}">
-                    <span>已付款</span>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==7}">
+                    <span>未发货</span>
                 </c:if>
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==3}">
                     <span>成功交易</span>
+                </c:if>
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==8}">
+                    <span>待收货</span>
                 </c:if>
             </p>
         </div>
@@ -117,19 +120,15 @@ $("#faHuo").on("click", function () {
     var shipManName = $("#select option:selected").text();
     var freight = $("#input").val();
     var borderId = ${orderMallDetail.sfOrder.id};
-    alert("asdas");
     $.ajax({
         type: "POST",
-        url: "/borderManage/deliver.do",
+        url: "/sfOrderController/deliverOrder.do",
         data:{shipManName:shipManName,freight:freight,orderId:borderId,shipManId:shipManId},
         dataType: "Json",
         success: function () {
-            alert("asdas");
+            alert("发货成功");
             $(".fah").html("");
             location.reload(true);
-        },
-        error: function () {
-            alert("66666");
         }
     })
 })

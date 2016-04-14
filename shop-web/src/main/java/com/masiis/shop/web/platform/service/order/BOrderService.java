@@ -551,31 +551,30 @@ public class BOrderService {
         if(pfBorder.getSendType() == 0){
             throw new BusinessException("请选择发货方式");
         }
+        if (freight == null || freight == "") {
+            throw new BusinessException("请重新输入快递单号");
+        }
         if (pfBorder.getSendType() == 1) {//平台代发
             if (pfBorder.getOrderType() == 2) {//拿货
-                if (freight == null || freight == "") {
-                    throw new BusinessException("请重新输入快递单号");
-                } else {
-                    pfBorder.setShipStatus(5);
-                    pfBorder.setOrderStatus(8);
-                    PfBorderFreight pfBorderFreight = new PfBorderFreight();
-                    pfBorderFreight.setCreateTime(new Date());
-                    pfBorderFreight.setShipManId(Integer.parseInt(shipManId));
-                    pfBorderFreight.setPfBorderId(orderId);
-                    pfBorderFreight.setFreight(freight);
-                    pfBorderFreight.setShipManName(shipManName);
-                    borderSkuStockService.updateStock(pfBorder, user);
-                    pfBorderMapper.updateById(pfBorder);
-                    pfBorderFreightMapper.insert(pfBorderFreight);
-                    //添加订单日志
-                    PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-                    pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-                    pfBorderOperationLog.setCreateTime(new Date());
-                    pfBorderOperationLog.setPfBorderStatus(8);
-                    pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-                    pfBorderOperationLog.setRemark("订单完成");
-                    pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-                }
+                pfBorder.setShipStatus(5);
+                pfBorder.setOrderStatus(8);
+                PfBorderFreight pfBorderFreight = new PfBorderFreight();
+                pfBorderFreight.setCreateTime(new Date());
+                pfBorderFreight.setShipManId(Integer.parseInt(shipManId));
+                pfBorderFreight.setPfBorderId(orderId);
+                pfBorderFreight.setFreight(freight);
+                pfBorderFreight.setShipManName(shipManName);
+                borderSkuStockService.updateStock(pfBorder, user);
+                pfBorderMapper.updateById(pfBorder);
+                pfBorderFreightMapper.insert(pfBorderFreight);
+                //添加订单日志
+                PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+                pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+                pfBorderOperationLog.setCreateTime(new Date());
+                pfBorderOperationLog.setPfBorderStatus(8);
+                pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+                pfBorderOperationLog.setRemark("订单完成");
+                pfBorderOperationLogMapper.insert(pfBorderOperationLog);
             }
         } else if (pfBorder.getSendType() == 2) {//自己发货
             pfBorder.setShipStatus(5);

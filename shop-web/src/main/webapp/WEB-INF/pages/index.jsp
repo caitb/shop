@@ -125,7 +125,7 @@
                     </a>
                 </div>
                 <div class="btm">
-                    <a href="javascript:;">
+                    <a href="<%=path%>/shop/manage/index">
                         <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
                         <span>我的店铺</span>
                     </a>

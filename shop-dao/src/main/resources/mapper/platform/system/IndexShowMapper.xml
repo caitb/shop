@@ -46,7 +46,7 @@
         select id,name ,img_url  from pb_banner
     </select>
     <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Integer">
-        SELECT sku_image.img_name,sku_image.img_url,sku.id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id,
+        SELECT sku_image.img_name,sku_image.img_url,sku_image.sku_id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id,
                 spu.ship_amount,sku_agent.bail
         FROM com_sku sku
         INNER JOIN com_spu spu ON sku.spu_id=spu.id

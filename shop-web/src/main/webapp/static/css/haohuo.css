@@ -62,9 +62,7 @@
   -webkit-box-align: center;
   display: -moz-box;
   -moz-box-align: center;
-  border-bottom: 1px solid #f6f6f6;
   padding: 5px 0;
-  margin-bottom: 5px;
 }
 .wrap .box .main .sec1 .photo {
   width: 90px;
@@ -74,6 +72,7 @@
   display: block;
   width: 90px;
   height: 90px;
+  border: 1px solid #ccc;
 }
 .wrap .box .main .sec1 div {
   -webkit-box-flex: 1;
@@ -88,35 +87,41 @@
   margin-left: 10px;
 }
 .wrap .box .main .sec1 div h2 {
-  color: #333333;
-  font-size: 14px;
-}
-.wrap .box .main .sec1 div h2 b {
-  float: right;
-  margin-right: 10px;
-}
-.wrap .box .main .sec1 div h2:nth-child(1) {
-  margin-bottom: 5px;
-}
-.wrap .box .main .sec1 div h2:last-child {
-  margin-top: 5px;
+  padding-bottom: 5px;
 }
 .wrap .box .main .sec1 div h3 {
-  color: #999999;
   font-size: 12px;
+  color: #666;
 }
-.wrap .box .main .sec1 div h3 span {
-  font-size: 12px;
-}
-.wrap .box .main .sec1 div h3:nth-child(3) {
+.wrap .box .main .sec1 div h3:nth-child(2) {
   border-bottom: 1px solid #ccc;
 }
-.wrap .box .main .sec1 div p {
-  width: 100%;
+.wrap .box .main .sec1 div h3:nth-child(2) b {
+  float: right;
+  color: #999;
   font-size: 12px;
-  color: #B0B0B0;
+  margin-right: 10px;
 }
-.wrap .box .main .sec1 div p span {
-  color: #FF6633;
+.wrap .box .main .sec1 div h3:nth-child(3) {
+  padding-top: 8px;
+  height: 18px;
+}
+.wrap .box .main .sec1 + h2 {
+  padding: 10px 10px;
+  background: #fff;
+  border-top: 1px solid #f6f6f6;
   font-size: 12px;
+  margin-bottom: 5px;
+  color: #999;
+}
+.wrap .box .main .sec1 + h2 span {
+  font-size: 12px;
+}
+.wrap .box .main .sec1 + h2 button {
+  float: right;
+  padding: 4px 15px;
+  border-radius: 3px;
+  color: #fff;
+  background: #ff5200;
+  margin-top: -3px;
 }

@@ -6,6 +6,7 @@
   display: -webkit-box;
   position: relative;
   margin-bottom: 5px;
+  box-shadow: 1px 1px 1px #999;
 }
 .xq_header a:first-child {
   display: block;
@@ -52,7 +53,7 @@
   -moz-box-align: center;
   margin-bottom: 5px;
   background: white url("../images/zhuce_1.png") no-repeat;
-  background-size: 70%;
+  background-size: 80%;
   background-position: center 85%;
 }
 .xinxi p:nth-child(1) {

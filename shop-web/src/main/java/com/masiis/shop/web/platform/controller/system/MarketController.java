@@ -7,6 +7,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -36,7 +37,7 @@ public class MarketController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
-    private SpuService spuService;
+    private SkuAgentService skuAgentService;
     @Resource
     private BOrderService bOrderService;
 
@@ -78,6 +79,7 @@ public class MarketController extends BaseController {
                 //确定代理权限，显示优惠区间
                 indexCom.setMaxDiscount(productService.getMaxDiscount());
                 indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
+                indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
 //            }else{
 //                indexCom.setDiscountLevel("成为合伙人可查看利润");
 //            }

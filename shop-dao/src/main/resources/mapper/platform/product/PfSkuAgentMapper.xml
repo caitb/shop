@@ -57,6 +57,18 @@
         from pf_sku_agent
     </select>
 
+    <select id="selectMaxBail" resultType="double" parameterType="java.lang.Integer">
+        select MAX(bail)
+        from pf_sku_agent
+        where sku_id= #{skuId,jdbcType=INTEGER};
+    </select>
+
+    <select id="selectMinBail" resultType="double" parameterType="java.lang.Integer">
+        select  MIN(bail)
+        from pf_sku_agent
+        where sku_id= #{skuId,jdbcType=INTEGER};
+    </select>
+
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark
         from pf_sku_agent

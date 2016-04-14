@@ -165,5 +165,8 @@ footer .btm span img{
 }
 footer .btm:nth-child(2) span img{
   width:54%;
-
+  margin-top: 4px;
+}
+footer .btm:nth-child(3) span img{
+  margin-top: 3px;
 }

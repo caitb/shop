@@ -37,7 +37,7 @@
         <nav>
             <p><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
-            <p><span>1233</span><span>店铺总参与人数</span></p>
+            <p><span>${sumLevel}</span><span>店铺总参与人数</span></p>
         </nav>
     </div>
     <nav>

@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.shop;
 
+import com.masiis.shop.dao.beans.order.SfDistributionRecord;
+import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -31,6 +33,8 @@ public class SfShopManageController extends BaseController {
     private SfShopMapper sfShopMapper;
     @Resource
     private SfOrderMapper sfOrderMapper;
+    @Resource
+    private SfDistributionRecordMapper sfDistributionRecordMapper;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
@@ -42,11 +46,15 @@ public class SfShopManageController extends BaseController {
             comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
-            Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId());
+            Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
+
+            SfDistributionRecord sfCount = sfDistributionRecordMapper.selectCountByUserId(comUser.getId());
+            Integer sumLevel = sfCount.getSumLevel(); //总参与人数
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
             mav.addObject("orderCount", orderCount);
+            mav.addObject("sumLevel", sumLevel);
 
             return mav;
         } catch (Exception e) {

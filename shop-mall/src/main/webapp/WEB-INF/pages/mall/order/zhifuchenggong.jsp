@@ -69,7 +69,7 @@
         <button onclick="returnHomePage()">返回首页</button>
     </div>
 </div>
-<div class="back"></div>
+<div class="back" style="display: block"></div>
 <div id="contactSellerDivId" class="back_l">
     <p>索要发票</p>
     <p>请联系：00000000</p>
@@ -110,6 +110,7 @@
     }
     function closeShare(){
         $("#shareDivId").hide();
+        $(".back").hide();
     }
     function returnHomePage(){
         window.location.href="mall.qc.iimai.com/${order.shopId}/${userPid}/shop.shtml";

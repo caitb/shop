@@ -14,17 +14,22 @@ public class Order {
 
     private PfBorder pfBorder;
     private PfCorder pfCorder;
+    private SfOrder sfOrder;
 
     private List<PfBorderItem> pfBorderItems;
+    private List<SfOrderItem> pfOrderItems;
 
     private PfBorderConsignee pfBorderConsignee;
     private PfCorderConsignee pfCorderConsignee;
+    private SfOrderConsignee sfOrderConsignee;
 
     private List<PfBorderFreight> pfBorderFreights;
     private List<PfCorderFreight> pfCorderFreights;
+    private List<SfOrderFreight> sfOrderFreights;
 
     private List<PfBorderPayment> pfBorderPayments;
     private List<PfCorderPayment> pfCorderPayments;
+    private List<SfOrderPayment> sfOrderPayments;
 
     private List<ProductInfo> productInfos;
 
@@ -52,12 +57,28 @@ public class Order {
         this.pfCorder = pfCorder;
     }
 
+    public SfOrder getSfOrder() {
+        return sfOrder;
+    }
+
+    public void setSfOrder(SfOrder sfOrder) {
+        this.sfOrder = sfOrder;
+    }
+
     public List<PfBorderItem> getPfBorderItems() {
         return pfBorderItems;
     }
 
     public void setPfBorderItems(List<PfBorderItem> pfBorderItems) {
         this.pfBorderItems = pfBorderItems;
+    }
+
+    public List<SfOrderItem> getPfOrderItems() {
+        return pfOrderItems;
+    }
+
+    public void setPfOrderItems(List<SfOrderItem> pfOrderItems) {
+        this.pfOrderItems = pfOrderItems;
     }
 
     public PfBorderConsignee getPfBorderConsignee() {
@@ -76,6 +97,14 @@ public class Order {
         this.pfCorderConsignee = pfCorderConsignee;
     }
 
+    public SfOrderConsignee getSfOrderConsignee() {
+        return sfOrderConsignee;
+    }
+
+    public void setSfOrderConsignee(SfOrderConsignee sfOrderConsignee) {
+        this.sfOrderConsignee = sfOrderConsignee;
+    }
+
     public List<PfBorderFreight> getPfBorderFreights() {
         return pfBorderFreights;
     }
@@ -90,6 +119,14 @@ public class Order {
 
     public void setPfCorderFreights(List<PfCorderFreight> pfCorderFreights) {
         this.pfCorderFreights = pfCorderFreights;
+    }
+
+    public List<SfOrderFreight> getSfOrderFreights() {
+        return sfOrderFreights;
+    }
+
+    public void setSfOrderFreights(List<SfOrderFreight> sfOrderFreights) {
+        this.sfOrderFreights = sfOrderFreights;
     }
 
     public List<PfBorderPayment> getPfBorderPayments() {
@@ -108,6 +145,14 @@ public class Order {
         this.pfCorderPayments = pfCorderPayments;
     }
 
+    public List<SfOrderPayment> getSfOrderPayments() {
+        return sfOrderPayments;
+    }
+
+    public void setSfOrderPayments(List<SfOrderPayment> sfOrderPayments) {
+        this.sfOrderPayments = sfOrderPayments;
+    }
+
     public List<ProductInfo> getProductInfos() {
         return productInfos;
     }
@@ -122,13 +167,18 @@ public class Order {
                 "comUser=" + comUser +
                 ", pfBorder=" + pfBorder +
                 ", pfCorder=" + pfCorder +
+                ", sfOrder=" + sfOrder +
                 ", pfBorderItems=" + pfBorderItems +
+                ", pfOrderItems=" + pfOrderItems +
                 ", pfBorderConsignee=" + pfBorderConsignee +
                 ", pfCorderConsignee=" + pfCorderConsignee +
+                ", sfOrderConsignee=" + sfOrderConsignee +
                 ", pfBorderFreights=" + pfBorderFreights +
                 ", pfCorderFreights=" + pfCorderFreights +
+                ", sfOrderFreights=" + sfOrderFreights +
                 ", pfBorderPayments=" + pfBorderPayments +
                 ", pfCorderPayments=" + pfCorderPayments +
+                ", sfOrderPayments=" + sfOrderPayments +
                 ", productInfos=" + productInfos +
                 '}';
     }

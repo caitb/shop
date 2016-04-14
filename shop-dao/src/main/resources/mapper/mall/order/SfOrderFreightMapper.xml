@@ -45,4 +45,18 @@
         from sf_order_freight
     </select>
 
+    <select id="selectByOrderId" parameterType="Long" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               sf_order_id,
+               ship_man_id,
+               ship_man_name,
+               freight
+        from
+               sf_order_freight
+        WHERE
+               sf_order_id = #{orderId}
+    </select>
+
 </mapper>

@@ -17,7 +17,7 @@ public class Order {
     private SfOrder sfOrder;
 
     private List<PfBorderItem> pfBorderItems;
-    private List<SfOrderItem> pfOrderItems;
+    private List<SfOrderItem> sfOrderItems;
 
     private PfBorderConsignee pfBorderConsignee;
     private PfCorderConsignee pfCorderConsignee;
@@ -73,12 +73,12 @@ public class Order {
         this.pfBorderItems = pfBorderItems;
     }
 
-    public List<SfOrderItem> getPfOrderItems() {
-        return pfOrderItems;
+    public List<SfOrderItem> getSfOrderItems() {
+        return sfOrderItems;
     }
 
-    public void setPfOrderItems(List<SfOrderItem> pfOrderItems) {
-        this.pfOrderItems = pfOrderItems;
+    public void setSfOrderItems(List<SfOrderItem> sfOrderItems) {
+        this.sfOrderItems = sfOrderItems;
     }
 
     public PfBorderConsignee getPfBorderConsignee() {
@@ -169,7 +169,7 @@ public class Order {
                 ", pfCorder=" + pfCorder +
                 ", sfOrder=" + sfOrder +
                 ", pfBorderItems=" + pfBorderItems +
-                ", pfOrderItems=" + pfOrderItems +
+                ", sfOrderItems=" + sfOrderItems +
                 ", pfBorderConsignee=" + pfBorderConsignee +
                 ", pfCorderConsignee=" + pfCorderConsignee +
                 ", sfOrderConsignee=" + sfOrderConsignee +

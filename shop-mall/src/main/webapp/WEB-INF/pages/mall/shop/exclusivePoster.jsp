@@ -17,7 +17,7 @@
         .wrap{
             background: #fff;
         }
-        .wrap>canvas{
+        .wrap>img{
             display: block;
             width: 90%;
             margin: 1em auto 1em auto;
@@ -35,7 +35,7 @@
     <script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>
     <script src="<%=basePath%>static/js/plugins/base64.js"></script>
     <script type="text/javascript">
-        window.addEventListener("load", eventWindowLoaded, false);
+        //window.addEventListener("load", eventWindowLoaded, false);
         function eventWindowLoaded() {
             canvasApp();
         }
@@ -108,10 +108,11 @@
     <p>专属海报</p>
 </header>
 <div class="wrap">
-    <canvas id="canvasOne">
+    <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
     </canvas>
-    <b id="downloadPoster">保存到手机</b>
+    <img src="${shopPoster}" />
+    <b id="downloadPoster2">长按图片保存海报</b>
 </div>
 </body>
 </html>

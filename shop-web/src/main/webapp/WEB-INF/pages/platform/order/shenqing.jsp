@@ -195,13 +195,13 @@
     }
 
     $("#nextPageId").bind("onclick", function () {
-        $(this).html("请稍后...");
         window.location.href = "${basePath}userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
     });
 
     $("#goToNext").on("click", function () {
         var auditStatus = "${user.auditStatus}";
         if (auditStatus == 2) {
+            $(this).html("请稍后...");
             window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
         } else if (auditStatus == 1) {
             alert("您的实名认证正在审核中,请耐心等候!");

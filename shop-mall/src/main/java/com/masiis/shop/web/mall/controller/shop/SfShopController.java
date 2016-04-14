@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSkuImage;
@@ -20,8 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -91,15 +96,35 @@ public class SfShopController extends BaseController {
             File posterDir = new File(realPath + "static/images/shop/poster/");
             if(!posterDir.exists()) posterDir.mkdirs();
 
+            //二维码
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            CreateParseCode.createCode(200, 200, basePath+"index?shopId="+shopId+"&userPid="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
+            String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
+            CreateParseCode.createCode(200, 200, basePath+"index?shopId="+shopId+"&userPid="+comUser.getId(), qrCodePath);
+
+            //用户头像
+            String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
+            ImageUtils.scale2(headImgPath, headImgPath, 130, 130, false);
+
+            //画专属海报
+            String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
+            String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg";
+            Map<String, Integer> positionMap = new HashMap<>();
+            positionMap.put("headImg-left", 195);
+            positionMap.put("headImg-top", 130);
+            positionMap.put("bgImg-left", 0);
+            positionMap.put("bgImg-top", 0);
+            positionMap.put("qrCodeImg-left", 160);
+            positionMap.put("qrCodeImg-top", 368);
+            positionMap.put("content-top", 306);
+            drawPoster(headImgPath, qrCodePath, bgPath, "我是"+comUser.getWxNkName(), shopPosterPath, positionMap);
 
             mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
             mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
             mav.addObject("userName", comUser.getWxNkName());
             mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
+            mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg");
             return mav;
         } catch (Exception e) {
             log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
@@ -108,6 +133,37 @@ public class SfShopController extends BaseController {
 
         mav.setViewName("error");
         return mav;
+    }
+
+    private void drawPoster(String headImgPath, String qrCodePath, String bgPath, String content, String shopPosterPath, Map<String, Integer> positionMap){
+        ImageIcon headImgIcon = new ImageIcon(headImgPath);
+        ImageIcon qrCodeIcon = new ImageIcon(qrCodePath);
+        ImageIcon bgIcon = new ImageIcon(bgPath);
+        Image headImage = headImgIcon.getImage();
+        Image qrCodeImage = qrCodeIcon.getImage();
+        Image bgImage = bgIcon.getImage();
+
+        int width = bgImage.getWidth(null) == -1 ? 520 : bgImage.getWidth(null);
+        int height = bgImage.getHeight(null) == -1 ? 710 : bgImage.getHeight(null);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bufferedImage.createGraphics();
+
+        g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), null);
+        g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);
+        g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), null);
+
+        g.setFont(new Font("雅黑", Font.PLAIN, 28));
+        g.setColor(new Color(247,60,140));
+        g.drawString(content, width/2-content.length()/2*28-(content.length()%2*14), positionMap.get("content-top"));
+        g.dispose();
+
+        try {
+            ImageIO.write(bufferedImage, "jpg", new File(shopPosterPath));
+        } catch (Exception e) {
+            log.error("画海报出错了!");
+            e.printStackTrace();
+            return;
+        }
     }
 
     @RequestMapping("/getSkuPoster")
@@ -126,8 +182,26 @@ public class SfShopController extends BaseController {
 
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), posterDir.getAbsolutePath()+"/"+posterName);
+            String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
+            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), qrCodePath);
+
+            //用户头像
+            String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
+            ImageUtils.scale2(headImgPath, headImgPath, 90, 90, false);
+
+            //画专属海报
+            String bgPath = realPath + "static/images/shop/background-img/sku-"+skuId+".png";
+            String skuPosterPath = realPath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg";
+            Map<String, Integer> positionMap = new HashMap<>();
+            positionMap.put("headImg-left", 46);
+            positionMap.put("headImg-top", 44);
+            positionMap.put("bgImg-left", 0);
+            positionMap.put("bgImg-top", 0);
+            positionMap.put("qrCodeImg-left", 304);
+            positionMap.put("qrCodeImg-top", 314);
+            positionMap.put("content-top", 56);
+            drawPoster(headImgPath, qrCodePath, bgPath, "我是"+comUser.getWxNkName(), skuPosterPath, positionMap);
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
             dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);
@@ -135,6 +209,7 @@ public class SfShopController extends BaseController {
             dataMap.put("userName", comUser.getWxNkName());
             dataMap.put("skuName", skuService.getSkuById(skuId).getName());
             dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
+            dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
             return dataMap;
         } catch (Exception e) {
             log.error("获取专属海报失败![shopId=" + shopId + "][skuId="+skuId+"][comUser=" + getComUser(request) + "]");

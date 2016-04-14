@@ -15,14 +15,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
-    <link rel="stylesheet" href="<%=path%>/static/css/nahuo.css">
+    <link rel="stylesheet" href="${path}/static/css/nahuo.css">
 </head>
 <body>
 <div class="wrap">
 
     <div class="main">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png"
+            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="${path}/static/images/xq_rt.png"
                                                                               alt=""></a>
             <p>拿货方式</p>
         </header>
@@ -96,7 +96,7 @@
                         <a href="#"><p>收货地址：
                             <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span>
                         </p></a>
-                        <img src="<%=path%>/static/images/next.png" alt="">
+                        <img src="${path}/static/images/next.png" alt="">
                     </div>
                 </section>
                 <div class="xuan" onclick="toChooseAddressPage()"><h1>选择收获地址<span></span></h1></div>
@@ -146,7 +146,7 @@
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
         var bOrderId = $("#bOrderId").val();
-        window.location.href = "<%=path%>/userAddress/toChooseAddressPage.html?pageType=takeGoods&selectedAddressId=" + selectedAddressId + "&orderId=" + bOrderId;
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=takeGoods&selectedAddressId=" + selectedAddressId + "&orderId=" + bOrderId;
     }
 
     function submit(para) {
@@ -162,14 +162,14 @@
         paraData.sendType = sendType;
         paraData.userAddressId = $("#addressId").val();
         $.ajax({
-            url: "<%=basePath%>border/setUserSendType/save.do",
+            url: "${basePath}border/setUserSendType/save.do",
             type: "post",
             data: paraData,
             dataType: "json",
             success: function (data) {
                 $(para).html("正在提交...");
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>border/payBOrdersSuccess.shtml?bOrderId=" + paraData.bOrderId;
+                    window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + paraData.bOrderId;
                 }
             }
         });

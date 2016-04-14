@@ -50,6 +50,10 @@ public class SfDistributionRecord {
      */
     private Integer sumLevel;
     /**
+     * 分润总金额
+     */
+    private BigDecimal distributionAmount;
+    /**
      * 分润人列表
      */
     List<SfDistributionPerson> sfDistributionPersons;
@@ -125,5 +129,13 @@ public class SfDistributionRecord {
 
     public void setSfDistributionPersons(List<SfDistributionPerson> sfDistributionPersons) {
         this.sfDistributionPersons = sfDistributionPersons;
+    }
+
+    public BigDecimal getDistributionAmount() {
+        return distributionAmount;
+    }
+
+    public void setDistributionAmount(BigDecimal distributionAmount) {
+        this.distributionAmount = distributionAmount;
     }
 }

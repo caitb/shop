@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,14 +72,24 @@ public class SfOrderItemDistributionService {
     }
 
     /**
-     * 查询分销记录list
-     * @param userId
+     * 询分销记录list
+     * @param userid
+     * @param start
+     * @param end
+     * @param currentPage
+     * @param pageSize
      * @return
      */
-    public List<SfDistributionRecord> findListSfDistributionRecord(Long userId){
-        return sfDistributionRecordMapper.selectListByUserId(userId);
+    public List<SfDistributionRecord> findListSfDistributionRecordLimit(Long userid, Date start, Date end, Integer currentPage, Integer pageSize){
+        if (currentPage == 0||currentPage == 0){
+            return sfDistributionRecordMapper.selectListByUserIdLimt(userid,start,end);
+        }
+        PageHelper.startPage(currentPage,pageSize);
+        return sfDistributionRecordMapper.selectListByUserIdLimt(userid,start,end);
     }
-
+    public Integer findCountSfDistributionRecordLimit(Long userid, Date start, Date end){
+        return sfDistributionRecordMapper.selectCountByUserIdLimit(userid,start,end);
+    }
     /**
      * 根据订单商品子表 id查询分润人信息
      * @param itemId

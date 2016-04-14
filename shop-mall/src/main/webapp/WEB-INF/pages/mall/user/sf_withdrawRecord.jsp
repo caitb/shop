@@ -1,5 +1,10 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +14,11 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
     <title>麦链合伙人</title>
-    <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/tixianjilu.css">
-    <link rel="stylesheet" href="${path}/static/css/common/common.css">
-    <link rel="stylesheet" href="${path}/static/css/common/dropload.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/tixianjilu.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common/common.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/common/dropload.css">
+    <link rel="stylesheet" href="<%=path%>/static/css/devCss/loading.css">
 </head>
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
@@ -22,7 +26,7 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-        <a href="javascript:history.back(-1)" onClick=""><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.back(-1)" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>提现记录</p>
     </header>
     <div class="wrap">
@@ -49,16 +53,16 @@
             <div id="datePlugin"></div>
         </div>
      </div>
-<script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-<script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-<script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-<script type="text/javascript" src="${path}/static/js/plugins/date.js" ></script>
-<script type="text/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
-<script type="text/javascript" src="${path}/static/js/plugins/dropload.min.js"></script>
-<script type="text/javascript" src="${path}/static/js/pageJs/sf_withdrawRecord.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+<script type="text/javascript" src="<%=path%>/static/js/plugins/date.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/plugins/iscroll.js" ></script>
+<%--<script type="text/javascript" src="<%=path%>/static/js/plugins/dropload.min.js"></script>--%>
+<script type="text/javascript" src="<%=path%>/static/js/pageJs/sf_withdrawRecord.js"></script>
 <script type="text/javascript">
-    var path = "${path}";
-    var basepath = "${basepath}";
+    var path = "<%=path%>";
+    var basepath = "<%=basePath%>";
 </script>
 </body>
 </html>

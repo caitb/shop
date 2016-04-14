@@ -13,11 +13,15 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface PfSkuAgentMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(PfSkuAgent record);
+    Double selectMaxBail(Integer skuId);
+    Double selectMinBail(Integer skuId);
 
     PfSkuAgent selectByPrimaryKey(Integer id);
 

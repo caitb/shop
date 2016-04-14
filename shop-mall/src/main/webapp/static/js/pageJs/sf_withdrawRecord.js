@@ -4,23 +4,23 @@ $(function(){
     });
     $('#endTime').date({theme:"datetime"});
 });
-$('#divall').dropload({
-    scrollArea : window,
-    loadDownFn : function(me){
-        $.ajax({
-            type: 'GET',
-            url: 'json/more.json',
-            dataType: 'json',
-            success: function(data){
-                // 代码执行后必须重置
-                me.resetload();
-            },
-            error: function(xhr, type){
-                me.noData();
-            }
-        });
-    }
-});
+//$('#divall').dropload({
+//    scrollArea : window,
+//    loadDownFn : function(me){
+//        $.ajax({
+//            type: 'GET',
+//            url: 'json/more.json',
+//            dataType: 'json',
+//            success: function(data){
+//                // 代码执行后必须重置
+//                me.resetload();
+//            },
+//            error: function(xhr, type){
+//                me.noData();
+//            }
+//        });
+//    }
+//});
 function getMore(){
     var year = $("#year").val();
     var month = $("#month").val();

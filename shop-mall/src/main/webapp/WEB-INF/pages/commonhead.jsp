@@ -9,3 +9,7 @@
 <%-- 公用变量,用${}来获取 --%>
 <c:set var="path" value="<%=path%>" />
 <c:set var="basepath" value="<%=basePath%>" />
+<link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
+<link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
+<link rel="stylesheet" href="${path}/static/css/pageCss/header.css">
+<link rel="stylesheet" href="${path}/static/css/devCss/loading.css">

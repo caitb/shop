@@ -6,12 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-    <title>Document</title>
-    <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/fenxiaojilu.css">
-    <link rel="stylesheet" href="${path}/static/css/common/common.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
+    <title>分销记录</title>
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/shop/css/fenxiaojilu.css">
+    <link rel="stylesheet" href="${path}/static/css/common.css">
 </head>
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
@@ -19,8 +17,8 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-            <a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>订单详情</p>  
+            <a href="javascript:window.location.replace('${basePath}shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <p>分销记录</p>
     </header>
     <div class="wrap">
        <div class="index_login">
@@ -53,12 +51,12 @@
     <div class="back_f">
 
     </div>
-    <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script type="application/javascript" src="${path}/static/js/plugins/date.js" ></script>
-    <script type="application/javascript" src="${path}/static/js/plugins/iscroll.js" ></script>
-    <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
-    <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>
-    <script type="application/javascript" src="${path}/static/js/pageJs/sf_distribution.js"></script>
+    <script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
+    <script type="application/javascript" src="${path}/static/js/commonAjax.js"/>
+    <script type="application/javascript" src="${path}/static/js/iscroll.js"></script>
+    <script type="application/javascript" src="${path}/static/js/date.js" ></script>
+    <script type="application/javascript" src="${path}/static/js/definedAlertWindow.js"></script>
+    <script type="application/javascript" src="${path}/static/js/sf_distribution.js"></script>
     <script>
         var path = "${path}";
         var basepath = "${basepath}";

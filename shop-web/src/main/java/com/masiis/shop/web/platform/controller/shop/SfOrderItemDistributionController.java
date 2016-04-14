@@ -1,4 +1,4 @@
-package com.masiis.shop.web.mall.controller.order;
+package com.masiis.shop.web.platform.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -7,9 +7,9 @@ import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
-import com.masiis.shop.web.mall.controller.base.BaseController;
-import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
-import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.shop.SfOrderItemDistributionService;
+import com.masiis.shop.web.platform.service.shop.SfShopService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -102,7 +102,7 @@ public class SfOrderItemDistributionController extends BaseController {
         mv.addObject("currentPage",1);
         mv.addObject("sfShop",sfShop);
         mv.addObject("sfDistributionRecords",sfDistributionRecords);
-        mv.setViewName("mall/order/sf_distribution");
+        mv.setViewName("platform/shop/sf_distribution");
         return mv;
     }
 

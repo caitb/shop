@@ -112,7 +112,7 @@
         $("#shareDivId").hide();
     }
     function returnHomePage(){
-        window.location.href="/index.html";
+        window.location.href="mall.qc.iimai.com/{shopId}/{userPid}/shop.shtml";
     }
 </script>
 </body>

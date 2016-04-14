@@ -7,6 +7,7 @@ import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserAddressService;
+import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -48,6 +49,8 @@ public class SfOrderPurchaseService {
     private SfOrderItemDistributionService orderItemDisService;
     @Resource
     private SfOrderConsigneeService ordConService;
+    @Resource
+    private UserService userService;
 
     private static BigDecimal orderSumDisAmount;//一条订单的总的分润
     private static Map<Integer, BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
@@ -362,6 +365,7 @@ public class SfOrderPurchaseService {
             sfOrder.setShopUserId(sfShopCartSkuDetail.getSfShopUserId());
             sfOrder.setShopId(sfShopCartSkuDetail.getSfShopId());
             sfOrder.setShopUserId(sfShopCartSkuDetail.getSfShopUserId());
+            sfOrder.setSendType(getSendType(sfShopCartSkuDetail.getSfShopUserId()));
         }
         sfOrder.setCreateTime(new Date());
         sfOrder.setCreateMan(purchaseUserId);
@@ -378,7 +382,6 @@ public class SfOrderPurchaseService {
         sfOrder.setPayStatus(0);
         sfOrder.setDistributionAmount(orderSumDisAmount);
         sfOrder.setReceivableAmount(skuTotalPrice.add(skuTotalShipAmount));//应收费用
-        sfOrder.setSendType(0);
         sfOrder.setOrderType(0);
         sfOrder.setOrderStatus(0);
         sfOrder.setIsCounting(0);
@@ -387,6 +390,21 @@ public class SfOrderPurchaseService {
         sfOrder.setIsReceipt(0);
         return sfOrder;
     }
+
+    /**
+     * 获得发货方式
+     * @author hanzengzhi
+     * @date 2016/4/14 16:12
+     */
+    private Integer getSendType(Long shopUserId){
+        ComUser comUser = userService.getUserById(shopUserId);
+        if (comUser == null){
+            log.info("支付成功获得发货方式comUser为null,shopUserId为"+shopUserId);
+            throw new BusinessException("支付成功获得发货方式comUser为null");
+        }
+        return comUser.getSendType();
+    }
+
 
     /**
      * 生成订单日志数据

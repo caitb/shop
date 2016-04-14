@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class SfOrderPayService {
     private SfOrderPaymentMapper paymentMapper;
     @Resource
     private SfOrderPaymentService ordPaymentSer;
+    @Resource
+    private PfUserSkuStockService skuStockService;
 
     /**
      * 获得需要支付的订单的信息
@@ -98,6 +101,13 @@ public class SfOrderPayService {
                 log.info("更新订单操作日志失败----end");
                 throw new BusinessException("更新订单操作日志失败----end");
             }
+            //获得订单子表详情信息
+            log.info("支付成功更新库存---start");
+            List<SfOrderItem> orderItems = ordItemService.getOrderItemByOrderId(order.getId());
+            if (orderItems!=null&&orderItems.size()!=0){
+                updateStock(order,orderItems);
+            }
+            log.info("支付成功更新库存---end");
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -139,6 +149,22 @@ public class SfOrderPayService {
     }
 
     /**
+     * 支付成功后更新冻结库存
+     * @author hanzengzhi
+     * @date 2016/4/14 15:57
+     */
+    private void updateStock(SfOrder order,List<SfOrderItem> orderItems){
+        for (SfOrderItem orderItem:orderItems){
+            PfUserSkuStock skuStock = skuStockService.selectByUserIdAndSkuId(order.getShopUserId(),orderItem.getSkuId());
+            log.info("更新库存shopUserId---"+order.getShopUserId()+"商品skuId----"+orderItem.getSkuId()+"之前冻结库存----"+skuStock.getFrozenStock());
+            skuStock.setFrozenStock(skuStock.getFrozenStock()+orderItem.getQuantity());
+            log.info("更新库存shopUserId---"+order.getShopUserId()+"商品skuId----"+orderItem.getSkuId()+"之后冻结库存----"+skuStock.getFrozenStock());
+            skuStockService.update(skuStock);
+        }
+    }
+
+
+    /**
      * 支付成功回调
      * @author hanzengzhi
      * @date 2016/4/10 13:59
@@ -156,6 +182,7 @@ public class SfOrderPayService {
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems",orderItems);
+            //
         }catch (Exception e){
             throw new BusinessException(e);
         }

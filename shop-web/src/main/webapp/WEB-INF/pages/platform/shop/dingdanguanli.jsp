@@ -61,7 +61,7 @@
                                 <c:if test="${pb.sendType==0 ||pb.sendType==null}">未选择</c:if>
                                 <c:if test="${pb.sendType==2}">自己发货</c:if></b></span></p>
                             <div class="ding">
-                                <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
+                                <p><a href="<%=path%>/sfOrderController/sfOrderDetal.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.sfOrderConsignee.consignee}','${pb.sfOrderConsignee.provinceName} ${pb.sfOrderConsignee.cityName} ${pb.sfOrderConsignee.regionName} ${pb.sfOrderConsignee.address}','${pb.sfOrderConsignee.mobile}','${pb.sfOrderConsignee.zip}')">收货人信息</p></c:if>
                                 <c:if test="${pb.orderStatus ==7}">
                                     <button class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</button>
@@ -304,7 +304,7 @@
                                 }
                                 trHtml+="</b></span></p>";
                                 trHtml+="<div class=\"ding\">";
-                                trHtml+="<p><a href=\"<%=path%>/borderManage/deliveryBorderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
+                                trHtml+="<p><a href=\"<%=path%>/sfOrderController/sfOrderDetal.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
                                 if(sfOrder.payStatus ==1 ){
                                     if(sfOrder.sfOrderConsignee != null){
                                         trHtml+="<p class=\"sh\" onclick=\"shouhuorenxinxi('"

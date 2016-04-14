@@ -1,13 +1,16 @@
 package com.masiis.shop.web.platform.controller.shop;
+
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
+import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.shop.SfOrderService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
+import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,7 +36,11 @@ public class SfOrderController extends BaseController {
     @Resource
     private SfOrderService sfOrderService;
     @Autowired
-    private UserService userService;
+    private SfOrderShopService sfOrderShopService;
+    @Autowired
+    private SfOrderPaymentMapper sfOrderPaymentMapper;
+    @Autowired
+    private ComDictionaryService comDictionaryService;
 
 
     @RequestMapping("/deliverOrder.do")
@@ -58,51 +64,54 @@ public class SfOrderController extends BaseController {
         return json.toString();
     }
 
-//    /**
-//     * 订单详情
-//     * <p/>
-//     * 进货订单详情
-//     *
-//     * @author muchaofeng
-//     * @date 2016/3/16 15:00
-//     */
-//    @RequestMapping("/borderDetils.html")
-//    public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
-//        OrderMallDetail orderMallDetail = new OrderMallDetail();
-//        ComUser user = getComUser(request);
-//        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-//        SfOrder order = sfOrderManageService.findOrderByOrderId(id);
-//        List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(id);
-//        StringBuffer stringBuffer =new StringBuffer();
-//        for (SfOrderItem sfOrderItem : sfOrderItems) {
-//            sfOrderItem.setSkuUrl(skuValue + sfOrderManageService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
-//            order.setTotalQuantity(order.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
-//        }
-//        //快递公司信息
-//        List<SfOrderFreight> sfOrderFreights = sfOrderManageService.findSfOrderFreight(id);
-//        if(sfOrderFreights.size()!=0 && sfOrderFreights!=null){
-//            for (SfOrderFreight sfOrderFreight:sfOrderFreights) {
-//                stringBuffer.append("<p>承运公司：<span>"+sfOrderFreight.getShipManName()+"</span></p>");
-//                stringBuffer.append("<p>运单编号：<span>"+sfOrderFreight.getFreight()+"</span></p>");
-//            }
-//        }else {
-//            stringBuffer.append("<p>承运公司：<span></span></p>");
-//            stringBuffer.append("<p>运单编号：<span></span></p>");
-//        }
-//
-//        //收货人
-//        SfOrderConsignee sfOrderConsignee = sfOrderManageService.findSfOrderConsignee(id);
-//        orderMallDetail.setSfOrder(order);
-//        orderMallDetail.setSfOrderItems(sfOrderItems);
-//        orderMallDetail.setSfOrderFreights(sfOrderFreights);
-//        orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("stringBuffer", stringBuffer.toString());
-//        modelAndView.addObject("orderMallDetail", orderMallDetail);
-//        modelAndView.setViewName("mall/order/dingdanxiangqing");
-//        return modelAndView;
-//    }
-//
+    /**
+     * 订单详情
+     * @author muchaofeng
+     * @date 2016/3/16 15:00
+     */
+    @RequestMapping("/sfOrderDetal.html")
+    public ModelAndView sfOrderDetal(HttpServletRequest request, Long id) throws Exception {
+        OrderMallDetail orderMallDetail = new OrderMallDetail();
+        ComUser user = getComUser(request);
+        SfOrder order = sfOrderService.findSforderByorderId(id);
+        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+
+        List<SfOrderItem> sfOrderItems = sfOrderShopService.findSfOrderItemBySfOrderId(id);
+        StringBuffer stringBuffer =new StringBuffer();
+        for (SfOrderItem sfOrderItem : sfOrderItems) {
+            sfOrderItem.setSkuUrl(skuValue + sfOrderShopService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
+            order.setTotalQuantity(order.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+        }
+        //快递公司信息
+        List<SfOrderFreight> sfOrderFreights = sfOrderShopService.findSfOrderFreight(id);
+        if(sfOrderFreights!=null && sfOrderFreights.size()!=0){
+            for (SfOrderFreight sfOrderFreight:sfOrderFreights) {
+                stringBuffer.append("<p>承运公司：<span>"+sfOrderFreight.getShipManName()+"</span></p>");
+                stringBuffer.append("<p>运单编号：<span>"+sfOrderFreight.getFreight()+"</span></p>");
+            }
+        }else {
+            stringBuffer.append("<p>承运公司：<span></span></p>");
+            stringBuffer.append("<p>运单编号：<span></span></p>");
+        }
+        ComDictionary comDictionary = comDictionaryService.findComDictionary(order.getOrderStatus());
+        order.setOrderSkuStatus(comDictionary.getValue());
+        //支付方式
+        List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(id);
+        //收货人
+        SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
+        orderMallDetail.setBuyerName(user.getRealName());
+        orderMallDetail.setSfOrder(order);
+        orderMallDetail.setSfOrderPayments(sfOrderPayments);
+        orderMallDetail.setSfOrderItems(sfOrderItems);
+        orderMallDetail.setSfOrderFreights(sfOrderFreights);
+        orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("stringBuffer", stringBuffer.toString());
+        modelAndView.addObject("orderMallDetail", orderMallDetail);
+        modelAndView.setViewName("platform/shop/shopxiangqing");
+        return modelAndView;
+    }
+
     /**
      * 分段查询小铺订单
      * @author muchaofeng
@@ -142,10 +151,6 @@ public class SfOrderController extends BaseController {
         List<SfOrder> sfOrders=null;
         try {
             ComUser user = getComUser(request);
-            if (user == null) {
-                user = userService.getUserById(1l);
-                request.getSession().setAttribute("comUser", user);
-            }
             Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), null, shopId);

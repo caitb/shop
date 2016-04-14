@@ -41,6 +41,16 @@ public class SfOrderService {
     @Autowired
     private SkuService skuService;
 
+
+    /**
+     * 通过订单Id获取订单
+     * @author muchaofeng
+     * @date 2016/4/13 19:59
+     */
+    public SfOrder findSforderByorderId(Long id){
+        return sfOrderMapper.selectByPrimaryKey(id);
+    }
+
    /**
     * 小铺订单
     * @author muchaofeng

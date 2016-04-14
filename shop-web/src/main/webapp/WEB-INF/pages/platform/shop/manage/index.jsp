@@ -30,7 +30,7 @@
         </div>
         <div>
             <p>
-                <span>麦链商城光放认证</span>
+                <span>${sfShop.explanation}</span>
             </p>
         </div>
         <img src="${sfShop.logo}" alt="">
@@ -47,7 +47,7 @@
     </div>
     <nav>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/nav1.jpg" alt=""></span><span>商品管理</span></p>
-        <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>订单管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/nav2.jpg" alt=""></span><span>店铺订单</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/nav3.jpg" alt=""></span><span>店铺设置</span></p>
     </nav>
     <nav style="margin:0;">
@@ -56,6 +56,9 @@
         <p></p>
     </nav>
 </div>
-<c:import url="../../../common/nav-footer.jsp"></c:import>
+<div class="wrap_no" <c:if test="${sfShop == null}">style="display: block"</c:if> >
+    <p>您还不是合伙人，去<a href="">好货市场</a>看看吧~</p>
+</div>
+<c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 </html>

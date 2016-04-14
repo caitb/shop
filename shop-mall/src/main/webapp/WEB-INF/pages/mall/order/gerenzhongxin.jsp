@@ -69,10 +69,10 @@
             <li></li>
         </ul>
     </nav>
-</div>
+</div><c:if test="${fm!=0}">
 <footer>
     <div>
-        <p onclick="javascript:window.location.replace('<%=path%>/index');">
+        <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
             <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
@@ -85,6 +85,6 @@
             <span>个人中心</span>
         </p>
     </div>
-</footer>
+</footer></c:if>
 </body>
 </html>

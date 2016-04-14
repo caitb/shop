@@ -184,7 +184,8 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/4/2 14:09
      */
     @RequestMapping("/borderManagement.html")
-    public ModelAndView borderManagement(HttpServletRequest request) throws Exception{
+    public ModelAndView borderManagement(HttpServletRequest request,Integer fm) throws Exception{
+        request.getSession().setAttribute("fm",fm);
         ComUser user = getComUser(request);
         if (user == null) {
             user = userService.getUserById(1l);

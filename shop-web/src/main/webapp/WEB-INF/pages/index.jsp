@@ -63,12 +63,12 @@
                 <li class="market">
                     <a class="herf" href="<%=basePath%>product/user/${user.id}">
                         <h1><img src="<%=path%>/static/images/1%20(2).png" style="height: 18px;margin-top: 2px;"></h1>
-                        <span>商品管理</span></a>
+                        <span>库存管理</span></a>
                 </li>
                 <li class="market">
                     <a class="herf" href="<%=path%>/borderManage/borderManagement.html">
                         <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""><c:if test="${borderNum!=0}"><span>${borderNum}</span></c:if></h1>
-                        <span>订单管理</span></a>
+                        <span>合伙人订单</span></a>
                 </li>
             </ul>
         </nav>

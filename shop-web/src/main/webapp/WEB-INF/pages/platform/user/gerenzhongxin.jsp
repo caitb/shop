@@ -49,7 +49,7 @@
             </a>
         </div>
         <div class="btm">
-            <a href="<%=path%>/html/xiaodian.html">
+            <a href="<%=path%>/shop/manage/index">
                 <span><img src="<%=path%>/images/shouye_footer2.png" alt=""></span>
                 <span>我的店铺</span>
             </a>

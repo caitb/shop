@@ -121,7 +121,7 @@
     <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
     </canvas>
-    <b id="downloadPoster">下载图片</b>
+    <b id="downloadPoster">长按图片保存海报</b>
     <span class="close">×</span>
 </div>
 <div class="back">

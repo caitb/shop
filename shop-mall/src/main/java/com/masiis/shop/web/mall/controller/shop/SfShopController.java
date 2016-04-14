@@ -122,10 +122,10 @@ public class SfShopController extends BaseController {
             positionMap.put("content-top", 306);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(247,60,140));
 
-            mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
-            mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
-            mav.addObject("userName", comUser.getWxNkName());
-            mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
+//            mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
+//            mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
+//            mav.addObject("userName", comUser.getWxNkName());
+//            mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
             mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg");
             return mav;
         } catch (Exception e) {
@@ -210,11 +210,11 @@ public class SfShopController extends BaseController {
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
-            dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);
-            dataMap.put("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
-            dataMap.put("userName", comUser.getWxNkName());
-            dataMap.put("skuName", skuService.getSkuById(skuId).getName());
-            dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
+//            dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);
+//            dataMap.put("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
+//            dataMap.put("userName", comUser.getWxNkName());
+//            dataMap.put("skuName", skuService.getSkuById(skuId).getName());
+//            dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
             dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
             return dataMap;
         } catch (Exception e) {

@@ -1,11 +1,9 @@
 package com.masiis.shop.web.mall.service.order;
 
-import com.masiis.shop.common.enums.BOrderStatus;
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
-import com.masiis.shop.dao.mallBeans.SfOrderItemImage;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.masiis.shop.common.enums;
+package com.masiis.shop.common.enums.BOrder;
 
 /**
 * 订单状态枚举类

@@ -1,6 +1,6 @@
 package com.masiis.shop.scheduler.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;

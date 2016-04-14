@@ -57,6 +57,10 @@ public class SkuService {
         int n = 0;
         if (pUserId == 0) {
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            //如果进入排单直接返回-quantity
+            if (pfSkuStock.getIsQueue() == 1) {
+                return 0 - quantity;
+            }
             n = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pUserId);

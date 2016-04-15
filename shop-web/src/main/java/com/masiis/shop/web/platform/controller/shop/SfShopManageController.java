@@ -66,15 +66,21 @@ public class SfShopManageController extends BaseController {
             comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
+
+            if(sfShop == null) return mav;
+
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 
             SfDistributionRecord sfCount = sfDistributionRecordMapper.selectCountByUserId(comUser.getId());
             Integer sumLevel = sfCount.getSumLevel(); //总参与人数
 
+            String shopUrl = "http://mall.qc.iimai.com/"+sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
+
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
             mav.addObject("orderCount", orderCount);
             mav.addObject("sumLevel", sumLevel);
+            mav.addObject("shopUrl", shopUrl);
 
             return mav;
         } catch (Exception e) {
@@ -181,7 +187,8 @@ public class SfShopManageController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(200, 200, basePath+"index?shopId="+shopId+"&userPid="+comUser.getId(), qrCodePath);
+            String shopUrl = "http://mall.qc.iimai.com/"+shopId+"/"+comUser.getId()+"/shop.shtml";
+            CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";

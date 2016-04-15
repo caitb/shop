@@ -5,12 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.base.BaseService;
-import com.masiis.shop.dao.platform.order.PfCorderConsigneeMapper;
-import com.masiis.shop.dao.platform.order.PfCorderFreightMapper;
-import com.masiis.shop.dao.platform.order.PfCorderMapper;
-import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
+import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
@@ -38,6 +36,8 @@ public class COrderService extends BaseService {
     private ComSkuMapper comSkuMapper;
     @Resource
     private ComSpuMapper comSpuMapper;
+    @Resource
+    private PfCorderOperationLogMapper pfCorderOperationLogMapper;
 
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, PfCorder pfCorder){
         PageHelper.startPage(pageNumber, pageSize);
@@ -47,14 +47,12 @@ public class COrderService extends BaseService {
         List<Order> orders = new ArrayList<>();
         for(PfCorder pc : pfCorders){
             ComUser comUser = comUserMapper.selectByPrimaryKey(pc.getUserId());
-            //PfCorderPayment pfCorderPayment = pfCorderPaymentMapper.selectByCorderId(pc.getId());
             PfCorderConsignee pfCorderConsignee = pfCorderConsigneeMapper.selectByCorderId(pc.getId());
             List<PfCorderFreight> pfCorderFreights = pfCorderFreightMapper.selectByCorderId(pc.getId());
 
             Order order = new Order();
             order.setComUser(comUser);
             order.setPfCorder(pc);
-            //order.setPfCorderPayment(pfCorderPayment);
             order.setPfCorderConsignee(pfCorderConsignee);
             order.setPfCorderFreights(pfCorderFreights);
 
@@ -112,13 +110,24 @@ public class COrderService extends BaseService {
      * @param pfCorderFreight
      */
     public void delivery(PfCorderFreight pfCorderFreight){
-        PfCorder pfCorder = new PfCorder();
-        pfCorder.setId(pfCorderFreight.getPfCorderId());
+        PfCorder pfCorder = pfCorderMapper.selectById(pfCorderFreight.getPfCorderId());
+        pfCorder.setOrderStatus(8);
         pfCorder.setShipStatus(5);
+        pfCorder.setDeliveryTime(new Date());
 
         pfCorderFreight.setCreateTime(new Date());
 
         pfCorderMapper.updateById(pfCorder);
         pfCorderFreightMapper.insert(pfCorderFreight);
+
+        //添加订单日志
+        PfCorderOperationLog pfCorderOperationLog = new PfCorderOperationLog();
+        pfCorderOperationLog.setCreateMan(pfCorder.getUserId());
+        pfCorderOperationLog.setCreateTime(new Date());
+        pfCorderOperationLog.setPfCorderStatus(8);
+        pfCorderOperationLog.setPfCorderId(pfCorder.getId());
+        pfCorderOperationLog.setRemark("订单完成");
+        pfCorderOperationLogMapper.insert(pfCorderOperationLog);
     }
+
 }

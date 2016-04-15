@@ -174,7 +174,7 @@
                                                             <div class="form-group" style="margin-left: -81px;">
                                                                 <label for="freight" class="col-sm-4 control-label">快递单号</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="hidden" name="pfBorderId" value="${order.pfCorder.id}" />
+                                                                    <input type="hidden" name="pfCorderId" value="${order.pfCorder.id}" />
                                                                     <input type="hidden" id="shipManName" name="shipManName" value="" />
                                                                     <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
                                                                 </div>

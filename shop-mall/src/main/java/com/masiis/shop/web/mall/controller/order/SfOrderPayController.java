@@ -37,7 +37,7 @@ public class SfOrderPayController {
     @RequestMapping(value = "getOrderInfo.html")
     public String getOrderInfo(HttpServletRequest request ,HttpServletResponse response,
                                @RequestParam(value = "orderId",required = true)Long orderId,
-                               Model model){
+                               Model model)throws Exception{
         Map<String,Object>  map =  orderPayService.getOrderInfo(orderId);
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));
@@ -66,7 +66,7 @@ public class SfOrderPayController {
     @RequestMapping(value = "paySuccessCallBack.html")
     public String paySuccessCallBack(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "orderId", required = true) Long orderId,
-                                     Model model){
+                                     Model model)throws Exception{
         Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));

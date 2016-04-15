@@ -26,13 +26,13 @@
                     <p>选择拿货方式</p>
                 </div>
             </c:if>
-            <div class="paidan">
-                <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
-                <p style="color:red;">*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>
-            </div>
+            <%--<div class="paidan">--%>
+            <%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
+            <%--<p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>--%>
+            <%--</div>--%>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span><b>重新选择</b></p>
+                    <p>拿货方式：<span>自己发货</span><b>你已选择拿货方式，不可更改</b></p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
@@ -49,7 +49,6 @@
                             </span><img src="${path}/static/images/next.png" alt=""></p></a>
                     </div>
                 </section>
-                <p>支付成功后，您的在线库存将会增加</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
@@ -114,18 +113,23 @@
         if ($(para).html() == "正在提交...") {
             return;
         }
-        var sendType =${pfBorder.sendType};
-        var orderType =${pfBorder.orderType};
-        if (orderType == 1 && sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {
+        var sendType =${bOrderConfirm.sendType};
+        var orderType =${bOrderConfirm.orderType};
+        if (orderType == 2 || sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {
             alert("请填写收获地址");
             return;
         }
         var paraData = {};
-        paraData.bOrderId = "${pfBorder.id}";
+        paraData.orderType = "0";//代理订单
+        paraData.skuId = "${bOrderConfirm.skuId}";
+        paraData.skuQuantity ="${bOrderConfirm.skuQuantity}";
+        paraData.wenXinId ="${bOrderConfirm.wenXinId}";
+        paraData.agentLevelId ="${bOrderConfirm.agentLevelId}";
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
+        paraData.pUserId ="${bOrderConfirm.pUserId}";
         $.ajax({
-            url: "${basePath}border/payBOrderSubmit.do",
+            url: "${basePath}border/add.do",
             type: "post",
             data: paraData,
             dataType: "json",

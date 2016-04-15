@@ -56,6 +56,7 @@ public class BOrderAddService {
     private SkuService skuService;
     @Resource
     private UserAddressService userAddressService;
+
     /**
      * 代理和补货统一添加订单入口
      *
@@ -63,7 +64,7 @@ public class BOrderAddService {
      * @param pfBorderItems
      */
     @Transactional
-    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems) throws Exception {
+    public Long AddBOrder(PfBorder pfBorder, List<PfBorderItem> pfBorderItems, PfBorderConsignee pfBorderConsignee) throws Exception {
         if (pfBorder == null) {
             throw new BusinessException("pfBorder为空");
         }
@@ -85,6 +86,11 @@ public class BOrderAddService {
         pfBorderOperationLog.setPfBorderStatus(0);
         pfBorderOperationLog.setRemark("新增订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        //添加收货人信息
+        if (pfBorderConsignee != null) {
+            pfBorderConsignee.setPfBorderId(pfBorder.getId());
+            pfBorderConsigneeMapper.insert(pfBorderConsignee);
+        }
         return pfBorder.getId();
     }
 
@@ -162,7 +168,7 @@ public class BOrderAddService {
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItems.add(pfBorderItem);
-        return AddBOrder(order, pfBorderItems);
+        return AddBOrder(order, pfBorderItems, null);
     }
 
     /**

@@ -1,20 +1,19 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.introspect.VirtualAnnotatedMember;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
-import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
-import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
+import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.order.PfCorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
@@ -33,7 +32,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,13 +88,16 @@ public class BOrderController extends BaseController {
         }
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(orderType);
+        bOrderConfirm.setWenXinId(weixinId);
+        bOrderConfirm.setpUserId(pUserId);
         //拿货方式
         bOrderConfirm.setSendType(comUser.getSendType());
         //获得地址
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
         bOrderConfirm.setComUserAddress(comUserAddress);
-        //获取sku名称
+        //获取sku
         ComSku comSku = skuService.getSkuById(skuId);
+        bOrderConfirm.setSkuId(skuId);
         bOrderConfirm.setSkuName(comSku.getName());
         //获取sku主图片
         ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
@@ -140,7 +141,7 @@ public class BOrderController extends BaseController {
     }
 
     /**
-     * 用户确认生成订单(合伙订单)
+     * 用户确认生成订单
      *
      * @author ZhaoLiang
      * @date 2016/3/8 12:50
@@ -148,93 +149,97 @@ public class BOrderController extends BaseController {
     @ResponseBody
     @RequestMapping("/add.do")
     public String addBOrder(HttpServletRequest request,
-                            @RequestParam(value = "skuId", required = true) Integer skuId,
-                            @RequestParam(value = "levelId", required = false) Integer levelId,
-                            @RequestParam(value = "weixinId", required = false) String weixinId,
-                            @RequestParam(value = "pUserId", required = false) Long pUserId,
-                            @RequestParam(value = "quantity", required = false) Integer quantity,
-                            @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
+                            BOrderConfirm bOrderConfirm) {
         JSONObject obj = new JSONObject();
         try {
-            if (skuId == null || skuId <= 0) {
+            if (bOrderConfirm.getSkuId() == null || bOrderConfirm.getSkuId() <= 0) {
                 throw new BusinessException("商品skuId不正确");
             }
-            //订单类型(0代理1补货2拿货)
-            Integer orderType = 0;
             ComUser comUser = getComUser(request);
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            if (pfUserSku == null) {
-                orderType = 1;
-            }
-            //代理订单
+            ComSku comSku = skuService.getSkuById(bOrderConfirm.getSkuId());
+            //订单类型(0代理1补货2拿货)
+            Integer orderType = bOrderConfirm.getOrderType();
+            BigDecimal unitPrice = BigDecimal.ZERO;//折扣后单价
+            BigDecimal bailPrice = BigDecimal.ZERO;//保证金
+            Integer quantitiy = 0;//商品数量
+            Integer agentLevel = 0;//代理等级
+            BigDecimal discount = BigDecimal.ZERO;
             if (orderType == 0) {
-                if (StringUtils.isBlank(weixinId)) {
+                if (StringUtils.isBlank(bOrderConfirm.getWenXinId())) {
                     throw new BusinessException("微信号不能为空");
                 }
-                if (levelId == null || levelId <= 0) {
-                    throw new BusinessException("代理等级有误");
+                if (bOrderConfirm.getAgentLevelId() == null || bOrderConfirm.getAgentLevelId() <= 0) {
+                    throw new BusinessException("商品代理等级不正确");
                 }
-
-            }
-
-
-            if (pUserId != null && pUserId > 0) {
-                userSkuService.checkParentData(pUserId, skuId, levelId);
-            }
-
-            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
-            ComSku comSku = skuService.getSkuById(skuId);
-            //折扣后单价
-            BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
-            //保证金
-            BigDecimal bailPrice = pfSkuAgent.getBail();
-            //折扣后总价
-            BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity()));
-            //处理订单数据
-            PfBorder order = new PfBorder();
-            order.setCreateTime(new Date());
-            order.setCreateMan(comUser.getId());
-            String orderCode = OrderMakeUtils.makeOrder("B");
-            order.setOrderCode(orderCode);
-            order.setUserMessage("");
-            order.setUserId(comUser.getId());
-            if (pUserId != null && pUserId > 0) {
-                order.setUserPid(pUserId);
+                if (StringUtils.isBlank(bOrderConfirm.getWenXinId())) {
+                    throw new BusinessException("商品代理微信号不正确");
+                }
+                if (bOrderConfirm.getpUserId() != null && bOrderConfirm.getpUserId() > 0) {
+                    userSkuService.checkParentData(bOrderConfirm.getpUserId(), bOrderConfirm.getSkuId(), bOrderConfirm.getAgentLevelId());
+                }
+                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(bOrderConfirm.getSkuId(), bOrderConfirm.getAgentLevelId());
+                unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
+                bailPrice = pfSkuAgent.getBail();
+                quantitiy = pfSkuAgent.getQuantity();
+                agentLevel = bOrderConfirm.getAgentLevelId();
+                discount = pfSkuAgent.getDiscount();
+            } else if (orderType == 1) {
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), bOrderConfirm.getSkuId());
+                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(bOrderConfirm.getSkuId(), pfUserSku.getAgentLevelId());
+                unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
+                bailPrice = BigDecimal.ZERO;
+                quantitiy = bOrderConfirm.getSkuQuantity();
+                agentLevel = pfUserSku.getAgentLevelId();
+                discount = pfSkuAgent.getDiscount();
+            } else if (orderType == 2) {
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), bOrderConfirm.getSkuId());
+                unitPrice = BigDecimal.ZERO;
+                bailPrice = BigDecimal.ZERO;
+                quantitiy = bOrderConfirm.getSkuQuantity();
+                agentLevel = pfUserSku.getAgentLevelId();
             } else {
-                order.setUserPid(0l);
+                throw new BusinessException("订单类型不正确");
             }
-            order.setSupplierId(0);
-            order.setReceivableAmount(totalPrice.add(bailPrice));
-            order.setOrderAmount(totalPrice.add(bailPrice));
-            order.setBailAmount(bailPrice);
-            order.setProductAmount(totalPrice);
-            order.setShipAmount(BigDecimal.ZERO);
-            order.setPayAmount(BigDecimal.ZERO);
-            order.setShipManId(0);
-            order.setShipManName("");
-            order.setShipType(0);
-            order.setShipRemark("");
+            //处理订单数据
+            PfBorder pfBorder = new PfBorder();
+            pfBorder.setCreateTime(new Date());
+            pfBorder.setCreateMan(comUser.getId());
+            String orderCode = OrderMakeUtils.makeOrder("B");
+            pfBorder.setOrderCode(orderCode);
+            pfBorder.setUserMessage(bOrderConfirm.getUserMessage());
+            pfBorder.setUserId(comUser.getId());
+            if (bOrderConfirm.getpUserId() != null && bOrderConfirm.getpUserId() > 0) {
+                pfBorder.setUserPid(bOrderConfirm.getpUserId());
+            } else {
+                pfBorder.setUserPid(0l);
+            }
+            pfBorder.setSupplierId(0);
+            pfBorder.setReceivableAmount(unitPrice.multiply(BigDecimal.valueOf(quantitiy)).add(bailPrice));
+            pfBorder.setOrderAmount(unitPrice.multiply(BigDecimal.valueOf(quantitiy)).add(bailPrice));
+            pfBorder.setBailAmount(bailPrice);
+            pfBorder.setProductAmount(unitPrice.multiply(BigDecimal.valueOf(quantitiy)));
+            pfBorder.setShipAmount(BigDecimal.ZERO);
+            pfBorder.setPayAmount(BigDecimal.ZERO);
+            pfBorder.setShipManId(0);
+            pfBorder.setShipManName("");
+            pfBorder.setShipType(0);
+            pfBorder.setShipRemark("");
             //确定订单的拿货方式
             if (comUser.getSendType() == 0) {
-                ComUser pUser = userService.getUserById(pUserId);
-                if (pUser == null) {
-                    order.setSendType(comUser.getSendType());
-                } else {
-                    order.setSendType(pUser.getSendType());
-                }
+                throw new BusinessException("用户还没有选择拿货方式");
             } else {
-                order.setSendType(comUser.getSendType());
+                pfBorder.setSendType(comUser.getSendType());
             }
-            order.setOrderType(0);
-            order.setOrderStatus(0);
-            order.setShipStatus(0);
-            order.setPayStatus(0);
-            order.setIsCounting(0);
-            order.setIsShip(0);
-            order.setIsReplace(0);
-            order.setIsReceipt(0);
-            order.setReplaceOrderId(0l);
-            order.setRemark("代理订单");
+            pfBorder.setOrderType(orderType);
+            pfBorder.setOrderStatus(0);
+            pfBorder.setShipStatus(0);
+            pfBorder.setPayStatus(0);
+            pfBorder.setIsCounting(0);
+            pfBorder.setIsShip(0);
+            pfBorder.setIsReplace(0);
+            pfBorder.setIsReceipt(0);
+            pfBorder.setReplaceOrderId(0l);
+            pfBorder.setRemark("");
             //处理订单商品数据
             List<PfBorderItem> orderItems = new ArrayList<>();
             PfBorderItem pfBorderItem = new PfBorderItem();
@@ -242,13 +247,13 @@ public class BOrderController extends BaseController {
             pfBorderItem.setSpuId(comSku.getSpuId());
             pfBorderItem.setSkuId(comSku.getId());
             pfBorderItem.setSkuName(comSku.getName());
-            pfBorderItem.setAgentLevelId(levelId);
-            pfBorderItem.setWxId(weixinId);
-            pfBorderItem.setQuantity(pfSkuAgent.getQuantity());
+            pfBorderItem.setAgentLevelId(agentLevel);
+            pfBorderItem.setWxId(bOrderConfirm.getWenXinId());
+            pfBorderItem.setQuantity(quantitiy);
             pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-            pfBorderItem.setDiscount(pfSkuAgent.getDiscount());
+            pfBorderItem.setDiscount(discount);
             pfBorderItem.setUnitPrice(unitPrice);
-            pfBorderItem.setTotalPrice(totalPrice);
+            pfBorderItem.setTotalPrice(unitPrice.multiply(BigDecimal.valueOf(quantitiy)));
             pfBorderItem.setBailAmount(bailPrice);
             pfBorderItem.setIsComment(0);
             pfBorderItem.setIsReturn(0);
@@ -256,7 +261,28 @@ public class BOrderController extends BaseController {
             if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) != null) {
                 throw new BusinessException("此商品已经建立过代理，请通过补货增加库存。");
             }
-            Long bOrderId = bOrderAddService.AddBOrder(order, orderItems);
+            PfBorderConsignee pfBorderConsignee = null;
+            //拿货方式(0未选择1平台代发2自己发货)
+            if (pfBorder.getOrderType() == 2 || pfBorder.getSendType() == 2) {
+                ComUserAddress comUserAddress = bOrderConfirm.getComUserAddress();
+                if (comUserAddress == null) {
+                    throw new BusinessException("请填写收货地址");
+                }
+                pfBorderConsignee = new PfBorderConsignee();
+                pfBorderConsignee.setCreateTime(new Date());
+                pfBorderConsignee.setUserId(comUserAddress.getUserId());
+                pfBorderConsignee.setConsignee(comUserAddress.getName());
+                pfBorderConsignee.setMobile(comUserAddress.getMobile());
+                pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
+                pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
+                pfBorderConsignee.setCityId(comUserAddress.getCityId());
+                pfBorderConsignee.setCityName(comUserAddress.getCityName());
+                pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
+                pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
+                pfBorderConsignee.setAddress(comUserAddress.getAddress());
+                pfBorderConsignee.setZip(comUserAddress.getZip());
+            }
+            Long bOrderId = bOrderAddService.AddBOrder(pfBorder, orderItems, pfBorderConsignee);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {

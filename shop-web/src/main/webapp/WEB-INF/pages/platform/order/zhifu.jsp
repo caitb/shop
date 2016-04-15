@@ -26,13 +26,13 @@
                     <p>选择拿货方式</p>
                 </div>
             </c:if>
-            <%--<div class="paidan">--%>
-                <%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
-                <%--<p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>--%>
-            <%--</div>--%>
-            <c:if test="${pfBorder.sendType==2}">
+            <div class="paidan">
+                <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
+                <p style="color:red;">*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>
+            </div>
+            <%--<c:if test="${pfBorder.sendType==2}">--%>
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span><b>你已选择拿货方式，不可更改</b></p>
+                    <p>拿货方式：<span>自己发货</span><b>重新选择</b></p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
@@ -47,13 +47,14 @@
                                     src="${path}/static/images/next.png" alt=""></p></a>
                     </div>
                 </section>
-            </c:if>
-            <c:if test="${pfBorder.sendType==1}">
+                <p>支付成功后，您的在线库存将会增加</p>
+          <%--  </c:if>--%>
+<%--            <c:if test="${pfBorder.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span><b>你已选择拿货方式，不可更改</b></p>
                     <h1>支付成功后，您的在线库存将会增加</h1>
                 </div>
-            </c:if>
+            </c:if>--%>
             ${productInfo}
             <section class="sec3">
                 <p>留言：<input type="text" id="userMessage" name="userMessage"></p>
@@ -69,7 +70,7 @@
                 <p><b>保证金：</b><span>￥${pfBorder.bailAmount}</span></p>
                 <p>共需支付：￥${pfBorder.receivableAmount}</p>
             </section>
-            <a href="javascript:;" onclick="submit(this)" class="weixin">微信支付</a>
+            <a href="javascript:;" onclick="submit(this)" class="weixin">下一步</a>
         </main>
     </div>
 </div>

@@ -64,7 +64,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                 <p>
                                     <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                    <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                    <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                 </p>
                                 </c:if>
                             </div>
@@ -97,7 +97,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -130,7 +130,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -163,7 +163,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -196,7 +196,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -278,7 +278,7 @@
                                        trHtml+="<button id=\"querenshouhuo_"+sfOrder.id+"\" onclick=\"querenshouhuo('"+sfOrder.id+"')\">确认收货</button></p>";
                                    }
                                    if(sfOrder.orderStatus ==0 ){
-                                       trHtml+="<button>继续支付</button></p>";
+                                       trHtml+="<button onclick=\"javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId="+sfOrder.id+"');\">继续支付</button>";
                                    }
                                }
                                trHtml+="</div></section>";

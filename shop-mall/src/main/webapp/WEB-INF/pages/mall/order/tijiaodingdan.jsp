@@ -34,7 +34,7 @@
     function submitOrder(){
         var selectedAddressId = $("#addressId").val();
         var shopId = $("#shopId").val();
-        var message = $("#messageId").val();
+        var message = $("#userMessageId").val();
         if(selectedAddressId ==null || selectedAddressId =="" ){
             alert("未选择收获地址");
             return false ;
@@ -105,7 +105,7 @@
         </c:forEach>
         <section class="sec3">
             <p><em>运费</em><span>${skuTotalShipAmount}</span></p>
-            <p><em>留言：</em><input type="text"></p>
+            <p><em>留言：</em><input id="userMessageId" type="text"></p>
             <h1>共<b style="font-size:12px">${totalQuantity}</b>件商品　合计：<span>￥${skuTotalPrice}</span></h1>
         </section>
         <section class="sec4">

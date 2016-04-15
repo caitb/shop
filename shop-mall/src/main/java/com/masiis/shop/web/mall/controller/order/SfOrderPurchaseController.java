@@ -76,6 +76,7 @@ public class SfOrderPurchaseController extends BaseController {
             if (!StringUtils.isEmpty(message)){
                 message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
             }
+            log.info("message------"+message);
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
             if (orderId != null){
                 obj.put("isSubmitOrder","true");

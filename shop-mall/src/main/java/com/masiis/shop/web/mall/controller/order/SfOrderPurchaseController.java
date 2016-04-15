@@ -60,9 +60,10 @@ public class SfOrderPurchaseController extends BaseController {
     public String submitOrder(HttpServletRequest request,HttpServletResponse response,
                               @RequestParam(value = "message" , required = false)String message,
                               @RequestParam(value = "shopId",required = true) Long sfShopId,
-                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
+                              @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId)throws Exception{
         JSONObject obj = new JSONObject();
         ComUser comUser = getComUser(request);
+        message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
         Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
         if (orderId != null){
             obj.put("isSubmitOrder","true");

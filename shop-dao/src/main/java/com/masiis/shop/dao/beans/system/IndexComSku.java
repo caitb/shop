@@ -17,6 +17,7 @@ public class IndexComSku {
     private Date createTime;//创建日期
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
+    private Integer skuId;//sku主键id
     private Integer isPay;//是否付款
     private String imgName;//图片名称
     private String imgUrl;//图片地址
@@ -27,11 +28,28 @@ public class IndexComSku {
     private String remark;//备注
     private String fullImgUrl;//完整的图片URL地址
     private  String discountLevel;//优惠区间
+    private  String bailLevel;//优惠区间
     private Integer maxDiscount;//优惠%
     private ComSku comSku;//商品属性
     private Integer isSalt;//是否下架
     private Integer agentNum;//代理人数
     private Integer isPartner ;//是否为合伙人
+
+    public void setBailLevel(String bailLevel) {
+        this.bailLevel = bailLevel;
+    }
+
+    public String getBailLevel() {
+        return bailLevel;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
 
     public void setBail(BigDecimal bail) {this.bail = bail;}
     public BigDecimal getBail() {return bail;}

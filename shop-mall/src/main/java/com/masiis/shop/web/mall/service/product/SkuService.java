@@ -68,7 +68,7 @@ public class SkuService {
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
-        if(shopUser!=null && shopUser.getSendType().equals("1")){//平台
+        if(shopUser!=null && shopUser.getSendType()==1){//平台
             n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }else{
             n = pfUserSkuStock.getCustomStock();

@@ -138,6 +138,7 @@
         var addressId = $("#addressId").val();
         if (addressId === undefined || addressId == "") {
             alert("请输入拿货地址！");
+            return;
         }
         if (checked == true) {
             if (afterLowerCount >= 0) {

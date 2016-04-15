@@ -82,7 +82,7 @@ public class SfShopService {
      * @author muchaofeng
      * @date 2016/4/10 10:56
      */
-    public boolean mallShout(Long shopId, Long userId){
+    public boolean mallShout(Long userId, Long shopId){
         try{
             Map<String, Object> map = new HashMap<>();
 

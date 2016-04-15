@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhaoLiang on 2016/3/4.
@@ -38,6 +39,19 @@ public class SkuAgentService {
      */
     public List<ComAgentLevel> getComAgentLevel() {
         return comAgentLevelMapper.selectAll();
+    }
+
+    /**
+     * 获取商品保证金区间
+     * @author muchaofeng
+     * @date 2016/4/14 17:40
+     */
+
+    public String getSkuAgentLevel(Integer skuId) {
+        Double maxBail = pfSkuAgentMapper.selectMaxBail(skuId);
+        Double minBail = pfSkuAgentMapper.selectMinBail(skuId);
+        String bail = String.valueOf(minBail)+"-"+String.valueOf(maxBail);
+        return bail;
     }
 
     /**

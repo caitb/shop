@@ -1,27 +1,19 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/xinjianka.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/xinjianka.css">
+    <link rel="stylesheet" href="${path}/static/css/loading.css">
 </head>
 <body>
 <input type="hidden" id="userId" name="userId" value="${userId}"/>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:history.back(-1)" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:history.back(-1)" onClick=""><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>添加银行卡</p>
     </header>
     <main>
@@ -41,10 +33,12 @@
         </botton>
     </main>
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/commonAjax.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
 <script>
+    var path = "${path}";
+    var basePath = "${basePath}";
     <%--function backLastPage(){--%>
         <%--fullShow();//跳转页面钱展示全屏遮罩loading...--%>
         <%--window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";--%>
@@ -78,7 +72,7 @@
         $.ajax({
             type:"POST",
             async:false,
-            url : "<%=path%>/extractwayinfo/add.do",
+            url : basePath + "extractwayinfo/add.do",
             data:{bankcard:bankcard,bankid:bankid,depositbankname:depositbankname,cardownername:cardownername,returnJumpType:returnJumpType},
             dataType:"Json",
             beforeSend:function(){
@@ -90,9 +84,9 @@
                 }else {
                     if (data.returnJumpType == 0){
                         fullShow();//跳转页面钱展示全屏遮罩loading...
-                        window.location.href="<%=basePath%>extractwayinfo/findExtractwayInfo.shtml";
+                        window.location.href = basePath + "extractwayinfo/findExtractwayInfo.shtml";
                     }else if (data.returnJumpType == 1){
-                        window.location.href="<%=basePath%>personalInfo/toBankCardPage.html";
+                        window.location.href = basePath + "personalInfo/toBankCardPage.html";
                     }
                 }
             },

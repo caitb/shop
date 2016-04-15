@@ -1,31 +1,22 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=path%>/static/css/base.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/header.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/tixian.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
+    <%@include file="/WEB-INF/pages/common/head.jsp" %>
+    <link rel="stylesheet" href="${path}/static/css/tixian.css">
     <script type="application/javascript">
-        var path = "<%=path%>";
-        var basepath = "<%=basePath%>";
+        var path = "${path}";
+        var basepath = "${basePath}";
         var maxMoney = "${extractMoney}";
     </script>
 </head>
 <body>
    <div class="wrap">
         <header class="xq_header">
-            <a href="#" onclick="backLastPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="#" onclick="backLastPage()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>申请提现 </p>            
         </header>
         <main>
@@ -33,7 +24,7 @@
                 <c:choose>
                     <c:when test="${hasCard == true}">
                         <div class="sec2" onclick="choiceBank()">
-                            <span><img src="<%=path%>${extractwayInfo.cardImg}" alt=""></span>
+                            <span><img src="${path}${extractwayInfo.cardImg}" alt=""></span>
                             <p>
                                 <span><em>${extractwayInfo.bankName}</em></span>
                                 <span>
@@ -47,7 +38,7 @@
                     </c:when>
                     <c:otherwise>
                         <div class="xinz" style="margin-bottom:5px;" onclick="choiceBank()">
-                            <p><a href="<%=basePath%>extractwayinfo/toCreateBankcard.shtml" style="color:#333;">新增银行卡</a></p>
+                            <p><a href="${basePath}>extractwayinfo/toCreateBankcard.shtml" style="color:#333;">新增银行卡</a></p>
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -78,7 +69,7 @@
 
     </div>
 </body>
-<script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<script type="application/javascript" src="<%=path%>/static/js/extract_apply.js"></script>
-<script type="application/javascript" src="<%=path%>/static/js/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="${path}/static/js/extract_apply.js"></script>
+<script type="application/javascript" src="${path}/static/js/commonAjax.js"></script>
 </html>

@@ -8,9 +8,10 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderItem;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface SfOrderItemMallMapper {
     List<SfOrderItem> selectBySfOrderId(Long sfOrderId);
 }

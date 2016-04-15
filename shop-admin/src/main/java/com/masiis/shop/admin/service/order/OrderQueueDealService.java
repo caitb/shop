@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.product.SkuService;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
@@ -132,7 +133,7 @@ public class OrderQueueDealService {
             }
         }
         //修改订单状态，订单完成
-        pfBorder.setOrderStatus(3);
+        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
         if (pfBorderMapper.updateById(pfBorder) == 0) {
             throw new BusinessException("平台代发:修改订单状态失败");
         }
@@ -188,8 +189,8 @@ public class OrderQueueDealService {
                 throw new BusinessException("自发货:平台商品库存不足，拿货数量为" + quantity + "，平台库存量" + pfSkuStock.getStock());
             }
         }
-        //修改订单状态，订单完成
-        pfBorder.setOrderStatus(7);
+        //修改订单状态，订单待发货
+        pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
         if (pfBorderMapper.updateById(pfBorder) == 0) {
             throw new BusinessException("自发货:修改订单状态失败");
         }

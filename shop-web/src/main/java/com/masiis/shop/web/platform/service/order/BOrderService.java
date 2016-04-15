@@ -1,15 +1,13 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.masiis.shop.common.enums.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.user.PfUserSkuCustom;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -502,25 +499,6 @@ public class BOrderService {
         }
         return pfBorders;
     }
-
-    /**
-     * 判断订单库存是否充足
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/18 14:25
-     */
-    public boolean checkBOrderStock(PfBorder pfBorder) throws Exception {
-        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        for (PfBorderItem pfBorderItem : pfBorderItems) {
-            int n = skuService.checkSkuStock(pfBorderItem.getSkuId(), pfBorderItem.getQuantity(), pfBorder.getUserPid());
-            if (n < 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     /**
      * 发货
      *

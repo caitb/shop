@@ -61,11 +61,12 @@ public class SfOrderItemDistributionController extends BaseController {
         logger.info("count:"+count);
         Integer sumLevel = sfCount.getSumLevel();
         logger.info("sumLevel:"+sumLevel);
-        BigDecimal distributionAmount = sfCount.getDistributionAmount();
+        BigDecimal distributionAmount;
         if (count == 0){
+            distributionAmount = new BigDecimal(0);
             mv.addObject("sumLevel",0);
-            mv.addObject("totalCount",0);
-            mv.addObject("distributionAmount",0);
+//            mv.addObject("totalCount",0);
+            mv.addObject("distributionAmount",distributionAmount);
         }else {
             Date start = DateUtil.getFirstTimeInMonth(new Date());
             Date end = DateUtil.getLastTimeInMonth(new Date());
@@ -73,13 +74,14 @@ public class SfOrderItemDistributionController extends BaseController {
             totalPage = num%10 == 0 ? num/10 : num/10 + 1;
             List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,1,10);
             List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
+            distributionAmount = sfCount.getDistributionAmount();
             for (SfDistributionRecord sfDistributionRecord : sflist){
                 List<SfDistributionPerson> persons = sfOrderItemDistributionService.findListSfDistributionPerson(sfDistributionRecord.getItemId());
                 sfDistributionRecord.setSfDistributionPersons(persons);
                 sfDistributionRecords.add(sfDistributionRecord);
             }
             mv.addObject("sumLevel",sumLevel);
-            mv.addObject("totalCount",count);
+//            mv.addObject("totalCount",count);
             mv.addObject("distributionAmount",distributionAmount);
             mv.addObject("sfDistributionRecords",sfDistributionRecords);
             logger.info("sfDistributionRecords.size()="+sfDistributionRecords.size());

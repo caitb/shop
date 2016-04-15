@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.SfOrder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface SfOrderMapper {
@@ -32,5 +33,12 @@ public interface SfOrderMapper {
      * @return
      */
     Integer countByShopId(Long shopId);
+
+    /**
+     * 根据条件查询订单
+     * @param conditionMap
+     * @return
+     */
+    List<SfOrder> selectByMap(Map<String, Object> conditionMap);
 
 }

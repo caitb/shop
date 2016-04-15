@@ -39,7 +39,7 @@
             </p>
             <%--<c:forEach begin="0" end="${size}" step="2" var="i">--%>
             <p><c:forEach items="${SfShopDetails}" begin="0" end="0" var="sf">
-                <span style="background:url('<%=path%>/static/images/f.png')no-repeat 0;background-size: 14px 14px;">${sf.icon}${sf.skuName}${sf.agentLevelName}合伙人认证</span>
+                <span style="background:url('<%=path%>/static/images/f.png')no-repeat 0;background-size: 14px 14px;">${sf.icon}${sf.skuName}${sf.agentLevelName}认证</span>
             </c:forEach>
             </p>
             <%--</c:forEach>--%>
@@ -136,6 +136,7 @@
                 if(data.mallShout){
                     $("#ok").show();
                     $(".back").show();
+                    location.reload(true);
                 } else{
                     $("#no").show();
                     $(".back").show();

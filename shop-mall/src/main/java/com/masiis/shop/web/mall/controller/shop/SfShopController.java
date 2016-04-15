@@ -2,11 +2,14 @@ package com.masiis.shop.web.mall.controller.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
@@ -244,6 +247,14 @@ public class SfShopController extends BaseController {
                                      @RequestParam(value="skuId",required = true) Integer skuId,
                                      @RequestParam(value="shopId",required = true) Long shopId,
                                      @RequestParam(value="fromUserId",required = false) Long fromUserId) throws Exception {
+        SfShop sfShop =sfShopService.getSfShopById(shopId);
+        if(sfShop==null){
+            throw new BusinessException("该店铺不存在！");
+        }
+        ComSku comSku = skuService.getSkuById(skuId);
+        if(comSku==null){
+            throw new BusinessException("该商品不存在！");
+        }
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);

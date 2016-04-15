@@ -26,7 +26,7 @@ function showMore() {
     if (currentPage < totalPage) {
         $.ajax({
             type: "POST",
-            url: basepath + "distribution/moreDistribution.do",
+            url: basePath + "distribution/moreDistribution.do",
             data: {currentPage: currentPage, count: count, year: year, month: month},
             dataType: "Json",
             success: function (data) {
@@ -48,9 +48,14 @@ function showMore() {
 }
 
 function turnMonth(year,month){
+    var yearLast = $("#year").val();
+    var monthLast = $("#month").val();
+    if (yearLast == year && monthLast == month){
+        return;
+    }
     $.ajax({
         type: "POST",
-        url: basepath + "distribution/moreDistribution.do",
+        url: basePath + "distribution/moreDistribution.do",
         data: {currentPage: 0, count: 0, year: year, month: month},
         dataType: "Json",
         success: function (data) {
@@ -61,11 +66,20 @@ function turnMonth(year,month){
                 $("#divall").html(data.message);
             }
             $("#currentPage").val(1);
+            $("#year").val(year);
+            $("#month").val(month);
         },
         error: function () {
             //请求出错处理
             alert("请求出错，请稍后再试");
         }
     });
+}
+
+function viewOrder(orderId){
+    if (orderId == ""){
+        return;
+    }
+    window.location.href = basePath + "borderManage/borderDetils.html?id=" + orderId;
 }
 

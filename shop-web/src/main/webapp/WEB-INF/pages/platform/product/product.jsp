@@ -105,7 +105,7 @@
                     </li>
                 </ul>
             </div>
-            <span class="btn">—</span>
+            <span class="btn">+</span>
         </div>
         <div class="back_j" style="display: none">
             <p class="biao">绑定账号</p>
@@ -199,19 +199,19 @@
         $(this).parent().animate({
             width: "90%"
         })
-        $(".fixe").addClass("active");
-        $(this).addClass("on").delay(3000).removeClass("on")
-        $(".left").show()
-        $(this).html("+")
+
+        $(".left").show("slow");
+        $(this).addClass("on").delay(3000).removeClass("on");
+        $(this).html("—")
     }, function () {
         $(this).parent().animate({
             width: "50px"
         })
         $(this).prev().hide()
+        $(".left").hide();
         $(".fixe").removeClass("active");
         $(this).addClass("on")
-        $(".left").hide()
-        $(this).html("—")
+        $(this).html("+")
     })
     $(".paidan").on("click", function () {
         $(".back").css("display", "-webkit-box");

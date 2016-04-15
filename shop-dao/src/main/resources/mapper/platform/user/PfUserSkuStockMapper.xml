@@ -22,11 +22,11 @@
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStock">
         insert into pf_user_sku_stock (id, create_time, user_id, 
             spu_id, sku_id, stock, 
-            frozen_stock, remark, version
+            frozen_stock,custom_stock, remark, version
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, 
             #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, 
-            #{frozenStock,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
+            #{frozenStock,jdbcType=INTEGER},#{customStock,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
             )
     </insert>
 
@@ -38,6 +38,7 @@
             sku_id = #{skuId,jdbcType=INTEGER},
             stock = #{stock,jdbcType=INTEGER},
             frozen_stock = #{frozenStock,jdbcType=INTEGER},
+            custom_stock= #{customStock,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR},
             version = #{version,jdbcType=INTEGER}
         where id = #{id,jdbcType=BIGINT}
@@ -59,6 +60,7 @@
         update pf_user_sku_stock
         set stock = #{stock,jdbcType=INTEGER},
         frozen_stock = #{frozenStock,jdbcType=INTEGER},
+        custom_stock= #{customStock,jdbcType=INTEGER},
         remark = #{remark,jdbcType=VARCHAR},
         version = #{version,jdbcType=INTEGER}+1
         where id = #{id,jdbcType=BIGINT}

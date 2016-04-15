@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/shenqingtixian.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
 </head>
 <body>
 <input type="hidden" id="extractableFee" name="extractableFee" value="${userAccount.extractableFee}"/>

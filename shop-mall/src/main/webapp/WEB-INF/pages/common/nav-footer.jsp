@@ -22,15 +22,3 @@
         </p>
     </div>
 </footer>
-<script>
-    var oAs = document.getElementsByTagName('a');
-    for(var i in oAs){
-        oAs[i].onclick = function(){
-            for(var j in oAs){
-                oAs[j].class = '';
-            }
-
-            oAs[i].class = 'active';
-        }
-    }
-</script>

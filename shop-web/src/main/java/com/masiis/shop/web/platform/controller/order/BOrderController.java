@@ -9,8 +9,9 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.PayBOrderService;
+import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
@@ -54,7 +55,9 @@ public class BOrderController extends BaseController {
     @Resource
     private UserAddressService userAddressService;
     @Resource
-    private PayBOrderService payBOrderService;
+    private BOrderPayService payBOrderService;
+    @Resource
+    private BOrderAddService bOrderAddService;
 
     /**
      * 用户确认生成订单(合伙订单)
@@ -155,7 +158,7 @@ public class BOrderController extends BaseController {
             if (userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), comSku.getId()) != null) {
                 throw new BusinessException("此商品已经建立过代理，请通过补货增加库存。");
             }
-            Long bOrderId = bOrderService.AddBOrder(order, orderItems);
+            Long bOrderId = bOrderAddService.AddBOrder(order, orderItems);
             obj.put("isError", false);
             obj.put("bOrderId", bOrderId);
         } catch (Exception ex) {

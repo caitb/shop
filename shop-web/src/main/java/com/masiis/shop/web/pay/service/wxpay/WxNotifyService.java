@@ -6,12 +6,11 @@ import com.masiis.shop.dao.po.PfCorderPayment;
 import com.masiis.shop.web.platform.beans.pay.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
-import com.masiis.shop.web.platform.service.order.PayBOrderService;
+import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.swing.border.Border;
 
 /**
  * Created by lzh on 2016/3/16.
@@ -25,7 +24,7 @@ public class WxNotifyService {
     @Resource
     private COrderService cOrderService;
     @Resource
-    private PayBOrderService payBOrderService;
+    private BOrderPayService payBOrderService;
 
     /**
      * 处理微信支付订单异步回调业务

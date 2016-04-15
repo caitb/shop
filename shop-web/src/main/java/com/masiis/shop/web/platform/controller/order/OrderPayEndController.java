@@ -5,8 +5,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.BorderSkuStockService;
-import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +28,7 @@ public class OrderPayEndController extends BaseController {
     @Resource
     private BOrderService bOrderService;
     @Resource
-    private BorderSkuStockService borderSkuStockService;
+    private BOrderSkuStockService borderSkuStockService;
 
     /**
      * 补货订单支付完成

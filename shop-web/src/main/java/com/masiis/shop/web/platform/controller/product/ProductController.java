@@ -7,6 +7,7 @@ import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuService;
@@ -33,10 +34,8 @@ public class ProductController extends BaseController {
 
     @Resource
     private ProductService productService;
-
     @Resource
     private UserSkuService userSkuService;
-
     @Resource
     private BOrderService bOrderService;
     @Resource
@@ -45,7 +44,8 @@ public class ProductController extends BaseController {
     private UserService userService;
     @Resource
     private UserAddressService userAddressService;
-
+    @Resource
+    private BOrderAddService bOrderAddService;
     @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
     public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/product");
@@ -120,7 +120,7 @@ public class ProductController extends BaseController {
                 object.put("isQueue", true);
                 object.put("message", "您的订单将进入排单期");
             }
-            Long orderCode = bOrderService.addReplenishmentOrders(comUser.getId(), skuId, stock);
+            Long orderCode = bOrderAddService.addReplenishmentOrders(comUser.getId(), skuId, stock);
             object.put("isError", false);
             object.put("orderCode", orderCode);
         } catch (Exception ex) {
@@ -148,7 +148,7 @@ public class ProductController extends BaseController {
             if (product.getStock() - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
-            Long orderCode = bOrderService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);
+            Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);
             object.put("borderId", orderCode);
             object.put("isError", false);
         } catch (Exception ex) {

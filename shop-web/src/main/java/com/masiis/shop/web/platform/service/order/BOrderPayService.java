@@ -1,7 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderShipType;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -42,7 +41,7 @@ import java.util.Random;
  * @date 2016/3/30
  */
 @Service
-public class PayBOrderService {
+public class BOrderPayService {
 
     private Logger log = Logger.getLogger(this.getClass());
     @Resource

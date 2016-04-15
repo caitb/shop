@@ -22,8 +22,8 @@
         <h1>
             <span>${comUser.realName}，欢迎登陆~</span>
         </h1>--%>
-        <h1>店铺地址：<span>http://mall.iimai.com//1/shop.html</span></h1>
-        <p><b>复制</b></p>
+        <h1>店铺地址：<span id="shopUrl">${shopUrl}</span></h1>
+        <p id="copyShopUrl"><b>复制</b></p>
     </div>
     <div class="header">
         <div>
@@ -65,4 +65,13 @@
 </c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
+<script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
+<script>
+$(function(){
+    $('#shopUrl').html(window.location.href);
+    $('#copyShopUrl').on('click', function(){
+        $('#shopUrl').text().clone();
+    });
+});
+</script>
 </html>

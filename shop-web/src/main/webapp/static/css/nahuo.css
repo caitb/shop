@@ -63,6 +63,9 @@
 .wrap .main .content > .sec1 table tr td:nth-child(1) {
   border-right: 1px solid #F3F4F5;
 }
+.wrap .main .content > .sec1 table tr td:nth-child(2) {
+  border-right: 1px solid #F3F4F5;
+}
 .wrap .main .content > .sec1 table tr td {
   text-align: center;
   font-size: 12px;
@@ -236,4 +239,73 @@
   color: white;
   line-height: 30px;
   border-radius: 5px;
+}
+.back{
+  width:100%;
+  height:100%;
+  background: rgba(0,0,0,0.7);
+  position: fixed;
+  top:0;
+  left:0;
+}
+.back_que {
+  position: fixed;
+  left: 3%;
+  top: 10%;
+  width: 94%;
+  background: white;
+  border-radius: 5px;
+  z-index: 10;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.back_que p {
+  margin: 0 10px;
+  color: #F74A11;
+  border-bottom: 1px solid #F74A11;
+  line-height: 50px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 15px;
+}
+.back_que input{
+  display: none;
+}
+.back_que label{
+  letter-spacing: 1px;
+  display: -webkit-box;
+  font-size:10px;
+  background: url("/static/images/radio2.png") no-repeat 0 2px;
+  background-size: 14px;
+  padding-left: 20px;
+  margin:0 10px;
+  margin-bottom: 20px;
+}
+.back_que input:checked+label{
+  background: url("/static/images/j.png") no-repeat 0 2px;
+  background-size: 14px;
+}
+.back_que h3 {
+  display: -webkit-box;
+  -webkit-box-align: center;
+  margin: 15px 10px;
+  border-top: 1px solid #999;
+}
+.back_que h3 span {
+  display: block;
+  -webkit-box-flex: 1;
+  text-align: center;
+  line-height: 33px;
+  background: #d6d6d6;
+  margin-left: 10%;
+  color: white;
+  width: 1px;
+  border-radius: 5px;
+  color: #333;
+  margin-top: 15px;
+}
+.back_que h3 span:nth-child(2) {
+  margin-right: 10%;
+  background: #0fc420;
+  color: white;
 }

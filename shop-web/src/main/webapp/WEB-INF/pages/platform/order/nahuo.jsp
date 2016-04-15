@@ -29,7 +29,7 @@
         <div class="xinxi">
             <p>注册信息</p>
             <p>支付订单</p>
-            <p>选择拿货方式</p>
+            <p style="color: #F74A11;">选择拿货方式</p>
         </div>
         <div class="nahuo">
             <p>支付成功，请选择拿货方式</p>
@@ -105,6 +105,29 @@
             <button onclick="submit(this)">确定</button>
         </div>
     </div>
+</div>
+<div class="back"></div>
+<div class="back_que">
+    <p>数据确认</p>
+    <input type="checkbox" id="a"><label for="a">我已了解自己发货需要-自建仓库<br/>
+        （每200瓶仓库成本200元）</label>
+
+    <input type="checkbox" id="b"><label for="b">我已了解自己发货需要-自己发货<br/>
+        （每200瓶的物流费用2500元）</label>
+
+    <input type="checkbox" id="c"><label for="c">我已了解自己发货-下级合伙人不支持平台代发</label>
+
+    <input type="checkbox" id="f"><label for="f">我已了解自己发货-店铺发货需要自己发货<br/>
+        （每200瓶需要3000元的人工和物流费用）</label>
+
+    <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供）</label>
+
+    <input type="checkbox" id="h"><label for="h">我已阅读并了解自己发货的风险</label>
+
+    <h3>
+        <span class="que_qu" id="getBack">我在想想</span>
+        <span class="que_que" id="submit">确定选择</span>
+    </h3>
 </div>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>

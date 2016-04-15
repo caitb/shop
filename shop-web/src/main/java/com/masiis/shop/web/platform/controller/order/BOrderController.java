@@ -5,6 +5,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -18,6 +19,7 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +43,8 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/border")
 public class BOrderController extends BaseController {
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Resource
     private SkuAgentService skuAgentService;
     @Resource
@@ -468,5 +472,43 @@ public class BOrderController extends BaseController {
             }
         }
         return jsonObject.toJSONString();
+    }
+
+    /**
+     * 订单跳转到收银台界面
+     *
+     * @param request
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/orderpay")
+    public String orderPayPlatform(HttpServletRequest request,
+                                   @RequestParam(value = "orderId", required = true) String orderId){
+        try{
+            if(StringUtils.isBlank(orderId)
+                    || !SysBeanUtils.isNumeric(orderId)){
+                throw new BusinessException("orderId为空或者不是数字类型");
+            }
+            PfBorder order = bOrderService.getPfBorderById(Long.valueOf(orderId));
+            if(order == null){
+                throw new BusinessException("该orderid对应的订单不存在");
+            }
+            if(order.getOrderStatus().intValue() != BOrderStatus.NotPaid.getCode().intValue()
+                    && order.getOrderStatus().intValue() != BOrderStatus.MPS.getCode().intValue()){
+                throw new BusinessException("该订单订单状态不正确,该订单状态为:"
+                        + BOrderStatus.getByCode(order.getOrderStatus()).getDesc());
+            }
+            if(order.getPayStatus().intValue() != 0){
+                throw new BusinessException("该订单支付状态不正确!");
+            }
+
+            log.info("订单状态验证通过,订单状态:" + BOrderStatus.getByCode(order.getOrderStatus()).getDesc());
+
+
+        } catch (Exception e) {
+
+        }
+
+        return "";
     }
 }

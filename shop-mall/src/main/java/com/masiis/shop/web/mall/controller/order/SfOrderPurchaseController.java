@@ -65,8 +65,8 @@ public class SfOrderPurchaseController extends BaseController {
                               @RequestParam(value = "shopId",required = true) Long sfShopId,
                               @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
         try{
-            JSONObject obj = new JSONObject();
             log.info("提交订单-----start");
+            JSONObject obj = new JSONObject();
             log.info("获取comuser-----start");
             ComUser comUser = getComUser(request);
             log.info("获取comuser-----"+comUser);

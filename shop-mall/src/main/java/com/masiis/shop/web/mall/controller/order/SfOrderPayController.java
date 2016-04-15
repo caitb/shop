@@ -6,6 +6,7 @@ package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,6 +73,7 @@ public class SfOrderPayController {
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));
         model.addAttribute("userPid",map.get("userPid"));
+        model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
         return "mall/order/zhifuchenggong";
     }
 

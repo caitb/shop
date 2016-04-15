@@ -66,15 +66,21 @@
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
 <script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>static/js/jquery.zclip.js"></script>
 <script>
-    function getClipboardText(event){
-        var clipboardData = event.clipboardData || window.clipboardData;
-        return clipboardData.getData("text");
-    };
-$(function(){
-    $('#copyShopUrl').on('click', function(e){
-        getClipboardText(e);
+    $(document).ready(function(){
+        if ( window.clipboardData ) {
+            $('#copyShopUrl').click(function() {
+                window.clipboardData.setData("Text", $('#shopUrl').text());
+                alert('复制成功！');
+            });
+        } else {
+            $("#copyShopUrl").zclip({
+                path:'http://img3.job1001.com/js/ZeroClipboard/ZeroClipboard.swf',
+                copy:function(){return $('#shopUrl').text();},
+                afterCopy:function(){alert('复制成功！');}
+            });
+        }
     });
-});
 </script>
 </html>

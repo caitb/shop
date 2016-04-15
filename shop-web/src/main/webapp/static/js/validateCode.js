@@ -16,6 +16,10 @@
                 $("#nextPageId").on("click", function () {
                     validateCodeJS.toNextPage();
                 })
+                $(".close").on("click",function () {
+                    $(this).parent().hide();
+                    $(".back").hide()
+                })
             },
             applyTrial: function (skipPageValue) {
                 var skuId = $("#skuId").val();

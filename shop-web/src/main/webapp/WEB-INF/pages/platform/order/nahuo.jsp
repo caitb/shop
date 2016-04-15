@@ -83,23 +83,8 @@
             </div>
             <div class="sec2">
                 <h1>请选择拿货方式</h1>
-                <button id="platformSendGoodsId" onclick="platformSendGoods()">平台待发货（90%的用户选择）</button>
+                <button id="platformSendGoodsId" onclick="platformSendGoods()" class="active">平台待发货（90%的用户选择）</button>
                 <button id="ownSendGoodsId" onclick="ownSendGoods()">自己发货</button>
-
-                <section id="" class="shouhuo">
-                    <div onclick="toChooseAddressPage()">
-                        <input style="display: none" type="text" id="bOrderId" value="${bOrderId}"/>
-                        <input style="display: none" type="text" id="isPlatformSendGoodsId"
-                               value="${isPlatformSendGoods}"/>
-                        <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                        <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                        <a href="#"><p>收货地址：
-                            <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName} ${comUserAddress.address}</span>
-                        </p></a>
-                        <img src="${path}/static/images/next.png" alt="">
-                    </div>
-                </section>
-                <div class="xuan" onclick="toChooseAddressPage()"><h1>选择收获地址<span></span></h1></div>
                 <p>*选择后，您的其他合伙商品将使用同一种方式，不可更改</p>
             </div>
             <button onclick="submit(this)">确定</button>
@@ -111,15 +96,15 @@
     <div class="back_que">
         <p>数据确认</p>
         <input type="checkbox" id="a"><label for="a">我已了解自己发货需要-自建仓库<br/>
-            （每200瓶仓库成本200元）</label>
+        （每200瓶仓库成本200元）</label>
 
         <input type="checkbox" id="b"><label for="b">我已了解自己发货需要-自己发货<br/>
-            （每200瓶的物流费用2500元）</label>
+        （每200瓶的物流费用2500元）</label>
 
         <input type="checkbox" id="c"><label for="c">我已了解自己发货-下级合伙人不支持平台代发</label>
 
         <input type="checkbox" id="f"><label for="f">我已了解自己发货-店铺发货需要自己发货<br/>
-            （每200瓶需要3000元的人工和物流费用）</label>
+        （每200瓶需要3000元的人工和物流费用）</label>
 
         <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供）</label>
 
@@ -127,51 +112,20 @@
 
         <h3>
             <span class="que_qu" id="getBack">我在想想</span>
-            <span class="que_que" id="submit">确定选择</span>
+            <span class="que_que" id="getOK">确定选择</span>
         </h3>
     </div>
 </div>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
-    var sendType = 0;
-    $(document).ready(function () {
-        var isPlatformSendGoods = $("#isPlatformSendGoodsId").val();
-        if (isPlatformSendGoods == "true") {
-            platformSendGoods();
-        } else {
-            ownSendGoods();
-        }
-    })
-    function isShowAddress() {
-        var addressId = $("#addressId").val();
-        if (addressId == "") {
-            $(".xuan").show();
-            $(".shouhuo").hide();
-        } else {
-            $(".xuan").hide();
-            $(".shouhuo").show();
-        }
-    }
+    var sendType = 1;
     function platformSendGoods() {
-        $(".xuan").hide();
-        $(".shouhuo").hide();
         $("#platformSendGoodsId").attr("class", "active");
         $("#ownSendGoodsId").removeClass("active");
         sendType = 1;
     }
     function ownSendGoods() {
-        isShowAddress();
-        $("#ownSendGoodsId").attr("class", "active");
-        $("#platformSendGoodsId").removeClass("active");
-        sendType = 2
-    }
-    /* $(".sec2 button").on("click", function () {
-     $(this).addClass("active").siblings().removeClass("active")
-     })*/
-    function toChooseAddressPage() {
-        var selectedAddressId = $("#addressId").val();
-        var bOrderId = $("#bOrderId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=takeGoods&selectedAddressId=" + selectedAddressId + "&orderId=" + bOrderId;
+        $(".back_box").show();
     }
 
     function submit(para) {
@@ -182,23 +136,39 @@
             alert("请选择拿货方式");
             return;
         }
-        var paraData = {};
-        paraData.bOrderId = $("#bOrderId").val();
-        paraData.sendType = sendType;
-        paraData.userAddressId = $("#addressId").val();
-        $.ajax({
-            url: "${basePath}border/setUserSendType/save.do",
-            type: "post",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                $(para).html("正在提交...");
-                if (data.isError == false) {
-                    window.location.href = "${basePath}border/payBOrdersSuccess.shtml?bOrderId=" + paraData.bOrderId;
-                }
+        var paraData = "?";
+        paraData += "orderType=0";
+        paraData += "&skuId=${skuId}";
+        paraData += "&levelId=${levelId}";
+        paraData += "&weixinId=${weixinId}";
+        paraData += "&pUserId=${pUserId}";
+        paraData += "&sendType=" + sendType;
+        window.location.href = "${basePath}border/confirmBOrder.shtml" + paraData;
+    }
+    /*
+     * 返回修改
+     * */
+    $("#getBack").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_box").hide();
+    })
+    $("#getOK").click(function (event) {
+        var n = 0;
+        $(".back_que :checkbox").each(function () {
+            if ($(this).is(':checked') == false) {
+                alert("请确定所有选项");
+                n++;
+                return false;
             }
         });
-    }
+        if (n == 0) {
+            $("#ownSendGoodsId").attr("class", "active");
+            $("#platformSendGoodsId").removeClass("active");
+            sendType = 2
+            $(".back_box").hide();
+        }
+    });
 </script>
 </body>
 </html>

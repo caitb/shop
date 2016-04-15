@@ -32,7 +32,7 @@
             <%--</div>--%>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span><b>你已选择拿货方式，不可更改</b></p>
+                    <p>拿货方式：<span>自己发货</span></p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
@@ -122,12 +122,13 @@
         var paraData = {};
         paraData.orderType = "0";//代理订单
         paraData.skuId = "${bOrderConfirm.skuId}";
-        paraData.skuQuantity ="${bOrderConfirm.skuQuantity}";
-        paraData.wenXinId ="${bOrderConfirm.wenXinId}";
-        paraData.agentLevelId ="${bOrderConfirm.agentLevelId}";
+        paraData.skuQuantity = "${bOrderConfirm.skuQuantity}";
+        paraData.wenXinId = "${bOrderConfirm.wenXinId}";
+        paraData.agentLevelId = "${bOrderConfirm.agentLevelId}";
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
-        paraData.pUserId ="${bOrderConfirm.pUserId}";
+        paraData.pUserId = "${bOrderConfirm.pUserId}";
+        paraData.sendType = "${bOrderConfirm.sendType}";
         $.ajax({
             url: "${basePath}border/add.do",
             type: "post",
@@ -136,7 +137,7 @@
             success: function (data) {
                 if (data.isError == false) {
                     $(para).html("正在提交...");
-                    window.location.href = "${basePath}border/payBOrderReady.shtml?bOrderId=" + paraData.bOrderId;
+                    window.location.href = "${basePath}border/goToCheckoutBOrder.shtml?bOrderId=" + data.bOrderId;
                 }
             }
         });

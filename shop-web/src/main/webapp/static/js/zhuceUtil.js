@@ -105,7 +105,12 @@ $(function () {
         event.stopPropagation();
         //还没有选择拿货方式
         if (sendType == 0) {
-
+            var paraData = "?";
+            paraData += "skuId=" + skuId;
+            paraData += "&levelId=" + $(".on").attr("levelId");
+            paraData += "&weixinId=" + $("#q_weixinId").html();
+            paraData += "&pUserId=" + pUserId;
+            window.location.href = path + "border/setUserSendType.shtml" + paraData;
         } else {
             var paraData = "?";
             paraData += "orderType=0";
@@ -115,32 +120,6 @@ $(function () {
             paraData += "&pUserId=" + pUserId;
             window.location.href = path + "border/confirmBOrder.shtml" + paraData;
         }
-        var paraData = {};
-        //paraData.realName = $("#q_name").html();
-        //paraData.weixinId = $("#q_weixinId").html();
-        //paraData.skuId = skuId;
-        //paraData.levelId = $(".on").attr("levelId");
-        //paraData.pUserId = pUserId;
-        //$.ajax({
-        //    url: path + "border/add.do",
-        //    type: "post",
-        //    data: paraData,
-        //    dataType: "json",
-        //    success: function (data) {
-        //        if (data.isError == false) {
-        //            thisObj.html("正在提交...");
-        //            var param = "?";
-        //            param += "bOrderId=" + data.bOrderId;
-        //            window.location.href = path + "border/payBOrder.shtml" + param;
-        //        }
-        //        else {
-        //            alert(data.message);
-        //        }
-        //    },
-        //    error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //        //alert(XMLHttpRequest.responseText);
-        //    }
-        //});
     });
     /*
      * 是否有推荐人

@@ -91,7 +91,7 @@ public class BOrderPayService {
      * <1>修改订单支付信息
      * <2>修改订单数据
      * <3>添加订单日志
-     * <4>修改用户为已代理
+     * <4>修改用户为已代理如果用户没有选择拿货方式更新用户的拿货方式为订单的拿货方式
      * <5>为用户生成小铺
      * <6>初始化分销关系
      * <7>为小铺生成商品
@@ -138,18 +138,15 @@ public class BOrderPayService {
         pfBorderOperationLog.setPfBorderId(bOrderId);
         pfBorderOperationLog.setRemark("订单已支付");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        log.info("<4>修改用户为已代理");
+        log.info("<4>修改用户为已代理如果用户没有选择拿货方式更新用户的拿货方式为订单的拿货方式");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        if (comUser.getIsAgent() == 0 || pfBorder.getUserPid() != 0) {
-            if (comUser.getIsAgent() == 0) {
-                comUser.setIsAgent(1);
-            }
-            if (comUser.getSendType() == 0 && pfBorder.getUserPid() != 0) {
-                ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-                comUser.setSendType(pComUser.getSendType());
-            }
-            comUserMapper.updateByPrimaryKey(comUser);
+        if (comUser.getIsAgent() == 0) {
+            comUser.setIsAgent(1);
         }
+        if (comUser.getSendType() == 0) {
+            comUser.setSendType(pfBorder.getSendType());
+        }
+        comUserMapper.updateByPrimaryKey(comUser);
         log.info("<5>为用户生成小铺");
         SfShop sfShop = sfShopMapper.selectByUserId(comUser.getId());
         if (sfShop == null) {
@@ -495,14 +492,14 @@ public class BOrderPayService {
         OrderPayView view = new OrderPayView();
 
         List<PfBorderItem> items = pfBorderItemMapper.selectAllByOrderId(order.getId());
-        if(items == null || items.size() != 1){
+        if (items == null || items.size() != 1) {
             throw new BusinessException();
         }
         PfBorderItem item = items.get(0);
         ComSku sku = skuMapper.findBySkuId(item.getSkuId());
         PfUserSku userSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(order.getId(), order.getUserId(), item.getSkuId());
         ComAgentLevel level = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
-        if(level == null){
+        if (level == null) {
             throw new BusinessException("代理关系未找到");
         }
         view.setOrderId(order.getId());

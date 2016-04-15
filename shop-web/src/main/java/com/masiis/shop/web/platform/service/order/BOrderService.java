@@ -55,23 +55,6 @@ public class BOrderService {
     private BOrderSkuStockService borderSkuStockService;
     @Resource
     private ComUserAccountService comUserAccountService;
-    /**
-     * 订单支付
-     *
-     * @author ZhaoLiang
-     * @date 2016/4/9 11:13
-     */
-    @Transactional
-    public void toPayBOrder(PfBorder pfBorder, PfBorderConsignee pfBorderConsignee) throws Exception {
-        pfBorderMapper.updateById(pfBorder);
-        if (pfBorderConsignee != null) {
-            PfBorderConsignee pbc = pfBorderConsigneeMapper.selectByBorderId(pfBorderConsignee.getPfBorderId());
-            if (pbc != null) {
-                pfBorderConsigneeMapper.deleteByOrderId(pfBorderConsignee.getPfBorderId());
-            }
-            pfBorderConsigneeMapper.insert(pfBorderConsignee);
-        }
-    }
 
     /**
      * 获取订单

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>订单详情</title>
-    <%@ include file="/WEB-INF/pages/common/head.jsp"%>
+    <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shouyintai.css">
 </head>
 <body>
@@ -21,11 +21,25 @@
         <p>支付订单</p>
     </div>
     <div class="sec1">
-        <p><span>商品信息：</span><span>${view.skuName}</span></p>
-        <p><span>数量：</span><span>${view.proNum}</span></p>
-        <p><span>需付款：</span><span>￥${view.payFee}</span></p>
+        <c:forEach items="${pfBorderItems}" var="pfBorderItem">
+            <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>
+            <p><span>数量：</span><span>${pfBorderItem.quantity}</span></p>
+            <p><span>商品总金额：</span><span>￥${pfBorderItem.totalPrice}</span></p>
+        </c:forEach>
+        <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
+        <p><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></p>
     </div>
-    <button>微信支付</button>
+    <button id="submit">微信支付</button>
 </div>
 </body>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script>
+    $("#submit").click(function (event) {
+        if ($(this).html() == "正在提交...") {
+            return;
+        }
+        $(this).html("正在提交...");
+        window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+    })
+</script>
 </html>

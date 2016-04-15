@@ -13,13 +13,13 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.PfCorderConsigneeService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.sun.javafx.sg.Border;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +60,36 @@ public class BOrderController extends BaseController {
     private BOrderAddService bOrderAddService;
 
     /**
+     * 选择拿货方式
+     *
+     * @param request
+     * @param skuId
+     * @param levelId
+     * @param weixinId
+     * @param pUserId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/setUserSendType.shtml")
+    public ModelAndView setUserSendType(HttpServletRequest request,
+                                        @RequestParam(value = "skuId", required = true) Integer skuId,
+                                        @RequestParam(value = "levelId", required = false) Integer levelId,
+                                        @RequestParam(value = "weixinId", required = false) String weixinId,
+                                        @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if (comUser.getSendType() != 0) {
+            throw new BusinessException("用户已经选择了拿货方式");
+        }
+        modelAndView.addObject("skuId", skuId);
+        modelAndView.addObject("levelId", levelId);
+        modelAndView.addObject("weixinId", weixinId);
+        modelAndView.addObject("pUserId", pUserId);
+        modelAndView.setViewName("platform/order/nahuo");
+        return modelAndView;
+    }
+
+    /**
      * 确认订单页面
      *
      * @param orderType 订单类型(0代理1补货2拿货)
@@ -79,19 +108,26 @@ public class BOrderController extends BaseController {
                                       @RequestParam(value = "levelId", required = false) Integer levelId,
                                       @RequestParam(value = "weixinId", required = false) String weixinId,
                                       @RequestParam(value = "pUserId", required = false) Long pUserId,
+                                      @RequestParam(value = "sendType", required = false) Integer sendType,
                                       @RequestParam(value = "quantity", required = false) Integer quantity,
                                       @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
         ModelAndView mv = new ModelAndView();
         ComUser comUser = getComUser(request);
+        Integer userSendType = 0;
         if (comUser.getSendType() == null || comUser.getSendType() <= 0) {
-            throw new BusinessException("用户还没有选择拿货方式");
+            if (sendType == null || sendType <= 0) {
+                throw new BusinessException("还未选中拿货方式");
+            }
+            userSendType = sendType;
+        } else {
+            userSendType = comUser.getSendType();
         }
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(orderType);
         bOrderConfirm.setWenXinId(weixinId);
         bOrderConfirm.setpUserId(pUserId);
         //拿货方式
-        bOrderConfirm.setSendType(comUser.getSendType());
+        bOrderConfirm.setSendType(userSendType);
         //获得地址
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
         bOrderConfirm.setComUserAddress(comUserAddress);
@@ -226,7 +262,7 @@ public class BOrderController extends BaseController {
             pfBorder.setShipRemark("");
             //确定订单的拿货方式
             if (comUser.getSendType() == 0) {
-                throw new BusinessException("用户还没有选择拿货方式");
+                pfBorder.setSendType(bOrderConfirm.getSendType());
             } else {
                 pfBorder.setSendType(comUser.getSendType());
             }
@@ -264,7 +300,8 @@ public class BOrderController extends BaseController {
             PfBorderConsignee pfBorderConsignee = null;
             //拿货方式(0未选择1平台代发2自己发货)
             if (pfBorder.getOrderType() == 2 || pfBorder.getSendType() == 2) {
-                ComUserAddress comUserAddress = bOrderConfirm.getComUserAddress();
+                //获得地址
+                ComUserAddress comUserAddress = userAddressService.getOrderAddress(bOrderConfirm.getUserAddressId(), comUser.getId());
                 if (comUserAddress == null) {
                     throw new BusinessException("请填写收货地址");
                 }
@@ -296,70 +333,22 @@ public class BOrderController extends BaseController {
     }
 
 
-    /**
-     * 订单支付处理
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/17 14:32
-     */
-    @ResponseBody
-    @RequestMapping("/payBOrderSubmit.do")
-    public String payBOrderSubmit(HttpServletRequest request,
-                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId,
-                                  @RequestParam(value = "userMessage", required = true) String userMessage,
-                                  @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            if (bOrderId <= 0) {
-                throw new BusinessException("订单号错误");
-            }
-            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            //校验库存
-            List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
-            for (PfBorderItem pfBorderItem : pfBorderItems) {
-                if (pfBorder.getUserPid() > 0) {
-                    userSkuService.checkParentData(pfBorder.getUserPid(), pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId());
-                }
-            }
-            //拿货方式(0未选择1平台代发2自己发货)
-            PfBorderConsignee pfBorderConsignee = null;
-            if (pfBorder.getSendType() == 2) {
-                if (userAddressId == null || userAddressId <= 0) {
-                    throw new BusinessException("收货地址不能为空");
-                }
-                ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);
-                pfBorderConsignee = new PfBorderConsignee();
-                pfBorderConsignee.setCreateTime(new Date());
-                pfBorderConsignee.setPfBorderId(pfBorder.getId());
-                pfBorderConsignee.setUserId(comUserAddress.getUserId());
-                pfBorderConsignee.setConsignee(comUserAddress.getName());
-                pfBorderConsignee.setMobile(comUserAddress.getMobile());
-                pfBorderConsignee.setProvinceId(comUserAddress.getProvinceId());
-                pfBorderConsignee.setProvinceName(comUserAddress.getProvinceName());
-                pfBorderConsignee.setCityId(comUserAddress.getCityId());
-                pfBorderConsignee.setCityName(comUserAddress.getCityName());
-                pfBorderConsignee.setRegionId(comUserAddress.getRegionId());
-                pfBorderConsignee.setRegionName(comUserAddress.getRegionName());
-                pfBorderConsignee.setAddress(comUserAddress.getAddress());
-                pfBorderConsignee.setZip(comUserAddress.getZip());
-                //补货&自己发货 订单状态修改为待发货
-                pfBorder.setOrderStatus(BOrderStatus.WaitShip.getCode());
-            }
-            pfBorder.setUserMessage(userMessage);
-            bOrderService.toPayBOrder(pfBorder, pfBorderConsignee);
-            jsonObject.put("isError", false);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
+    @RequestMapping("/goToCheckoutBOrder.shtml")
+    public ModelAndView toPayBOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (bOrderId == null || bOrderId <= 0) {
+            throw new BusinessException("订单号不正确");
         }
-        return jsonObject.toJSONString();
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
+        modelAndView.addObject("pfBorder", pfBorder);
+        modelAndView.addObject("pfBorderItems", pfBorderItems);
+        modelAndView.setViewName("platform/order/shouyintai");
+        return modelAndView;
     }
 
-    @RequestMapping("/payBOrderReady.shtml")
-    public String payBOrderReady(HttpServletRequest request,
+    @RequestMapping("/payBOrder.shtml")
+    public String payBOrder(HttpServletRequest request,
                                  RedirectAttributes attrs,
                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         WxPaySysParamReq req = null;
@@ -488,28 +477,6 @@ public class BOrderController extends BaseController {
 
         }
         return mv;
-    }
-
-    @RequestMapping("/setUserSendType.shtml")
-    public ModelAndView setUserSendType(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-                                        @RequestParam(value = "bOrderId") Long bOrderId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        ComUser comUser = getComUser(request);
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(selectedAddressId, comUser.getId());
-        modelAndView.addObject("comUserAddress", comUserAddress);
-        modelAndView.addObject("bOrderId", bOrderId);
-        if (comUserAddress != null) {
-            modelAndView.addObject("addressId", comUserAddress.getId());
-        }
-        if (selectedAddressId == null) {
-            modelAndView.addObject("isPlatformSendGoods", "true");
-        } else {
-            modelAndView.addObject("isPlatformSendGoods", "false");
-        }
-        modelAndView.setViewName("platform/order/nahuo");
-        return modelAndView;
     }
 
     @ResponseBody

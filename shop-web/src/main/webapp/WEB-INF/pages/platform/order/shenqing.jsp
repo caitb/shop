@@ -177,7 +177,7 @@
 </div>
 <div id="realNameVerifyDiv" class="back_login" style="display:none;">
     <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
-    <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified();">去认证</span></h1>
+    <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified(this);">去认证</span></h1>
 </div>
 <div class="back" style="display: none">
 
@@ -185,7 +185,8 @@
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
-    function goVerified() {
+    function goVerified(para) {
+        $(para).html("正在提交...");
         var para = "?";
         para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
         window.location.href = "${basePath}user/userVerified.shtml" + para;

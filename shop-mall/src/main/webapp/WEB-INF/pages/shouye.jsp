@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
@@ -44,8 +44,8 @@
             </p>
             <%--</c:forEach>--%>
         </div>
-        <%--<img src="${sfShop.logo}" alt="">--%>
-        <img src="<%=path%>/static/images/admin.png" alt="">
+        <c:if test="${not empty sfShop.logo}"><img src="${sfShop.logo}" alt=""></c:if>
+        <c:if test="${empty sfShop.logo}"><img src="<%=path%>/static/images/touxiang.png" alt=""></c:if>
     </div>
     <div class="banner">
         <p  class="shout">

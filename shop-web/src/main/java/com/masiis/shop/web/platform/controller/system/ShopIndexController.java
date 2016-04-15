@@ -60,7 +60,7 @@ public class ShopIndexController extends BaseController {
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorders) {
-            if (pfBord.getOrderStatus() == 1 && pfBord.getShipStatus() == 0) {
+            if (pfBord.getOrderStatus() == 7 ) {
                 pfBorders10.add(pfBord);//代发货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中

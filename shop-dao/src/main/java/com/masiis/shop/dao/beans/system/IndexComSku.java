@@ -18,6 +18,7 @@ public class IndexComSku {
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
     private Integer skuId;//sku主键id
+    private Integer isTrial;//是否允许试用
     private Long uid;
     private Integer isPay;//是否付款
     private String imgName;//图片名称
@@ -42,6 +43,14 @@ public class IndexComSku {
 
     public String getBailLevel() {
         return bailLevel;
+    }
+
+    public void setIsTrial(Integer isTrial) {
+        this.isTrial = isTrial;
+    }
+
+    public Integer getIsTrial() {
+        return isTrial;
     }
 
     public Long getUid() {

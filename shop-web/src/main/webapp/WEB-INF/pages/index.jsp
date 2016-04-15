@@ -170,7 +170,14 @@
                 $(".herf").attr("href","javascript:;");
             }
         })
-
+        <%--$(function(){--%>
+            <%--var border= ${pfBorders10};--%>
+            <%--if(border==null || border==""){--%>
+                <%--$(".back_j").attr("style", "display:block");--%>
+                <%--$(".back").attr("style", "display:block");--%>
+                <%--$(".j_qu").attr("href","javascript:;");--%>
+            <%--}--%>
+        <%--})--%>
         $(".back").on("click",function(){
             $(".back_login").hide();
             $(".back").hide();

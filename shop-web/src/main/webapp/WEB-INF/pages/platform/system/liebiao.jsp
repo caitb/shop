@@ -171,8 +171,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </p>
                         <div>
                             <h2>${Sku.comSku.name}</h2>
-                            <h3>试用费用：<span>${Sku.shipAmount}</span>元</h3>
-                            <h3><c:if test="${user.isAgent==1}">保 证 金：<span>${Sku.bail}</span>元</c:if><b style="float:right; margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</b></h3>
+                            <c:if test="${Sku.isTrial==1}"><h3>试用费用：<span>${Sku.shipAmount}</span>元</h3></c:if>
+                            <h3>保 证 金：<span>${Sku.bail}</span>元<b style="float:right; margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</b></h3>
                             <h2>超过<span>${Sku.agentNum}</span>人合伙<b>${Sku.discountLevel}</b></h2>
                         </div>
                     </section>

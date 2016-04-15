@@ -59,7 +59,7 @@
                                 <h3><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
                                     <b>${Sku.discountLevel}</b>
                                 </h3>
-                                <h3>试用费用：<span>${Sku.shipAmount}</span>元</h3>
+                                <c:if test="${Sku.isTrial==1}"><h3>试用费用：<span>${Sku.shipAmount}</span>元</h3></c:if>
                                 <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
                             </div>
                         </section>

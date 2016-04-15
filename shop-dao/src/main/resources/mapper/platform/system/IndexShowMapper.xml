@@ -26,6 +26,7 @@
         <result column="agent_num" property="agentNum" jdbcType="VARCHAR" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
         <result column="user_id" property="uid" jdbcType="BIGINT" />
+        <result column="is_trial" property="isTrial" jdbcType="INTEGER" />
         <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku">
             <id column="id" property="id" jdbcType="INTEGER" />
             <result column="name" property="name" jdbcType="VARCHAR" />
@@ -47,7 +48,7 @@
     </select>
     <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Long">
         SELECT sku_image.img_name,sku_image.img_url,sku_image.sku_id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id,
-                spu.ship_amount,user_sku.user_id
+                spu.ship_amount,user_sku.user_id,spu.is_trial
         FROM com_sku sku
         INNER JOIN com_spu spu ON sku.spu_id=spu.id
         INNER JOIN pf_sku_statistic sku_statistic ON sku.id = sku_statistic.sku_id

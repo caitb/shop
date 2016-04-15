@@ -3,10 +3,9 @@ package com.masiis.shop.web.platform.service.shop;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
-import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.service.order.BorderSkuStockService;
+import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class SfOrderService {
     @Autowired
     private SfOrderOperationLogMapper sfOrderOperationLogMapper;
     @Autowired
-    private BorderSkuStockService borderSkuStockService;
+    private BOrderSkuStockService borderSkuStockService;
     @Autowired
     private SfOrderFreightMapper sfOrderFreightMapper;
     @Autowired

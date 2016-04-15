@@ -1,7 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderShipType;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
@@ -11,10 +10,12 @@ import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.order.OrderPayView;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 /**
  * payBOrderService
@@ -42,7 +42,7 @@ import java.util.Random;
  * @date 2016/3/30
  */
 @Service
-public class PayBOrderService {
+public class BOrderPayService {
 
     private Logger log = Logger.getLogger(this.getClass());
     @Resource
@@ -79,6 +79,8 @@ public class PayBOrderService {
     private SfShopSkuMapper sfShopSkuMapper;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private ComSkuMapper skuMapper;
 
     /**
      * 支付回调统一入口
@@ -481,5 +483,35 @@ public class PayBOrderService {
         } else {
             throw new BusinessException("拿货方式有误");
         }
+    }
+
+    /**
+     * 申请合伙人的代理订单支付页面对象view
+     *
+     * @param order
+     * @return
+     */
+    public OrderPayView createOrderPayViewByBOrder(PfBorder order) {
+        OrderPayView view = new OrderPayView();
+
+        List<PfBorderItem> items = pfBorderItemMapper.selectAllByOrderId(order.getId());
+        if(items == null || items.size() != 1){
+            throw new BusinessException();
+        }
+        PfBorderItem item = items.get(0);
+        ComSku sku = skuMapper.findBySkuId(item.getSkuId());
+        PfUserSku userSku = pfUserSkuMapper.selectByOrderIdAndUserIdAndSkuId(order.getId(), order.getUserId(), item.getSkuId());
+        ComAgentLevel level = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
+        if(level == null){
+            throw new BusinessException("代理关系未找到");
+        }
+        view.setOrderId(order.getId());
+        view.setProNum(item.getQuantity());
+        view.setPayFee(order.getReceivableAmount());
+        view.setSkuName(sku.getName());
+        view.setAgentLevelId(level.getId());
+        view.setAgentLevelName(level.getName());
+
+        return view;
     }
 }

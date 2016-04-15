@@ -18,6 +18,7 @@ public class IndexComSku {
     private Long createMan;//创建人
     private Integer spuId;//spu主键id
     private Integer skuId;//sku主键id
+    private Long uid;
     private Integer isPay;//是否付款
     private String imgName;//图片名称
     private String imgUrl;//图片地址
@@ -41,6 +42,14 @@ public class IndexComSku {
 
     public String getBailLevel() {
         return bailLevel;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public void setSkuId(Integer skuId) {

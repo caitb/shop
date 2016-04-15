@@ -22,12 +22,12 @@
             <p>支付订单</p>
             <p>选择拿货方式</p>
         </div>
-        <%--<div class="paidan" style="display: none">--%>
-        <%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
-        <%--<p style="color: #FF5200">--%>
-        <%--*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货--%>
-        <%--</p>--%>
-        <%--</div>--%>
+        <%--<div class="paidan">
+        <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
+        <p style="color: #FF5200">
+        *由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货
+        </p>
+        </div>--%>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
         </p>
@@ -110,12 +110,14 @@
     <div class="back">
     </div>
 </div>
+
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
     var path = "${basePath}";
     var skuId = "${skuId}";
     var pUserId = "${pUserId}";
+    var sendType = "${comUser.sendType}";
 </script>
 <script src="${path}/static/js/zhuceUtil.js"></script>
 </html>

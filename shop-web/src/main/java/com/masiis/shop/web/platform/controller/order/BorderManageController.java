@@ -10,8 +10,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.order.BorderFreightService;
-import com.masiis.shop.web.platform.service.order.BorderSkuStockService;
+import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -25,11 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 订单管理
@@ -49,15 +46,13 @@ public class BorderManageController extends BaseController {
     @Resource
     private ComDictionaryService comDictionaryService;
     @Resource
-    private BorderFreightService borderFreightService;
-    @Resource
     private ComUserAccountService comUserAccountService;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private PfBorderPaymentMapper pfBorderPaymentMapper;
     @Resource
-    private BorderSkuStockService borderSkuStockService;
+    private BOrderSkuStockService borderSkuStockService;
 
     /**
      * 确认收货

@@ -53,7 +53,7 @@ public class UserApplyController extends BaseController {
      * @date 2016/3/5 13:51
      */
     @RequestMapping("/apply.shtml")
-    public ModelAndView partnersApply(HttpServletRequest request,
+    public ModelAndView apply(HttpServletRequest request,
                                       HttpServletResponse response,
                                       @RequestParam(value = "skuId", required = true) Integer skuId,
                                       @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
@@ -83,12 +83,11 @@ public class UserApplyController extends BaseController {
     /**
      * 合伙人注册
      *
-     * @author ZhaoLiang再次
+     * @author ZhaoLiang
      * @date 2016/3/5 14:27
      */
     @RequestMapping("/register.shtml")
-    public ModelAndView partnersRegister(HttpServletRequest request,
-                                         HttpServletResponse response,
+    public ModelAndView register(HttpServletRequest request,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
@@ -144,6 +143,7 @@ public class UserApplyController extends BaseController {
         mv.addObject("pUserLevelId", pUserLevelId);
         mv.addObject("pUserId", pUserId);
         mv.addObject("agentSkuViews", agentSkuViews);
+        mv.addObject("comUser", comUser);
         if (pUserId != null && pUserId > 0) {
             // 上级代理商品关系
             mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());

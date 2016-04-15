@@ -48,7 +48,7 @@ public class ProductListController extends BaseController {
         }
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_product_800_800_url");
-        List<IndexComSku> indexComSk = indexShowService.findIndexComSku();
+        List<IndexComSku> indexComSk = indexShowService.findIndexComSku(user.getId());
         List<IndexComSku> Com =new ArrayList<IndexComSku>();
         for (IndexComSku indexComSku:indexComSk) {
             //获取商品图片地址

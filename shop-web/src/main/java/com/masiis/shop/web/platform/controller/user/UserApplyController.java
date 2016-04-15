@@ -54,9 +54,9 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView apply(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      @RequestParam(value = "skuId", required = true) Integer skuId,
-                                      @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+                              HttpServletResponse response,
+                              @RequestParam(value = "skuId", required = true) Integer skuId,
+                              @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView res = new ModelAndView();
         ComUser user = getComUser(request);
         if (user == null) {
@@ -88,8 +88,8 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/register.shtml")
     public ModelAndView register(HttpServletRequest request,
-                                         @RequestParam(value = "skuId", required = true) Integer skuId,
-                                         @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+                                 @RequestParam(value = "skuId", required = true) Integer skuId,
+                                 @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
         ComUser comUser = getComUser(request);
         if (comUser == null) {
@@ -111,6 +111,10 @@ public class UserApplyController extends BaseController {
         List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
         // 上级代理等级id(0表示没有上级推荐)
         Integer pUserLevelId = 0;
+        Integer sendType = 0;
+        if (comUser.getSendType() > 0) {
+            sendType = comUser.getSendType();
+        }
         if (pUserId != null && pUserId > 0) {
             //校验上级合伙人数据是否合法
             PfUserSku parentUS = userSkuService.checkParentData(pUserId, skuId);
@@ -143,13 +147,17 @@ public class UserApplyController extends BaseController {
         mv.addObject("pUserLevelId", pUserLevelId);
         mv.addObject("pUserId", pUserId);
         mv.addObject("agentSkuViews", agentSkuViews);
-        mv.addObject("comUser", comUser);
         if (pUserId != null && pUserId > 0) {
+            ComUser pUser = userService.getUserById(pUserId);
             // 上级代理商品关系
-            mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());
+            mv.addObject("pWxNkName", pUser.getWxNkName());
+            if (sendType == 0) {
+                sendType = pUser.getSendType();
+            }
         } else {
             mv.addObject("pWxNkName", "");
         }
+        mv.addObject("sendType", sendType);
         mv.setViewName("platform/order/zhuce");
         return mv;
     }

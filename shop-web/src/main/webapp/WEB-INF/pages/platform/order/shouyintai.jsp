@@ -1,25 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: lzh
-  Date: 2016/4/15
-  Time: 14:22
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>订单详情</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/reset.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/shouyintai.css">
+    <%@ include file="/WEB-INF/pages/common/head.jsp"%>
+    <link rel="stylesheet" href="${path}/static/css/shouyintai.css">
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="../images/xq_rt.png" alt=""></a>
+        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>订单支付</p>
     </header>
     <div class="xinxi">
@@ -28,9 +21,9 @@
         <p>支付订单</p>
     </div>
     <div class="sec1">
-        <p><span>商品信息：</span><span>抗引力-瘦脸精华</span></p>
-        <p><span>数量：</span><span>3434</span></p>
-        <p><span>需付款：</span><span>￥1233.00</span></p>
+        <p><span>商品信息：</span><span>${view.skuName}</span></p>
+        <p><span>数量：</span><span>${view.proNum}</span></p>
+        <p><span>需付款：</span><span>￥${view.payFee}</span></p>
     </div>
     <button>微信支付</button>
 </div>

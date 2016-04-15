@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.beans.order.OrderPayView;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -21,6 +22,7 @@ import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -483,7 +485,8 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/orderpay")
     public String orderPayPlatform(HttpServletRequest request,
-                                   @RequestParam(value = "orderId", required = true) String orderId){
+                                   @RequestParam(value = "orderId", required = true) String orderId,
+                                   Model model){
         try{
             if(StringUtils.isBlank(orderId)
                     || !SysBeanUtils.isNumeric(orderId)){
@@ -504,11 +507,15 @@ public class BOrderController extends BaseController {
 
             log.info("订单状态验证通过,订单状态:" + BOrderStatus.getByCode(order.getOrderStatus()).getDesc());
 
-
+            OrderPayView view = payBOrderService.createOrderPayViewByBOrder(order);
+            
+            model.addAttribute("view", view);
         } catch (Exception e) {
-
+            log.error(e.getMessage());
+            throw new BusinessException(e.getMessage() + ",跳转500");
         }
 
-        return "";
+        return "platform/order/shouyintai";
     }
+
 }

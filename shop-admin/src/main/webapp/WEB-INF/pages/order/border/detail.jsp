@@ -118,6 +118,8 @@
                                                 <c:if test="${order.pfBorder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.pfBorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.pfBorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                             </div>
                                         </div>
 

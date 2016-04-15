@@ -118,6 +118,8 @@
                                                 <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                             </div>
                                         </div>
 
@@ -270,7 +272,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="remark">${order.sfOrder.remark}</span>
+                                                <span class="bgarea" id="remark">${order.sfOrder.userMessage}</span>
                                             </div>
                                         </div>
 
@@ -303,13 +305,14 @@
 
                                             <div class="profile-info-value">
                                                 <span class="bgarea" id="order_status">
-                                                    <c:if test="${order.sfOrder.orderStatus == 0}">未处理</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 1}">已付款</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 2}">已取消</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 3}">已完成</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 4}">退款中</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 5}">已退款</c:if>
-                                                    <c:if test="${order.sfOrder.orderStatus == 7}">待发货</c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 0}"><span class="" id="orderStatus">未处理</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 1}"><span class="" id="orderStatus">已付款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 2}"><span class="" id="orderStatus">已取消</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                                 </span>
                                             </div>
                                         </div>

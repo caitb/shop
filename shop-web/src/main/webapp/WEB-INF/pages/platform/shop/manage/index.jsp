@@ -28,7 +28,7 @@
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
-            <span>分享</span>
+            <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
         </div>
         <div>
             <p>

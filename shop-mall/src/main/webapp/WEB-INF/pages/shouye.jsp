@@ -120,6 +120,7 @@
     $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
+        location.reload(true);
     })
     $("#fenxiang").on("click",function(){
         $("#fen").show();
@@ -136,7 +137,7 @@
                 if(data.mallShout){
                     $("#ok").show();
                     $(".back").show();
-                    location.reload(true);
+//                    location.reload(true);
                 } else{
                     $("#no").show();
                     $(".back").show();

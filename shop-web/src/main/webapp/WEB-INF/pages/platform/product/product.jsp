@@ -108,6 +108,7 @@
             <span class="btn">+</span>
         </div>
         <div class="back_j" style="display: none">
+            <span class="close">×</span>
             <p class="biao">绑定账号</p>
             <div>
                 <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
@@ -168,6 +169,7 @@
         productJS.initPage();
         validateCodeJS.initPage();
     });
+
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,

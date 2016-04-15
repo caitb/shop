@@ -58,6 +58,7 @@
         <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
     </div>
     <div class="back_j" style="display: none">
+        <span class="close">×</span>
         <p class="biao">绑定账号</p>
         <div>
             <p>手机号：<input type="tel" class="phone" id="phoneId"></p>

@@ -14,7 +14,7 @@
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">--%>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
@@ -50,7 +50,7 @@
     <div class="banner">
         <p  class="shout">
             <span>已有</span>
-            <span><em>${sfShop.shoutNum}</em>人</span>
+            <span><em id="nahhan">${sfShop.shoutNum}</em>人</span>
             <span>为ta呐喊</span>
             <img src="<%=path%>/static/images/an.png" alt="">
         </p>
@@ -97,14 +97,14 @@
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
-    <span class="close">×</span>
+    <span  id="okCloss">×</span>
 </div>
 <div id="no" class="back_f" style="display: none">
     <h1>您已呐喊过，请明天再来 </h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
     <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
-    <span class="close">×</span>
+    <span class="close" >×</span>
 </div>
 <div id="fen" class="back_f" style="display: none">
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
@@ -114,18 +114,24 @@
 </div>
 <div class="back"></div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
-<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
-<script src="<%=path%>/static/js/common/commonAjax.js"></script>
+<%--<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>--%>
+<%--<script src="<%=path%>/static/js/common/commonAjax.js"></script>--%>
 <script>
     $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
-        location.reload(true);
+    })
+    $("#okCloss").on("click",function(){
+        $("#ok").hide();
+        $(".back").hide();
+//        location.reload(true);
     })
     $("#fenxiang").on("click",function(){
         $("#fen").show();
         $(".back").show();
     })
+
+    var naNum =${sfShop.shoutNum+1};
     $(".shout").on("click",function(){
         var shopId =${sfShop.id};
         $.ajax({
@@ -137,6 +143,7 @@
                 if(data.mallShout){
                     $("#ok").show();
                     $(".back").show();
+                    $("#nahhan").html(naNum);
 //                    location.reload(true);
                 } else{
                     $("#no").show();

@@ -54,8 +54,8 @@ public class ProductController extends BaseController {
         Product productDetails = productService.getSkuDetails(skuId);
         if (comUser != null && comUser.getIsAgent() == 1) {
             productDetails.setIsPartner(true);
-            productDetails.setMaxDiscount(productService.getMaxDiscount());
         }
+        productDetails.setMaxDiscount(productService.getMaxDiscount(Integer.parseInt(skuId)));
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), Integer.parseInt(skuId));
         mav.addObject("pfUserSku", pfUserSku);//是否代理过该商品
         mav.addObject("productDetails", productDetails);

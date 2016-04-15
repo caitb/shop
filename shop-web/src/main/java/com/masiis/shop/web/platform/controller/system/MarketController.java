@@ -2,23 +2,21 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
-import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PbBanner;
+import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
-import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +75,8 @@ public class MarketController extends BaseController {
                 //判断会员权限
                 indexCom.setIsPartner(1);
                 //确定代理权限，显示优惠区间
-                indexCom.setMaxDiscount(productService.getMaxDiscount());
-                indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
+                indexCom.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
+                indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
                 indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
 //            }else{
 //                indexCom.setDiscountLevel("成为合伙人可查看利润");

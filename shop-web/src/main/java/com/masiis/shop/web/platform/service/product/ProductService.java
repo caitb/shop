@@ -79,8 +79,8 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 代理商利润
      */
-    public Integer getMaxDiscount() throws Exception {
-        int bb= (int)((1-productMapper.maxDiscount())*100);
+    public Integer getMaxDiscount(Integer skuId) throws Exception {
+        int bb= (int)((1-productMapper.maxDiscount(skuId))*100);
         return bb;
     }
     /**

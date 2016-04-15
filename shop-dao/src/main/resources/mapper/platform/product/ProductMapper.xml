@@ -63,8 +63,8 @@
        ORDER BY sort ASC
     </select>
 
-    <select id="maxDiscount" resultType="double">
-        SELECT  MIN(discount) From com_agent_level
+    <select id="maxDiscount" resultType="double" parameterType="int">
+        SELECT  MIN(discount) From  pf_sku_agent WHERE sku_id =#{skuId}
     </select>
     <!-->用户商品列表<-->
     <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="Long">

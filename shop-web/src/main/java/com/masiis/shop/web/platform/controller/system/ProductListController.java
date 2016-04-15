@@ -2,10 +2,8 @@ package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.system.IndexComSku;
-import com.masiis.shop.dao.po.ComSpu;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
@@ -63,8 +61,8 @@ public class ProductListController extends BaseController {
                 //确定代理权限
 //                indexComSku.setIsPartner(1);
                 //显示优惠区间
-                indexComSku.setMaxDiscount(productService.getMaxDiscount());
-                indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount()+"%");
+                indexComSku.setMaxDiscount(productService.getMaxDiscount(indexComSku.getSkuId()));
+                indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexComSku.getSkuId())+"%");
 //            } else {
 //                indexComSku.setDiscountLevel("成为合伙人可查看");
 //            }

@@ -5,6 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +66,16 @@ public class SfOrderPurchaseController extends BaseController {
                               @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
         try{
             JSONObject obj = new JSONObject();
+            log.info("提交订单-----start");
+            log.info("获取comuser-----start");
             ComUser comUser = getComUser(request);
-            message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
+            log.info("获取comuser-----"+comUser);
+            if (comUser == null){
+                throw new BusinessException("获取comuser为null");
+            }
+            if (!StringUtils.isEmpty(message)){
+                message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
+            }
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
             if (orderId != null){
                 obj.put("isSubmitOrder","true");
@@ -74,6 +83,7 @@ public class SfOrderPurchaseController extends BaseController {
                 obj.put("isSubmitOrder","false");
             }
             obj.put("sfOrderId",orderId);
+            log.info("提交订单-----end");
             return obj.toJSONString();
         }catch (UnsupportedEncodingException e){
             throw new BusinessException("留言信息转化为中文出错");

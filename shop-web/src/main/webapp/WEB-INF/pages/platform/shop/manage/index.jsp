@@ -67,10 +67,13 @@
 </body>
 <script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
 <script>
+    function getClipboardText(event){
+        var clipboardData = event.clipboardData || window.clipboardData;
+        return clipboardData.getData("text");
+    };
 $(function(){
-    $('#shopUrl').html(window.location.href);
-    $('#copyShopUrl').on('click', function(){
-        $('#shopUrl').text().clone();
+    $('#copyShopUrl').on('click', function(e){
+        getClipboardText(e);
     });
 });
 </script>

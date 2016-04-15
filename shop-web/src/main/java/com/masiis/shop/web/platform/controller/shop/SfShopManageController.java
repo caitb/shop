@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.shop;
 
 import com.masiis.shop.common.util.ImageUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
@@ -74,7 +75,7 @@ public class SfShopManageController extends BaseController {
             SfDistributionRecord sfCount = sfDistributionRecordMapper.selectCountByUserId(comUser.getId());
             Integer sumLevel = sfCount.getSumLevel(); //总参与人数
 
-            String shopUrl = "http://mall.qc.iimai.com/"+sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
+            String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
@@ -187,7 +188,7 @@ public class SfShopManageController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            String shopUrl = "http://mall.qc.iimai.com/"+shopId+"/"+comUser.getId()+"/shop.shtml";
+            String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + shopId+"/"+comUser.getId()+"/shop.shtml";
             CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
 
             //用户头像

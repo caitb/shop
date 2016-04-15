@@ -50,13 +50,13 @@
                     </div>
                 </section>
                 <p>支付成功后，您的在线库存将会增加</p>
-          <%--  </c:if>--%>
-<%--            <c:if test="${pfBorder.sendType==1}">
+            </c:if>
+            <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span><b>你已选择拿货方式，不可更改</b></p>
                     <h1>支付成功后，您的在线库存将会增加</h1>
                 </div>
-            </c:if>--%>
+            </c:if>
             <section class="sec2">
                 <p class="photo">
                     <img src="${bOrderConfirm.skuImg}" alt=\"\">

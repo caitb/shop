@@ -21,6 +21,10 @@ public class BOrderConfirm {
      */
     private Integer sendType;
     /**
+     * sku主键ID
+     */
+    private Integer skuId;
+    /**
      * sku图片
      */
     private String skuImg;
@@ -32,6 +36,10 @@ public class BOrderConfirm {
      * sku数量
      */
     private Integer skuQuantity;
+    /**
+     * 微信Id
+     */
+    private String wenXinId;
     /**
      * 代理等级ID
      */
@@ -61,9 +69,21 @@ public class BOrderConfirm {
      */
     private BigDecimal orderTotalPrice;
     /**
+     * 用户地址id
+     */
+    private Long userAddressId;
+    /**
      * 用户地址
      */
     private ComUserAddress comUserAddress;
+    /**
+     * 用户留言
+     */
+    private String userMessage;
+    /**
+     * 上级用户id
+     */
+    private Long pUserId;
 
     public Integer getOrderType() {
         return orderType;
@@ -79,6 +99,14 @@ public class BOrderConfirm {
 
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public String getSkuImg() {
@@ -103,6 +131,14 @@ public class BOrderConfirm {
 
     public void setSkuQuantity(Integer skuQuantity) {
         this.skuQuantity = skuQuantity;
+    }
+
+    public String getWenXinId() {
+        return wenXinId;
+    }
+
+    public void setWenXinId(String wenXinId) {
+        this.wenXinId = wenXinId;
     }
 
     public Integer getAgentLevelId() {
@@ -161,11 +197,35 @@ public class BOrderConfirm {
         this.orderTotalPrice = orderTotalPrice;
     }
 
+    public Long getUserAddressId() {
+        return userAddressId;
+    }
+
+    public void setUserAddressId(Long userAddressId) {
+        this.userAddressId = userAddressId;
+    }
+
     public ComUserAddress getComUserAddress() {
         return comUserAddress;
     }
 
     public void setComUserAddress(ComUserAddress comUserAddress) {
         this.comUserAddress = comUserAddress;
+    }
+
+    public Long getpUserId() {
+        return pUserId;
+    }
+
+    public void setpUserId(Long pUserId) {
+        this.pUserId = pUserId;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
     }
 }

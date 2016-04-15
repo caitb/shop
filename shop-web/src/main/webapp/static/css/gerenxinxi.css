@@ -6,6 +6,7 @@
 }
 .wrap main {
   -webkit-box-flex: 1;
+  padding-bottom: 50px;
 }
 .wrap main .head_img {
   display: -webkit-box;

@@ -232,7 +232,6 @@ public class COrderService {
         pfCorder.setPayAmount(new BigDecimal(0));
         pfCorder.setPayStatus(0);//未支付
         pfCorder.setUserMassage(reason);
-        pfCorder.setUserMassage("");
         pfCorder.setSupplierId(0);
         pfCorder.setCreateMan(userId);
         return pfCorder;

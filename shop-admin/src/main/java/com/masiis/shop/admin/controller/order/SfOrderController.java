@@ -3,6 +3,7 @@ package com.masiis.shop.admin.controller.order;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.OrderService;
+import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.SfOrderFreight;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -101,7 +102,7 @@ public class SfOrderController extends BaseController {
                 return "请填写运单号";
             }
 
-            orderService.delivery(sfOrderFreight);
+            orderService.delivery(sfOrderFreight, (PbUser)request.getSession().getAttribute("pbUser"));
 
             return "success";
         } catch (Exception e) {

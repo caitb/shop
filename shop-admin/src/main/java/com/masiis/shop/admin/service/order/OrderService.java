@@ -125,7 +125,7 @@ public class OrderService {
      * 发货
      * @param sfOrderFreight
      */
-    public void delivery(SfOrderFreight sfOrderFreight){
+    public void delivery(SfOrderFreight sfOrderFreight, PbUser operationUser){
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(sfOrderFreight.getSfOrderId());
         sfOrder.setOrderStatus(8);
         sfOrder.setShipStatus(5);
@@ -146,7 +146,7 @@ public class OrderService {
         sfOrderOperationLog.setCreateTime(new Date());
         sfOrderOperationLog.setSfOrderStatus(8);
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
-        sfOrderOperationLog.setRemark("订单完成");
+        sfOrderOperationLog.setRemark(operationUser.toString());
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
     }
 }

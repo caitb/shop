@@ -23,8 +23,8 @@ public class IndexShowService {
      *
      * @return
      */
-    public List<IndexComSku> findIndexComSku() throws Exception{
-        return indexShowMapper.selectAllIndexComSku();
+    public List<IndexComSku> findIndexComSku(Long userId) throws Exception{
+        return indexShowMapper.selectAllIndexComSku(userId);
     }
     /**
      * 获取所有展示商品信息

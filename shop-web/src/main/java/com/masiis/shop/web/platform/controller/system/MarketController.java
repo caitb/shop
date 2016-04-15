@@ -65,7 +65,7 @@ public class MarketController extends BaseController {
         //获取商品图片地址常量
         String skuValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         //获取主页展示商品信息
-        List<IndexComSku> indexComS = indexShowService.findIndexComSku();
+        List<IndexComSku> indexComS = indexShowService.findIndexComSku(user.getId());
         List<IndexComSku> ComS =new ArrayList<IndexComSku>();
         for (IndexComSku indexCom:indexComS) {
 //            ComSpu comSpu = spuService.getSpuById(indexCom.getComSku().getSpuId());

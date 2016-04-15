@@ -65,8 +65,8 @@
                         </section>
                         <h2>
                             超过<span>${Sku.agentNum}</span>人合伙
-                            <c:if test="${user.isAgent!=1}"><button>我要合伙</button></c:if>
-                            <c:if test="${user.isAgent==1}"><button>您已合伙</button></c:if>
+                            <c:if test="${empty Sku.uid}"><button>我要合伙</button></c:if>
+                            <c:if test="${not empty Sku.uid}"><button>您已合伙</button></c:if>
                         </h2></a>
                     </c:forEach>
                 </div>

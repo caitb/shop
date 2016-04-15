@@ -25,7 +25,7 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="agent_num" property="agentNum" jdbcType="VARCHAR" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
-        <result column="bail" property="bail" jdbcType="DECIMAL" />
+        <result column="user_id" property="uid" jdbcType="BIGINT" />
         <association property="comSku" javaType="com.masiis.shop.dao.po.ComSku">
             <id column="id" property="id" jdbcType="INTEGER" />
             <result column="name" property="name" jdbcType="VARCHAR" />
@@ -45,12 +45,13 @@
     <select id="selectAllPbBanner" resultMap="BannerResultMap">
         select id,name ,img_url  from pb_banner
     </select>
-    <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Integer">
+    <select id="selectAllIndexComSku" resultMap="ComSkuResultMap" parameterType="java.lang.Long">
         SELECT sku_image.img_name,sku_image.img_url,sku_image.sku_id ,sku.name,sku.price_retail,sku_statistic.agent_num,sku.spu_id,
-                spu.ship_amount
+                spu.ship_amount,user_sku.user_id
         FROM com_sku sku
         INNER JOIN com_spu spu ON sku.spu_id=spu.id
         INNER JOIN pf_sku_statistic sku_statistic ON sku.id = sku_statistic.sku_id
+        LEFT JOIN pf_user_sku user_sku ON sku.id = user_sku.sku_id AND user_sku.user_id =#{userId}
         LEFT JOIN com_sku_image sku_image ON sku.id = sku_image.sku_id AND sku_image.is_default = 1
         WHERE spu.is_sale=1 AND spu.is_delete = 0
     </select>

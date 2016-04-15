@@ -19,7 +19,7 @@ public interface IndexShowMapper {
      * 查首页所有展示商品信息
      * @return
      */
-    List<IndexComSku> selectAllIndexComSku();
+    List<IndexComSku> selectAllIndexComSku(Long userId);
 
 
 }

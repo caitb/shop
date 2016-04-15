@@ -1,10 +1,13 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.introspect.VirtualAnnotatedMember;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderConfirm;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -60,6 +63,83 @@ public class BOrderController extends BaseController {
     private BOrderAddService bOrderAddService;
 
     /**
+     * 确认订单页面
+     *
+     * @param orderType 订单类型(0代理1补货2拿货)
+     * @param skuId     订单商品
+     * @param levelId   代理等级(订单代理需要)
+     * @param weixinId  微信id(订单代理需要)
+     * @param pUserId   上级用户id(订单代理需要)
+     * @param quantity  订单商品数量(订单补货或拿货需要)
+     * @author ZhaoLiang
+     * @date 2016/3/5 16:32
+     */
+    @RequestMapping("/confirmBOrder.shtml")
+    public ModelAndView confirmBOrder(HttpServletRequest request,
+                                      @RequestParam(value = "orderType", required = true) Integer orderType,
+                                      @RequestParam(value = "skuId", required = true) Integer skuId,
+                                      @RequestParam(value = "levelId", required = false) Integer levelId,
+                                      @RequestParam(value = "weixinId", required = false) String weixinId,
+                                      @RequestParam(value = "pUserId", required = false) Long pUserId,
+                                      @RequestParam(value = "quantity", required = false) Integer quantity,
+                                      @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if (comUser.getSendType() == null || comUser.getSendType() <= 0) {
+            throw new BusinessException("用户还没有选择拿货方式");
+        }
+        BOrderConfirm bOrderConfirm = new BOrderConfirm();
+        bOrderConfirm.setOrderType(orderType);
+        //拿货方式
+        bOrderConfirm.setSendType(comUser.getSendType());
+        //获得地址
+        ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
+        bOrderConfirm.setComUserAddress(comUserAddress);
+        //获取sku名称
+        ComSku comSku = skuService.getSkuById(skuId);
+        bOrderConfirm.setSkuName(comSku.getName());
+        //获取sku主图片
+        ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
+        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        bOrderConfirm.setSkuImg(skuImg + comSkuImage.getImgUrl());
+        //获取用户代理等级
+        Integer temLevelId = 0;
+        if (orderType == 0) {
+            if (levelId == null || levelId <= 0) {
+                throw new BusinessException("商品代理等级有误");
+            }
+            temLevelId = levelId;
+        } else {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
+            temLevelId = pfUserSku.getAgentLevelId();
+        }
+        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(temLevelId);
+        bOrderConfirm.setAgentLevelId(comAgentLevel.getId());
+        bOrderConfirm.setAgentLevelName(comAgentLevel.getName());
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, comAgentLevel.getId());
+        if (orderType == 0) {
+            bOrderConfirm.setSkuQuantity(pfSkuAgent.getQuantity());
+        } else {
+            if (quantity == null || quantity <= 0) {
+                throw new BusinessException("商品数量有误");
+            }
+            bOrderConfirm.setSkuQuantity(quantity);
+        }
+        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
+        bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
+        bOrderConfirm.setBailAmount(pfSkuAgent.getBail());
+        BigDecimal highProfit = comSku.getPriceRetail().multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));//最高利润
+        bOrderConfirm.setHighProfit(highProfit);
+        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, temLevelId + 1);
+        BigDecimal lowProfit = comSku.getPriceRetail().multiply(lowerSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));//最低利润
+        bOrderConfirm.setLowProfit(lowProfit);
+        bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()));
+        mv.addObject("bOrderConfirm", bOrderConfirm);
+        mv.setViewName("platform/order/zhifu");
+        return mv;
+    }
+
+    /**
      * 用户确认生成订单(合伙订单)
      *
      * @author ZhaoLiang
@@ -68,22 +148,40 @@ public class BOrderController extends BaseController {
     @ResponseBody
     @RequestMapping("/add.do")
     public String addBOrder(HttpServletRequest request,
-                            @RequestParam(value = "weixinId", required = true) String weixinId,
                             @RequestParam(value = "skuId", required = true) Integer skuId,
-                            @RequestParam(value = "levelId", required = true) Integer levelId,
-                            @RequestParam(value = "pUserId", required = true) Long pUserId) {
+                            @RequestParam(value = "levelId", required = false) Integer levelId,
+                            @RequestParam(value = "weixinId", required = false) String weixinId,
+                            @RequestParam(value = "pUserId", required = false) Long pUserId,
+                            @RequestParam(value = "quantity", required = false) Integer quantity,
+                            @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
         JSONObject obj = new JSONObject();
         try {
-            if (StringUtils.isBlank(weixinId)) {
-                throw new BusinessException("微信号不能为空");
+            if (skuId == null || skuId <= 0) {
+                throw new BusinessException("商品skuId不正确");
             }
-            if (levelId <= 0) {
-                throw new BusinessException("代理等级有误");
+            //订单类型(0代理1补货2拿货)
+            Integer orderType = 0;
+            ComUser comUser = getComUser(request);
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
+            if (pfUserSku == null) {
+                orderType = 1;
             }
+            //代理订单
+            if (orderType == 0) {
+                if (StringUtils.isBlank(weixinId)) {
+                    throw new BusinessException("微信号不能为空");
+                }
+                if (levelId == null || levelId <= 0) {
+                    throw new BusinessException("代理等级有误");
+                }
+
+            }
+
+
             if (pUserId != null && pUserId > 0) {
                 userSkuService.checkParentData(pUserId, skuId, levelId);
             }
-            ComUser comUser = getComUser(request);
+
             PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, levelId);
             ComSku comSku = skuService.getSkuById(skuId);
             //折扣后单价
@@ -171,66 +269,6 @@ public class BOrderController extends BaseController {
         return obj.toJSONString();
     }
 
-    /**
-     * 合伙人支付页面
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/5 16:32
-     */
-    @RequestMapping("/payBOrder.shtml")
-    public ModelAndView payBOrder(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  @RequestParam(value = "userAddressId", required = false) Long userAddressId,
-                                  @RequestParam(value = "userMessage", required = false) String userMessage,
-                                  @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        ComUser comUser = getComUser(request);
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
-        StringBuffer stringBuffer = new StringBuffer();
-        int sumQuantity = 0;
-        BigDecimal lowProfit = BigDecimal.ZERO;//最低利润
-        BigDecimal highProfit = BigDecimal.ZERO;//最高利润
-        for (PfBorderItem pfBorderItem : pfBorderItems) {
-            ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
-            //获取用户代理等级
-            ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfBorderItem.getAgentLevelId());
-            stringBuffer.append("<section class=\"sec2\" >");
-            stringBuffer.append("<p class=\"photo\" >");
-            stringBuffer.append("<img src = '" + skuImg + comSkuImage.getImgUrl() + "' alt = \"\" >");
-            stringBuffer.append("</p>");
-            stringBuffer.append("<div>");
-            stringBuffer.append("<h2> " + pfBorderItem.getSkuName() + "'<b style=\"float:right; margin-right:10px;font-size:12px;\">x" + pfBorderItem.getQuantity() + "</b></h2>");
-            stringBuffer.append("<h3>合伙人等级：<span>" + comAgentLevel.getName() + "</span></h3>");
-            stringBuffer.append("<p>商品总价:<span>" + pfBorderItem.getTotalPrice() + "</span>保证金:<span>" + pfBorderItem.getBailAmount() + "</span></p>");
-            stringBuffer.append("</div>");
-            stringBuffer.append("</section>");
-            sumQuantity += pfBorderItem.getQuantity();
-            if (pfBorderItem.getAgentLevelId() == SysConstants.MAX_AGENT_LEVEL) {
-                lowProfit = lowProfit.add(pfBorderItem.getTotalPrice());
-            } else {
-                PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(pfBorderItem.getSkuId(), pfBorderItem.getAgentLevelId() + 1);
-                BigDecimal lowerAmount = pfSkuAgent.getDiscount().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(pfBorderItem.getOriginalPrice());//下级拿货价
-                lowProfit = lowProfit.add(lowerAmount.subtract(pfBorderItem.getTotalPrice()));
-            }
-            BigDecimal higherAmount = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity()));
-            highProfit = highProfit.add(higherAmount.subtract(pfBorderItem.getTotalPrice()));
-        }
-        //获得地址
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
-        if (comUserAddress != null) {
-            request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, comUserAddress.getId());
-        }
-        mv.addObject("comUserAddress", comUserAddress);
-        mv.addObject("pfBorder", pfBorder);
-        mv.addObject("productInfo", stringBuffer.toString());
-        mv.addObject("quantity", sumQuantity);
-        mv.addObject("lowProfit", lowProfit.setScale(2, RoundingMode.HALF_DOWN));
-        mv.addObject("highProfit", highProfit.setScale(2, RoundingMode.HALF_DOWN));
-        mv.setViewName("platform/order/zhifu");
-        return mv;
-    }
 
     /**
      * 订单支付处理

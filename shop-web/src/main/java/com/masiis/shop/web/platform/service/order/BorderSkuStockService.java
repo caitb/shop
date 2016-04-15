@@ -20,13 +20,14 @@ import java.util.List;
 
 /**
  * 更改库存
+ *
  * @author muchaofeng
  * @date 2016/4/2 10:31
  */
 
 @Service
 @Transactional
-public class BorderSkuStockService {
+public class BOrderSkuStockService {
 
     @Resource
     private PfBorderItemMapper pfBorderItemMapper;
@@ -47,7 +48,7 @@ public class BorderSkuStockService {
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
-    public  void  updateStock(PfBorder pfBorder, ComUser user) {
+    public void updateStock(PfBorder pfBorder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         PfSkuStock pfSkuStock = null;
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
@@ -64,6 +65,7 @@ public class BorderSkuStockService {
                 }
             } else {
                 pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
+                pfUserSkuStock.getCustomStock();
                 if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
                     pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
                     pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfBorderItem.getQuantity());
@@ -83,15 +85,15 @@ public class BorderSkuStockService {
      * @author muchaofeng
      * @date 2016/3/21 14:35
      */
-    public  void  updateOrderStock(SfOrder sfOrder, ComUser user) {
+    public void updateOrderStock(SfOrder sfOrder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
         PfSkuStock pfSkuStock = null;
         SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
-        if(sfUserRelation==null){
+        if (sfUserRelation == null) {
             throw new BusinessException("用户关系异常");
         }
         ComUser userPid = comUserMapper.selectByPrimaryKey(sfUserRelation.getUserPid());
-        if(userPid==null){
+        if (userPid == null) {
             throw new BusinessException("用户上级为空");
         }
         for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
@@ -139,16 +141,18 @@ public class BorderSkuStockService {
             }
         }
     }
+
     /**
      * 商品库存
+     *
      * @author muchaofeng
      * @date 2016/4/5 12:14
      */
 
     public List<StockManage> totalGetStock(PfBorder pfBorder, ComUser user) {
         PfUserSkuStock pfUserSkuStock = null;
-        StockManage stockManage =null;
-        List<StockManage> stockManages=new ArrayList<>();
+        StockManage stockManage = null;
+        List<StockManage> stockManages = new ArrayList<>();
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
             stockManage.setSkuName(pfBorderItem.getSkuName());
@@ -160,11 +164,12 @@ public class BorderSkuStockService {
 
     /**
      * 查询商品库存
+     *
      * @param userId
      * @param skuId
      * @return
      */
-    public PfUserSkuStock getUserSkuStockByUserIdAndSkuId(Long userId,int skuId){
-        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,skuId);
+    public PfUserSkuStock getUserSkuStockByUserIdAndSkuId(Long userId, int skuId) {
+        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 }

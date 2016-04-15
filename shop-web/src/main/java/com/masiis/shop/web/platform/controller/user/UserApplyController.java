@@ -88,7 +88,6 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/register.shtml")
     public ModelAndView partnersRegister(HttpServletRequest request,
-                                         HttpServletResponse response,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mv = new ModelAndView();
@@ -144,6 +143,7 @@ public class UserApplyController extends BaseController {
         mv.addObject("pUserLevelId", pUserLevelId);
         mv.addObject("pUserId", pUserId);
         mv.addObject("agentSkuViews", agentSkuViews);
+        mv.addObject("comUser", comUser);
         if (pUserId != null && pUserId > 0) {
             // 上级代理商品关系
             mv.addObject("pWxNkName", userService.getUserById(pUserId).getWxNkName());

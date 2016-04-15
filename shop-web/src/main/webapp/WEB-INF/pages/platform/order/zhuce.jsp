@@ -110,12 +110,14 @@
     <div class="back">
     </div>
 </div>
+
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
     var path = "${basePath}";
     var skuId = "${skuId}";
     var pUserId = "${pUserId}";
+    var sendType = "${comUser.sendType}";
 </script>
 <script src="${path}/static/js/zhuceUtil.js"></script>
 </html>

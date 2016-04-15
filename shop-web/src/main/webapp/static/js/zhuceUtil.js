@@ -97,38 +97,50 @@ $(function () {
         $(".back").show();
     });
     $("#submit").click(function (event) {
-        var thisObj=$(this);
+        var thisObj = $(this);
         if (thisObj.html() == "正在提交...") {
             return;
         }
         var event = event || event.window;
         event.stopPropagation();
+        //还没有选择拿货方式
+        if (sendType == 0) {
+
+        } else {
+            var paraData = "?";
+            paraData += "orderType=0";
+            paraData += "&skuId=" + skuId;
+            paraData += "&levelId=" + $(".on").attr("levelId");
+            paraData += "&weixinId=" + $("#q_weixinId").html();
+            paraData += "&pUserId=" + pUserId;
+            window.location.href = path + "border/confirmBOrder.shtml" + paraData;
+        }
         var paraData = {};
-        paraData.realName = $("#q_name").html();
-        paraData.weixinId = $("#q_weixinId").html();
-        paraData.skuId = skuId;
-        paraData.levelId = $(".on").attr("levelId");
-        paraData.pUserId = pUserId;
-        $.ajax({
-            url: path + "border/add.do",
-            type: "post",
-            data: paraData,
-            dataType: "json",
-            success: function (data) {
-                if (data.isError == false) {
-                    thisObj.html("正在提交...");
-                    var param = "?";
-                    param += "bOrderId=" + data.bOrderId;
-                    window.location.href = path + "border/payBOrder.shtml" + param;
-                }
-                else {
-                    alert(data.message);
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                //alert(XMLHttpRequest.responseText);
-            }
-        });
+        //paraData.realName = $("#q_name").html();
+        //paraData.weixinId = $("#q_weixinId").html();
+        //paraData.skuId = skuId;
+        //paraData.levelId = $(".on").attr("levelId");
+        //paraData.pUserId = pUserId;
+        //$.ajax({
+        //    url: path + "border/add.do",
+        //    type: "post",
+        //    data: paraData,
+        //    dataType: "json",
+        //    success: function (data) {
+        //        if (data.isError == false) {
+        //            thisObj.html("正在提交...");
+        //            var param = "?";
+        //            param += "bOrderId=" + data.bOrderId;
+        //            window.location.href = path + "border/payBOrder.shtml" + param;
+        //        }
+        //        else {
+        //            alert(data.message);
+        //        }
+        //    },
+        //    error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //        //alert(XMLHttpRequest.responseText);
+        //    }
+        //});
     });
     /*
      * 是否有推荐人

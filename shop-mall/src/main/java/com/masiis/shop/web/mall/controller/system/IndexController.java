@@ -2,7 +2,6 @@ package com.masiis.shop.web.mall.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.beans.system.System;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
@@ -179,11 +178,9 @@ public class IndexController extends BaseController {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-        Long start = java.lang.System.currentTimeMillis();
         try {
             boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
-            java.lang.System.out.println("是否呐喊的花费时间:" + (java.lang.System.currentTimeMillis() - start));
-            SfShop sfShop = new SfShop();
+            SfShop sfShop = null;
             if(mallShout){
                 sfShop = sfShopMapper.selectByPrimaryKey(shopId);
                 sfShop.setShoutNum(sfShop.getShoutNum()+1);
@@ -198,9 +195,7 @@ public class IndexController extends BaseController {
                 sfShopMapper.updateByPrimaryKey(sfShop);
                 sfShopShoutLogMapper.insert(sfShopShoutLog);
             }
-            java.lang.System.out.println("保存呐喊花费时间:" + (java.lang.System.currentTimeMillis() - start));
             json.put("mallShout",mallShout);
-//            json.put("shoutNum",sfShop.getShoutNum());
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);

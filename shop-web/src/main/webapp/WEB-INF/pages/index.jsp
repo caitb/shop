@@ -51,7 +51,7 @@
         </div><c:if test="${user.isAgent==0}">
         <div class="index_Nlogin" >
             <span style="background: url('<%=path%>/static/images/index_login1.png') no-repeat;background-size: contain;"></span>
-            <img src="<%=path%>/static/images/index_login.png" alt=""><p>您还不是合伙人，先去好货市场看看把~</p>
+            <img src="<%=path%>/static/images/index_login.png" alt=""><p>您还不是合伙人，先去好货市场看看吧~</p>
         </div></c:if>
         <nav>
             <ul>
@@ -110,7 +110,7 @@
         <h1 class="j_qu">点击前往</h1>
     </div>
     <div class="back_login" style="display:none;">
-        <p>您还不是合伙人，先去好货市场看看把~</p>
+        <p>您还不是合伙人，先去好货市场看看吧~</p>
         <h1><span id="quxiao">取消</span><span id="goMark">去好货市场</span></h1>
     </div>
     <div class="back" style="display:none;">

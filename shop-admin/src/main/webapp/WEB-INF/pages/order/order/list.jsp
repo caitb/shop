@@ -496,7 +496,7 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
+                                parent.window.$('#myTabbable').add('orderDetail', '店铺订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
                             }
                         }
                     }

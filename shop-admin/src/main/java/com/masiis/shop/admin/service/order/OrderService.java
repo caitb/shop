@@ -8,6 +8,7 @@ import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class OrderService {
     @Resource
     private SfOrderOperationLogMapper sfOrderOperationLogMapper;
     @Resource
-    private BOrderService bOrderService;
+    private PfUserSkuStockMapper pfUserSkuStockMapper;
 
     /**
      * 店铺订单列表
@@ -125,7 +126,7 @@ public class OrderService {
      * 发货
      * @param sfOrderFreight
      */
-    public void delivery(SfOrderFreight sfOrderFreight, PbUser operationUser){
+    public void delivery(SfOrderFreight sfOrderFreight, PbUser operationUser) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(sfOrderFreight.getSfOrderId());
         sfOrder.setOrderStatus(8);
         sfOrder.setShipStatus(5);
@@ -136,9 +137,7 @@ public class OrderService {
         sfOrderMapper.updateByPrimaryKey(sfOrder);
         sfOrderFreightMapper.insert(sfOrderFreight);
 
-
-        ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
-        bOrderService.updateOrderStock(sfOrder, comUser);
+        updateOrderStock(sfOrder);
 
         //添加订单日志
         SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
@@ -148,5 +147,20 @@ public class OrderService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark(operationUser.toString());
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+    }
+
+    public void updateOrderStock(SfOrder sfOrder) throws Exception {
+        List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(sfOrder.getId());
+        for(SfOrderItem sfOrderItem : sfOrderItems){
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfOrder.getShopUserId(), sfOrderItem.getSkuId());
+            if(pfUserSkuStock.getStock()-sfOrderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock()-sfOrderItem.getQuantity()>=0){
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock()-sfOrderItem.getQuantity());
+                pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock()-sfOrderItem.getQuantity());
+                int c = pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
+                if(c == 0) throw new Exception("更改库存失败!");
+            }else{
+                throw new Exception("库存异常!");
+            }
+        }
     }
 }

@@ -49,6 +49,8 @@ public class BOrderService {
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
 
     /**
      * 根据条件查询记录
@@ -131,9 +133,8 @@ public class BOrderService {
      * 发货
      * @param pfBorderFreight
      */
-    public void delivery(PfBorderFreight pfBorderFreight){
-        PfBorder pfBorder = new PfBorder();
-        pfBorder.setId(pfBorderFreight.getPfBorderId());
+    public void delivery(PfBorderFreight pfBorderFreight) throws Exception {
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderFreight.getPfBorderId());
         pfBorder.setOrderStatus(8);
         pfBorder.setShipStatus(5);
         pfBorder.setShipTime(new Date());
@@ -142,47 +143,47 @@ public class BOrderService {
 
         pfBorderMapper.updateById(pfBorder);
         pfBorderFreightMapper.insert(pfBorderFreight);
+
+        updateOrderStock(pfBorder);
+
+        //添加订单日志
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderStatus(8);
+        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+        pfBorderOperationLog.setRemark("订单完成");
+        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
     }
 
     /**
-     * 更新出货库存
-     *
-     * @author muchaofeng
-     * @date 2016/3/21 14:35
+     * 更新库存
+     * @param pfBorder
      */
-    public  void  updateOrderStock(SfOrder sfOrder, ComUser user) {
-        PfUserSkuStock pfUserSkuStock = null;
-        PfSkuStock pfSkuStock = null;
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(user.getId());
-        if(sfUserRelation==null){
-            throw new BusinessException("用户关系异常");
-        }
-        ComUser userPid = comUserMapper.selectByPrimaryKey(sfUserRelation.getUserPid());
-        if(userPid==null){
-            throw new BusinessException("用户上级为空");
-        }
-        for (SfOrderItem sfOrderItem : sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId())) {
-            if (userPid.getId() == 0) {
-                pfSkuStock = pfSkuStockMapper.selectBySkuId(sfOrderItem.getSkuId());
-                if (pfSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
-                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - sfOrderItem.getQuantity());
-                    pfSkuStock.setStock(pfSkuStock.getStock() - sfOrderItem.getQuantity());
-                    if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
-                        throw new BusinessException("并发修改库存失败");
-                    }
-                } else {
-                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+    public  void  updateOrderStock(PfBorder pfBorder) throws Exception {
+        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+        if(pfBorder.getUserPid().intValue() == 0){
+            for(PfBorderItem pfBorderItem : pfBorderItems){
+                PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+                if(pfSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
+                    pfSkuStock.setStock(pfSkuStock.getStock()-pfBorderItem.getQuantity());
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock()-pfBorderItem.getQuantity());
+                    int c = pfSkuStockMapper.updateByIdAndVersion(pfSkuStock);
+                    if(c == 0) throw new Exception("更改库存失败!");
+                }else{
+                    throw new Exception("库存异常!");
                 }
-            } else {
-                pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), sfOrderItem.getSkuId());
-                if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
-                    pfUserSkuStock.setStock(pfUserSkuStock.getStock() - sfOrderItem.getQuantity());
-                    pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity());
-                    if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                        throw new BusinessException("并发修改库存失败");
-                    }
-                } else {
-                    throw new BusinessException(sfOrderItem.getSkuName() + "当前库存异常");
+            }
+        }else{
+            for(PfBorderItem pfBorderItem : pfBorderItems){
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                if(pfUserSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
+                    pfUserSkuStock.setStock(pfUserSkuStock.getStock()-pfBorderItem.getQuantity());
+                    pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity());
+                    int c = pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
+                    if(c == 0) throw new Exception("更改库存失败!");
+                }else{
+                    throw new Exception("库存异常!");
                 }
             }
         }

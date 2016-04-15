@@ -254,6 +254,9 @@
     function submit(){
         $('#loginForm').submit();
     }
+    $(document).keyup(function(e){
+       if(e.keyCode == 13) $('#loginForm').submit();
+    });
 </script>
 </body>
 </html>

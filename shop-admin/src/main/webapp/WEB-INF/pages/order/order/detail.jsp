@@ -165,18 +165,13 @@
                                                                 <label for="shipName" class="col-sm-4 control-label">快递名称</label>
                                                                 <div class="col-sm-4">
                                                                     <select class="form-control" id="shipName" name="shipManId">
-                                                                        <option>1</option>
-                                                                        <option>2</option>
-                                                                        <option>3</option>
-                                                                        <option>4</option>
-                                                                        <option>5</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group" style="margin-left: -81px;">
                                                                 <label for="freight" class="col-sm-4 control-label">快递单号</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="hidden" name="pfBorderId" value="${order.sfOrder.id}" />
+                                                                    <input type="hidden" name="sfOrderId" value="${order.sfOrder.id}" />
                                                                     <input type="hidden" id="shipManName" name="shipManName" value="" />
                                                                     <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
                                                                 </div>
@@ -769,7 +764,7 @@
 
                     // Use Ajax to submit form data
                     $.ajax({
-                        url: '<%=basePath%>order/border/delivery.do',
+                        url: '<%=basePath%>order/order/delivery.do',
                         type: 'POST',
                         data: $form.serialize(),
                         success: function(msg){

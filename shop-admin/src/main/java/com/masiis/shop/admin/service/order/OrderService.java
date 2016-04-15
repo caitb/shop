@@ -12,10 +12,7 @@ import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 店铺订单业务
@@ -40,6 +37,10 @@ public class OrderService {
     private SfOrderItemMapper sfOrderItemMapper;
     @Resource
     private SfOrderPaymentMapper sfOrderPaymentMapper;
+    @Resource
+    private SfOrderOperationLogMapper sfOrderOperationLogMapper;
+    @Resource
+    private BOrderService bOrderService;
 
     /**
      * 店铺订单列表
@@ -118,5 +119,34 @@ public class OrderService {
         }
 
         return order;
+    }
+
+    /**
+     * 发货
+     * @param sfOrderFreight
+     */
+    public void delivery(SfOrderFreight sfOrderFreight, PbUser operationUser){
+        SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(sfOrderFreight.getSfOrderId());
+        sfOrder.setOrderStatus(8);
+        sfOrder.setShipStatus(5);
+        sfOrder.setShipTime(new Date());
+
+        sfOrderFreight.setCreateTime(new Date());
+
+        sfOrderMapper.updateByPrimaryKey(sfOrder);
+        sfOrderFreightMapper.insert(sfOrderFreight);
+
+
+        ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
+        bOrderService.updateOrderStock(sfOrder, comUser);
+
+        //添加订单日志
+        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+        sfOrderOperationLog.setCreateTime(new Date());
+        sfOrderOperationLog.setSfOrderStatus(8);
+        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+        sfOrderOperationLog.setRemark(operationUser.toString());
+        sfOrderOperationLogMapper.insert(sfOrderOperationLog);
     }
 }

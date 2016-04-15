@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.shop;
 
 import com.masiis.shop.common.util.ImageUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
@@ -66,15 +67,21 @@ public class SfShopManageController extends BaseController {
             comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             sfShop = sfShopMapper.selectByUserId(comUser.getId());
+
+            if(sfShop == null) return mav;
+
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 
             SfDistributionRecord sfCount = sfDistributionRecordMapper.selectCountByUserId(comUser.getId());
             Integer sumLevel = sfCount.getSumLevel(); //总参与人数
 
+            String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
+
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
             mav.addObject("orderCount", orderCount);
             mav.addObject("sumLevel", sumLevel);
+            mav.addObject("shopUrl", shopUrl);
 
             return mav;
         } catch (Exception e) {
@@ -181,7 +188,8 @@ public class SfShopManageController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(200, 200, basePath+"index?shopId="+shopId+"&userPid="+comUser.getId(), qrCodePath);
+            String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + shopId+"/"+comUser.getId()+"/shop.shtml";
+            CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
@@ -201,7 +209,7 @@ public class SfShopManageController extends BaseController {
             positionMap.put("qrCodeImg-top", 368);
             positionMap.put("content-left", 520/2-content.length()/2*28-(content.length()%2*14));
             positionMap.put("content-top", 306);
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(247,60,140));
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247,60,140));
 
             mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg");
             return mav;
@@ -292,7 +300,7 @@ public class SfShopManageController extends BaseController {
             positionMap.put("content-left", 170);
             positionMap.put("content-top", 76);
             String skuName = skuService.getSkuById(skuId).getName();
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("雅黑", Font.PLAIN, 28), new Color(51,51,51));
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
             dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");

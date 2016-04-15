@@ -7,10 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/wodeyongjin.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
 </head>
 <body>
     <header>
@@ -61,6 +58,7 @@
         <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
     </div>
     <div class="back_j" style="display: none">
+        <span class="close">×</span>
         <p class="biao">绑定账号</p>
         <div>
             <p>手机号：<input type="tel" class="phone" id="phoneId"></p>

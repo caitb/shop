@@ -1,9 +1,11 @@
 package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
@@ -38,7 +41,7 @@ public class SfOrderPurchaseController extends BaseController {
     public String getConfirmOrderInfoController(HttpServletRequest request, HttpServletResponse response,
                                                 @RequestParam(value = "shopId") Long shopId,
                                                 @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
-                                                Model model){
+                                                Model model)throws Exception{
         ComUser comUser = getComUser(request);
         Map<String,Object> map = sfOrderPurchaseService.getConfirmOrderInfo(comUser.getId(),selectedAddressId,shopId);
         model.addAttribute("shopId",shopId);
@@ -61,15 +64,32 @@ public class SfOrderPurchaseController extends BaseController {
                               @RequestParam(value = "message" , required = false)String message,
                               @RequestParam(value = "shopId",required = true) Long sfShopId,
                               @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId){
-        JSONObject obj = new JSONObject();
-        ComUser comUser = getComUser(request);
-        Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
-        if (orderId != null){
-            obj.put("isSubmitOrder","true");
-        }else{
-            obj.put("isSubmitOrder","false");
+        try{
+            log.info("提交订单-----start");
+            JSONObject obj = new JSONObject();
+            log.info("获取comuser-----start");
+            ComUser comUser = getComUser(request);
+            log.info("获取comuser-----"+comUser);
+            if (comUser == null){
+                throw new BusinessException("获取comuser为null");
+            }
+            if (!StringUtils.isEmpty(message)){
+                message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
+            }
+            log.info("message------"+message);
+            Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
+            if (orderId != null){
+                obj.put("isSubmitOrder","true");
+            }else{
+                obj.put("isSubmitOrder","false");
+            }
+            obj.put("sfOrderId",orderId);
+            log.info("提交订单-----end");
+            return obj.toJSONString();
+        }catch (UnsupportedEncodingException e){
+            throw new BusinessException("留言信息转化为中文出错");
+        }catch (Exception e){
+            throw new BusinessException(e);
         }
-        obj.put("sfOrderId",orderId);
-        return obj.toJSONString();
     }
 }

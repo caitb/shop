@@ -22,8 +22,8 @@
             <p><img src="${comUser.wxHeadImg}" alt=""></p>
             <div><h1>${comUser.realName}</h1>
                 <h1>
-                    <span><img src="${path}/static/images/admin.png" alt="">等级A1</span>
-                    <span><img src="${path}/static/images/admin.png" alt="">等级A1</span>
+                    <span><img src="${path}/static/images/admin.png" alt=""></span>
+                    <span><img src="${path}/static/images/admin.png" alt=""></span>
                 </h1>
             </div>
         </div>

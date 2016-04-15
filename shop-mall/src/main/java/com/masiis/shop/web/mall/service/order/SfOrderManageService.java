@@ -126,16 +126,17 @@ public class SfOrderManageService {
     @Transactional
     public void deliver( Long orderId) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
-//        sfOrder.setOrderStatus(3);
-//        sfOrderMapper.updateByPrimaryKey(sfOrder);
-//        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
-//        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
-//        sfOrderOperationLog.setCreateTime(new Date());
-//        sfOrderOperationLog.setSfOrderStatus(BOrderStatus.Complete.getCode());
-//        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
-//        sfOrderOperationLog.setRemark("订单完成");
-//        sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         // 进行订单分润和代理商销售额、收入计算
         sfUserAccountService.countingSfOrder(sfOrder);
+        // 进行订单状态修改
+        sfOrder.setOrderStatus(3);
+        sfOrderMapper.updateByPrimaryKey(sfOrder);
+        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+        sfOrderOperationLog.setCreateTime(new Date());
+        sfOrderOperationLog.setSfOrderStatus(BOrderStatus.Complete.getCode());
+        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+        sfOrderOperationLog.setRemark("订单完成");
+        sfOrderOperationLogMapper.insert(sfOrderOperationLog);
     }
 }

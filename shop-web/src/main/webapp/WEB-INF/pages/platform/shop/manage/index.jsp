@@ -22,13 +22,13 @@
         <h1>
             <span>${comUser.realName}，欢迎登陆~</span>
         </h1>--%>
-        <h1>店铺地址：<span>http://mall.iimai.com//1/shop.html</span></h1>
-        <p><b>复制</b></p>
+        <h1>店铺地址：<span id="shopUrl">${shopUrl}</span></h1>
+        <p id="copyShopUrl"><b>复制</b></p>
     </div>
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
-            <span>分享</span>
+            <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
         </div>
         <div>
             <p>
@@ -48,7 +48,7 @@
         </nav>
     </div>
     <nav>
-        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId='+sfShop+'&&isSale=1');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/managePro.htmls?shopId=${sfShop.id}&&isSale=1');"><span><img src="<%=basePath%>static/images/foot_icon%20(5).png" alt=""></span><span>商品管理</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span><img src="<%=basePath%>static/images/foot_icon%20(3).png" alt=""></span><span>合伙人订单</span></p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupShop');"><span><img src="<%=basePath%>static/images/foot_icon%20(2).png" alt=""></span><span>店铺设置</span></p>
     </nav>
@@ -65,4 +65,22 @@
 </c:if>
 <c:import url="/WEB-INF/pages/common/nav-footer.jsp"></c:import>
 </body>
+<script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>static/js/jquery.zclip.js"></script>
+<script>
+    $(document).ready(function(){
+        if ( window.clipboardData ) {
+            $('#copyShopUrl').click(function() {
+                window.clipboardData.setData("Text", $('#shopUrl').text());
+                alert('复制成功！');
+            });
+        } else {
+            $("#copyShopUrl").zclip({
+                path:'http://img3.job1001.com/js/ZeroClipboard/ZeroClipboard.swf',
+                copy:function(){return $('#shopUrl').text();},
+                afterCopy:function(){alert('复制成功！');}
+            });
+        }
+    });
+</script>
 </html>

@@ -1,5 +1,7 @@
 package com.masiis.shop.web.mall.constants;
 
+import com.masiis.shop.common.util.PropertiesUtils;
+
 /**
  * Created by lzh on 2016/2/24.
  */
@@ -53,4 +55,6 @@ public class SysConstants {
     public static final String ID_CARD_PATH = "/static/upload/user/idCard/";
 
     public static final Integer MAX_AGENT_LEVEL = 3;//最低代理等级
+
+    public static final String  MALL_DOMAIN_NAME_ADDRESS = PropertiesUtils.getStringValue("mall.domain.name.address");//小铺域名地址
 }

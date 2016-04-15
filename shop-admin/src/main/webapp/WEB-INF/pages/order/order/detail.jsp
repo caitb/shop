@@ -104,7 +104,7 @@
                                             <div class="profile-info-name"> 订单号 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="orderCode">${order.pfBorder.orderCode}</span>
+                                                <span class="" id="orderCode">${order.sfOrder.orderCode}</span>
                                             </div>
                                         </div>
 
@@ -112,14 +112,14 @@
                                             <div class="profile-info-name"> 订单状态 </div>
 
                                             <div class="profile-info-value">
-                                                <c:if test="${order.pfBorder.orderStatus == 0}"><span class="" id="orderStatus">未处理</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 1}"><span class="" id="orderStatus">已付款</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 2}"><span class="" id="orderStatus">已取消</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
-                                                <c:if test="${order.pfBorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 0}"><span class="" id="orderStatus">未处理</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 1}"><span class="" id="orderStatus">已付款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 2}"><span class="" id="orderStatus">已取消</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                             </div>
                                         </div>
 
@@ -127,7 +127,7 @@
                                             <div class="profile-info-name"> 下单日期 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="createTime"><fmt:formatDate value="${order.pfBorder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <span class="" id="createTime"><fmt:formatDate value="${order.sfOrder.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                             </div>
                                         </div>
 
@@ -135,7 +135,7 @@
                                             <div class="profile-info-name"> 支付日期 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="payTime"><fmt:formatDate value="${order.pfBorder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <span class="" id="payTime"><fmt:formatDate value="${order.sfOrder.payTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                             </div>
                                         </div>
 
@@ -143,8 +143,8 @@
                                             <div class="profile-info-name"> 支付类型 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfBorderPayments}" var="borderPayment">
-                                                    ${borderPayment.payTypeName}
+                                                <c:forEach items="${order.sfOrderPayments}" var="orderPayment">
+                                                    ${orderPayment.payTypeName}
                                                 </c:forEach>
                                             </div>
                                         </div>
@@ -153,14 +153,14 @@
                                             <div class="profile-info-name"> 物流状态 </div>
 
                                             <div class="profile-info-value">
-                                                <c:if test="${order.pfBorder.shipStatus == 0}">
+                                                <c:if test="${order.sfOrder.shipStatus == 0}">
                                                     <span>未发货</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">发货</span>
                                                     <button type="button" class="btn btn-info" id="fahuo-" data-toggle="collapse" style="display: none;">
                                                         发货
                                                     </button>
                                                     <div id="delivery" class="collapse" aria-expanded="false" style="height: 0px;">
-                                                        <form class="form-horizontal" id="deliForm" action="<%=basePath%>order/border/delivery.do">
+                                                        <form class="form-horizontal" id="deliForm" action="<%=basePath%>order/order/delivery.do">
                                                             <div class="form-group" style="margin-top: 10px; margin-left: -81px;">
                                                                 <label for="shipName" class="col-sm-4 control-label">快递名称</label>
                                                                 <div class="col-sm-4">
@@ -176,7 +176,7 @@
                                                             <div class="form-group" style="margin-left: -81px;">
                                                                 <label for="freight" class="col-sm-4 control-label">快递单号</label>
                                                                 <div class="col-sm-4">
-                                                                    <input type="hidden" name="pfBorderId" value="${order.pfBorder.id}" />
+                                                                    <input type="hidden" name="pfBorderId" value="${order.sfOrder.id}" />
                                                                     <input type="hidden" id="shipManName" name="shipManName" value="" />
                                                                     <input type="text" class="form-control" id="freight" name="freight" placeholder="快递单号">
                                                                 </div>
@@ -191,8 +191,8 @@
                                                         </form>
                                                     </div>
                                                 </c:if>
-                                                <c:if test="${order.pfBorder.shipStatus == 5}"><span>已发货</span></c:if>
-                                                <c:if test="${order.pfBorder.shipStatus == 9}"><span>已收货</span></c:if>
+                                                <c:if test="${order.sfOrder.shipStatus == 5}"><span>已发货</span></c:if>
+                                                <c:if test="${order.sfOrder.shipStatus == 9}"><span>已收货</span></c:if>
                                             </div>
                                         </div>
 
@@ -201,8 +201,8 @@
 
                                             <div class="profile-info-value">
                                                 <span class="" id="extractableFee">
-                                                    <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
-                                                        ${pfBorderFreight.shipManName}
+                                                    <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                        ${sfOrderFreight.shipManName}
                                                     </c:forEach>
                                                 </span>
                                             </div>
@@ -212,8 +212,8 @@
                                             <div class="profile-info-name"> 发货时间 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
-                                                    <span class="" id="bfCreateTime"><fmt:formatDate value="${pfBorderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
+                                                <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                    <span class="" id="bfCreateTime"><fmt:formatDate value="${sfOrderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                                 </c:forEach>
                                             </div>
                                         </div>
@@ -222,8 +222,8 @@
                                             <div class="profile-info-name"> 运单单号 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfBorderFreights}" var="pfBorderFreight">
-                                                    <span class="" id="freight">${pfBorderFreight.freight}</span>
+                                                <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                    <span class="" id="freight">${sfOrderFreight.freight}</span>
                                                 </c:forEach>
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@
                                             <div class="profile-info-name"> 收货人 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="" id="consignee">${order.pfBorderConsignee.consignee}</span>
+                                                <span class="" id="consignee">${order.sfOrderConsignee.consignee}</span>
                                             </div>
                                         </div>
 
@@ -240,7 +240,7 @@
                                             <div class="profile-info-name"> 收货地址 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="address">${order.pfBorderConsignee.provinceName}${order.pfBorderConsignee.cityName}${order.pfBorderConsignee.regionName}${order.pfBorderConsignee.address}</span>
+                                                <span class="bgarea" id="address">${order.sfOrderConsignee.provinceName}${order.sfOrderConsignee.cityName}${order.sfOrderConsignee.regionName}${order.sfOrderConsignee.address}</span>
                                             </div>
                                         </div>
 
@@ -248,7 +248,7 @@
                                             <div class="profile-info-name"> 联系电话 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="mobile">${order.pfBorderConsignee.mobile}</span>
+                                                <span class="bgarea" id="mobile">${order.sfOrderConsignee.mobile}</span>
                                             </div>
                                         </div>
 
@@ -256,7 +256,7 @@
                                             <div class="profile-info-name"> 邮编 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="zip">${order.pfBorderConsignee.zip}</span>
+                                                <span class="bgarea" id="zip">${order.sfOrderConsignee.zip}</span>
                                             </div>
                                         </div>
 
@@ -272,7 +272,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="remark">${order.pfBorder.remark}</span>
+                                                <span class="bgarea" id="remark">${order.sfOrder.userMessage}</span>
                                             </div>
                                         </div>
 
@@ -280,7 +280,7 @@
                                             <div class="profile-info-name"> 运费 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="shipAmount">${order.pfBorder.shipAmount}</span>
+                                                <span class="bgarea" id="shipAmount">${order.sfOrder.shipAmount}</span>
                                             </div>
                                         </div>
 
@@ -288,7 +288,7 @@
                                             <div class="profile-info-name"> 商品总金额 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="productAmount">${order.pfBorder.productAmount}</span>
+                                                <span class="bgarea" id="productAmount">${order.sfOrder.productAmount}</span>
                                             </div>
                                         </div>
 
@@ -296,7 +296,7 @@
                                             <div class="profile-info-name"> 实付金额 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="bgarea" id="payAmount">${order.pfBorder.payAmount}</span>
+                                                <span class="bgarea" id="payAmount">${order.sfOrder.payAmount}</span>
                                             </div>
                                         </div>
 
@@ -305,13 +305,14 @@
 
                                             <div class="profile-info-value">
                                                 <span class="bgarea" id="order_status">
-                                                    <c:if test="${order.pfBorder.orderStatus == 0}">未处理</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 1}">已付款</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 2}">已取消</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 3}">已完成</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 4}">退款中</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 5}">已退款</c:if>
-                                                    <c:if test="${order.pfBorder.orderStatus == 7}">待发货</c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 0}"><span class="" id="orderStatus">未处理</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 1}"><span class="" id="orderStatus">已付款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 2}"><span class="" id="orderStatus">已取消</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                                 </span>
                                             </div>
                                         </div>
@@ -353,7 +354,7 @@
                                             <td>${product.comSku.priceMarket}</td>
                                             <td>${product.comSku.priceRetail}</td>
                                             <td>1</td>
-                                            <td>${order.pfBorder.productAmount}</td>
+                                            <td>${order.sfOrder.productAmount}</td>
                                         </tr>
                                     </c:forEach>
                                     </tbody>

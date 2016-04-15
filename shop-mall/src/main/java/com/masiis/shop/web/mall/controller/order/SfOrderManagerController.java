@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/sfOrderManagerController")
 public class SfOrderManagerController extends BaseController {
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private SfOrderManageService sfOrderManageService;
@@ -47,6 +49,7 @@ public class SfOrderManagerController extends BaseController {
     public String deliverSfOrder(@RequestParam(required = true) Long orderId) {
         JSONObject json = new JSONObject();
         try {
+            log.info("deliverSfOrder进来了");
             sfOrderManageService.deliver(orderId);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

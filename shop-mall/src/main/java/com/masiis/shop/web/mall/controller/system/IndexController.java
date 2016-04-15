@@ -2,6 +2,8 @@ package com.masiis.shop.web.mall.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.shop.SfShopShoutLogMapper;
 import com.masiis.shop.dao.mallBeans.SfShopDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -21,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +33,7 @@ import java.util.List;
 @Controller
 public class IndexController extends BaseController {
     @Resource
-    private SfOrderManageService sfOrderManageService;
+    private SfShopMapper sfShopMapper;
     @Resource
     private UserService userService;
     @Resource
@@ -39,6 +42,8 @@ public class IndexController extends BaseController {
     private SkuService skuService;
     @Resource
     private SfShopSkuService sfShopSkuService;
+    @Resource
+    private SfShopShoutLogMapper sfShopShoutLogMapper;
 
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
@@ -175,6 +180,21 @@ public class IndexController extends BaseController {
         }
         try {
             boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
+            SfShop sfShop = null;
+            if(mallShout){
+                sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+                sfShop.setShoutNum(sfShop.getShoutNum()+1);
+
+                SfShopShoutLog sfShopShoutLog = new SfShopShoutLog();
+                sfShopShoutLog.setCreateTime(new Date());
+                sfShopShoutLog.setNum(1);
+                sfShopShoutLog.setUserId(user.getId());
+                sfShopShoutLog.setShopId(shopId);
+                sfShopShoutLog.setShopUserId(sfShop.getUserId());
+
+                sfShopMapper.updateByPrimaryKey(sfShop);
+                sfShopShoutLogMapper.insert(sfShopShoutLog);
+            }
             json.put("mallShout",mallShout);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {

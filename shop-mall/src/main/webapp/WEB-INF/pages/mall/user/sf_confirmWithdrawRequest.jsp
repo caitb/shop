@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
     <%@include file="/WEB-INF/pages/commonhead.jsp" %>
-    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
-    <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="${path}/static/css/pageCss/querenshenqing.css">
-    <link rel="stylesheet" href="${path}/static/css/devCss/loading.css">
     <style>
         a{
             background: url("${path}/static/images/icon_37.png") no-repeat 0;

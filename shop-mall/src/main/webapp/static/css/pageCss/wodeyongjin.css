@@ -16,6 +16,17 @@
   background: url("/static/images/zichan_2.png") no-repeat 0;
   background-size: 12px;
 }
+.close{
+  width:20px;
+  height:20px;
+  border-radius: 10px;
+  border:1px solid #cccccc;
+  line-height:20px;
+  text-align: center;
+  position: absolute;
+  right: 5px;
+  top:5px;
+}
 .wrap nav ul li {
   width: 1px;
   -webkit-box-flex: 1;

@@ -64,7 +64,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                 <p>
                                     <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                    <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                    <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                 </p>
                                 </c:if>
                             </div>
@@ -97,7 +97,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -130,7 +130,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -163,7 +163,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -196,7 +196,7 @@
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
                                     <p>
                                         <c:if test="${pb.orderStatus ==8}"><button id="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.id}')">确认收货</button></c:if>
-                                        <c:if test="${pb.orderStatus ==0}"><button>继续支付</button></c:if>
+                                        <c:if test="${pb.orderStatus ==0}"><button onclick="javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId=${pb.id}');">继续支付</button></c:if>
                                     </p>
                                 </c:if>
                             </div>
@@ -278,7 +278,7 @@
                                        trHtml+="<button id=\"querenshouhuo_"+sfOrder.id+"\" onclick=\"querenshouhuo('"+sfOrder.id+"')\">确认收货</button></p>";
                                    }
                                    if(sfOrder.orderStatus ==0 ){
-                                       trHtml+="<button>继续支付</button></p>";
+                                       trHtml+="<button onclick=\"javascript:window.location.replace('<%=path%>/orderPay/getOrderInfo.html?orderId="+sfOrder.id+"');\">继续支付</button>";
                                    }
                                }
                                trHtml+="</div></section>";
@@ -286,7 +286,7 @@
                            $(".all").eq(index).html(trHtml);
                        }
                    })
-               })
+               });
            })
 
             $(document).ready(function(){
@@ -295,28 +295,34 @@
                 $("li").eq(index).children("a").addClass("on");
                 $(".all").eq(index).show().siblings().hide();
             });
-
+            var oid = "";
             function querenshouhuo(id){
                 $(".back").css("display","-webkit-box");
                 $(".back_shouhuo").css("display","-webkit-box");
-                $(".que_que").on("click",function(){
-                    $(".back_shouhuo").hide();
-                    $(".back").hide();
-                    var aa="#querenshouhuo_"+id;
-                    var bb=".querenshouhuo_"+id;
-                    $.ajax({
-                        type:"POST",
-                        url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
-                        data:{orderId:id},
-                        dataType:"Json",
-                        success:function(date){
-                            $(""+aa+"").attr("style","display:none");
-                            $(""+bb+"").html("交易成功");
-//                            location.reload(true);
-                        }
-                    })
-                })
+                oid = id;
             }
+
+           $(function(){
+               $(".que_que").on("click",function(){
+                   $(".back_shouhuo").hide();
+                   $(".back").hide();
+                   var aa="#querenshouhuo_"+oid;
+                   var bb=".querenshouhuo_"+oid;
+                   $.ajax({
+                       type:"POST",
+                       url : "<%=path%>/sfOrderManagerController/deliverSfOrder.do",
+                       data:{orderId:oid},
+                       dataType:"Json",
+                       success:function(date){
+                           $(""+aa+"").attr("style","display:none");
+                           $(""+bb+"").html("交易成功");
+//                            location.reload(true);
+                       }
+                   });
+               });
+           });
+
+
             $(".que_qu").on("click",function(){
                 $(".back_shouhuo").hide();
                 $(".back").hide();
@@ -328,7 +334,7 @@
             $(".close").on("click",function(){
                 $(".shouhuo").hide();
                 $(".back").hide();
-            })
+            });
        </script>
 </body>
 </html>

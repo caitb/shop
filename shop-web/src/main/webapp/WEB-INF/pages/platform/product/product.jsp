@@ -105,9 +105,10 @@
                     </li>
                 </ul>
             </div>
-            <span class="btn">—</span>
+            <span class="btn">+</span>
         </div>
         <div class="back_j" style="display: none">
+            <span class="close">×</span>
             <p class="biao">绑定账号</p>
             <div>
                 <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
@@ -168,6 +169,7 @@
         productJS.initPage();
         validateCodeJS.initPage();
     });
+
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'horizontal',
         loop: true,
@@ -199,19 +201,19 @@
         $(this).parent().animate({
             width: "90%"
         })
-        $(".fixe").addClass("active");
-        $(this).addClass("on").delay(3000).removeClass("on")
-        $(".left").show()
-        $(this).html("+")
+
+        $(".left").show("slow");
+        $(this).addClass("on").delay(3000).removeClass("on");
+        $(this).html("—")
     }, function () {
         $(this).parent().animate({
             width: "50px"
         })
         $(this).prev().hide()
+        $(".left").hide();
         $(".fixe").removeClass("active");
         $(this).addClass("on")
-        $(".left").hide()
-        $(this).html("—")
+        $(this).html("+")
     })
     $(".paidan").on("click", function () {
         $(".back").css("display", "-webkit-box");

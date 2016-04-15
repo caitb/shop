@@ -110,6 +110,7 @@ public class BaseController {
         if (user == null) {
             return null;
         }
+        log.info("缓存user的id为----"+user.getId());
         user = userService.getUserById(user.getId());
         return user;
     }

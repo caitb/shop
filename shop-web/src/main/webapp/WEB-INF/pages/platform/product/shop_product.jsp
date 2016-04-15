@@ -50,6 +50,7 @@
                 </div>
                 </c:forEach>
             </section>
+
     </main>
 </div>
 <div class="back_que"style="display: none">
@@ -80,7 +81,7 @@
     $("#onsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
-        $(".all").eq(0).show().siblings().hide();
+        $(".sec1").show().siblings().hide();
         $.ajax({//上架中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -90,7 +91,6 @@
             success: function (data) {
                 var trHtml = "";
                 $.each(data.skuInfoList, function(i, sku){
-                    trHtml+="<section class=\"all\" style=\"display: block;\">";
                     trHtml+="<div class=\"sec1\">";
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
@@ -103,16 +103,14 @@
                     trHtml+="<p onclick=\"xiajia('"+sku.shopSkuId+"')\">下架</p>";
                     trHtml+="<p onclick=\"share('"+sku.comSku.id+"')\">分享</p>";
                     trHtml+="</div>";
-                    trHtml+="</section>";
                 });
-                $(".all").eq(0).html(trHtml);
+                $(".all").empty().html(trHtml);
             }
         });
     })
     $("#outsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
-        $(".all").eq(1).show().siblings().hide();
         $.ajax({//仓库中
             url: '<%=basePath%>shop/deliverSale.do',
             type: 'post',
@@ -122,7 +120,6 @@
             success: function (data) {
                 var trHtml = "";
                 $.each(data.skuInfoList, function(i, sku){
-                    trHtml+="<section class=\"all\" style=\"display: block;\">";
                     trHtml+="<div class=\"sec1\">";
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
@@ -135,9 +132,8 @@
                     trHtml+="<p onclick=\"shangjia('"+sku.shopSkuId+"')\">上架</p>";
                     trHtml+="<p><a href=\"<%=basePath%>product/"+sku.comSku.id+"\">预览</a></p>";
                     trHtml+="</div>";
-                    trHtml+="</section>";
                 });
-                $(".all").eq(1).html(trHtml);
+                $(".all").empty().html(trHtml);
             }
         });
 

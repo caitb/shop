@@ -52,7 +52,7 @@
             </c:if>
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
-                    <p>拿货方式：<span>平台代发</span><b>你已选择拿货方式，不可更改</b></p>
+                    <p>拿货方式：<span>平台代发</span></p>
                     <h1>支付成功后，您的在线库存将会增加</h1>
                 </div>
             </c:if>
@@ -120,15 +120,13 @@
             return;
         }
         var paraData = {};
-        paraData.orderType = "0";//代理订单
-        paraData.skuId = "${bOrderConfirm.skuId}";
-        paraData.skuQuantity = "${bOrderConfirm.skuQuantity}";
-        paraData.wenXinId = "${bOrderConfirm.wenXinId}";
-        paraData.agentLevelId = "${bOrderConfirm.agentLevelId}";
-        paraData.userMessage = $("#userMessage").val();
-        paraData.userAddressId = $("#addressId").val();
         paraData.pUserId = "${bOrderConfirm.pUserId}";
         paraData.sendType = "${bOrderConfirm.sendType}";
+        paraData.skuId = "${bOrderConfirm.skuId}";
+        paraData.agentLevelId = "${bOrderConfirm.agentLevelId}";
+        paraData.weiXinId = "${bOrderConfirm.wenXinId}";
+        paraData.userMessage = $("#userMessage").val();
+        paraData.userAddressId = $("#addressId").val();
         $.ajax({
             url: "${basePath}border/add.do",
             type: "post",
@@ -137,7 +135,7 @@
             success: function (data) {
                 if (data.isError == false) {
                     $(para).html("正在提交...");
-                    window.location.href = "${basePath}border/goToCheckoutBOrder.shtml?bOrderId=" + data.bOrderId;
+                    window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
                 }
             }
         });

@@ -28,12 +28,12 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p>支付订单</p>
             <p style="color: #F74A11;">选择拿货方式</p>
+            <p>支付订单</p>
         </div>
-        <div class="nahuo">
-            <p>支付成功，请选择拿货方式</p>
-        </div>
+        <%--<div class="nahuo">--%>
+            <%--<p>支付成功，请选择拿货方式</p>--%>
+        <%--</div>--%>
         <div class="content">
             <div class="sec1">
                 <h1>拿货方式简介</h1>

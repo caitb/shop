@@ -32,7 +32,7 @@
             <p>支付订单</p>
         </div>
         <%--<div class="nahuo">--%>
-            <%--<p>支付成功，请选择拿货方式</p>--%>
+        <%--<p>支付成功，请选择拿货方式</p>--%>
         <%--</div>--%>
         <div class="content">
             <div class="sec1">
@@ -137,13 +137,12 @@
             return;
         }
         var paraData = "?";
-        paraData += "orderType=0";
-        paraData += "&skuId=${skuId}";
-        paraData += "&levelId=${levelId}";
-        paraData += "&weixinId=${weixinId}";
-        paraData += "&pUserId=${pUserId}";
+        paraData += "skuId=${skuId}";
+        paraData += "&agentLevelId=${agentLevelId}";
+        paraData += "&weiXinId=${weiXinId}";
         paraData += "&sendType=" + sendType;
-        window.location.href = "${basePath}border/confirmBOrder.shtml" + paraData;
+        paraData += "&pUserId=${pUserId}";
+        window.location.href = "${basePath}BOrderAdd/agentBOrder.shtml" + paraData;
     }
     /*
      * 返回修改

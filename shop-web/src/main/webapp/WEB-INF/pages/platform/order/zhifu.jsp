@@ -120,6 +120,7 @@
             return;
         }
         var paraData = {};
+        paraData.orderType = "${bOrderConfirm.orderType}";
         paraData.pUserId = "${bOrderConfirm.pUserId}";
         paraData.sendType = "${bOrderConfirm.sendType}";
         paraData.skuId = "${bOrderConfirm.skuId}";

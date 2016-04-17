@@ -90,7 +90,7 @@ public class UserApplyController extends BaseController {
     public ModelAndView register(HttpServletRequest request,
                                  @RequestParam(value = "skuId", required = true) Integer skuId,
                                  @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = new ModelAndView("platform/order/zhuce");
         ComUser comUser = getComUser(request);
         if (comUser == null) {
             throw new BusinessException("用户未登录!");
@@ -158,7 +158,6 @@ public class UserApplyController extends BaseController {
             mv.addObject("pWxNkName", "");
         }
         mv.addObject("sendType", sendType);
-        mv.setViewName("platform/order/zhuce");
         return mv;
     }
 

@@ -1,10 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
-import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
@@ -21,7 +18,6 @@ import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
-import com.sun.javafx.sg.Border;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +29,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -75,182 +70,19 @@ public class BOrderController extends BaseController {
     @RequestMapping("/setUserSendType.shtml")
     public ModelAndView setUserSendType(HttpServletRequest request,
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
-                                        @RequestParam(value = "levelId", required = false) Integer levelId,
-                                        @RequestParam(value = "weixinId", required = false) String weixinId,
+                                        @RequestParam(value = "agentLevelId", required = false) Integer agentLevelId,
+                                        @RequestParam(value = "weiXinId", required = false) String weiXinId,
                                         @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("platform/order/nahuo");
         ComUser comUser = getComUser(request);
         if (comUser.getSendType() != 0) {
             throw new BusinessException("用户已经选择了拿货方式");
         }
         modelAndView.addObject("skuId", skuId);
-        modelAndView.addObject("levelId", levelId);
-        modelAndView.addObject("weixinId", weixinId);
+        modelAndView.addObject("agentLevelId", agentLevelId);
+        modelAndView.addObject("weiXinId", weiXinId);
         modelAndView.addObject("pUserId", pUserId);
-        modelAndView.setViewName("platform/order/nahuo");
         return modelAndView;
-    }
-
-    /**
-     * 确认订单页面
-     *
-     * @param orderType 订单类型(0代理1补货2拿货)
-     * @param skuId     订单商品
-     * @param levelId   代理等级(订单代理需要)
-     * @param weixinId  微信id(订单代理需要)
-     * @param pUserId   上级用户id(订单代理需要)
-     * @param quantity  订单商品数量(订单补货或拿货需要)
-     * @author ZhaoLiang
-     * @date 2016/3/5 16:32
-     */
-    @RequestMapping("/confirmBOrder.shtml")
-    public ModelAndView confirmBOrder(HttpServletRequest request,
-                                      @RequestParam(value = "orderType", required = true) Integer orderType,
-                                      @RequestParam(value = "skuId", required = true) Integer skuId,
-                                      @RequestParam(value = "levelId", required = false) Integer levelId,
-                                      @RequestParam(value = "weixinId", required = false) String weixinId,
-                                      @RequestParam(value = "pUserId", required = false) Long pUserId,
-                                      @RequestParam(value = "sendType", required = false) Integer sendType,
-                                      @RequestParam(value = "quantity", required = false) Integer quantity,
-                                      @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
-        ModelAndView mv = new ModelAndView();
-        ComUser comUser = getComUser(request);
-        Integer userSendType = 0;
-        if (comUser.getSendType() == null || comUser.getSendType() <= 0) {
-            if (sendType == null || sendType <= 0) {
-                throw new BusinessException("还未选中拿货方式");
-            }
-            userSendType = sendType;
-        } else {
-            userSendType = comUser.getSendType();
-        }
-        BOrderConfirm bOrderConfirm = new BOrderConfirm();
-        bOrderConfirm.setOrderType(orderType);
-        bOrderConfirm.setWenXinId(weixinId);
-        bOrderConfirm.setpUserId(pUserId);
-        //拿货方式
-        bOrderConfirm.setSendType(userSendType);
-        //获得地址
-        ComUserAddress comUserAddress = userAddressService.getOrderAddress(userAddressId, comUser.getId());
-        bOrderConfirm.setComUserAddress(comUserAddress);
-        //获取sku
-        ComSku comSku = skuService.getSkuById(skuId);
-        bOrderConfirm.setSkuId(skuId);
-        bOrderConfirm.setSkuName(comSku.getName());
-        //获取sku主图片
-        ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        bOrderConfirm.setSkuImg(skuImg + comSkuImage.getImgUrl());
-        //获取用户代理等级
-        Integer temLevelId = 0;
-        if (orderType == 0) {
-            if (levelId == null || levelId <= 0) {
-                throw new BusinessException("商品代理等级有误");
-            }
-            temLevelId = levelId;
-        } else {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            temLevelId = pfUserSku.getAgentLevelId();
-        }
-        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(temLevelId);
-        bOrderConfirm.setAgentLevelId(comAgentLevel.getId());
-        bOrderConfirm.setAgentLevelName(comAgentLevel.getName());
-        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, comAgentLevel.getId());
-        if (orderType == 0) {
-            bOrderConfirm.setSkuQuantity(pfSkuAgent.getQuantity());
-        } else {
-            if (quantity == null || quantity <= 0) {
-                throw new BusinessException("商品数量有误");
-            }
-            bOrderConfirm.setSkuQuantity(quantity);
-        }
-        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_DOWN);
-        bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
-        bOrderConfirm.setBailAmount(pfSkuAgent.getBail());
-        BigDecimal highProfit = comSku.getPriceRetail().multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最高利润
-        bOrderConfirm.setHighProfit(highProfit);
-        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, temLevelId + 1);
-        BigDecimal lowProfit = comSku.getPriceRetail().multiply(lowerSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最低利润
-        bOrderConfirm.setLowProfit(lowProfit);
-        bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
-        mv.addObject("bOrderConfirm", bOrderConfirm);
-        mv.setViewName("platform/order/zhifu");
-        return mv;
-    }
-
-    /**
-     * 代理提交订单
-     *
-     * @param request
-     * @param pUserId       上级合伙人id，平台为0
-     * @param sendType      拿货方式(0未选择1平台代发2自己发货)
-     * @param skuId         合伙skuId
-     * @param levelId       合伙等级
-     * @param weiXinId      微信Id
-     * @param userMessage   用户留言
-     * @param userAddressId 用户地址Id
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/add.do")
-    public String addBOrder(HttpServletRequest request,
-                            @RequestParam(value = "pUserId", required = false) Long pUserId,
-                            @RequestParam(value = "sendType", required = true) Integer sendType,
-                            @RequestParam(value = "skuId", required = true) Integer skuId,
-                            @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
-                            @RequestParam(value = "weiXinId", required = true) String weiXinId,
-                            @RequestParam(value = "userMessage", required = false) String userMessage,
-                            @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
-        JSONObject obj = new JSONObject();
-        try {
-            if (skuId == null) {
-                throw new BusinessException("参数校验失败：skuId为空！");
-            }
-            if (pUserId == null) {
-                pUserId = 0l;
-            }
-            ComUser comUser = getComUser(request);
-            if (comUser.getSendType() > 0) {
-                sendType = comUser.getSendType();
-            } else if (pUserId > 0) {
-                sendType = userService.getUserById(pUserId).getSendType();
-            }
-            if (sendType == null && sendType <= 0) {
-                throw new BusinessException("参数校验失败：拿货方式异常！");
-            }
-            if (agentLevelId == null) {
-                throw new BusinessException("参数校验失败：合伙等级为空！");
-            }
-            if (weiXinId == null) {
-                throw new BusinessException("参数校验失败：合伙微信为空！");
-            }
-            if (userMessage == null) {
-                userMessage = "";
-            }
-            if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
-                throw new BusinessException("参数校验失败：用户收货信息异常！");
-            }
-            BOrderAdd bOrderAdd = new BOrderAdd();
-            bOrderAdd.setOrderType(BOrderType.agent.getCode());
-            bOrderAdd.setpUserId(pUserId);
-            bOrderAdd.setUserId(comUser.getId());
-            bOrderAdd.setSendType(sendType);
-            bOrderAdd.setSkuId(skuId);
-            bOrderAdd.setAgentLevelId(agentLevelId);
-            bOrderAdd.setWeiXinId(weiXinId);
-            bOrderAdd.setUserMessage(userMessage);
-            bOrderAdd.setUserAddressId(userAddressId);
-            Long bOrderId = bOrderAddService.addBOrder(bOrderAdd);
-            obj.put("isError", false);
-            obj.put("bOrderId", bOrderId);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return obj.toJSONString();
     }
 
 

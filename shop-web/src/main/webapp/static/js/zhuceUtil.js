@@ -34,6 +34,9 @@ $(function () {
                 success: function (rdata) {
                     if (rdata && rdata.isError == false) {
                         pUserId = rdata.pUserId;
+                        if (sendType == 0) {
+                            sendType = rdata.sendType;
+                        }
                         bl = true;
                     } else {
                         alert(rdata.message);

@@ -117,7 +117,7 @@
     var path = "${basePath}";
     var skuId = "${skuId}";
     var pUserId = "${pUserId}";
-    var sendType = "${comUser.sendType}";
+    var sendType = "${sendType}";
 </script>
 <script src="${path}/static/js/zhuceUtil.js"></script>
 </html>

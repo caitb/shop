@@ -207,7 +207,11 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("参数校验失败：skuId为空！");
             }
             if (pUserId == null) {
-                pUserId=0l;
+                pUserId = 0l;
+            }
+            ComUser comUser = getComUser(request);
+            if (comUser.getSendType() > 0) {
+                sendType = comUser.getSendType();
             } else if (pUserId > 0) {
                 sendType = userService.getUserById(pUserId).getSendType();
             }
@@ -221,7 +225,7 @@ public class BOrderController extends BaseController {
                 throw new BusinessException("参数校验失败：合伙微信为空！");
             }
             if (userMessage == null) {
-                userMessage="";
+                userMessage = "";
             }
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：用户收货信息异常！");
@@ -229,7 +233,6 @@ public class BOrderController extends BaseController {
             BOrderAdd bOrderAdd = new BOrderAdd();
             bOrderAdd.setOrderType(BOrderType.agent.getCode());
             bOrderAdd.setpUserId(pUserId);
-            ComUser comUser = getComUser(request);
             bOrderAdd.setUserId(comUser.getId());
             bOrderAdd.setSendType(sendType);
             bOrderAdd.setSkuId(skuId);

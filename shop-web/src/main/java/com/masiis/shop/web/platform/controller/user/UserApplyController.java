@@ -68,7 +68,7 @@ public class UserApplyController extends BaseController {
         }
         if (pUserId != null && pUserId > 0) {
             //校验上级合伙人数据是否合法
-            userSkuService.checkParentData(pUserId, skuId);
+            userSkuService.checkParentData(user, pUserId, skuId);
             res.addObject("pUserId", pUserId);
         }
 
@@ -117,7 +117,7 @@ public class UserApplyController extends BaseController {
         }
         if (pUserId != null && pUserId > 0) {
             //校验上级合伙人数据是否合法
-            PfUserSku parentUS = userSkuService.checkParentData(pUserId, skuId);
+            PfUserSku parentUS = userSkuService.checkParentData(comUser, pUserId, skuId);
             if (parentUS.getAgentLevelId() == 3) {
                 throw new BusinessException("您的推荐人还不能发展下级代理");
             }
@@ -176,6 +176,7 @@ public class UserApplyController extends BaseController {
             if (StringUtils.isBlank(pMobile)) {
                 throw new BusinessException("手机号有误");
             }
+            ComUser user = getComUser(request);
             ComUser pUser = null;
             if (StringUtils.isNotBlank(pMobile)) {
                 pUser = userService.getUserByMobile(pMobile);
@@ -184,16 +185,17 @@ public class UserApplyController extends BaseController {
                 }
                 if (agentLevel == null || agentLevel <= 0) {
                     //校验上级合伙人数据是否合法
-                    userSkuService.checkParentData(pUser.getId(), skuId);
+                    userSkuService.checkParentData(user, pUser.getId(), skuId);
                 } else {
                     //校验上级合伙人数据是否合法
-                    userSkuService.checkParentData(pUser.getId(), skuId, agentLevel);
+                    userSkuService.checkParentData(user, pUser.getId(), skuId, agentLevel);
                 }
             } else {
                 throw new BusinessException("手机号为空");
             }
             jsonObject.put("isError", false);
             jsonObject.put("pUserId", pUser.getId());
+            jsonObject.put("sendType", pUser.getSendType());
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 jsonObject.put("isError", true);

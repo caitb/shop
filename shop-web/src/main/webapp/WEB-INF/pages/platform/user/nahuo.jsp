@@ -77,10 +77,10 @@
             <input type="hidden" id="levelStock" value="${levelStock}"/>
         </section>
         <section class="sec4">
-            <p><em>在线库存：</em><b>${productInfo.stock}</b></p>
+            <p><em>在线库存：</em><b style="margin-top:5px">${productInfo.stock}</b></p>
             <p>
-                <em>拿货数量：</em><b><span class="jian">-</span><input type="text" value="1" class="number">
-                <span class="jia">+</span></b>
+                <em>拿货数量：</em><b><label class="jian">-</label><input type="tel" value="1" class="number">
+                <label class="jia">+</label></b>
             </p>
             <p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>
         </section>

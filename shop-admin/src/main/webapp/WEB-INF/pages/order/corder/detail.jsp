@@ -104,7 +104,7 @@
                                             <div class="profile-info-name"> 订单号 </div>
 
                                             <div class="profile-info-value">
-                                                <span class="" id="orderCode">${order.pfBorder.orderCode}</span>
+                                                <span class="" id="orderCode">${order.pfCorder.orderCode}</span>
                                             </div>
                                         </div>
 
@@ -118,6 +118,8 @@
                                                 <c:if test="${order.pfCorder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待收货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已收货</span></c:if>
                                             </div>
                                         </div>
 

@@ -49,7 +49,7 @@
                 <p>${sendTypeName}</p>
             </div>
         </div>
-        <p>系统已经给你生成了店铺，您现在可以：</p>
+        <p>您现在可以：</p>
         <div class="box">
             <a href="${basePath}">
                 <div class="sec1">

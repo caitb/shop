@@ -393,7 +393,7 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.extractableFee){
+                            if(row.comUserAccount){
                                 return '￥' + row.comUserAccount.extractableFee;
                             }
                         }
@@ -458,7 +458,7 @@
                                 $('#modal-audit').modal('show');
                             },
                             'click .yes': function(e, value, row, index){
-                                bootbox.confirm("确定已打款了?", function(result) {
+                                bootbox.confirm('这是合伙人,确定已线下打款了吗?', function(result) {
                                     if(result) {
                                         $.ajax({
                                             url: '<%=basePath%>fundmanage/extract/audit.do',

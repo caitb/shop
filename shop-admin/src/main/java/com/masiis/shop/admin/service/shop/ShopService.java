@@ -55,4 +55,20 @@ public class ShopService {
 
         return pageMap;
     }
+
+    /**
+     * 店铺详情
+     * @param shopId
+     * @return
+     */
+    public Shop shopDetail(Long shopId){
+        SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
+
+        Shop shop = new Shop();
+        shop.setSfShop(sfShop);
+        shop.setComUser(comUser);
+
+        return shop;
+    }
 }

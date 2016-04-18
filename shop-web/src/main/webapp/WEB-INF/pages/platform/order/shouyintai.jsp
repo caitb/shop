@@ -27,7 +27,7 @@
             <p><span>商品总金额：</span><span>￥${pfBorderItem.totalPrice}</span></p>
         </c:forEach>
         <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
-        <p><span>合计：</span><span>￥${pfBorder.receivableAmount}</span></p>
+        <p><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></p>
     </div>
     <button id="submit">微信支付</button>
 </div>

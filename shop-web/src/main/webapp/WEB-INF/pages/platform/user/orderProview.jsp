@@ -32,7 +32,7 @@
             return;
         }
         $(this).html("正在提交...");
-        window.location.href = "${basePath}BOrderAdd/payBOrder.shtml?bOrderId=${pfBorder.id}";
+        window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
     })
 </script>
 </html>

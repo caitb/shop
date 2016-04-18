@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
+import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUserAddress;
@@ -134,10 +135,11 @@ public class UserAddressService {
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
             Long pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
             String agentOrderForAddressJson = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM);
+            String supplementeOrderForAddress = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SUPPLEMENT_PARAM);
             if (StringUtils.isEmpty(orderType)) {
                 return indexPath;
             } else {
-                return getOrderAddress(orderType,agentOrderForAddressJson, orderId, skuId, selectedAddressId, pfUserSkuStockId);
+                return getOrderAddress(orderType,agentOrderForAddressJson, supplementeOrderForAddress,orderId, skuId, selectedAddressId, pfUserSkuStockId);
             }
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
@@ -152,7 +154,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType,String agentOrderForAddressJson, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType,String agentOrderForAddressJson,String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -169,6 +171,9 @@ public class UserAddressService {
                 break;
             case SysConstants.SESSION_ORDER_AGENT_TYPE_VALUE : //代理订单
                 getAgentOrderPageAddress(sb,agentOrderForAddressJson,selectedAddressId);
+                break;
+            case SysConstants.SESSION_ORDER_SUPPLEMENT_TYPE_VALUE ://补货订单
+                getSupplementOrderPageAddress(sb,supplementeOrderForAddress,selectedAddressId);
                 break;
             default:
                 break;
@@ -250,8 +255,6 @@ public class UserAddressService {
     private void getAgentOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId   ){
         sb.append("/BOrderAdd/agentBOrder.shtml?");
         if (!StringUtils.isEmpty(jsonParam)){
-            JSONObject jsonObject = new JSONObject();
-            org.json.JSONObject object = new org.json.JSONObject(jsonParam);
             BorderAgentParamForAddress paramObject  = JSONObject.parseObject(jsonParam,BorderAgentParamForAddress.class);
             if (paramObject!=null){
                 if (paramObject.getSkuId()!=null){
@@ -273,6 +276,29 @@ public class UserAddressService {
         }
         if (selectedAddressId!=null){
             sb.append("userAddressId=").append(selectedAddressId);
+        }
+    }
+
+    /**
+     * 获得补货订单地址参数
+     * @author hanzengzhi
+     * @date 2016/4/18 16:00
+     */
+    private void getSupplementOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId){
+        sb.append("/BOrderAdd/supplementBOrder.shtml?");
+        if (!StringUtils.isEmpty(jsonParam)){
+            BorderSupplementParamForAddress paramForAddress = JSONObject.parseObject(jsonParam, BorderSupplementParamForAddress.class);
+            if(paramForAddress!=null){
+                if (paramForAddress.getSkuId()!=null){
+                    sb.append("skuId=").append(paramForAddress.getSkuId()).append("&");
+                }
+                if (paramForAddress.getQuantity()!=null){
+                    sb.append("quantity=").append(paramForAddress.getQuantity()).append("&");
+                }
+            }
+            if (selectedAddressId!=null){
+                sb.append("userAddressId=").append(selectedAddressId);
+            }
         }
     }
 

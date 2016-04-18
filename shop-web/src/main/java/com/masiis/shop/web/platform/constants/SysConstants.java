@@ -28,6 +28,7 @@ public class SysConstants {
     public static final String SESSION_ORDER_TAKE_GOODS_VALUE = "takeGoods";//拿货
     public static final String SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE = "manageGoodsTakeGoods";//管理商品拿货
     public static final String SESSION_ORDER_AGENT_TYPE_VALUE= "agentOrder";//代理订单
+    public static final String SESSION_ORDER_SUPPLEMENT_TYPE_VALUE= "supplementOrder";//代理订单
 
     /**
      * session
@@ -38,6 +39,7 @@ public class SysConstants {
     public static final String SESSION_ORDER_SKU_ID = "skuId";
     public static final String SESSION_PF_USER_SKU_STOCK_ID = "pfUserSkuStockId";
     public static final String SESSION_ORDER_AGENT_PARAM = "agentOrderparamForAddress";//代理订单跳转到地址需要携带的参数(多个)
+    public static final String SESSION_ORDER_SUPPLEMENT_PARAM = "supplementOrderParamForAddress";//补货订单跳转到地址需要携带的参数(多个)
 
     /**
      * 商品最小图片

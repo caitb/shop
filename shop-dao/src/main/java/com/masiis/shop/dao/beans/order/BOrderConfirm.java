@@ -39,7 +39,7 @@ public class BOrderConfirm {
     /**
      * 微信Id
      */
-    private String wenXinId;
+    private String weiXinId;
     /**
      * 代理等级ID
      */
@@ -134,11 +134,11 @@ public class BOrderConfirm {
     }
 
     public String getWenXinId() {
-        return wenXinId;
+        return weiXinId;
     }
 
     public void setWenXinId(String wenXinId) {
-        this.wenXinId = wenXinId;
+        this.weiXinId = wenXinId;
     }
 
     public Integer getAgentLevelId() {

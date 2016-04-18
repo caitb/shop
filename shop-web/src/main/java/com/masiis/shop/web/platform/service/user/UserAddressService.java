@@ -1,6 +1,8 @@
 package com.masiis.shop.web.platform.service.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
 import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
 import com.masiis.shop.dao.po.ComArea;
 import com.masiis.shop.dao.po.ComUserAddress;
@@ -131,10 +133,11 @@ public class UserAddressService {
             Long orderId = (Long) request.getSession().getAttribute(SysConstants.SESSION_ORDER_Id);
             Integer skuId = (Integer) request.getSession().getAttribute(SysConstants.SESSION_ORDER_SKU_ID);
             Long pfUserSkuStockId = (Long) request.getSession().getAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID);
+            String agentOrderForAddressJson = (String) request.getSession().getAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM);
             if (StringUtils.isEmpty(orderType)) {
                 return indexPath;
             } else {
-                return getOrderAddress(orderType, orderId, skuId, selectedAddressId, pfUserSkuStockId);
+                return getOrderAddress(orderType,agentOrderForAddressJson, orderId, skuId, selectedAddressId, pfUserSkuStockId);
             }
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
@@ -149,7 +152,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType,String agentOrderForAddressJson, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -163,6 +166,9 @@ public class UserAddressService {
                 break;
             case SysConstants.SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE://管理商品拿货
                 getManageGoodsTakeGoodsPageAddress(sb, pfUserSkuStockId, selectedAddressId);
+                break;
+            case SysConstants.SESSION_ORDER_AGENT_TYPE_VALUE : //代理订单
+                getAgentOrderPageAddress(sb,agentOrderForAddressJson,selectedAddressId);
                 break;
             default:
                 break;
@@ -235,6 +241,25 @@ public class UserAddressService {
         if (!StringUtils.isEmpty(selectedAddressId)) {
             sb.append("&selectedAddressId=").append(selectedAddressId);
         }
+    }
+    /**
+     * 代理订单的地址路径
+     * @author hanzengzhi
+     * @date 2016/4/18 11:37
+     */
+    private void getAgentOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId   ){
+        sb.append("/BOrderAdd/agentBOrder.shtml?");
+        if (!StringUtils.isEmpty(jsonParam)){
+            BorderAgentParamForAddress paramObject = (BorderAgentParamForAddress)JSONObject.toJSON(jsonParam);
+            if (paramObject!=null){
+                sb.append("skuId=").append(paramObject.getSkuId());
+                sb.append("&agentLevelId=").append(paramObject.getAgentLevelId());
+                sb.append("&weiXinId=").append(paramObject.getWeiXinId());
+                sb.append("&sendType=").append(paramObject.getSendType());
+                sb.append("&pUserId=").append(paramObject.getpUserId());
+            }
+        }
+        sb.append("&userAddressId").append(selectedAddressId);
     }
 
     /**

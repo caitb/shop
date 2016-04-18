@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by cai_tb on 16/3/31.
  */
 @Controller
-@RequestMapping("/fundmanage/extract")
+@RequestMapping("/fundmanage/com-extract")
 public class ExtractApplyController {
 
     private final static Log log = LogFactory.getLog(ExtractApplyController.class);
@@ -28,7 +28,7 @@ public class ExtractApplyController {
 
     @RequestMapping("/list.shtml")
     public String list(){
-        return "fundmanage/extract/list";
+        return "fundmanage/com-extract/list";
     }
 
     /**

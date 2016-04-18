@@ -203,9 +203,12 @@ public class UserAddressController extends BaseController {
                                       @RequestParam(value = "skuId", required = false) Integer skuId,
                                       @RequestParam(value = "selectedAddressId", required = true) Long selectedAddressId,
                                       @RequestParam(value = "pfUserSkuStockId", required = false) Long pfUserSkuStockId,
+                                      @RequestParam(value = "agentOrderparamForAddress", required = false) String agentOrderparamForAddress,
+
                                       Model model)throws Exception {
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SELECTED_ADDRESS, selectedAddressId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_TYPE, pageType);
+        request.getSession().setAttribute(SysConstants.SESSION_ORDER_AGENT_PARAM,agentOrderparamForAddress);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_Id, orderId);
         request.getSession().setAttribute(SysConstants.SESSION_ORDER_SKU_ID, skuId);
         request.getSession().setAttribute(SysConstants.SESSION_PF_USER_SKU_STOCK_ID, pfUserSkuStockId);

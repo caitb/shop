@@ -34,6 +34,9 @@ $(function () {
                 success: function (rdata) {
                     if (rdata && rdata.isError == false) {
                         pUserId = rdata.pUserId;
+                        if (sendType == 0) {
+                            sendType = rdata.sendType;
+                        }
                         bl = true;
                     } else {
                         alert(rdata.message);
@@ -107,8 +110,8 @@ $(function () {
         if (sendType == 0) {
             var paraData = "?";
             paraData += "skuId=" + skuId;
-            paraData += "&levelId=" + $(".on").attr("levelId");
-            paraData += "&weixinId=" + $("#q_weixinId").html();
+            paraData += "&agentLevelId=" + $(".on").attr("levelId");
+            paraData += "&weiXinId=" + $("#q_weixinId").html();
             paraData += "&pUserId=" + pUserId;
             window.location.href = path + "border/setUserSendType.shtml" + paraData;
         } else {

@@ -129,7 +129,7 @@
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
         $.ajax({
-            url: "${basePath}border/add.do",
+            url: "${basePath}BOrderAdd/agentBOrder/add.do",
             type: "post",
             data: paraData,
             dataType: "json",

@@ -292,7 +292,7 @@
 
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>fundmanage/extract/list.do',
+            url: '<%=basePath%>fundmanage/com-extract/list.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
@@ -393,7 +393,7 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.extractableFee){
+                            if(row.comUserAccount){
                                 return '￥' + row.comUserAccount.extractableFee;
                             }
                         }
@@ -458,10 +458,10 @@
                                 $('#modal-audit').modal('show');
                             },
                             'click .yes': function(e, value, row, index){
-                                bootbox.confirm("确定已打款了?", function(result) {
+                                bootbox.confirm('这是合伙人,确定已线下打款了吗?', function(result) {
                                     if(result) {
                                         $.ajax({
-                                            url: '<%=basePath%>fundmanage/extract/audit.do',
+                                            url: '<%=basePath%>fundmanage/com-extract/audit.do',
                                             data: {id:row.comUserExtractApply.id, auditType: 3},
                                             success: function(msg){
                                                 $('#table').bootstrapTable('refresh');
@@ -655,7 +655,7 @@
         }
 
         $.ajax({
-            url: '<%=basePath%>fundmanage/extract/audit.do',
+            url: '<%=basePath%>fundmanage/com-extract/audit.do',
             type: 'POST',
             data: $('#auditForm').serialize(),
             success: function(msg){

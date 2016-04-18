@@ -95,7 +95,7 @@ public class ComUserAccountService {
                 PfUserBillItem item = createBillItemByBOrder(order);
                 itemMapper.insert(item);
 
-                log.info("账单子项创建成功!");
+                log.info("账单子项创建成功,账单子项金额为:" + item.getOrderPayAmount());
 
                 ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
                 log.info("增加上级结算中金额");

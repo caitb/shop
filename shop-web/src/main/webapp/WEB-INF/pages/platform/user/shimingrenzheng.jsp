@@ -39,16 +39,17 @@
             <div class="sfphoto">
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
                        style="display: none;">
-                <label class="zheng">
+                <label class="zheng only">
                     <div class="fakeloader0"></div>
                     <img src="${path}/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
                          onclick="F_Open_dialog(0)">
                 </label>
-                <label class="fan" style="margin-left:10px;">
+                <label class="fan only" style="margin-left:10px;">
                     <div class="fakeloader1"></div>
                     <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                 </label>
+                <img src="${path}/static/images/loading.jpg" style="display: none;" />
             </div>
 
         </main>
@@ -60,26 +61,20 @@
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script src="${path}/static/js/fakeLoader.js"></script>
 <script>
+    oNly()
+    function oNly(){
+        var oNlywidth=$(".only").width();
+        $(".only").height(oNlywidth+"px")
+    }
     var checkImg = 0;
     function F_Open_dialog(data) {
-        if (data == 0) {
-            checkImg = 0;
-        } else {
-            checkImg = 1;
-        }
+        checkImg = data;
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
-        var selector = !checkImg ? '.zheng':'.fan';
-        $(".fakeloader"+checkImg).fakeLoader({
-            timeToHide:120000,
-            bgColor:"#ececec",
-            spinner:"spinner2",
-            width: $(selector).width(),
-            height: $(selector).height(),
-            left: $(selector).position().left,
-            top: $(selector).position().top
-        });
+        var selector = !checkImg ? 'idCardFront':'idCardBack';
+
+        $('#'+selector).attr('src', '${path}/static/images/loading.jpg');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -90,33 +85,7 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "${path}" + data.imgPath);
-                        $('#idCardFront').load(function(){
-                            $(".fakeloader"+checkImg).fakeLoader({
-                                timeToHide:0,
-                                bgColor:"#ececec",
-                                spinner:"spinner2",
-                                width: $(selector).width(),
-                                height: $(selector).height(),
-                                left: $(selector).position().left,
-                                top: $(selector).position().top
-                            });
-                        });
-                    } else {
-                        $("#idCardBack").attr("src", "${path}" + data.imgPath);
-                        $('#idCardBack').load(function(){
-                            $(".fakeloader"+checkImg).fakeLoader({
-                                timeToHide:0,
-                                bgColor:"#ececec",
-                                spinner:"spinner2",
-                                width: $(selector).width(),
-                                height: $(selector).height(),
-                                left: $(selector).position().left,
-                                top: $(selector).position().top
-                            });
-                        });
-                    }
+                    $("#"+selector).attr("src", "${path}" + data.imgPath);
                 } else {
                     alert(data.msg);
                 }

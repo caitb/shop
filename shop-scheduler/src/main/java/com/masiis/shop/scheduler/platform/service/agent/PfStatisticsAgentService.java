@@ -152,16 +152,16 @@ public class PfStatisticsAgentService {
         }
     }
 
-    public static void main(String[] args)throws Exception{
-        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-        context.setValidating(false);
-        context.load("classpath*:/spring/*.xml");
-        context.refresh();
-        PfStatisticsAgentService pfStatisticsAgentService = context.getBean(PfStatisticsAgentService.class);
-        pfStatisticsAgentService.statisticsAgent();
-//        while (true) {
-//            pfStatisticsAgentService.statisticsAgent();
-//            Thread.sleep(10000);
-//        }
-    }
+//    public static void main(String[] args)throws Exception{
+//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+//        context.setValidating(false);
+//        context.load("classpath*:/spring/*.xml");
+//        context.refresh();
+//        PfStatisticsAgentService pfStatisticsAgentService = context.getBean(PfStatisticsAgentService.class);
+//        pfStatisticsAgentService.statisticsAgent();
+////        while (true) {
+////            pfStatisticsAgentService.statisticsAgent();
+////            Thread.sleep(10000);
+////        }
+//    }
 }

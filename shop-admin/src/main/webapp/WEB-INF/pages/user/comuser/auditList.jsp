@@ -176,7 +176,7 @@
                                                         </div>
 
                                                         <div class="profile-info-row" id="auditReason">
-                                                            <div class="profile-info-name" id="jjT"> 拒绝原因 </div>
+                                                            <div class="profile-info-name" id="jjT"> 审核备注 </div>
 
                                                             <div class="profile-info-value" id="jjF">
                                                                 <form id="auditForm">

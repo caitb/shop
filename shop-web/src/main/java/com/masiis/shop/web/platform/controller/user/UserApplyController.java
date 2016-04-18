@@ -5,6 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.order.AgentSkuView;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
@@ -45,6 +46,8 @@ public class UserApplyController extends BaseController {
     private UserService userService;
     @Resource
     private UserSkuService userSkuService;
+    @Resource
+    private BOrderService bOrderService;
 
     /**
      * 合伙人申请
@@ -54,10 +57,9 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/apply.shtml")
     public ModelAndView apply(HttpServletRequest request,
-                              HttpServletResponse response,
                               @RequestParam(value = "skuId", required = true) Integer skuId,
                               @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView res = new ModelAndView();
+        ModelAndView res = new ModelAndView("platform/order/shenqing");
         ComUser user = getComUser(request);
         if (user == null) {
             throw new BusinessException("用户未登录!");
@@ -71,12 +73,21 @@ public class UserApplyController extends BaseController {
             userSkuService.checkParentData(user, pUserId, skuId);
             res.addObject("pUserId", pUserId);
         }
-
+        boolean isQueuing = false;
+        Integer count = 0;
         // 判断排单标志位,如果处于排单状态下,显示排单人数
-
+        if (pUserId == null) {
+            pUserId = 0l;
+        }
+        int n = skuService.checkSkuStock(skuId, 1, pUserId);
+        if (n < 0) {
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
         res.addObject("user", userService.getUserById(user.getId()));
         res.addObject("skuId", skuId);
-        res.setViewName("platform/order/shenqing");
+        res.addObject("isQueuing", isQueuing);
+        res.addObject("count", count);
         return res;
     }
 
@@ -142,6 +153,17 @@ public class UserApplyController extends BaseController {
             view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
             agentSkuViews.add(view);
         }
+        boolean isQueuing = false;
+        Integer count = 0;
+        // 判断排单标志位,如果处于排单状态下,显示排单人数
+        if (pUserId == null) {
+            pUserId = 0l;
+        }
+        int n = skuService.checkSkuStock(skuId, 1, pUserId);
+        if (n < 0) {
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
         mv.addObject("skuId", comSku.getId());
         mv.addObject("skuName", comSku.getName());
         mv.addObject("pUserLevelId", pUserLevelId);
@@ -158,6 +180,8 @@ public class UserApplyController extends BaseController {
             mv.addObject("pWxNkName", "");
         }
         mv.addObject("sendType", sendType);
+        mv.addObject("isQueuing", isQueuing);
+        mv.addObject("count", count);
         return mv;
     }
 

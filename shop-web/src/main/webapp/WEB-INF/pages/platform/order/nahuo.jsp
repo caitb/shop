@@ -31,9 +31,12 @@
             <p style="color: #F74A11;">选择拿货方式</p>
             <p>支付订单</p>
         </div>
-        <%--<div class="nahuo">--%>
-        <%--<p>支付成功，请选择拿货方式</p>--%>
-        <%--</div>--%>
+        <c:if test="${isQueuing==true}">
+            <div class="paidan">
+                <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
+                <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
+            </div>
+        </c:if>
         <div class="content">
             <div class="sec1">
                 <h1>拿货方式简介</h1>

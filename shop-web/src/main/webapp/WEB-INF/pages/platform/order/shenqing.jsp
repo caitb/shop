@@ -11,13 +11,16 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="${path}/static/images/xq_rt.png"
+                                                                        alt=""></a>
     <p>合伙人申请</p>
 </header>
-<%--<div class="paidan" style="display: none;">--%>
-<%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
-<%--<p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>--%>
-<%--</div>--%>
+<c:if test="${isQueuing==true}">
+    <div class="paidan">
+        <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
+        <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
+    </div>
+</c:if>
 <div class="biao">
     <h1>申请条件</h1>
     <table>
@@ -191,7 +194,7 @@
         para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
         window.location.href = "${basePath}user/userVerified.shtml" + para;
     }
-    function reSubmitIdentityAuth(){
+    function reSubmitIdentityAuth() {
         window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
     }
 

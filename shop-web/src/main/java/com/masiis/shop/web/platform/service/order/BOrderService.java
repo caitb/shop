@@ -230,6 +230,7 @@ public class BOrderService {
         }
         return pfBorders;
     }
+
     /**
      * 发货
      *
@@ -343,5 +344,14 @@ public class BOrderService {
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);
         }
+    }
+
+    /**
+     * 获取排队订单数量
+     * @param skuId
+     * @return
+     */
+    public Integer selectQueuingOrderCount(Integer skuId) {
+        return pfBorderMapper.selectQueuingOrderCount(skuId);
     }
 }

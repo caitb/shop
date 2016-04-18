@@ -75,7 +75,6 @@ public class SkuService {
         }
         return n - quantity;
     }
-
     /**
      * 根据skuId查找skuExtension
      *

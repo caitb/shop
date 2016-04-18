@@ -84,7 +84,7 @@ public class BOrderAddController extends BaseController {
         agentParamForAddress.setSkuId(skuId);
         agentParamForAddress.setWeiXinId(weiXinId);
         String paramForAddress = JSONObject.toJSONString(agentParamForAddress);
-        mv.addObject("agentOrderparamForAddress",paramForAddress);
+        mv.addObject("agentOrderparamForAddress", paramForAddress);
 
 
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
@@ -115,11 +115,28 @@ public class BOrderAddController extends BaseController {
         bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
         BigDecimal highProfit = comSku.getPriceRetail().multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最高利润
         bOrderConfirm.setHighProfit(highProfit);
-        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId + 1);
+        Integer lowerAgentLevelId = agentLevelId + 1;
+        if (lowerAgentLevelId > 3) {
+            lowerAgentLevelId = 3;
+        }
+        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, lowerAgentLevelId);
         BigDecimal lowProfit = comSku.getPriceRetail().multiply(lowerSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
+        boolean isQueuing = false;
+        Integer count = 0;
+        // 判断排单标志位,如果处于排单状态下,显示排单人数
+        if (pUserId == null) {
+            pUserId = 0l;
+        }
+        int n = skuService.checkSkuStock(skuId, 1, pUserId);
+        if (n < 0) {
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
         mv.addObject("bOrderConfirm", bOrderConfirm);
+        mv.addObject("isQueuing", isQueuing);
+        mv.addObject("count", count);
         return mv;
     }
 
@@ -226,13 +243,17 @@ public class BOrderAddController extends BaseController {
         bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
         BigDecimal highProfit = comSku.getPriceRetail().multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最高利润
         bOrderConfirm.setHighProfit(highProfit);
-        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId + 1);
+        Integer lowerAgentLevelId = agentLevelId + 1;
+        if (lowerAgentLevelId > 3) {
+            lowerAgentLevelId = 3;
+        }
+        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, lowerAgentLevelId);
         BigDecimal lowProfit = comSku.getPriceRetail().multiply(lowerSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
         //获取排单信息
         PfSkuStock pfSkuStock = skuService.getPfSkuStockInfoBySkuId(skuId);
-        if(pfSkuStock!=null && pfSkuStock.getIsQueue()==1){
+        if (pfSkuStock != null && pfSkuStock.getIsQueue() == 1) {
             mv.addObject("isQueue", true);
         }
         mv.addObject("bOrderConfirm", bOrderConfirm);

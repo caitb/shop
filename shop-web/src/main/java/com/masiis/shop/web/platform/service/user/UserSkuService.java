@@ -84,7 +84,7 @@ public class UserSkuService {
      * @author ZhaoLiang
      * @date 2016/4/1 12:11
      */
-    public PfUserSku checkParentData(Long pUserId, Integer skuId) throws Exception {
+    public PfUserSku checkParentData(ComUser comUser, Long pUserId, Integer skuId) throws Exception {
         PfUserSku pfUserSku = null;
         if (pUserId == null || pUserId <= 0) {
             throw new BusinessException(" 上级用户id不合法!");
@@ -98,6 +98,9 @@ public class UserSkuService {
                 throw new BusinessException("您的推荐人还未代理此款商品");
             }
         }
+        if (comUser.getSendType() != 0 && comUser.getSendType() != pUser.getSendType()) {
+            throw new BusinessException(" 您和您的上级合伙人的拿货方式不一致不能建立关系!");
+        }
         return pfUserSku;
     }
 
@@ -109,7 +112,7 @@ public class UserSkuService {
      * @author ZhaoLiang
      * @date 2016/4/1 12:11
      */
-    public PfUserSku checkParentData(Long pUserId, Integer skuId, Integer agentLevelId) throws Exception {
+    public PfUserSku checkParentData(ComUser comUser, Long pUserId, Integer skuId, Integer agentLevelId) throws Exception {
         PfUserSku pfUserSku = null;
         if (pUserId == null || pUserId <= 0) {
             throw new BusinessException(" 上级用户id不合法!");
@@ -144,6 +147,9 @@ public class UserSkuService {
                     }
                 }
             }
+        }
+        if (comUser.getSendType() != 0 && comUser.getSendType() != pUser.getSendType()) {
+            throw new BusinessException(" 您和您的上级合伙人的拿货方式不一致不能建立关系!");
         }
         return pfUserSku;
     }

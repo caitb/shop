@@ -22,36 +22,40 @@
 
 <div class="wrap">
     <main>
-    <header class="xq_header">
-        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>商品管理</p>
-    </header>
+        <header class="xq_header">
+            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>商品管理</p>
+        </header>
         <div id="box">
             <div class="main">
-            <div class="d_box">
-                <c:forEach items="${userProducts}" var="sku">
-                    <h1>
-                        <img src="<%=path%>/static/images/ip.png" alt="">
-                        拿货方式：<span>平台代发货</span>
-                    </h1>
-                    <section class="sec2">
-                        <p class="photo">
-                            <img src="${sku.comSkuImage.fullImgUrl}" alt="">
-                        </p>
-                        <div>
-                            <h2 id="sku1">${sku.name}</h2>
-                            <h3>零售价：<span>${sku.priceRetail}</span></h3>
-                            <p>已售：<span>0</span>　　在线库存：<span id="sku2">${sku.stock}</span></p>
-                            <input type="hidden" id="pfuId" value="${sku.pfuId}">
-                            <input type="text" id="skuId" value="${sku.id}" style="display: none">
-                        </div>
-                    </section>
-                    <section class="sec3">
-                        <p class="jianku" onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">申请拿货</p>
-                        <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}')">补货</p>
-                    </section>
-                </c:forEach>
-            </div>
+                <div class="d_box">
+                    <c:forEach items="${userProducts}" var="sku">
+                        <h1>
+                            <img src="<%=path%>/static/images/ip.png" alt="">
+                            拿货方式：<span>平台代发货</span>
+                        </h1>
+                        <section class="sec2">
+                            <p class="photo">
+                                <img src="${sku.comSkuImage.fullImgUrl}" alt="">
+                            </p>
+                            <div>
+                                <h2 id="sku1">${sku.name}</h2>
+                                <h3>零售价：<span>${sku.priceRetail}</span></h3>
+                                <p>已售：<span>0</span>　　在线库存：<span id="sku2">${sku.stock}</span></p>
+                                <input type="hidden" id="pfuId" value="${sku.pfuId}">
+                                <input type="text" id="skuId" value="${sku.id}" style="display: none">
+                            </div>
+                        </section>
+                        <section class="sec3">
+                            <p class="jianku"
+                               onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
+                                申请拿货</p>
+                            <p class="buhuo"
+                               onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}')">
+                                补货</p>
+                        </section>
+                    </c:forEach>
+                </div>
             </div>
         </div>
         <div class="back">
@@ -61,11 +65,12 @@
             <h4>商品:　　<span id="addsku"></span></h4>
             <input type="text" id="addSkuId" style="display: none">
             <h4 id="xianshi">本次最多可补货数量:　　<span id="maxStock"></span></h4>
-            <h4>补货数量:　　<div>
-                <span class="jian">-</span>
-                <input type="tel" class="number" value="1"/>
-                <span class="jia">+</span>
-            </div>
+            <h4>补货数量:　　
+                <div>
+                    <span class="jian">-</span>
+                    <input type="tel" class="number" value="1"/>
+                    <span class="jia">+</span>
+                </div>
             </h4>
             <h4 class="queue">您的订单将进入排单期</h4>
             <div>
@@ -73,61 +78,64 @@
                 <h1 class="b_que">确定</h1>
             </div>
         </div>
-</main>
+    </main>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <%--<script src="<%=path%>/static/js/definedAlertWindow.js"></script>--%>
 <script>
-    var i=1;
-    $(".jia").on("click",function(){
+    var i = 1;
+    $(".jia").on("click", function () {
         i++;
         $(".number").val(i)
     })
     $(".number").on("change", function () {
-        i=$(this).val();
+        i = $(this).val();
     })
-    $(".jian").on("click",function(){
-        if(i==1){
+    $(".jian").on("click", function () {
+        if (i == 1) {
             return false;
         }
         i--;
         $(".number").val(i)
     })
-    function buhuokucun(a,b,c,d){
+    function buhuokucun(a, b, c, d) {
         $(".queue").hide();//init
         $("#addsku").html(a);
         $("#maxStock").html(b);
-        if(c==1){ //进入排单
+        if (c == 1) { //进入排单
             $(".queue").show();
             $("#xianshi").hide();
         }
         $("#addSkuId").val(d);
-        $(".back").css("display","-webkit-box");
+        $(".back").css("display", "-webkit-box");
         $(".back_b").show();
     }
-    $(".b_qu").on("click",function(){
-        $(".back").css("display","none");
+    $(".b_qu").on("click", function () {
+        $(".back").css("display", "none");
         $(".back_b").hide();
     })
-    $(".b_que").on("click",function(){
-       var skuId = $("#addSkuId").val();
-        $.ajax({
-            url: '<%=basePath%>product/user/addStock.do',
-            type: 'post',
-            data: {stock:i,skuId:skuId},
-            dataType: 'json',
-            success: function (data) {
-                if(data['isError'] == false){
-                    if(data['isQueue'] == true){
-                        alert(data['message']);
-                    }
-                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
-                }else{
-                    alert(data['message']);
-                }
-            }
-        });
+    $(".b_que").on("click", function () {
+        var paraData = "?";
+        paraData += "&skuId=" + $("#addSkuId").val();
+        paraData += "&quantity=" + i;
+        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+        <%--$.ajax({--%>
+        <%--url: '<%=basePath%>product/user/addStock.do',--%>
+        <%--type: 'post',--%>
+        <%--data: {stock: i, skuId: skuId},--%>
+        <%--dataType: 'json',--%>
+        <%--success: function (data) {--%>
+        <%--if (data['isError'] == false) {--%>
+        <%--if (data['isQueue'] == true) {--%>
+        <%--alert(data['message']);--%>
+        <%--}--%>
+        <%--window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId=" + data.orderCode + "";--%>
+        <%--} else {--%>
+        <%--alert(data['message']);--%>
+        <%--}--%>
+        <%--}--%>
+        <%--});--%>
     })
 </script>
 </body>

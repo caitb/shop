@@ -7,8 +7,10 @@
  */
 package com.masiis.shop.dao.po;
 
-import java.util.Date;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+@Repository
 public class PfUserCertificate {
 
     private Long id;

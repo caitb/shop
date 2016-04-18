@@ -49,6 +49,7 @@
                     <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                 </label>
+                <img src="${path}/static/images/loading.jpg" style="display: none;" />
             </div>
 
         </main>
@@ -75,16 +76,9 @@
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
-        var selector = !checkImg ? '.zheng':'.fan';
-        $(".fakeloader"+checkImg).fakeLoader({
-            timeToHide:120000,
-            bgColor:"#ececec",
-            spinner:"spinner2",
-            width: $(selector).width(),
-            height: $(selector).height(),
-            left: $(selector).position().left,
-            top: $(selector).position().top
-        });
+        var selector = !checkImg ? 'idCardFront':'idCardBack';
+
+        $('#'+selector).attr('src', '${path}/static/images/loading.jpg');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -98,28 +92,10 @@
                     if (checkImg == 0) {
                         $("#idCardFront").attr("src", "${path}" + data.imgPath);
                         $('#idCardFront').load(function(){
-                            $(".fakeloader"+checkImg).fakeLoader({
-                                timeToHide:0,
-                                bgColor:"#ececec",
-                                spinner:"spinner2",
-                                width: $(selector).width(),
-                                height: $(selector).height(),
-                                left: $(selector).position().left,
-                                top: $(selector).position().top
-                            });
                         });
                     } else {
                         $("#idCardBack").attr("src", "${path}" + data.imgPath);
                         $('#idCardBack').load(function(){
-                            $(".fakeloader"+checkImg).fakeLoader({
-                                timeToHide:0,
-                                bgColor:"#ececec",
-                                spinner:"spinner2",
-                                width: $(selector).width(),
-                                height: $(selector).height(),
-                                left: $(selector).position().left,
-                                top: $(selector).position().top
-                            });
                         });
                     }
                 } else {

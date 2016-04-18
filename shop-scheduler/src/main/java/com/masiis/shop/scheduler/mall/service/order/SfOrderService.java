@@ -1,13 +1,16 @@
 package com.masiis.shop.scheduler.mall.service.order;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.order.SfOrderOperationLogMapper;
+import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderOperationLog;
 import com.masiis.shop.dao.po.SfOrder;
 import com.masiis.shop.dao.po.SfOrderOperationLog;
+import com.masiis.shop.scheduler.mall.service.user.SfUserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,10 @@ public class SfOrderService {
     private SfOrderMapper sfOrderMapper;
     @Resource
     private SfOrderOperationLogMapper logMapper;
+    @Resource
+    private SfUserAccountMapper sfAccountMapper;
+    @Resource
+    private SfUserAccountService sfUserAccountService;
 
     /**
      * 查询指定过期时间的待取消订单
@@ -89,7 +96,24 @@ public class SfOrderService {
         }
     }
 
+    /**
+     * 超过7天自动收货
+     *
+     * @param sfOrder
+     */
     public void confirmOrderReceive(SfOrder sfOrder) {
-
+        //SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
+        // 进行订单分润和代理商销售额、收入计算
+        sfUserAccountService.countingSfOrder(sfOrder);
+        // 进行订单状态修改
+        sfOrder.setOrderStatus(3);
+        sfOrderMapper.updateByPrimaryKey(sfOrder);
+        SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+        sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
+        sfOrderOperationLog.setCreateTime(new Date());
+        sfOrderOperationLog.setSfOrderStatus(BOrderStatus.Complete.getCode());
+        sfOrderOperationLog.setSfOrderId(sfOrder.getId());
+        sfOrderOperationLog.setRemark("订单完成");
+        logMapper.insert(sfOrderOperationLog);
     }
 }

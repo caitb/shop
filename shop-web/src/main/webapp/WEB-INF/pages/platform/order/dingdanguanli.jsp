@@ -32,7 +32,7 @@
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=6">
                         <h1><img src="<%=path%>/static/images/paidan.png" alt=""><c:if test="${pfBorders6 !=0}"><span>${pfBorders6}</span></c:if></h1>
-                        <h1>我在拍单</h1></a>
+                        <h1>我在排单</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span>${pfBorders0}</span></c:if></h1>

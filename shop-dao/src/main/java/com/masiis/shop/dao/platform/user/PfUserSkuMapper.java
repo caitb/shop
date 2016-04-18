@@ -61,4 +61,17 @@ public interface PfUserSkuMapper {
 
     List<PfUserSku> selectByMap(Map<String, Object> conditionMap);
 
+    /**
+     * 查询倒数第二级列表
+     * @return
+     */
+    List<PfUserSku> selectSecondLastLevel();
+
+    /**
+     * 通过主键列表 查询
+     * @param list
+     * @return
+     */
+    List<PfUserSku> selectByListId(List<Integer> list);
+
 }

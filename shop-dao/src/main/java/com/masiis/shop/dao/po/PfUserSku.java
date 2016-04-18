@@ -58,6 +58,10 @@ public class PfUserSku {
      */
     private BigDecimal bail;
     /**
+     * 所有下级代理人数(每日统计)
+     */
+    private Long agentNum;
+    /**
      * 备注
      */
     private String remark;
@@ -133,6 +137,12 @@ public class PfUserSku {
     }
     public void setBail(BigDecimal bail) {
         this.bail = bail;
+    }
+    public Long getAgentNum() {
+        return agentNum;
+    }
+    public void setAgentNum(Long agentNum) {
+        this.agentNum = agentNum;
     }
     public String getRemark() {
         return remark;

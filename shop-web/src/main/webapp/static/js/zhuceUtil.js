@@ -121,7 +121,7 @@ $(function () {
             paraData += "&levelId=" + $(".on").attr("levelId");
             paraData += "&weixinId=" + $("#q_weixinId").html();
             paraData += "&pUserId=" + pUserId;
-            window.location.href = path + "border/confirmBOrder.shtml" + paraData;
+            window.location.href = path + "BOrderAdd/confirmBOrder.shtml" + paraData;
         }
     });
     /*

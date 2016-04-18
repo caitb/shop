@@ -378,10 +378,10 @@ public class SfOrderPurchaseService {
         sfOrder.setShipAmount(skuTotalShipAmount);//运费
         sfOrder.setShipType(0);
         sfOrder.setShipStatus(0);
-        sfOrder.setPayAmount(skuTotalPrice.add(skuTotalShipAmount));//支付金额
+        sfOrder.setPayAmount(new BigDecimal(0));//支付金额
         sfOrder.setPayStatus(0);
         sfOrder.setDistributionAmount(orderSumDisAmount);
-        sfOrder.setReceivableAmount(skuTotalPrice.add(skuTotalShipAmount));//应收费用
+        sfOrder.setReceivableAmount(skuTotalPrice.add(skuTotalShipAmount));//应收费用(微信调用支付时需要)
         sfOrder.setOrderType(0);
         sfOrder.setOrderStatus(0);
         sfOrder.setIsCounting(0);

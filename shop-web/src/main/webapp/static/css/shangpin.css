@@ -157,21 +157,24 @@
 .wrap .back_b h4 div .number {
     color: #F74A11;
     float: left;
-    width: 30px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
     text-align: center;
+    border-radius: 5px;
+    border: 1px solid #E5E5E5;
 }
 .wrap .back_j h4 div span,
 .wrap .back_b h4 div span {
     display: block;
     float: left;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border: 1px solid #E5E5E5;
     text-align: center;
-    line-height: 30px;
+    line-height: 40px;
     text-indent: 0;
-    font-size: 12px;
+    font-size: 20px;
+    border-radius: 5px;
 }
 .wrap .back_j h4 div span:nth-child(2),
 .wrap .back_b h4 div span:nth-child(2) {

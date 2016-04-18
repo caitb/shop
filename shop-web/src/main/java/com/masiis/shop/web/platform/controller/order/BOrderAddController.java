@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
+import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -210,6 +211,12 @@ public class BOrderAddController extends BaseController {
                                          @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
         ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/supplementBOrderAdd");
         ComUser comUser = getComUser(request);
+
+        BorderSupplementParamForAddress paramForAddress = new BorderSupplementParamForAddress();
+        paramForAddress.setSkuId(skuId);
+        paramForAddress.setQuantity(quantity);
+        mv.addObject("supplementOrderParamForAddress",JSONObject.toJSONString(paramForAddress));
+
         Integer sendType = comUser.getSendType();
         Integer agentLevelId = 0;
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
@@ -252,11 +259,16 @@ public class BOrderAddController extends BaseController {
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
         //获取排单信息
-        PfSkuStock pfSkuStock = skuService.getPfSkuStockInfoBySkuId(skuId);
-        if (pfSkuStock != null && pfSkuStock.getIsQueue() == 1) {
-            mv.addObject("isQueue", true);
+        boolean isQueuing = false;
+        Integer count =0;
+        int useStock = skuService.checkSkuStock(skuId, quantity, pfUserSku.getUserPid());
+        if(useStock<0){
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
         }
         mv.addObject("bOrderConfirm", bOrderConfirm);
+        mv.addObject("isQueuing", isQueuing);
+        mv.addObject("count", count);
         return mv;
     }
 
@@ -287,7 +299,7 @@ public class BOrderAddController extends BaseController {
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
             PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
             BOrderAdd bOrderAdd = new BOrderAdd();
-            bOrderAdd.setOrderType(BOrderType.agent.getCode());
+            bOrderAdd.setOrderType(BOrderType.Supplement.getCode());
             bOrderAdd.setpUserId(pfUserSku.getUserPid());
             bOrderAdd.setUserId(comUser.getId());
             bOrderAdd.setSendType(sendType);

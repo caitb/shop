@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
@@ -214,6 +215,15 @@ public class BOrderController extends BaseController {
         mav.addObject("pRealName", pRealName);
         mav.addObject("sendTypeName", sendTypeName);
         mav.addObject("pfBorder", pfBorder);
+        boolean isQueuing = false;
+        Integer count = 0;
+        if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(pfBorderItems.get(0).getSkuId());
+        }
+        mav.addObject("isQueuing", isQueuing);
+        mav.addObject("count", count);
+        mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
         return mav;
     }
 

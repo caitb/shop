@@ -12,6 +12,30 @@
     <link rel="stylesheet" href="${path}/static/css/tijiaosq.css">
     <link rel="stylesheet" href="${path}/static/css/fakeLoader.css"/>
 </head>
+<style>
+    .loader--spinningDisc {
+        border: solid 0.5em #9b59b6;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        padding: 0.5em;
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        background: #3498db;
+        background-clip: content-box;
+        animation: spinDisc 1.5s linear infinite;
+    }
+    @keyframes spinDisc {
+        50% {
+            border-top-color: #3498db;
+            border-bottom-color: #3498db;
+            background-color: #2ecc71;
+        }
+        100% {
+            transform: rotate(1turn);
+        }
+    }
+</style>
 <body>
 <div class="wrap">
     <div class="box">
@@ -68,17 +92,14 @@
     }
     var checkImg = 0;
     function F_Open_dialog(data) {
-        if (data == 0) {
-            checkImg = 0;
-        } else {
-            checkImg = 1;
-        }
+        checkImg = data;
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
         var selector = !checkImg ? 'idCardFront':'idCardBack';
 
-        $('#'+selector).attr('src', '${path}/static/images/loading.jpg');
+        $('#'+selector).addClass('loader loader--spinningDisc');
+        //$('#'+selector).attr('src', '${path}/static/images/loading.jpg');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -89,15 +110,8 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "${path}" + data.imgPath);
-                        $('#idCardFront').load(function(){
-                        });
-                    } else {
-                        $("#idCardBack").attr("src", "${path}" + data.imgPath);
-                        $('#idCardBack').load(function(){
-                        });
-                    }
+                    $('#'+selector).removeClass('loader loader--spinningDisc');
+                    $("#"+selector).attr("src", "${path}" + data.imgPath);
                 } else {
                     alert(data.msg);
                 }

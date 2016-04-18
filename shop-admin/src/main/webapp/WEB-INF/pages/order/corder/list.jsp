@@ -383,25 +383,25 @@
                         }
                     },
                     {
-                        field: 'upTime',
+                        field: 'productAmount',
                         title: '订单金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfCorder && row.pfCorder.productAmount){
+                            if(row.pfCorder){
                                 return row.pfCorder.productAmount;
                             }
                         }
                     },
                     {
-                        field: 'status',
+                        field: 'payAmount',
                         title: '实付金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfCorder && row.pfCorder.payAmount){
+                            if(row.pfCorder){
                                 return row.pfCorder.payAmount;
                             }
                         }

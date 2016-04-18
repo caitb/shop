@@ -389,7 +389,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.productAmount){
+                            if(row.pfBorder){
                                 return row.pfBorder.productAmount;
                             }
                         }
@@ -401,7 +401,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.pfBorder && row.pfBorder.payAmount){
+                            if(row.pfBorder){
                                 return row.pfBorder.payAmount;
                             }
                         }

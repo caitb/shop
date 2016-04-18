@@ -416,7 +416,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row && row.pfUserSkuStock && row.pfUserSkuStock.stock){
+                            if(row && row.pfUserSkuStock){
                                 return row.pfUserSkuStock.stock;
                             }
                         }

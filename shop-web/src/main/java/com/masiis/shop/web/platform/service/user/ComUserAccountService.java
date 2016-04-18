@@ -84,19 +84,19 @@ public class ComUserAccountService {
                 throw new BusinessException("订单状态不正确,当前订单状态为:" + orderStatus);
             }
 
-            log.info("订单类型和状态校验通过,进行创建账单子项工作!");
-            // 创建对应的bill_item
-            PfUserBillItem item = createBillItemByBOrder(order);
-            itemMapper.insert(item);
-
-            log.info("账单子项创建成功!");
-
             BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
 
             log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
 
             // 获取对应的account记录
             if (order.getUserPid() != 0) {
+                log.info("订单类型和状态校验通过,进行创建账单子项工作!");
+                // 创建对应的bill_item
+                PfUserBillItem item = createBillItemByBOrder(order);
+                itemMapper.insert(item);
+
+                log.info("账单子项创建成功!");
+
                 ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
                 log.info("增加上级结算中金额");
                 ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, item.getId(), UserAccountRecordFeeType.AddCountingFee);
@@ -143,13 +143,13 @@ public class ComUserAccountService {
 
             ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
             log.info("增加本级总成本");
-            ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, item.getId(), UserAccountRecordFeeType.AddCostFee);
+            ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, order.getId(), UserAccountRecordFeeType.AddCostFee);
             recordCostFee.setPrevFee(accountS.getCostFee());
             accountS.setCostFee(accountS.getCostFee().add(orderPayment));
             recordCostFee.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordCostFee);
             log.info("增加本级保证金");
-            ComUserAccountRecord recordBailFee = createAccountRecord(order.getBailAmount(), accountS, item.getId(), UserAccountRecordFeeType.AddBailFee);
+            ComUserAccountRecord recordBailFee = createAccountRecord(order.getBailAmount(), accountS, order.getId(), UserAccountRecordFeeType.AddBailFee);
             recordBailFee.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(order.getBailAmount()));
             recordBailFee.setNextFee(accountS.getBailFee());

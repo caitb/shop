@@ -1,4 +1,4 @@
-package com.masiis.shop.scheduler.mall.business;
+package com.masiis.shop.scheduler.mall.business.order;
 
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;

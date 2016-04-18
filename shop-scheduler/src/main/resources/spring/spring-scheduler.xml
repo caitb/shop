@@ -22,6 +22,8 @@
 
         <!-- mall订单相关job -->
         <task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 20 0 * * ?" />
+        <task:scheduled ref="sfOrderTask" method="unPaySfOrderCancelJob" cron="0 20 * * * ?" />
+        <task:scheduled ref="sfOrderTask" method="orderReceivedConfirmJob" cron="0 30 * * * ?" />
     </task:scheduled-tasks>
 
 </beans>

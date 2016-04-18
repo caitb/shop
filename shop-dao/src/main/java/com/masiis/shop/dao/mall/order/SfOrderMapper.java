@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrder;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,4 +43,24 @@ public interface SfOrderMapper {
      */
     List<SfOrder> selectByMap(Map<String, Object> conditionMap);
 
+    /**
+     * 查询指定时间,指定状态,指定支付状态的小铺订单
+     *
+     * @param expiraTime
+     * @param orderStatus
+     * @param payStatus
+     * @return
+     */
+    List<SfOrder> selectByStatusAndDate(@Param("expiraTime") Date expiraTime,
+                                        @Param("orderStatus") int orderStatus,
+                                        @Param("payStatus") int payStatus);
+
+    /**
+     *更新小铺订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    int updateOrderCancelById(@Param("orderId") Long orderId,
+                              @Param("orderStatus") Integer orderStatus);
 }

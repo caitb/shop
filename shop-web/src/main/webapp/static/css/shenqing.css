@@ -204,20 +204,16 @@ body .sec2 {
   display: -moz-box;
   height: 42px;
   margin-top: 1rem;
-  margin-bottom: 7rem;
-  border-radius: 5px;
-  overflow: hidden;
+  padding-bottom: 7rem;
+
 }
 body .sec2 p {
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: center;
   -webkit-box-flex: 1;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: center;
-  -moz-box-flex: 1;
   background: #F74A11;
+  border-radius: 5px;
 }
 body .sec2 p a {
   width: 100%;

@@ -9,6 +9,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +38,8 @@ public class BOrderController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private BOrderPayService payBOrderService;
+    @Resource
+    private SkuService skuService;
 
     /**
      * 选择拿货方式
@@ -60,10 +63,23 @@ public class BOrderController extends BaseController {
         if (comUser.getSendType() != 0) {
             throw new BusinessException("用户已经选择了拿货方式");
         }
+        boolean isQueuing = false;
+        Integer count = 0;
+        // 判断排单标志位,如果处于排单状态下,显示排单人数
+        if (pUserId == null) {
+            pUserId = 0l;
+        }
+        int n = skuService.checkSkuStock(skuId, 1, pUserId);
+        if (n < 0) {
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
         modelAndView.addObject("skuId", skuId);
         modelAndView.addObject("agentLevelId", agentLevelId);
         modelAndView.addObject("weiXinId", weiXinId);
         modelAndView.addObject("pUserId", pUserId);
+        modelAndView.addObject("isQueuing", isQueuing);
+        modelAndView.addObject("count", count);
         return modelAndView;
     }
 

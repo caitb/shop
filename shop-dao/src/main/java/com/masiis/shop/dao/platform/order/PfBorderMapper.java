@@ -29,18 +29,18 @@ public interface PfBorderMapper {
 
     PfBorder selectByOrderCode(String orderId);
 
-    List<PfBorder> selectByUserId(@Param("userId") Long userId,@Param("orderStatus") Integer orderStatus,@Param("sendType") Integer sendType);
+    List<PfBorder> selectByUserId(@Param("userId") Long userId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
     List<PfBorder> selectByCondition(PfBorder pfBorder);
 
     void updateByPrimaryKey(PfBorder pfBorder);
 
-    List<PfBorder> selectByUserPid(@Param("userPId") Long userPId,@Param("orderStatus") Integer orderStatus,@Param("sendType") Integer sendType);
+    List<PfBorder> selectByUserPid(@Param("userPId") Long userPId, @Param("orderStatus") Integer orderStatus, @Param("sendType") Integer sendType);
 
 
-    List<PfBorder> selectUnCountingByUserAndDate( @Param("userid") Long userid,
-                                        @Param("start") Date countStartDay,
-                                        @Param("end") Date countEndDay);
+    List<PfBorder> selectUnCountingByUserAndDate(@Param("userid") Long userid,
+                                                 @Param("start") Date countStartDay,
+                                                 @Param("end") Date countEndDay);
 
     /**
      * 根据订单创建时间的上限,订单状态和支付状态来查询订单
@@ -64,6 +64,7 @@ public interface PfBorderMapper {
 
     /**
      * 统计团队销售额
+     *
      * @param sUserIds
      * @return
      */
@@ -71,8 +72,11 @@ public interface PfBorderMapper {
 
     /**
      * 统计代理商购买次数和购买总额
+     *
      * @param userId
      * @return
      */
     Map<String, Double> statisticsBuy(Long userId);
+
+    Integer selectQueuingOrderCount(@Param("skuId") Integer skuId);
 }

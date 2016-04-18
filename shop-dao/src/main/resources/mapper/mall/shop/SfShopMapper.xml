@@ -178,4 +178,34 @@
         where
         user_id = #{userId,jdbcType=BIGINT} AND id = #{shopId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+        select
+                id,
+                create_time,
+                name,
+                user_id,
+                status,
+                logo,
+                explanation,
+                shout_num,
+                pageviews,
+                sale_amount,
+                ship_amount,
+                qr_code,
+                remark
+        from
+                sf_shop
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -392,7 +392,7 @@
         </where>
     </select>
 
-    <update id="updateOrderCancelById" >
+    <update id="updateOrderCancelById">
         update
             pf_border
         SET
@@ -402,7 +402,7 @@
         AND order_status = 0
         AND pay_status = 0
     </update>
-    
+
     <select id="countSales" parameterType="String" resultType="Double">
         SELECT sum(pay_amount - bail_amount) FROM pf_border WHERE FIND_IN_SET(user_id,#{sUserIds})
     </select>
@@ -417,5 +417,10 @@
                user_id = #{userId}
                AND order_type IN (0,1)
                AND pay_status = 1
+    </select>
+    <select id="selectQueuingOrderCount" resultType="java.lang.Integer">
+        SELECT COUNT(pb.id) FROM pf_border pb
+        WHERE pb.order_status=6
+        AND EXISTS(SELECT 0 FROM pf_border_item pbi WHERE pb.id=pbi.pf_border_id AND pbi.sku_id=#{skuId})
     </select>
 </mapper>

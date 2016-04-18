@@ -101,34 +101,6 @@ public class ProductController extends BaseController {
         return object.toJSONString();
     }
 
-    /**
-     * @Author Jing Hao
-     * @Date 2016/3/22 0022 下午 4:02
-     * 补货（平台 自己）
-     */
-    @RequestMapping(value = "/user/addStock.do")
-    @ResponseBody
-    public String addProductStock(HttpServletRequest request, HttpServletResponse response,
-                                  @RequestParam(required = true) Integer stock,
-                                  @RequestParam(required = true) Integer skuId) {
-        JSONObject object = new JSONObject();
-        try {
-            ComUser comUser = getComUser(request);
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);//代理关系
-            int usableStock = skuService.checkSkuStock(skuId, stock, pfUserSku.getUserPid() == null ? 0 : pfUserSku.getUserPid());
-            if (usableStock < 0) {
-                object.put("isQueue", true);
-                object.put("message", "您的订单将进入排单期");
-            }
-            Long orderCode = bOrderAddService.addReplenishmentOrders(comUser.getId(), skuId, stock);
-            object.put("isError", false);
-            object.put("orderCode", orderCode);
-        } catch (Exception ex) {
-            object.put("isError", true);
-            object.put("message", ex.getMessage());
-        }
-        return object.toJSONString();
-    }
 
     /**
      * 平台发货，申请拿货

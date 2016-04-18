@@ -19,11 +19,11 @@
             <p>支付订单</p>
         </header>
         <main>
-            <c:if test="${isQueue==true}">
+            <c:if test="${bOrderConfirm.sendType==1 && isQueuing==true}">
                 <div class="paidan">
-                    <p class="laba"><img src="${path}/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
-                    </p>
-                    <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
+                    <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
+
+                    <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
                 </div>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
@@ -60,7 +60,7 @@
                     <h2> ${bOrderConfirm.skuName}
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
-                    <h3>合伙人等级：<span>${bOrderConfirm.agentLevelName}</span></h3>
+                    <h3>规格：<span>默认</span></h3>
                     <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>
                     </p>
                 </div>
@@ -76,7 +76,6 @@
                 </h1>
             </div>
             <section class="sec4">
-                <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
                 <p>共需支付：￥${bOrderConfirm.orderTotalPrice}</p>
             </section>
             <a href="javascript:;" onclick="submit(this)" class="weixin">下一步</a>
@@ -128,7 +127,7 @@
             success: function (data) {
                 if (data.isError == false) {
                     $(para).html("正在提交...");
-                    window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                    window.location.href = "${basePath}BOrderAdd/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
                 }
             }
         });

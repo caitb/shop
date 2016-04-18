@@ -1,7 +1,6 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.zxing.client.result.VCardResultParser;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -11,17 +10,18 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderAddService;
-import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.*;
+import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.service.user.UserCertificateService;
+import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -243,56 +243,6 @@ public class BOrderAddController extends BaseController {
                 userMessage = "";
             }
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
-                throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
-            }
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
-            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
-            BOrderAdd bOrderAdd = new BOrderAdd();
-            bOrderAdd.setOrderType(BOrderType.agent.getCode());
-            bOrderAdd.setpUserId(pfUserSku.getUserPid());
-            bOrderAdd.setUserId(comUser.getId());
-            bOrderAdd.setSendType(sendType);
-            bOrderAdd.setSkuId(skuId);
-            bOrderAdd.setAgentLevelId(pfUserSku.getAgentLevelId());
-            bOrderAdd.setWeiXinId(pfUserCertificate.getWxId());
-            bOrderAdd.setUserMessage(userMessage);
-            bOrderAdd.setUserAddressId(userAddressId);
-            bOrderAdd.setQuantity(quantity);
-            Long bOrderId = bOrderAddService.addBOrder(bOrderAdd);
-            jsonObject.put("isError", false);
-            jsonObject.put("bOrderId", bOrderId);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return jsonObject.toJSONString();
-    }
-
-    @ResponseBody
-    @RequestMapping("/takeBOrder/add.do")
-    public String takeBOrderAdd(HttpServletRequest request,
-                                @RequestParam(value = "skuId", required = true) Integer skuId,
-                                @RequestParam(value = "quantity", required = true) Integer quantity,
-                                @RequestParam(value = "userMessage", required = false) String userMessage,
-                                @RequestParam(value = "userAddressId", required = true) Long userAddressId) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            Integer sendType = 0;
-            ComUser comUser = getComUser(request);
-            if (comUser.getSendType() <= 0) {
-                throw new BusinessException("您还没有确定拿货状态不能补货");
-            }
-            sendType = comUser.getSendType();
-            if (skuId == null || skuId <= 0) {
-                throw new BusinessException("参数校验失败：skuId:" + skuId);
-            }
-            if (StringUtils.isBlank(userMessage)) {
-                userMessage = "";
-            }
-            if (userAddressId == null || userAddressId <= 0) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);

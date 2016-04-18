@@ -3,20 +3,13 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
-import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.product.SkuAgentService;
-import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -28,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -40,21 +32,11 @@ import java.util.UUID;
 @RequestMapping("/border")
 public class BOrderController extends BaseController {
     @Resource
-    private SkuAgentService skuAgentService;
-    @Resource
-    private SkuService skuService;
-    @Resource
     private UserService userService;
     @Resource
     private BOrderService bOrderService;
     @Resource
-    private UserSkuService userSkuService;
-    @Resource
-    private UserAddressService userAddressService;
-    @Resource
     private BOrderPayService payBOrderService;
-    @Resource
-    private BOrderAddService bOrderAddService;
 
     /**
      * 选择拿货方式
@@ -88,7 +70,7 @@ public class BOrderController extends BaseController {
 
     @RequestMapping("/goToPayBOrder.shtml")
     public ModelAndView toPayBOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId) {
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView("platform/order/shouyintai");
         if (bOrderId == null || bOrderId <= 0) {
             throw new BusinessException("订单号不正确");
         }
@@ -96,7 +78,6 @@ public class BOrderController extends BaseController {
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
         modelAndView.addObject("pfBorder", pfBorder);
         modelAndView.addObject("pfBorderItems", pfBorderItems);
-        modelAndView.setViewName("platform/order/shouyintai");
         return modelAndView;
     }
 
@@ -181,13 +162,13 @@ public class BOrderController extends BaseController {
     @RequestMapping("/payBOrdersSuccess.shtml")
     public ModelAndView payBOrdersSuccess(HttpServletRequest request,
                                           @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("platform/order/lingquzhengshu");
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         String realName = "";//姓名
         String skuName = "";//合作产品
         String levelName = "";//合伙人等级
         String pRealName = "";//上级合伙人
-        String sendType = "";//拿货方式
+        String sendTypeName = "";//拿货方式
         ComUser comUser = getComUser(request);
         realName = comUser.getRealName();
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
@@ -205,19 +186,18 @@ public class BOrderController extends BaseController {
         }
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 0) {
-            sendType = "未选择";
+            sendTypeName = "未选择";
         } else if (pfBorder.getSendType() == 1) {
-            sendType = "平台代发";
+            sendTypeName = "平台代发";
         } else if (pfBorder.getSendType() == 2) {
-            sendType = "自己发货";
+            sendTypeName = "自己发货";
         }
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
         mav.addObject("pRealName", pRealName);
-        mav.addObject("sendType", sendType);
-        mav.addObject("userId", pfBorder.getUserId());
-        mav.setViewName("platform/order/lingquzhengshu");
+        mav.addObject("sendTypeName", sendTypeName);
+        mav.addObject("pfBorder", pfBorder);
         return mav;
     }
 

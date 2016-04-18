@@ -27,7 +27,20 @@
                 <h2><img src="${path}/static/images/ready.png" alt=""></h2>
                 <p>恭喜您，申请成功！</p>
             </div>
-            <p>本次申请进入排单系统，支付订单时前面有<span>6558</span>人预约。待产能提升，我们将按照付款先后顺序发货。<b>查看订单</b></p>
+            <c:choose>
+                <c:when test="${isQueuing==true}">
+                    <p>本次申请进入排单系统，支付订单时前面有<span>${count}</span>人预约。待产能提升，我们将按照付款先后顺序发货。</p>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${pfBorder.sendType == 1}">
+                        <p>您的在线库存已经变更 <b>+${quantity}</b></p>
+                    </c:if>
+                    <c:if test="${pfBorder.sendType == 2}">
+                        <p>我们将尽快安排发货，请耐心等待。</p>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+            <a href="${basePath}borderManage/borderDetils.html?id=${pfBorder.id}"><b>查看订单</b></a>
             <div class="Name">
                 <p>姓名：</p>
                 <p>${realName}</p>

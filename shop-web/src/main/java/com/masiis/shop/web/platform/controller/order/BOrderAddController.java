@@ -216,7 +216,7 @@ public class BOrderAddController extends BaseController {
         agentLevelId = pfUserSku.getAgentLevelId();
         PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
-        bOrderConfirm.setOrderType(BOrderType.agent.getCode());
+        bOrderConfirm.setOrderType(BOrderType.Supplement.getCode());
         bOrderConfirm.setWenXinId(pfUserCertificate.getWxId());
         bOrderConfirm.setpUserId(pfUserSku.getUserPid());
         //拿货方式

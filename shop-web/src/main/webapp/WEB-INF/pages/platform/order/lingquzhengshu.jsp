@@ -29,18 +29,20 @@
             </div>
             <c:choose>
                 <c:when test="${isQueuing==true}">
-                    <p>本次申请进入排单系统，支付订单时前面有<span>${count}</span>人预约。待产能提升，我们将按照付款先后顺序发货。</p>
+                    <p>本次申请进入排单系统，支付订单时前面有<span>${count}</span>人预约。待产能提升，我们将按照付款先后顺序发货。
+                        <a href="${basePath}borderManage/borderDetils.html?id=${pfBorder.id}"><b>查看订单</b></a></p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${pfBorder.sendType == 1}">
-                        <p>您的在线库存已经变更 <b>+${quantity}</b></p>
+                        <p>您的在线库存已经变更 <span>+${quantity}</span></p>
                     </c:if>
                     <c:if test="${pfBorder.sendType == 2}">
-                        <p>我们将尽快安排发货，请耐心等待。</p>
+                        <p>我们将尽快安排发货，请耐心等待。
+                            <a href="${basePath}borderManage/borderDetils.html?id=${pfBorder.id}"><b>查看订单</b></a></p>
                     </c:if>
                 </c:otherwise>
             </c:choose>
-            <a href="${basePath}borderManage/borderDetils.html?id=${pfBorder.id}"><b>查看订单</b></a>
+
             <div class="Name">
                 <p>姓名：</p>
                 <p>${realName}</p>
@@ -73,21 +75,25 @@
                     </p>
                 </div>
             </a>
-            <div class="sec1">
-                <img src="${path}/static/images/zs%20(1).png" alt="">
-                <p>
-                    <span>查看店铺</span>
-                    <span>系统已经为您生成的店铺，请去管理吧</span>
-                </p>
-            </div>
-            <div class="sec1">
-                <img src="${path}/static/images/zs%20(3).png" alt="">
-                <p>
-                    <span>返回市场</span>
-                    <span>继续查看感兴趣的商品</span>
-                </p>
-            </div>
-            <a href="${basePath}userCertificate/userList/${userId}">
+            <a href="${path}/shop/manage/index">
+                <div class="sec1">
+                    <img src="${path}/static/images/zs%20(1).png" alt="">
+                    <p>
+                        <span>查看店铺</span>
+                        <span>系统已经为您生成的店铺，请去管理吧</span>
+                    </p>
+                </div>
+            </a>
+            <a href="${path}/marketGood/market">
+                <div class="sec1">
+                    <img src="${path}/static/images/zs%20(3).png" alt="">
+                    <p>
+                        <span>返回市场</span>
+                        <span>继续查看感兴趣的商品</span>
+                    </p>
+                </div>
+            </a>
+            <a href="${basePath}userCertificate/userList/${pfBorder.userId}">
                 <div class="sec1">
                     <img src="${path}/static/images/zs%20(2).png" alt="">
                     <p>

@@ -234,6 +234,13 @@ public class BOrderPayService {
                 date = calendar.getTime();
                 pfUserCertificate.setEndTime(date);
                 pfUserCertificate.setAgentLevelId(pfBorderItem.getAgentLevelId());
+                pfUserCertificate.setStatus(1);
+                pfUserCertificate.setRemark("");
+                String code = getCertificateCode(pfUserCertificate);
+                thisUS.setCode(code);
+                pfUserSkuMapper.insert(thisUS);
+                pfUserCertificate.setPfUserSkuId(thisUS.getId());
+                pfUserCertificate.setCode(code);
                 String name = comUser.getRealName();//申请人
                 String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
                 String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
@@ -242,13 +249,6 @@ public class BOrderPayService {
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
                 pfUserCertificate.setImgUrl(picName + ".jpg");
-                pfUserCertificate.setStatus(1);
-                pfUserCertificate.setRemark("");
-                String code = getCertificateCode(pfUserCertificate);
-                thisUS.setCode(code);
-                pfUserSkuMapper.insert(thisUS);
-                pfUserCertificate.setPfUserSkuId(thisUS.getId());
-                pfUserCertificate.setCode(code);
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
             log.info("<9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)");

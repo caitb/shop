@@ -104,6 +104,9 @@ public class BOrderController extends BaseController {
                             @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         WxPaySysParamReq req = null;
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
+            throw new BusinessException("订单状态异常");
+        }
         //切换开发模式和测试模式
         String enviromentkey = PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY);
         if (StringUtils.isBlank(enviromentkey)

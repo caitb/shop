@@ -39,12 +39,12 @@
             <div class="sfphoto">
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
                        style="display: none;">
-                <label class="zheng">
+                <label class="zheng only">
                     <div class="fakeloader0"></div>
                     <img src="${path}/static/images/shenfen.png" alt="" id="idCardFront" name="idCardPre"
                          onclick="F_Open_dialog(0)">
                 </label>
-                <label class="fan" style="margin-left:10px;">
+                <label class="fan only" style="margin-left:10px;">
                     <div class="fakeloader1"></div>
                     <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
@@ -60,6 +60,11 @@
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script src="${path}/static/js/fakeLoader.js"></script>
 <script>
+    oNly()
+    function oNly(){
+        var oNlywidth=$(".only").width();
+        $(".only").height(oNlywidth+"px")
+    }
     var checkImg = 0;
     function F_Open_dialog(data) {
         if (data == 0) {

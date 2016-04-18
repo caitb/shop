@@ -43,12 +43,12 @@
             <div class="sfphoto">
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
                        style="display: none;">
-                <label class="zheng">
+                <label class="zheng only">
                     <img src="${idCardFrontUrl}" alt="" id="idCardFront" name="idCardPre"
                          onclick="F_Open_dialog(0)">
                     重新上传
                 </label>
-                <label class="fan" style="margin-left:10px;">
+                <label class="fan only" style="margin-left:10px;">
                     <img src="${idCardBackUrl}" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                     重新上传
@@ -64,6 +64,11 @@
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script>
+    oNly()
+    function oNly(){
+        var oNlywidth=$(".only").width();
+        $(".only").height(oNlywidth+"px")
+    }
     var checkImg = 0;
     function F_Open_dialog(data) {
         if (data == 0) {

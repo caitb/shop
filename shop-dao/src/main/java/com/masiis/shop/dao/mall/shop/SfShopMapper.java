@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface SfShopMapper {
     int deleteByPrimaryKey(Long id);
@@ -27,4 +29,6 @@ public interface SfShopMapper {
     SfShop selectByUserId(Long userId);
 
     SfShop selectByUserIdAndShopId(@Param("userId") Long userId,@Param("shopId") Long shopId);
+
+    List<SfShop> selectByMap(Map<String, Object> conditionMap);
 }

@@ -371,7 +371,7 @@
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.extractableFee){
+                            if(row.comUserAccount){
                                 return row.comUserAccount.extractableFee;
                             }
                         }
@@ -383,7 +383,7 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount && row.comUserAccount.countingFee){
+                            if(row.comUserAccount){
                                 return row.comUserAccount.countingFee;
                             }
                         }

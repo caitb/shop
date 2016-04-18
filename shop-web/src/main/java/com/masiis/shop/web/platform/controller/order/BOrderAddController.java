@@ -6,6 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
+import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -74,6 +75,17 @@ public class BOrderAddController extends BaseController {
         } else {
             sendType = comUser.getSendType();
         }
+        JSONObject jsonObject = new JSONObject();
+        BorderAgentParamForAddress agentParamForAddress = new BorderAgentParamForAddress();
+        agentParamForAddress.setAgentLevelId(agentLevelId);
+        agentParamForAddress.setpUserId(pUserId);
+        agentParamForAddress.setSendType(sendType);
+        agentParamForAddress.setSkuId(skuId);
+        agentParamForAddress.setWeiXinId(weiXinId);
+        String paramForAddress = JSONObject.toJSONString(agentParamForAddress);
+        mv.addObject("agentOrderparamForAddress",paramForAddress);
+
+
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
         bOrderConfirm.setWenXinId(weiXinId);

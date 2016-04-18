@@ -108,7 +108,7 @@
 
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress=${agentOrderparamForAddress}";
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress="+JSON.stringify(${agentOrderparamForAddress});
     }
 
     function submit(para) {

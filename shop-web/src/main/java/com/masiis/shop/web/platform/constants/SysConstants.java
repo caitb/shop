@@ -31,7 +31,7 @@ public class SysConstants {
 
     /**
      * session
-     * 当前订单的id和当前的订单的地址
+     * 当前订单的id和当前的订单的地址以及参数
      */
     public static final String SESSION_ORDER_Id = "orderId";
     public static final String SESSION_ORDER_SELECTED_ADDRESS = "orderSelectedAddress";

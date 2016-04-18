@@ -250,16 +250,30 @@ public class UserAddressService {
     private void getAgentOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId   ){
         sb.append("/BOrderAdd/agentBOrder.shtml?");
         if (!StringUtils.isEmpty(jsonParam)){
-            BorderAgentParamForAddress paramObject = (BorderAgentParamForAddress)JSONObject.toJSON(jsonParam);
+            JSONObject jsonObject = new JSONObject();
+            org.json.JSONObject object = new org.json.JSONObject(jsonParam);
+            BorderAgentParamForAddress paramObject  = JSONObject.parseObject(jsonParam,BorderAgentParamForAddress.class);
             if (paramObject!=null){
-                sb.append("skuId=").append(paramObject.getSkuId());
-                sb.append("&agentLevelId=").append(paramObject.getAgentLevelId());
-                sb.append("&weiXinId=").append(paramObject.getWeiXinId());
-                sb.append("&sendType=").append(paramObject.getSendType());
-                sb.append("&pUserId=").append(paramObject.getpUserId());
+                if (paramObject.getSkuId()!=null){
+                    sb.append("skuId=").append(paramObject.getSkuId()).append("&");
+                }
+                if (paramObject.getAgentLevelId()!=null){
+                    sb.append("agentLevelId=").append(paramObject.getAgentLevelId()).append("&");
+                }
+                if (paramObject.getWeiXinId()!=null){
+                    sb.append("weiXinId=").append(paramObject.getWeiXinId()).append("&");
+                }
+                if (paramObject.getSendType()!=null){
+                    sb.append("sendType=").append(paramObject.getSendType()).append("&");
+                }
+                if (paramObject.getpUserId()!=null){
+                    sb.append("pUserId=").append(paramObject.getpUserId()).append("&");
+                }
             }
         }
-        sb.append("&userAddressId").append(selectedAddressId);
+        if (selectedAddressId!=null){
+            sb.append("userAddressId=").append(selectedAddressId);
+        }
     }
 
     /**

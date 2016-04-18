@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
@@ -62,10 +63,12 @@ public class ManageShopProductService {
                  skuInfo.setShopSkuId(sfShopSku.getId());
                  skuInfo.setSaleNum(sfShopSku.getSaleNum());
                  if(pfUserSkuStock!=null){
-                     if(comUser.getSendType().equals("1")){//平台代发
+                     if(comUser.getSendType()==1){//平台代发
                          skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
-                     }else{
+                     }else if(comUser.getSendType()==2){//自己
                          skuInfo.setStock(pfUserSkuStock.getCustomStock());
+                     }else{
+                         throw new BusinessException("发货方式未选择！");
                      }
                  }
                  skuInfoList.add(skuInfo);

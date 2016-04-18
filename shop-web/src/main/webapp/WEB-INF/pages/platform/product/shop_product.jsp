@@ -40,7 +40,7 @@
 
                         <p>${sku.comSku.priceMarket}</p>
 
-                        <p>已售：<span>${sku.saleNum}</span> 库存<span>${sku.stock}</span></p>
+                        <p>已售：<span>${sku.saleNum}</span> 库存: <span>${sku.stock}</span></p>
                     </div>
                 </div>
                 <div class="sec2">

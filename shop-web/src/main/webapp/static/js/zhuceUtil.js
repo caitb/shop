@@ -104,6 +104,7 @@ $(function () {
         if (thisObj.html() == "正在提交...") {
             return;
         }
+        thisObj.html("正在提交...");
         var event = event || event.window;
         event.stopPropagation();
         //还没有选择拿货方式

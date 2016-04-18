@@ -418,10 +418,10 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row.sfShop && row.sfShop.status == 0) {
-                                return '关店';
+                                return '<span class="label label-sm label-grey">关店</span>';
                             }
                             if(row.sfShop && row.sfShop.status == 1){
-                                return '开店';
+                                return '<span class="label label-sm label-success">开店</span>';
                             }
                         }
                     },
@@ -430,47 +430,12 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var sArr = ['<a class="v-detail" href="javascript:void(0);">查看</a>'];
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 0) {
-                                sArr.push('&nbsp;&nbsp;<a class="audit" href="javascript:void(0);">审核</a>');
-                            }
-                            if(row.comUserExtractApply && row.comUserExtractApply.auditType == 2) {
-                                sArr.push('&nbsp;&nbsp;<a class="yes" href="javascript:void(0);">确认打款</a>');
-                            }
 
                             return sArr.join('');
                         },
                         events: {
-                            'click .audit': function(e, value, row, index){
-                                $('#applyId').val(row.comUserExtractApply.id);
-                                $('#applyTime').html(new Date(row.comUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
-                                $('#realName').html(row.comUser.realName);
-                                $('#extractFee').html(row.comUserExtractApply.extractFee);
-                                $('#extractableFee').html(row.comUserAccount.extractableFee);
-                                $('#extractWay').html(row.comUserExtractApply.extractWay);
-                                $('#bankCard').html(row.comUserExtractApply.bankCard);
-                                $('#bankName').html(row.comUserExtractApply.bankName);
-                                $('#depositBankName').html(row.comUserExtractApply.depositBankName);
-                                $('#cardOwnerName').html(row.comUserExtractApply.cardOwnerName);
-
-                                $('#modal-audit').modal('show');
-                            },
-                            'click .yes': function(e, value, row, index){
-                                bootbox.confirm('这是合伙人,确定已线下打款了吗?', function(result) {
-                                    if(result) {
-                                        $.ajax({
-                                            url: '<%=basePath%>fundmanage/com-extract/audit.do',
-                                            data: {id:row.comUserExtractApply.id, auditType: 3},
-                                            success: function(msg){
-                                                $('#table').bootstrapTable('refresh');
-                                                $.gritter.add({
-                                                    title: '消息',
-                                                    text: msg,
-                                                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-                                                });
-                                            }
-                                        })
-                                    }
-                                });
+                            'click .v-detail': function(e, value, row, index){
+                                parent.window.$('#myTabbable').add('shop-'+row.sfShop.id, '店铺信息', '<%=basePath%>shop/detail.shtml?shopId='+row.sfShop.id);
                             }
                         }
                     }

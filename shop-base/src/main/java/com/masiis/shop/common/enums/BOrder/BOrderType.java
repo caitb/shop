@@ -17,7 +17,7 @@ public enum BOrderType {
             return "代理";
         }
     },
-    Replenishment {
+    Supplement {
         public Integer getCode() {
             return 1;
         }

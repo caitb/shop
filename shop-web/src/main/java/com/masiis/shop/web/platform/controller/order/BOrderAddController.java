@@ -259,11 +259,16 @@ public class BOrderAddController extends BaseController {
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
         //获取排单信息
-        PfSkuStock pfSkuStock = skuService.getPfSkuStockInfoBySkuId(skuId);
-        if (pfSkuStock != null && pfSkuStock.getIsQueue() == 1) {
-            mv.addObject("isQueue", true);
+        boolean isQueuing = false;
+        Integer count =0;
+        int useStock = skuService.checkSkuStock(skuId, quantity, pfUserSku.getUserPid());
+        if(useStock<0){
+            isQueuing = true;
+            count = bOrderService.selectQueuingOrderCount(skuId);
         }
         mv.addObject("bOrderConfirm", bOrderConfirm);
+        mv.addObject("isQueuing", isQueuing);
+        mv.addObject("count", count);
         return mv;
     }
 
@@ -294,7 +299,7 @@ public class BOrderAddController extends BaseController {
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);
             PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
             BOrderAdd bOrderAdd = new BOrderAdd();
-            bOrderAdd.setOrderType(BOrderType.agent.getCode());
+            bOrderAdd.setOrderType(BOrderType.Supplement.getCode());
             bOrderAdd.setpUserId(pfUserSku.getUserPid());
             bOrderAdd.setUserId(comUser.getId());
             bOrderAdd.setSendType(sendType);

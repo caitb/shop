@@ -85,7 +85,7 @@
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
                 <p>共需支付：￥${bOrderConfirm.orderTotalPrice}</p>
             </section>
-            <a href="javascript:;" onclick="submit(this)" class="weixin">下一步</a>
+            <a href="javascript:;" onclick="submit(this);" class="weixin">下一步</a>
         </main>
     </div>
 </div>
@@ -108,7 +108,7 @@
 
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress="+JSON.stringify(${agentOrderparamForAddress});
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress=" +${agentOrderparamForAddress};
     }
 
     function submit(para) {

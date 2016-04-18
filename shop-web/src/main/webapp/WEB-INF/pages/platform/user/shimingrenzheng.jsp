@@ -68,11 +68,7 @@
     }
     var checkImg = 0;
     function F_Open_dialog(data) {
-        if (data == 0) {
-            checkImg = 0;
-        } else {
-            checkImg = 1;
-        }
+        checkImg = data;
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
@@ -89,15 +85,7 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "${path}" + data.imgPath);
-                        $('#idCardFront').load(function(){
-                        });
-                    } else {
-                        $("#idCardBack").attr("src", "${path}" + data.imgPath);
-                        $('#idCardBack').load(function(){
-                        });
-                    }
+                    $("#"+selector).attr("src", "${path}" + data.imgPath);
                 } else {
                     alert(data.msg);
                 }

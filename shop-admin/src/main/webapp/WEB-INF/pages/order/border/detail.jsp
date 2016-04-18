@@ -776,7 +776,7 @@
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
-                                return;
+                                parent.window.document.getElementById('orderDetail').contentWindow.location.reload(true);
                             }
                             alert(msg);
                         }

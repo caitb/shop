@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface SfUserExtractApplyMapper {
     int deleteByPrimaryKey(Long id);
@@ -47,4 +49,6 @@ public interface SfUserExtractApplyMapper {
     List<SfUserExtractApply> selectListByUserAndDate(@Param("userid") Long userid,
                                                      @Param("start") Date start,
                                                      @Param("end") Date end);
+
+    List<SfUserExtractApply> selectByMap(Map<String, Object> conditionMap);
 }

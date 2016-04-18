@@ -141,11 +141,14 @@
 <footer>
     <section class="sec3">
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <c:if test="${empty pfUserSku || pfUserSku.isPay==0}">
+        <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
             <p>
                 <a id="applyTrial" onclick="validateCodeJS.applyTrial('trial')">申请试用</a>
                 <a id="trialed" style="display: none">已试用</a>
             </p>
+        </c:if>
+        <c:if test="${productDetails.isTrial==0}">
+            <a  style="display: none">不能试用</a>
         </c:if>
         <c:if test="${empty pfUserSku}"><!--未代理><-->
         <p style="background: #DA3600;"><a onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>

@@ -173,23 +173,27 @@
         $(".back_b").hide();
     })
     $(".b_que").on("click",function(){
-        var skuId = $("#addSkuId").val();
-        $.ajax({
-            url: '<%=basePath%>product/user/addStock.do',
-            type: 'post',
-            data: {stock:i,skuId:skuId},
-            dataType: 'json',
-            success: function (data) {
-                if(data['isError'] == false){
-                    if(data['isQueue'] == true){
-                        alert(data['message']);
-                    }
-                    window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";
-                }else{
-                    alert(data['message']);
-                }
-            }
-        });
+        var paraData = "?";
+        paraData += "&skuId=" + $("#addSkuId").val();
+        paraData += "&quantity=" + i;
+        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+        <%--var skuId = $("#addSkuId").val();--%>
+        <%--$.ajax({--%>
+            <%--url: '<%=basePath%>product/user/addStock.do',--%>
+            <%--type: 'post',--%>
+            <%--data: {stock:i,skuId:skuId},--%>
+            <%--dataType: 'json',--%>
+            <%--success: function (data) {--%>
+                <%--if(data['isError'] == false){--%>
+                    <%--if(data['isQueue'] == true){--%>
+                        <%--alert(data['message']);--%>
+                    <%--}--%>
+                    <%--window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";--%>
+                <%--}else{--%>
+                    <%--alert(data['message']);--%>
+                <%--}--%>
+            <%--}--%>
+        <%--});--%>
     })
 </script>
 </body>

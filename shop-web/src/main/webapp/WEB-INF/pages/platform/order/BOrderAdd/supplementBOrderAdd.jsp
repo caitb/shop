@@ -19,17 +19,13 @@
             <p>支付订单</p>
         </header>
         <main>
-            <c:if test="${bOrderConfirm.orderType==0}">
-                <div class="xinxi">
-                    <p>注册信息</p>
-                    <p>支付订单</p>
-                    <p>选择拿货方式</p>
+            <c:if test="${isQueue==true}">
+                <div class="paidan">
+                    <p class="laba"><img src="${path}/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
+                    </p>
+                    <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>
                 </div>
             </c:if>
-            <%--<div class="paidan">--%>
-            <%--<h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>1233</span>人排单</b></h1>--%>
-            <%--<p>*由于商品火爆导致库存不足，本次申请将进入排单系统，待产能提升，我们会按付款顺序发货</p>--%>
-            <%--</div>--%>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
                     <p>拿货方式：<span>自己发货</span></p>
@@ -65,7 +61,7 @@
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
                     <h3>合伙人等级：<span>${bOrderConfirm.agentLevelName}</span></h3>
-                    <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>保证金:<span>${bOrderConfirm.bailAmount}</span>
+                    <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>
                     </p>
                 </div>
             </section>
@@ -120,16 +116,12 @@
             return;
         }
         var paraData = {};
-        paraData.orderType = "${bOrderConfirm.orderType}";
-        paraData.pUserId = "${bOrderConfirm.pUserId}";
-        paraData.sendType = "${bOrderConfirm.sendType}";
         paraData.skuId = "${bOrderConfirm.skuId}";
-        paraData.agentLevelId = "${bOrderConfirm.agentLevelId}";
-        paraData.weiXinId = "${bOrderConfirm.wenXinId}";
+        paraData.quantity = "${bOrderConfirm.skuQuantity}";
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
         $.ajax({
-            url: "${basePath}BOrderAdd/agentBOrder/add.do",
+            url: "${basePath}BOrderAdd/supplementBOrder/add.do",
             type: "post",
             data: paraData,
             dataType: "json",

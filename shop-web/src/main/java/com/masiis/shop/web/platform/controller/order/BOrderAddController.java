@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * BOrderAddController
@@ -229,6 +230,11 @@ public class BOrderAddController extends BaseController {
         BigDecimal lowProfit = comSku.getPriceRetail().multiply(lowerSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())).setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
+        //获取排单信息
+        PfSkuStock pfSkuStock = skuService.getPfSkuStockInfoBySkuId(skuId);
+        if(pfSkuStock!=null && pfSkuStock.getIsQueue()==1){
+            mv.addObject("isQueue", true);
+        }
         mv.addObject("bOrderConfirm", bOrderConfirm);
         return mv;
     }
@@ -281,5 +287,18 @@ public class BOrderAddController extends BaseController {
             }
         }
         return jsonObject.toJSONString();
+    }
+
+    @RequestMapping("/goToPayBOrder.shtml")
+    public ModelAndView toPayBOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+        ModelAndView modelAndView = new ModelAndView("platform/user/orderProview");
+        if (bOrderId == null || bOrderId <= 0) {
+            throw new BusinessException("订单号不正确");
+        }
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
+        modelAndView.addObject("pfBorder", pfBorder);
+        modelAndView.addObject("pfBorderItems", pfBorderItems);
+        return modelAndView;
     }
 }

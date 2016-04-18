@@ -65,6 +65,7 @@ public class ProductListController extends BaseController {
                 indexComSku.setMaxDiscount(productService.getMaxDiscount(indexComSku.getSkuId()));
                 indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexComSku.getSkuId())+"%");
                 indexComSku.setBailLevel(skuAgentService.getSkuAgentLevel(indexComSku.getSkuId()));
+
 //            } else {
 //                indexComSku.setDiscountLevel("成为合伙人可查看");
 //            }

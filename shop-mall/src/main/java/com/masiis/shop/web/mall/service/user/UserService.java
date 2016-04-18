@@ -207,7 +207,7 @@ public class UserService {
                 comUser.setMobile(phone);
                 comUser.setIsBinding(1);
                 //更新表中的信息
-                comUserMapper.updatePhone(comUser);
+                comUserMapper.updateByPrimaryKey(comUser);
             } else {
                 throw new Exception("查询用户信息失败");
             }

@@ -7,6 +7,7 @@ import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
+import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ProductListController extends BaseController {
 
     @Resource
-    private SpuService spuService;
+    private SkuAgentService skuAgentService;
     @Resource
     private IndexShowService indexShowService;
 
@@ -63,6 +64,8 @@ public class ProductListController extends BaseController {
                 //显示优惠区间
                 indexComSku.setMaxDiscount(productService.getMaxDiscount(indexComSku.getSkuId()));
                 indexComSku.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexComSku.getSkuId())+"%");
+                indexComSku.setBailLevel(skuAgentService.getSkuAgentLevel(indexComSku.getSkuId()));
+
 //            } else {
 //                indexComSku.setDiscountLevel("成为合伙人可查看");
 //            }

@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Document</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/shop/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/main.css">
     <link rel="stylesheet" href="<%=path%>/static/shop/css/shangpinguanli.css">
@@ -40,7 +40,7 @@
 
                         <p>${sku.comSku.priceMarket}</p>
 
-                        <p>已售：<span>${sku.saleNum}</span> 库存<span>${sku.stock}</span></p>
+                        <p>已售：<span>${sku.saleNum}</span> 库存: <span>${sku.stock}</span></p>
                     </div>
                 </div>
                 <div class="sec2">

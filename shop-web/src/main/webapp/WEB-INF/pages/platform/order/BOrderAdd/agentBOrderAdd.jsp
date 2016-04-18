@@ -22,8 +22,8 @@
             <c:if test="${bOrderConfirm.orderType==0}">
                 <div class="xinxi">
                     <p>注册信息</p>
-                    <p>支付订单</p>
                     <p>选择拿货方式</p>
+                    <p>支付订单</p>
                 </div>
             </c:if>
             <c:if test="${isQueuing==true}">
@@ -108,7 +108,7 @@
 
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress=" +${agentOrderparamForAddress};
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=agentOrder&selectedAddressId=" + selectedAddressId + "&agentOrderparamForAddress=" +JSON.stringify(${agentOrderparamForAddress});
     }
 
     function submit(para) {

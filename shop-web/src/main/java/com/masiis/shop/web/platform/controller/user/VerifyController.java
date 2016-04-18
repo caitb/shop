@@ -14,6 +14,7 @@ import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
+import com.masiis.shop.web.platform.utils.wx.WxAuthUrlUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -70,11 +71,7 @@ public class VerifyController extends BaseController {
         }
         // 获取access_token
         log.info("开始获取access_token...");
-        String url = WxConstants.URL_GET_ACCESS_TOKEN
-                        + "?appid=" + WxConstants.APPID
-                        + "&secret=" + WxConstants.APPSECRET
-                        + "&code=" + code
-                        + "&grant_type=" + WxConstants.GRANT_TYPE_ACCESSTOKEN;
+        String url = WxAuthUrlUtils.createAccessTokenUrl(code);
         String result = HttpClientUtils.httpGet(url);
         log.info("getAccessToken请求成功:" + result);
         AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
@@ -83,10 +80,7 @@ public class VerifyController extends BaseController {
                 log.info("微信访问授权成功{openid:" + res.getOpenid() + "}");
                 log.info("开始获取微信用户的信息...");
 
-                String infoUrl = WxConstants.URL_GET_USERINFO
-                        + "?access_token=" + res.getAccess_token()
-                        + "&openid=" + res.getOpenid()
-                        + "&lang=zh_CN";
+                String infoUrl = WxAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
                 String infoRes = HttpClientUtils.httpGet(infoUrl);
 
                 System.out.println("info:" + infoRes);
@@ -187,12 +181,10 @@ public class VerifyController extends BaseController {
             token = SpringRedisUtil.get(wxUser.getUnionid() + wxUser.getOpenid() + "_token", String.class);
             ComUser user = userService.getUserByUnionid(unionid);
             // 取得了openid和token,并进行验证有效期
-            String checkTokenUrl = WxConstants.URL_CHECK_ACCESS_TOKEN
-                    + "?access_token=" + token
-                    + "&openid=" + wxUser.getOpenid();
+            String checkTokenUrl = WxAuthUrlUtils.createCheckTokenUrl(token, wxUser.getOpenid());
             try {
                 String result = HttpClientUtils.httpGet(checkTokenUrl);
-                System.out.println(result);
+                System.out.println("检查token是否有效,请求结果:" + result);
                 ErrorRes resBean = JSONObject.parseObject(result, ErrorRes.class);
                 if (resBean != null && "0".equals(resBean.getErrcode())) {
                     // token仍有效,进行登录操作,并跳转目标链接
@@ -211,12 +203,8 @@ public class VerifyController extends BaseController {
                         throw new BusinessException("token超时,且redis取不到refreshtoken!");
                     }
 
-                    String rftoken_url = WxConstants.URL_REFRESH_TOKEN
-                                + "?appid=" + WxConstants.APPID
-                                + "&grant_type=" + WxConstants.GRANT_TYPE_RFTOKEN
-                                + "&refresh_token=REFRESH_TOKEN";
+                    String rftoken_url = WxAuthUrlUtils.createRefreshTokenUrl(rftoken);
                     String rfResult = HttpClientUtils.httpGet(rftoken_url);
-
                     ErrorRes rfRes = JSONObject.parseObject(rfResult, ErrorRes.class);
                     if (resBean != null && StringUtils.isNotBlank(resBean.getErrcode())) {
                         log.error("刷新token失败...");
@@ -225,14 +213,12 @@ public class VerifyController extends BaseController {
                     log.info("刷新token成功,进行登录操作...");
                     RefreshTokenRes rfResBean = JSONObject.parseObject(rfResult, RefreshTokenRes.class);
                     // 刷新token成功,授权继续,此处保存access_token,refreshtoken和openid;
-                    String infoUrl = WxConstants.URL_GET_USERINFO
-                            + "?appid=" + WxConstants.APPID
-                            + "&openid=" + rfResBean.getOpenid()
-                            + "&lang=zh_CN";
+                    String infoUrl = WxAuthUrlUtils.createUserInfoUrl(rfResBean.getAccess_token(),
+                            rfResBean.getOpenid());
+                    // 发送请求,获取用户信息
                     String infoRes = HttpClientUtils.httpGet(infoUrl);
                     WxUserInfo userRes = JSONObject.parseObject(infoRes, WxUserInfo.class);
                     if(userRes == null || StringUtils.isBlank(userRes.getOpenid())){
-                        // 没获取到信息
                         throw new BusinessException("获取微信用户信息失败,未获取到信息");
                     }
                     // 更新wxUser的信息
@@ -266,13 +252,8 @@ public class VerifyController extends BaseController {
         }
         String stateStr = MD5Utils.encrypt(state);
         session.setAttribute(stateStr, state);
-        String redirect_url = WxConstants.URL_AUTH
-                + "?appid=" + WxConstants.APPID
-                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
-                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
-                + "&scope=" + WxConstants.SCOPE_AUTH_USRINFO
-                + "&state=" + stateStr
-                + WxConstants.TAILSTR_AUTH;
+        // 创建微信授权链接,需用户点击确认
+        String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, stateStr);
 
         // 向微信获取授权code
         return "redirect:" + redirect_url;

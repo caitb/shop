@@ -50,7 +50,9 @@ public class WxConstants {
      * 刷新token
      */
     public static final String URL_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
-
+    /**
+     * 获取微信用户信息
+     */
     public static final String URL_GET_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
     /**
      * 刷新token的grant_type类型

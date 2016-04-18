@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
+import com.masiis.shop.dao.beans.order.BorderSupplementParamForAddress;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -210,6 +211,12 @@ public class BOrderAddController extends BaseController {
                                          @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
         ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/supplementBOrderAdd");
         ComUser comUser = getComUser(request);
+
+        BorderSupplementParamForAddress paramForAddress = new BorderSupplementParamForAddress();
+        paramForAddress.setSkuId(skuId);
+        paramForAddress.setQuantity(quantity);
+        mv.addObject("supplementOrderParamForAddress",JSONObject.toJSONString(paramForAddress));
+
         Integer sendType = comUser.getSendType();
         Integer agentLevelId = 0;
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), skuId);

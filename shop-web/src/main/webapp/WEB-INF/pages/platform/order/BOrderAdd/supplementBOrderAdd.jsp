@@ -102,7 +102,7 @@
 
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=zhifu&selectedAddressId=" + selectedAddressId + "&orderId=${pfBorder.id}";
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=supplementOrder&selectedAddressId=" + selectedAddressId + "&supplementOrderParamForAddress="+JSON.stringify(${supplementOrderParamForAddress});
     }
 
     function submit(para) {

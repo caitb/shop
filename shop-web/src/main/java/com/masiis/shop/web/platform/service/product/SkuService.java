@@ -8,9 +8,6 @@ import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.org.apache.xpath.internal.Expression;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,5 +86,12 @@ public class SkuService {
         return comSkuExtensionMapper.selectBySkuId(skuId);
     }
 
+    /**
+     * jjh
+     * 查看排单flag
+     */
+    public PfSkuStock getPfSkuStockInfoBySkuId(Integer skuId) {
+        return pfSkuStockMapper.selectBySkuId(skuId);
+    }
 
 }

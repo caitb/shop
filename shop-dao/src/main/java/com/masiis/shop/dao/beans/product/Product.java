@@ -47,6 +47,8 @@ public class Product extends ComSku {
 
     private Integer isQueue;//排单flag
 
+    private Integer isTrial;//是否可试用
+
     public String getSpuName() {
         return spuName;
     }
@@ -189,5 +191,13 @@ public class Product extends ComSku {
 
     public void setIsQueue(Integer isQueue) {
         this.isQueue = isQueue;
+    }
+
+    public Integer getIsTrial() {
+        return isTrial;
+    }
+
+    public void setIsTrial(Integer isTrial) {
+        this.isTrial = isTrial;
     }
 }

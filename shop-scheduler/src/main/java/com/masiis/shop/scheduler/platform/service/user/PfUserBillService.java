@@ -2,6 +2,7 @@ package com.masiis.shop.scheduler.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -79,7 +80,7 @@ public class PfUserBillService {
             bill.setStatus(1);
             // 修改account账户结算额和可提现额
             ComUserAccount account = accountMapper.findByUserId(user.getId());
-            ComUserAccountRecord record = createAccountRecord(bill, 1);
+            ComUserAccountRecord record = createAccountRecord(account, bill, 1);
             record.setUserAccountId(account.getId());
             // 修改结算
             log.info("修改账户的结算金额,之前结算金额是:" + account.getCountingFee());
@@ -89,7 +90,7 @@ public class PfUserBillService {
             record.setNextFee(account.getCountingFee());
             recordMapper.insert(record);
             // 修改可提现
-            ComUserAccountRecord recordEx = createAccountRecord(bill, 4);
+            ComUserAccountRecord recordEx = createAccountRecord(account, bill, 4);
             log.info("修改账户的可提现金额,之前可提现金额是:" + account.getExtractableFee());
             recordEx.setPrevFee(account.getExtractableFee());
             account.setExtractableFee(account.getExtractableFee().add(bill.getBillAmount()));
@@ -110,7 +111,7 @@ public class PfUserBillService {
         }
     }
 
-    private ComUserAccountRecord createAccountRecord(PfUserBill bill, int type) {
+    private ComUserAccountRecord createAccountRecord(ComUserAccount account, PfUserBill bill, int type) {
         ComUserAccountRecord record = new ComUserAccountRecord();
 
         record.setBillId(bill.getId());
@@ -118,6 +119,10 @@ public class PfUserBillService {
         record.setFeeType(type);
         record.setHandleFee(bill.getBillAmount());
         record.setHandleTime(new Date());
+        record.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
+        record.setHandleType(0);
+        record.setUserAccountId(account.getId());
+        record.setHandler("0");
 
         return record;
     }

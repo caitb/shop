@@ -384,10 +384,10 @@
                 create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
             </if>
             <if test="orderStatus != null">
-                order_status = #{orderStatus,jdbcType=INTEGER}
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
             </if>
             <if test="payStatus != null">
-                pay_status = #{payStatus,jdbcType=INTEGER}
+            AND pay_status = #{payStatus,jdbcType=INTEGER}
             </if>
         </where>
     </select>

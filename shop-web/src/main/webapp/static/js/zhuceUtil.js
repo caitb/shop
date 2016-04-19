@@ -113,15 +113,13 @@ $(function () {
             paraData += "skuId=" + skuId;
             paraData += "&agentLevelId=" + $(".on").attr("levelId");
             paraData += "&weiXinId=" + $("#q_weixinId").html();
-            paraData += "&pUserId=" + pUserId;
             window.location.href = path + "border/setUserSendType.shtml" + paraData;
         } else {
             var paraData = "?";
-            paraData += "&skuId=" + skuId;
+            paraData += "skuId=" + skuId;
             paraData += "&agentLevelId=" + $(".on").attr("levelId");
             paraData += "&weiXinId=" + $("#q_weixinId").html();
             paraData += "&sendType=" + sendType;
-            paraData += "&pUserId=" + pUserId;
             window.location.href = path + "BOrderAdd/agentBOrder.shtml" + paraData;
         }
     });

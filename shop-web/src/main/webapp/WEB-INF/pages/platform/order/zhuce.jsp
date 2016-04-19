@@ -50,7 +50,6 @@
                         <input type="radio" id="b" name="danx" class="fou"/>
                         <label for="b" style="margin-left:30px;">否</label>
                     </h3>
-                    <%--<h3 class="Bhide">您的推荐人：<span>校长</span></h3>--%>
                     <div id="hehuo">
                         <h3>上级合伙人电话： <input type="text" class="stel" id="pMobile" name="pMoble">
                             <span class="onc"></span>
@@ -60,7 +59,7 @@
                 </c:if>
                 <c:if test="${pWxNkName!=''}">
                     <div id="hehuo">
-                        <h3>您的推荐人： <input type="text" class="stel" value="${pWxNkName}" readonly="readonly"/></h3>
+                        <h3 class="Bhide">您的推荐人：<span>${pWxNkName}</span></h3>
                     </div>
                 </c:if>
 

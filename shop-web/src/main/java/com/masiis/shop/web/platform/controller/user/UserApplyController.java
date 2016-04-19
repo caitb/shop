@@ -9,6 +9,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +50,8 @@ public class UserApplyController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private PfUserRelationService pfUserRelationService;
 
     /**
      * 合伙人申请
@@ -69,9 +73,15 @@ public class UserApplyController extends BaseController {
             throw new BusinessException("sku不合法,系统不存在该sku");
         }
         if (pUserId != null && pUserId > 0) {
-            //校验上级合伙人数据是否合法
+            //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
             userSkuService.checkParentData(user, pUserId, skuId);
-            res.addObject("pUserId", pUserId);
+            PfUserRelation pfUserRelation = new PfUserRelation();
+            pfUserRelation.setUserId(user.getId());
+            pfUserRelation.setSkuId(skuId);
+            pfUserRelation.setCreateTime(new Date());
+            pfUserRelation.setIsEnable(1);
+            pfUserRelation.setUserPid(pUserId);
+            pfUserRelationService.insert(pfUserRelation);
         }
         boolean isQueuing = false;
         Integer count = 0;
@@ -99,8 +109,7 @@ public class UserApplyController extends BaseController {
      */
     @RequestMapping("/register.shtml")
     public ModelAndView register(HttpServletRequest request,
-                                 @RequestParam(value = "skuId", required = true) Integer skuId,
-                                 @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+                                 @RequestParam(value = "skuId", required = true) Integer skuId) throws Exception {
         ModelAndView mv = new ModelAndView("platform/order/zhuce");
         ComUser comUser = getComUser(request);
         if (comUser == null) {
@@ -122,19 +131,17 @@ public class UserApplyController extends BaseController {
         List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
         // 上级代理等级id(0表示没有上级推荐)
         Integer pUserLevelId = 0;
+        Long pUserId = 0l;
         Integer sendType = 0;
         if (comUser.getSendType() > 0) {
             sendType = comUser.getSendType();
         }
-        if (pUserId != null && pUserId > 0) {
-            //校验上级合伙人数据是否合法
-            PfUserSku parentUS = userSkuService.checkParentData(comUser, pUserId, skuId);
-            if (parentUS.getAgentLevelId() == 3) {
-                throw new BusinessException("您的推荐人还不能发展下级代理");
-            }
-            pUserLevelId = parentUS.getAgentLevelId();
+        PfUserRelation pfUserRelation = pfUserRelationService.selectEnableByUserId(comUser.getId(), skuId);
+        if (pfUserRelation != null) {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pfUserRelation.getUserPid(), skuId);
+            pUserLevelId = pfUserSku.getAgentLevelId();
+            pUserId = pfUserRelation.getUserPid();
         }
-
         // 创建该sku代理商的代理门槛信息
         List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
         for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
@@ -154,10 +161,6 @@ public class UserApplyController extends BaseController {
         }
         boolean isQueuing = false;
         Integer count = 0;
-        // 判断排单标志位,如果处于排单状态下,显示排单人数
-        if (pUserId == null) {
-            pUserId = 0l;
-        }
         int n = skuService.checkSkuStock(skuId, 1, pUserId);
         if (n < 0) {
             isQueuing = true;

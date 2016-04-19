@@ -11,8 +11,8 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="javascript:;" onClick="javascript :history.back(-1);"><img src="${path}/static/images/xq_rt.png"
-                                                                        alt=""></a>
+    <a href="javascript:;" onClick="javascript :history.back(-1);">
+        <img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
 <c:if test="${isQueuing==true}">
@@ -155,15 +155,11 @@
         </h1>
     </div>
     <input id="skuId" value="${skuId}" style="display: none"/>
-    <input id="pUserId" value="${pUserId}" style="display: none"/>
-    <input id="skipPageId" value="register" style="display: none"/>
+    <%--<input id="skipPageId" value="register" style="display: none"/>--%>
     <input id="type" value="${type}" style="display: none"/>
 </main>
 <section class="sec2">
-
     <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
-
-    <%--<p><a id="applyTrial" onclick="validateCodeJS.applyTrial()">继续</a></p>--%>
 </section>
 <div class="back_j">
     <p class="biao">绑定账号</p>
@@ -191,7 +187,7 @@
     function goVerified(para) {
         $(para).html("正在提交...");
         var para = "?";
-        para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}&pUserId=${pUserId}");
+        para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}");
         window.location.href = "${basePath}user/userVerified.shtml" + para;
     }
     function reSubmitIdentityAuth() {
@@ -199,18 +195,20 @@
     }
 
     $("#nextPageId").bind("onclick", function () {
-        window.location.href = "${basePath}userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+        window.location.href = "${basePath}userApply/register.shtml?skuId=${skuId}";
     });
 
     $("#goToNext").on("click", function () {
         var auditStatus = "${user.auditStatus}";
         if (auditStatus == 2) {
             $(this).html("请稍后...");
-            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}&pUserId=${pUserId}";
+            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
         } else if (auditStatus == 1) {
             alert("您的实名认证正在审核中,请耐心等候!");
         } else if (auditStatus == 0) {
             $("#realNameVerifyDiv").show();
+        } else if (auditStatus ==3){
+            alert("您的实名认证未通过,请重新提交!");
         }
     });
 

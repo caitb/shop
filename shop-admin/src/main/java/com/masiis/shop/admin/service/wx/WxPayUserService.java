@@ -65,7 +65,7 @@ public class WxPayUserService {
      * @param handler   后台操作人
      */
     @Transactional
-    public void payUserByExtractApply(SfUserExtractApply apply, String handler){
+    public void payUserByExtractApply(SfUserExtractApply apply, String handler, String rootPath){
         log.info("小铺端用户提现微信打款操作开始...");
 
         try{
@@ -117,7 +117,7 @@ public class WxPayUserService {
 
             // 组织请求数据
             WxPayUserBeanReq req = createWxPayUserBeanReqBy(apply, wxUser);
-            WxPayUserBeanRes result = new HttpsUtils(WxPayUserCons.APP_MCHID, new File("F:/VS/cert01/apiclient_cert.p12"))
+            WxPayUserBeanRes result = new HttpsUtils(WxPayUserCons.APP_MCHID, new File(rootPath + WxPayUserCons.PATH_CERT))
                     .sendPostByXMLWithParse(WxPayUserCons.URL_PAY_USER, req, WxPayUserBeanRes.class);
             if(result == null){
                 throw new BusinessException("发送https请求或解析xml结果报错!");

@@ -26,4 +26,6 @@ public class WxPayUserCons {
      */
     public static final String URL_PAY_USER = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 
+    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
+
 }

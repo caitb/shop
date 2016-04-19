@@ -58,7 +58,7 @@ public class SfUserExtractApplyController {
                         Integer auditType,
                         String auditCause){
         try {
-            sfUserExtractApplyService.audit(id, auditType, auditCause);
+            sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"));
 
             return "success";
         } catch (Exception e) {

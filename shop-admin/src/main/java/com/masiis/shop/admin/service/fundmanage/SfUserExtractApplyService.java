@@ -70,10 +70,10 @@ public class SfUserExtractApplyService {
         return pageMap;
     }
 
-    public void audit(Long id, Integer auditType, String auditCause){
+    public void audit(Long id, Integer auditType, String auditCause, String rootPath){
         SfUserExtractApply sfUserExtractApply = sfUserExtractApplyMapper.selectByPrimaryKey(id);
         if(auditType.intValue() == 3){
-            wxPayUserService.payUserByExtractApply(sfUserExtractApply, null);
+            wxPayUserService.payUserByExtractApply(sfUserExtractApply, null, rootPath);
             return;
         }
 

@@ -105,7 +105,7 @@
 <body>
 <header>
     <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-    <p>专属海报</p>
+    <p>店铺分享</p>
 </header>
 <div class="wrap">
     <canvas id="canvasOne" style="display: none;">

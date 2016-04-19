@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/reset.css">
     <style>
@@ -105,7 +105,7 @@
 <body>
 <header>
     <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-    <p>专属海报</p>
+    <p>店铺分享专属海报</p>
 </header>
 <div class="wrap">
     <canvas id="canvasOne" style="display: none;">

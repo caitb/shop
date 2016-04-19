@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
+import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,8 @@ public class IndexController extends BaseController {
     private SfShopSkuService sfShopSkuService;
     @Resource
     private SfShopShoutLogMapper sfShopShoutLogMapper;
+    @Resource
+    private SfUserShopViewService sfUserShopViewService;
 
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
@@ -61,6 +64,8 @@ public class IndexController extends BaseController {
 
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);
+
+        sfUserShopViewService.addShopView(user.getId(),shopId);
         SfShop sfShop =null;
         List<SfShopSku> sfShopSkus =null;
         if(shopId==null){

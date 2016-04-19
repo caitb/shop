@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index');"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>运费设置</p>
 </header>
 

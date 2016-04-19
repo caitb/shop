@@ -43,7 +43,7 @@
                 <p>${sfShop.explanation}</p>
                 <h3>
                     <span id="showUrl">店铺地址</span>
-                    <span>浏览商店</span>
+                    <span onclick="javascript:window.location.replace('${shopUrl}');">店铺预览</span>
                     <span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>
                 </h3>
             </div>

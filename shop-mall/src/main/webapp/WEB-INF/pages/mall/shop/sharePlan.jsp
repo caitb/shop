@@ -34,10 +34,6 @@
     </style>
 </head>
 <body>
-<header>
-    <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-    <p>分享计划</p>
-</header>
 <div class="wrap">
     <img src="<%=basePath%>static/images/fenx.png" alt="">
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${shopId}');">
@@ -47,7 +43,7 @@
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
         <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">

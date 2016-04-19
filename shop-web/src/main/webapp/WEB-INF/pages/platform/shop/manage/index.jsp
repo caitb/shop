@@ -39,8 +39,8 @@
         <img src="${sfShop.logo}" alt="">--%>
             <div>
                 <img src="<%=path%>/static/images/admin.png" alt="">
-                <h1>王平的店</h1>
-                <p>了看到阿萨德撒</p>
+                <h1>${sfShop.name}</h1>
+                <p>${sfShop.explanation}</p>
                 <h3>
                     <span>店铺地址</span>
                     <span>浏览商店</span>

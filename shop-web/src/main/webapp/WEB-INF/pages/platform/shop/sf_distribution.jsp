@@ -24,7 +24,7 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-            <a href="javascript:window.location.replace('${basePath}shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>分销记录</p>
     </header>
     <div class="wrap">
@@ -56,12 +56,12 @@
     <div id="datePlugin"></div>
     <div class="back"></div>
     <div class="back_f"></div>
-<script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<script type="application/javascript" src="${path}/static/js/date.js" ></script>
-<script type="application/javascript" src="${path}/static/js/iscroll.js" ></script>
-<script type="application/javascript" src="${path}/static/js/commonAjax.js"></script>
-<script type="application/javascript" src="${path}/static/js/definedAlertWindow.js"></script>
-<script type="application/javascript" src="${path}/static/js/sf_distribution.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/date.js" ></script>
+<script type="application/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
+<script type="application/javascript" src="<%=path%>/static/js/commonAjax.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/sf_distribution.js"></script>
 <script>
     var path = "<%=path%>";
     var basePath = "<%=basePath%>";

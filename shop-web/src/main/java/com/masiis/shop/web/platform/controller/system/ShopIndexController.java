@@ -56,12 +56,14 @@ public class ShopIndexController extends BaseController {
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
         Long num =0l;
-//        List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
-//        if(agentNum!= null){
-//            for (PfUserSku pfUserSku :agentNum) {
-//                num= num + pfUserSku.getAgentNum();
-//            }
-//        }
+        List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
+        if(agentNum!= null){
+            for (PfUserSku pfUserSku :agentNum) {
+                if(pfUserSku !=null && pfUserSku.getAgentNum()!= null){
+                    num= num + pfUserSku.getAgentNum();
+                }
+            }
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中

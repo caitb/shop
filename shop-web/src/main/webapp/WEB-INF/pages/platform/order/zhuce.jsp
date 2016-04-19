@@ -19,8 +19,8 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p>支付订单</p>
             <p>选择拿货方式</p>
+            <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">
             <div class="paidan">

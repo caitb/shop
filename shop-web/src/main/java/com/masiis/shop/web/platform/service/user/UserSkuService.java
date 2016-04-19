@@ -56,7 +56,11 @@ public class UserSkuService {
      */
 
     public List<PfUserSku> getAgentNumByUserId(Long userId) throws Exception {
-        return pfUserSkuMapper.selectAgentNum(userId);
+        List<PfUserSku> res = pfUserSkuMapper.selectAgentNum(userId);
+        if(res == null || res.size() == 0){
+            return null;
+        }
+        return res;
     }
 
 

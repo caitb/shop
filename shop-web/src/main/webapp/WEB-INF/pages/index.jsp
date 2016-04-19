@@ -42,7 +42,7 @@
             <div class="admin" >
                 <img src="${user.wxHeadImg}" alt="">
                 <h3>${user.wxNkName}—欢迎您登入</h3>
-            </div> <c:if test="${user.isAgent==1}">
+            </div> <c:if test="${user.isAgent==0}">
             <p><b>${num}</b><span>下级合伙人</span></p>
             <ul>
                 <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span></h1></li>
@@ -75,7 +75,9 @@
         <nav>
             <ul>
                 <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
-                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt=""><span>1</span></h1>
+                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
+                        <%--<span>1</span>--%>
+                    </h1>
                     <span>我的下级</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>developing/ui">

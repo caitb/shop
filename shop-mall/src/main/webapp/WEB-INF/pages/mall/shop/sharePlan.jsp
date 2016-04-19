@@ -38,7 +38,7 @@
     <img src="<%=basePath%>static/images/fenx.png" alt="">
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${shopId}');">
         获取我的专属海报
-    </button>s
+    </button>
 </div>
 <footer>
     <div>

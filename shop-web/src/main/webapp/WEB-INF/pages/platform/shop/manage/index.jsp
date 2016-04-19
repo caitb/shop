@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
 </head>
 <body>
-<div class="wrap" <c:if test="${comUser.isAgent==0}">style="display: none;"</c:if> >
+<div class="wrap" <c:if test="${sfShop==null}">style="display: none;"</c:if> >
     <div class="na">
 <%--        <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
@@ -69,7 +69,7 @@
         <p></p>
     </nav>
 </div>
-<c:if test="${comUser.isAgent==0}">
+<c:if test="${sfShop==null}">
     <div class="wrap_no">
         <p>您还不是合伙人，去<a href="<%=basePath%>marketGood/market">好货市场</a>看看吧~</p>
     </div>

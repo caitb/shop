@@ -163,10 +163,15 @@ public class VerifyController extends BaseController {
             String val = cookie.getValue();
             String unionid = null;
             String token = null;
-            if (StringUtils.isBlank(val)
-                    || StringUtils.isBlank(unionid = SpringRedisUtil.get(val, String.class))) {
-                System.out.println("err_val:" + val);
-                throw new BusinessException("cookie中unionid信息为空!");
+            try {
+                unionid = SpringRedisUtil.get(val, String.class);
+                if (StringUtils.isBlank(val) || StringUtils.isBlank(unionid)) {
+                    log.error("cookie中unionid信息为空,err_val:" + val);
+                    throw new BusinessException("cookie中unionid信息为空!");
+                }
+            } catch (Exception e) {
+                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                return createRedirectRes(auth_base_url);
             }
             System.out.println("val:" + val);
             // 根据unionid获取用户对象
@@ -305,7 +310,7 @@ public class VerifyController extends BaseController {
                     log.error("bactk_userRes:空!");
                     throw new BusinessException("userRes:空!");
                 }
-                if (StringUtils.isBlank(res.getUnionid()) || !res.getUnionid().equals(wxUser.getUnionid())) {
+                if (StringUtils.isBlank(userRes.getUnionid()) || !userRes.getUnionid().equals(wxUser.getUnionid())) {
                     log.error("bactk_没有unionid或unionid错误");
                     throw new BusinessException("没有unionid或unionid错误");
                 }

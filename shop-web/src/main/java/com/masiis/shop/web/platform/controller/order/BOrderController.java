@@ -72,8 +72,8 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("weiXinId", weiXinId);
         boolean isQueuing = false;
         Integer count = 0;
-        int n = skuService.checkSkuStock(skuId, 1, pUserId);
-        if (n < 0) {
+        int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
+        if (status == 1) {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }

@@ -126,8 +126,8 @@ public class BOrderAddController extends BaseController {
         Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
         boolean isQueuing = false;
         Integer count = 0;
-        int n = skuService.checkSkuStock(skuId, 1, pUserId);
-        if (n < 0) {
+        int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
+        if (status == 1) {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
@@ -173,6 +173,11 @@ public class BOrderAddController extends BaseController {
             }
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
+            }
+            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
+            int status = skuService.getSkuStockStatus(skuId, pfSkuAgent.getQuantity(), pUserId);
+            if (status == 2) {
+                throw new BusinessException("您的上级合伙人库存不足，请联系补货");
             }
             BOrderAdd bOrderAdd = new BOrderAdd();
             bOrderAdd.setOrderType(BOrderType.agent.getCode());
@@ -259,8 +264,8 @@ public class BOrderAddController extends BaseController {
         //获取排单信息
         boolean isQueuing = false;
         Integer count = 0;
-        int useStock = skuService.checkSkuStock(skuId, quantity, pfUserSku.getUserPid());
-        if (useStock < 0) {
+        int status = skuService.getSkuStockStatus(skuId, quantity, pfUserSku.getUserPid());
+        if (status == 1) {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }

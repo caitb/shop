@@ -44,21 +44,28 @@ public class SkuService {
         return comSkuImageMapper.selectDefaultImgBySkuId(skuId);
     }
 
+
     /**
-     * 判断库存是否足够
+     * 检查库存状态
      *
-     * @author ZhaoLiang
-     * @date 2016/4/1 16:19
+     * @param skuId
+     * @param quantity
+     * @param pUserId
+     * @return 0库存充足1库存不足进入排单2库存不足不可下单
+     * @throws Exception
      */
-    public int checkSkuStock(Integer skuId, int quantity, Long pUserId) throws Exception {
-        int n = 0;
+    public int getSkuStockStatus(Integer skuId, int quantity, Long pUserId) throws Exception {
         if (pUserId == 0) {
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
             //如果进入排单直接返回-quantity
             if (pfSkuStock.getIsQueue() == 1) {
-                return 0 - quantity;
+                return 1;
             }
-            n = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
+            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < quantity) {
+                return 1;
+            } else {
+                return 0;
+            }
         } else {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pUserId);
             if (comUser == null) {
@@ -67,14 +74,22 @@ public class SkuService {
                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUserId, skuId);
                 //拿货方式: 0,未选择; 1,平台代发; 2,自己发货
                 if (comUser.getSendType() == 1) {
-                    n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
+                    if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 } else {
-                    n = pfUserSkuStock.getCustomStock();
+                    if (pfUserSkuStock.getCustomStock() < quantity) {
+                        return 2;
+                    } else {
+                        return 0;
+                    }
                 }
             }
         }
-        return n - quantity;
     }
+
     /**
      * 根据skuId查找skuExtension
      *

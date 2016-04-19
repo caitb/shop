@@ -117,6 +117,10 @@ public class SfOrderManagerController extends BaseController {
     @RequestMapping("/stockOrder")
     public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
         ComUser comUser = getComUser(request);
+//        if(shopId!= null){
+//            SfShop shop = sfShopService.getSfShopById(shopId);
+//            request.getSession().setAttribute("shipAmount", shop.getShipAmount());
+//        }
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, shopId);
         String index=null;
         if(orderStatus==null){

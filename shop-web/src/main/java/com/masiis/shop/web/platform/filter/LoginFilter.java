@@ -89,7 +89,7 @@ public class LoginFilter implements Filter{
             // cookie验证由controller来验证
             RedirectParam rp = new RedirectParam();
             rp.setCode(RedirectCons.WX_CHECK_CODE);
-            rp.setSurl(request.getRequestURL().toString());
+            rp.setSurl(request.getRequestURL().toString() + "?" + request.getQueryString());
             rp.setNonceStr(WXBeanUtils.createGenerateStr());
             rp.creatSign();
 

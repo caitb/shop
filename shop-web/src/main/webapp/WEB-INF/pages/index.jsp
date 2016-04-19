@@ -43,7 +43,7 @@
                 <img src="${user.wxHeadImg}" alt="">
                 <h3>${user.wxNkName}—欢迎您登入</h3>
             </div> <c:if test="${user.isAgent==1}">
-            <p><b>1233</b><span>下级合伙人</span></p>
+            <p><b>${num}</b><span>下级合伙人</span></p>
             <ul>
                 <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span></h1></li>
                 <li><p>总利润</p><h1>￥<span>${comUserAccount.profitFee}</span></h1></li>
@@ -189,8 +189,8 @@
         $("#goMark").on("click",function(){
             $(".back_login").hide();
             $(".back").hide();
-            window.setTimeout("window.location='<%=path%>/marketGood/market'",1000);
-            <%--window.location.href="<%=path%>/marketGood/market";--%>
+            <%--window.setTimeout("window.location='<%=path%>/marketGood/market'",1000);--%>
+            window.location.href="<%=path%>/marketGood/market";
         })
 
     </script>

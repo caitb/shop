@@ -1,16 +1,14 @@
 package com.masiis.shop.web.platform.controller.system;
 
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.PbBanner;
-import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,13 +33,14 @@ public class ShopIndexController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
-    private SpuService spuService;
+    private UserSkuService userSkuService;
     @Resource
     private BOrderService bOrderService;
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req)throws Exception{
         ComUser user = getComUser(req);
+//        ComUser user = userService.getUserById(1l);
         if (user == null) {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
@@ -54,8 +53,16 @@ public class ShopIndexController extends BaseController {
             String url = value + banner.getImgUrl();//图片地址
             urls.add(url);
         }
-        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
 
+        ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
+        Long num =0l;
+        List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
+        for (PfUserSku pfUserSku :agentNum) {
+            if(pfUserSku.getAgentNum()==null){
+                pfUserSku.setAgentNum(0l);
+            }
+            num= num + pfUserSku.getAgentNum();
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
@@ -68,6 +75,7 @@ public class ShopIndexController extends BaseController {
         }
         Integer borderNum = pfBorders10.size()+pfBorders6.size();
         modelAndView.addObject("borderNum",borderNum);//订单数量
+        modelAndView.addObject("num",num);//订单数量
         modelAndView.addObject("comUserAccount",comUserAccount);//封装用户统计信息
         modelAndView.addObject("urls",urls);//封装图片地址集合
         modelAndView.setViewName("index");

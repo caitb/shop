@@ -119,6 +119,9 @@ public class BOrderPayService {
         if (pfBorder.getPayStatus() == 1) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
         }
+        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
+            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
+        }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
@@ -273,7 +276,7 @@ public class BOrderPayService {
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 //如果可售库存不足或者排单开关打开的情况下 订单进入排单
-                if (pfBorder.getSendType() == 1 && (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
+                if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
                     //平台库存不足，排单处理
                     pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
                     pfBorderMapper.updateById(pfBorder);

@@ -70,6 +70,12 @@ public class BOrderAddService {
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
 
+    /**
+     * 添加订单
+     * @param bOrderAdd
+     * @return
+     * @throws Exception
+     */
     @Transactional
     public Long addBOrder(BOrderAdd bOrderAdd) throws Exception {
         if (bOrderAdd == null) {
@@ -195,84 +201,6 @@ public class BOrderAddService {
         }
         return pfBorder.getId();
     }
-
-
-    /**
-     * 添加补货订单
-     *
-     * @return 订单id
-     * @author ZhaoLiang
-     * @date 2016/3/22 15:44
-     */
-    public Long addReplenishmentOrders(Long userId, Integer skuId, int quantity) throws Exception {
-        //获取用户代理sku关系数据
-        PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, skuId);
-        if (pfUserSku == null) {
-            throw new BusinessException("您还没有代理过此商品，不能补货。");
-        }
-        //获取商品代理等级数据
-        PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfUserSku.getSkuId(), pfUserSku.getAgentLevelId());
-        //获取sku信息
-        ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
-        //获取产品单价
-        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount());
-        //处理订单数据
-        PfBorder order = new PfBorder();
-        order.setCreateTime(new Date());
-        order.setCreateMan(userId);
-        order.setOrderCode(OrderMakeUtils.makeOrder("B"));
-        order.setUserMessage("系统生成：用户补货");
-        order.setUserId(userId);
-        if (pfUserSku.getUserPid() != null && pfUserSku.getUserPid() > 0) {
-            order.setUserPid(pfUserSku.getUserPid());
-        } else {
-            order.setUserPid(0l);
-        }
-        order.setSupplierId(0);
-        order.setReceivableAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));
-        order.setOrderAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));//运费到付，商品总价即订单总金额
-        order.setBailAmount(BigDecimal.ZERO);
-        order.setProductAmount(unitPrice.multiply(BigDecimal.valueOf(quantity)));
-        order.setShipAmount(BigDecimal.ZERO);
-        order.setPayAmount(BigDecimal.ZERO);
-        order.setShipManId(0);
-        order.setShipManName("");
-        order.setShipType(0);
-        order.setShipRemark("");
-        //获取拿货方式
-        ComUser comUser = comUserMapper.selectByPrimaryKey(userId);
-        order.setSendType(comUser.getSendType());
-        order.setOrderType(1);//订单类型(0代理1补货2拿货)
-        order.setOrderStatus(0);
-        order.setShipStatus(0);
-        order.setPayStatus(0);
-        order.setIsCounting(0);
-        order.setIsShip(0);
-        order.setIsReplace(0);
-        order.setIsReceipt(0);
-        order.setReplaceOrderId(0l);
-        order.setRemark("补货订单");
-        //处理订单商品数据
-        List<PfBorderItem> pfBorderItems = new ArrayList<>();
-        PfBorderItem pfBorderItem = new PfBorderItem();
-        pfBorderItem.setCreateTime(new Date());
-        pfBorderItem.setSpuId(comSku.getSpuId());
-        pfBorderItem.setSkuId(comSku.getId());
-        pfBorderItem.setSkuName(comSku.getName());
-        pfBorderItem.setAgentLevelId(pfUserSku.getAgentLevelId());
-        pfBorderItem.setWxId("");
-        pfBorderItem.setQuantity(quantity);
-        pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setDiscount(pfSkuAgent.getDiscount());
-        pfBorderItem.setUnitPrice(unitPrice);
-        pfBorderItem.setTotalPrice(unitPrice.multiply(BigDecimal.valueOf(quantity)));
-        pfBorderItem.setBailAmount(BigDecimal.ZERO);
-        pfBorderItem.setIsComment(0);
-        pfBorderItem.setIsReturn(0);
-        pfBorderItems.add(pfBorderItem);
-        return null;
-    }
-
     /**
      * 添加拿货订单
      *

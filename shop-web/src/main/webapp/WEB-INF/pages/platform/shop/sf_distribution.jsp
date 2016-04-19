@@ -24,7 +24,7 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-            <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index')"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>分销记录</p>
     </header>
     <div class="wrap">

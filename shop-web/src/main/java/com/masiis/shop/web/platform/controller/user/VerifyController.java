@@ -321,7 +321,7 @@ public class VerifyController extends BaseController {
                 // 登录
                 session.invalidate();
                 session = request.getSession();
-                loginByWx(request, response, user, res.getOpenid(), res.getUnionid(),
+                loginByWx(request, response, user, userRes.getOpenid(), userRes.getUnionid(),
                         res.getAccess_token(), res.getRefresh_token());
                 log.info("bactk_登录成功");
             } catch (Exception e) {

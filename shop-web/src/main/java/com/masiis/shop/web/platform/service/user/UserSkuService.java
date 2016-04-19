@@ -50,6 +50,17 @@ public class UserSkuService {
     }
 
     /**
+     * 获取下级合伙人
+     * @author muchaofeng
+     * @date 2016/4/19 11:43
+     */
+
+    public List<PfUserSku> getAgentNumByUserId(Long userId) throws Exception {
+        return pfUserSkuMapper.selectAgentNum(userId);
+    }
+
+
+    /**
      * 根据主键获取数据
      *
      * @author ZhaoLiang

@@ -77,7 +77,7 @@
                                 <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
                                 <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
-                                <c:when test="${pb.orderStatus ==7}">
+                                <c:when test="${pb.orderStatus ==7 && pb.sendType==2}">
                                     <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                             </div>
                         </section></c:forEach>
@@ -122,7 +122,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -167,7 +168,7 @@
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
                                     <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
-                                        <c:when test="${pb.orderStatus ==7}">
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}">
                                             <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
@@ -212,7 +213,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p>
+                                    </c:when><c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -256,7 +258,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -300,7 +303,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -409,7 +413,7 @@
                                    }
                                    if(pfBorder.orderStatus ==6){
                                        trHtml+="<p>处理排单</p>";
-                                   }else if(pfBorder.orderStatus ==7){
+                                   }else if(pfBorder.orderStatus ==7 && pfBorder.sendType==2){
                                        trHtml+="<span class=\"fa\" name=\"fahuo_"+pfBorder.id+"\" onclick=\"fahuo('"+pfBorder.id+"')\">发货</span>";
                                    }else{
                                        trHtml+="";

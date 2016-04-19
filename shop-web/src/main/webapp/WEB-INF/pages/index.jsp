@@ -42,7 +42,7 @@
             <div class="admin" >
                 <img src="${user.wxHeadImg}" alt="">
                 <h3>${user.wxNkName}—欢迎您登入</h3>
-            </div> <c:if test="${user.isAgent==0}">
+            </div> <c:if test="${user.isAgent==1}">
             <p><b>${num}</b><span>下级合伙人</span></p>
             <ul>
                 <li><p>总销售额</p><h1>￥<span>${comUserAccount.totalIncomeFee}</span></h1></li>

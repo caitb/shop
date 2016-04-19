@@ -6,10 +6,7 @@ import com.masiis.shop.admin.constants.wx.WxPayUserCons;
 import com.masiis.shop.admin.utils.WxBeanUtils;
 import com.masiis.shop.common.enums.SfUserExtractAuditTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.DateUtil;
-import com.masiis.shop.common.util.HttpsUtils;
-import com.masiis.shop.common.util.LocalInetAddressUtil;
-import com.masiis.shop.common.util.SysBeanUtils;
+import com.masiis.shop.common.util.*;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
@@ -117,16 +114,20 @@ public class WxPayUserService {
 
             // 组织请求数据
             WxPayUserBeanReq req = createWxPayUserBeanReqBy(apply, wxUser);
+            req.setSign(WxBeanUtils.toSignString(req));
+            System.out.println("证书路径:" + rootPath + WxPayUserCons.PATH_CERT);
             WxPayUserBeanRes result = new HttpsUtils(WxPayUserCons.APP_MCHID, new File(rootPath + WxPayUserCons.PATH_CERT))
                     .sendPostByXMLWithParse(WxPayUserCons.URL_PAY_USER, req, WxPayUserBeanRes.class);
             if(result == null){
                 throw new BusinessException("发送https请求或解析xml结果报错!");
             }
             if(!"SUCCESS".equals(result.getReturn_code())){
+                log.error("result:" + result);
                 log.error(result.getReturn_msg() + ",用户id:" + user.getId());
                 throw new BusinessException(result.getReturn_msg());
             }
             if(!"SUCCESS".equals(result.getResult_code())){
+                log.error("result:" + result);
                 log.error(result.getErr_code_des() + ",用户id:" + user.getId());
                 throw new BusinessException(result.getErr_code_des());
             }
@@ -225,7 +226,7 @@ public class WxPayUserService {
         req.setCheck_name("NO_CHECK");
         req.setSpbill_create_ip(LocalInetAddressUtil.getHostIp());
         req.setSign(WxBeanUtils.toSignString(req));
-        String res = new HttpsUtils(WxPayUserCons.APP_MCHID, new File("F:/VS/cert01/apiclient_cert.p12"))
+        String res = new HttpsUtils(WxPayUserCons.APP_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
                 .sendPostByXML(WxPayUserCons.URL_PAY_USER, req);
         System.out.println(res);
     }

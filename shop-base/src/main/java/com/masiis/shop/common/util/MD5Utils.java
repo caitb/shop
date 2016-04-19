@@ -12,7 +12,7 @@ public class MD5Utils {
         try {
             resultString = new String(data);
             MessageDigest md = MessageDigest.getInstance("MD5");
-            resultString =parseByte2HexStr(md.digest(resultString.getBytes()));
+            resultString =parseByte2HexStr(md.digest(resultString.getBytes("UTF-8")));
         } catch (Exception ex) {
         }
         return resultString;

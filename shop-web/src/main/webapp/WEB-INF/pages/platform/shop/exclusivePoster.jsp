@@ -115,22 +115,6 @@
     <b id="downloadPoster2">长按图片保存海报</b>
 </div>
 </body>
-<script>
-//    function onBridgeReady(){
-//        WeixinJSBridge.call('hideOptionMenu');
-//    }
-//
-//    if (typeof WeixinJSBridge == "undefined"){
-//        if( document.addEventListener ){
-//            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-//        }else if (document.attachEvent){
-//            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-//            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-//        }
-//    }else{
-//        onBridgeReady();
-//    }
-</script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
     /*

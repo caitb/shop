@@ -10,12 +10,16 @@ import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComSkuImage;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
+import com.masiis.shop.web.mall.constants.WxConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.task.JsapiTicketTask;
 import com.masiis.shop.web.mall.utils.DownloadImage;
+import com.masiis.shop.web.mall.utils.JSSDKUtil;
+import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,6 +100,7 @@ public class SfShopController extends BaseController {
         try {
             ComUser comUser = getComUser(request);
                     comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            SfShop sfShop = sfShopService.getSfShopById(shopId);
             String realPath = request.getServletContext().getRealPath("/");
             String posterName = comUser.getId() + ".jpg";
 
@@ -106,7 +111,8 @@ public class SfShopController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(200, 200, basePath+shopId+"/"+comUser.getId()+"/shop.shtml", qrCodePath);
+            String shopUrl = basePath+shopId+"/"+comUser.getId()+"/shop.shtml";
+            CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
@@ -128,11 +134,23 @@ public class SfShopController extends BaseController {
             positionMap.put("content-top", 306);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247,60,140));
 
-//            mav.addObject("shopQRCode", "static/images/shop/poster/"+posterName);
-//            mav.addObject("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
-//            mav.addObject("userName", comUser.getWxNkName());
-//            mav.addObject("bgShop", "static/images/shop/background-img/bg-shop.png");
+
+            String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
+            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+            if(jsapi_ticket == null){
+                log.info("从redis获取的jsapi_ticket=null");
+                jsapi_ticket = new JsapiTicketTask().requestTicket();
+            }
+
+            Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
+            shareMap.put("appId", WxConstants.APPID);
+            shareMap.put("shareTitle", "我是"+comUser.getRealName()+",我为朋友呐喊!");
+            shareMap.put("shareDesc", "在家靠父母，出外靠朋友。我为朋友呐喊，分享赚佣金。");
+            shareMap.put("shareImg", sfShop.getLogo());
+            shareMap.put("shareLink", shopUrl);
+
             mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg");
+            mav.addObject("shareMap", shareMap);
             return mav;
         } catch (Exception e) {
             log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");

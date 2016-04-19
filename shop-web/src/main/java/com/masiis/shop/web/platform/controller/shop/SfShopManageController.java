@@ -216,6 +216,7 @@ public class SfShopManageController extends BaseController {
             positionMap.put("content-top", 306);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247,60,140));
 
+            //jssdk
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
             String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
             if(jsapi_ticket == null){

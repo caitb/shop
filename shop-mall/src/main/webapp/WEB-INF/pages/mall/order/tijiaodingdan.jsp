@@ -36,7 +36,7 @@
         var shopId = $("#shopId").val();
         var message = $("#userMessageId").val();
         if(selectedAddressId ==null || selectedAddressId =="" ){
-            alert("未选择收获地址");
+            alert("未选择收货地址");
             return false ;
         }
         var paramJson = {

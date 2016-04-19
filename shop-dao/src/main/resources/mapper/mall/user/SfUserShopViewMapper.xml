@@ -45,4 +45,10 @@
         from sf_user_shop_view
     </select>
 
+    <select id="selectByShopIdAndUserId" resultMap="BaseResultMap">
+        select id, create_time, user_id, shop_id, shop_user_id, remark
+        from sf_user_shop_view
+        where user_id = #{userId,jdbcType=BIGINT} and shop_id = #{shopId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

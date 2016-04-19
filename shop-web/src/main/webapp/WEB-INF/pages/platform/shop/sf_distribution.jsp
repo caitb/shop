@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>s
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-    <title>分销记录</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/shop/css/fenxiaojilu.css">
     <link rel="stylesheet" href="<%=path%>/static/css/main.css">
@@ -67,9 +67,9 @@
     var basePath = "<%=basePath%>";
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){
+            turnMonth(year,month);
             $("#year").val(year);
             $("#month").val(month);
-            turnMonth(year,month);
         });
         $('#endTime').date({theme:"datetime"});
     });

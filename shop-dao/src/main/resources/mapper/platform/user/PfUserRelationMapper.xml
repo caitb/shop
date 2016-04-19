@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.PfUserRelationMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserRelation">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="user_pid" property="userPid" jdbcType="BIGINT"/>
+        <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from pf_user_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserRelation">
+        insert into pf_user_relation (id, create_time, sku_id, 
+            user_id, user_pid, is_enable, 
+            remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{skuId,jdbcType=INTEGER}, 
+            #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT}, #{isEnable,jdbcType=INTEGER}, 
+            #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserRelation">
+        update pf_user_relation
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            user_id = #{userId,jdbcType=BIGINT},
+            user_pid = #{userPid,jdbcType=BIGINT},
+            is_enable = #{isEnable,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        from pf_user_relation
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        from pf_user_relation
+    </select>
+
+    <select id="selectEnableByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, sku_id, user_id, user_pid, is_enable, remark
+        from pf_user_relation
+        where user_id = #{userId}
+        and sku_id=#{skuId}
+        and is_enable=1
+    </select>
+</mapper>

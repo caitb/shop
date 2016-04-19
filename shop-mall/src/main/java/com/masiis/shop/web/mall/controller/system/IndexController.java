@@ -76,6 +76,7 @@ public class IndexController extends BaseController {
         BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku:sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
+            ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail= new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
@@ -85,6 +86,7 @@ public class IndexController extends BaseController {
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
+            sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
             bail=sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);

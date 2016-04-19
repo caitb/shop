@@ -109,12 +109,12 @@
         <input type="checkbox" id="f"><label for="f">我已了解自己发货-店铺发货需要自己发货<br/>
         （每200瓶需要3000元的人工和物流费用）</label>
 
-        <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供）</label>
+        <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供</label>
 
         <input type="checkbox" id="h"><label for="h">我已阅读并了解自己发货的风险</label>
 
         <h3>
-            <span class="que_qu" id="getBack">我在想想</span>
+            <span class="que_qu" id="getBack">我再想想</span>
             <span class="que_que" id="getOK">确定选择</span>
         </h3>
     </div>

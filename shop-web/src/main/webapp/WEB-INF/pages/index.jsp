@@ -75,7 +75,9 @@
         <nav>
             <ul>
                 <li class="market"><a class="herf" href="<%=basePath%>myteam/teamlist">
-                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt=""><span>1</span></h1>
+                    <h1><img src="<%=path%>/static/images/1%20(4).png" alt="">
+                        <%--<span>1</span>--%>
+                    </h1>
                     <span>我的下级</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>developing/ui">

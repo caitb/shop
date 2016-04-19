@@ -59,18 +59,6 @@ $(function () {
             return true;
         }
     }
-    //$("#weixin").on("blur", function () {
-    //    if (weixinCheckFun(this)) {
-    //        $(this).next().hide();
-    //        $(this).css({"color": "black"})
-    //    }
-    //})
-    //$("#pMobile").on("blur", function () {
-    //    if (mobileCheckFun(this)) {
-    //        $(this).next().hide();
-    //        $(this).css({"color": "black"})
-    //    }
-    //})
     $("#next").click(function () {
         var n = 0;
         if (!weixinCheckFun($("#weixin"))) {
@@ -84,6 +72,10 @@ $(function () {
             $("#q_pMobile").parent().css("display", "-webkit-box");
         } else {
             $("#q_pMobile").parent().css("display", "none");
+        }
+        if ($(".on label").length == 0) {
+            alert("请选择合伙人等级");
+            n++;
         }
         if (n > 0) {
             return;

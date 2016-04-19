@@ -9,9 +9,11 @@ body .wrap {
     overflow: hidden;
     position: relative;
     padding-bottom: 42px;
+    z-index: 1;
 }
 body .wrap .box .banner {
     width: 100%;
+    z-index: 1;
 }
 body .wrap .box .banner img {
     display: block;
@@ -261,7 +263,7 @@ body .back {
     display: -webkit-box;
     -webkit-box-align: center;
     -webkit-box-pack: center;
-    z-index: 4;
+    z-index: 5;
 }
 body footer {
     width: 100%;

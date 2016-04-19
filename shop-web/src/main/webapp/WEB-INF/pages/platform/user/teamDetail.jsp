@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>订单详情</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/wodetuandui.css">

@@ -33,7 +33,7 @@
     </div>
     <div class="dynmic">
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0">
-            <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><b>${sfOrders0}</b></span>
+            <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><c:if test="${sfOrders0 !=0}"><b>${sfOrders0}</b></c:if></span>
             <span>待付款</span></a>
         </p>
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">

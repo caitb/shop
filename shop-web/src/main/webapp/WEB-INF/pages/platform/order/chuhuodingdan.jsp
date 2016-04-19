@@ -58,7 +58,7 @@
                                 <div>
                                     <h2>${pbi.skuName}</h2>
                                     <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                 </div>
                             </div> </c:forEach>
                                 <h1>
@@ -77,7 +77,7 @@
                                 <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                 <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
                                 <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
-                                <c:when test="${pb.orderStatus ==7}">
+                                <c:when test="${pb.orderStatus ==7 && pb.sendType==2}">
                                     <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                             </div>
                         </section></c:forEach>
@@ -104,7 +104,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -122,7 +122,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -148,7 +149,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -167,7 +168,7 @@
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
                                     <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
-                                        <c:when test="${pb.orderStatus ==7}">
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}">
                                             <span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
@@ -194,7 +195,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -212,7 +213,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p>
+                                    </c:when><c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -238,7 +240,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -256,7 +258,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -282,7 +285,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span></p>
+                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -300,7 +303,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.payStatus ==1}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when><c:when test="${pb.orderStatus ==7}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
+                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -387,8 +391,13 @@
                                        trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                        trHtml+="<p class=\"defult\">实收款：<span style=\"float:none;color:#FF6A2A;font-size: 12px\">￥"+pfBorderItem.totalPrice+"</span></p></div></div>";
                                    });
-                                   trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>( 运费：到付)</h1>";
-                                   trHtml+="<h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
+                                   trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
+                                   if(pfBorder.orderType==0){
+                                       trHtml+="(包含保证金 运费：到付)";
+                                   }else{
+                                       trHtml+="(运费：到付)";
+                                   }
+                                   trHtml+="</h1><h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
                                    if(pfBorder.orderType==2 && pfBorder.sendType==1){
                                        orderTypeName="拿货";
                                    }else if(pfBorder.orderType==0){
@@ -409,7 +418,7 @@
                                    }
                                    if(pfBorder.orderStatus ==6){
                                        trHtml+="<p>处理排单</p>";
-                                   }else if(pfBorder.orderStatus ==7){
+                                   }else if(pfBorder.orderStatus ==7 && pfBorder.sendType==2){
                                        trHtml+="<span class=\"fa\" name=\"fahuo_"+pfBorder.id+"\" onclick=\"fahuo('"+pfBorder.id+"')\">发货</span>";
                                    }else{
                                        trHtml+="";

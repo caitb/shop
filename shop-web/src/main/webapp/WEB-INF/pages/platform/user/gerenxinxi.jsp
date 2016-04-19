@@ -18,12 +18,27 @@
         <p>个人信息</p>
     </header>
     <main>
-        <div class="head_img" style="background: url('${path}/static/images/icon_27.png')">
+        <div class="head_img" style="background: url('${path}/static/images/gerenxinxibeijing.png')">
             <p><img src="${comUser.wxHeadImg}" alt=""></p>
             <div><h1>${comUser.realName}</h1>
+<%--                    <span><img src="${path}/static/images/admin.png" alt=""></span>
+                    <span><img src="${path}/static/images/admin.png" alt=""></span>--%>
                 <h1>
-                    <span><img src="${path}/static/images/admin.png" alt=""></span>
-                    <span><img src="${path}/static/images/admin.png" alt=""></span>
+                    <c:if test="${pfskuAgents!=null}">
+                        <c:forEach items="${pfskuAgents}" var="skuAgent">
+                            <c:choose>
+                                <c:when test="${skuAgent.agentLevelId==1}">
+                                    <span><img src="${path}/static/images/kangyinli1A.png" alt=""></span>
+                                </c:when>
+                                <c:when test="${skuAgent.agentLevelId==2}">
+                                    <span><img src="${path}/static/images/kangyinli2A.png" alt=""></span>
+                                </c:when>
+                                <c:when test="${skuAgent.agentLevelId==3}">
+                                    <span><img src="${path}/static/images/kangyinli3A.png" alt=""></span>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                    </c:if>
                 </h1>
             </div>
         </div>

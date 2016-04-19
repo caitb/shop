@@ -38,7 +38,7 @@
                     </c:when>
                     <c:otherwise>
                         <div class="xinz" style="margin-bottom:5px;" onclick="choiceBank()">
-                            <p><a href="${basePath}>extractwayinfo/toCreateBankcard.shtml" style="color:#333;">新增银行卡</a></p>
+                            <p><a href="${basePath}extractwayinfo/toCreateBankcard.shtml" style="color:#333;">新增银行卡</a></p>
                         </div>
                     </c:otherwise>
                 </c:choose>

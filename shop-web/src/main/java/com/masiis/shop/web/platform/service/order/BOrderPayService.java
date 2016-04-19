@@ -273,7 +273,7 @@ public class BOrderPayService {
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 //如果可售库存不足或者排单开关打开的情况下 订单进入排单
-                if (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                if (pfBorder.getSendType() == 1 && (pfSkuStock.getIsQueue() == 1 || pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
                     //平台库存不足，排单处理
                     pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
                     pfBorderMapper.updateById(pfBorder);
@@ -286,7 +286,7 @@ public class BOrderPayService {
             } else {
                 PfUserSkuStock parentSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
                 //上级合伙人库存不足，排单处理
-                if (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                if (pfBorder.getSendType() == 1 && (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity())) {
                     pfBorder.setOrderStatus(BOrderStatus.MPS.getCode());//排队订单
                     pfBorderMapper.updateById(pfBorder);
                 }

@@ -189,7 +189,8 @@
         $("#goMark").on("click",function(){
             $(".back_login").hide();
             $(".back").hide();
-            window.location.href="<%=path%>/marketGood/market";
+            window.setTimeout("window.location='<%=path%>/marketGood/market'",1000);
+            <%--window.location.href="<%=path%>/marketGood/market";--%>
         })
 
     </script>

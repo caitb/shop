@@ -138,11 +138,13 @@ public class SfOrderItemDistributionController extends BaseController {
         if (totalCount == 0){
             jsonObject.put("isTrue","false");
             jsonObject.put("message","无查询记录");
+            logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
         if (count >= totalCount){
             jsonObject.put("isTrue","false");
             jsonObject.put("message","已经加载全部");
+            logger.info(jsonObject.toJSONString());
             return jsonObject.toJSONString();
         }
         List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,currentPage + 1,10);

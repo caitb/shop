@@ -80,10 +80,6 @@ public class BOrderConfirm {
      * 用户留言
      */
     private String userMessage;
-    /**
-     * 上级用户id
-     */
-    private Long pUserId;
 
     public Integer getOrderType() {
         return orderType;
@@ -211,14 +207,6 @@ public class BOrderConfirm {
 
     public void setComUserAddress(ComUserAddress comUserAddress) {
         this.comUserAddress = comUserAddress;
-    }
-
-    public Long getpUserId() {
-        return pUserId;
-    }
-
-    public void setpUserId(Long pUserId) {
-        this.pUserId = pUserId;
     }
 
     public String getUserMessage() {

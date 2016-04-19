@@ -13,6 +13,7 @@ public class SfShopDetail {
     private String skuName;//商品名
     private String skuUrl;//商品首页地址
     private BigDecimal priceRetail;//销售价
+    private String slogan;
     /**
      * 运费，0为包邮
      */
@@ -26,6 +27,14 @@ public class SfShopDetail {
      * 保证金
      */
     private BigDecimal bail;
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
+
+    public String getSlogan() {
+        return slogan;
+    }
 
     public BigDecimal getBail() {
         return bail;

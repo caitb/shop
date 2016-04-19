@@ -65,7 +65,7 @@
             <div>
                 <h2>${sd.skuName}</h2>
 
-                <h3>30秒瘦脸立即见效</h3>
+                <h3>${sd.slogan}</h3>
 
                 <h2>运费：<span>${sfShop.shipAmount}</span><b>￥${sd.priceRetail}</b></h2>
 

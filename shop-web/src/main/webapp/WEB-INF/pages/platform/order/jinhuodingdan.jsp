@@ -122,7 +122,7 @@
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0 }">
-                                        <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa"  name="querenshouhuo_${pb.id}"
@@ -168,7 +168,7 @@
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0}">
-                                        <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -214,7 +214,7 @@
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0}">
-                                        <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                     <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -260,7 +260,7 @@
                                     <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0}">
-                                        <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                     <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -306,7 +306,7 @@
                                         <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                         <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                         <c:if test="${pb.orderStatus ==0}">
-                                            <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -354,7 +354,7 @@
                                             <span class="jixu">选择拿货方式</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==0 }">
-                                            <span class="jixu"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"
@@ -449,7 +449,7 @@
                             if(pfBorder.sendType==0 && pfBorder.orderStatus !=0){
                                 trHtml+="<span class=\"jixu\">选择拿货方式</span></a>";
                             }else if(pfBorder.orderStatus ==0){
-                                trHtml+="<span class=\"jixu\"><a href=\"<%=basePath%>border/payBOrder.shtml?bOrderId="+pfBorder.id+"\">继续支付</a></span></a>";
+                                trHtml+="<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">继续支付</a></span></a>";
                             }else{
                                 trHtml+="</a>";
                             }

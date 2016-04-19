@@ -38,7 +38,7 @@
         </div>
         <img src="${sfShop.logo}" alt="">--%>
             <div>
-                <img src="<%=path%>/static/images/admin.png" alt="">
+                <img src="${comUser.wxHeadImg}" alt="">
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
                 <h3>

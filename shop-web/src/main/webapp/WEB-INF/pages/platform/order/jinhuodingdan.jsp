@@ -114,8 +114,10 @@
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
-                                        <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
-                                        <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                        <b>类型：</b><span>拿货</span></c:if>
+                                    <c:if test="${pb.orderType==0}">
+                                        <b>类型：</b><span>合伙订单</span></c:if>
+                                    <c:if test="${pb.orderType==1}">
                                         <b>类型：</b><span>补货</span></c:if>
                                 </h1>
                                 <div class="ding">
@@ -434,7 +436,7 @@
                                 trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                 trHtml+="</div></div>";
                             });
-                            trHtml+="<h1> 共<span>"+pfBorder.orderAmount+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
+                            trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
                             if(pfBorder.orderType==0){
                                 trHtml+="(包含保证金 运费：到付)";
                             }else{
@@ -448,7 +450,7 @@
                             }else if(pfBorder.orderType==1){
                                 orderTypeName="补货";
                             }
-                            trHtml+="<b>类型：</b><span>"+pfBorder.pidUserName+"</span></h1>";
+                            trHtml+="<b>类型：</b><span>"+pfBorder.orderTypeName+"</span></h1>";
                             trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/borderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
                             if(pfBorder.sendType==0 && pfBorder.orderStatus !=0){
                                 trHtml+="<span class=\"jixu\">选择拿货方式</span></a>";

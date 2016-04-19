@@ -405,7 +405,7 @@
                                    }else if(pfBorder.orderType==1){
                                        orderTypeName="补货";
                                    }
-                                   trHtml+="<b>类型：</b><span>"+pfBorder.pidUserName+"</span></h1>";
+                                   trHtml+="<b>类型：</b><span>"+pfBorder.orderTypeName+"</span></h1>";
                                    trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/borderManage/deliveryBorderDetils.html?id="+pfBorder.id+"\">查看订单详情</a></p>";
                                    if(pfBorder.payStatus ==1 ){
                                        if(pfBorder.pfBorderConsignee != null){

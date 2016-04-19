@@ -111,7 +111,7 @@
         var sendType =${bOrderConfirm.sendType};
         var orderType =${bOrderConfirm.orderType};
         if (orderType == 2 || sendType == 2 && ($("#addressId").val() == null || $("#addressId").val() == "")) {
-            alert("请填写收获地址");
+            alert("请填写收货地址");
             return;
         }
         var paraData = {};

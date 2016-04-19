@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserShopView;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface SfUserShopViewMapper {
     List<SfUserShopView> selectAll();
 
     int updateByPrimaryKey(SfUserShopView record);
+
+    SfUserShopView selectByShopIdAndUserId(@Param(value = "userId") Long userId, @Param(value = "shopId") Long shopId);
 }

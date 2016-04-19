@@ -53,7 +53,7 @@
             </c:if>
             <c:if test="${pfBorder.sendType == 2}">
                 <h1>待发货</h1>
-                <p>您的订单已提交，请耐心等待收获</p>
+                <p>您的订单已提交，请耐心等待收货</p>
             </c:if>
         </div>
         <div class="kuaidi">

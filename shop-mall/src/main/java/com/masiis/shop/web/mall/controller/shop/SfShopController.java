@@ -13,6 +13,7 @@ import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.DownloadImage;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
@@ -53,6 +54,8 @@ public class SfShopController extends BaseController {
     private SkuService skuService;
     @Resource
     private UserService userService;
+    @Resource
+    private SfUserShopViewService sfUserShopViewService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
@@ -259,6 +262,10 @@ public class SfShopController extends BaseController {
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);
+        //店铺浏览量
+        if (fromUserId != null) {
+            sfUserShopViewService.addShopView(user.getId(), shopId);
+        }
         ComUser fromUser = userService.getUserById(fromUserId);
         userService.getShareUser(user.getId(),fromUserId,shopId);//来自分享人的信息
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");

@@ -80,7 +80,7 @@
         var addressId = $("#addressId").val();
         var skuId = $("#skuId").val();
         if(addressId==null||addressId==""){
-           alert("请填写收获地址");
+           alert("请填写收货地址");
             return;
         }
         if(getStrLen($("#trialReasonId").val())>100){

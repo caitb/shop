@@ -18,14 +18,16 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
-<div class="wrap"><c:if test="${pUser.id!=user.id && pUser.id != sfShop.userId && userPid !=null}">
+<div class="wrap">
+    <c:if test="${pUser.id!=user.id && pUser.id != sfShop.userId && userPid !=null}">
     <div class="na">
-        <p>${pUser.wxHeadImg}</p>
+        <p><img src="${pUser.wxHeadImg}" alt=""></p>
         <h1>
             <span>我是${pUser.wxNkName}，我为麦链商城呐喊！</span>
             <span>跟我一起：呐喊得红包，分享赚佣金</span>
         </h1>
-    </div></c:if>
+    </div>
+        </c:if>
     <div class="header">
         <div>
             <p>${sfShop.name}</p>

@@ -30,15 +30,25 @@
             <td>任务入口</td>
         </tr>
         <tr>
-            <td>注册麦链商场账户</td>
-            <td>已完成</td>
-            <td>--</td>
+            <c:choose>
+                <c:when test="${user.isBinding==1}">
+                    <td>绑定手机号</td>
+                    <td>是</td>
+                    <td>--</td>
+                </c:when>
+                <c:otherwise>
+                    <td>绑定手机号</td>
+                    <td><span style="color: #FF5200">否</span></td>
+                    <td><a href="javascript:void(0);" onclick="validateCodeJS.applyTrial('agent')"
+                           style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                </c:otherwise>
+            </c:choose>
         </tr>
         <tr>
             <td>实名认证</td>
             <c:choose>
                 <c:when test="${user.auditStatus == 2}">
-                    <td>已完成</td>
+                    <td>是</td>
                     <td>--</td>
                 </c:when>
                 <c:otherwise>
@@ -75,8 +85,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <section class="sec1">
@@ -90,8 +100,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <section class="sec1">
@@ -105,8 +115,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <section class="sec1">
@@ -120,8 +130,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <section class="sec1">
@@ -135,8 +145,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <section class="sec1">
@@ -150,8 +160,8 @@
     <div>
         <p></p>
         <h1>
-            <span>啊上来肯德基</span>
-            <span>啊上来肯德基</span>
+            <span>还没有数据</span>
+            <span>还没有数据</span>
         </h1>
     </div>
     <input id="skuId" value="${skuId}" style="display: none"/>
@@ -161,6 +171,7 @@
 <section class="sec2">
     <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
 </section>
+<div class="back"></div>
 <div class="back_j">
     <p class="biao">绑定账号</p>
     <div>
@@ -178,37 +189,48 @@
     <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
     <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified(this);">去认证</span></h1>
 </div>
-<div class="back" style="display: none">
-
-</div>
 </body>
-<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<%--<%@ include file="/WEB-INF/pages/common/foot.jsp" %>--%>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/definedAlertWindow.js"></script>
+<%--<script src="${path}/static/js/commonAjax.js"></script>--%>
+<script src="${path}/static/js/iscroll.js"></script>
+<script src="${path}/static/js/validateCode.js"></script>
 <script>
+    $(document).ready(function () {
+        validateCodeJS.initPage();
+    });
+
     function goVerified(para) {
         $(para).html("正在提交...");
         var para = "?";
         para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}");
         window.location.href = "${basePath}user/userVerified.shtml" + para;
     }
+
     function reSubmitIdentityAuth() {
         window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
     }
 
-    $("#nextPageId").bind("onclick", function () {
-        window.location.href = "${basePath}userApply/register.shtml?skuId=${skuId}";
-    });
-
     $("#goToNext").on("click", function () {
+        var isBinding = "${user.isBinding}";
         var auditStatus = "${user.auditStatus}";
-        if (auditStatus == 2) {
-            $(this).html("请稍后...");
-            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
-        } else if (auditStatus == 1) {
+        if (isBinding == 0) {
+            alert("请绑定手机号");
+            return;
+        }
+        if (auditStatus == 1) {
             alert("您的实名认证正在审核中,请耐心等候!");
+            return;
         } else if (auditStatus == 0) {
             $("#realNameVerifyDiv").show();
-        } else if (auditStatus ==3){
+            return;
+        } else if (auditStatus == 3) {
             alert("您的实名认证未通过,请重新提交!");
+            return;
+        } else if (auditStatus == 2) {
+            $(this).html("请稍后...");
+            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
         }
     });
 

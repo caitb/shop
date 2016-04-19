@@ -98,8 +98,7 @@
     function uploadIdCardImg() {
         var selector = !checkImg ? 'idCardFront':'idCardBack';
 
-        $('#'+selector).addClass('loader loader--spinningDisc');
-        //$('#'+selector).attr('src', '${path}/static/images/loading.jpg');
+        $('#'+selector).attr('src', '${path}/static/images/loading.jpg');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -110,7 +109,6 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    $('#'+selector).removeClass('loader loader--spinningDisc');
                     $("#"+selector).attr("src", "${path}" + data.imgPath);
                 } else {
                     alert(data.msg);

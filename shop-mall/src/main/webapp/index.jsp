@@ -11,8 +11,8 @@
 </head>
 <body>
 <%
-    response.sendRedirect("/index");
-//    response.sendRedirect("/sfOrderManagerController/borderManagement.html?fm=0");
+//    response.sendRedirect("/index");
+    response.sendRedirect("/sfOrderManagerController/borderManagement.html?fm=0");
 %>
 </body>
 </html>

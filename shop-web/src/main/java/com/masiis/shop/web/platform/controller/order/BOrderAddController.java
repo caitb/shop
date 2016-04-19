@@ -15,10 +15,7 @@ import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserCertificateService;
-import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.user.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +53,8 @@ public class BOrderAddController extends BaseController {
     private BOrderAddService bOrderAddService;
     @Resource
     private UserCertificateService userCertificateService;
+    @Resource
+    private PfUserRelationService pfUserRelationService;
 
     @RequestMapping("/agentBOrder.shtml")
     public ModelAndView agentBOrder(HttpServletRequest request,
@@ -63,7 +62,6 @@ public class BOrderAddController extends BaseController {
                                     @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
                                     @RequestParam(value = "weiXinId", required = true) String weiXinId,
                                     @RequestParam(value = "sendType", required = true) Integer sendType,
-                                    @RequestParam(value = "pUserId", required = false) Long pUserId,
                                     @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
         ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/agentBOrderAdd");
         ComUser comUser = getComUser(request);
@@ -77,21 +75,16 @@ public class BOrderAddController extends BaseController {
         } else {
             sendType = comUser.getSendType();
         }
-        JSONObject jsonObject = new JSONObject();
         BorderAgentParamForAddress agentParamForAddress = new BorderAgentParamForAddress();
         agentParamForAddress.setAgentLevelId(agentLevelId);
-        agentParamForAddress.setpUserId(pUserId);
         agentParamForAddress.setSendType(sendType);
         agentParamForAddress.setSkuId(skuId);
         agentParamForAddress.setWeiXinId(weiXinId);
         String paramForAddress = JSONObject.toJSONString(agentParamForAddress);
         mv.addObject("agentOrderparamForAddress", paramForAddress);
-
-
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
         bOrderConfirm.setWenXinId(weiXinId);
-        bOrderConfirm.setpUserId(pUserId);
         //拿货方式
         bOrderConfirm.setSendType(sendType);
         //获得地址
@@ -130,12 +123,9 @@ public class BOrderAddController extends BaseController {
                 .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         bOrderConfirm.setLowProfit(lowProfit);
         bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
+        Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
         boolean isQueuing = false;
         Integer count = 0;
-        // 判断排单标志位,如果处于排单状态下,显示排单人数
-        if (pUserId == null) {
-            pUserId = 0l;
-        }
         int n = skuService.checkSkuStock(skuId, 1, pUserId);
         if (n < 0) {
             isQueuing = true;
@@ -154,7 +144,6 @@ public class BOrderAddController extends BaseController {
                                  @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
                                  @RequestParam(value = "weiXinId", required = true) String weiXinId,
                                  @RequestParam(value = "sendType", required = true) Integer sendType,
-                                 @RequestParam(value = "pUserId", required = false) Long pUserId,
                                  @RequestParam(value = "userMessage", required = false) String userMessage,
                                  @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
         JSONObject jsonObject = new JSONObject();
@@ -169,17 +158,15 @@ public class BOrderAddController extends BaseController {
                 throw new BusinessException("参数校验失败：weiXinId:" + weiXinId);
             }
             ComUser comUser = getComUser(request);
+            Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
             if (comUser.getSendType() > 0) {
                 sendType = comUser.getSendType();
-            } else if (pUserId != null && pUserId > 0) {
+            } else if (pUserId > 0) {
                 sendType = userService.getUserById(pUserId).getSendType();
             } else {
                 if (sendType == null && sendType <= 0) {
                     throw new BusinessException("参数校验失败：sendType:" + sendType);
                 }
-            }
-            if (pUserId == null) {
-                pUserId = 0l;
             }
             if (StringUtils.isBlank(userMessage)) {
                 userMessage = "";
@@ -231,7 +218,6 @@ public class BOrderAddController extends BaseController {
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
         bOrderConfirm.setWenXinId(pfUserCertificate.getWxId());
-        bOrderConfirm.setpUserId(pfUserSku.getUserPid());
         //拿货方式
         bOrderConfirm.setSendType(sendType);
         //获得地址

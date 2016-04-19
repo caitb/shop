@@ -22,12 +22,18 @@ public class PfUserRelationService {
     }
 
     /**
-     * 获取有效的代理绑定关系
-     *
+     * 获取用户上级代理关系
      * @param userId
+     * @param skuId
+     * @return
      */
-    public PfUserRelation selectEnableByUserId(Long userId, Integer skuId) {
-        return pfUserRelationMapper.selectEnableByUserId(userId, skuId);
+    public Long getPUserId(Long userId, Integer skuId) {
+        PfUserRelation pfUserRelation = pfUserRelationMapper.selectEnableByUserId(userId, skuId);
+        if (pfUserRelation == null) {
+            return 0l;
+        } else {
+            return pfUserRelation.getUserPid();
+        }
     }
 
 }

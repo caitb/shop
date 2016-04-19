@@ -13,7 +13,6 @@ public class BorderAgentParamForAddress {
     private Integer agentLevelId;
     private String  weiXinId;
     private Integer sendType;
-    private Long pUserId;
 
     public Integer getSkuId() {
         return skuId;
@@ -45,13 +44,5 @@ public class BorderAgentParamForAddress {
 
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
-    }
-
-    public Long getpUserId() {
-        return pUserId;
-    }
-
-    public void setpUserId(Long pUserId) {
-        this.pUserId = pUserId;
     }
 }

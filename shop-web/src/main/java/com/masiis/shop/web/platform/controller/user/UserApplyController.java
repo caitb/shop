@@ -110,7 +110,7 @@ public class UserApplyController extends BaseController {
     @RequestMapping("/register.shtml")
     public ModelAndView register(HttpServletRequest request,
                                  @RequestParam(value = "skuId", required = true) Integer skuId) throws Exception {
-        ModelAndView mv = new ModelAndView("platform/order/zhuce");
+        ModelAndView modelAndView = new ModelAndView("platform/order/zhuce");
         ComUser comUser = getComUser(request);
         if (comUser == null) {
             throw new BusinessException("用户未登录!");
@@ -129,18 +129,12 @@ public class UserApplyController extends BaseController {
         List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
         //获取代理信息
         List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
-        // 上级代理等级id(0表示没有上级推荐)
+        //上级代理等级
         Integer pUserLevelId = 0;
-        Long pUserId = 0l;
-        Integer sendType = 0;
-        if (comUser.getSendType() > 0) {
-            sendType = comUser.getSendType();
-        }
-        PfUserRelation pfUserRelation = pfUserRelationService.selectEnableByUserId(comUser.getId(), skuId);
-        if (pfUserRelation != null) {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pfUserRelation.getUserPid(), skuId);
+        Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
+        if (pUserId > 0) {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
             pUserLevelId = pfUserSku.getAgentLevelId();
-            pUserId = pfUserRelation.getUserPid();
         }
         // 创建该sku代理商的代理门槛信息
         List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
@@ -159,6 +153,26 @@ public class UserApplyController extends BaseController {
             view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
             agentSkuViews.add(view);
         }
+        modelAndView.addObject("skuId", comSku.getId());
+        modelAndView.addObject("skuName", comSku.getName());
+        modelAndView.addObject("pUserLevelId", pUserLevelId);
+        modelAndView.addObject("pUserId", pUserId);
+        modelAndView.addObject("agentSkuViews", agentSkuViews);
+        Integer sendType = 0;
+        if (comUser.getSendType() > 0) {
+            sendType = comUser.getSendType();
+        }
+        if (pUserId != null && pUserId > 0) {
+            ComUser pUser = userService.getUserById(pUserId);
+            // 上级代理商品关系
+            modelAndView.addObject("pWxNkName", pUser.getWxNkName());
+            if (sendType == 0) {
+                sendType = pUser.getSendType();
+            }
+        } else {
+            modelAndView.addObject("pWxNkName", "");
+        }
+        modelAndView.addObject("sendType", sendType);
         boolean isQueuing = false;
         Integer count = 0;
         int n = skuService.checkSkuStock(skuId, 1, pUserId);
@@ -166,25 +180,9 @@ public class UserApplyController extends BaseController {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
-        mv.addObject("skuId", comSku.getId());
-        mv.addObject("skuName", comSku.getName());
-        mv.addObject("pUserLevelId", pUserLevelId);
-        mv.addObject("pUserId", pUserId);
-        mv.addObject("agentSkuViews", agentSkuViews);
-        if (pUserId != null && pUserId > 0) {
-            ComUser pUser = userService.getUserById(pUserId);
-            // 上级代理商品关系
-            mv.addObject("pWxNkName", pUser.getWxNkName());
-            if (sendType == 0) {
-                sendType = pUser.getSendType();
-            }
-        } else {
-            mv.addObject("pWxNkName", "");
-        }
-        mv.addObject("sendType", sendType);
-        mv.addObject("isQueuing", isQueuing);
-        mv.addObject("count", count);
-        return mv;
+        modelAndView.addObject("isQueuing", isQueuing);
+        modelAndView.addObject("count", count);
+        return modelAndView;
     }
 
     @ResponseBody

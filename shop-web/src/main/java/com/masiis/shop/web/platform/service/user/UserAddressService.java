@@ -139,7 +139,7 @@ public class UserAddressService {
             if (StringUtils.isEmpty(orderType)) {
                 return indexPath;
             } else {
-                return getOrderAddress(orderType,agentOrderForAddressJson, supplementeOrderForAddress,orderId, skuId, selectedAddressId, pfUserSkuStockId);
+                return getOrderAddress(orderType, agentOrderForAddressJson, supplementeOrderForAddress, orderId, skuId, selectedAddressId, pfUserSkuStockId);
             }
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
@@ -154,7 +154,7 @@ public class UserAddressService {
      * @author hanzengzhi
      * @date 2016/3/22 12:13
      */
-    private String getOrderAddress(String orderType,String agentOrderForAddressJson,String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
+    private String getOrderAddress(String orderType, String agentOrderForAddressJson, String supplementeOrderForAddress, Long orderId, Integer skuId, Long selectedAddressId, Long pfUserSkuStockId) {
         StringBuffer sb = new StringBuffer();
         switch (orderType) {
             case SysConstants.SESSION_TRIAL_ORDER_TYPE_VALUE:
@@ -169,11 +169,11 @@ public class UserAddressService {
             case SysConstants.SESSION_MANAGE_GOODS_TAKE_GOODS_VALUE://管理商品拿货
                 getManageGoodsTakeGoodsPageAddress(sb, pfUserSkuStockId, selectedAddressId);
                 break;
-            case SysConstants.SESSION_ORDER_AGENT_TYPE_VALUE : //代理订单
-                getAgentOrderPageAddress(sb,agentOrderForAddressJson,selectedAddressId);
+            case SysConstants.SESSION_ORDER_AGENT_TYPE_VALUE: //代理订单
+                getAgentOrderPageAddress(sb, agentOrderForAddressJson, selectedAddressId);
                 break;
-            case SysConstants.SESSION_ORDER_SUPPLEMENT_TYPE_VALUE ://补货订单
-                getSupplementOrderPageAddress(sb,supplementeOrderForAddress,selectedAddressId);
+            case SysConstants.SESSION_ORDER_SUPPLEMENT_TYPE_VALUE://补货订单
+                getSupplementOrderPageAddress(sb, supplementeOrderForAddress, selectedAddressId);
                 break;
             default:
                 break;
@@ -247,56 +247,56 @@ public class UserAddressService {
             sb.append("&selectedAddressId=").append(selectedAddressId);
         }
     }
+
     /**
      * 代理订单的地址路径
+     *
      * @author hanzengzhi
      * @date 2016/4/18 11:37
      */
-    private void getAgentOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId   ){
+    private void getAgentOrderPageAddress(StringBuffer sb, String jsonParam, Long selectedAddressId) {
         sb.append("/BOrderAdd/agentBOrder.shtml?");
-        if (!StringUtils.isEmpty(jsonParam)){
-            BorderAgentParamForAddress paramObject  = JSONObject.parseObject(jsonParam,BorderAgentParamForAddress.class);
-            if (paramObject!=null){
-                if (paramObject.getSkuId()!=null){
+        if (!StringUtils.isEmpty(jsonParam)) {
+            BorderAgentParamForAddress paramObject = JSONObject.parseObject(jsonParam, BorderAgentParamForAddress.class);
+            if (paramObject != null) {
+                if (paramObject.getSkuId() != null) {
                     sb.append("skuId=").append(paramObject.getSkuId()).append("&");
                 }
-                if (paramObject.getAgentLevelId()!=null){
+                if (paramObject.getAgentLevelId() != null) {
                     sb.append("agentLevelId=").append(paramObject.getAgentLevelId()).append("&");
                 }
-                if (paramObject.getWeiXinId()!=null){
+                if (paramObject.getWeiXinId() != null) {
                     sb.append("weiXinId=").append(paramObject.getWeiXinId()).append("&");
                 }
-                if (paramObject.getSendType()!=null){
+                if (paramObject.getSendType() != null) {
                     sb.append("sendType=").append(paramObject.getSendType()).append("&");
-                }
-                if (paramObject.getpUserId()!=null){
-                    sb.append("pUserId=").append(paramObject.getpUserId()).append("&");
                 }
             }
         }
-        if (selectedAddressId!=null){
+        if (selectedAddressId != null) {
             sb.append("userAddressId=").append(selectedAddressId);
         }
     }
 
     /**
      * 获得补货订单地址参数
+     *
      * @author hanzengzhi
      * @date 2016/4/18 16:00
      */
-    private void getSupplementOrderPageAddress(StringBuffer sb,String jsonParam,Long selectedAddressId){
+    private void getSupplementOrderPageAddress(StringBuffer sb, String jsonParam, Long selectedAddressId) {
         sb.append("/BOrderAdd/supplementBOrder.shtml?");
-        if (!StringUtils.isEmpty(jsonParam)){
+        if (!StringUtils.isEmpty(jsonParam)) {
             BorderSupplementParamForAddress paramForAddress = JSONObject.parseObject(jsonParam, BorderSupplementParamForAddress.class);
-            if(paramForAddress!=null){
-                if (paramForAddress.getSkuId()!=null){
+            if (paramForAddress != null) {
+                if (paramForAddress.getSkuId() != null) {
                     sb.append("skuId=").append(paramForAddress.getSkuId()).append("&");
                 }
-                if (paramForAddress.getQuantity()!=null){
+                if (paramForAddress.getQuantity() != null) {
                     sb.append("quantity=").append(paramForAddress.getQuantity()).append("&");
                 }
             }
-            if (selectedAddressId!=null){
+            if (selectedAddressId != null) {
                 sb.append("userAddressId=").append(selectedAddressId);
             }
         }

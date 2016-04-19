@@ -25,5 +25,5 @@ public interface PfUserRelationMapper {
 
     int updateByPrimaryKey(PfUserRelation record);
 
-    PfUserRelation selectEnableByUserId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+        PfUserRelation selectEnableByUserId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 }

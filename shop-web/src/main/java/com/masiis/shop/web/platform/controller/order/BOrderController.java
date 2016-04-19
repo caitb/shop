@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderPayService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -41,6 +42,8 @@ public class BOrderController extends BaseController {
     private BOrderPayService payBOrderService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private PfUserRelationService pfUserRelationService;
 
     /**
      * 选择拿货方式
@@ -57,28 +60,23 @@ public class BOrderController extends BaseController {
     public ModelAndView setUserSendType(HttpServletRequest request,
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
                                         @RequestParam(value = "agentLevelId", required = false) Integer agentLevelId,
-                                        @RequestParam(value = "weiXinId", required = false) String weiXinId,
-                                        @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
+                                        @RequestParam(value = "weiXinId", required = false) String weiXinId) throws Exception {
         ModelAndView modelAndView = new ModelAndView("platform/order/nahuo");
         ComUser comUser = getComUser(request);
         if (comUser.getSendType() != 0) {
             throw new BusinessException("用户已经选择了拿货方式");
         }
+        Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
+        modelAndView.addObject("skuId", skuId);
+        modelAndView.addObject("agentLevelId", agentLevelId);
+        modelAndView.addObject("weiXinId", weiXinId);
         boolean isQueuing = false;
         Integer count = 0;
-        // 判断排单标志位,如果处于排单状态下,显示排单人数
-        if (pUserId == null) {
-            pUserId = 0l;
-        }
         int n = skuService.checkSkuStock(skuId, 1, pUserId);
         if (n < 0) {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
-        modelAndView.addObject("skuId", skuId);
-        modelAndView.addObject("agentLevelId", agentLevelId);
-        modelAndView.addObject("weiXinId", weiXinId);
-        modelAndView.addObject("pUserId", pUserId);
         modelAndView.addObject("isQueuing", isQueuing);
         modelAndView.addObject("count", count);
         return modelAndView;

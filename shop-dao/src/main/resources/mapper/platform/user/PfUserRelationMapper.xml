@@ -47,7 +47,7 @@
         from pf_user_relation
     </select>
 
-    <select id="selectEnableByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectEnableByUserId" resultMap="BaseResultMap">
         select id, create_time, sku_id, user_id, user_pid, is_enable, remark
         from pf_user_relation
         where user_id = #{userId}

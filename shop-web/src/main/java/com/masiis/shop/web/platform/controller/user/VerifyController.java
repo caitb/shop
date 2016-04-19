@@ -251,6 +251,7 @@ public class VerifyController extends BaseController {
             log.error(e.getMessage());
         }
         // 创建微信授权链接,需用户点击确认
+        session.setAttribute(stateStr, state);
         String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, stateStr);
         return "redirect:" + redirect_url;
     }
@@ -321,18 +322,19 @@ public class VerifyController extends BaseController {
                 // 登录
                 session.invalidate();
                 session = request.getSession();
-                loginByWx(request, response, user, res.getOpenid(), res.getUnionid(),
+                loginByWx(request, response, user, userRes.getOpenid(), userRes.getUnionid(),
                         res.getAccess_token(), res.getRefresh_token());
                 log.info("bactk_登录成功");
             } catch (Exception e) {
                 log.error(e);
                 // 跳到授权页面
+                session.setAttribute(state, stateStr);
                 String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
                 return createRedirectRes(redirect_url);
             }
             log.info("跳转目标页面,targetUrl:" + rp.getSurl());
             // 跳转目标页面;
-            session.removeAttribute(stateStr);
+            session.removeAttribute(state);
             return createRedirectRes(rp.getSurl());
         }
         // 请求失败

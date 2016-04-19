@@ -38,24 +38,26 @@
   background: #f6f6f6;
 }
 .wrap main .sec1 {
-  font-size: 12px;
-  padding: 5px 10px;
+  padding:10px;
   border-bottom: 1px solid #f6f6f6;
+}
+.sec1 input{
+  border:none;
 }
 .wrap main > h1 {
   color: red;
-  font-size: 10px;
   padding: 5px 10px;
 }
 .wrap main > h2 {
-  font-size: 12px;
   padding: 5px 10px;
 }
 .wrap main button {
   display: block;
-  width: 65%;
+  width: 60%;
   line-height: 30px;
-  background: #ccc;
+  border: 1px solid #F73C8C;
+  background: #fff;
   margin: 0 auto;
-  margin-top: 10rem;
+  margin-top: 2em;
+  color: #F73C8C;
 }

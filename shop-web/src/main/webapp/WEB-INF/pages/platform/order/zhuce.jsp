@@ -59,7 +59,7 @@
                 </c:if>
                 <c:if test="${pWxNkName!=''}">
                     <div id="hehuo">
-                        <h3 class="Bhide">您的推荐人：<span>${pWxNkName}</span></h3>
+                        <h3 class="Bhide">您的推荐人：${pWxNkName}</h3>
                     </div>
                 </c:if>
 

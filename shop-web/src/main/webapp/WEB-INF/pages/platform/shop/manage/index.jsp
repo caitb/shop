@@ -26,16 +26,27 @@
         <p id="copyShopUrl"><b>复制</b></p>
     </div>
     <div class="header">
-        <div>
+        <%--<div>
             <p>${sfShop.name}</p>
             <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
+            <span style="right: 70px;">浏览</span>
         </div>
         <div>
             <p>
                 <span>${sfShop.explanation}</span>
             </p>
         </div>
-        <img src="${sfShop.logo}" alt="">
+        <img src="${sfShop.logo}" alt="">--%>
+            <div>
+                <img src="<%=path%>/static/images/admin.png" alt="">
+                <h1>王平的店</h1>
+                <p>了看到阿萨德撒</p>
+                <h3>
+                    <span>店铺地址</span>
+                    <span>浏览商店</span>
+                    <span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>
+                </h3>
+            </div>
         <nav>
             <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>

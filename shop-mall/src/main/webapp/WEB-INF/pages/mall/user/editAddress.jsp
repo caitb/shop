@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
-    <link rel="stylesheet" href="${path}/static/css/base.css">
-    <link rel="stylesheet" href="${path}/static/css/reset.css">
-    <link rel="stylesheet" href="${path}/static/css/header.css">
-    <link rel="stylesheet" href="${path}/static/css/loading.css"/>
-    <link rel="stylesheet" href="${path}/static/css/xinjiandizhi.css">
+    <link rel="stylesheet" href="${path}/static/css/pageCss/base.css">
+    <link rel="stylesheet" href="${path}/static/css/pageCss/reset.css">
+    <link rel="stylesheet" href="${path}/static/css/pageCss/header.css">
+    <link rel="stylesheet" href="${path}/static/css/pageCss/loading.css"/>
+    <link rel="stylesheet" href="${path}/static/css/pageCss/xinjiandizhi.css">
 </head>
 <body>
 <main>
@@ -72,13 +72,13 @@
         </a>
     </div>
 </main>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script src="${path}/static/js/definedAlertWindow.js"></script>
-<script src="${path}/static/js/commonAjax.js"></script>
-<script src="${path}/static/js/iscroll.js"></script>
-<script src="${path}/static/js/checkUtil.js"></script>
-<script src="${path}/static/js/comArea.js"></script>
-<script src="${path}/static/js/address.js"></script>
+<script src="${path}/static/js/common/commonAjax.js"></script>
+<script src="${path}/static/js/plugins/iscroll.js"></script>
+<script src="${path}/static/js/common/checkUtil.js"></script>
+<script src="${path}/static/js/common/comArea.js"></script>
+<script src="${path}/static/js/pageJs/address.js"></script>
 <script>
     comAreaJS.init("edit");
     addressJS.init();

@@ -30,6 +30,7 @@
             margin: 0 auto;
             margin-top: 2em;
             color: #F73C8C;
+            margin-bottom: 100px;
         }
     </style>
 </head>

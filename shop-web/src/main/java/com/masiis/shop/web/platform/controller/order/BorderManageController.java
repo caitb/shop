@@ -101,7 +101,7 @@ public class BorderManageController extends BaseController {
             }else if(index==2){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
             }else if(index==3){
-                pfBorder = bOrderService.findPfBorder(user.getId(), 8, 2);
+                pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
             }else if(index==4){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 3, null);
             }else if(index==5){

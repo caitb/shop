@@ -16,7 +16,7 @@
                 $("#nextPageId").on("click", function () {
                     validateCodeJS.toNextPage();
                 })
-                $(".close").on("click",function () {
+                $(".close").on("click", function () {
                     $(this).parent().hide();
                     $(".back").hide()
                 })
@@ -37,6 +37,9 @@
                                 case "trial":
                                     window.location.href = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
                                     break;
+                                case "agent":
+                                    window.location.reload();
+                                    break;
                                 default:
                                     break;
                             }
@@ -55,12 +58,12 @@
             },
             getValidateNumber: function () {
                 validateCodeJS.phone = $("#phoneId").val();
-                if (validateCodeJS.checkPhone(validateCodeJS.phone)&&validateCodeJS.isBindedPhone()){
+                if (validateCodeJS.checkPhone(validateCodeJS.phone) && validateCodeJS.isBindedPhone()) {
                     $.ajax({
                         type: "POST",
                         url: "/binding/securityCode.do",
                         data: "phone=" + validateCodeJS.phone,
-                        async:false,
+                        async: false,
                         dataType: "text",
                         success: function (result) {
                             if (result) {
@@ -73,24 +76,24 @@
                     });
                 }
             },
-            isBindedPhone:function(){
+            isBindedPhone: function () {
                 validateCodeJS.phone = $("#phoneId").val();
                 var bl = true;
                 $.ajax({
                     type: "POST",
                     url: "/user/isBindedPhone.do",
                     data: "phone=" + validateCodeJS.phone,
-                    async:false,
+                    async: false,
                     dataType: "Json",
                     success: function (result) {
                         if (result && result.isError == true) {
                             alert(result.msg);
                             bl = false;
-                        }else{
+                        } else {
                             bl = true;
                         }
                     },
-                    error:function(){
+                    error: function () {
                         alert("error");
                         bl = false;
                     }
@@ -204,10 +207,14 @@
                         path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
                         validateCodeJS.bindPhoneSkipParam = "?skipPage=trial&status=success&path=" + path;
                         break;
+                    case "agent":
+                        alert("绑定成功");
+                        window.location.reload();
+                        break;
                     default:
+                        window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                 }
-                window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
             }
         }
 })();

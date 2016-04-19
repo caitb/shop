@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.order.AgentSkuView;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -72,23 +73,26 @@ public class UserApplyController extends BaseController {
         if (sku == null) {
             throw new BusinessException("sku不合法,系统不存在该sku");
         }
-        if (pUserId != null && pUserId > 0) {
-            //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-            userSkuService.checkParentData(user, pUserId, skuId);
-            PfUserRelation pfUserRelation = new PfUserRelation();
-            pfUserRelation.setUserId(user.getId());
-            pfUserRelation.setSkuId(skuId);
-            pfUserRelation.setCreateTime(new Date());
-            pfUserRelation.setIsEnable(1);
-            pfUserRelation.setUserPid(pUserId);
-            pfUserRelationService.insert(pfUserRelation);
+        Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
+        if (temPUserId == 0) {
+            if (pUserId != null && pUserId > 0) {
+                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                userSkuService.checkParentData(user, pUserId, skuId);
+                PfUserRelation pfUserRelation = new PfUserRelation();
+                pfUserRelation.setUserId(user.getId());
+                pfUserRelation.setSkuId(skuId);
+                pfUserRelation.setCreateTime(new Date());
+                pfUserRelation.setIsEnable(1);
+                pfUserRelation.setUserPid(pUserId);
+                pfUserRelationService.insert(pfUserRelation);
+            } else {
+                pUserId = 0l;
+            }
+        } else {
+            pUserId = temPUserId;
         }
         boolean isQueuing = false;
         Integer count = 0;
-        // 判断排单标志位,如果处于排单状态下,显示排单人数
-        if (pUserId == null) {
-            pUserId = 0l;
-        }
         int n = skuService.checkSkuStock(skuId, 1, pUserId);
         if (n < 0) {
             isQueuing = true;

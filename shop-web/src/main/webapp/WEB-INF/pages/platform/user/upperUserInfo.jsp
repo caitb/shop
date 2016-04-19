@@ -54,8 +54,8 @@
                 </c:when>
             </c:choose>
         </p>
-        <p><span>手机号</span><span>${userInfo.mobile}</span></p>
-        <p><span>微信号</span><span>${userInfo.wxId}</span></p>
+        <p><span>手机号</span><span>${pfUserCertificate.mobile}</span></p>
+        <p><span>微信号</span><span>${pfUserCertificate.wxId}</span></p>
         <p><span>是否认证</span><span class="four"><img src="<%=path%>/static/images/guanli.png" alt="">已通过</span></p>
         <p><span>授权证书</span><span><b><img src="${pfUserCertificate.imgUrl}" alt=""></b></span></p>
         <p><span>加入时间</span><span>${sDate}</span></p>

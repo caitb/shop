@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/gerenzhongxin.css">
@@ -33,7 +33,7 @@
     </div>
     <div class="dynmic">
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0">
-            <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><b>${sfOrders0}</b></span>
+            <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><c:if test="${sfOrders0 !=0}"><b>${sfOrders0}</b></c:if></span>
             <span>待付款</span></a>
         </p>
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">
@@ -76,7 +76,7 @@
             <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
-        <p onclick="javascript:window.location.replace('<%=path%>/share.html');">
+        <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
             <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
             <span>分享计划</span>
         </p>

@@ -202,17 +202,18 @@
                     case "applyPartner":
                         path = "/userApply/apply.shtml?skuId=" + $("#skuId").val();
                         validateCodeJS.bindPhoneSkipParam = "?skipPage=applyPartner&status=success&path=" + path
+                        window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                     case "trial":
                         path = "/corder/confirmOrder.do?skuId=" + validateCodeJS.skuId;
                         validateCodeJS.bindPhoneSkipParam = "?skipPage=trial&status=success&path=" + path;
+                        window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                     case "agent":
                         alert("绑定成功");
                         window.location.reload();
                         break;
                     default:
-                        window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                 }
             }

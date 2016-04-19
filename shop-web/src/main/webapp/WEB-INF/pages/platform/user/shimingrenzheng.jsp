@@ -73,7 +73,7 @@
                     <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                 </label>
-                <img src="${path}/static/images/loading.jpg" style="display: none;" />
+                <img src="${path}/static/images/loading2.gif" style="display: none;" />
             </div>
 
         </main>
@@ -98,7 +98,7 @@
     function uploadIdCardImg() {
         var selector = !checkImg ? 'idCardFront':'idCardBack';
 
-        $('#'+selector).attr('src', '${path}/static/images/loading.jpg');
+        $('#'+selector).attr('src', '${path}/static/images/loading2.gif');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",

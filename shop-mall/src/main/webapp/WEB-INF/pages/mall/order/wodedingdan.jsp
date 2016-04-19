@@ -58,7 +58,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
+                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -91,7 +91,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
+                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -124,7 +124,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
+                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -157,7 +157,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
+                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -190,7 +190,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥50.00）</h1>
+                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -270,7 +270,7 @@
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p></div></div>";
                                });
-                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"家商品 合计：￥"+sfOrder.orderAmount+" （含运费￥50.00）</h1>";
+                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"家商品 合计：￥"+sfOrder.orderAmount+" （含运费￥"+shipAmount+"）</h1>";
                                trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
                                if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
                                    trHtml+="<p>";

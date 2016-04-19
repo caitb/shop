@@ -10,32 +10,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链麦链商城</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/wodedianpu.css">
 </head>
 <body>
-<div class="wrap" <c:if test="${comUser.isAgent==0}">style="display: none;"</c:if> >
+<div class="wrap" <c:if test="${sfShop==null}">style="display: none;"</c:if> >
     <div class="na">
 <%--        <p><img src="${comUser.wxHeadImg}" alt=""></p>
         <h1>
             <span>${comUser.realName}，欢迎登陆~</span>
         </h1>--%>
-        <h1>店铺地址：<span id="shopUrl">${shopUrl}</span></h1>
-        <p id="copyShopUrl"><b>复制</b></p>
+        <h1>店铺地址：<input value="${shopUrl}"/></h1>
+        <p id="copyShopUrl"><b>关闭</b></p>
     </div>
     <div class="header">
-        <div>
+        <%--<div>
             <p>${sfShop.name}</p>
             <span onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享</span>
+            <span style="right: 70px;">浏览</span>
         </div>
         <div>
             <p>
                 <span>${sfShop.explanation}</span>
             </p>
         </div>
-        <img src="${sfShop.logo}" alt="">
+        <img src="${sfShop.logo}" alt="">--%>
+            <div>
+                <img src="${comUser.wxHeadImg}" alt="">
+                <h1>${sfShop.name}</h1>
+                <p>${sfShop.explanation}</p>
+                <h3>
+                    <span id="showUrl">店铺地址</span>
+                    <span onclick="javascript:window.location.replace('${shopUrl}');">店铺预览</span>
+                    <span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>
+                </h3>
+            </div>
         <nav>
             <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
@@ -58,7 +69,7 @@
         <p></p>
     </nav>
 </div>
-<c:if test="${comUser.isAgent==0}">
+<c:if test="${sfShop==null}">
     <div class="wrap_no">
         <p>您还不是合伙人，去<a href="<%=basePath%>marketGood/market">好货市场</a>看看吧~</p>
     </div>
@@ -81,6 +92,12 @@
                 afterCopy:function(){alert('复制成功！');}
             });
         }
+        $("#showUrl").on("click",function(){
+            $(".na").css("display","-webkit-box");
+        });
+        $("#copyShopUrl").on("click",function(){
+            $(this).parent().hide();
+        });
     });
 </script>
 </html>

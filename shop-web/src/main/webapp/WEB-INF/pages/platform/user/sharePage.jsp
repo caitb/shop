@@ -56,7 +56,7 @@
      * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
      */
     wx.config({
-        debug: true,
+        debug: false,
         appId: '${shareMap.appId}',
         timestamp: ${shareMap.timestamp},
         nonceStr: '${shareMap.nonceStr}',
@@ -105,22 +105,7 @@
         title: '${shareMap.shareTitle}',
         desc: '${shareMap.shareDesc}',
         link: '${shareMap.shareLink}',
-        imgUrl: '${shareMap.shareImg}',
-        trigger: function (res) {
-            //alert('用户点击分享到QQ: ' + "这是最新的masiis产品数据");
-        },
-        complete: function (res) {
-            //window.console.log(JSON.stringify(res));
-        },
-        success: function (res) {
-            //window.console.log('已分享');
-        },
-        cancel: function (res) {
-            //window.console.log('已取消');
-        },
-        fail: function (res) {
-            //window.console.log(JSON.stringify(res));
-        }
+        imgUrl: '${shareMap.shareImg}'
     };
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>

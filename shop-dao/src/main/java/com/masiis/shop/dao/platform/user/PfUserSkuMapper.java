@@ -26,6 +26,7 @@ public interface PfUserSkuMapper {
     List<PfUserSku> selectAll();
 
     int updateByPrimaryKey(PfUserSku record);
+    List<PfUserSku> selectAgentNum(Long userId);
 
     PfUserSku selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 

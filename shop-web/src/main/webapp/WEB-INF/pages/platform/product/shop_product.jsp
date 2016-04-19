@@ -18,7 +18,7 @@
 </head>
 <body>
 <header>
-    <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/shop/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/shop/images/xq_rt.png" alt=""></a>
     <p>商品管理</p>
 </header>
 <div class="wrap">

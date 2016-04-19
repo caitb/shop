@@ -255,6 +255,8 @@ public class UserCertificateController extends BaseController {
         String sDate=sdf.format(userInfo.getCreateTime());
         ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
         PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+        String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
+        pfUserCertificate.setImgUrl(ctValue + pfUserCertificate.getImgUrl());
         mav.addObject("userInfo", userInfo);
         mav.addObject("pfUserSku", pfUserSku);
         mav.addObject("comSku", comSku);

@@ -1,12 +1,17 @@
 package com.masiis.shop.web.mall.service.user;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserShopViewExtendMapper;
+import com.masiis.shop.dao.mall.user.SfUserShopViewMapper;
+import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfUserShopView;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +23,12 @@ public class SfUserShopViewService {
     private final Logger logger = Logger.getLogger(SfUserShopViewService.class);
     @Autowired
     private SfUserShopViewExtendMapper sfUserShopViewExtendMapper;
+
+    @Autowired
+    protected SfUserShopViewMapper sfUserShopViewMapper;
+    @Autowired
+    protected SfShopMapper sfshopMapper;
+
 
     /**
      * 根据用户id查询浏览过的店铺
@@ -44,5 +55,30 @@ public class SfUserShopViewService {
      */
     public Integer findCountByUserId(Long userId){
         return sfUserShopViewExtendMapper.selectCountByUserId(userId);
+    }
+
+
+    /**
+      * @Author jjh
+      * @Date 2016/4/19 0019 下午 3:14
+      * 增加店铺浏览量
+      */
+
+    public void addShopView(Long userId,Long shopId) throws Exception{
+        SfShop sfShop = sfshopMapper.selectByPrimaryKey(shopId);
+        if(sfShop==null){
+            throw new BusinessException("店铺不存在");
+        }
+        SfUserShopView sfUserShopView =sfUserShopViewMapper.selectByShopIdAndUserId(userId,shopId);
+        if(sfUserShopView==null){
+            SfUserShopView sf = new SfUserShopView();
+            sf.setCreateTime(new Date());
+            sf.setShopId(shopId);
+            sf.setUserId(userId);
+            sf.setShopUserId(sfShop.getUserId());
+            sf.setRemark("");
+            sfUserShopViewMapper.insert(sf);
+            logger.info(""+userId+"浏览了店铺"+shopId+"");
+        }
     }
 }

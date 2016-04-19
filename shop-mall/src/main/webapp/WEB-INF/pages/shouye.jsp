@@ -18,14 +18,16 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
-<div class="wrap"><c:if test="${pUser.id!=user.id && pUser.id != sfShop.userId && userPid !=null}">
+<div class="wrap">
+    <c:if test="${pUser.id!=user.id && pUser.id != sfShop.userId && userPid !=null}">
     <div class="na">
-        <p>${pUser.wxHeadImg}</p>
+        <p><img src="${pUser.wxHeadImg}" alt=""></p>
         <h1>
             <span>我是${pUser.wxNkName}，我为麦链商城呐喊！</span>
             <span>跟我一起：呐喊得红包，分享赚佣金</span>
         </h1>
-    </div></c:if>
+    </div>
+        </c:if>
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
@@ -95,20 +97,20 @@
 <div id="ok" class="back_f" style="display: none">
     <h1>呐喊成功！</h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span  id="okCloss">×</span>
 </div>
 <div id="no" class="back_f" style="display: none">
     <h1>您已呐喊过，请明天再来 </h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close" >×</span>
 </div>
 <div id="fen" class="back_f" style="display: none">
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享到店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>

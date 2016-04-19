@@ -67,11 +67,8 @@ public class SfUserExtractApplyController extends BaseController{
             userAccount = new SfUserAccount();
             userAccount.setExtractableFee(new BigDecimal(0));
         }
-        List<ComWxUser> comWxUsers = userService.findComWxUserByUserId(userId);
         mv.addObject("userAccount",userAccount);
-        if (comWxUsers != null){
-            mv.addObject("comWxUser",comWxUsers.get(0));
-        }
+        mv.addObject("comUser",comUser);
         mv.setViewName("mall/user/sf_withdrawRequest");
         return mv;
     }

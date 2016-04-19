@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/tijiaodingdan.css">
@@ -36,7 +36,7 @@
         var shopId = $("#shopId").val();
         var message = $("#userMessageId").val();
         if(selectedAddressId ==null || selectedAddressId =="" ){
-            alert("未选择收获地址");
+            alert("未选择收货地址");
             return false ;
         }
         var paramJson = {

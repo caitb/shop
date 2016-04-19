@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>麦链合伙人</title>
+    <title>麦链商城</title>
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/pageCss/reset.css">
     <style>
@@ -30,14 +30,11 @@
             margin: 0 auto;
             margin-top: 2em;
             color: #F73C8C;
+            margin-bottom: 100px;
         }
     </style>
 </head>
 <body>
-<header>
-    <a href="index.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-    <p>分享计划</p>
-</header>
 <div class="wrap">
     <img src="<%=basePath%>static/images/fenx.png" alt="">
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${shopId}');">
@@ -47,7 +44,7 @@
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer_x%20(3).png" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
         <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">

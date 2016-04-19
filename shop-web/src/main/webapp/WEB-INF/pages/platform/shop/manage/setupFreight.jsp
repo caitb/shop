@@ -11,19 +11,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/yunfeishezhi.css">
 </head>
 <body>
 <header>
-    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.location.replace('<%=basePath%>shop/manage/index');"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>运费设置</p>
 </header>
-<form id="freightForm" action="<%=basePath%>shop/manage/updateShop" method="post">
-    <input type="hidden" name="id" value="${sfShop.id}">
-    <input type="hidden" name="shipAmount" value="${sfShop.shipAmount}">
+
     <div class="wrap">
+        <form id="freightForm" action="<%=basePath%>shop/manage/updateShop" method="post">
+            <input type="hidden" name="id" value="${sfShop.id}">
+            <input type="hidden" name="shipAmount" value="${sfShop.shipAmount}">
         <div>
             <p><span>运费设置</span></p>
             <h1>
@@ -32,8 +33,9 @@
             </h1>
         </div>
         <button type="submit" id="save">保存</button>
+        </form>
     </div>
-</form>
+
 </body>
 <script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
 <script>

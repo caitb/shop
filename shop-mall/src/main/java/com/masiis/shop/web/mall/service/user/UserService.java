@@ -258,6 +258,7 @@ public class UserService {
                 }
             }
         }
+        log.info("分销关系");
     }
 
     /**

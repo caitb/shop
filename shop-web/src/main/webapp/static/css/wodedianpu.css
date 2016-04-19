@@ -11,7 +11,7 @@
   background: rgba(0,0,0,0.7);
   z-index: 10;
   border-radius: 5px;
-
+  display: none;
 }
 .na h1{
   font-size: 12px;
@@ -81,13 +81,20 @@
   border-right: 1px solid #fff;
   line-height: 15px;
   font-size: 12px;
+  padding-left: 10px;
 }
 .wrap .header > div h3 span:nth-child(1){
   background:url("/static/images/my(1).png") no-repeat 15px;
-  background-size: 15px 15px;
+  background-size: 14px;
+}
+.wrap .header > div h3 span:nth-child(2){
+  background:url("/static/images/my(3).png") no-repeat 15px;
+  background-size: 15px;
 }
 .wrap .header > div h3 span:last-child {
   border: none;
+  background:url("/static/images/my(2).png") no-repeat 15px;
+  background-size: 12px;
 }
 .wrap .header nav {
   display: -webkit-box;

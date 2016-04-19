@@ -125,7 +125,7 @@ public class UserAccountController extends BaseController{
                 JSONObject jsonObject = new JSONObject();
                 date = format.format(pfUserBill.getBalanceDate());
                 jsonObject.put("date",date);
-                jsonObject.put("incom",pfUserBill.getBillAmount());
+                jsonObject.put("incom",pfUserBill.getBillAmount().toString());
                 jsonArray.put(jsonObject);
             }
             log.info("jsonArray:"+jsonArray.toString());

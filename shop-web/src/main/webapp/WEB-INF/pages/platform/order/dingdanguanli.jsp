@@ -27,7 +27,7 @@
                 <h1>进货订单</h1>
                 <ul>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=7">
-                        <h1><img src="<%=path%>/static/images/fahuo.png" alt=""><c:if test="${pfBorders10 !=0}"><span>${pfBorders7}</span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/fahuo.png" alt=""><c:if test="${pfBorders7 !=0}"><span>${pfBorders7}</span></c:if></h1>
                         <h1>等待发货</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=6">
@@ -54,7 +54,7 @@
                 <h1>出货订单</h1>
                 <ul>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=7">
-                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""><c:if test="${pfBorderps10 !=0}"><span>${pfBorderps7}</span></c:if></h1>
+                        <h1><img src="<%=path%>/static/images/wofahuo.png" alt=""><c:if test="${pfBorderps7 !=0}"><span>${pfBorderps7}</span></c:if></h1>
                         <h1>我要发货</h1></a>
                     </li>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=6">

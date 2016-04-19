@@ -48,7 +48,7 @@
                                 <%--<c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>--%>
                                 <%--<c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>--%>
                                 <%--<c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>--%>
-                                <%--<c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>--%>
                                 <%--<c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>--%>
                             <%--</h2>--%>
                             <%--<c:forEach items="${pb.pfBorderItems}" var="pbi">--%>
@@ -95,7 +95,7 @@
                                     <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -141,7 +141,7 @@
                                     <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -187,7 +187,7 @@
                                     <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -233,7 +233,7 @@
                                     <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                    <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -279,7 +279,7 @@
                                         <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                         <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -325,7 +325,7 @@
                                         <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">已发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                         <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -368,7 +368,7 @@
            </div>
            <div class="back_shouhuo" style="display: none">
                <p>确认收到货品?</p>
-               <h4>亲，请您核对商品后在操作确认收货</h4>
+               <h4>亲，请您核对商品后再操作确认收货</h4>
 
                <h3>
                    <span class="que_qu">取消</span>
@@ -421,7 +421,7 @@
                             }else if(pfBorder.orderStatus ==7){
                                 StatusName="待发货";
                             }else if(pfBorder.orderStatus ==8){
-                                StatusName="已发货";
+                                StatusName="待收货";
                             }else if(pfBorder.orderStatus ==3){
                                 StatusName="交易成功";
                             }
@@ -459,7 +459,7 @@
                             }
                             if(pfBorder.orderStatus ==8){
                                 orderStatusName="确认收货";
-                                trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo(\""+pfBorder.orderStatus+"\",\""+pfBorder.id+" \")\">"+orderStatusName+"</span>";
+                                trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo('"+pfBorder.orderStatus+"','"+pfBorder.id+"')\">"+orderStatusName+"</span>";
                             }else{
                                 trHtml+="";
                             }

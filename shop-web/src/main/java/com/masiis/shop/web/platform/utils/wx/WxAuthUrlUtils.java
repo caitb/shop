@@ -74,4 +74,14 @@ public class WxAuthUrlUtils {
                 + "?access_token=" + token
                 + "&openid=" + openId;
     }
+
+    public static String createAuthorizeBaseUrl(String basepath, String stateStr) throws UnsupportedEncodingException {
+        return WxConstants.URL_AUTH
+                + "?appid=" + WxConstants.APPID
+                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_BASE_AUTH, "UTF-8")
+                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
+                + "&scope=" + WxConstants.SCOPE_AUTH_BASE
+                + "&state=" + stateStr
+                + WxConstants.TAILSTR_AUTH;
+    }
 }

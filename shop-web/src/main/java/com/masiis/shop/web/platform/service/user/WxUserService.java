@@ -41,4 +41,8 @@ public class WxUserService {
     public ComWxUser getUserByUnionidAndAppid(String unionid, String appid) {
         return wxUserMapper.selectByUnionidAndAppid(unionid, appid);
     }
+
+    public ComWxUser getWxUserByOpenIdAndAppID(String openid, String appid) {
+        return wxUserMapper.selectByOpenidAndAppid(openid, appid);
+    }
 }

@@ -61,6 +61,7 @@ public class LoginFilter implements Filter{
             // 过滤静态资源,以及一些放行的路径
             if (uri.startsWith(request.getContextPath() + "/static/")
                     || (request.getContextPath() + "/verify/actk").equals(uri)
+                    || (request.getContextPath() + "/verify/bactk").equals(uri)
                     || (request.getContextPath() + "/verify/wxcheck").equals(uri)
                     || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
                 // 放行

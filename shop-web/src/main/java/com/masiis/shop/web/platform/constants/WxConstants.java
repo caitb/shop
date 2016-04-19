@@ -23,6 +23,10 @@ public class WxConstants {
      */
     public static final String REDIECT_URI_GET_ACCESS_TOKEN = "verify/actk";
     /**
+     * 获取accesstoken链接
+     */
+    public static final String REDIECT_URI_BASE_AUTH = "verify/bactk";
+    /**
      * 授权页面链接参数
      */
     public static final String RESPONSE_TYPE_AUTH = "code";

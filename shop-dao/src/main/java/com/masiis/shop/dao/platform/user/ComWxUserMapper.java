@@ -44,4 +44,7 @@ public interface ComWxUserMapper {
                                       @Param("appid") String appid);
 
     List<ComWxUser> selectByUserId(@Param("comUserId") Long comUserId);
+
+    ComWxUser selectByOpenidAndAppid(@Param("openId") String openId,
+                                     @Param("appId") String appId);
 }

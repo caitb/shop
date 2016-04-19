@@ -23,10 +23,13 @@
   line-height:22px;
   color: #fff;
   margin-left: 15px;
+  display: -webkit-box;
 }
-.na h1 span{
+.na h1 input{
   font-size:12px;
-  color: #fff;
+  /* color: #fff; */
+  display: block;
+  -webkit-box-flex: 1;
 }
 .na p{
   width:60px;

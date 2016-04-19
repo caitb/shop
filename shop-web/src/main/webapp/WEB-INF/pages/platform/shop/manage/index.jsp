@@ -22,8 +22,8 @@
         <h1>
             <span>${comUser.realName}，欢迎登陆~</span>
         </h1>--%>
-        <h1>店铺地址：<span id="shopUrl">${shopUrl}</span></h1>
-        <p id="copyShopUrl"><b>复制</b></p>
+        <h1>店铺地址：<input value="${shopUrl}"/></h1>
+        <p id="copyShopUrl"><b>关闭</b></p>
     </div>
     <div class="header">
         <%--<div>
@@ -42,7 +42,7 @@
                 <h1>${sfShop.name}</h1>
                 <p>${sfShop.explanation}</p>
                 <h3>
-                    <span>店铺地址</span>
+                    <span id="showUrl">店铺地址</span>
                     <span>浏览商店</span>
                     <span  onclick="javascript:window.location.replace('<%=basePath%>shop/manage/getPoster?shopId=${sfShop.id}');">分享店铺</span>
                 </h3>
@@ -92,6 +92,12 @@
                 afterCopy:function(){alert('复制成功！');}
             });
         }
+        $("#showUrl").on("click",function(){
+            $(".na").css("display","-webkit-box");
+        });
+        $("#copyShopUrl").on("click",function(){
+            $(this).parent().hide();
+        });
     });
 </script>
 </html>

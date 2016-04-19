@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链合伙人</title>
-    <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
+    <link rel="stylesheet" href="<%=basePath%>static/css/main.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/dianpushezhi.css">
 </head>
@@ -20,8 +20,9 @@
     <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>店铺设置</p>
 </header>
-<form action="<%=basePath%>shop/manage/updateShop" method="post">
+
 <div class="wrap">
+    <form action="<%=basePath%>shop/manage/updateShop" method="post">
     <p>
         <label for="">店铺名称</label>
         <input type="hidden" name="id" value="${sfShop.id}">
@@ -32,7 +33,8 @@
         <textarea name="explanation" value="${sfShop.explanation}" id="" cols="30" rows="10">${sfShop.explanation}</textarea>
     </p>
     <button type="submit">保存</button>
+    </form>
 </div>
-</form>
+
 </body>
 </html>

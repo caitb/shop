@@ -14,7 +14,6 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="${path}/index"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>个人信息</p>
     </header>
     <main>
@@ -27,14 +26,14 @@
                     <c:if test="${pfskuAgents!=null}">
                         <c:forEach items="${pfskuAgents}" var="skuAgent">
                             <c:choose>
-                                <c:when test="${skuAgent.agentLevelId==1}">
-                                    <span><img src="${path}/static/images/kangyinli1A.png" alt=""></span>
+                                <c:when test="${skuAgent.agentLevelId==3}">
+                                    <span><img src="${path}/static/images/kangyinli1A.png" alt="">抗引力A</span>
                                 </c:when>
                                 <c:when test="${skuAgent.agentLevelId==2}">
-                                    <span><img src="${path}/static/images/kangyinli2A.png" alt=""></span>
+                                    <span><img src="${path}/static/images/kangyinli2A.png" alt="">抗引力AA</span>
                                 </c:when>
-                                <c:when test="${skuAgent.agentLevelId==3}">
-                                    <span><img src="${path}/static/images/kangyinli3A.png" alt=""></span>
+                                <c:when test="${skuAgent.agentLevelId==1}">
+                                    <span><img src="${path}/static/images/kangyinli3A.png" alt="">抗引力AAA</span>
                                 </c:when>
                             </c:choose>
                         </c:forEach>

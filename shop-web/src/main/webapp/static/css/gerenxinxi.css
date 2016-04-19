@@ -41,6 +41,9 @@
 .wrap main .head_img div h1:nth-child(2) span{
   float: left;
   margin-right: 5px;
+  color:#fff;
+  font-size: 12px;
+  line-height: 28px;
 }
 .wrap main .head_img div h1:nth-child(2) span img{
   display: inline-block;

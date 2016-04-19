@@ -95,8 +95,8 @@
                     </p>
                     <div>
                         <h2>${pfBorderItem.skuName}</h2>
-                        <h3>规格：<span>默认</span><b>x${pfBorderItem.quantity}</b></h3>
-                        <p>零售价：${pfBorderItem.unitPrice}</p>
+                        <h3>规格：<span>默认</span></h3>
+                        <p>零售价：${pfBorderItem.unitPrice}<b>x${pfBorderItem.quantity}</b></p>
                         <h1><b style="color:#333333">合计：</b><span>￥${pfBorderItem.totalPrice}</span></h1>
                     </div>
                 </section>

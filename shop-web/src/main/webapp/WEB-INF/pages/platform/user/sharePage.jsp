@@ -105,22 +105,7 @@
         title: '${shareMap.shareTitle}',
         desc: '${shareMap.shareDesc}',
         link: '${shareMap.shareLink}',
-        imgUrl: '${shareMap.shareImg}',
-        trigger: function (res) {
-            //alert('用户点击分享到QQ: ' + "这是最新的masiis产品数据");
-        },
-        complete: function (res) {
-            //window.console.log(JSON.stringify(res));
-        },
-        success: function (res) {
-            //window.console.log('已分享');
-        },
-        cancel: function (res) {
-            //window.console.log('已取消');
-        },
-        fail: function (res) {
-            //window.console.log(JSON.stringify(res));
-        }
+        imgUrl: '${shareMap.shareImg}'
     };
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>

@@ -48,15 +48,16 @@ public class IndexController extends BaseController {
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
                               @PathVariable("shopId") Long shopId,
-                              @PathVariable("userPid") Long userPid
-    )throws Exception{
+                              @PathVariable("userPid") Long userPid)throws Exception{
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-            req.getSession().setAttribute("userPid", userPid);
-            req.getSession().setAttribute("shopId", shopId);
+        req.getSession().setAttribute("userPid", userPid);
+        req.getSession().setAttribute("shopId", shopId);
+        SfShop shop = sfShopService.getSfShopById(shopId);
+        req.getSession().setAttribute("shipAmount", shop.getShipAmount());
 
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);
@@ -119,15 +120,15 @@ public class IndexController extends BaseController {
             req.getSession().setAttribute("shopId", shopId);
         }
 
+        SfShop shop = sfShopService.getSfShopById(shopId);
+        req.getSession().setAttribute("shipAmount", shop.getShipAmount());
+
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);
-//        ComUser pUser = new ComUser();
         SfShop sfShop =null;
         List<SfShopSku> sfShopSkus =null;
         if(shopId==null){
             throw new BusinessException("shopId不能为空");
-//            sfShop = sfShopService.getSfShopById(1L);
-//            sfShopSkus = skuService.getSfShopSkuByShopId(1L);
         }else{
             sfShop = sfShopService.getSfShopById(shopId);
             if(sfShop==null){
@@ -140,16 +141,17 @@ public class IndexController extends BaseController {
         BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku:sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
+            ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
             SfShopDetail sfShopDetail= new SfShopDetail();
             SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
-//            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(1L,sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
+            sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
             bail=sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);

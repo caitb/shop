@@ -434,7 +434,7 @@
                                 trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                 trHtml+="</div></div>";
                             });
-                            trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
+                            trHtml+="<h1> 共<span>"+pfBorder.orderAmount+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
                             if(pfBorder.orderType==0){
                                 trHtml+="(包含保证金 运费：到付)";
                             }else{

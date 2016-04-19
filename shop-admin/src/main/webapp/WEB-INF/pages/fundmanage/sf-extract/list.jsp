@@ -420,11 +420,11 @@
                             if(row.sfUserExtractApply && row.sfUserExtractApply.auditType == 0) {
                                 return '<span class="label label-sm label-grey">待审核</span>';
                             }else if(row.sfUserExtractApply && row.sfUserExtractApply.auditType == 1) {
-                                return '<span class="label label-sm label-info">已拒绝</span>';
+                                return '<span class="label label-sm label-danger">已拒绝</span>';
                             }else if(row.sfUserExtractApply && row.sfUserExtractApply.auditType == 2) {
-                                return '<span class="label label-sm label-success">待打款</span>';
+                                return '<span class="label label-sm label-info">待打款</span>';
                             }else if(row.sfUserExtractApply && row.sfUserExtractApply.auditType == 3){
-                                return '<span class="label label-sm label-danger">已打款</span>';
+                                return '<span class="label label-sm label-success">已打款</span>';
                             }
                         }
                     },

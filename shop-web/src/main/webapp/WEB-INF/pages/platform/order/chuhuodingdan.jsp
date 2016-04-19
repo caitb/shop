@@ -58,7 +58,7 @@
                                 <div>
                                     <h2>${pbi.skuName}</h2>
                                     <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                    <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                    <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                 </div>
                             </div> </c:forEach>
                                 <h1>
@@ -104,7 +104,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                            <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -149,7 +149,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                            <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -195,7 +195,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                            <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -240,7 +240,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                            <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -285,7 +285,7 @@
                                         <div>
                                             <h2>${pbi.skuName}</h2>
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
-                                            <p class="defult">实收款： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
+                                            <p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pbi.totalPrice}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>
                                         </div>
                                     </div> </c:forEach>
                                 <h1>
@@ -389,7 +389,7 @@
                                        trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
                                        trHtml+="<img src=\""+pfBorderItem.skuUrl+"\" alt=\"\"></a></p>";
                                        trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
-                                       trHtml+="<p class=\"defult\">实收款：<span style=\"float:none;color:#FF6A2A;font-size: 12px\">￥"+pfBorderItem.totalPrice+"</span></p></div></div>";
+                                       trHtml+="<p class=\"defult\">合计：<span style=\"float:none;color:#FF6A2A;font-size: 12px\">￥"+pfBorderItem.totalPrice+"</span></p></div></div>";
                                    });
                                    trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
                                    if(pfBorder.orderType==0){

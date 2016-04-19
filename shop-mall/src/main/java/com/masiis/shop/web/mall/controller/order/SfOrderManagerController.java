@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -37,6 +38,8 @@ public class SfOrderManagerController extends BaseController {
     private SfOrderManageService sfOrderManageService;
     @Resource
     private UserService userService;
+    @Resource
+    private SfShopService sfShopService;
 
 
     /**
@@ -141,6 +144,7 @@ public class SfOrderManagerController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
+//        modelAndView.addObject("shipAmount", shop.getShipAmount());
         modelAndView.setViewName("mall/order/wodedingdan");
         return modelAndView;
     }
@@ -186,8 +190,8 @@ public class SfOrderManagerController extends BaseController {
      * @author muchaofeng
      * @date 2016/4/2 14:09
      */
-    @RequestMapping("/orderManagement.html")
-    public ModelAndView orderManagement(HttpServletRequest request,Integer fm) throws Exception{
+    @RequestMapping("/borderManagement.html")
+    public ModelAndView borderManagement(HttpServletRequest request,Integer fm) throws Exception{
         request.getSession().setAttribute("fm",fm);
         ComUser user = getComUser(request);
         if (user == null) {

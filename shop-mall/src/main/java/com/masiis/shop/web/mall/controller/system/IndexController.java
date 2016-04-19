@@ -59,8 +59,6 @@ public class IndexController extends BaseController {
         }
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
-        SfShop shop = sfShopService.getSfShopById(shopId);
-        req.getSession().setAttribute("shipAmount", shop.getShipAmount());
 
         userService.getShareUser(user.getId(),userPid,shopId);//分销关系
         ComUser pUser = userService.getUserById(userPid);

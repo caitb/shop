@@ -24,10 +24,10 @@
                 var options = $(".sel:eq(0) option:selected").val();
                 var option2 = $(".sel:eq(1) option:selected").val();
                 var option3 = $(".sel:eq(2) option:selected").val();
-                if (options == -1 || option2 == -1 || option3 == -1) {
+                if (options == -1 || option2 == -1 || option3 == -2) {
                     $(".sel").css("border", "1px solid red")
                     return false;
-                } else if (options != -1 || option2 != -1 || option3 != -1) {
+                } else if (options != -1 || option2 != -1 || option3 != -2) {
                     $(".sel").css("border", "none")
                     return true;
                 }

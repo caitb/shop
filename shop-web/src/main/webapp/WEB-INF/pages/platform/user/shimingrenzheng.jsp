@@ -25,6 +25,7 @@
         background-clip: content-box;
         animation: spinDisc 1.5s linear infinite;
     }
+
     @keyframes spinDisc {
         50% {
             border-top-color: #3498db;
@@ -73,7 +74,7 @@
                     <img src="${path}/static/images/shenfenf.png" alt="" id="idCardBack" name="idCardPre"
                          onclick="F_Open_dialog(1)">
                 </label>
-                <img src="${path}/static/images/loading2.gif" style="display: none;" />
+                <img src="${path}/static/images/loading2.gif" style="display: none;"/>
             </div>
 
         </main>
@@ -85,10 +86,12 @@
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script src="${path}/static/js/fakeLoader.js"></script>
 <script>
+    var isRuningF = false;
+    var isRuningB = false;
     oNly()
-    function oNly(){
-        var oNlywidth=$(".only").width();
-        $(".only").height(oNlywidth+"px")
+    function oNly() {
+        var oNlywidth = $(".only").width();
+        $(".only").height(oNlywidth + "px")
     }
     var checkImg = 0;
     function F_Open_dialog(data) {
@@ -96,9 +99,9 @@
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
-        var selector = !checkImg ? 'idCardFront':'idCardBack';
+        var selector = !checkImg ? 'idCardFront' : 'idCardBack';
 
-        $('#'+selector).attr('src', '${path}/static/images/loading2.gif');
+        $('#' + selector).attr('src', '${path}/static/images/loading2.gif');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -109,7 +112,13 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    $("#"+selector).attr("src", "${path}" + data.imgPath);
+                    $("#" + selector).attr("src", "${path}" + data.imgPath);
+                    if (selector == "idCardFront") {
+                        isRuningF = true;
+                    }
+                    if (selector == "idCardBack") {
+                        isRuningB = true;
+                    }
                 } else {
                     alert(data.msg);
                 }
@@ -133,7 +142,19 @@
             return;
         }
         var fCardUrl = $("#idCardFront").attr("src");
+        if (fCardUrl == "${path}/static/images/shenfen.png") {
+            alert("请上传身份证正面!");
+            return;
+        }
         var bCardUrl = $("#idCardBack").attr("src");
+        if (bCardUrl == "${path}/static/images/shenfenf.png") {
+            alert("请上传身份证反面!");
+            return;
+        }
+        if (!isRuningF || !isRuningB) {
+            alert("图片正在上传中，请稍后!");
+            return;
+        }
         fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
         bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
         var paraData = {};

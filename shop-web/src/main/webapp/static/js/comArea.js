@@ -101,8 +101,9 @@
 					dataType: "Json",
 					success: function (result) {
 						var jsonData = eval(result);
-						if (jsonData!=null){
-							var appendString ="<option value='-1'>--县/区--</option>";
+						var appendString= "";
+						if (jsonData!=null&&jsonData.length!=0){
+							appendString  ="<option value='-2'>--县/区--</option>";
 							$.each(jsonData,function(i,item){
 								if(oldConntyId!=null&&oldConntyId!=""&&oldConntyId==jsonData[i].id){
 									appendString +='<option selected value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
@@ -110,9 +111,11 @@
 									appendString +='<option value='+jsonData[i].id+'>' +  jsonData[i].name + '</option>';
 								}
 							})
-							$("#s_county").empty();
-							$("#s_county").html(appendString);
+						}else{
+							appendString ="<option value='-1'></option>";
 						}
+						$("#s_county").empty();
+						$("#s_county").html(appendString);
 					}
 				})
 			}

@@ -116,7 +116,7 @@ public class BorderManageController extends BaseController {
             }
             for (PfBorder pfBorders : pfBorder) {
                 if(pfBorders.getUserPid()==0){
-                    pfBorders.setPidUserName("平台代理");
+                    pfBorders.setPidUserName("平台代发");
                 }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
                     pfBorders.setPidUserName("未选择");
                 } else{
@@ -171,7 +171,7 @@ public class BorderManageController extends BaseController {
             }
             for (PfBorder pfBorders : pfBorder) {
                 if(pfBorders.getUserPid()==0){
-                    pfBorders.setPidUserName("平台代理");
+                    pfBorders.setPidUserName("平台代发");
                 }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
                     pfBorders.setPidUserName("未选择");
                 } else{

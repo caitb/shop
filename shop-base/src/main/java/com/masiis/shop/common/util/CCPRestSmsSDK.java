@@ -59,6 +59,7 @@ public class CCPRestSmsSDK {
 	}
 
 	/**
+	 * 应用名称：麦士微商 麦士微商 麦士微商
 	 * 发送短信接口
 	 * @param phoneNum       手机号
 	 * @param smsTemplateId  短信模版
@@ -92,6 +93,7 @@ public class CCPRestSmsSDK {
 	}
 	
 	/**
+	 * 应用名称：麦士微商 麦士微商 麦士微商
 	 * 发送短信接口
 	 * @param phoneNum       手机号
 	 * @param smsTemplateId  短信模版
@@ -113,6 +115,47 @@ public class CCPRestSmsSDK {
 		System.out.println("SDKTestGetSubAccounts map=" + map);
 		String[] result = new String[2];
 		if("000000".equals(map.get("statusCode"))){
+			//正常返回输出data包体信息（map）
+			HashMap<String,Object> data = (HashMap<String, Object>) map.get("data");
+			Set<String> keySet = data.keySet();
+			for(String key:keySet){
+				Object object = data.get(key);
+				System.out.println(key +" = "+object);
+			}
+			result[0] = "0";
+			result[1] = "";
+		}else{
+			//异常返回输出错误码和错误信息
+			System.out.println("错误码=" + map.get("statusCode") +" 错误信息= " + map.get("statusMsg"));
+			result[0] = (String) map.get("statusCode");
+			result[1] = (String) map.get("statusMsg");
+		}
+		return result;
+	}
+
+	/**
+	 * 应用名称：麦链商城 麦链商城 麦链商城
+	 * 发送短信接口
+	 * @param phoneNum       手机号
+	 * @param smsTemplateId  短信模版
+	 * @param contents       短信内容
+	 * @return
+	 */
+	public static String[] sendSMSWithResultMasiisShop(String phoneNum, String smsTemplateId, String[] contents){
+		//初始化SDK
+		CCPRestSmsSDK smsSDK = new CCPRestSmsSDK();
+		//初始化服务器地址和端口
+		smsSDK.init("app.cloopen.com", "8883");
+		//（开发者）主账号：ACCOUNT SID,AUTH TOKEN
+		smsSDK.setAccount("aaf98f89524954cc015252b2c5720ff8", "a0bc3462cb3747f8a281972bbb331020");
+		//设置应用ID
+		smsSDK.setAppId("aaf98f895350b68801535ffde9661b68");
+
+		Map<String, Object> map = smsSDK.sendTemplateSMS(phoneNum,smsTemplateId, contents);
+
+		System.out.println("SDKTestGetSubAccounts map=" + map);
+		String[] result = new String[2];
+		if(!"000000".equals(map.get("statusCode"))){
 			//正常返回输出data包体信息（map）
 			HashMap<String,Object> data = (HashMap<String, Object>) map.get("data");
 			Set<String> keySet = data.keySet();

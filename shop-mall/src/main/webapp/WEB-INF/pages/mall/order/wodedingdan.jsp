@@ -270,7 +270,7 @@
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p></div></div>";
                                })
-                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"家商品 合计：￥"+sfOrder.orderAmount+" （含运费￥"+sfOrder.shipAmount+"）</h1>";
+                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderAmount+" （含运费￥"+sfOrder.shipAmount+"）</h1>";
                                trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
                                if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
                                    trHtml+="<p>";

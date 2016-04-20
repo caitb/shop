@@ -14,7 +14,7 @@
         <result column="is_certificate" property="isCertificate" jdbcType="INTEGER"/>
         <result column="pf_border_id" property="pfBorderId" jdbcType="BIGINT"/>
         <result column="bail" property="bail" jdbcType="DECIMAL"/>
-	    <result column="agent_num" property="agentNum" jdbcType="BIGINT" />
+        <result column="agent_num" property="agentNum" jdbcType="BIGINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -113,9 +113,9 @@
             <if test="bail != null">
                 bail = #{bail,jdbcType=DECIMAL},
             </if>
-	    <if test="agentNum != null">
-	    	agent_num = #{agentNum,jdbcType=BIGINT},
-	    </if>
+            <if test="agentNum != null">
+                agent_num = #{agentNum,jdbcType=BIGINT},
+            </if>
             <if test="userPid != null">
                 user_pid = #{userPid,jdbcType=BIGINT},
             </if>
@@ -139,7 +139,7 @@
         from pf_user_sku
     </select>
 
-    <select id="selectAgentNum"  resultMap="BaseResultMap">
+    <select id="selectAgentNum" resultMap="BaseResultMap">
         select agent_num from pf_user_sku WHERE user_id = #{userId}
     </select>
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
@@ -213,22 +213,22 @@
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfUserSku" resultMap="BaseResultMap">
         select
-               id,
-               create_time,
-               code,
-               pid,
-               user_id,
-               user_pid,
-               sku_id,
-               agent_level_id,
-               is_pay,
-               is_certificate,
-               pf_border_id,
-               bail,
-	       agent_num,
-               remark
+        id,
+        create_time,
+        code,
+        pid,
+        user_id,
+        user_pid,
+        sku_id,
+        agent_level_id,
+        is_pay,
+        is_certificate,
+        pf_border_id,
+        bail,
+        agent_num,
+        remark
         FROM
-               pf_user_sku
+        pf_user_sku
         <where>
             <if test="id != null">
                 AND id = #{id}
@@ -263,9 +263,9 @@
             <if test="bail != null">
                 and bail = #{bail,jdbcType=DECIMAL}
             </if>
-	    <if test="agentNum != null">
-	    	agent_num = #{agentNum,jdbcType=BIGINT},
-	    </if>
+            <if test="agentNum != null">
+                agent_num = #{agentNum,jdbcType=BIGINT},
+            </if>
             <if test="userPid != null">
                 and user_pid = #{userPid,jdbcType=BIGINT}
             </if>
@@ -274,22 +274,22 @@
 
     <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
         select
-                id,
-                create_time,
-                code,
-                pid,
-                user_id,
-                user_pid,
-                sku_id,
-                agent_level_id,
-                is_pay,
-                is_certificate,
-                pf_border_id,
-                bail,
-		        agent_num,
-                remark
+        id,
+        create_time,
+        code,
+        pid,
+        user_id,
+        user_pid,
+        sku_id,
+        agent_level_id,
+        is_pay,
+        is_certificate,
+        pf_border_id,
+        bail,
+        agent_num,
+        remark
         FROM
-                pf_user_sku
+        pf_user_sku
         <where>
             <if test="id != null">
                 AND id = #{id}
@@ -324,9 +324,9 @@
             <if test="bail != null">
                 and bail = #{bail,jdbcType=DECIMAL}
             </if>
-	    <if test="agentNum != null">
-	    	agent_num = #{agentNum,jdbcType=BIGINT},
-	    </if>
+            <if test="agentNum != null">
+                agent_num = #{agentNum,jdbcType=BIGINT},
+            </if>
             <if test="userPid != null">
                 and user_pid = #{userPid,jdbcType=BIGINT}
             </if>
@@ -375,14 +375,21 @@
         where s.agent_level_id = (select max(agent_level_id) - 1 from pf_user_sku );
     </select>
 
-    <select id="selectByListId" resultMap="BaseResultMap" >
+    <select id="selectByListId" resultMap="BaseResultMap">
         select
-            *
+        *
         from pf_user_sku
         where id in
         <foreach item="item" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="selectUserSkuCount" resultType="java.lang.Integer">
+        SELECT COUNT(0) FROM pf_user_sku
+        WHERE is_pay=1
+        AND is_certificate=1
+        AND user_id=#{userId}
     </select>
 </mapper>
 

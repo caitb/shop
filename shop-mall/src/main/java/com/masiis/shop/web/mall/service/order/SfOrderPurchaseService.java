@@ -190,6 +190,9 @@ public class SfOrderPurchaseService {
             List<SfShopCartSkuDetail> sfShopCartSkuDetails = (List<SfShopCartSkuDetail>) map.get("shopCartSkuDetails");
             BigDecimal skuTotalPrice = (BigDecimal) map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal) map.get("skuTotalShipAmount");
+            if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0){
+                return -2L; //购物车清空了，微信上返回获取不到购物车数据
+            }
             //判断商品是否有足够的库存
             if (isEnoughStock(sfShopCartSkuDetails)) {
                 //获得每款商品的分润信息
@@ -288,7 +291,7 @@ public class SfOrderPurchaseService {
         log.info("判断商品是否有足够的库存----start");
         Boolean bl = true;
         if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0) {
-            throw new BusinessException("判断库存商品详情信息为null");
+           return false;
         }
         for (SfShopCartSkuDetail cartSkuDetail : sfShopCartSkuDetails) {
             int n = skuService.checkSkuStock(cartSkuDetail.getComSku().getId(), cartSkuDetail.getQuantity(), cartSkuDetail.getSfShopId());

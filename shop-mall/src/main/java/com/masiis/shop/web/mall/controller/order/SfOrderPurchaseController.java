@@ -78,7 +78,7 @@ public class SfOrderPurchaseController extends BaseController {
             }*/
             log.info("message------"+message);
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
-            if (orderId != null){
+            if (orderId != null && orderId >0 ){
                 obj.put("isSubmitOrder","true");
             }else{
                 obj.put("isSubmitOrder","false");

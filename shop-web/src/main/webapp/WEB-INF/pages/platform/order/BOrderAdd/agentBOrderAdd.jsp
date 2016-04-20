@@ -14,23 +14,35 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);">
-                <img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <c:choose>
+                <c:when test="${previousPageType==0}">
+                    <a href="${basePath}userApply/register.shtml?skuId=${bOrderConfirm.skuId}">
+                        <img src="${path}/static/images/xq_rt.png" alt=""></a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${basePath}border/setUserSendType.shtml?skuId=${bOrderConfirm.skuId}&agentLevelId=${bOrderConfirm.agentLevelId}&weiXinId=${bOrderConfirm.wenXinId}">
+                        <img src="${path}/static/images/xq_rt.png" alt=""></a>
+                </c:otherwise>
+            </c:choose>
             <p>支付订单</p>
         </header>
         <main>
-            <c:if test="${bOrderConfirm.orderType==0}">
-                <div class="xinxi">
-                    <p>注册信息</p>
-                    <p>选择拿货方式</p>
-                    <p>支付订单</p>
-                </div>
-                <div class="xinxi two" style="display: -webkit-box;">
-                    <p>信息填写</p>
-                    <p>支付订单</p>
-                    <p>完成合伙</p>
-                </div>
-            </c:if>
+            <c:choose>
+                <c:when test="${comUser.sendType==0}">
+                    <div class="xinxi">
+                        <p>注册信息</p>
+                        <p>选择拿货方式</p>
+                        <p>支付订单</p>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="xinxi two" style="display: -webkit-box;">
+                        <p>信息填写</p>
+                        <p>支付订单</p>
+                        <p>完成合伙</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
             <c:if test="${isQueuing==true}">
                 <div class="paidan">
                     <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>

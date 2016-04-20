@@ -144,6 +144,7 @@
         paraData += "&agentLevelId=${agentLevelId}";
         paraData += "&weiXinId=${weiXinId}";
         paraData += "&sendType=" + sendType;
+        paraData += "&previousPageType=1";
         window.location.href = "${basePath}BOrderAdd/agentBOrder.shtml" + paraData;
     }
     /*

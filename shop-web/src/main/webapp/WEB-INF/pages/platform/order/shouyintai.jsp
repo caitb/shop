@@ -15,16 +15,22 @@
         <%--<a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>订单支付</p>
     </header>
-    <div class="xinxi">
-        <p>注册信息</p>
-        <p>选择拿货方式</p>
-        <p>支付订单</p>
-    </div>
-    <div class="xinxi two" style="display: -webkit-box;">
-        <p>信息填写</p>
-        <p>支付订单</p>
-        <p>完成合伙</p>
-    </div>
+    <c:choose>
+        <c:when test="${comUser.sendType==0}">
+            <div class="xinxi">
+                <p>注册信息</p>
+                <p>选择拿货方式</p>
+                <p>支付订单</p>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="xinxi two" style="display: -webkit-box;">
+                <p>信息填写</p>
+                <p>支付订单</p>
+                <p>完成合伙</p>
+            </div>
+        </c:otherwise>
+    </c:choose>
     <div class="sec1">
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">
             <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>

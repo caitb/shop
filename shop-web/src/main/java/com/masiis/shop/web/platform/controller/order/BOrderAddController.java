@@ -62,6 +62,7 @@ public class BOrderAddController extends BaseController {
                                     @RequestParam(value = "agentLevelId", required = true) Integer agentLevelId,
                                     @RequestParam(value = "weiXinId", required = true) String weiXinId,
                                     @RequestParam(value = "sendType", required = true) Integer sendType,
+                                    @RequestParam(value = "previousPageType", required = true) Integer previousPageType,
                                     @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
         ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/agentBOrderAdd");
         ComUser comUser = getComUser(request);
@@ -131,7 +132,9 @@ public class BOrderAddController extends BaseController {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
+        mv.addObject("comUser", comUser);
         mv.addObject("bOrderConfirm", bOrderConfirm);
+        mv.addObject("previousPageType", previousPageType);
         mv.addObject("isQueuing", isQueuing);
         mv.addObject("count", count);
         return mv;

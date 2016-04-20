@@ -24,6 +24,7 @@
         <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
         <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
         <result column="is_trial" property="isTrial" jdbcType="INTEGER"/>
+        <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
@@ -69,7 +70,7 @@
     </select>
     <!-->用户商品列表<-->
     <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="Long">
-        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock,pfu.frozen_stock
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.user_id = #{userId}

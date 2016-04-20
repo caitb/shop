@@ -134,6 +134,7 @@ public class ProductService {
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
+                product.setStock(product.getStock()-product.getFrozenStock());
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

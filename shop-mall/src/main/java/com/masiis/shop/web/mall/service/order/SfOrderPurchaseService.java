@@ -328,7 +328,7 @@ public class SfOrderPurchaseService {
             log.info("获得购买人--id为" + purchaseUserId + "---的上级关系共有---" + sfUserRelations.size());
             for (int i = 0; i < sfUserRelations.size(); i++) {
                 /*一条订单的总的分润*/
-                orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                 /*获得一款商品的购买人上级总的分润*/
                 BigDecimal skuDis = skuDisMap.get(skuId);
                 if (skuDis == null) {

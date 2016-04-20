@@ -83,7 +83,7 @@
             </div>
             <section class="sec4">
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
-                <p>共需支付：￥${bOrderConfirm.orderTotalPrice}</p>
+                <p><b>共需支付：</b><span>￥${bOrderConfirm.orderTotalPrice}</span></p>
             </section>
             <a href="javascript:;" onclick="submit(this);" class="weixin">下一步</a>
         </main>

@@ -19,7 +19,7 @@
 </head>
 <body>
 <div class="wrap">
-    <c:if test="${pUser.id!=user.id && pUser.id != sfShop.userId && userPid !=null}">
+    <c:if test="${userPid!=user.id && userPid != sfShop.userId && userPid !=null}">
     <div class="na">
         <p><img src="${pUser.wxHeadImg}" alt=""></p>
         <h1>
@@ -69,7 +69,7 @@
 
                 <h3>${sd.slogan}</h3>
 
-                <h2>运费：<span>${sfShop.shipAmount}</span><b>￥${sd.priceRetail}</b></h2>
+                <h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b>￥${sd.priceRetail}</b></h2>
 
                 <p>
                     <button>立即购买</button>

@@ -5,6 +5,7 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.utils.UploadImage;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ import java.io.IOException;
  */
 @Service
 public class UserIdentityAuthService {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserService userService;
@@ -56,7 +59,9 @@ public class UserIdentityAuthService {
         identityAuthRealPath = getIdentityAuthRealPath(request);
         //OSS下载到本地服务器
         isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
+        log.info("从服务器上下载身份证图片----前面图片路径----"+identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
         isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
+        log.info("从服务器上下载身份证图片----后面图片路径----"+identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
         OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
         //OSS删除
@@ -71,6 +76,7 @@ public class UserIdentityAuthService {
             try {
                 // 如果路径不存在,则创建
                 if (!file.getParentFile().exists()) {
+                    log.info("路径不存在创建路径");
                     file.getParentFile().mkdirs();
                 }
                 file.createNewFile();

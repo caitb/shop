@@ -25,6 +25,11 @@
                     <p>选择拿货方式</p>
                     <p>支付订单</p>
                 </div>
+                <div class="xinxi two" style="display: -webkit-box;">
+                    <p>信息填写</p>
+                    <p>支付订单</p>
+                    <p>完成合伙</p>
+                </div>
             </c:if>
             <c:if test="${isQueuing==true}">
                 <div class="paidan">
@@ -83,7 +88,7 @@
             </div>
             <section class="sec4">
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
-                <p>共需支付：￥${bOrderConfirm.orderTotalPrice}</p>
+                <p><b>共需支付：</b><span>￥${bOrderConfirm.orderTotalPrice}</span></p>
             </section>
             <a href="javascript:;" onclick="submit(this);" class="weixin">下一步</a>
         </main>

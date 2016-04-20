@@ -13,15 +13,10 @@
 </head>
 <body>
 <div class="wrap">
-    <header class="xq_header">
-        <p>个人信息</p>
-    </header>
     <main>
         <div class="head_img" style="background: url('${path}/static/images/gerenxinxibeijing.png');background-size: 100% 100%">
             <p><img src="${comUser.wxHeadImg}" alt=""></p>
-            <div><h1>${comUser.realName}</h1>
-<%--                    <span><img src="${path}/static/images/admin.png" alt=""></span>
-                    <span><img src="${path}/static/images/admin.png" alt=""></span>--%>
+            <div><h1>${comUser.wxNkName}</h1>
                 <h1>
                     <c:if test="${pfskuAgents!=null}">
                         <c:forEach items="${pfskuAgents}" var="skuAgent">

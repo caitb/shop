@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
@@ -12,7 +13,9 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.mall.constants.WxConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.product.SkuImageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
+import com.masiis.shop.web.mall.service.product.SpuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -56,6 +59,10 @@ public class SfShopController extends BaseController {
     private SfShopService sfShopService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SkuImageService skuImageService;
+    @Resource
+    private SpuService spuService;
     @Resource
     private UserService userService;
     @Resource
@@ -136,9 +143,9 @@ public class SfShopController extends BaseController {
 
 
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
-            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+            String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
             if(jsapi_ticket == null){
-                log.info("从redis获取的jsapi_ticket=null");
+                log.info("从redis获取的mall_jsapi_ticket=null");
                 jsapi_ticket = new JsapiTicketTask().requestTicket();
             }
 
@@ -286,12 +293,31 @@ public class SfShopController extends BaseController {
         }
         ComUser fromUser = userService.getUserById(fromUserId);
         userService.getShareUser(user.getId(),fromUserId,shopId);//来自分享人的信息
+
+        //jssdk
+        String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+fromUserId;
+        String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
+        if(jsapi_ticket == null){
+            log.info("从redis获取的mall_jsapi_ticket=null");
+            jsapi_ticket = new JsapiTicketTask().requestTicket();
+        }
+
+        Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
+        shareMap.put("appId", WxConstants.APPID);
+        shareMap.put("shareTitle", "我是"+user.getRealName()+",我为"+skuInfo.getComSku().getName()+"代言!");
+        shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
+        shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
+        shareMap.put("shareLink", curUrl);
+
+
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
         mav.addObject("skuInfo", skuInfo);//商品信息
         mav.addObject("SkuImageList", comSkuImageList);//图片列表
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
         mav.addObject("shopId", shopId);
         mav.addObject("fromUser", fromUser);//分享链接人信息
+
+        mav.addObject("shareMap", shareMap);
         return mav;
     }
 

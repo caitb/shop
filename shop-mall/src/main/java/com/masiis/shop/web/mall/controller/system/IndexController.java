@@ -66,10 +66,15 @@ public class IndexController extends BaseController {
         sfUserShopViewService.addShopView(user.getId(),shopId);
         SfShop sfShop =null;
         List<SfShopSku> sfShopSkus =null;
+//        BigDecimal ShipAmount=new BigDecimal(0);
+        boolean ok = true;
         if(shopId==null){
             throw new BusinessException("shopId不能为空");
         }else{
             sfShop = sfShopService.getSfShopById(shopId);
+            if(sfShop.getShipAmount().longValue()==0.00){
+                ok=false;
+            }
             if(sfShop==null){
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
@@ -77,7 +82,7 @@ public class IndexController extends BaseController {
         }
 
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
-        BigDecimal bail=new BigDecimal(0);
+//        BigDecimal bail=new BigDecimal(0);
         for (SfShopSku sfShopSku:sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
@@ -91,7 +96,7 @@ public class IndexController extends BaseController {
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
             sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
-            bail=sfShopSku.getBail().add(bail);//保证金
+//            bail=sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);
         }
@@ -100,7 +105,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid",userPid);
         modelAndView.addObject("sfShop",sfShop);
-        modelAndView.addObject("bail",bail);//保证金
+        modelAndView.addObject("ok",ok);//保证金
         modelAndView.addObject("SfShopDetails",SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;

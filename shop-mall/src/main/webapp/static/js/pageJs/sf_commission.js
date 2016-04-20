@@ -83,3 +83,10 @@ function viewMore(userId){
         });
     }
 }
+
+function showDetail(){
+    $("#detail").show();
+}
+function hideDetail(){
+    $("#detail").hide();
+}

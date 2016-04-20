@@ -23,7 +23,7 @@
 <div class="wrap">
     <main>
         <header class="xq_header">
-            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
             <p>商品管理</p>
         </header>
         <div id="box">

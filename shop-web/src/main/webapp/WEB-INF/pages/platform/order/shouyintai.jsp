@@ -12,13 +12,18 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <%--<a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>订单支付</p>
     </header>
     <div class="xinxi">
         <p>注册信息</p>
         <p>选择拿货方式</p>
         <p>支付订单</p>
+    </div>
+    <div class="xinxi two" style="display: -webkit-box;">
+        <p>信息填写</p>
+        <p>支付订单</p>
+        <p>完成合伙</p>
     </div>
     <div class="sec1">
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">

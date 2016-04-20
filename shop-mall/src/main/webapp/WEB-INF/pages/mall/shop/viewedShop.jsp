@@ -15,13 +15,13 @@
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
     <header>
-        <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>浏览过的店铺</p>
     </header>
-    <div class="wrap">
-        <section class="sec1">
-            <div id="viewedShop">
-                <c:forEach var="userShopView" items="${sfUserShopViews}">
+    <div class="wrap" >
+        <div id="viewedShop">
+            <c:forEach var="userShopView" items="${sfUserShopViews}">
+                <section class="sec1">
                     <p class="photo">
                         <img src="${path}${userShopView.logo}" alt="">
                     </p>
@@ -35,15 +35,15 @@
                         </h1>
                         <h3>${userShopView.explanation}</h3>
                         <c:if test="${userShopView.days == 0}">
-                            <h2><span>今天浏览过</span><b>点击查看></b></h2>
+                            <h2><span>今天浏览过</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
                         </c:if>
                         <c:if test="${userShopView.days > 0}">
-                            <h2><span>${userShopView.days}天前浏览过</span><b onclick="showShop(${userShopView.shopId})">点击查看></b></h2>
+                            <h2><span>${userShopView.days}天前浏览过</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
                         </c:if>
                     </div>
-                </c:forEach>
-            </div>
-        </section>
+                </section>
+            </c:forEach>
+        </div>
         <p style="text-align: center;"><a href="#" onclick="showMore()">查看更多></a></p>
     </div>
 <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
@@ -52,7 +52,7 @@
 <script type="application/javascript" src="${path}/static/js/pageJs/viewedShop.js"></script>
 <script type="application/javascript">
     var path = "${path}";
-    var basepath = "${basePath}";
+    var basepath = "${basepath}";
 </script>
 </body>
 </html>

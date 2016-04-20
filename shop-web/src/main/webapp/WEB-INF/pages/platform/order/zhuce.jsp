@@ -13,7 +13,7 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);">
+            <a href="${basePath}userApply/apply.shtml?skuId=${skuId}">
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>申请合伙人</p>
         </header>
@@ -21,6 +21,11 @@
             <p>注册信息</p>
             <p>选择拿货方式</p>
             <p>支付订单</p>
+        </div>
+        <div class="xinxi two" style="display: -webkit-box;">
+            <p>信息填写</p>
+            <p>支付订单</p>
+            <p>完成合伙</p>
         </div>
         <c:if test="${isQueuing==true}">
             <div class="paidan">

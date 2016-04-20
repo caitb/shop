@@ -233,19 +233,4 @@ public class UserApplyController extends BaseController {
         }
         return jsonObject.toJSONString();
     }
-
-    /**
-     * 申请完成
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/15 17:03
-     */
-    @RequestMapping("/applyOK.shtml")
-    public ModelAndView applyOK() throws Exception {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("platform/order/shenqingok");
-        return modelAndView;
-    }
-
-
 }

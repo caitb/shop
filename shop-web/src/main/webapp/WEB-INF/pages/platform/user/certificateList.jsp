@@ -22,7 +22,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>我的证书</p>
     </header>
     <main>

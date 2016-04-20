@@ -22,8 +22,8 @@
 
     <div class="main">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);"><img src="${path}/static/images/xq_rt.png"
-                                                                              alt=""></a>
+            <a href="${basePath}userApply/register.shtml?skuId=${skuId}">
+                <img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>拿货方式</p>
         </header>
         <div class="xinxi">
@@ -53,17 +53,17 @@
                         <td>自建（成本高）</td>
                     </tr>
                     <tr>
-                        <td>仓库</td>
+                        <td>发货</td>
                         <td>平台提供</td>
                         <td>自建（成本高）</td>
                     </tr>
                     <tr>
-                        <td>下级合伙人平台</td>
+                        <td>下级合伙人平台代发</td>
                         <td>支持</td>
                         <td>不支持</td>
                     </tr>
                     <tr>
-                        <td>店铺代发</td>
+                        <td>店铺发货</td>
                         <td>平台代发</td>
                         <td>自己发货（人工成本高）</td>
                     </tr>
@@ -75,8 +75,8 @@
                 </table>
                 <div>
                     <h1>1. 平台代发<span>(推荐)</span></h1>
-                    <p>您可以省去仓储和发货事物，平台将为您提专业的供仓储、发货服务（价值58800元的仓储发货套餐免费试用一年）；无论您的订单是发给下级合伙人还是发给普通消费者，平台统统可以为您搞定</p>
-                    <p><span>注：</span>此方式支持您在商品管理中提货</p>
+                    <p>您可以省去仓储和发货事物，平台将为您提供专业的仓储、发货服务（价值58800元的仓储发货套餐免费试用一年）；无论您的订单是发给下级合伙人还是发给普通消费者，平台统统可以为您搞定</p>
+                    <p><span></span>此方式支持您在商品管理中提货</p>
                 </div>
                 <div>
                     <h1>2. 由我自己发货</h1>
@@ -86,7 +86,7 @@
             </div>
             <div class="sec2">
                 <h1>请选择拿货方式</h1>
-                <button id="platformSendGoodsId" onclick="platformSendGoods()" class="active">平台待发货（90%的用户选择）</button>
+                <button id="platformSendGoodsId" onclick="platformSendGoods()" class="active">平台代发货（90%的用户选择）</button>
                 <button id="ownSendGoodsId" onclick="ownSendGoods()">自己发货</button>
                 <p>*选择后，您的其他合伙商品将使用同一种方式，不可更改</p>
             </div>

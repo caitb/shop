@@ -112,7 +112,7 @@
         Your browser does not support HTML5 Canvas.
     </canvas>
     <img src="${shopPoster}" />
-    <b id="downloadPoster2">长按图片保存海报</b>
+    <b id="hideOptionMenu">长按图片保存海报</b>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -180,6 +180,7 @@
         link: '${shareMap.shareLink}',
         imgUrl: '${shareMap.shareImg}'
     };
+
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>

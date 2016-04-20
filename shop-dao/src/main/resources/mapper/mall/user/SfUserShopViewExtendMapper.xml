@@ -9,7 +9,7 @@
         <result column="shop_user_id" property="shopUserId" jdbcType="BIGINT" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="shopName" property="shopName" jdbcType="VARCHAR" />
-        <result column="explanation" property="explanation" jdbcType="VARBINARY" />
+        <result column="explanation" property="explanation" jdbcType="VARCHAR" />
         <result column="bailFee" property="bailFee" jdbcType="DECIMAL"/>
         <result column="days" property="days" jdbcType="BIGINT" />
         <result column="logo" property="logo" jdbcType="VARCHAR" />

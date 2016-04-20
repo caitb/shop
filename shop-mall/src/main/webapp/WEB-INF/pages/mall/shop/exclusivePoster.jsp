@@ -111,6 +111,6 @@
         imgUrl: '${shareMap.shareImg}'
     };
 </script>
-<script src="<%=basePath%>static/js/zepto.min.js"></script>
-<script src="<%=basePath%>static/js/share.js"> </script>
+<script src="<%=basePath%>static/js/pageJs/zepto.min.js"></script>
+<script src="<%=basePath%>static/js/pageJs/share.js"> </script>
 </html>

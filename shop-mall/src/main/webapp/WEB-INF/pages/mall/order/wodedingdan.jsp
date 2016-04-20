@@ -314,9 +314,9 @@
                        data:{orderId:oid},
                        dataType:"Json",
                        success:function(date){
-                           $(""+aa+"").attr("style","display:none");
+                           $(""+aa+"").css("display","none");
                            $(""+bb+"").html("交易成功");
-//                            location.reload(true);
+                           location.reload(true);
                        }
                    });
                });

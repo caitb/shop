@@ -241,7 +241,7 @@ public class SfUserExtractApplyController extends BaseController{
                 for (SfUserExtractApply sfUserExtractApply : sfUserExtractApplies){
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("date",sdf.format(sfUserExtractApply.getApplyTime())+"日");
-                    jsonObject.put("extractFee",sfUserExtractApply.getExtractFee());
+                    jsonObject.put("extractFee",sfUserExtractApply.getExtractFee().toString());
                     jsonObject.put("status",sfUserExtractApply.getAuditType()==0?"待审核":sfUserExtractApply.getAuditType()==1?"已拒绝":sfUserExtractApply.getAuditType()==2?"待打款":"已付款");
                     jsonObject.put("totalPage",pageNums);
                     jsonArray.put(jsonObject);

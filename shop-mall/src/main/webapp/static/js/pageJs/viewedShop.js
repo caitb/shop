@@ -1,7 +1,7 @@
 
 function showMore() {
-    var currentPage = $("#currentPage").val();
-    var totalPage = $("#totalPage").val();
+    var currentPage = parseInt($("#currentPage").val());
+    var totalPage = parseInt($("#totalPage").val());
     var count = $(".shop").length;
     if (currentPage < totalPage) {
         $.ajax({
@@ -31,6 +31,6 @@ function showMore() {
  * 查看商铺详情
  * @param shopId
  */
-function showShop(shopId){
-    alert("shopId:"+shopId);
+function showShop(shopId,userId){
+    window.location.href=basepath+shopId+"/"+userId+"/shop.shtml";
 }

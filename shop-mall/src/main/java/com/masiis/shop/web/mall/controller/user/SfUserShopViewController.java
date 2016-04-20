@@ -9,7 +9,6 @@ import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +51,7 @@ public class SfUserShopViewController extends BaseController {
         Integer count = sfUserShopViewService.findCountByUserId(userId);
         //默认设置每页显示20条
         Integer totalPage = count%20 == 0 ? count/20 : count/20 + 1;
-        List<SfUserShopView> sfUserShopViews = null;
+        List<SfUserShopView> sfUserShopViews = new ArrayList<>();
         if (count > 0){
             logger.info("用户查看浏览过的店铺userId="+userId);
             List<SfUserShopView> shopViews = sfUserShopViewService.findShopViewByUserIdByLimit(userId,1,20);
@@ -111,17 +111,21 @@ public class SfUserShopViewController extends BaseController {
         for (SfUserShopView sfUserShopView : shopViews){
             sfShopSkus = sfShopSkuService.findShopSkuByShopId(sfUserShopView.getShopId());
             sfUserShopView.setShopSkus(sfShopSkus);
-            str.append("<p class='photo><img src='"+path + sfUserShopView.getLogo()+"' alt=''></p>");
+            str.append("<section class=\"sec1\">");
+            str.append("<p class=\"photo\">");
+            str.append("<img src=\""+path + sfUserShopView.getLogo()+"\" alt=\"\">");
+            str.append("</p>");
             str.append("<div class=\"shop\"><h2>"+sfUserShopView.getShopName()+"</h2><h1>");
             for (SfShopSku sku : sfShopSkus){
                 str.append("<img src=\""+ path + sku.getIcon() +"\" alt=\"\">");
             }
             str.append(sfUserShopView.getBailFee()+"保证金</h1><h3>"+sfUserShopView.getExplanation()+"</h3>");
             if (sfUserShopView.getDays() == 0){
-                str.append("<h2><span>今天浏览过</span><b>点击查看></b></h2>");
+                str.append("<h2><span>今天浏览过</span><b onclick=\"showShop(\"+sfUserShopView.getShopId()+\",\"+sfUserShopView.getShopUserId()+\")\">点击查看></b></h2>");
             }else {
-                str.append("<h2><span>"+sfUserShopView.getDays()+"天前浏览过</span><b onclick=\"showShop("+sfUserShopView.getShopId()+")\">点击查看></b></h2>");
+                str.append("<h2><span>"+sfUserShopView.getDays()+"天前浏览过</span><b onclick=\"showShop("+sfUserShopView.getShopId()+","+sfUserShopView.getShopUserId()+")\">点击查看></b></h2>");
             }
+            str.append("</div></section>");
         }
         jsonObject.put("isTrue","true");
         jsonObject.put("message",str);

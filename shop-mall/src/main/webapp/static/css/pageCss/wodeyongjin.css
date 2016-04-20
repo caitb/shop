@@ -220,3 +220,67 @@
   border-radius: 5px;
   color: white;
 }
+.back_j {
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  z-index: 10;
+  background: white;
+  padding-bottom: 15px;
+}
+.back_j h1 {
+  margin: 0 5px;
+  border-bottom: 1px solid #F74A11;
+  text-indent: 10px;
+  line-height: 28px;
+  margin-bottom: 5px;
+  color: #FF5200;
+}
+.back_j p {
+  margin: 10px;
+  text-indent: 2em;
+}
+.back_j botton {
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: #C2C2C2;
+  border-radius: 5px;
+}
+
+.back_s {
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  z-index: 10;
+  background: white;
+  padding-bottom: 15px;
+  border-radius: 5px;
+}
+.back_s h1 {
+  margin: 0 5px;
+  border-bottom: 1px solid #F74A11;
+  text-indent: 10px;
+  line-height: 40px;
+  margin-bottom: 5px;
+  color: #FF5200;
+}
+.back_s p {
+  margin: 10px;
+  text-indent: 2em;
+}
+.back_s button {
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: #C2C2C2;
+  border-radius: 5px;
+}

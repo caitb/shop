@@ -17,7 +17,7 @@ public class SfUserShopViewExtend {
     /**
      * 小铺描述
      */
-    private byte[] explanation;
+    private String explanation;
     /**
      * 用户账户保证金W
      */
@@ -43,11 +43,11 @@ public class SfUserShopViewExtend {
         this.shopName = shopName;
     }
 
-    public byte[] getExplanation() {
+    public String getExplanation() {
         return explanation;
     }
 
-    public void setExplanation(byte[] explanation) {
+    public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
 

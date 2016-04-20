@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>我的佣金</p>
     </header>
     <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
@@ -28,7 +28,7 @@
                 <li>
                     <p>结算中：</p>
                     <h1><span>￥</span>${userAccount.countingFee}</h1>
-                    <h2>查看说明</h2>
+                    <h2><a onclick="showDetail()">查看说明</a></h2>
                 </li>
             </ul>
         </nav>
@@ -70,6 +70,13 @@
         </div>
         <p class="tishi" id="errorMessageId"></p>
         <h1 class="j_qu" id="nextPageId">下一步</h1>
+    </div>
+    <div class="back_s" id="detail" style="display: none">
+        <h1>什么是结算中</h1>
+        <p>
+            为了响应国家爱号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+        </p>
+        <button onClick="hideDetail()">我知道了</button>
     </div>
     <div class="back">
     </div>

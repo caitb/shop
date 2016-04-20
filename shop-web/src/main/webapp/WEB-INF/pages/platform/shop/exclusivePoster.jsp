@@ -180,6 +180,9 @@
         link: '${shareMap.shareLink}',
         imgUrl: '${shareMap.shareImg}'
     };
+
+    wx.hideOptionMenu();
+
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>

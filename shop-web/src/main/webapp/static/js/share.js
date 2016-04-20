@@ -11,20 +11,22 @@
  */
 wx.ready(function () {
 
-    wx.onMenuShareAppMessage(shareData);
-    wx.onMenuShareTimeline(shareData);
-    wx.onMenuShareQQ(shareData);
-    wx.onMenuShareQZone(shareData);
-    wx.onMenuShareWeibo(shareData);
+    //wx.onMenuShareAppMessage(shareData);
+    //wx.onMenuShareTimeline(shareData);
+    //wx.onMenuShareQQ(shareData);
+    //wx.onMenuShareQZone(shareData);
+    //wx.onMenuShareWeibo(shareData);
+    //
+    //
+    //function decryptCode(code, callback) {
+    //    $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
+    //        if (res.errcode == 0) {
+    //            codes.push(res.code);
+    //        }
+    //    });
+    //}
 
-
-    function decryptCode(code, callback) {
-        $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
-            if (res.errcode == 0) {
-                codes.push(res.code);
-            }
-        });
-    }
+    wx.hideOptionMenu();
 });
 
 wx.error(function (res) {

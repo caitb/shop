@@ -20,6 +20,11 @@
         <p>选择拿货方式</p>
         <p>支付订单</p>
     </div>
+    <div class="xinxi two" style="display: -webkit-box;">
+        <p>信息填写</p>
+        <p>支付订单</p>
+        <p>完成合伙</p>
+    </div>
     <div class="sec1">
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">
             <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>

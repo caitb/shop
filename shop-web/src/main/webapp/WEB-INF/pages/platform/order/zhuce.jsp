@@ -22,6 +22,11 @@
             <p>选择拿货方式</p>
             <p>支付订单</p>
         </div>
+        <div class="xinxi two" style="display: -webkit-box;">
+            <p>信息填写</p>
+            <p>支付订单</p>
+            <p>完成合伙</p>
+        </div>
         <c:if test="${isQueuing==true}">
             <div class="paidan">
                 <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>

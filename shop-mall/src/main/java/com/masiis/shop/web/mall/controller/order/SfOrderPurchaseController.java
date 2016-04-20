@@ -73,12 +73,12 @@ public class SfOrderPurchaseController extends BaseController {
             if (comUser == null){
                 throw new BusinessException("获取comuser为null");
             }
-            if (!StringUtils.isEmpty(message)){
+/*            if (!StringUtils.isEmpty(message)){
                 message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
-            }
+            }*/
             log.info("message------"+message);
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
-            if (orderId != null){
+            if (orderId != null && orderId >0 ){
                 obj.put("isSubmitOrder","true");
             }else{
                 obj.put("isSubmitOrder","false");
@@ -86,8 +86,6 @@ public class SfOrderPurchaseController extends BaseController {
             obj.put("sfOrderId",orderId);
             log.info("提交订单-----end");
             return obj.toJSONString();
-        }catch (UnsupportedEncodingException e){
-            throw new BusinessException("留言信息转化为中文出错");
         }catch (Exception e){
             throw new BusinessException(e);
         }

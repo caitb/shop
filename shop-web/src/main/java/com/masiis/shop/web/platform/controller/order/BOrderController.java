@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -13,6 +14,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang.StringUtils;
@@ -45,6 +47,8 @@ public class BOrderController extends BaseController {
     private SkuService skuService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private PfUserSkuMapper pfUserSkuMapper;
 
     /**
      * 选择拿货方式
@@ -213,17 +217,19 @@ public class BOrderController extends BaseController {
         } else if (pfBorder.getSendType() == 2) {
             sendTypeName = "自己发货";
         }
+        Integer skuCount = pfUserSkuMapper.selectUserSkuCount(comUser.getId());
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
         mav.addObject("pRealName", pRealName);
         mav.addObject("sendTypeName", sendTypeName);
         mav.addObject("pfBorder", pfBorder);
+        mav.addObject("skuCount", skuCount);
         boolean isQueuing = false;
         Integer count = 0;
         if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
             isQueuing = true;
-            count = bOrderService.selectQueuingOrderCount(pfBorderItems.get(0).getSkuId());
+            count = bOrderService.selectQueuingOrderCount(pfBorderItems.get(0).getSkuId()) - 1;
         }
         mav.addObject("isQueuing", isQueuing);
         mav.addObject("count", count);

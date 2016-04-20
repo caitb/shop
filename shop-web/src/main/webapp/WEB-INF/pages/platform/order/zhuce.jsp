@@ -13,7 +13,7 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);">
+            <a href="${basePath}userApply/apply.shtml?skuId=${skuId}">
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>申请合伙人</p>
         </header>

@@ -174,6 +174,7 @@ public class VerifyController extends BaseController {
                 return createRedirectRes(auth_base_url);
             }
             System.out.println("val:" + val);
+            log.info("unionid:" + unionid);
             // 根据unionid获取用户对象
             ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConstants.APPID);
             if(wxUser == null){

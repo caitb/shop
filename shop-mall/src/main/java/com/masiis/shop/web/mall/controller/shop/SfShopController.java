@@ -143,9 +143,9 @@ public class SfShopController extends BaseController {
 
 
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
-            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+            String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
             if(jsapi_ticket == null){
-                log.info("从redis获取的jsapi_ticket=null");
+                log.info("从redis获取的mall_jsapi_ticket=null");
                 jsapi_ticket = new JsapiTicketTask().requestTicket();
             }
 
@@ -296,9 +296,9 @@ public class SfShopController extends BaseController {
 
         //jssdk
         String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+fromUserId;
-        String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+        String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
         if(jsapi_ticket == null){
-            log.info("从redis获取的jsapi_ticket=null");
+            log.info("从redis获取的mall_jsapi_ticket=null");
             jsapi_ticket = new JsapiTicketTask().requestTicket();
         }
 

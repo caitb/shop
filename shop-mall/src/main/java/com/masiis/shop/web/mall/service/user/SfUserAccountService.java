@@ -150,9 +150,6 @@ public class SfUserAccountService {
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(countFee));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
-            // 计算店主此次总利润
-            ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, countFee,
-                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), comUserAccount);
             // 小铺店主利润
             BigDecimal profit = new BigDecimal(0);
             // 每个分润用户的分润金额map,key:userId;value:fee
@@ -160,7 +157,7 @@ public class SfUserAccountService {
             List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
             for(SfOrderItem item:sfOrderItems) {
                 // 计算单个item的小铺店主利润
-                profit.add(calculateShopkeeperProfitBySfOrder(item, shopKeeper));
+                profit = profit.add(calculateShopkeeperProfitBySfOrder(item, shopKeeper));
 
                 // 计算单个item的分销分润
                 List<SfOrderItemDistribution> distributions = distributionMapper.selectBySfOrderItemId(item.getId());
@@ -175,6 +172,13 @@ public class SfUserAccountService {
                     distributionMapper.updateByPrimaryKey(dis);
                 }
             }
+            profit = profit.subtract(order.getDistributionAmount());
+            if(profit.compareTo(BigDecimal.ZERO) < 0){
+                profit = BigDecimal.ZERO;
+            }
+            // 计算店主此次总利润
+            ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,
+                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), comUserAccount);
             // 设置店主总利润
             pfprofitRecord.setPrevFee(comUserAccount.getProfitFee());
             comUserAccount.setProfitFee(comUserAccount.getProfitFee().add(profit));
@@ -272,8 +276,6 @@ public class SfUserAccountService {
      * @return
      */
     private BigDecimal calculateShopkeeperProfitBySfOrder(SfOrderItem item, ComUser shopKeeper) {
-        BigDecimal profit = new BigDecimal(0);
-
         // 查询小铺店主的代理信息
         ComSku sku = skuMapper.findBySkuId(item.getSkuId());
         PfUserSku userSku = userSkuMapper.selectByUserIdAndSkuId(shopKeeper.getId(), sku.getId());
@@ -282,9 +284,7 @@ public class SfUserAccountService {
         if(itemProfit.compareTo(BigDecimal.ZERO) < 0){
             itemProfit = BigDecimal.ZERO;
         }
-        profit.add(itemProfit);
-
-        return profit;
+        return itemProfit;
     }
 
     private ComUserAccountRecord createComUserAccountRecordBySfOrder(SfOrder order, BigDecimal countFee,

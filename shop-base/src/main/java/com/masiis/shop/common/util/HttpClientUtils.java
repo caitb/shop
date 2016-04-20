@@ -27,7 +27,7 @@ public class HttpClientUtils {
      * @param jsonParam     参数
      * @return
      */
-    public static String httpPost(String url,JSONObject jsonParam){
+    public static String httpPost(String url,String jsonParam){
         //post请求返回结果
         DefaultHttpClient httpClient = new DefaultHttpClient();
         String res = null;
@@ -72,6 +72,7 @@ public class HttpClientUtils {
             //发送get请求
             HttpGet request;
             request = new HttpGet(url);
+            request.addHeader("Content-Type", "text/plain");
             HttpResponse response = client.execute(request);
 
             /**请求发送成功，并得到响应**/

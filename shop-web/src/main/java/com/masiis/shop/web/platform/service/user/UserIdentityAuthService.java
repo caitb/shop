@@ -58,12 +58,12 @@ public class UserIdentityAuthService {
     private void loadIdCardFromOSSToLocal(HttpServletRequest request,ComUser comUser){
         identityAuthRealPath = getIdentityAuthRealPath(request);
         //OSS下载到本地服务器
-        isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
-        log.info("从服务器上下载身份证图片----前面图片路径----"+identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
-        isExistFile(identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
-        log.info("从服务器上下载身份证图片----后面图片路径----"+identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
-        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), identityAuthRealPath+"\\"+comUser.getIdCardFrontUrl());
-        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), identityAuthRealPath+"\\"+comUser.getIdCardBackUrl());
+        isExistFile(identityAuthRealPath+comUser.getIdCardFrontUrl());
+        log.info("从服务器上下载身份证图片----前面图片路径----"+identityAuthRealPath+comUser.getIdCardFrontUrl());
+        isExistFile(identityAuthRealPath+comUser.getIdCardBackUrl());
+        log.info("从服务器上下载身份证图片----后面图片路径----"+identityAuthRealPath+comUser.getIdCardBackUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardFrontUrl(), identityAuthRealPath+comUser.getIdCardFrontUrl());
+        OSSObjectUtils.downloadFile(OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + comUser.getIdCardBackUrl(), identityAuthRealPath+comUser.getIdCardBackUrl());
         //OSS删除
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardFrontUrl());
         //OSSObjectUtils.deleteBucketFile(comUser.getIdCardBackUrl());

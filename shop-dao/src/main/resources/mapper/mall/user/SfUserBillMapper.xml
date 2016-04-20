@@ -63,4 +63,11 @@
         from sf_user_bill
     </select>
 
+    <select id="selectBillNumsByDate" resultType="java.lang.Long">
+        select count(id)
+        from sf_user_bill
+        WHERE create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+        AND   create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+    </select>
+
 </mapper>

@@ -16,7 +16,7 @@ public class WxPayUserCons {
     /**
      * 公众号secret
      */
-    public static final String APPSECRET = "9568581471a3d711fe80fadd0ca5f154 ";
+    public static final String APPSECRET = "9568581471a3d711fe80fadd0ca5f154";
     /**
      * 商户号
      */

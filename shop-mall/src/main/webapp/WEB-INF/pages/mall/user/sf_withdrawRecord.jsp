@@ -26,7 +26,7 @@
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
-        <a href="javascript:history.back(-1)" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='<%=basePath%>sfaccount/commissionHome.shtml'" onClick=""><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>提现记录</p>
     </header>
     <div class="wrap">

@@ -112,7 +112,7 @@
         Your browser does not support HTML5 Canvas.
     </canvas>
     <img src="${shopPoster}" />
-    <b id="downloadPoster2">长按图片保存海报</b>
+    <b id="hideOptionMenu">长按图片保存海报</b>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -128,60 +128,58 @@
      * 邮件主题：【微信JS-SDK反馈】具体问题
      * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
      */
-    <%--wx.config({--%>
-        <%--debug: false,--%>
-        <%--appId: '${shareMap.appId}',--%>
-        <%--timestamp: ${shareMap.timestamp},--%>
-        <%--nonceStr: '${shareMap.nonceStr}',--%>
-        <%--signature: '${shareMap.signature}',--%>
-        <%--jsApiList: [--%>
-            <%--'checkJsApi',--%>
-            <%--'onMenuShareTimeline',--%>
-            <%--'onMenuShareAppMessage',--%>
-            <%--'onMenuShareQQ',--%>
-            <%--'onMenuShareWeibo',--%>
-            <%--'onMenuShareQZone',--%>
-            <%--'hideMenuItems',--%>
-            <%--'showMenuItems',--%>
-            <%--'hideAllNonBaseMenuItem',--%>
-            <%--'showAllNonBaseMenuItem',--%>
-            <%--'translateVoice',--%>
-            <%--'startRecord',--%>
-            <%--'stopRecord',--%>
-            <%--'onVoiceRecordEnd',--%>
-            <%--'playVoice',--%>
-            <%--'onVoicePlayEnd',--%>
-            <%--'pauseVoice',--%>
-            <%--'stopVoice',--%>
-            <%--'uploadVoice',--%>
-            <%--'downloadVoice',--%>
-            <%--'chooseImage',--%>
-            <%--'previewImage',--%>
-            <%--'uploadImage',--%>
-            <%--'downloadImage',--%>
-            <%--'getNetworkType',--%>
-            <%--'openLocation',--%>
-            <%--'getLocation',--%>
-            <%--'hideOptionMenu',--%>
-            <%--'showOptionMenu',--%>
-            <%--'closeWindow',--%>
-            <%--'scanQRCode',--%>
-            <%--'chooseWXPay',--%>
-            <%--'openProductSpecificView',--%>
-            <%--'addCard',--%>
-            <%--'chooseCard',--%>
-            <%--'openCard'--%>
-        <%--]--%>
-    <%--});--%>
+    wx.config({
+        debug: false,
+        appId: '${shareMap.appId}',
+        timestamp: ${shareMap.timestamp},
+        nonceStr: '${shareMap.nonceStr}',
+        signature: '${shareMap.signature}',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onVoiceRecordEnd',
+            'playVoice',
+            'onVoicePlayEnd',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode',
+            'chooseWXPay',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ]
+    });
 
-    <%--var shareData = {--%>
-        <%--title: '${shareMap.shareTitle}',--%>
-        <%--desc: '${shareMap.shareDesc}',--%>
-        <%--link: '${shareMap.shareLink}',--%>
-        <%--imgUrl: '${shareMap.shareImg}'--%>
-    <%--};--%>
-
-    wx.hideOptionMenu();
+    var shareData = {
+        title: '${shareMap.shareTitle}',
+        desc: '${shareMap.shareDesc}',
+        link: '${shareMap.shareLink}',
+        imgUrl: '${shareMap.shareImg}'
+    };
 
 </script>
 <script src="<%=basePath%>static/js/zepto.min.js"></script>

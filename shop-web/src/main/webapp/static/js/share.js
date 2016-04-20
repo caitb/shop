@@ -11,22 +11,21 @@
  */
 wx.ready(function () {
 
-    //wx.onMenuShareAppMessage(shareData);
-    //wx.onMenuShareTimeline(shareData);
-    //wx.onMenuShareQQ(shareData);
-    //wx.onMenuShareQZone(shareData);
-    //wx.onMenuShareWeibo(shareData);
-    //
-    //
-    //function decryptCode(code, callback) {
-    //    $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
-    //        if (res.errcode == 0) {
-    //            codes.push(res.code);
-    //        }
-    //    });
-    //}
+    wx.onMenuShareAppMessage(shareData);
+    wx.onMenuShareTimeline(shareData);
+    wx.onMenuShareQQ(shareData);
+    wx.onMenuShareQZone(shareData);
+    wx.onMenuShareWeibo(shareData);
 
-    wx.hideOptionMenu();
+
+    function decryptCode(code, callback) {
+        $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
+            if (res.errcode == 0) {
+                codes.push(res.code);
+            }
+        });
+    }
+
 });
 
 wx.error(function (res) {

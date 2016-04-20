@@ -134,17 +134,17 @@ public class SfOrderManagerController extends BaseController {
         } else if (orderStatus == 3) {
             index="4";//已完成
         }
-        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        if (sfOrders != null && sfOrders.size() != 0) {
-            for (SfOrder sfOrder : sfOrders) {
-                List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(sfOrder.getId());
-                for (SfOrderItem sfOrderItem : sfOrderItems) {
-                    sfOrderItem.setSkuUrl(skuValue + sfOrderManageService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
-                    sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
-                }
-                sfOrder.setSfOrderItems(sfOrderItems);
-            }
-        }
+//        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+//        if (sfOrders != null && sfOrders.size() != 0) {
+//            for (SfOrder sfOrder : sfOrders) {
+//                List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(sfOrder.getId());
+//                for (SfOrderItem sfOrderItem : sfOrderItems) {
+//                    sfOrderItem.setSkuUrl(skuValue + sfOrderManageService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
+//                    sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+//                }
+//                sfOrder.setSfOrderItems(sfOrderItems);
+//            }
+//        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
@@ -190,13 +190,26 @@ public class SfOrderManagerController extends BaseController {
     }
 
     /**
+     * 跳转
+     * @author muchaofeng
+     * @date 2016/4/20 14:56
+     */
+    @RequestMapping("/toBorderManagement")
+    public String toBorderManagement(HttpServletRequest request,Integer fm)throws Exception{
+        request.getSession().removeAttribute("fm");
+        if (fm!=null){
+            request.getSession().setAttribute("fm",fm);
+        }
+        return "redirect:/sfOrderManagerController/borderManagement.html";
+    }
+
+    /**
      * 订单管理
      * @author muchaofeng
      * @date 2016/4/2 14:09
      */
     @RequestMapping("/borderManagement.html")
     public ModelAndView borderManagement(HttpServletRequest request,Integer fm) throws Exception{
-        request.getSession().setAttribute("fm",fm);
         ComUser user = getComUser(request);
         if (user == null) {
             user = userService.getUserById(1l);

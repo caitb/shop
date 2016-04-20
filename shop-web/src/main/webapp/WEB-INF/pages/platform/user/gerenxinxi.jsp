@@ -13,9 +13,6 @@
 </head>
 <body>
 <div class="wrap">
-    <header class="xq_header">
-        <p>个人信息</p>
-    </header>
     <main>
         <div class="head_img" style="background: url('${path}/static/images/gerenxinxibeijing.png');background-size: 100% 100%">
             <p><img src="${comUser.wxHeadImg}" alt=""></p>

@@ -8,12 +8,12 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * MobileMessageUtil
+ * MobileVerificationUtil
  *
  * @author ZhaoLiang
  * @date 2016/3/9
  */
-public class MobileMessageUtil {
+public class MobileVerificationUtil {
 
     private static String sign = "_SMS";
 

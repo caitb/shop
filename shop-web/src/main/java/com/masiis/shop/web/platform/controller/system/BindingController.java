@@ -1,12 +1,8 @@
 package com.masiis.shop.web.platform.controller.system;
 
-import com.masiis.shop.common.constant.SMSConstants;
-import com.masiis.shop.common.util.CCPRestSmsSDK;
-import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.MobileMessageUtil;
+import com.masiis.shop.web.platform.utils.MobileVerificationUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.Random;
 
 /**
  * Created by muchaofeng on 2016/3/5.
@@ -51,7 +45,7 @@ public class BindingController {
     @ResponseBody
     public String SecurityCode(HttpServletRequest request, HttpServletResponse response, String phone ) throws Exception{
         JSONObject result = new JSONObject();
-        result.put("msg",MobileMessageUtil.sendIdentifyingCode(phone));
+        result.put("msg", MobileVerificationUtil.sendIdentifyingCode(phone));
         return  result.toString();
 //        // 发送短信之间的间隔要有60秒,这个要校验
 //        String s = "";
@@ -93,7 +87,7 @@ public class BindingController {
         JSONObject result = new JSONObject();
 //        HttpSession session = request.getSession();
 //        Object attribute = session.getAttribute(SMSConstants.CKCODE_RESET_PWD_NAME);
-        String identifyingCode = MobileMessageUtil.getIdentifyingCode(phone);
+        String identifyingCode = MobileVerificationUtil.getIdentifyingCode(phone);
         if(identifyingCode.equals(verificationCode)) {
             return "true";
             //result.put("msg","验证成功");

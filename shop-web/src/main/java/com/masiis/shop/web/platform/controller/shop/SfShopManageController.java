@@ -6,6 +6,7 @@ import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
@@ -54,6 +55,8 @@ public class SfShopManageController extends BaseController {
     private SfDistributionRecordMapper sfDistributionRecordMapper;
     @Resource
     private SkuService skuService;
+    @Resource
+    private ComSkuImageMapper comSkuImageMapper;
 
     /**
      * 店铺管理首页
@@ -301,7 +304,8 @@ public class SfShopManageController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), qrCodePath);
+            String skuDetailUrl = basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId();
+            CreateParseCode.createCode(300, 300, skuDetailUrl, qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
@@ -323,9 +327,25 @@ public class SfShopManageController extends BaseController {
             String skuName = skuService.getSkuById(skuId).getName();
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
-            Map<String, Object> dataMap = new HashMap<String, Object>();
-            dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
-            return dataMap;
+            //Map<String, Object> dataMap = new HashMap<String, Object>();
+            //jssdk
+            String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
+            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+            if(jsapi_ticket == null){
+                log.info("从redis获取的jsapi_ticket=null");
+                jsapi_ticket = new JsapiTicketTask().requestTicket();
+            }
+
+            Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
+            shareMap.put("appId", WxConstants.APPID);
+            shareMap.put("shareTitle", "我是"+comUser.getRealName()+",我为朋友呐喊!");
+            shareMap.put("shareDesc", "在家靠父母，出外靠朋友。我为朋友呐喊，分享赚佣金。");
+            shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + comSkuImageMapper.selectBySkuId(skuId).get(0).getImgUrl());
+            shareMap.put("shareLink", skuDetailUrl);
+
+            shareMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
+
+            return shareMap;
         } catch (Exception e) {
             log.error("获取专属海报失败![shopId=" + shopId + "][skuId="+skuId+"][comUser=" + getComUser(request) + "]");
             e.printStackTrace();

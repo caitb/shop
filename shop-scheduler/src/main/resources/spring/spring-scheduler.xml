@@ -14,16 +14,16 @@
     <task:scheduled-tasks>
         <!-- platform订单相关job -->
         <!-- 平台结算中到可提现的定时任务 -->
-        <task:scheduled ref="pfOrderTask" method="billCountJob" cron="0 20 0 * * ?" />
+        <!--<task:scheduled ref="pfOrderTask" method="billCountJob" cron="0 20 0 * * ?" />-->
         <!-- 未支付订单72小时后自动取消 -->
-        <task:scheduled ref="pfOrderTask" method="unPayOrderCancelJob" cron="0 20 * * * ?"/>
+        <!--<task:scheduled ref="pfOrderTask" method="unPayOrderCancelJob" cron="0 20 * * * ?"/>-->
         <!-- 订单发货后7天自动收货 -->
-        <task:scheduled ref="pfOrderTask" method="orderReceivedConfirmJob" cron="0 30 * * * ?" />
+        <!--<task:scheduled ref="pfOrderTask" method="orderReceivedConfirmJob" cron="0 30 * * * ?" />-->
 
         <!-- mall订单相关job -->
-        <task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 20 0 * * ?" />
+        <!--<task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 20 0 * * ?" />
         <task:scheduled ref="sfOrderTask" method="unPaySfOrderCancelJob" cron="0 20 * * * ?" />
-        <task:scheduled ref="sfOrderTask" method="orderReceivedConfirmJob" cron="0 30 * * * ?" />
+        <task:scheduled ref="sfOrderTask" method="orderReceivedConfirmJob" cron="0 30 * * * ?" />-->
 
         <!-- 每日统计下级代理数量 -->
         <task:scheduled ref="pfAgentTask" method="agentStatisticsJob" cron="0 40 0 * * ?"/>

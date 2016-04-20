@@ -36,7 +36,7 @@
                 <img src="<%=basePath%>static/images/icon_55.png" alt="">
                 <h1>￥<b>${account.totalIncomeFee}</b></h1>
                 <p>累计收入</p>
-                <h2>(截止到<span>${year}-${month}-${day}}</span>)</h2>
+                <h2>(截止到<span>${year}-${month}-${day}</span>)</h2>
             </div>
             <nav>
                 <ul>

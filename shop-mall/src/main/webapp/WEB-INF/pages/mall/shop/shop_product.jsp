@@ -286,6 +286,7 @@
 
                 $('#skuPoster').attr('src', data['skuPoster']);
                 $('.back_f').show();
+                $('.back').show();
             }
         });
     });

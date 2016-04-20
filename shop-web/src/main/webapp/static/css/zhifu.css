@@ -105,6 +105,7 @@
   background: white url("../images/zhuce_2.png") no-repeat;
   background-size: 80%;
   background-position: center 85%;
+  display: none;
 }
 .wrap .box main .xinxi p:nth-child(2) {
   color: #F74A11;

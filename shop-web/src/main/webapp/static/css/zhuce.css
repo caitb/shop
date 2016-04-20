@@ -5,6 +5,9 @@
   position: relative;
   overflow: hidden;
 }
+.xinxi{
+  display: none;
+}
 .wrap #box {
   width: 100%;
   height: 100%;
@@ -245,7 +248,7 @@
 }
 .wrap #box main .sec2 .dengji p span,
 .wrap #box main .sec2 .dengji p b {
-  font-size: 12px;
+  font-size: 10px;
   color: #999999;
 }
 .wrap #box main .sec2 .dengji p b:nth-child(2){
@@ -383,4 +386,7 @@
   top: 0;
   left: 0;
   display: none;
+}
+.two{
+  display:none;
 }

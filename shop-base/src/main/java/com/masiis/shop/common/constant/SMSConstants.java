@@ -8,7 +8,7 @@ public class SMSConstants {
 	/**
 	 * 注册短信通知模板ID
 	 */
-	public static final String REGESTER_TEMPLETE_ID = "72314";
+	public static final String REGESTER_TEMPLETE_ID = "63778";
 	/**
 	 * 支付短信
 	 */

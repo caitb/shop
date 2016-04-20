@@ -58,7 +58,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -91,7 +91,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -124,7 +124,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -157,7 +157,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -190,7 +190,7 @@
                                     <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}家商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -221,7 +221,7 @@
         </div>
         <div class="back_shouhuo" style="display: none">
            <p>确认收到货品?</p>
-           <h4>亲，请您核对商品后在操作确认收货</h4>
+           <h4>亲，请您核对商品后再操作确认收货</h4>
 
            <h3>
                <span class="que_qu">取消</span>

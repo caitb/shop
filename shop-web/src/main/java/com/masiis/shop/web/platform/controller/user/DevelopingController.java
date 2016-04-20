@@ -15,6 +15,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.task.JsapiTicketTask;
 import com.masiis.shop.web.platform.utils.DownloadImage;
@@ -69,6 +70,8 @@ public class DevelopingController extends BaseController {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private UserCertificateService userCertificateService;
+    @Resource
+    private JSSDKService jssdkService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -132,13 +135,16 @@ public class DevelopingController extends BaseController {
 
         try {
             String curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
-            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
-            if(jsapi_ticket == null){
-                log.info("从redis获取的jsapi_ticket=null");
-                jsapi_ticket = new JsapiTicketTask().requestTicket();
-            }
+//            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+//            if(jsapi_ticket == null){
+//                log.info("从redis获取的jsapi_ticket=null");
+//                jsapi_ticket = new JsapiTicketTask().requestTicket();
+//            }
+//
+//            Map<String, String> resultMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
 
-            Map<String, String> resultMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
+            /** 获取调用JSSDK所需要的数据 **/
+            Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
 
             ComUser comUser = getComUser(request);
             ComSku comSku = comSkuMapper.selectById(skuId);

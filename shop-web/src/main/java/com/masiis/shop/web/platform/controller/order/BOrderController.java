@@ -14,6 +14,7 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,7 +85,8 @@ public class BOrderController extends BaseController {
 
 
     @RequestMapping("/goToPayBOrder.shtml")
-    public ModelAndView toPayBOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+    public ModelAndView toPayBOrder(HttpServletRequest request,
+                                    @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
         ModelAndView modelAndView = new ModelAndView("platform/order/shouyintai");
         if (bOrderId == null || bOrderId <= 0) {
             throw new BusinessException("订单号不正确");
@@ -93,6 +95,7 @@ public class BOrderController extends BaseController {
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
         modelAndView.addObject("pfBorder", pfBorder);
         modelAndView.addObject("pfBorderItems", pfBorderItems);
+        modelAndView.addObject("comUser", getComUser(request));
         return modelAndView;
     }
 

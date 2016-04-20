@@ -112,6 +112,7 @@ $(function () {
             paraData += "&agentLevelId=" + $(".on").attr("levelId");
             paraData += "&weiXinId=" + $("#q_weixinId").html();
             paraData += "&sendType=" + sendType;
+            paraData += "&previousPageType=0";
             window.location.href = path + "BOrderAdd/agentBOrder.shtml" + paraData;
         }
     });

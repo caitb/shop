@@ -16,6 +16,7 @@ import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuImageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.product.SpuService;
+import com.masiis.shop.web.mall.service.shop.JSSDKService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -67,6 +68,8 @@ public class SfShopController extends BaseController {
     private UserService userService;
     @Resource
     private SfUserShopViewService sfUserShopViewService;
+    @Resource
+    private JSSDKService jssdkService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
@@ -143,14 +146,9 @@ public class SfShopController extends BaseController {
 
 
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
-            String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
-            if(jsapi_ticket == null){
-                log.info("从redis获取的mall_jsapi_ticket=null");
-                jsapi_ticket = new JsapiTicketTask().requestTicket();
-            }
-
-            Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
-            shareMap.put("appId", WxConstants.APPID);
+            /** 获取调用jssdk所需数据 **/
+            Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
+            //要分享的数据
             shareMap.put("shareTitle", "我是"+comUser.getRealName()+",我为朋友呐喊!");
             shareMap.put("shareDesc", "在家靠父母，出外靠朋友。我为朋友呐喊，分享赚佣金。");
             shareMap.put("shareImg", sfShop.getLogo());
@@ -241,11 +239,6 @@ public class SfShopController extends BaseController {
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
-//            dataMap.put("shopQRCode", "static/images/shop/poster/"+posterName);
-//            dataMap.put("userImg", "static/images/shop/poster/h-"+comUser.getId()+".jpg");
-//            dataMap.put("userName", comUser.getWxNkName());
-//            dataMap.put("skuName", skuService.getSkuById(skuId).getName());
-//            dataMap.put("skuImg", "static/images/shop/background-img/sku-"+skuId+".png");
             dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
             return dataMap;
         } catch (Exception e) {
@@ -296,14 +289,10 @@ public class SfShopController extends BaseController {
 
         //jssdk
         String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+fromUserId;
-        String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
-        if(jsapi_ticket == null){
-            log.info("从redis获取的mall_jsapi_ticket=null");
-            jsapi_ticket = new JsapiTicketTask().requestTicket();
-        }
 
-        Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
-        shareMap.put("appId", WxConstants.APPID);
+        /** 获取调用jssdk所需数据 **/
+        Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
+        //要分享的数据
         shareMap.put("shareTitle", "我是"+user.getRealName()+",我为"+skuInfo.getComSku().getName()+"代言!");
         shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
         shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());

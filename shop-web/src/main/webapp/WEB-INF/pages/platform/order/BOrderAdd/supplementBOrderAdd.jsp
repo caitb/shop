@@ -14,7 +14,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:;" onClick="javascript :history.go(-1);">
+            <a href="javascript:;" onClick="javascript:history.go(-1);location.reload();">
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>支付订单</p>
         </header>

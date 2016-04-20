@@ -271,6 +271,9 @@ public class UserAddressService {
                 if (paramObject.getSendType() != null) {
                     sb.append("sendType=").append(paramObject.getSendType()).append("&");
                 }
+                if (paramObject.getPreviousPageType()!=null){
+                    sb.append("previousPageType=").append(paramObject.getPreviousPageType()).append("&");
+                }
             }
         }
         if (selectedAddressId != null) {

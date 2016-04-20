@@ -22,6 +22,11 @@
             <p style="color:#F74A11;">选择拿货方式</p>
             <p style="color:#F74A11;">支付订单</p>
         </div>
+        <div class="xinxi two" style="display: -webkit-box;">
+            <p>信息填写</p>
+            <p>支付订单</p>
+            <p>完成合伙</p>
+        </div>
         <div class="main">
             <div class="drap">
                 <h2><img src="${path}/static/images/ready.png" alt=""></h2>

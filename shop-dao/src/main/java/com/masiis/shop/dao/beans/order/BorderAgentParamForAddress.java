@@ -13,6 +13,7 @@ public class BorderAgentParamForAddress {
     private Integer agentLevelId;
     private String  weiXinId;
     private Integer sendType;
+    private Integer previousPageType;
 
     public Integer getSkuId() {
         return skuId;
@@ -44,5 +45,13 @@ public class BorderAgentParamForAddress {
 
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
+    }
+
+    public Integer getPreviousPageType() {
+        return previousPageType;
+    }
+
+    public void setPreviousPageType(Integer previousPageType) {
+        this.previousPageType = previousPageType;
     }
 }

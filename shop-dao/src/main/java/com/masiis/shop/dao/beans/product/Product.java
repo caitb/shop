@@ -49,6 +49,8 @@ public class Product extends ComSku {
 
     private Integer isTrial;//是否可试用
 
+    private Integer frozenStock;
+
     public String getSpuName() {
         return spuName;
     }
@@ -199,5 +201,13 @@ public class Product extends ComSku {
 
     public void setIsTrial(Integer isTrial) {
         this.isTrial = isTrial;
+    }
+
+    public Integer getFrozenStock() {
+        return frozenStock;
+    }
+
+    public void setFrozenStock(Integer frozenStock) {
+        this.frozenStock = frozenStock;
     }
 }

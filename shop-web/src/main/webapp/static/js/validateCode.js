@@ -67,7 +67,6 @@
                         dataType: "text",
                         success: function (result) {
                             if (result) {
-                                alert("短信发送成功,请注意查收!");
                                 validateCodeJS.times();
                             } else {
                                 alert("短信发送失败,请重试!");

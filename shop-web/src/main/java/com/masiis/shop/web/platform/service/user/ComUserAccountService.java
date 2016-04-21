@@ -99,13 +99,13 @@ public class ComUserAccountService {
 
                 ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
                 log.info("增加上级结算中金额");
-                ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, item.getId(), UserAccountRecordFeeType.AddCountingFee);
+                ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
                 recordC.setPrevFee(account.getCountingFee());
                 account.setCountingFee(account.getCountingFee().add(orderPayment));
                 recordC.setNextFee(account.getCountingFee());
                 recordMapper.insert(recordC);
                 log.info("增加上级总销售额");
-                ComUserAccountRecord recordT = createAccountRecord(orderPayment, account, item.getId(), UserAccountRecordFeeType.AddTotalIncomeFee);
+                ComUserAccountRecord recordT = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddTotalIncomeFee);
                 recordT.setPrevFee(account.getTotalIncomeFee());
                 account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
                 recordT.setNextFee(account.getTotalIncomeFee());

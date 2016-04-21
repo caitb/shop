@@ -238,24 +238,34 @@ public class UserService {
      * @author muchaofeng
      * @date 2016/4/12 12:03
      */
-    public void getShareUser(Long userId, Long userPd, Long shopId) {
-//        SfShop sfShop = sfShopMapper.selectByUserIdAndShopId(userId,shopId);
-        if (sfShopMapper.selectByUserIdAndShopId(userId, shopId) == null) {
-            if (!userId.equals(userPd)) {
-                SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-                SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPd);
-                if (sfUserRelation == null) { //来自于分享链接
-                    SfUserRelation sfNewUserRelation = new SfUserRelation();
-                    sfNewUserRelation.setCreateTime(new Date());
-                    sfNewUserRelation.setUserId(userId);
-                    sfNewUserRelation.setUserPid(userPd);
-                    if (sfUserPRelation == null) {
-                        sfNewUserRelation.setLevel(1);
-                    } else {
-                        sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
-                    }
-                    sfUserRelationMapper.insert(sfNewUserRelation);
-                }
+    public void getShareUser(Long userId, Long userPid, Long shopId) {
+        if (userPid == null) {
+            userPid = 0l;
+        }
+        if (userId == userPid) {
+            //点击自己的链接进入不会建立分销关系
+            return;
+        }
+        //获取自己的分销关系
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        //获取上级分销关系
+        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPid);
+        if (sfUserRelation == null) { //来自于分享链接
+            SfUserRelation sfNewUserRelation = new SfUserRelation();
+            sfNewUserRelation.setCreateTime(new Date());
+            sfNewUserRelation.setUserId(userId);
+            if (sfUserPRelation == null) {
+                sfNewUserRelation.setLevel(1);
+                sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
+            } else {
+                sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
+                sfNewUserRelation.setUserPid(userPid);
+            }
+            sfUserRelationMapper.insert(sfNewUserRelation);
+        } else {
+            if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
+                sfUserRelation.setUserPid(sfUserPRelation.getUserId());
+                sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
             }
         }
         log.info("分销关系");

@@ -145,11 +145,11 @@ public class OrderQueueDealService {
         pfBorderOperationLog.setPfBorderId(pfBorder.getId());
         pfBorderOperationLog.setRemark("订单完成，平台代发排单处理订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        //递归处理下级
-        List<PfBorder> pfBorders = pfBorderMapper.selectByUserPid(pfBorder.getUserId(), 6, 0);
-        for (PfBorder order : pfBorders) {
-            pfQueuingOrder(order.getId());
-        }
+//        //递归处理下级
+//        List<PfBorder> pfBorders = pfBorderMapper.selectByUserPid(pfBorder.getUserId(), 6, 0);
+//        for (PfBorder order : pfBorders) {
+//            pfQueuingOrder(order.getId());
+//        }
         return "success";
     }
 

@@ -27,7 +27,7 @@
             )
         values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{createDate,jdbcType=TIMESTAMP}, #{pfUserBillId,jdbcType=BIGINT},
             #{pfBorderId,jdbcType=BIGINT}, #{orderType,jdbcType=INTEGER}, #{orderSubType,jdbcType=INTEGER},
-            #{orderCreateDate,jdbcType=TIMESTAMP}, #{orderPayAmount,jdbcType=DECIMAL}, #{isCount,jdbcType=INTEGER}
+            #{orderCreateDate,jdbcType=TIMESTAMP}, #{orderPayAmount,jdbcType=DECIMAL}, #{isCount,jdbcType=INTEGER},
             #{remark,jdbcType=VARCHAR})
     </insert>
 

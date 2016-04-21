@@ -101,6 +101,7 @@ public class ProductController {
                       ComSku comSku,
                       @RequestParam("discounts")String[] discounts,
                       @RequestParam("quantitys")Integer[] quantitys,
+                      @RequestParam("bails")Integer[] bails,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
                       @RequestParam("mainImgNames")String[] mainImgNames,
@@ -125,6 +126,7 @@ public class ProductController {
                     pfSkuAgent.setAgentLevelId(new Integer(i + 1));
                     pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
+                    pfSkuAgent.setBail(new BigDecimal(bails[i]));
 
                     pfSkuAgents.add(pfSkuAgent);
                 }
@@ -196,15 +198,18 @@ public class ProductController {
     }
 
     @RequestMapping("/update.do")
+    @ResponseBody
     public String update(HttpServletRequest request, HttpServletResponse response,
                          Integer spuId,
                          Integer skuId,
+                         Integer unitId,
                          @RequestParam("skuAgentIds")Integer[] skuAgentIds,
                          @RequestParam("skuDistributionIds")Integer[] skuDistributionIds,
                          ComSpu comSpu,
                          ComSku comSku,
                          @RequestParam("discounts")String[] discounts,
                          @RequestParam("quantitys")Integer[] quantitys,
+                         @RequestParam("bails")String[] bails,
                          @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                          @RequestParam(value = "mainImgUrls", required = false)String[] mainImgUrls,
                          @RequestParam(value = "mainImgNames", required = false)String[] mainImgNames) throws FileNotFoundException {
@@ -215,6 +220,7 @@ public class ProductController {
                 comSpu.setId(spuId);
                 comSpu.setModifyTime(new Date());
                 comSpu.setModifyMan(pbUser.getId());
+                comSpu.setUnit(unitId);
 
                 comSku.setId(skuId);
                 comSku.setModifyTime(new Date());
@@ -227,6 +233,7 @@ public class ProductController {
                     pfSkuAgent.setId(skuAgentIds[i]);
                     pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
+                    pfSkuAgent.setBail(new BigDecimal(bails[i]));
 
                     pfSkuAgents.add(pfSkuAgent);
                 }

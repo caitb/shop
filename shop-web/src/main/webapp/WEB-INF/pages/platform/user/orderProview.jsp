@@ -8,6 +8,8 @@
     <title>订单详情</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shouyintai.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="${path}/static/js/hideWXShare.js"> </script>
 </head>
 <body>
 <div class="wrap">

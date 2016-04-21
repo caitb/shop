@@ -279,7 +279,7 @@ public class SfShopController extends BaseController {
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
         List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
-        ComUser user = getComUser(request);
+        ComUser user = getComUser(request);user = comUserMapper.selectByPrimaryKey(121L);
         //店铺浏览量
         if (fromUserId != null) {
             sfUserShopViewService.addShopView(user.getId(), shopId);

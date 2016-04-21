@@ -59,7 +59,7 @@
     </div>
     <div class="content">
         <h1>在售商品</h1><c:forEach items="${SfShopDetails}" var="sd">
-        <section class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&&shopId=${sfShop.id}');">
+        <section class="sec1" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${sd.skuId}&shopId=${sfShop.id}');">
             <p class="photo">
                 <img src="${sd.skuUrl}" alt="">
             </p>

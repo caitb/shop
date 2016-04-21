@@ -289,7 +289,6 @@ public class SfShopController extends BaseController {
 
         //jssdk
         String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+fromUserId;
-
         /** 获取调用jssdk所需数据 **/
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         //要分享的数据

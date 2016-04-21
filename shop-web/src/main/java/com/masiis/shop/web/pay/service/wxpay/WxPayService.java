@@ -6,7 +6,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.COrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
@@ -39,15 +39,15 @@ public class WxPayService {
 
     public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
         UnifiedOrderReq res = null;
-        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConstants.APPID);
+        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
         try {
             String orderType = req.getOrderId().charAt(0) + "";
             res = new UnifiedOrderReq();
 
-            res.setAppid(WxConstants.APPID);
-            res.setMch_id(WxConstants.WX_PAY_MCHID);
+            res.setAppid(WxConsPF.APPID);
+            res.setMch_id(WxConsPF.WX_PAY_MCHID);
             res.setNonce_str(WXBeanUtils.createGenerateStr());
-            res.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
+            res.setNotify_url(WxConsPF.WX_PAY_URL_UNIORDER_NOTIFY);
             res.setOpenid(wxUser.getOpenid());
             // PC网页或公众号内支付传"WEB"
             res.setDevice_info("WEB");

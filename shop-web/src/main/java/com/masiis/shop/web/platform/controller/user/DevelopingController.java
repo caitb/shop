@@ -12,7 +12,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
@@ -183,7 +183,7 @@ public class DevelopingController extends BaseController {
             }
 
 
-            resultMap.put("appId", WxConstants.APPID);
+            resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
             resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
             resultMap.put("shareLink", shareLink);

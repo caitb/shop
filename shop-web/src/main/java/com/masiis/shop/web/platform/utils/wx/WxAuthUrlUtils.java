@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.utils.wx;
 
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,13 +20,13 @@ public class WxAuthUrlUtils {
      * @throws UnsupportedEncodingException
      */
     public static String createAuthorizeInfoUrl(String basepath, String stateStr) throws UnsupportedEncodingException {
-        return WxConstants.URL_AUTH
-                + "?appid=" + WxConstants.APPID
-                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
-                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
-                + "&scope=" + WxConstants.SCOPE_AUTH_USRINFO
+        return WxConsPF.URL_AUTH
+                + "?appid=" + WxConsPF.APPID
+                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConsPF.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
+                + "&response_type=" + WxConsPF.RESPONSE_TYPE_AUTH
+                + "&scope=" + WxConsPF.SCOPE_AUTH_USRINFO
                 + "&state=" + stateStr
-                + WxConstants.TAILSTR_AUTH;
+                + WxConsPF.TAILSTR_AUTH;
     }
 
     /**
@@ -36,7 +36,7 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createUserInfoUrl(String accessToken, String openId){
-        return WxConstants.URL_GET_USERINFO
+        return WxConsPF.URL_GET_USERINFO
                 + "?access_token=" + accessToken
                 + "&openid=" + openId
                 + "&lang=zh_CN";
@@ -49,11 +49,11 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createAccessTokenUrl(String code){
-        return WxConstants.URL_GET_ACCESS_TOKEN
-                + "?appid=" + WxConstants.APPID
-                + "&secret=" + WxConstants.APPSECRET
+        return WxConsPF.URL_GET_ACCESS_TOKEN
+                + "?appid=" + WxConsPF.APPID
+                + "&secret=" + WxConsPF.APPSECRET
                 + "&code=" + code
-                + "&grant_type=" + WxConstants.GRANT_TYPE_ACCESSTOKEN;
+                + "&grant_type=" + WxConsPF.GRANT_TYPE_ACCESSTOKEN;
     }
 
     /**
@@ -63,25 +63,25 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createRefreshTokenUrl(String refreshToken){
-        return WxConstants.URL_REFRESH_TOKEN
-                + "?appid=" + WxConstants.APPID
-                + "&grant_type=" + WxConstants.GRANT_TYPE_RFTOKEN
+        return WxConsPF.URL_REFRESH_TOKEN
+                + "?appid=" + WxConsPF.APPID
+                + "&grant_type=" + WxConsPF.GRANT_TYPE_RFTOKEN
                 + "&refresh_token=" + refreshToken;
     }
 
     public static String createCheckTokenUrl(String token, String openId){
-        return WxConstants.URL_CHECK_ACCESS_TOKEN
+        return WxConsPF.URL_CHECK_ACCESS_TOKEN
                 + "?access_token=" + token
                 + "&openid=" + openId;
     }
 
     public static String createAuthorizeBaseUrl(String basepath, String stateStr) throws UnsupportedEncodingException {
-        return WxConstants.URL_AUTH
-                + "?appid=" + WxConstants.APPID
-                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_BASE_AUTH, "UTF-8")
-                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
-                + "&scope=" + WxConstants.SCOPE_AUTH_BASE
+        return WxConsPF.URL_AUTH
+                + "?appid=" + WxConsPF.APPID
+                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConsPF.REDIECT_URI_BASE_AUTH, "UTF-8")
+                + "&response_type=" + WxConsPF.RESPONSE_TYPE_AUTH
+                + "&scope=" + WxConsPF.SCOPE_AUTH_BASE
                 + "&state=" + stateStr
-                + WxConstants.TAILSTR_AUTH;
+                + WxConsPF.TAILSTR_AUTH;
     }
 }

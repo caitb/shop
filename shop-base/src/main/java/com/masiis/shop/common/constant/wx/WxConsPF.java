@@ -5,7 +5,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 /**
  * Created by lzh on 2016/2/24.
  */
-public class WxConstants {
+public class WxConsPF {
     /**
      * 授权页面链接
      */

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -76,7 +76,7 @@ public class WXBeanUtils {
             sb.append(arrayToSort[i]);
         }
         String result = sb.toString();
-        result += "key=" + WxConstants.WX_PAY_SIGN_KEY;
+        result += "key=" + WxConsPF.WX_PAY_SIGN_KEY;
         result = MD5Utils.encrypt(result).toUpperCase();
         return result;
     }

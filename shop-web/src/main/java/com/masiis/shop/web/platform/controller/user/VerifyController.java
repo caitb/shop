@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.platform.beans.wxauth.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.constants.WxResCodeCons;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -175,7 +175,7 @@ public class VerifyController extends BaseController {
             System.out.println("val:" + val);
             log.info("unionid:" + unionid);
             // 根据unionid获取用户对象
-            ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConstants.APPID);
+            ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConsPF.APPID);
             if(wxUser == null){
                 log.error("该unionid无效,需要重新对该用户授权!");
                 String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
@@ -289,7 +289,7 @@ public class VerifyController extends BaseController {
         log.info("bactk_getAccessToken请求成功:" + result);
         AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
         if(StringUtils.isNotBlank(res.getOpenid())) {
-            ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(res.getOpenid(), WxConstants.APPID);
+            ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(res.getOpenid(), WxConsPF.APPID);
             if(wxUser == null){
                 // 跳到授权页面
                 String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);

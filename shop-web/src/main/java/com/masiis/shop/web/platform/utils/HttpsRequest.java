@@ -3,7 +3,7 @@ package com.masiis.shop.web.platform.utils;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
-import com.masiis.shop.common.constant.wx.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
@@ -101,7 +101,7 @@ public class HttpsRequest implements IServiceRequest {
     public static void main(String[] args) throws UnrecoverableKeyException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpsRequest h = new HttpsRequest();
         UnifiedOrderReq order = new UnifiedOrderReq();
-        order.setAppid(WxConstants.APPID);
+        order.setAppid(WxConsPF.APPID);
         //order.setAttach();
         order.setBody("麦士测试商品10");
         //order.setDetail();
@@ -109,9 +109,9 @@ public class HttpsRequest implements IServiceRequest {
         //order.setFee_type(); //默认中文
         //order.setGoods_tag();
         //order.setLimit_pay();
-        order.setMch_id(WxConstants.WX_PAY_MCHID);
+        order.setMch_id(WxConsPF.WX_PAY_MCHID);
         order.setNonce_str("AAAAAAAAAABBBBBBBBBB223225220");
-        order.setNotify_url(WxConstants.WX_PAY_URL_UNIORDER_NOTIFY);
+        order.setNotify_url(WxConsPF.WX_PAY_URL_UNIORDER_NOTIFY);
         order.setOut_trade_no("TESTORDER0000000000000010");
         order.setOpenid("oUIwkwgLzn8CKMDrvbCSE3T-u5fs");
         //order.setProduct_id();

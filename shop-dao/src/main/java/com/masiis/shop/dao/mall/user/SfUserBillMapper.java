@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserBill;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public interface SfUserBillMapper {
@@ -22,4 +24,7 @@ public interface SfUserBillMapper {
     List<SfUserBill> selectAll();
 
     int updateByPrimaryKey(SfUserBill record);
+
+    Long selectBillNumsByDate(@Param("start") Date countStartDay,
+                              @Param("end") Date countEndDay);
 }

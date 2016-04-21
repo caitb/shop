@@ -81,6 +81,7 @@ public class BOrderAddController extends BaseController {
         agentParamForAddress.setSendType(sendType);
         agentParamForAddress.setSkuId(skuId);
         agentParamForAddress.setWeiXinId(weiXinId);
+        agentParamForAddress.setPreviousPageType(previousPageType);
         String paramForAddress = JSONObject.toJSONString(agentParamForAddress);
         mv.addObject("agentOrderparamForAddress", paramForAddress);
         BOrderConfirm bOrderConfirm = new BOrderConfirm();

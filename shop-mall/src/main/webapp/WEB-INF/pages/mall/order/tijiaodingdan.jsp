@@ -54,6 +54,8 @@
                 if (data.isSubmitOrder == "false") {
                     if(data.sfOrderId==-1){
                         alert("库存不足");
+                    }else if (data.sfOrderId==-2){
+                        alert("请返回重新选择商品");
                     }else{
                         alert("提交订单失败");
                     }

@@ -146,4 +146,15 @@ public class SfUserBillService {
 
         return bill;
     }
+
+    /**
+     * 根据日期区间查询账单数量
+     *
+     * @param countStartDay
+     * @param countEndDay
+     * @return
+     */
+    public Long queryBillNumsByDate(Date countStartDay, Date countEndDay) {
+        return billMapper.selectBillNumsByDate(countStartDay, countEndDay);
+    }
 }

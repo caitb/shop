@@ -13,31 +13,6 @@ public class MobileMessageUtil {
     private static String sign = "_SMS";
 
     /**
-     * 发送短信验证码
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/9 13:26
-     */
-//    public static boolean sendIdentifyingCode(String phone) {
-//        String code = "";
-//        Random random = new Random();
-//        for (int i = 0; i < 4; i++) {
-//            code += random.nextInt(10);
-//        }
-//        SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
-//
-//        String[] content = new String[2];
-//        content[0] = code;
-//        content[1] = SMSConstants.REGESTER_VALID_TIME;
-//
-//        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.REGESTER_TEMPLETE_ID, content);
-//        if (!"0".equals(smsRes[0])) {
-//            return false;
-//        }
-//        return true;
-//    }
-
-    /**
      * 支付短信
      * @param phone             手机号码
      * @param skuName           商品名称
@@ -46,8 +21,8 @@ public class MobileMessageUtil {
      */
     public static boolean sendMessageForToPay(String phone, String skuName, String agentLevelName) {
         String[] content = new String[]{skuName,agentLevelName};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.TOPAY_TEMPLETE_ID, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.TOPAY_TEMPLETE_ID, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -63,8 +38,8 @@ public class MobileMessageUtil {
      */
     public static boolean partnerApplicationSuccess(String phone, String skuName, String agentLevelName){
         String[] content = new String[]{skuName,agentLevelName};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.PARTNER_APPLICATION_SUCCESS, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.PARTNER_APPLICATION_SUCCESS, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -79,8 +54,8 @@ public class MobileMessageUtil {
      */
     public static boolean verifiedSubmitRemind(String phone, String days){
         String[] content = new String[]{days};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -94,8 +69,8 @@ public class MobileMessageUtil {
      */
     public static boolean verifiedComplete(String phone, boolean approved){
         String[] content = new String[]{approved==true?"通过审核":"未通过审核"};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.VERIFIED_COMPLETE, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_COMPLETE, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -111,8 +86,8 @@ public class MobileMessageUtil {
      */
     public static boolean goodsOrderStatus(String phone, String orderCode, String shipName, String shipCode){
         String[] content = new String[]{orderCode, shipName, shipCode};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.ORDER_STATUS, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ORDER_STATUS, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -124,8 +99,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean shipOrder(String phone){
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.SHIP_ORDER, null);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.SHIP_ORDER, null);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -139,8 +114,8 @@ public class MobileMessageUtil {
      */
     public static boolean withdrawRequestVerify(String phone, String days){
         String[] content = new String[]{days};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -155,8 +130,8 @@ public class MobileMessageUtil {
      */
     public static boolean withdrawVerifyApprove(String phone, String days, Integer theWay){
         String[] content = new String[]{days,theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":""};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
@@ -170,8 +145,8 @@ public class MobileMessageUtil {
      */
     public static boolean withdrawVerifyRefuse(String phone, String reason){
         String[] content = new String[]{reason};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE, content);
-        if (!"0".equals(smsRes[0])) {
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE, content);
+        if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;

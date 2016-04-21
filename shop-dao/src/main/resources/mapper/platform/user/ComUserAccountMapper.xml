@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.user.ComUserAccountMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserAccount">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="com_user_id" property="comUserId" jdbcType="BIGINT"/>
-        <result column="total_income_fee" property="totalIncomeFee" jdbcType="DECIMAL"/>
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="total_income_fee" property="totalIncomeFee" jdbcType="DECIMAL" />
         <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
-        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL"/>
-        <result column="profit_fee" property="profitFee" jdbcType="DECIMAL"/>
-        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL"/>
-        <result column="bail_fee" property="bailFee" jdbcType="DECIMAL"/>
-        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
-        <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP"/>
-        <result column="changed_by" property="changedBy" jdbcType="VARCHAR"/>
+        <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
+        <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL" />
+        <result column="counting_fee" property="countingFee" jdbcType="DECIMAL" />
+        <result column="bail_fee" property="bailFee" jdbcType="DECIMAL" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="changed_time" property="changedTime" jdbcType="TIMESTAMP" />
+        <result column="changed_by" property="changedBy" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
     </resultMap>
 
@@ -22,13 +22,15 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount"  useGeneratedKeys="true" keyProperty="id">
-        insert into com_user_account (id, com_user_id, total_income_fee,cost_fee,
-            extractable_fee, counting_fee, bail_fee,
-            created_time, changed_time, changed_by
+        insert into com_user_account (id, com_user_id, total_income_fee,
+            cost_fee, profit_fee, extractable_fee,
+            counting_fee, bail_fee, created_time,
+            changed_time, changed_by, version
             )
-        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},#{costFee,jdbcType=DECIMAL},
-            #{extractableFee,jdbcType=DECIMAL}, #{countingFee,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL},
-            #{createdTime,jdbcType=TIMESTAMP}, #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
+            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL},
+            #{countingFee,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL}, #{createdTime,jdbcType=TIMESTAMP},
+            #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
             )
     </insert>
 
@@ -37,6 +39,7 @@
         set com_user_id = #{comUserId,jdbcType=BIGINT},
             total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
             cost_fee = #{costFee,jdbcType=DECIMAL},
+            profit_fee = #{profitFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
             bail_fee = #{bailFee,jdbcType=DECIMAL},
@@ -55,14 +58,14 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, counting_fee, bail_fee,
-        created_time, changed_time, changed_by, version
+        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee,
+        counting_fee, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
     </select>
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT id, com_user_id, total_income_fee, profit_fee,cost_fee, extractable_fee, counting_fee, bail_fee,
-        created_time, changed_time, changed_by, version
-        FROM com_user_account
+        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee,
+        counting_fee, bail_fee, created_time, changed_time, changed_by, version
+        from com_user_account
         where com_user_id = #{comUserId}
     </select>
 
@@ -85,6 +88,7 @@
         set com_user_id = #{comUserId,jdbcType=BIGINT},
             total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
             cost_fee = #{costFee,jdbcType=DECIMAL},
+            profit_fee = #{profitFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
             bail_fee = #{bailFee,jdbcType=DECIMAL},

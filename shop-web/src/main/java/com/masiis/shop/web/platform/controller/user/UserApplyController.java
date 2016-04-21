@@ -190,6 +190,40 @@ public class UserApplyController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping("/register/save.do")
+    public String registerSave(HttpServletRequest request,
+                               @RequestParam(value = "skuId", required = true) Integer skuId,
+                               @RequestParam(value = "pUserId", required = true) Long pUserId) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (pUserId != null && pUserId > 0) {
+                ComUser comUser = getComUser(request);
+                Long temPUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
+                if (temPUserId == 0) {
+                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                    userSkuService.checkParentData(comUser, pUserId, skuId);
+                    PfUserRelation pfUserRelation = new PfUserRelation();
+                    pfUserRelation.setCreateTime(new Date());
+                    pfUserRelation.setUserId(comUser.getId());
+                    pfUserRelation.setSkuId(skuId);
+                    pfUserRelation.setIsEnable(1);
+                    pfUserRelation.setUserPid(pUserId);
+                    pfUserRelationService.insert(pfUserRelation);
+                }
+            }
+            jsonObject.put("isError", false);
+        } catch (Exception ex) {
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                jsonObject.put("isError", true);
+                jsonObject.put("message", ex.getMessage());
+            } else {
+                throw new BusinessException("网络错误", ex);
+            }
+        }
+        return jsonObject.toJSONString();
+    }
+
+    @ResponseBody
     @RequestMapping("/checkPMobile.do")
     public String checkPMobile(HttpServletRequest request,
                                @RequestParam(value = "skuId", required = true) Integer skuId,

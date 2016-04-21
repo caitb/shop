@@ -64,6 +64,7 @@ public class ComUserAccountService {
         account.setCreatedTime(new Date());
         account.setTotalIncomeFee(new BigDecimal(0));
         account.setProfitFee(new BigDecimal(0));
+        account.setVersion(0L);
         accountMapper.insert(account);
     }
 

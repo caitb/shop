@@ -181,6 +181,7 @@
                                                             <div class="profile-info-value" id="jjF">
                                                                 <form id="auditForm">
                                                                   <input type="hidden" name="id" id="userId" value="" />
+                                                                  <input type="hidden" name="mobile" id="mobile" value="" />
                                                                   <input type="hidden" name="auditStatus" id="auditStatus" value="2" />
                                                                   <textarea name="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
                                                                 </form>
@@ -379,6 +380,7 @@
                                     success: function(data){
                                         data = window.eval('('+data+')');
                                         $('#userId').val(data.id);
+                                        $('#mobile').val(data.mobile);
                                         $('#nickName').html(data.wxNkName);
                                         $('#realName').html(data.realName);
                                         $('#linkmanIDCard').html(data.idCard);

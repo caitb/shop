@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -146,6 +147,9 @@ public class ComUserService {
      */
     public void audit(ComUser comUser){
         comUserMapper.updateByPrimaryKey(comUser);
+        if(comUser.getAuditStatus()==2 || comUser.getAuditStatus()==3){
+            MobileMessageUtil.verifiedComplete(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
+        }
     }
 
     public String findByPid(Integer pid) {

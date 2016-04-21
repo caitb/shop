@@ -54,7 +54,7 @@
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
 <script src="<%=path%>/static/js/dropload.min.js"></script>
 <script type="application/javascript" src="<%=path%>/static/js/extract_list.js"></script>
-<script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
     function toBack(){
         fullShow();//跳转页面钱展示全屏遮罩loading...

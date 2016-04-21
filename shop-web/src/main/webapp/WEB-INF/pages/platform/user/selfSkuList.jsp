@@ -101,6 +101,8 @@
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/plugins/fastclick.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
     $(function() {
         FastClick.attach(document.body);

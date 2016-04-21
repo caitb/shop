@@ -452,6 +452,7 @@
         <module>shop-web</module>
         <module>shop-scheduler</module>
         <module>shop-mall</module>
+        <module>shop-api</module>
     </modules>
 
 </project>

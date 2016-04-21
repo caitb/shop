@@ -19,7 +19,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+        <a href="<%=basePath%>myteam/teamlist"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
         <p>我的团队</p>
     </header>
     <main>

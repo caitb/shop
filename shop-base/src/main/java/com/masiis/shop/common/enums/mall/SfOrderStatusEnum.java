@@ -102,4 +102,9 @@ public enum SfOrderStatusEnum {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "{\"code\":" + getCode() + ",\"desc\":" + getDesc() + "}";
+    }
 }

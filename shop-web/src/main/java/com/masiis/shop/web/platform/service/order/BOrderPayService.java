@@ -287,7 +287,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
+                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) != 1) {
                     throw new BusinessException("(平台发货)排队订单增加冻结量失败");
                 }
             } else {
@@ -299,7 +299,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(parentSkuStock) == 0) {
+                if (pfUserSkuStockMapper.updateByIdAndVersion(parentSkuStock) != 1) {
                     throw new BusinessException("(代理发货)排队订单增加冻结量失败");
                 }
             }
@@ -332,7 +332,7 @@ public class BOrderPayService {
                 pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
                 //减少冻结库存
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
-                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
+                if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) != 1) {
                     throw new BusinessException("减少平台库存失败");
                 }
             } else {
@@ -341,7 +341,7 @@ public class BOrderPayService {
                 parentSkuStock.setStock(parentSkuStock.getStock() - pfBorderItem.getQuantity());
                 //减少上级合伙人冻结库存
                 parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(parentSkuStock) == 0) {
+                if (pfUserSkuStockMapper.updateByIdAndVersion(parentSkuStock) != 1) {
                     throw new BusinessException("减少上级合伙人平台库存失败");
                 }
             }
@@ -349,7 +349,7 @@ public class BOrderPayService {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
             //如果还没有库存信息直接初始化库存
             pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
-            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
                 throw new BusinessException("增加用户平台库存失败");
             }
         }

@@ -75,6 +75,8 @@ public class PfUserBillService {
                     order.setIsCounting(1);
                     sfOrderMapper.updateByPrimaryKey(order);
                 }
+                item.setIsCount(1);
+                itemMapper.updateByPrimaryKey(item);
             }
             // 修改账单状态
             bill.setStatus(1);

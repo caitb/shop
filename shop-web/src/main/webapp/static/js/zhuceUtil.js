@@ -99,22 +99,37 @@ $(function () {
         thisObj.html("正在提交...");
         var event = event || event.window;
         event.stopPropagation();
-        //还没有选择拿货方式
-        if (sendType == 0) {
-            var paraData = "?";
-            paraData += "skuId=" + skuId;
-            paraData += "&agentLevelId=" + $(".on").attr("levelId");
-            paraData += "&weiXinId=" + $("#q_weixinId").html();
-            window.location.href = path + "border/setUserSendType.shtml" + paraData;
-        } else {
-            var paraData = "?";
-            paraData += "skuId=" + skuId;
-            paraData += "&agentLevelId=" + $(".on").attr("levelId");
-            paraData += "&weiXinId=" + $("#q_weixinId").html();
-            paraData += "&sendType=" + sendType;
-            paraData += "&previousPageType=0";
-            window.location.href = path + "BOrderAdd/agentBOrder.shtml" + paraData;
-        }
+        var para = {};
+        para.skuId = skuId;
+        para.pUserId = pUserId;
+        $.ajax({
+            url: path + "userApply/register/save.do",
+            data: para,
+            dataType: "json",
+            type: "POST",
+            success: function (rdata) {
+                if (rdata && rdata.isError == false) {
+                    //还没有选择拿货方式
+                    if (sendType == 0) {
+                        var paraData = "?";
+                        paraData += "skuId=" + skuId;
+                        paraData += "&agentLevelId=" + $(".on").attr("levelId");
+                        paraData += "&weiXinId=" + $("#q_weixinId").html();
+                        window.location.href = path + "border/setUserSendType.shtml" + paraData;
+                    } else {
+                        var paraData = "?";
+                        paraData += "skuId=" + skuId;
+                        paraData += "&agentLevelId=" + $(".on").attr("levelId");
+                        paraData += "&weiXinId=" + $("#q_weixinId").html();
+                        paraData += "&sendType=" + sendType;
+                        paraData += "&previousPageType=0";
+                        window.location.href = path + "BOrderAdd/agentBOrder.shtml" + paraData;
+                    }
+                } else {
+                    alert(rdata.message);
+                }
+            }
+        });
     });
     /*
      * 是否有推荐人

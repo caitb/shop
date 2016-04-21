@@ -226,6 +226,7 @@ public class SfUserAccountService {
         sfItem.setRemark("用户订单分润");
         sfItem.setItemType(1);
         sfItem.setItemSubType(2);
+        sfItem.setIsCount(0);
 
         return sfItem;
     }
@@ -247,6 +248,7 @@ public class SfUserAccountService {
         item.setOrderPayAmount(countFee);
         item.setOrderType(1);
         item.setOrderSubType(0);
+        item.setIsCount(0);
 
         return item;
     }

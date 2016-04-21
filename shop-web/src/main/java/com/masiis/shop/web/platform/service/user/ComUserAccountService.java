@@ -111,8 +111,6 @@ public class ComUserAccountService {
                 recordT.setNextFee(account.getTotalIncomeFee());
                 recordMapper.insert(recordT);
                 log.info("增加上级总利润");
-                PfUserSku userSku = null;
-                PfSkuAgent skuAgent = null;
                 PfUserSku pUserSku = null;
                 PfSkuAgent pSkuAgent = null;
                 BigDecimal discountAh = BigDecimal.ZERO;
@@ -126,6 +124,7 @@ public class ComUserAccountService {
                         sumProfitFee = sumProfitFee.add(profitFee);
                     }
                 }
+                log.info("开始修改利润");
                 ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, item.getId(), UserAccountRecordFeeType.AddProfitFee);
                 recordP.setPrevFee(account.getProfitFee());
                 account.setProfitFee(account.getProfitFee().add(sumProfitFee));
@@ -182,6 +181,7 @@ public class ComUserAccountService {
         item.setOrderType(0);
         item.setPfBorderId(order.getId());
         item.setUserId(order.getUserPid());
+        item.setIsCount(0);
         return item;
     }
 

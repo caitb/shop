@@ -53,6 +53,10 @@ public class SfUserBillItem {
      */
     private BigDecimal amount;
     /**
+     * 是否结算: 0,未结算; 1,已结算
+     */
+    private Integer isCount;
+    /**
      * 备注
      */
     private String remark;
@@ -117,6 +121,15 @@ public class SfUserBillItem {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
+
+    public Integer getIsCount() {
+        return isCount;
+    }
+
+    public void setIsCount(Integer isCount) {
+        this.isCount = isCount;
+    }
+
     public String getRemark() {
         return remark;
     }

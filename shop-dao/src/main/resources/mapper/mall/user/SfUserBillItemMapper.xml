@@ -12,6 +12,7 @@
         <result column="item_sub_type" property="itemSubType" jdbcType="INTEGER" />
         <result column="source_create_time" property="sourceCreateTime" jdbcType="TIMESTAMP" />
         <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="is_count" property="isCount" jdbcType="INTEGER" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -24,11 +25,11 @@
         insert into sf_user_bill_item (id, com_user_id, create_time, 
             create_man, sf_user_bill_id, source_id, 
             item_type, item_sub_type, source_create_time, 
-            amount, remark)
+            amount, is_count, remark)
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
             #{createMan,jdbcType=BIGINT}, #{sfUserBillId,jdbcType=BIGINT}, #{sourceId,jdbcType=BIGINT}, 
             #{itemType,jdbcType=INTEGER}, #{itemSubType,jdbcType=INTEGER}, #{sourceCreateTime,jdbcType=TIMESTAMP}, 
-            #{amount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR})
+            #{amount,jdbcType=DECIMAL}, #{isCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserBillItem" >
@@ -42,26 +43,27 @@
             item_sub_type = #{itemSubType,jdbcType=INTEGER},
             source_create_time = #{sourceCreateTime,jdbcType=TIMESTAMP},
             amount = #{amount,jdbcType=DECIMAL},
+            is_count = #{isCount,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, com_user_id, create_time, create_man, sf_user_bill_id, source_id, item_type, 
-        item_sub_type, source_create_time, amount, remark
+        item_sub_type, source_create_time, amount, is_count, remark
         from sf_user_bill_item
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, com_user_id, create_time, create_man, sf_user_bill_id, source_id, item_type, 
-        item_sub_type, source_create_time, amount, remark
+        item_sub_type, source_create_time, amount, is_count, remark
         from sf_user_bill_item
     </select>
 
     <select id="selectByUserAndDate" resultMap="BaseResultMap" >
         select id, com_user_id, create_time, create_man, sf_user_bill_id, source_id, item_type,
-        item_sub_type, source_create_time, amount, remark
+        item_sub_type, source_create_time, amount, is_count, remark
         from sf_user_bill_item
         WHERE com_user_id = #{userId,jdbcType=BIGINT}
         AND create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}

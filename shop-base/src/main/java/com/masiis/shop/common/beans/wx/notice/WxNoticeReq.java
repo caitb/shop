@@ -4,12 +4,17 @@ package com.masiis.shop.common.beans.wx.notice;
  * @date 2016/4/20
  * @author lzh
  */
-public class BaseSend {
+public class WxNoticeReq<T extends WxNoticeDataBase> {
     private String touser;
     private String template_id;
     private String url;
     private String topcolor;
-    private Object data;
+    private T data;
+
+    public WxNoticeReq(T data){
+        super();
+        this.data = data;
+    }
 
     public String getTouser() {
         return touser;
@@ -43,11 +48,11 @@ public class BaseSend {
         this.topcolor = topcolor;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

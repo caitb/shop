@@ -201,6 +201,7 @@ public class MyTeamService {
         memberMap.put("status", pfUserCertificate.getStatus());
         memberMap.put("certificateImg", PropertiesUtils.getStringValue("index_user_certificate_url") + pfUserCertificate.getImgUrl());
         memberMap.put("applyTime", pfUserCertificate.getBeginTime());
+        memberMap.put("pid", pfUserSku.getPid());
 
         return memberMap;
     }

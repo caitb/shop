@@ -63,6 +63,7 @@ public class ComUserAccountService {
         account.setBailFee(new BigDecimal(0));
         account.setCreatedTime(new Date());
         account.setTotalIncomeFee(new BigDecimal(0));
+        account.setProfitFee(new BigDecimal(0));
         accountMapper.insert(account);
     }
 

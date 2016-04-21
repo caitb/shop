@@ -18,8 +18,8 @@ public class WxNoticeUtils {
      * @param noPay
      * @return
      */
-    public static WxNoticeRes userNoticByNoPay(WxNoticConfig config,
-                                               WxNoticeReq<WxNoticeNotPay> noPay){
+    public static WxNoticeRes userNoticByNoPayToPF(WxNoticConfig config,
+                                                    WxNoticeReq<WxNoticeNotPay> noPay){
         String url = config.getUrl() + "?access_token=" + config.getNoticeToken();
         String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
         WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);

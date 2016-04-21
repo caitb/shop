@@ -1,7 +1,7 @@
 package com.masiis.shop.admin.utils;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.masiis.shop.admin.constants.wx.WxConsSF;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;

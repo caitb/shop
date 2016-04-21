@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.constants.wx;
+package com.masiis.shop.common.constant.wx;
 
 /**
  * @Date:2016/4/21
@@ -21,4 +21,8 @@ public class WxConsPF {
      * 商户号
      */
     public static final String APP_MCHID = "1327801401";
+
+
+
+    /***********************微信通知模板id***********************/
 }

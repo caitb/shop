@@ -9,11 +9,7 @@ public class SysConstants {
     /**
      * cookie的名称
      */
-    public static final String COOKIE_WX_ID_NAME = "wx_usr_coo";
-    /**
-     * cookie的名称
-     */
-    public static final String COOKIE_MALL_WX_ID_NAME = "s14bX88j23O205Z6tHky11Apy1oL165yQM4eqC0eT5i2A8096FFfc4fS78G067z7";
+    public static final String COOKIE_WX_ID_NAME = "s14bX88j23O205Z6tHky11Apy1oL165yQM4eqC0eT5i2A8096FFfc4fS78G067z7";
     /**
      * 登录信息保存cookie加密密钥
      */

@@ -4,12 +4,17 @@ package com.masiis.shop.common.beans.wx.notice;
  * @date 2016/4/20
  * @author lzh
  */
-public class BaseSend {
+public class TemplateBase {
     private String touser;
     private String template_id;
     private String url;
     private String topcolor;
-    private Object data;
+    private TemplateDataBase data;
+
+    public TemplateBase(TemplateDataBase data){
+        super();
+        this.data = data;
+    }
 
     public String getTouser() {
         return touser;
@@ -43,11 +48,11 @@ public class BaseSend {
         this.topcolor = topcolor;
     }
 
-    public Object getData() {
+    public TemplateDataBase getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(TemplateDataBase data) {
         this.data = data;
     }
 }

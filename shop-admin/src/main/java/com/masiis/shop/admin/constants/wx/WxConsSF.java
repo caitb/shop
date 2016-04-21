@@ -4,7 +4,7 @@ package com.masiis.shop.admin.constants.wx;
  * @Date:2016/4/9
  * @auth:lzh
  */
-public class WxPayUserCons {
+public class WxConsSF {
     /**
      * API调用签名密钥
      */

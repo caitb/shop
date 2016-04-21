@@ -69,6 +69,8 @@ public class SfUserBillService {
                     bill.setCountAmount(bill.getCountAmount().subtract(item.getAmount()));
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getAmount()));
                 }
+                item.setIsCount(1);
+                itemMapper.updateByPrimaryKey(item);
             }
 
             // 修改账单状态

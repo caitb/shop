@@ -2,7 +2,7 @@ package com.masiis.shop.admin.service.wx;
 
 import com.masiis.shop.admin.beans.wx.WxPayUserBeanReq;
 import com.masiis.shop.admin.beans.wx.WxPayUserBeanRes;
-import com.masiis.shop.admin.constants.wx.WxPayUserCons;
+import com.masiis.shop.admin.constants.wx.WxConsSF;
 import com.masiis.shop.admin.utils.WxBeanUtils;
 import com.masiis.shop.common.enums.SfUserExtractAuditTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -11,13 +11,9 @@ import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractPaymentMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.ComWxUserMapper;
 import com.masiis.shop.dao.po.*;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -85,7 +81,7 @@ public class WxPayUserService {
                 log.error("该用户未绑定微信,comUserId:" + user.getId());
                 throw new BusinessException("该用户未绑定微信!");
             }
-            ComWxUser wxUser = wxUserMapper.selectByUnionidAndAppid(user.getWxUnionid(), WxPayUserCons.APPID);
+            ComWxUser wxUser = wxUserMapper.selectByUnionidAndAppid(user.getWxUnionid(), WxConsSF.APPID);
             if(wxUser == null){
                 log.error("微信账户错误,请联系管理员");
                 throw new BusinessException("数据错误,请联系管理员");
@@ -115,9 +111,9 @@ public class WxPayUserService {
             // 组织请求数据
             WxPayUserBeanReq req = createWxPayUserBeanReqBy(apply, wxUser);
             req.setSign(WxBeanUtils.toSignString(req));
-            System.out.println("证书路径:" + rootPath + WxPayUserCons.PATH_CERT);
-            WxPayUserBeanRes result = new HttpsUtils(WxPayUserCons.APP_MCHID, new File(rootPath + WxPayUserCons.PATH_CERT))
-                    .sendPostByXMLWithParse(WxPayUserCons.URL_PAY_USER, req, WxPayUserBeanRes.class);
+            System.out.println("证书路径:" + rootPath + WxConsSF.PATH_CERT);
+            WxPayUserBeanRes result = new HttpsUtils(WxConsSF.APP_MCHID, new File(rootPath + WxConsSF.PATH_CERT))
+                    .sendPostByXMLWithParse(WxConsSF.URL_PAY_USER, req, WxPayUserBeanRes.class);
             if(result == null){
                 throw new BusinessException("发送https请求或解析xml结果报错!");
             }
@@ -218,16 +214,16 @@ public class WxPayUserService {
         // 请求的金额是分为单位
         req.setAmount(100);
         req.setDesc("用户提现");
-        req.setMch_appid(WxPayUserCons.APPID);
-        req.setMchid(WxPayUserCons.APP_MCHID);
+        req.setMch_appid(WxConsSF.APPID);
+        req.setMchid(WxConsSF.APP_MCHID);
         req.setNonce_str(WxBeanUtils.createGenerateStr());
         req.setPartner_trade_no(SysBeanUtils.createSfUserExtractPaySerialNum());
         // 目前先用不校验
         req.setCheck_name("NO_CHECK");
         req.setSpbill_create_ip(LocalInetAddressUtil.getHostIp());
         req.setSign(WxBeanUtils.toSignString(req));
-        String res = new HttpsUtils(WxPayUserCons.APP_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
-                .sendPostByXML(WxPayUserCons.URL_PAY_USER, req);
+        String res = new HttpsUtils(WxConsSF.APP_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
+                .sendPostByXML(WxConsSF.URL_PAY_USER, req);
         System.out.println(res);
     }
 
@@ -244,8 +240,8 @@ public class WxPayUserService {
         // 请求的金额是分为单位
         req.setAmount(apply.getExtractFee().multiply(new BigDecimal(100)).intValue());
         req.setDesc("用户提现");
-        req.setMch_appid(WxPayUserCons.APPID);
-        req.setMchid(WxPayUserCons.APP_MCHID);
+        req.setMch_appid(WxConsSF.APPID);
+        req.setMchid(WxConsSF.APP_MCHID);
         req.setNonce_str(WxBeanUtils.createGenerateStr());
         req.setPartner_trade_no(SysBeanUtils.createSfUserExtractPaySerialNum());
         // 目前先用不校验

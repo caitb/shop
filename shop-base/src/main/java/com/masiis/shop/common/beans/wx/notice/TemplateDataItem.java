@@ -8,6 +8,14 @@ public class TemplateDataItem {
     private String value;
     private String color;
 
+    public TemplateDataItem(){}
+
+    public TemplateDataItem(String value, String color){
+        super();
+        this.value = value;
+        this.color = color;
+    }
+
     public String getValue() {
         return value;
     }

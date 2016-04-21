@@ -47,6 +47,10 @@ public class PfUserBillItem {
      * 订单支付金额
      */
     private BigDecimal orderPayAmount;
+    /**
+     * 是否结算: 0,未结算; 1,已结算
+     */
+    private Integer isCount;
     private String remark;
 
     public Long getId() {
@@ -106,6 +110,15 @@ public class PfUserBillItem {
     public void setOrderPayAmount(BigDecimal orderPayAmount) {
         this.orderPayAmount = orderPayAmount;
     }
+
+    public Integer getIsCount() {
+        return isCount;
+    }
+
+    public void setIsCount(Integer isCount) {
+        this.isCount = isCount;
+    }
+
     public String getRemark() {
         return remark;
     }

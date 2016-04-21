@@ -1,10 +1,12 @@
 package com.masiis.shop.common.beans.wx.notice;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @Date:2016/4/20
  * @auth:lzh
  */
-public class TemplateNotPay {
+public class TemplateNotPay extends TemplateDataBase{
     private TemplateDataItem first;
     private TemplateDataItem type;
     private TemplateDataItem e_title;

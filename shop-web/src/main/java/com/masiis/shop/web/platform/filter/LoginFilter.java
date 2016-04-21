@@ -46,7 +46,7 @@ public class LoginFilter implements Filter{
         }
 
         String uri = request.getRequestURI();
-        log.info("Filter:" + WxConsPF.APPID);
+
         if(StringUtils.isBlank(enviromentkey)
                 || enviromentkey.equals("0")){
             // 开发阶段可以先跳过

@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.service.order.BOrderService;
+import com.masiis.shop.admin.service.order.OrderQueueDealService;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderFreight;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,6 +30,8 @@ public class PfBorderController {
 
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private OrderQueueDealService orderQueueDealService;
 
     @RequestMapping("/list.shtml")
     public String list(){
@@ -70,6 +74,36 @@ public class PfBorderController {
         }
 
         return null;
+    }
+
+    /**
+     * 处理排单
+     * @param request
+     * @param response
+     * @param borderId  订单id
+     * @param sendType  发货类型
+     * @return
+     */
+    @RequestMapping("/scheduling.do")
+    @ResponseBody
+    public Object scheduling(HttpServletRequest request, HttpServletResponse response, Long borderId, String sendType){
+
+        Map<Long, String> orderMap = new HashMap<>();
+        try {
+            if(borderId == null || sendType == null){
+                throw new RuntimeException("参数有误!不知道处理哪个订单![orderMap="+orderMap+"]");
+            }
+            orderMap.put(borderId, sendType);
+
+            orderQueueDealService.commonQueuingOrder(orderMap);
+
+            return "success";
+        } catch (Exception e) {
+            log.error("处理排单出错了![orderMap="+orderMap+"]");
+            e.printStackTrace();
+        }
+
+        return "error";
     }
 
     @RequestMapping("/delivery.do")

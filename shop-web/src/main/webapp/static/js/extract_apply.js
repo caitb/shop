@@ -26,6 +26,7 @@ $(function(){
             success:function(response){
                 if(response.resCode == "success"){
                     window.location.href = basepath + response.resUrl;
+                    sendMessage();
                 } else if (response.resCode == "fail") {
                     alert(response.resMsg);
                 }
@@ -50,4 +51,22 @@ function choiceBank(){
 function backLastPage(){
     fullShow();//跳转页面钱展示全屏遮罩loading...
     window.location.href= basepath + "account/home";
+}
+
+/**
+ * 申请提现成功发送短信
+ */
+function sendMessage(){
+    var options = {
+        url:basepath + "extract/sendMessageWithdrawRequest.do",
+        type:"POST",
+        dataType:"JSON",
+        success:function(response){
+
+        },
+        error:function(response){
+
+        }
+    };
+    $.ajax(options);
 }

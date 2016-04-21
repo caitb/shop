@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -238,5 +239,22 @@ public class UserExtractApplyController extends BaseController {
         }
 
         return res.toJSONString();
+    }
+
+    /**
+     * 提现申请发送短信
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/sendMessageWithdrawRequest.do")
+    @ResponseBody
+    public String sendMessageWithdrawRequest(HttpServletRequest request){
+        log.info("提现申请成功发送短信");
+        ComUser user = getComUser(request);
+        if (user == null){
+            throw new BusinessException("该用户未登录");
+        }
+        boolean flag = MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"1");
+        return String.valueOf(flag);
     }
 }

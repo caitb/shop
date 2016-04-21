@@ -16,11 +16,15 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/guanli.css">
 </head>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/pageJs/hideWXShare.js"> </script>
 <script>
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-        WeixinJSBridge.call('hideToolbar');
-        WeixinJSBridge.call('hideOptionMenu');
-    });
+    $(document).ready(function(){
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            WeixinJSBridge.call('hideToolbar');
+            WeixinJSBridge.call('hideOptionMenu');
+        });
+    })
 </script>
 <script>
     $(document).ready(function () {

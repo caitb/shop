@@ -4,6 +4,7 @@ import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
@@ -93,7 +94,7 @@ public class BOrderPayService {
      * <3>添加订单日志
      * <4>修改用户为已代理如果用户没有选择拿货方式更新用户的拿货方式为订单的拿货方式
      * <5>为用户生成小铺
-     * <6>初始化分销关系
+     * <6>初始化分销关系(暂删除)
      * <7>为小铺生成商品
      * <8>修改用户sku代理关系数据
      * <9>修改代理人数(如果是代理类型的订单增加修改sku代理人数)
@@ -168,19 +169,21 @@ public class BOrderPayService {
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
         }
-        log.info("<6>初始化分销关系");
-        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
-        if (sfUserRelation == null) {
-            sfUserRelation = new SfUserRelation();
-            sfUserRelation.setCreateTime(new Date());
-            sfUserRelation.setUserPid(0l);
-            sfUserRelation.setUserId(comUser.getId());
-            sfUserRelation.setLevel(1);
-            sfUserRelation.setRemark("代理人初始分销关系");
-            sfUserRelationMapper.insert(sfUserRelation);
-        }
-        int n = 0;
+//        log.info("<6>初始化分销关系");
+//        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
+//        if (sfUserRelation == null) {
+//            sfUserRelation = new SfUserRelation();
+//            sfUserRelation.setCreateTime(new Date());
+//            sfUserRelation.setUserPid(0l);
+//            sfUserRelation.setUserId(comUser.getId());
+//            sfUserRelation.setLevel(1);
+//            sfUserRelation.setRemark("代理人初始分销关系");
+//            sfUserRelationMapper.insert(sfUserRelation);
+//        }
+        String skuName = "";
+        String agentLevelName = "";
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
+            skuName = pfBorderItem.getSkuName();
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {
                 log.info("<7>为小铺生成商品");
@@ -250,6 +253,7 @@ public class BOrderPayService {
                 String value1 = "授权书编号：" + pfUserCertificate.getCode() + "，手机：" + pfUserCertificate.getMobile() + "，微信：" + pfUserCertificate.getWxId();
                 String value2 = "授权期限：" + beginTime + "至" + endTime;
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                agentLevelName = comAgentLevel.getName();
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.insert(pfUserCertificate);
@@ -305,7 +309,8 @@ public class BOrderPayService {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }
-
+        //发送支付成功短信
+//        MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), skuName, agentLevelName);
     }
 
     /**

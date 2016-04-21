@@ -1,5 +1,6 @@
 /**
- * 隐藏微信分享
+ * 隐藏微信分享功能
+ * @config json字符串或json对象
  */
 function hideWXShare(config){
     if((typeof config)=='string'){
@@ -17,6 +18,11 @@ function hideWXShare(config){
         signature: config.signature,
         jsApiList: [
             'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone',
             'hideOptionMenu',
         ]
     });

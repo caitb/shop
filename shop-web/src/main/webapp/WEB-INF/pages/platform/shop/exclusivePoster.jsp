@@ -31,76 +31,6 @@
             width: 100%;
         }
     </style>
-    <%--<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>--%>
-    <%--<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>--%>
-    <%--<script src="<%=basePath%>static/js/plugins/base64.js"></script>--%>
-    <script type="text/javascript">
-        //window.addEventListener("load", eventWindowLoaded, false);
-        function eventWindowLoaded() {
-            canvasApp();
-        }
-
-        function canvasSupport() {
-            return Modernizr.canvas;
-        }
-
-        function eventWindowLoaded() {
-            canvasApp();
-        }
-
-        function canvasApp() {
-
-            if(!canvasSupport()) {
-                return;
-            }
-            var theCanvas = document.getElementById("canvasOne");
-            theCanvas.width = 520;
-            theCanvas.height =710;
-            var context = theCanvas.getContext("2d");
-            context.fillStyle = "#EEEEEE";
-            context.fillRect(0, 0, theCanvas.width, theCanvas.height);
-
-            var imgSrcs = ['<%=basePath%>${userImg}', '<%=basePath%>${bgShop}', '<%=basePath%>${shopQRCode}'];
-            var oImgs = [];
-            for(var i in imgSrcs){
-                oImgs[i] = new Image();
-                oImgs[i].src = imgSrcs[i];
-                oImgs[i].isLoaded = false;
-
-                oImgs[i].addEventListener('load', function(){
-                    this.isLoaded = true;
-                }, false);
-
-            }
-
-            var drawTimer = setInterval(function(){
-                var isAllLoaded = true;
-                for(var i in oImgs){
-                    if(!oImgs[i].isLoaded) isAllLoaded = false;
-                }
-
-                if(isAllLoaded){
-                    context.drawImage(oImgs[0], 195, 130, 130, 130);
-                    context.drawImage(oImgs[1], 0, 0);
-                    context.drawImage(oImgs[2], 160, 368);
-
-                    context.font = 'normal 28px Microsoft YaHei';
-                    context.textBaseline = 'top';
-                    context.strokeStyle = '#F73C8C';
-                    var text = '我是' + '${userName}';
-                    context.strokeText(text,520/2-text.length/2*28, 284);
-
-                    clearInterval(drawTimer);
-                }
-            },100);
-
-
-            document.getElementById('downloadPoster').onclick = function(){
-                Canvas2Image.saveAsPNG(theCanvas);
-            }
-
-        }
-    </script>
 </head>
 <body>
 <header>
@@ -108,14 +38,12 @@
     <p>店铺分享</p>
 </header>
 <div class="wrap">
-    <canvas id="canvasOne" style="display: none;">
-        Your browser does not support HTML5 Canvas.
-    </canvas>
     <img src="${shopPoster}" />
     <b id="hideOptionMenu">长按图片保存海报</b>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script>
     /*
      * 注意：
@@ -141,36 +69,6 @@
             'onMenuShareQQ',
             'onMenuShareWeibo',
             'onMenuShareQZone',
-            'hideMenuItems',
-            'showMenuItems',
-            'hideAllNonBaseMenuItem',
-            'showAllNonBaseMenuItem',
-            'translateVoice',
-            'startRecord',
-            'stopRecord',
-            'onVoiceRecordEnd',
-            'playVoice',
-            'onVoicePlayEnd',
-            'pauseVoice',
-            'stopVoice',
-            'uploadVoice',
-            'downloadVoice',
-            'chooseImage',
-            'previewImage',
-            'uploadImage',
-            'downloadImage',
-            'getNetworkType',
-            'openLocation',
-            'getLocation',
-            'hideOptionMenu',
-            'showOptionMenu',
-            'closeWindow',
-            'scanQRCode',
-            'chooseWXPay',
-            'openProductSpecificView',
-            'addCard',
-            'chooseCard',
-            'openCard'
         ]
     });
 
@@ -182,7 +80,7 @@
         imgUrl: '${shareMap.shareImg}'
     };
 
+
 </script>
-<script src="<%=basePath%>static/js/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/share.js"> </script>
 </html>

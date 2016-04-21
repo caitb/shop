@@ -1,11 +1,11 @@
-package com.masiis.shop.web.mall.constants;
+package com.masiis.shop.common.constant.wx;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 
 /**
  * Created by lzh on 2016/2/24.
  */
-public class WxConstants {
+public class WxConsSF {
     /**
      * 授权页面链接
      */

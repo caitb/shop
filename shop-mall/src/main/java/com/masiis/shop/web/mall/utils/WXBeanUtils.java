@@ -6,7 +6,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
 import com.masiis.shop.web.mall.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public class WXBeanUtils {
 
     public static void main(String[] args) throws IllegalAccessException {
         BrandWCPayReq br = new BrandWCPayReq();
-        br.setAppId(WxConstants.APPID);
+        br.setAppId(WxConsSF.APPID);
         String nonce = "sddfs22dsdf5ssdfa53wq3";
         System.out.println("nonce:" + nonce);
         br.setNonceStr(nonce);
@@ -89,7 +89,7 @@ public class WXBeanUtils {
             sb.append(arrayToSort[i]);
         }
         String result = sb.toString();
-        result += "key=" + WxConstants.WX_PAY_SIGN_KEY;
+        result += "key=" + WxConsSF.WX_PAY_SIGN_KEY;
         result = MD5Utils.encrypt(result).toUpperCase();
         return result;
     }

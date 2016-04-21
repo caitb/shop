@@ -2,13 +2,12 @@ package com.masiis.shop.web.mall.service.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.task.JsapiTicketTask;
 import com.masiis.shop.web.mall.utils.JSSDKUtil;
 import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.Map;
 
 /**
@@ -33,7 +32,7 @@ public class JSSDKService {
         }
 
         Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
-                            shareMap.put("appId", WxConstants.APPID);
+                            shareMap.put("appId", WxConsSF.APPID);
 
         return shareMap;
     }

@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.mall.beans.wxauth.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.constants.WxResCodeCons;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Date;
 
 /**
@@ -170,7 +169,7 @@ public class VerifyController extends BaseController {
             }
             System.out.println("val:" + val);
             // 根据openid获取用户对象
-            ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConstants.APPID);
+            ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConsSF.APPID);
             if(wxUser == null){
                 throw new BusinessException("该unionid无效,需要重新对该用户授权!");
             }

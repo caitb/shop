@@ -2,7 +2,7 @@ package com.masiis.shop.web.mall.task;
 
 import com.alibaba.druid.support.json.JSONParser;
 import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,7 +29,7 @@ public class JsapiTicketTask {
             }
             log.info("[mall_jsapi_access_tocken="+accessTocken+"]");
 
-            jsapiTicketUrl = WxConstants.URL_JSSDK_JSAPI_TICKET
+            jsapiTicketUrl = WxConsSF.URL_JSSDK_JSAPI_TICKET
                             + "?access_token=" + accessTocken
                             + "&type=jsapi";
             log.info("开始请求jsapi票据jsapi_ticket中......");

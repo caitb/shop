@@ -4,7 +4,7 @@ import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 
 import java.util.Map;
@@ -22,10 +22,10 @@ public class JsapiAccessTokenTask {
         String jsonResult = null;
 
         try {
-            accessTokenUrl = WxConstants.URL_JSSDK_ACCESS_TOKEN
-                                   + "?grant_type=" + WxConstants.JSSDK_GRANT_TYPE
-                                   + "&appid=" + WxConstants.APPID
-                                   + "&secret=" + WxConstants.APPSECRET;
+            accessTokenUrl = WxConsSF.URL_JSSDK_ACCESS_TOKEN
+                                   + "?grant_type=" + WxConsSF.JSSDK_GRANT_TYPE
+                                   + "&appid=" + WxConsSF.APPID
+                                   + "&secret=" + WxConsSF.APPSECRET;
             log.info("开始请求获取jssapi令牌中.....");
             jsonResult     = HttpClientUtils.httpGet(accessTokenUrl);
             log.info("请求获取jssapi令牌返回的[jsonResult="+jsonResult+"]");

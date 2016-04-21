@@ -1,6 +1,6 @@
 package com.masiis.shop.web.mall.utils.wx;
 
-import com.masiis.shop.web.mall.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,13 +20,13 @@ public class WxAuthUrlUtils {
      * @throws UnsupportedEncodingException
      */
     public static String createAuthorizeInfoUrl(String basepath, String stateStr) throws UnsupportedEncodingException {
-        return WxConstants.URL_AUTH
-                + "?appid=" + WxConstants.APPID
-                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConstants.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
-                + "&response_type=" + WxConstants.RESPONSE_TYPE_AUTH
-                + "&scope=" + WxConstants.SCOPE_AUTH_USRINFO
+        return WxConsSF.URL_AUTH
+                + "?appid=" + WxConsSF.APPID
+                + "&redirect_uri=" + URLEncoder.encode(basepath + WxConsSF.REDIECT_URI_GET_ACCESS_TOKEN, "UTF-8")
+                + "&response_type=" + WxConsSF.RESPONSE_TYPE_AUTH
+                + "&scope=" + WxConsSF.SCOPE_AUTH_USRINFO
                 + "&state=" + stateStr
-                + WxConstants.TAILSTR_AUTH;
+                + WxConsSF.TAILSTR_AUTH;
     }
 
     /**
@@ -36,7 +36,7 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createUserInfoUrl(String accessToken, String openId){
-        return WxConstants.URL_GET_USERINFO
+        return WxConsSF.URL_GET_USERINFO
                 + "?access_token=" + accessToken
                 + "&openid=" + openId
                 + "&lang=zh_CN";
@@ -49,11 +49,11 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createAccessTokenUrl(String code){
-        return WxConstants.URL_GET_ACCESS_TOKEN
-                + "?appid=" + WxConstants.APPID
-                + "&secret=" + WxConstants.APPSECRET
+        return WxConsSF.URL_GET_ACCESS_TOKEN
+                + "?appid=" + WxConsSF.APPID
+                + "&secret=" + WxConsSF.APPSECRET
                 + "&code=" + code
-                + "&grant_type=" + WxConstants.GRANT_TYPE_ACCESSTOKEN;
+                + "&grant_type=" + WxConsSF.GRANT_TYPE_ACCESSTOKEN;
     }
 
     /**
@@ -63,14 +63,14 @@ public class WxAuthUrlUtils {
      * @return
      */
     public static String createRefreshTokenUrl(String refreshToken){
-        return WxConstants.URL_REFRESH_TOKEN
-                + "?appid=" + WxConstants.APPID
-                + "&grant_type=" + WxConstants.GRANT_TYPE_RFTOKEN
+        return WxConsSF.URL_REFRESH_TOKEN
+                + "?appid=" + WxConsSF.APPID
+                + "&grant_type=" + WxConsSF.GRANT_TYPE_RFTOKEN
                 + "&refresh_token=" + refreshToken;
     }
 
     public static String createCheckTokenUrl(String token, String openId){
-        return WxConstants.URL_CHECK_ACCESS_TOKEN
+        return WxConsSF.URL_CHECK_ACCESS_TOKEN
                 + "?access_token=" + token
                 + "&openid=" + openId;
     }

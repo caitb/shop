@@ -1,6 +1,6 @@
 package com.masiis.shop.web.platform.utils.wx;
 
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

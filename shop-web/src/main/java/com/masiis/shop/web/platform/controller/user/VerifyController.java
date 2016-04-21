@@ -7,7 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.platform.beans.wxauth.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import com.masiis.shop.web.platform.constants.WxResCodeCons;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Date;
 
 /**

@@ -4,7 +4,7 @@ import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.constants;
+package com.masiis.shop.common.constant.wx;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 

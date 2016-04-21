@@ -3,7 +3,7 @@ package com.masiis.shop.web.platform.utils;
 import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;

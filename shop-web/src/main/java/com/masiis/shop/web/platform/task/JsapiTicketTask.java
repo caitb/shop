@@ -2,7 +2,7 @@ package com.masiis.shop.web.platform.task;
 
 import com.alibaba.druid.support.json.JSONParser;
 import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

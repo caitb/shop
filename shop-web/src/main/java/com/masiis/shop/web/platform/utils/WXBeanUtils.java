@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

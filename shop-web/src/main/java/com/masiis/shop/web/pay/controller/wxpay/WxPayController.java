@@ -7,7 +7,7 @@ import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.masiis.shop.web.platform.service.user.UserService;

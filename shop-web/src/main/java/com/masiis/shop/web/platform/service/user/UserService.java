@@ -1,22 +1,18 @@
 package com.masiis.shop.web.platform.service.user;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -332,7 +328,7 @@ public class UserService {
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
-        wxUser.setAppid(WxConstants.APPID);
+        wxUser.setAppid(WxConsPF.APPID);
         wxUser.setComUserId(user.getId());
 
         return wxUser;

@@ -7,7 +7,7 @@ import com.masiis.shop.web.platform.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
-import com.masiis.shop.web.platform.constants.WxConstants;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.pay.service.wxpay.WxPayService;
 import com.masiis.shop.web.platform.service.user.UserService;
@@ -69,7 +69,7 @@ public class WxPayController extends BaseController{
         try {
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
-            res = h.sendPost(WxConstants.WX_PAY_URL_UNIORDER, uniOrder);
+            res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayPage:下预付单响应成功,response:" + res);
 
             xStream.processAnnotations(UnifiedOrderRes.class);
@@ -147,7 +147,7 @@ public class WxPayController extends BaseController{
      */
     private BrandWCPayReq createBrandWCPayReq(UnifiedOrderRes resObj) {
         BrandWCPayReq payReq = new BrandWCPayReq();
-        payReq.setAppId(WxConstants.APPID);
+        payReq.setAppId(WxConsPF.APPID);
         payReq.setTimeStamp(String.valueOf(new Date().getTime()));
         payReq.setNonceStr(WXBeanUtils.createGenerateStr());
         payReq.setSignType("MD5");

@@ -145,9 +145,9 @@ public class ProductController extends BaseController {
         ComUserAddress comUserAddress = userAddressService.getOrderAddress(selectedAddressId, comUser.getId());
         if (comUserAddress != null) {
             mav.addObject("addressId", comUserAddress.getId());
-            mav.addObject("pfUserSkuStockId", id);
             mav.addObject("comUserAddress", comUserAddress);
         }
+        mav.addObject("pfUserSkuStockId", id);
         PfUserSkuStock product = productService.getStockByUser(id);
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());

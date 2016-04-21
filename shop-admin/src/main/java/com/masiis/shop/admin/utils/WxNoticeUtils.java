@@ -1,7 +1,7 @@
 package com.masiis.shop.admin.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.admin.constants.wx.WxConsSF;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.beans.wx.notice.WxNoticeDataItem;
 import com.masiis.shop.common.beans.wx.notice.WxNoticeNotPay;
 import com.masiis.shop.common.beans.wx.notice.WxNoticeReq;

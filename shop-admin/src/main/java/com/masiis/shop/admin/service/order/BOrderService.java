@@ -162,7 +162,7 @@ public class BOrderService {
      */
     public  void  updateOrderStock(PfBorder pfBorder) throws Exception {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        if(pfBorder.getUserPid().intValue() == 0){
+        if(pfBorder.getUserPid().intValue() == 0 && pfBorder.getOrderType().intValue() != 2){
             for(PfBorderItem pfBorderItem : pfBorderItems){
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 if(pfSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
@@ -176,7 +176,8 @@ public class BOrderService {
             }
         }else{
             for(PfBorderItem pfBorderItem : pfBorderItems){
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                Long userPid = pfBorder.getOrderType().intValue()==2 ? pfBorder.getUserId() : pfBorder.getUserPid();
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userPid, pfBorderItem.getSkuId());
                 if(pfUserSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
                     pfUserSkuStock.setStock(pfUserSkuStock.getStock()-pfBorderItem.getQuantity());
                     pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity());

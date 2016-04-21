@@ -1,11 +1,28 @@
-package com.masiis.shop.web.platform.constants;
+package com.masiis.shop.common.constant.wx;
 
 import com.masiis.shop.common.util.PropertiesUtils;
 
 /**
- * Created by lzh on 2016/2/24.
+ * @Date:2016/4/9
+ * @auth:lzh
  */
-public class WxConstants {
+public class WxConsSF {
+    /**
+     * API调用签名密钥
+     */
+    public static final String API_KEY = "6AEEB8CB6153CEAAA0FC8AACF5A10934";
+    /**
+     * 商户号
+     */
+    public static final String APP_MCHID = "1329841601";
+    /**
+     * 企业给用户打款url
+     */
+    public static final String URL_PAY_USER = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+
+    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
+
+
     /**
      * 授权页面链接
      */
@@ -23,10 +40,6 @@ public class WxConstants {
      */
     public static final String REDIECT_URI_GET_ACCESS_TOKEN = "verify/actk";
     /**
-     * 获取accesstoken链接
-     */
-    public static final String REDIECT_URI_BASE_AUTH = "verify/bactk";
-    /**
      * 授权页面链接参数
      */
     public static final String RESPONSE_TYPE_AUTH = "code";
@@ -37,7 +50,7 @@ public class WxConstants {
     /**
      * 静默授权的可选参数
      */
-    public static final String SCOPE_AUTH_BASE = "snsapi_base";
+    public static final String SCOPE_AUTH_BASE = "snsapi_BASE";
     /**
      * 授权链接尾部带着部分
      */
@@ -54,9 +67,7 @@ public class WxConstants {
      * 刷新token
      */
     public static final String URL_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
-    /**
-     * 获取微信用户信息
-     */
+
     public static final String URL_GET_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
     /**
      * 刷新token的grant_type类型

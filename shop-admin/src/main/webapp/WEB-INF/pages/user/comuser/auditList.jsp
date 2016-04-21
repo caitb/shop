@@ -578,6 +578,7 @@
                 if('success' == msg){
                     $('#modal-audit').modal('hide');
                 }
+                msg = msg=='success' ? '审核成功!' : '审核失败!';
                 $.gritter.add({
                     title: '消息',
                     text: msg,

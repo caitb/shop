@@ -221,7 +221,6 @@ public class SfOrderPurchaseService {
                     if (sfShopCartSkuDetails != null && sfShopCartSkuDetails.size() > 0) {
                         for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
                             //插入订单子表
-                            //shopCartIdSB.append("'").append(sfShopCartSkuDetail.getShopCartId()).append("',");
                             shopCartIdSB.append(sfShopCartSkuDetail.getShopCartId()).append(",");
                             log.info("插入订单子表---start");
                             SfOrderItem sfOrderItem = generateSfOrderItem(sfOrder.getId(), sfShopCartSkuDetail);

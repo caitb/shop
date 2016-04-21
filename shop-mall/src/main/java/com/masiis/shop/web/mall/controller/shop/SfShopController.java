@@ -288,7 +288,8 @@ public class SfShopController extends BaseController {
         userService.getShareUser(user.getId(),fromUserId,shopId);//来自分享人的信息
 
         //jssdk
-        String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+fromUserId;
+        String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId;
+               curUrl += fromUser==null ? "" : "&fromUserId="+fromUserId;
         /** 获取调用jssdk所需数据 **/
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         //要分享的数据

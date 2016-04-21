@@ -246,29 +246,26 @@ public class UserService {
             //点击自己的链接进入不会建立分销关系
             return;
         }
-        SfShop sfShop = sfShopMapper.selectByUserIdAndShopId(userId, shopId);
-        if (sfShop == null) {
-            //获取自己的分销关系
-            SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
-            //获取上级分销关系
-            SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPid);
-            if (sfUserRelation == null) { //来自于分享链接
-                SfUserRelation sfNewUserRelation = new SfUserRelation();
-                sfNewUserRelation.setCreateTime(new Date());
-                sfNewUserRelation.setUserId(userId);
-                if (sfUserPRelation == null) {
-                    sfNewUserRelation.setLevel(1);
-                    sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
-                } else {
-                    sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
-                    sfNewUserRelation.setUserPid(userPid);
-                }
-                sfUserRelationMapper.insert(sfNewUserRelation);
+        //获取自己的分销关系
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(userId);
+        //获取上级分销关系
+        SfUserRelation sfUserPRelation = sfUserRelationMapper.getSfUserRelationByUserId(userPid);
+        if (sfUserRelation == null) { //来自于分享链接
+            SfUserRelation sfNewUserRelation = new SfUserRelation();
+            sfNewUserRelation.setCreateTime(new Date());
+            sfNewUserRelation.setUserId(userId);
+            if (sfUserPRelation == null) {
+                sfNewUserRelation.setLevel(1);
+                sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
             } else {
-                if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
-                    sfUserRelation.setUserPid(sfUserPRelation.getUserId());
-                    sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
-                }
+                sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
+                sfNewUserRelation.setUserPid(userPid);
+            }
+            sfUserRelationMapper.insert(sfNewUserRelation);
+        } else {
+            if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
+                sfUserRelation.setUserPid(sfUserPRelation.getUserId());
+                sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
             }
         }
         log.info("分销关系");

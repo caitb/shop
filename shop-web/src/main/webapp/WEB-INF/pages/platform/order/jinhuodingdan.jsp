@@ -54,7 +54,7 @@
                             <%--<c:forEach items="${pb.pfBorderItems}" var="pbi">--%>
                             <%--<div class="shangpin">--%>
                                 <%--<p class="photo">--%>
-                                   <%--<a href="<%=path%>/static/html/xiangqing.html">--%>
+                                   <%--<a href="javascript:void(0);">--%>
                                         <%--<img src="${pbi.skuUrl}" alt="">--%>
                                     <%--</a>--%>
                                 <%--</p>--%>
@@ -101,7 +101,7 @@
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
                                         <p class="photo">
-                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                            <a href="javascript:void(0);">
                                                 <img src="${pbi.skuUrl}" alt="">
                                             </a>
                                         </p>
@@ -149,7 +149,7 @@
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
                                         <p class="photo">
-                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                            <a href="javascript:void(0);">
                                                 <img src="${pbi.skuUrl}" alt="">
                                             </a>
                                         </p>
@@ -195,7 +195,7 @@
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
                                         <p class="photo">
-                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                            <a href="javascript:void(0);">
                                                 <img src="${pbi.skuUrl}" alt="">
                                             </a>
                                         </p>
@@ -241,7 +241,7 @@
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
                                         <p class="photo">
-                                            <a href="<%=path%>/static/html/xiangqing.html">
+                                            <a href="javascript:void(0);">
                                                 <img src="${pbi.skuUrl}" alt="">
                                             </a>
                                         </p>
@@ -287,7 +287,7 @@
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                         <div class="shangpin">
                                             <p class="photo">
-                                                <a href="<%=path%>/static/html/xiangqing.html">
+                                                <a href="javascript:void(0);">
                                                     <img src="${pbi.skuUrl}" alt="">
                                                 </a>
                                             </p>
@@ -333,7 +333,7 @@
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                         <div class="shangpin">
                                             <p class="photo">
-                                                <a href="<%=path%>/static/html/xiangqing.html">
+                                                <a href="javascript:void(0);">
                                                     <img src="${pbi.skuUrl}" alt="">
                                                 </a>
                                             </p>
@@ -431,7 +431,7 @@
                             $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
                                 trHtml+="<div class='shangpin'>";
                                 trHtml+=" <p class=\"photo\">";
-                                trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
+                                trHtml+="<a href=\"javascript:void(0);\">";
                                 trHtml+="<img src=\""+pfBorderItem.skuUrl+"\" alt=\"\"></a></p>";
                                 trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                 trHtml+="</div></div>";

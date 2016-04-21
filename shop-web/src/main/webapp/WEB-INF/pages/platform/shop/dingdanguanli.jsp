@@ -47,7 +47,7 @@
                             <c:forEach items="${pb.sfOrderItems}" var="pbi">
                                 <div class="shangpin">
                                     <p class="photo">
-                                        <a href="<%=path%>/static/html/xiangqing.html">
+                                        <a href="javascript:void(0);">
                                             <img src="${pbi.skuUrl}" alt="">
                                         </a>
                                     </p>
@@ -83,7 +83,7 @@
                                <c:forEach items="${pb.sfOrderItems}" var="pbi">
                                    <div class="shangpin">
                                        <p class="photo">
-                                           <a href="<%=path%>/static/html/xiangqing.html">
+                                           <a href="javascript:void(0);">
                                                <img src="${pbi.skuUrl}" alt="">
                                            </a>
                                        </p>
@@ -119,7 +119,7 @@
                                <c:forEach items="${pb.sfOrderItems}" var="pbi">
                                    <div class="shangpin">
                                        <p class="photo">
-                                           <a href="<%=path%>/static/html/xiangqing.html">
+                                           <a href="javascript:void(0);">
                                                <img src="${pbi.skuUrl}" alt="">
                                            </a>
                                        </p>
@@ -155,7 +155,7 @@
                                <c:forEach items="${pb.sfOrderItems}" var="pbi">
                                    <div class="shangpin">
                                        <p class="photo">
-                                           <a href="<%=path%>/static/html/xiangqing.html">
+                                           <a href="javascript:void(0);">
                                                <img src="${pbi.skuUrl}" alt="">
                                            </a>
                                        </p>
@@ -191,7 +191,7 @@
                                <c:forEach items="${pb.sfOrderItems}" var="pbi">
                                    <div class="shangpin">
                                        <p class="photo">
-                                           <a href="<%=path%>/static/html/xiangqing.html">
+                                           <a href="javascript:void(0);">
                                                <img src="${pbi.skuUrl}" alt="">
                                            </a>
                                        </p>
@@ -290,7 +290,7 @@
                                 $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
                                     trHtml+="<div class=\"shangpin\">";
                                     trHtml+=" <p class=\"photo\">";
-                                    trHtml+="<a href=\"<%=path%>/static/html/xiangqing.html\">";
+                                    trHtml+="<a href=\"javascript:void(0);\">";
                                     trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                     trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p> </div> </div>";
                                 });

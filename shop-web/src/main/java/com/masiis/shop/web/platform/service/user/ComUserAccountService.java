@@ -133,7 +133,7 @@ public class ComUserAccountService {
                 log.info("插入总销售额的变动流水!");
 
                 int type = accountMapper.updateByIdWithVersion(account);
-                if (type == 0) {
+                if (type != 1) {
                     throw new BusinessException("修改出货方结算金额和总销售额失败!");
                 }
                 log.info("更新出货人账户结算额和总销售额成功!");
@@ -154,10 +154,9 @@ public class ComUserAccountService {
             recordBailFee.setNextFee(accountS.getBailFee());
             recordMapper.insert(recordBailFee);
             int typeS = accountMapper.updateByIdWithVersion(accountS);
-            if (typeS == 0) {
+            if (typeS != 1) {
                 throw new BusinessException("修改进货方成本账户失败!");
             }
-
             log.info("更新进货方成本账户成功!");
         } catch (Exception e) {
             log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage(), e);

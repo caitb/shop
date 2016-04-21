@@ -7,6 +7,20 @@ import com.masiis.shop.common.util.PropertiesUtils;
  */
 public class WxConsSF {
     /**
+     * API调用签名密钥
+     */
+    public static final String API_KEY = "6AEEB8CB6153CEAAA0FC8AACF5A10934";
+    /**
+     * 商户号
+     */
+    public static final String APP_MCHID = "1329841601";
+    /**
+     * 企业给用户打款url
+     */
+    public static final String URL_PAY_USER = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+
+    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
+    /**
      * 授权页面链接
      */
     public static final String URL_AUTH = "https://open.weixin.qq.com/connect/oauth2/authorize";

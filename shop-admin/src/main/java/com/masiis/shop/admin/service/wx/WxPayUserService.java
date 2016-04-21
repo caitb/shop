@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.wx;
 import com.masiis.shop.admin.beans.wx.WxPayUserBeanReq;
 import com.masiis.shop.admin.beans.wx.WxPayUserBeanRes;
 import com.masiis.shop.admin.utils.WxBeanUtils;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.enums.SfUserExtractAuditTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.*;
@@ -111,7 +112,7 @@ public class WxPayUserService {
             WxPayUserBeanReq req = createWxPayUserBeanReqBy(apply, wxUser);
             req.setSign(WxBeanUtils.toSignString(req));
             System.out.println("证书路径:" + rootPath + WxConsSF.PATH_CERT);
-            WxPayUserBeanRes result = new HttpsUtils(WxConsSF.APP_MCHID, new File(rootPath + WxConsSF.PATH_CERT))
+            WxPayUserBeanRes result = new HttpsUtils(WxConsSF.WX_PAY_MCHID, new File(rootPath + WxConsSF.PATH_CERT))
                     .sendPostByXMLWithParse(WxConsSF.URL_PAY_USER, req, WxPayUserBeanRes.class);
             if(result == null){
                 throw new BusinessException("发送https请求或解析xml结果报错!");

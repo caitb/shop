@@ -100,7 +100,11 @@
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
+<script src="<%=path%>/static/plugins/fastclick.js"></script>
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
     function jiankucun(a,b){
         $("#skuName").html(a);
         $("#skuStock").html(b);

@@ -221,7 +221,8 @@
                     break;
             }
             if(validateCodeJS.skipPageId=="buy" || validateCodeJS.skipPageId=="share" ){
-                window.location.reload();
+                $(".back_j").hide();
+                $(".back").hide();
             }else{
                 window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
             }

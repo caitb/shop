@@ -20,7 +20,11 @@
 <%--<script src="<%=path%>/static/js/commonAjax.js"></script>--%>
 <%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="<%=path%>/static/plugins/fastclick.js"></script>
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
     $(document).ready(function () {
         var addressId = $("#addressId").val();
         if (addressId == "") {

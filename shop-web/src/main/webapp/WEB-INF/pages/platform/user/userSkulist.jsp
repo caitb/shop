@@ -83,7 +83,11 @@
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <%--<script src="<%=path%>/static/js/definedAlertWindow.js"></script>--%>
+<script src="<%=path%>/static/plugins/fastclick.js"></script>
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
     var i = 1;
     $(".jia").on("click", function () {
         i++;

@@ -142,7 +142,7 @@
         <span style="float:left">数量：</span>
         <p>
             <label class="jian">-</label>
-            <input type="text" value="1" class="number">
+            <input type="tel" value="1" class="number">
             <label class="jia">+</label>
         </p>
     </h1>
@@ -164,7 +164,11 @@
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/validateCode.js"></script>
 <%--<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>--%>
+<script src="<%=path%>/static/js/plugins/fastclick.js"></script>
 <script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
     $(document).ready(function () {
         validateCodeJS.initPage();
     });

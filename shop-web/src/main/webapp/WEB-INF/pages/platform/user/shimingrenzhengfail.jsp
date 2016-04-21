@@ -64,21 +64,22 @@
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script>
+    var isRuningF = false;
+    var isRuningB = false;
     oNly()
-    function oNly(){
-        var oNlywidth=$(".only").width();
-        $(".only").height(oNlywidth+"px")
+    function oNly() {
+        var oNlywidth = $(".only").width();
+        $(".only").height(oNlywidth + "px")
     }
     var checkImg = 0;
     function F_Open_dialog(data) {
-        if (data == 0) {
-            checkImg = 0;
-        } else {
-            checkImg = 1;
-        }
+        checkImg = data;
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
+        var selector = !checkImg ? 'idCardFront' : 'idCardBack';
+
+        $('#' + selector).attr('src', '${path}/static/images/loading2.gif');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",
             data: "",
@@ -89,14 +90,17 @@
             success: function (rdata) {
                 var data = JSON.parse(rdata);
                 if (data.code == 1) {
-                    if (checkImg == 0) {
-                        $("#idCardFront").attr("src", "${path}" + data.imgPath);
-                    } else {
-                        $("#idCardBack").attr("src", "${path}" + data.imgPath);
+                    $("#" + selector).attr("src", "${path}" + data.imgPath);
+                    if (selector == "idCardFront") {
+                        isRuningF = true;
+                    }
+                    if (selector == "idCardBack") {
+                        isRuningB = true;
                     }
                 } else {
                     alert(data.msg);
                 }
+
             }
         });
     }
@@ -116,7 +120,19 @@
             return;
         }
         var fCardUrl = $("#idCardFront").attr("src");
+        if (fCardUrl == "${path}/static/images/shenfen.png") {
+            alert("请上传身份证正面!");
+            return;
+        }
         var bCardUrl = $("#idCardBack").attr("src");
+        if (bCardUrl == "${path}/static/images/shenfenf.png") {
+            alert("请上传身份证反面!");
+            return;
+        }
+        if (!isRuningF || !isRuningB) {
+            alert("图片正在上传中，请稍后!");
+            return;
+        }
         fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
         bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
         var paraData = {};
@@ -136,6 +152,7 @@
                 }
                 else {
                     alert(data.message);
+                    return false;
                 }
             }
         });

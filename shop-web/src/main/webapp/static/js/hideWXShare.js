@@ -29,3 +29,13 @@ function hideWXShare(config){
 
     wx.hideOptionMenu();
 }
+
+$(function(){
+    $.ajax({
+        url: '/hideWXShare',
+        data: {hideUrl: window.location.href},
+        success: function(config){
+            hideWXShare(config);
+        }
+    })
+});

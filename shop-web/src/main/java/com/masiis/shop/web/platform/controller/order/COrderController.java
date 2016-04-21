@@ -150,6 +150,7 @@ public class COrderController extends BaseController {
         if (!StringUtils.isEmpty(reason)){
             reason = new String(reason.getBytes("ISO-8859-1"), "UTF-8");
         }
+        log.info("申请理由:--------"+reason);
         WxPaySysParamReq wpspr = cOrderService.trialApplyPay(request, userId, comUser, skuId, addressId, reason);
         attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
         log.info("试用申请-----开始调用微信支付");

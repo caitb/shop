@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.beans.wxauth.RedirectParam;
@@ -45,7 +46,7 @@ public class LoginFilter implements Filter{
         }
 
         String uri = request.getRequestURI();
-
+        log.info("Filter:" + WxConsPF.APPID);
         if(StringUtils.isBlank(enviromentkey)
                 || enviromentkey.equals("0")){
             // 开发阶段可以先跳过

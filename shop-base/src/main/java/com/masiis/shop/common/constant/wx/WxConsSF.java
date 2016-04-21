@@ -7,10 +7,6 @@ import com.masiis.shop.common.util.PropertiesUtils;
  */
 public class WxConsSF {
     /**
-     * API调用签名密钥
-     */
-    public static final String API_KEY = "6AEEB8CB6153CEAAA0FC8AACF5A10934";
-    /**
      * 商户号
      */
     public static final String APP_MCHID = "1329841601";

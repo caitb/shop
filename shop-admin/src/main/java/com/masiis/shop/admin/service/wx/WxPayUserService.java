@@ -215,14 +215,14 @@ public class WxPayUserService {
         req.setAmount(100);
         req.setDesc("用户提现");
         req.setMch_appid(WxConsSF.APPID);
-        req.setMchid(WxConsSF.APP_MCHID);
+        req.setMchid(WxConsSF.WX_PAY_MCHID);
         req.setNonce_str(WxBeanUtils.createGenerateStr());
         req.setPartner_trade_no(SysBeanUtils.createSfUserExtractPaySerialNum());
         // 目前先用不校验
         req.setCheck_name("NO_CHECK");
         req.setSpbill_create_ip(LocalInetAddressUtil.getHostIp());
         req.setSign(WxBeanUtils.toSignString(req));
-        String res = new HttpsUtils(WxConsSF.APP_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
+        String res = new HttpsUtils(WxConsSF.WX_PAY_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
                 .sendPostByXML(WxConsSF.URL_PAY_USER, req);
         System.out.println(res);
     }
@@ -241,7 +241,7 @@ public class WxPayUserService {
         req.setAmount(apply.getExtractFee().multiply(new BigDecimal(100)).intValue());
         req.setDesc("用户提现");
         req.setMch_appid(WxConsSF.APPID);
-        req.setMchid(WxConsSF.APP_MCHID);
+        req.setMchid(WxConsSF.WX_PAY_MCHID);
         req.setNonce_str(WxBeanUtils.createGenerateStr());
         req.setPartner_trade_no(SysBeanUtils.createSfUserExtractPaySerialNum());
         // 目前先用不校验

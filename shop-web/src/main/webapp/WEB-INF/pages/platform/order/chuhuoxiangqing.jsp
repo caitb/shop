@@ -132,6 +132,8 @@
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script>
     //        var myScroll = new IScroll("main",{
     //                 preventDefault: false

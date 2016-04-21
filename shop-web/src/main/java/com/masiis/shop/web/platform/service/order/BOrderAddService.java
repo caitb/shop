@@ -292,28 +292,16 @@ public class BOrderAddService {
         pfBorderOperationLog.setRemark("订单已支付,拿货订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
 
-        logger.info("<3>冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存");
-        PfSkuStock pfSkuStock = null;
+        logger.info("<3>冻结usersku库存 用户加冻结库存存");
         PfUserSkuStock pfUserSkuStock = null;
-        //冻结sku库存 如果用户id是0 则为平台直接代理商扣减平台商品库存
-        if (order.getUserPid() == 0) {
-            pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-            if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < quantity) {
-                throw new BusinessException("拿货失败：拿货数量超过库存数量");
-            }
-            pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + quantity);
-            if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) == 0) {
-                throw new BusinessException("并发修改库存失败");
-            }
-        } else {
-            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
-            if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
-                throw new BusinessException("拿货失败：拿货数量超过库存数量");
-            }
-            pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
-            if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                throw new BusinessException("并发修改库存失败");
-            }
+        //冻结usersku库存 用户加冻结库存
+        pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
+        if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
+            throw new BusinessException("拿货失败：拿货数量超过库存数量");
+        }
+        pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
+        if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+            throw new BusinessException("并发修改库存失败");
         }
         logger.info("<4>添加订单地址信息");
         ComUserAddress comUserAddress = userAddressService.getUserAddressById(userAddressId);

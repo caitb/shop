@@ -431,6 +431,9 @@
                             if(row.pfBorder && row.pfBorder.orderStatus == 5){
                                 return '已退款';
                             }
+                            if(row.pfBorder && row.pfBorder.orderStatus == 6){
+                                return '排单中';
+                            }
                             if(row.pfBorder && row.pfBorder.orderStatus == 7){
                                 return '待发货';
                             }
@@ -492,11 +495,31 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="detail" href="javascript:void(0);">查看</a>';
+                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            if(row.pfBorder && row.pfBorder.orderStatus == 6){
+                                arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
+                            }
+
+                            return arr.join('');
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
                                 parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                            },
+                            'click .scheduling': function(e, value, row, index){
+                                $.ajax({
+                                    url: '<%=basePath%>order/border/scheduling.do',
+                                    data: {borderId: row.pfBorder.id, sendType: row.comUser.sendType},
+                                    success: function(msg){
+                                        msg = msg=='success' ? '处理排单成功!' : '处理排单出错了!';
+                                        $.gritter.add({
+                                            title: '消息',
+                                            text: msg,
+                                            class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                        });
+                                        $('#table').bootstrapTable('refresh');
+                                    }
+                                })
                             }
                         }
                     }

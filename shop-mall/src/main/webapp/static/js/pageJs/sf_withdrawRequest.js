@@ -31,12 +31,26 @@ function withdraw(userId){
                 alert(data.message);
             }else {
                 fullShow();
+                sendMessage();
                 window.location.href = basepath + data.resUrl;
             }
         },
         error: function(){
             //请求出错处理
             alert("请求出错，请稍后再试");
+        }
+    });
+}
+
+function sendMessage(){
+    $.ajax({
+        type:"POST",
+        async:true,
+        url : basepath+"/withdraw/sendMessageWithdrawRequest.do",
+        dataType:"Json",
+        success:function(data){
+        },
+        error: function(){
         }
     });
 }

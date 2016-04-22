@@ -22,7 +22,7 @@
     <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>订单详情</p>
 </header>
-<div class="wrap">]=
+<div class="wrap">
     <div id="box">
         <div class="sec2">
             <p><span>订单编号：</span><span>${orderMallDetail.sfOrder.orderCode}</span></p>

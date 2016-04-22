@@ -109,7 +109,7 @@ public class BOrderController extends BaseController {
                             @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         WxPaySysParamReq req = null;
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
+        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())) {
             throw new BusinessException("订单状态异常");
         }
         //切换开发模式和测试模式
@@ -227,7 +227,7 @@ public class BOrderController extends BaseController {
         mav.addObject("skuCount", skuCount);
         boolean isQueuing = false;
         Integer count = 0;
-        if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
+        if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(pfBorderItems.get(0).getSkuId()) - 1;
         }

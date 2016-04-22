@@ -7,16 +7,6 @@ import com.masiis.shop.common.util.WxPropertiesUtils;
  */
 public class WxConsSF {
     /**
-     * 商户号
-     */
-    public static final String APP_MCHID = "1329841601";
-    /**
-     * 企业给用户打款url
-     */
-    public static final String URL_PAY_USER = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
-
-    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
-    /**
      * 授权页面链接
      */
     public static final String URL_AUTH = "https://open.weixin.qq.com/connect/oauth2/authorize";
@@ -69,12 +59,15 @@ public class WxConsSF {
      */
     public static final String URL_WX_NOTICE = "https://api.weixin.qq.com/cgi-bin/message/template/send";
     /**
+     * 获取用户信息(包括是否关注公众号)
+     */
+    public static final String URL_USERINFO_SUBSCRIBE = "https://api.weixin.qq.com/cgi-bin/user/info";
+    /**
      * 刷新token的grant_type类型
      */
     public static final String GRANT_TYPE_RFTOKEN = "refresh_token";
 
     public static final String GRANT_TYPE_ACCESSTOKEN = "authorization_code";
-
     /**
      * JSSDK:access_token获取地址
      */
@@ -105,5 +98,12 @@ public class WxConsSF {
      * 订单异步回调通知地址
      */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_PAY_URL_UNIORDER_NOTIFY"); //"http://weixin.masiis.com/wxntfy/orderNtfy";
-
+    /**
+     * 企业给用户打款url
+     */
+    public static final String WX_PAY_URL_USER = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+    /**
+     * 企业给用户打款证书路径
+     */
+    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
 }

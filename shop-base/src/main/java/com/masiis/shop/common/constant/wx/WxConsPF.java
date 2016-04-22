@@ -59,6 +59,14 @@ public class WxConsPF {
      */
     public static final String URL_GET_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
     /**
+     * 提醒微信用户url
+     */
+    public static final String URL_WX_NOTICE = "https://api.weixin.qq.com/cgi-bin/message/template/send";
+    /**
+     * 获取用户信息(包括是否关注公众号)
+     */
+    public static final String URL_USERINFO_SUBSCRIBE = "https://api.weixin.qq.com/cgi-bin/user/info";
+    /**
      * 刷新token的grant_type类型
      */
     public static final String GRANT_TYPE_RFTOKEN = "refresh_token";

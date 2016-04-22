@@ -4,6 +4,7 @@ import com.alibaba.druid.support.json.JSONParser;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.utils.SpringRedisUtil;
+import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -25,7 +26,7 @@ public class JsapiTicketTask {
             String accessTocken = SpringRedisUtil.get("jsapi_access_tocken", String.class);
             if(accessTocken == null){
                 log.info("从redis获取的jsapi_access_tocken=null");
-                accessTocken = new JsapiAccessTokenTask().requestToken();
+                accessTocken = WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
             }
             log.info("[jsapi_access_tocken="+accessTocken+"]");
 

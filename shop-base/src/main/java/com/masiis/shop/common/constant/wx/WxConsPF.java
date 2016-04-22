@@ -65,7 +65,7 @@ public class WxConsPF {
     /**
      * 获取用户信息(包括是否关注公众号)
      */
-    public static final String URL_USERINFO_SUBSCRIBE = "https://api.weixin.qq.com/cgi-bin/user/info";
+    public static final String URL_CGIBIN_USERINFO = "https://api.weixin.qq.com/cgi-bin/user/info";
     /**
      * 刷新token的grant_type类型
      */

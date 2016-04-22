@@ -310,7 +310,7 @@ public class BOrderPayService {
             saveBOrderSendType(pfBorder);
         }
         //发送支付成功短信
-        MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), skuName, agentLevelName);
+//        MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), skuName, agentLevelName);
     }
 
     /**

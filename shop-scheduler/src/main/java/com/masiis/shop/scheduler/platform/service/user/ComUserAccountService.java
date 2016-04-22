@@ -56,35 +56,33 @@ public class ComUserAccountService {
                 throw new BusinessException("订单状态不正确,当前订单状态为:" + orderStatus);
             }
 
-            log.info("订单类型和状态校验通过,进行创建账单子项工作!");
-            // 创建对应的bill_item
-            PfUserBillItem item = createBillItemByBOrder(order);
-            itemMapper.insert(item);
-
-            log.info("账单子项创建成功!");
-
             BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
 
             log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
 
             // 获取对应的account记录
             if (order.getUserPid() != 0) {
+                log.info("订单类型和状态校验通过,进行创建账单子项工作!");
+                // 创建对应的bill_item
+                PfUserBillItem item = createBillItemByBOrder(order);
+                itemMapper.insert(item);
+
+                log.info("账单子项创建成功,账单子项金额为:" + item.getOrderPayAmount());
+
                 ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
                 log.info("增加上级结算中金额");
-                ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, item.getId(), UserAccountRecordFeeType.AddCountingFee);
+                ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
                 recordC.setPrevFee(account.getCountingFee());
                 account.setCountingFee(account.getCountingFee().add(orderPayment));
                 recordC.setNextFee(account.getCountingFee());
                 recordMapper.insert(recordC);
                 log.info("增加上级总销售额");
-                ComUserAccountRecord recordT = createAccountRecord(orderPayment, account, item.getId(), UserAccountRecordFeeType.AddTotalIncomeFee);
+                ComUserAccountRecord recordT = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddTotalIncomeFee);
                 recordT.setPrevFee(account.getTotalIncomeFee());
                 account.setTotalIncomeFee(account.getTotalIncomeFee().add(orderPayment));
                 recordT.setNextFee(account.getTotalIncomeFee());
                 recordMapper.insert(recordT);
                 log.info("增加上级总利润");
-                PfUserSku userSku = null;
-                PfSkuAgent skuAgent = null;
                 PfUserSku pUserSku = null;
                 PfSkuAgent pSkuAgent = null;
                 BigDecimal discountAh = BigDecimal.ZERO;
@@ -98,6 +96,7 @@ public class ComUserAccountService {
                         sumProfitFee = sumProfitFee.add(profitFee);
                     }
                 }
+                log.info("开始修改利润");
                 ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, item.getId(), UserAccountRecordFeeType.AddProfitFee);
                 recordP.setPrevFee(account.getProfitFee());
                 account.setProfitFee(account.getProfitFee().add(sumProfitFee));
@@ -106,7 +105,7 @@ public class ComUserAccountService {
                 log.info("插入总销售额的变动流水!");
 
                 int type = accountMapper.updateByIdWithVersion(account);
-                if (type == 0) {
+                if (type != 1) {
                     throw new BusinessException("修改出货方结算金额和总销售额失败!");
                 }
                 log.info("更新出货人账户结算额和总销售额成功!");
@@ -115,22 +114,21 @@ public class ComUserAccountService {
 
             ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
             log.info("增加本级总成本");
-            ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, item.getId(), UserAccountRecordFeeType.AddCostFee);
+            ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, order.getId(), UserAccountRecordFeeType.AddCostFee);
             recordCostFee.setPrevFee(accountS.getCostFee());
             accountS.setCostFee(accountS.getCostFee().add(orderPayment));
             recordCostFee.setNextFee(accountS.getCostFee());
             recordMapper.insert(recordCostFee);
             log.info("增加本级保证金");
-            ComUserAccountRecord recordBailFee = createAccountRecord(order.getBailAmount(), accountS, item.getId(), UserAccountRecordFeeType.AddBailFee);
+            ComUserAccountRecord recordBailFee = createAccountRecord(order.getBailAmount(), accountS, order.getId(), UserAccountRecordFeeType.AddBailFee);
             recordBailFee.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(order.getBailAmount()));
             recordBailFee.setNextFee(accountS.getBailFee());
             recordMapper.insert(recordBailFee);
             int typeS = accountMapper.updateByIdWithVersion(accountS);
-            if (typeS == 0) {
+            if (typeS != 1) {
                 throw new BusinessException("修改进货方成本账户失败!");
             }
-
             log.info("更新进货方成本账户成功!");
         } catch (Exception e) {
             log.error("订单完成进行账户总销售额和结算金额操作错误," + e.getMessage(), e);

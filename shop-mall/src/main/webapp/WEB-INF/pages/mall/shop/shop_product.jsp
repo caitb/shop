@@ -164,11 +164,8 @@
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/validateCode.js"></script>
 <%--<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>--%>
-<script src="<%=path%>/static/js/plugins/fastclick.js"></script>
+<script src="<%=path%>/static/js/plugins/zepto.min.js"></script>
 <script>
-    $(function() {
-        FastClick.attach(document.body);
-    });
     $(document).ready(function () {
         validateCodeJS.initPage();
     });
@@ -183,18 +180,18 @@
     $(".number").on("change",function(){
         i=$(this).val();
     })
-    $(".jian").on("click",function(){
+    $(".jian").on("tap",function(){
         if(i<=1){
             return false;
         }
         i--;
         $(".number").val(i)
     })
-    $(".jia").on("click",function(){
+    $(".jia").on("tap",function(){
         i++;
         $(".number").val(i)
     })
-    $(".close").on("click",function(){
+    $(".close").on("tap",function(){
         $(this).parent().hide();
         $(".back").hide();
     })
@@ -276,7 +273,7 @@
 
     }
 
-    $('#share').on('click', function(){
+    $('#share').on('tap', function(){
         $.ajax({
             url: '<%=basePath%>shop/getSkuPoster',
             data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},

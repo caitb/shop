@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserBill;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,4 +29,7 @@ public interface PfUserBillMapper {
     List<PfUserBill> selectByUserId(Long userId);
 
     List<PfUserBill> selectByUserIdLimitPage(Long userId,String balanceDate);
+
+    Long selectBillNumsByDate(@Param("start") Date countStartDay,
+                              @Param("end") Date countEndDay);
 }

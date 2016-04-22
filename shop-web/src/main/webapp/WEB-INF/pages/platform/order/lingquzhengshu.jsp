@@ -18,7 +18,7 @@
             <p>申请合伙人</p>
         </header>
         <c:choose>
-            <c:when test="${skuCount<=1}">
+            <c:when test="${skuCount<=0}">
                 <div class="xinxi">
                     <p>注册信息</p>
                     <p style="color:#F74A11;">选择拿货方式</p>

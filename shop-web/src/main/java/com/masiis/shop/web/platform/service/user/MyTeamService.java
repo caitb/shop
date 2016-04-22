@@ -76,7 +76,7 @@ public class MyTeamService {
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
-            Map<String, String> curMap = countChild(pus.getId(), pus.getUserId());
+            Map<String, String> curMap = countChild(pus.getId());
             agentSkuMap.put("countChild", curMap.get("childIds").split(",").length);
             agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
 
@@ -91,13 +91,12 @@ public class MyTeamService {
      * @param userSkuId
      * @return
      */
-    public Map<String, String> countChild(Integer userSkuId, Long userId){
+    public Map<String, String> countChild(Integer userSkuId){
         String curPIds = userSkuId.toString();
-        String curUserIds = userId.toString();
+        String curUserIds = "";
         StringBuilder childIds = new StringBuilder(4000);
         StringBuilder userIds = new StringBuilder(4000);
         childIds.append("," + curPIds);
-        userIds.append("," + curUserIds);
 
         while (curPIds != null){
            Map<String, String> curMap = pfUserSkuMapper.countChild(curPIds);
@@ -131,13 +130,13 @@ public class MyTeamService {
         if(userIds != null && userIds.size() > 0){
             comUsers = comUserMapper.selectByIds(userIds);
         }
-        Map<String, String> curMap = countChild(pfUserSku.getId(), pfUserSku.getUserId());
+        Map<String, String> curMap = countChild(pfUserSku.getId());
         ComSku comSku = comSkuMapper.selectById(pfUserSku.getSkuId());
 
         Map<String, Object> teamMap = new HashMap<>();
         teamMap.put("skuName", comSku.getName());//商品名称
         teamMap.put("totalChildren", userIds.size());//直接下级人数
-        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size()-1);//间接下级人数
+        teamMap.put("countChild", curMap.get("childIds").split(",").length - userIds.size());//间接下级人数
         teamMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));//总销售额
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
@@ -176,13 +175,13 @@ public class MyTeamService {
         ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
         ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
-        Map<String, String> curMap = countChild(pfUserSku.getId(), comUser.getId());
+        Map<String, String> curMap = countChild(pfUserSku.getId());
 
 
         Map<String, Object> memberMap = new HashMap<>();
         memberMap.put("stock", statisticsBuy.get("stock"));
         memberMap.put("totalAmount", statisticsBuy.get("totalAmount"));
-        memberMap.put("countChild", curMap.get("childIds").split(",").length - 1);
+        memberMap.put("countChild", curMap.get("childIds").split(",").length);
         memberMap.put("comUserId", comUser.getId());
         memberMap.put("comUserName", comUser.getRealName());
         memberMap.put("mobile", comUser.getMobile());

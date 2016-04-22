@@ -516,6 +516,7 @@ public class BorderManageController extends BaseController {
         BorderDetail borderDetail = new BorderDetail();
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
+        ComUser Buser = userService.getUserById(pfBorder.getUserId());
         ComUser comUser = getComUser(request);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
         for (PfBorderItem pfBorderItem : pfBorderItems) {
@@ -531,7 +532,7 @@ public class BorderManageController extends BaseController {
         PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(id);
         //支付方式
         List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(id);
-        borderDetail.setBuyerName(comUser.getRealName());
+        borderDetail.setBuyerName(Buser.getWxNkName());
         borderDetail.setPfBorderPayments(pfBorderPayments);
         borderDetail.setPfBorder(pfBorder);
         borderDetail.setPfBorderItems(pfBorderItems);

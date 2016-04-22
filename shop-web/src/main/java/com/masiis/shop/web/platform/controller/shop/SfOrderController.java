@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.shop.SfOrderService;
 import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,12 +36,14 @@ public class SfOrderController extends BaseController {
 
     @Resource
     private SfOrderService sfOrderService;
-    @Autowired
+    @Resource
     private SfOrderShopService sfOrderShopService;
-    @Autowired
+    @Resource
     private SfOrderPaymentMapper sfOrderPaymentMapper;
-    @Autowired
+    @Resource
     private ComDictionaryService comDictionaryService;
+    @Resource
+    private UserService userService;
 
 
     @RequestMapping("/deliverOrder.do")
@@ -74,6 +77,7 @@ public class SfOrderController extends BaseController {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
         SfOrder order = sfOrderService.findSforderByorderId(id);
+        ComUser Buser = userService.getUserById(order.getUserId());
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
 
         List<SfOrderItem> sfOrderItems = sfOrderShopService.findSfOrderItemBySfOrderId(id);
@@ -99,7 +103,7 @@ public class SfOrderController extends BaseController {
         List<SfOrderPayment> sfOrderPayments = sfOrderPaymentMapper.selectBySfOrderId(id);
         //收货人
         SfOrderConsignee sfOrderConsignee = sfOrderShopService.findSfOrderConsignee(id);
-        orderMallDetail.setBuyerName(user.getRealName());
+        orderMallDetail.setBuyerName(Buser.getWxNkName());
         orderMallDetail.setSfOrder(order);
         orderMallDetail.setSfOrderPayments(sfOrderPayments);
         orderMallDetail.setSfOrderItems(sfOrderItems);

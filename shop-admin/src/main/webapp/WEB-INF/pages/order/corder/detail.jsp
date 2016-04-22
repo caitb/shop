@@ -272,7 +272,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="remark">${order.pfCorder.remark}</span>
+                                                <span class="bgarea" id="remark">${order.pfCorder.userMessage}</span>
                                             </div>
                                         </div>
 
@@ -776,10 +776,10 @@
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
-                                parent.window.document.getElementById('orderDetail').contentWindow.location.reload(true);
-                                return;
+                                window.location.reload();
+                            }else{
+                                alert('发货失败了!');
                             }
-                            alert(msg);
                         }
                     });
                 });

@@ -121,7 +121,7 @@ public class ComUserAccountService {
                 for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(userPId)) {
                     pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPId, pfBorderItem.getSkuId());
                     pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
-                    discountAh = pfBorderItem.getDiscount().subtract(pSkuAgent.getDiscount());
+                    discountAh = pSkuAgent.getDiscount().subtract(pfBorderItem.getDiscount());
                     if (discountAh.compareTo(BigDecimal.ZERO) > 0) {
                         BigDecimal profitFee = pfBorderItem.getTotalPrice().multiply(discountAh);
                         sumProfitFee = sumProfitFee.add(profitFee);

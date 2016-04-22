@@ -201,22 +201,22 @@ public class SfShopManageController extends BaseController {
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
-            ImageUtils.scale2(headImgPath, headImgPath, 130, 130, false);
+            ImageUtils.scale2(headImgPath, headImgPath, 90, 90, false);
 
             //画专属海报
             String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
             String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg";
             String content = "我是"+comUser.getWxNkName();
             Map<String, Integer> positionMap = new HashMap<>();
-            positionMap.put("headImg-left", 195);
-            positionMap.put("headImg-top", 130);
+            positionMap.put("headImg-left", 72);
+            positionMap.put("headImg-top", 328);
             positionMap.put("bgImg-left", 0);
             positionMap.put("bgImg-top", 0);
-            positionMap.put("qrCodeImg-left", 160);
-            positionMap.put("qrCodeImg-top", 368);
-            positionMap.put("content-left", 520/2-content.length()/2*28-(content.length()%2*14));
-            positionMap.put("content-top", 306);
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247,60,140));
+            positionMap.put("qrCodeImg-left", 212);
+            positionMap.put("qrCodeImg-top", 470);
+            positionMap.put("content-left", 186);
+            positionMap.put("content-top", 330);
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
             //jssdk
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
@@ -252,6 +252,7 @@ public class SfShopManageController extends BaseController {
         int height = bgImage.getHeight(null) == -1 ? 710 : bgImage.getHeight(null);
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
+        g.setBackground(new Color(255,255,255));
 
         g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), null);
         g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);

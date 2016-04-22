@@ -202,6 +202,10 @@
     });
 
     function goVerified(para) {
+        if(${user.isBinding!=1}){
+            alert("请先绑定手机号");
+            return false;
+        }
         $(para).html("正在提交...");
         var para = "?";
         para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}");
@@ -209,6 +213,10 @@
     }
 
     function reSubmitIdentityAuth() {
+        if(${user.isBinding!=1}){
+            alert("请先绑定手机号");
+            return false;
+        }
         window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
     }
 

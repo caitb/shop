@@ -156,7 +156,7 @@ public class SfUserAccountService {
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
                     UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(countFee));
+            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
             log.info("小铺店主的结算中和总销售额增加金额:" + countFee);

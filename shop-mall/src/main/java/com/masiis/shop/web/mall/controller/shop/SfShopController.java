@@ -212,7 +212,7 @@ public class SfShopController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), qrCodePath);
+            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+comUser.getId(), qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";

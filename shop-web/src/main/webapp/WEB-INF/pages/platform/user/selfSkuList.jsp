@@ -100,24 +100,21 @@
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
-<script src="<%=path%>/static/plugins/fastclick.js"></script>
+<script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
-    $(function() {
-        FastClick.attach(document.body);
-    });
     function jiankucun(a,b){
         $("#skuName").html(a);
         $("#skuStock").html(b);
         $(".back").css("display","-webkit-box");
         $(".back_j").show();
     }
-    $(".j_qu").on("click",function(){
+    $(".j_qu").on("tap",function(){
         $(".back").css("display","none");
         $(".back_j").hide();
     })
-    $(".j_que").on("click",function(){
+    $(".j_que").on("tap",function(){
         var skuName = $("#skuName").text();
         $("#sku3").html(skuName);
         var skuStock = $("#skuStock").text();
@@ -127,12 +124,12 @@
         $(".back_j").hide();
         $(".back_que").css("display","-webkit-box");
     })
-    $(".que_qu").on("click",function(){
+    $(".que_qu").on("tap",function(){
         $(".back").css("display","none");
         $(".back_que").hide();
     })
     //ajax
-    $('.que_que').on('click', function () {
+    $('.que_que').on('tap', function () {
         var pfuId = $("#pfuId").val();
         var stockNumber = $("#stockNumber").val();
         $.ajax({
@@ -153,14 +150,14 @@
         });
     });
     var i=1;
-    $(".jia").on("click",function(){
+    $(".jia").on("tap",function(){
         i++;
         $(".number").val(i)
     })
     $(".number").on("change", function () {
         i=$(this).val();
     })
-    $(".jian").on("click",function(){
+    $(".jian").on("tap",function(){
         if(i==1){
             return false;
         }
@@ -174,11 +171,11 @@
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
     }
-    $(".b_qu").on("click",function(){
+    $(".b_qu").on("tap",function(){
         $(".back").css("display","none");
         $(".back_b").hide();
     })
-    $(".b_que").on("click",function(){
+    $(".b_que").on("tap",function(){
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;

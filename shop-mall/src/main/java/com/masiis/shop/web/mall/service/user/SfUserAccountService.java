@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
@@ -63,6 +64,8 @@ public class SfUserAccountService {
     private PfUserBillItemMapper billItemMapper;
     @Resource
     private SfUserBillItemMapper sfBillItemMapper;
+    @Resource
+    private SfShopMapper shopMapper;
 
     /**
      * 根据用户id查询分销用户账户表
@@ -128,7 +131,13 @@ public class SfUserAccountService {
                 throw new BusinessException("不合法的拿货方式");
             }
 
-            log.info("计算店主的");
+            log.info("计算店铺的总销售额");
+
+            SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
+            sfShop.setSaleAmount(sfShop.getSaleAmount().add(countFee));
+            sfShop.setShipAmount(sfShop.getShipAmount().add(order.getShipAmount()));
+
+            log.info("计算店主的结算中金额增加,总销售额增加,总利润增加");
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
@@ -149,6 +158,8 @@ public class SfUserAccountService {
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(countFee));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
+
+            log.info("小铺店主的结算中和总销售额增加金额:" + countFee);
 
             // 小铺店主利润
             BigDecimal profit = new BigDecimal(0);
@@ -184,6 +195,8 @@ public class SfUserAccountService {
             comUserAccount.setProfitFee(comUserAccount.getProfitFee().add(profit));
             pfprofitRecord.setNextFee(comUserAccount.getProfitFee());
 
+            log.info("小铺店主总利润增加:" + profit);
+
             int res = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
             if(res != 1){
                 throw new BusinessException("小铺店主account修改失败!");
@@ -192,6 +205,8 @@ public class SfUserAccountService {
             comUserAccountRecordMapper.insert(countRecord);
             comUserAccountRecordMapper.insert(pfIncomeRecord);
             comUserAccountRecordMapper.insert(pfprofitRecord);
+
+            log.info("计算小铺订单分润");
 
             // 计算分销订单的分润
             for(Long sfUserId:fenRunUserFeeMap.keySet()){
@@ -207,6 +222,8 @@ public class SfUserAccountService {
                 sfRecord.setNextFee(sfUserAccount.getCountingFee());
                 sfRecordMapper.insert(sfRecord);
                 sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
+
+                log.info("用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
             }
         } catch (Exception e) {
             log.error(e.getMessage());

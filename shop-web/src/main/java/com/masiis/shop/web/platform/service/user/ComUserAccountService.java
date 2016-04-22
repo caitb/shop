@@ -118,12 +118,12 @@ public class ComUserAccountService {
                 PfSkuAgent pSkuAgent = null;
                 BigDecimal discountAh = BigDecimal.ZERO;
                 BigDecimal sumProfitFee = BigDecimal.ZERO;
-                for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(userPId)) {
+                for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(order.getId())) {
                     pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPId, pfBorderItem.getSkuId());
                     pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
                     discountAh = pfBorderItem.getDiscount().subtract(pSkuAgent.getDiscount());
                     if (discountAh.compareTo(BigDecimal.ZERO) > 0) {
-                        BigDecimal profitFee = pfBorderItem.getTotalPrice().multiply(discountAh);
+                        BigDecimal profitFee = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(discountAh);
                         sumProfitFee = sumProfitFee.add(profitFee);
                     }
                 }
@@ -134,7 +134,7 @@ public class ComUserAccountService {
                 recordP.setNextFee(account.getProfitFee());
                 recordMapper.insert(recordP);
                 log.info("插入总销售额的变动流水!");
-
+                log.info("个人账户数据:" + account.toString());
                 int type = accountMapper.updateByIdWithVersion(account);
                 if (type != 1) {
                     throw new BusinessException("修改出货方结算金额和总销售额失败!");
@@ -155,7 +155,6 @@ public class ComUserAccountService {
             recordBailFee.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(order.getBailAmount()));
             recordBailFee.setNextFee(accountS.getBailFee());
-            log.info("个人账户数据:" + accountS.toString());
             recordMapper.insert(recordBailFee);
             int typeS = accountMapper.updateByIdWithVersion(accountS);
             if (typeS != 1) {

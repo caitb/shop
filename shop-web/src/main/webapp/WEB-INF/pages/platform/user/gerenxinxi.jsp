@@ -57,7 +57,15 @@
         </div>
         <div class="sec1" style="background:white url('${path}/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px;">
             <p>手机号</p>
-            <p>${comUser.mobile}</p>
+            <c:choose>
+                <c:when test="${comUser.mobile == null || comUser.mobile == ''}">
+                    <p id="bindPhoneId">点击绑定</p>
+                </c:when>
+                <c:otherwise>
+                    <p id="bindPhonedId">已绑定 ${comUser.mobile}</p>
+                </c:otherwise>
+            </c:choose>
+            <input id="mobileId" style="display: none" value="${comUser.mobile}" />
         </div>
         <div class="sec1" style="background:white url('${path}/static/images/weixin.png') no-repeat 10px;  background-size: 20px;">
             <p>微信号</p>
@@ -122,6 +130,8 @@
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="${path}/static/js/pageJs/hideWXShare.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
 <script type="text/javascript" src="${path}/static/js/personalInfo.js"></script>
 </html>

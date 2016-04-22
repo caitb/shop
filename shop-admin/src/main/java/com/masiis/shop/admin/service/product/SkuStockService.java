@@ -67,6 +67,9 @@ public class SkuStockService {
      * @param pfSkuStock
      */
     public void update(PfSkuStock pfSkuStock){
+        if(pfSkuStock.getStock().intValue()<0){
+            pfSkuStock.setStock(0);
+        }
         pfSkuStockMapper.updateById(pfSkuStock);
     }
 }

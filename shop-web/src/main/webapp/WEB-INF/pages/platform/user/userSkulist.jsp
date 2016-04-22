@@ -103,6 +103,7 @@
         $(".number").val(i)
     })
     function buhuokucun(a, b, c, d) {
+        $(".number").val(1);
         $(".queue").hide();//init
         $("#addsku").html(a);
         $("#maxStock").html(b);

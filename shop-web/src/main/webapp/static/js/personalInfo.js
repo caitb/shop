@@ -8,11 +8,19 @@
                 /*$("#weChatNumberId").bind("click",function(){
                     window.location.href = personalInfoJS.basePath + "/personalInfo/selectSkuWeChatInfo.do";
                 })*/
+                $("#bindPhoneId").bind("click",function(){
+                    validateCodeJS.applyTrial("personalInfo");
+                })
+
                 $("#identityAuthId").bind("click",function(){
+                    if ($("#mobileId").val()==null||$("#mobileId").val()==""){
+                        alert("请先绑定手机号");
+                        return false;
+                    }
                     if($("#auditStatusId").val() == 1){
                         alert("您的实名认证正在审核，请耐心等待");
                     }else{
-                        validateCodeJS.applyTrial("identityAuth");
+                        window.location.href = personalInfoJS.basePath + "/identityAuth/toInentityAuthPage.html?auditStatus="+$("#auditStatusId").val();
                     }
                 })
 
@@ -28,7 +36,7 @@
             }
         }
     $(document).ready(function(){
-        personalInfoJS.init();
         validateCodeJS.initPage();
+        personalInfoJS.init();
     })
 })();

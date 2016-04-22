@@ -1,11 +1,15 @@
 package com.masiis.shop.web.platform.controller.order;
 
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderConsignee;
+import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +33,9 @@ public class OrderPayEndController extends BaseController {
     private BOrderService bOrderService;
     @Resource
     private BOrderSkuStockService borderSkuStockService;
+    @Resource
+    private UserService userService;
+
 
     /**
      * 补货订单支付完成
@@ -64,6 +71,16 @@ public class OrderPayEndController extends BaseController {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee",pfBorderConsignee);
         }
+        //send msg 发送短信
+//        ComUser comUser = userService.getUserById(pfBorder.getUserId());
+//
+//        if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
+//            MobileMessageUtil.addStockByPlatform(comUser.getMobile(),)
+//        }
+//        if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
+//            MobileMessageUtil.addStockByUserself()
+//        }
+
         mv.setViewName("platform/order/ReplenishmentPayments");
         return mv;
     }

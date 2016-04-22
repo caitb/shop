@@ -29,8 +29,7 @@
     <label class="add">加关注</label>
 </div>
 <div class="wrap">
-
-    <c:if test=" ${not empty fromUser} ">
+    <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">
         <div class="na">
             <p><img src="${fromUser.wxHeadImg}" alt=""></p>
             <h1>

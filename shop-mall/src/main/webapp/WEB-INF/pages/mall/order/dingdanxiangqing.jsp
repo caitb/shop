@@ -5,8 +5,7 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -16,8 +15,8 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/jinhuoxiangqing.css">
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
-    <script src="<%=path%>/static/js/iscroll.js"></script>
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">--%>
+    <%--<script src="<%=path%>/static/js/iscroll.js"></script>--%>
 </head>
 <body>
    

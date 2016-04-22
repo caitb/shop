@@ -121,6 +121,9 @@ public class OrderQueueDealService {
                     userSkuStock.setFrozenStock(0);
                     userSkuStock.setRemark("处理排单时插入的数据");
                     userSkuStock.setVersion(0);
+                    if (pfUserSkuStockMapper.insert(userSkuStock) == 0) {
+                        throw new BusinessException("平台代发:更新代理商商品库存表失败");
+                    }
                 } else {
                     userSkuStock.setStock(userSkuStock.getStock() + quantity);
                     if (pfUserSkuStockMapper.updateByIdAndVersion(userSkuStock) == 0) {

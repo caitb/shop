@@ -236,7 +236,7 @@ public class UserService {
      * @author muchaofeng
      * @date 2016/4/12 12:03
      */
-    public void getShareUser(Long userId, Long userPid, Long shopId) {
+    public void getShareUser(Long userId, Long userPid) {
         if (userPid == null) {
             userPid = 0l;
         }

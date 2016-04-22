@@ -51,7 +51,7 @@ public class IndexController extends BaseController {
     @RequestMapping("/{shopId}/{userPid}/shop.shtml")
     public ModelAndView index(HttpServletRequest req,
                               @PathVariable("shopId") Long shopId,
-                              @PathVariable("userPid") Long userPid)throws Exception{
+                              @PathVariable("userPid") Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);
@@ -60,22 +60,22 @@ public class IndexController extends BaseController {
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
-        userService.getShareUser(user.getId(),userPid,shopId);//分销关系
+        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
 
-        sfUserShopViewService.addShopView(user.getId(),shopId);
-        SfShop sfShop =null;
-        List<SfShopSku> sfShopSkus =null;
+        sfUserShopViewService.addShopView(user.getId(), shopId);
+        SfShop sfShop = null;
+        List<SfShopSku> sfShopSkus = null;
 //        BigDecimal ShipAmount=new BigDecimal(0);
         boolean ok = true;
-        if(shopId==null){
+        if (shopId == null) {
             throw new BusinessException("shopId不能为空");
-        }else{
+        } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if(sfShop.getShipAmount().longValue()==0.00){
-                ok=false;
+            if (sfShop.getShipAmount().longValue() == 0.00) {
+                ok = false;
             }
-            if(sfShop==null){
+            if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
             sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
@@ -83,12 +83,12 @@ public class IndexController extends BaseController {
 
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
 //        BigDecimal bail=new BigDecimal(0);
-        for (SfShopSku sfShopSku:sfShopSkus) {
+        for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
-            SfShopDetail sfShopDetail= new SfShopDetail();
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
+            SfShopDetail sfShopDetail = new SfShopDetail();
+            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
@@ -103,56 +103,56 @@ public class IndexController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
-        modelAndView.addObject("userPid",userPid);
-        modelAndView.addObject("sfShop",sfShop);
-        modelAndView.addObject("ok",ok);//保证金
-        modelAndView.addObject("SfShopDetails",SfShopDetails);
+        modelAndView.addObject("userPid", userPid);
+        modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("ok", ok);//保证金
+        modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;
     }
 
     @RequestMapping("/index")
     public ModelAndView myindex(HttpServletRequest req,
-                              Long shopId,Long userPid)throws Exception{
+                                Long shopId, Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-        shopId=4L;
-        userPid=19L;
-        if(req.getSession().getAttribute("userPid")==null){
+        shopId = 4L;
+        userPid = 19L;
+        if (req.getSession().getAttribute("userPid") == null) {
             req.getSession().setAttribute("userPid", userPid);
         }
-        if(req.getSession().getAttribute("shopId")==null){
+        if (req.getSession().getAttribute("shopId") == null) {
             req.getSession().setAttribute("shopId", shopId);
         }
 
         SfShop shop = sfShopService.getSfShopById(shopId);
         req.getSession().setAttribute("shipAmount", shop.getShipAmount());
 
-        userService.getShareUser(user.getId(),userPid,shopId);//分销关系
+        userService.getShareUser(user.getId(), userPid);//分销关系
         ComUser pUser = userService.getUserById(userPid);
-        SfShop sfShop =null;
-        List<SfShopSku> sfShopSkus =null;
-        if(shopId==null){
+        SfShop sfShop = null;
+        List<SfShopSku> sfShopSkus = null;
+        if (shopId == null) {
             throw new BusinessException("shopId不能为空");
-        }else{
+        } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if(sfShop==null){
+            if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
             sfShopSkus = skuService.getSfShopSkuByShopId(shopId);
         }
 
         List<SfShopDetail> SfShopDetails = new ArrayList<>();
-        BigDecimal bail=new BigDecimal(0);
-        for (SfShopSku sfShopSku:sfShopSkus) {
+        BigDecimal bail = new BigDecimal(0);
+        for (SfShopSku sfShopSku : sfShopSkus) {
             ComSku comSku = skuService.getComSkuBySkuId(sfShopSku.getSkuId());
             ComSpu comSpu = skuService.getSpuById(comSku.getSpuId());
             ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(sfShopSku.getSkuId());
-            SfShopDetail sfShopDetail= new SfShopDetail();
-            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(),sfShopSku.getSkuId());
+            SfShopDetail sfShopDetail = new SfShopDetail();
+            SfShopSku shopSku = sfShopSkuService.findShopSkuByShopIdAndSkuId(sfShopSku.getShopId(), sfShopSku.getSkuId());
             sfShopDetail.setSkuUrl(comSkuImage.getFullImgUrl());
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
@@ -160,30 +160,31 @@ public class IndexController extends BaseController {
             sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
             sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
-            bail=sfShopSku.getBail().add(bail);//保证金
+            bail = sfShopSku.getBail().add(bail);//保证金
 
             SfShopDetails.add(sfShopDetail);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
-        modelAndView.addObject("userPid",userPid);
-        modelAndView.addObject("sfShop",sfShop);
-        modelAndView.addObject("bail",bail);//保证金
-        modelAndView.addObject("SfShopDetails",SfShopDetails);
+        modelAndView.addObject("userPid", userPid);
+        modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("bail", bail);//保证金
+        modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;
     }
 
     /**
      * 呐喊
+     *
      * @author muchaofeng
      * @date 2016/4/12 17:05
      */
 
     @RequestMapping("/shout.do")
     @ResponseBody
-    public String shout(HttpServletRequest req,Long shopId){
+    public String shout(HttpServletRequest req, Long shopId) {
         JSONObject json = new JSONObject();
         ComUser user = getComUser(req);
         if (user == null) {
@@ -193,9 +194,9 @@ public class IndexController extends BaseController {
         try {
             boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
             SfShop sfShop = null;
-            if(mallShout){
+            if (mallShout) {
                 sfShop = sfShopMapper.selectByPrimaryKey(shopId);
-                sfShop.setShoutNum(sfShop.getShoutNum()+1);
+                sfShop.setShoutNum(sfShop.getShoutNum() + 1);
 
                 SfShopShoutLog sfShopShoutLog = new SfShopShoutLog();
                 sfShopShoutLog.setCreateTime(new Date());
@@ -207,7 +208,7 @@ public class IndexController extends BaseController {
                 sfShopMapper.updateByPrimaryKey(sfShop);
                 sfShopShoutLogMapper.insert(sfShopShoutLog);
             }
-            json.put("mallShout",mallShout);
+            json.put("mallShout", mallShout);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -221,11 +222,12 @@ public class IndexController extends BaseController {
 
     /**
      * 分享
+     *
      * @author muchaofeng
      * @date 2016/4/12 17:05
      */
     @RequestMapping("/share.html")
-    public String share(HttpServletRequest req)throws Exception{
+    public String share(HttpServletRequest req) throws Exception {
         return "mall/shop/fenxiangjihua";
     }
 

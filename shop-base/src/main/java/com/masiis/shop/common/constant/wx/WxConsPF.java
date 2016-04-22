@@ -1,6 +1,6 @@
 package com.masiis.shop.common.constant.wx;
 
-import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.common.util.WxPropertiesUtils;
 
 /**
  * Created by lzh on 2016/2/24.
@@ -13,11 +13,11 @@ public class WxConsPF {
     /**
      * appid
      */
-    public static final String APPID = PropertiesUtils.getStringValue("wx.conf.pf.APPID"); //"wxd5afa1deb29c6197"; //麦士集团appid"wx7c874d5a102dccef";
+    public static final String APPID = WxPropertiesUtils.getStringValue("wx.conf.pf.APPID"); //"wxd5afa1deb29c6197"; //麦士集团appid"wx7c874d5a102dccef";
     /**
      * appsecret
      */
-    public static final String APPSECRET = PropertiesUtils.getStringValue("wx.conf.pf.APPSECRET"); //"d0c6c73cbc769450a554a2623d2c45ea"; //麦士集团appsecret"67f21b9a5df948c9dbf203393d8fb1a1";
+    public static final String APPSECRET = WxPropertiesUtils.getStringValue("wx.conf.pf.APPSECRET"); //"d0c6c73cbc769450a554a2623d2c45ea"; //麦士集团appsecret"67f21b9a5df948c9dbf203393d8fb1a1";
     /**
      * 获取accesstoken链接
      */
@@ -82,11 +82,11 @@ public class WxConsPF {
     /**
      * 微信支付签名密钥
      */
-    public static final String WX_PAY_SIGN_KEY = PropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_SIGN_KEY"); //"U0SJD1OR4WLA5J8QM9IZAJT5KC4ZLS7D";
+    public static final String WX_PAY_SIGN_KEY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_SIGN_KEY"); //"U0SJD1OR4WLA5J8QM9IZAJT5KC4ZLS7D";
     /**
      * 商户号
      */
-    public static final String WX_PAY_MCHID = PropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_MCHID"); //"1319531601";
+    public static final String WX_PAY_MCHID = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_MCHID"); //"1319531601";
     /**
      * 统一下单url
      */
@@ -94,6 +94,6 @@ public class WxConsPF {
     /**
      * 订单异步回调通知地址
      */
-    public static final String WX_PAY_URL_UNIORDER_NOTIFY = PropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_URL_UNIORDER_NOTIFY"); //"http://weixin.masiis.com/wxntfy/orderNtfy";
+    public static final String WX_PAY_URL_UNIORDER_NOTIFY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_URL_UNIORDER_NOTIFY"); //"http://weixin.masiis.com/wxntfy/orderNtfy";
 
 }

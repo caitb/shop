@@ -281,7 +281,7 @@ public class SfShopController extends BaseController {
             sfUserShopViewService.addShopView(user.getId(), shopId);
         }
         ComUser fromUser = userService.getUserById(fromUserId);
-        userService.getShareUser(user.getId(),fromUserId,shopId);//来自分享人的信息
+        userService.getShareUser(user.getId(),fromUserId);//来自分享人的信息
 
         //jssdk
         String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId;

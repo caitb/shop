@@ -67,4 +67,11 @@
         and create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
         and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
     </select>
+
+    <select id="selectBillNumsByDate" resultType="java.lang.Long">
+        select (id)
+        from pf_user_bill_item
+        where create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

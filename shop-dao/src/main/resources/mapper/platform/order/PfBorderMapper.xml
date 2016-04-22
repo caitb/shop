@@ -423,4 +423,10 @@
         WHERE pb.order_status=6
         AND EXISTS(SELECT 0 FROM pf_border_item pbi WHERE pb.id=pbi.pf_border_id AND pbi.sku_id=#{skuId})
     </select>
+
+    <select id="selectAllQueuingOrder" resultMap="BaseResultMap">
+        select * from pf_border
+        where order_status=6
+        order by case user_pid when 0 then 0 else 1 end,create_time
+    </select>
 </mapper>

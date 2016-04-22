@@ -79,4 +79,10 @@ public interface PfBorderMapper {
     Map<String, Double> statisticsBuy(Long userId);
 
     Integer selectQueuingOrderCount(@Param("skuId") Integer skuId);
+
+    /**
+     * 查询排单订单
+     * @return
+     */
+    List<PfBorder> selectAllQueuingOrder();
 }

@@ -295,7 +295,10 @@ public class BOrderAddService {
         logger.info("<3>冻结usersku库存 用户加冻结库存存");
         PfUserSkuStock pfUserSkuStock = null;
         //冻结usersku库存 用户加冻结库存
-        pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
+        pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
+        if (pfUserSkuStock == null){
+            throw new BusinessException("拿货失败：没有库存信息");
+        }
         if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
             throw new BusinessException("拿货失败：拿货数量超过库存数量");
         }

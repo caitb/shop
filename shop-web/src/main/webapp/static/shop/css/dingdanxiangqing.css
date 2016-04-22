@@ -40,13 +40,7 @@
 }
 .wrap #box .sec3 > p {
   margin: 0 10px;
-  background: url("../images/icon_41.png") no-repeat 0px;
-  background-size: 15px;
   line-height: 25px;
-}
-.wrap #box .sec3 p:nth-child(3) {
-  background: url("../images/icon_42.png") no-repeat 0px;
-  background-size: 15px;
 }
 .wrap #box .sec4 {
   width: 100%;

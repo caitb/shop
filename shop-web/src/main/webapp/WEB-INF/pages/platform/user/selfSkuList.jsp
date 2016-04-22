@@ -165,6 +165,7 @@
         $(".number").val(i)
     })
     function buhuokucun(a,b,d){
+        $(".number").val(1);
         $("#addsku").html(a);
         $("#maxStock").html(b);
         $("#addSkuId").val(d);

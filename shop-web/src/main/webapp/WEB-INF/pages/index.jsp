@@ -24,6 +24,14 @@
 <body>
 <div class="wrap">
     <div class="box">
+        <div class="na">
+            <p></p>
+            <h1>
+                <span>麦链合伙人</span>
+                <span>关注可查资金，管理店铺，发展下级</span>
+            </h1>
+            <label class="add">加关注</label>
+        </div>
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
@@ -115,8 +123,13 @@
         <p>您还不是合伙人，先去好货市场看看吧~</p>
         <h1><span id="quxiao">取消</span><span id="goMark">去好货市场</span></h1>
     </div>
-    <div class="back" style="display:none;">
+    <div class="back">
 
+    </div>
+    <div class="back_f">
+        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/asd.JPG" alt="">
     </div>
     <div class="bottom">
         <footer>
@@ -194,7 +207,14 @@
             <%--window.setTimeout("window.location='<%=path%>/marketGood/market'",1000);--%>
             window.location.href="<%=path%>/marketGood/market";
         })
-
+        $(".add").on("click",function () {
+            $(".back").show()
+            $(".back_f").show()
+        })
+        $(".close").on("click",function () {
+            $(".back").hide()
+            $(".back_f").hide()
+        })
     </script>
 </body>
 </html>

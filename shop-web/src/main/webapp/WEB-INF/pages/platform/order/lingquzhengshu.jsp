@@ -33,6 +33,14 @@
                 </div>
             </c:otherwise>
         </c:choose>
+        <div class="na">
+            <p></p>
+            <h1>
+                <span>麦链合伙人</span>
+                <span>关注可查资金，管理店铺，发展下级</span>
+            </h1>
+            <label class="add">加关注</label>
+        </div>
         <div class="main">
             <div class="drap">
                 <h2><img src="${path}/static/images/ready.png" alt=""></h2>
@@ -116,5 +124,22 @@
         </div>
     </div>
 </main>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_f">
+        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/asd.JPG" alt="">
+    </div>
+</div>
+<script src="${path}/static/js/zepto.min.js"></script>
+<script>
+    $(".add").on("tap",function () {
+        $(".back_box").show()
+    })
+    $(".close").on("tap",function () {
+            $(".back_box").hide()
+    })
+</script>
 </body>
 </html>

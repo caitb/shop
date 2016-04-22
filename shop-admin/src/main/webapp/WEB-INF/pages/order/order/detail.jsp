@@ -772,9 +772,10 @@
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
-                                parent.window.document.getElementById('orderDetail').contentWindow.location.reload(true);
+                                window.location.reload();
+                            }else{
+                                alert('发货失败了!');
                             }
-                            alert(msg);
                         }
                     });
                 });

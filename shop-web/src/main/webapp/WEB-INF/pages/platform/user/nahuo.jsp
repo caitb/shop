@@ -20,13 +20,10 @@
 <%--<script src="<%=path%>/static/js/commonAjax.js"></script>--%>
 <%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-<script src="<%=path%>/static/plugins/fastclick.js"></script>
+<script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
-    $(function() {
-        FastClick.attach(document.body);
-    });
     $(document).ready(function () {
         var addressId = $("#addressId").val();
         if (addressId == "") {
@@ -121,18 +118,18 @@
     $(".number").on("change", function () {
         i = $(this).val();
     })
-    $(".jian").on("click", function () {
+    $(".jian").on("tap", function () {
         if (i <= 1) {
             return false;
         }
         i--;
         $(".number").val(i)
     })
-    $(".jia").on("click", function () {
+    $(".jia").on("tap", function () {
         i++;
         $(".number").val(i)
     })
-    $(".que_qu").on("click", function () {
+    $(".que_qu").on("tap", function () {
         $(".back").css("display", "none");
         $(".back_que").hide();
     })
@@ -160,7 +157,7 @@
             alert("请确认拿货风险!");
         }
     }
-    $('.que_que').on('click', function () {
+    $('.que_que').on('tap', function () {
         var paraData = {};
         paraData.userAddressId = "${comUserAddress.id}";
         paraData.message = $("#msg").val();

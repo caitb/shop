@@ -59,7 +59,7 @@
             <p>手机号</p>
             <c:choose>
                 <c:when test="${comUser.mobile == null || comUser.mobile == ''}">
-                    <p id="bindPhoneId">未绑定</p>
+                    <p id="bindPhoneId">点击绑定</p>
                 </c:when>
                 <c:otherwise>
                     <p id="bindPhonedId">已绑定 ${comUser.mobile}</p>
@@ -130,6 +130,8 @@
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="${path}/static/js/hideWXShare.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
 <script type="text/javascript" src="${path}/static/js/personalInfo.js"></script>
 </html>

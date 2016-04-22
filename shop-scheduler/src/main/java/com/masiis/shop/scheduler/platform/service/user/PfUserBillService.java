@@ -178,6 +178,6 @@ public class PfUserBillService {
      * @return
      */
     public Long queryBillNumsByDate(Date countStartDay, Date countEndDay) {
-        return itemMapper.selectBillNumsByDate(countStartDay, countEndDay);
+        return billMapper.selectBillNumsByDate(countStartDay, countEndDay);
     }
 }

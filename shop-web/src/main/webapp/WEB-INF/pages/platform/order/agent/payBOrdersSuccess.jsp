@@ -12,16 +12,36 @@
 </head>
 <body>
 <main>
+    <header class="xq_header">
+        <%--<a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
+        <p>申请合伙人</p>
+    </header>
+    <div class="na">
+        <p></p>
+        <h1>
+            <span>麦链合伙人</span>
+            <span>关注可查资金，管理店铺，发展下级</span>
+        </h1>
+        <label class="add">加关注</label>
+    </div>
     <div class="wrap">
-        <header class="xq_header">
-            <%--<a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
-            <p>申请合伙人</p>
-        </header>
-        <div class="xinxi">
-            <p>注册信息</p>
-            <p style="color:#F74A11;">确定拿货方式</p>
-            <p style="color:#F74A11;">支付订单</p>
-        </div>
+        <c:choose>
+            <c:when test="${skuCount<=0}">
+                <div class="xinxi">
+                    <p>注册信息</p>
+                    <p style="color:#F74A11;">选择拿货方式</p>
+                    <p style="color:#F74A11;">支付订单</p>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="xinxi two" style="display: -webkit-box;">
+                    <p>信息填写</p>
+                    <p style="color:#F74A11;">支付订单</p>
+                    <p style="color:#F74A11;">完成合伙</p>
+                </div>
+            </c:otherwise>
+        </c:choose>
+
         <div class="main">
             <div class="drap">
                 <h2><img src="${path}/static/images/ready.png" alt=""></h2>
@@ -105,5 +125,22 @@
         </div>
     </div>
 </main>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_f">
+        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/asd.JPG" alt="">
+    </div>
+</div>
+<script src="${path}/static/js/zepto.min.js"></script>
+<script>
+    $(".add").on("tap",function () {
+        $(".back_box").show()
+    })
+    $(".close").on("tap",function () {
+            $(".back_box").hide()
+    })
+</script>
 </body>
 </html>

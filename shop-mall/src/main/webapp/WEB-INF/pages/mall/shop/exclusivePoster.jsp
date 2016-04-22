@@ -30,6 +30,95 @@
             color: #F73C8C;
             width: 100%;
         }
+        body{
+            position: relative;
+        }
+        .back_box{
+            width:100%;
+            height:100%;
+            position: fixed;
+            top: 0;
+            background: rgba(255,255,255,0);
+            display: none;
+        }
+        .back{
+            width:100%;
+            height:100%;
+            background: rgba(0,0,0,0.5);
+            position: absolute;
+            top:0;
+        }
+        .back_f{
+            width:96%;
+            position: absolute;
+            left:2%;
+            top:30%;
+            background: #fff;
+            border-radius: 5px;
+        }
+        .back_f p{
+            text-align: center;
+            margin-top: 3em;
+        }
+        .back_f .close{
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 25px;
+            height: 25px;
+            border-radius: 15px;
+            text-align: center;
+            line-height: 24px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+        }
+        .back_f img{
+            width:90%;
+            margin:15% 0 5% 5%;
+        }
+        .wrap .na {
+            display: -webkit-box;
+            margin-bottom: 5px;
+            padding: 0px 10px;
+            background: #FFFFFF;
+            position: relative;
+        }
+        .wrap .na p {
+            margin-top: 3px;
+            width: 30px;
+            height: 30px;
+            border-radius: 25px;
+            background: #ccc;
+            overflow: hidden;
+        }
+        .wrap .na p img {
+            width: 100%;
+        }
+        .wrap .na h1 {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-pack: center;
+            margin-left: 10px;
+        }
+        .wrap .na h1 span {
+            display: block;
+            font-size: 12px;
+        }
+        .wrap .na h1 span:last-child{
+            font-size: 10px;
+            color: #999;
+        }
+        .wrap .na label{
+            position: absolute;
+            line-height: 25px;
+            right: 5px;
+            top: 6px;
+            color: #fff;
+            padding: 0 15px;
+            background: #ff0000;
+            border-radius: 5px;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -38,11 +127,27 @@
     <p>店铺分享专属海报</p>
 </header>
 <div class="wrap">
+    <div class="na">
+        <p></p>
+        <h1>
+            <span>麦链合伙人</span>
+            <span>关注可查资金，管理店铺，发展下级</span>
+        </h1>
+        <label class="add">加关注</label>
+    </div>
     <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
     </canvas>
     <img src="${shopPoster}" />
     <b id="downloadPoster2">长按图片保存海报</b>
+</div>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_f">
+        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/asd.JPG" alt="">
+    </div>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -110,7 +215,16 @@
         link: '${shareMap.shareLink}',
         imgUrl: '${shareMap.shareImg}'
     };
+
 </script>
 <script src="<%=basePath%>static/js/pageJs/zepto.min.js"></script>
 <script src="<%=basePath%>static/js/pageJs/share.js"> </script>
+<script>
+    $(".add").on("tap",function () {
+        $(".back_box").show()
+    })
+    $(".close").on("tap",function () {
+        $(".back_box").hide()
+    })
+</script>
 </html>

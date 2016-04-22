@@ -48,6 +48,15 @@ public class PfUserBillTaskService {
         // 订单结束时间
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
         log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
+
+        // 检查日期区间内是否有账单,确保只创建一次
+        Long nums = billService.queryBillNumsByDate(countStartDay, countEndDay);
+        if(nums.intValue() != 0){
+            log.error("此日期内已存在账单,异常发生");
+            // 创建通知
+            return;
+        }
+
         // 查询所有用户
         List<ComUser> users = userService.findAll();
         // 多线程处理

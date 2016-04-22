@@ -145,7 +145,7 @@
         paraData += "&weiXinId=${weiXinId}";
         paraData += "&sendType=" + sendType;
         paraData += "&previousPageType=1";
-        window.location.href = "${basePath}agent/agentBOrder.shtml" + paraData;
+        window.location.href = "${basePath}BOrderAdd/agentBOrder.shtml" + paraData;
     }
     /*
      * 返回修改

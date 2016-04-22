@@ -17,22 +17,11 @@
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>申请合伙人</p>
         </header>
-        <c:choose>
-            <c:when test="${sendType==0}">
-                <div class="xinxi">
-                    <p>注册信息</p>
-                    <p>选择拿货方式</p>
-                    <p>支付订单</p>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="xinxi two" style="display: -webkit-box;">
-                    <p>信息填写</p>
-                    <p>支付订单</p>
-                    <p>完成合伙</p>
-                </div>
-            </c:otherwise>
-        </c:choose>
+        <div class="xinxi">
+            <p>注册信息</p>
+            <p>确定拿货方式</p>
+            <p>支付订单</p>
+        </div>
         <c:if test="${isQueuing==true}">
             <div class="paidan">
                 <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>

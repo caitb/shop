@@ -28,7 +28,7 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p style="color: #F74A11;">选择拿货方式</p>
+            <p style="color: #F74A11;">确定拿货方式</p>
             <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">

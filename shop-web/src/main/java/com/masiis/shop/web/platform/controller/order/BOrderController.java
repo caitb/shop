@@ -64,7 +64,7 @@ public class BOrderController extends BaseController {
                                         @RequestParam(value = "skuId", required = true) Integer skuId,
                                         @RequestParam(value = "agentLevelId", required = false) Integer agentLevelId,
                                         @RequestParam(value = "weiXinId", required = false) String weiXinId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView("platform/order/nahuo");
+        ModelAndView modelAndView = new ModelAndView("platform/order/agent/setUserSendType");
         ComUser comUser = getComUser(request);
         if (comUser.getSendType() != 0) {
             throw new BusinessException("用户已经选择了拿货方式");
@@ -89,7 +89,7 @@ public class BOrderController extends BaseController {
     @RequestMapping("/goToPayBOrder.shtml")
     public ModelAndView toPayBOrder(HttpServletRequest request,
                                     @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
-        ModelAndView modelAndView = new ModelAndView("platform/order/shouyintai");
+        ModelAndView modelAndView = new ModelAndView("platform/order/agent/goToPayBOrder");
         if (bOrderId == null || bOrderId <= 0) {
             throw new BusinessException("订单号不正确");
         }
@@ -185,7 +185,7 @@ public class BOrderController extends BaseController {
     @RequestMapping("/payBOrdersSuccess.shtml")
     public ModelAndView payBOrdersSuccess(HttpServletRequest request,
                                           @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
-        ModelAndView mav = new ModelAndView("platform/order/lingquzhengshu");
+        ModelAndView mav = new ModelAndView("platform/order/agent/payBOrdersSuccess");
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         String realName = "";//姓名
         Integer skuId = 0;//合伙产品id

@@ -60,8 +60,14 @@ public class WxConsSF {
      * 刷新token
      */
     public static final String URL_REFRESH_TOKEN = "https://api.weixin.qq.com/sns/oauth2/refresh_token";
-
+    /**
+     * 获取微信用户信息
+     */
     public static final String URL_GET_USERINFO = "https://api.weixin.qq.com/sns/userinfo";
+    /**
+     * 提醒微信用户url
+     */
+    public static final String URL_WX_NOTICE = "https://api.weixin.qq.com/cgi-bin/message/template/send";
     /**
      * 刷新token的grant_type类型
      */

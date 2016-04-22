@@ -29,7 +29,4 @@ public interface PfUserBillMapper {
     List<PfUserBill> selectByUserId(Long userId);
 
     List<PfUserBill> selectByUserIdLimitPage(Long userId,String balanceDate);
-
-    Long selectBillNumsByDate(@Param("start") Date countStartDay,
-                              @Param("end") Date countEndDay);
 }

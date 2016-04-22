@@ -69,7 +69,7 @@
     </select>
 
     <select id="selectBillNumsByDate" resultType="java.lang.Long">
-        select (id)
+        select count(id)
         from pf_user_bill_item
         where create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
         and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}

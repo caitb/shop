@@ -85,6 +85,6 @@ public interface PfUserSkuMapper {
      *
      * @return
      */
-    Integer selectUserSkuCount(Long userId);
+    Integer selectUserSkuCount(@Param("userId") Long userId, @Param("skuId") Integer skuId);
 
 }

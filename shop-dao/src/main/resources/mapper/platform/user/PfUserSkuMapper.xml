@@ -390,6 +390,7 @@
         WHERE is_pay=1
         AND is_certificate=1
         AND user_id=#{userId}
+        AND sku_id!=#{skuId}
     </select>
 </mapper>
 

@@ -328,7 +328,7 @@
                         editable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.pfSkuStock && row.pfSkuStock.stock){
+                            if(row.pfSkuStock){
                                 return row.pfSkuStock.stock;
                             }
                         }

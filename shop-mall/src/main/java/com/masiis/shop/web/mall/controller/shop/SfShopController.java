@@ -289,7 +289,7 @@ public class SfShopController extends BaseController {
         /** 获取调用jssdk所需数据 **/
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         //要分享的数据
-        shareMap.put("shareTitle", "我是"+user.getRealName()+",我为"+skuInfo.getComSku().getName()+"代言!");
+        shareMap.put("shareTitle", "我是"+user.getWxNkName()+",我为"+skuInfo.getComSku().getName()+"代言!");
         shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
         shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
         shareMap.put("shareLink", curUrl);

@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
-import com.masiis.shop.dao.mall.order.SfOrderItemDistributionExtendMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.po.SfOrderItemDistribution;
 import org.apache.log4j.Logger;

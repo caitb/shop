@@ -30,6 +30,4 @@ public interface PfUserBillItemMapper {
                                              @Param("start") Date start,
                                              @Param("end") Date end);
 
-    Long selectBillNumsByDate(@Param("start") Date countStartDay,
-                              @Param("end") Date countEndDay);
 }

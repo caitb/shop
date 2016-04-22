@@ -43,14 +43,14 @@ public class PfUserBillTaskService {
         final Date balanceDate = DateUtil.getDateNextdays(-1);
         log.info("创建每日结算账单,账单结算时间:" + DateUtil.Date2String(balanceDate, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单开始时间
-        final Date countStartDay = getCountDay(balanceDate);
+        final Date countStartDay = getCountDay(balanceDate, -8);
         log.info("创建每日结算账单,订单开始时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单结束时间
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
         log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
 
         // 检查日期区间内是否有账单,确保只创建一次
-        Long nums = billService.queryBillNumsByDate(countStartDay, countEndDay);
+        Long nums = billService.queryBillNumsByDate(getCountDay(new Date(), 0), getCountDay(new Date(), 1));
         if(nums.intValue() != 0){
             log.error("此日期内已存在账单,异常发生");
             // 创建通知
@@ -78,10 +78,10 @@ public class PfUserBillTaskService {
         // 结束
     }
 
-    public static Date getCountDay(Date date){
+    public static Date getCountDay(Date date, int num){
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) - 8);
+        c.set(Calendar.DAY_OF_YEAR, c.get(Calendar.DAY_OF_YEAR) + num);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);

@@ -40,6 +40,10 @@
                                 case "agent":
                                     window.location.reload();
                                     break;
+                                case "identityAuth":
+                                    //window.location.href = personalInfoJS.basePath + "/identityAuth/toInentityAuthPage.html?auditStatus="+$("#auditStatusId").val();
+                                    window.location.href = "/identityAuth/toInentityAuthPage.html?auditStatus="+$("#auditStatusId").val();
+                                    break;
                                 default:
                                     break;
                             }
@@ -211,6 +215,11 @@
                     case "agent":
                         alert("绑定成功");
                         window.location.reload();
+                        break;
+                    case "identityAuth":
+                        path = "/identityAuth/toInentityAuthPage.html?auditStatus="+$("#auditStatusId").val();
+                        validateCodeJS.bindPhoneSkipParam = "?skipPage=identityAuth&status=success&path=" + path
+                        window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
                         break;
                     default:
                         break;

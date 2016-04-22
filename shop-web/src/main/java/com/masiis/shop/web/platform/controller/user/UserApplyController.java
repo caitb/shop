@@ -2,12 +2,10 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.order.AgentSkuView;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
-import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
@@ -20,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ui.Model;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -64,7 +60,7 @@ public class UserApplyController extends BaseController {
     public ModelAndView apply(HttpServletRequest request,
                               @RequestParam(value = "skuId", required = true) Integer skuId,
                               @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
-        ModelAndView res = new ModelAndView("platform/order/shenqing");
+        ModelAndView res = new ModelAndView("platform/order/agent/apply");
         ComUser user = getComUser(request);
         if (user == null) {
             throw new BusinessException("用户未登录!");
@@ -114,7 +110,7 @@ public class UserApplyController extends BaseController {
     @RequestMapping("/register.shtml")
     public ModelAndView register(HttpServletRequest request,
                                  @RequestParam(value = "skuId", required = true) Integer skuId) throws Exception {
-        ModelAndView modelAndView = new ModelAndView("platform/order/zhuce");
+        ModelAndView modelAndView = new ModelAndView("platform/order/agent/register");
         ComUser comUser = getComUser(request);
         if (comUser == null) {
             throw new BusinessException("用户未登录!");

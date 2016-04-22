@@ -28,7 +28,7 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p style="color: #F74A11;">选择拿货方式</p>
+            <p style="color: #F74A11;">确定拿货方式</p>
             <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">
@@ -145,7 +145,7 @@
         paraData += "&weiXinId=${weiXinId}";
         paraData += "&sendType=" + sendType;
         paraData += "&previousPageType=1";
-        window.location.href = "${basePath}BOrderAdd/agentBOrder.shtml" + paraData;
+        window.location.href = "${basePath}agent/agentBOrder.shtml" + paraData;
     }
     /*
      * 返回修改

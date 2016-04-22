@@ -16,7 +16,6 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
-import org.apache.commons.collections.buffer.PriorityBuffer;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +64,7 @@ public class BOrderAddController extends BaseController {
                                     @RequestParam(value = "sendType", required = true) Integer sendType,
                                     @RequestParam(value = "previousPageType", required = true) Integer previousPageType,
                                     @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
-        ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/agentBOrderAdd");
+        ModelAndView mv = new ModelAndView("platform/order/agent/agentBOrder");
         ComUser comUser = getComUser(request);
         if (agentLevelId == null || agentLevelId <= 0) {
             throw new BusinessException("商品代理等级有误");
@@ -212,7 +211,7 @@ public class BOrderAddController extends BaseController {
                                          @RequestParam(value = "skuId", required = true) Integer skuId,
                                          @RequestParam(value = "quantity", required = true) Integer quantity,
                                          @RequestParam(value = "userAddressId", required = false) Long userAddressId) throws Exception {
-        ModelAndView mv = new ModelAndView("platform/order/BOrderAdd/supplementBOrderAdd");
+        ModelAndView mv = new ModelAndView("platform/order/agent/supplementBOrder");
         ComUser comUser = getComUser(request);
 
         BorderSupplementParamForAddress paramForAddress = new BorderSupplementParamForAddress();

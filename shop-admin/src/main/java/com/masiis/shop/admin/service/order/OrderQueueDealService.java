@@ -146,7 +146,7 @@ public class OrderQueueDealService {
         pfBorderOperationLog.setCreateTime(new Date());
         pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
         pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单完成，平台代发排单处理订单");
+        pfBorderOperationLog.setRemark("订单完成，平台代发处理排单订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
 //        //递归处理下级
 //        List<PfBorder> pfBorders = pfBorderMapper.selectByUserPid(pfBorder.getUserId(), 6, 0);
@@ -203,7 +203,7 @@ public class OrderQueueDealService {
         pfBorderOperationLog.setCreateTime(new Date());
         pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
         pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单待发货，自发货排单处理订单");
+        pfBorderOperationLog.setRemark("订单待发货，自发货处理排单订单");
         pfBorderOperationLogMapper.insert(pfBorderOperationLog);
         return "success";
     }

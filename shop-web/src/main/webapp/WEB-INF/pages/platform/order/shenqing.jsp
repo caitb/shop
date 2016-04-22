@@ -72,7 +72,7 @@
 
 <main>
     <div class="he">
-        <h1>合伙人特权</h1>
+        <h1>成为合伙人后，您将获得以下特权</h1>
     </div>
     <section class="sec1">
         <img src="${path}/static/images/shenqing_3.png" alt="">

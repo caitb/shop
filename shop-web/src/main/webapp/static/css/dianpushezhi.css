@@ -5,6 +5,12 @@
 .wrap p {
   padding: 10px;
 }
+.wrap p:nth-child(2),.wrap p:nth-child(4){
+  text-indent: 55%;
+  padding: 0 10px;
+  color: red;
+  font-size: 12px;
+ }
 .wrap p input,
 .wrap p textarea {
   border-radius: 5px;
@@ -12,6 +18,15 @@
   width: 60%;
   margin-left: 9px;
   padding: 5px;
+}
+.wrap h1{
+  margin:10px;
+  font-size: 12px;
+  color: #666;
+  margin-top: 2em;
+}
+.wrap h1 span{
+  color: red;
 }
 .wrap button {
   display: block;

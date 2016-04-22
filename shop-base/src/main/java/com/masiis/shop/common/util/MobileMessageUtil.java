@@ -152,4 +152,32 @@ public class MobileMessageUtil {
         return true;
     }
 
+    /**
+     * 补货-平台代发
+     * @param phone
+     * @param quantity   补货数量
+     * @return
+     */
+    public static boolean addStockByPlatform(String phone, String quantity){
+        String[] content = new String[]{quantity};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ADD_STOCK_PLATFORM, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 补货-自己发货
+     * @param phone
+     * @return
+     */
+    public static boolean addStockByUserself(String phone){
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ADD_STOCK_SELF, null);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -18,6 +18,14 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/shouye.css">
 </head>
 <body>
+<div class="addb">
+    <p></p>
+    <h1>
+        <span>麦链合伙人</span>
+        <span>关注可查资金，管理店铺，发展下级</span>
+    </h1>
+    <label class="add">加关注</label>
+</div>
 <div class="wrap">
     <c:if test="${userPid!=user.id && userPid != sfShop.userId && userPid !=null}">
     <div class="na">
@@ -114,6 +122,11 @@
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>
+<div class="back_g">
+    <p>关注公众账号查资金，管理店铺，发展下级</p>
+    <span class="close">×</span>
+    <img src="${path}/static/images/asd.JPG" alt="">
+</div>
 <div class="back"></div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <%--<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>--%>
@@ -122,6 +135,10 @@
     $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
+    })
+    $(".add").on("click",function () {
+        $(".back_g").show()
+        $(".back").show()
     })
     $("#okCloss").on("click",function(){
         $("#ok").hide();

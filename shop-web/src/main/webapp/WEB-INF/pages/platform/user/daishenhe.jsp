@@ -15,6 +15,14 @@
 <header class="xq_header" style="margin:0;">
     <p>等待审核</p>
 </header>
+<div class="na">
+    <p></p>
+    <h1>
+        <span>麦链合伙人</span>
+        <span>关注可查资金，管理店铺，发展下级</span>
+    </h1>
+    <label class="add">加关注</label>
+</div>
 <div class="drap">
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
@@ -24,5 +32,22 @@
 <a href="${path}/marketGood/market" class="jixu">
     返回市场
 </a>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_f">
+        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/asd.JPG" alt="">
+    </div>
+</div>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script>
+    $(".add").on("click",function () {
+        $(".back_box").show()
+    })
+    $(".close").on("click",function () {
+        $(".back_box").hide()
+    })
+</script>
 </body>
 </html>

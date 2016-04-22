@@ -200,6 +200,17 @@ public class SfOrderPurchaseService {
                 for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
+                log.info("循环遍历----map--start");
+                for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
+                    List<SfOrderItemDistribution> list =  entry.getValue();
+                    for (SfOrderItemDistribution sid : list){
+                        log.info("小铺订单id----"+sid.getSfOrderId());
+                        log.info("小铺订单商品子表ID----"+sid.getSfOrderItemId());
+                        log.info("分润金额----"+sid.getDistributionAmount());
+                        log.info("分润人id----"+sid.getUserId());
+                    }
+                }
+                log.info("循环遍历----map--end");
                 log.info("获得分润信息---end");
                 //插入订单表
                 log.info("插入订单---start");
@@ -232,6 +243,9 @@ public class SfOrderPurchaseService {
                                 if (itemDisList != null && itemDisList.size() != 0) {
                                     for (SfOrderItemDistribution orderItemDis : itemDisList) {
                                         log.info("插入子订单分润表--start");
+                                        log.info("----分润人id----"+orderItemDis.getUserId());
+                                        log.info("----分润信息表id----"+orderItemDis.getSfSkuDistributionId());
+                                        log.info("----分润金额----"+orderItemDis.getDistributionAmount());
                                         orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(), sfOrderItem.getId(), orderItemDis);
                                         int iii = orderItemDisService.insert(orderItemDis);
                                         if (iii != 1) {
@@ -341,7 +355,12 @@ public class SfOrderPurchaseService {
                 if (orderItemDisList == null || orderItemDisList.size() == 0) {
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
+
                 if (!purchaseUserId.equals(sfUserRelations.get(0).getUserId())) {
+                    log.info("----purchaseUserId------"+purchaseUserId);
+                    log.info("----purchaseUserId------"+sfUserRelations.get(0).getUserId());
+                    log.info("----skuDisId------"+sfSkuDistribution.get(i).getId());
+                    log.info("----分润金额------"+skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                     orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
                 }
                 ordItemDisMap.put(skuId, orderItemDisList);
@@ -538,6 +557,14 @@ public class SfOrderPurchaseService {
         if (sfUserRelation != null && sfUserRelation.getUserPid() != null && sfUserRelationList.size() < 3) {
             getSfUserRelation(sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
         }
+        log.info("关系----start");
+        for (SfUserRelation sf :sfUserRelationList ){
+            log.info("-------------start--------");
+            log.info("用户id-----"+sf.getUserId());
+            log.info("上一级用户id-----"+sf.getUserPid());
+            log.info("-------------end--------");
+        }
+        log.info("关系----end");
         return sfUserRelationList;
     }
 

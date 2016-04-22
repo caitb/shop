@@ -212,7 +212,7 @@ public class SfShopController extends BaseController {
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
             String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?shopId="+shopId+"&skuId="+skuId+"&fromUserId="+comUser.getId(), qrCodePath);
+            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+comUser.getId(), qrCodePath);
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
@@ -289,7 +289,7 @@ public class SfShopController extends BaseController {
         /** 获取调用jssdk所需数据 **/
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         //要分享的数据
-        shareMap.put("shareTitle", "我是"+user.getRealName()+",我为"+skuInfo.getComSku().getName()+"代言!");
+        shareMap.put("shareTitle", "我是"+user.getWxNkName()+",我为"+skuInfo.getComSku().getName()+"代言!");
         shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
         shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
         shareMap.put("shareLink", curUrl);
@@ -301,7 +301,8 @@ public class SfShopController extends BaseController {
         mav.addObject("defaultSkuImage", comSkuImage);//默认图片
         mav.addObject("shopId", shopId);
         mav.addObject("fromUser", fromUser);//分享链接人信息
-
+        mav.addObject("fromUserId", fromUserId);
+        mav.addObject("loginUser", user);
         mav.addObject("shareMap", shareMap);
         return mav;
     }

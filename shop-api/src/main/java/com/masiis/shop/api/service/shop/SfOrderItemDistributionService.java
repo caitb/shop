@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.service.shop;
+package com.masiis.shop.api.service.shop;
 
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.dao.beans.order.SfDistributionPerson;

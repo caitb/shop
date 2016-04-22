@@ -20,6 +20,10 @@
                     $(this).parent().hide();
                     $(".back").hide()
                 })
+                $(".add").on("click", function () {
+                    $(".back_f").show();
+                    $(".back").show();
+                })
             },
             applyTrial: function (skipPageValue) {
                 var skuId = $("#skuId").val();

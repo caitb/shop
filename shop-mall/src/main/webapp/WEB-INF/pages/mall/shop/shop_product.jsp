@@ -20,8 +20,16 @@
     <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>商品详情</p>
 </header>
+<div class="addb">
+    <p></p>
+    <h1>
+        <span>麦链合伙人</span>
+        <span>关注可查资金，管理店铺，发展下级</span>
+    </h1>
+    <label class="add">加关注</label>
+</div>
 <div class="wrap">
-    <c:if test=" ${not empty fromUser} ">
+    <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">
         <div class="na">
             <p><img src="${fromUser.wxHeadImg}" alt=""></p>
             <h1>
@@ -126,7 +134,11 @@
     <span class="close">×</span>
 </div>
 <div class="back">
-
+</div>
+<div class="back_g">
+    <p>关注公众账号查资金，管理店铺，发展下级</p>
+    <span class="close">×</span>
+    <img src="${path}/static/images/asd.JPG" alt="">
 </div>
 <div class="shoping">
     <img src="${defaultSkuImage.fullImgUrl}" alt="">
@@ -191,9 +203,14 @@
         i++;
         $(".number").val(i)
     })
+    $(".add").on("tap",function () {
+        $(".back_g").show()
+        $(".back").show()
+    })
     $(".close").on("tap",function(){
         $(this).parent().hide();
         $(".back").hide();
+        $(".back_g").hide()
     })
     function buy(){
         var cartData = {};

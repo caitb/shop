@@ -77,7 +77,7 @@ public class MyTeamService {
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
             Map<String, String> curMap = countChild(pus.getId());
-            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length);
+            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length+1);
             agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
 
             agentSkuMaps.add(agentSkuMap);

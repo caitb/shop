@@ -154,6 +154,7 @@ public class ComUserAccountService {
             recordBailFee.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(order.getBailAmount()));
             recordBailFee.setNextFee(accountS.getBailFee());
+            log.info("个人账户数据:" + accountS.toString());
             recordMapper.insert(recordBailFee);
             int typeS = accountMapper.updateByIdWithVersion(accountS);
             if (typeS != 1) {

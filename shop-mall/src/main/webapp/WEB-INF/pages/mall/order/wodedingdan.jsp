@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/dingdan.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">--%>
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
 </head>

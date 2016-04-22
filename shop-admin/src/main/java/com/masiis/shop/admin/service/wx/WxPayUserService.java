@@ -113,7 +113,7 @@ public class WxPayUserService {
             req.setSign(WxBeanUtils.toSignString(req));
             System.out.println("证书路径:" + rootPath + WxConsSF.PATH_CERT);
             WxPayUserBeanRes result = new HttpsUtils(WxConsSF.WX_PAY_MCHID, new File(rootPath + WxConsSF.PATH_CERT))
-                    .sendPostByXMLWithParse(WxConsSF.URL_PAY_USER, req, WxPayUserBeanRes.class);
+                    .sendPostByXMLWithParse(WxConsSF.WX_PAY_URL_USER, req, WxPayUserBeanRes.class);
             if(result == null){
                 throw new BusinessException("发送https请求或解析xml结果报错!");
             }
@@ -209,22 +209,6 @@ public class WxPayUserService {
     }
 
     public static void main(String[] ars) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
-        WxPayUserBeanReq req = new WxPayUserBeanReq();
-        req.setOpenid("ojLdDwksB_M2b5R9ZNIk3UdmfaA8");
-        // 请求的金额是分为单位
-        req.setAmount(100);
-        req.setDesc("用户提现");
-        req.setMch_appid(WxConsSF.APPID);
-        req.setMchid(WxConsSF.WX_PAY_MCHID);
-        req.setNonce_str(WxBeanUtils.createGenerateStr());
-        req.setPartner_trade_no(SysBeanUtils.createSfUserExtractPaySerialNum());
-        // 目前先用不校验
-        req.setCheck_name("NO_CHECK");
-        req.setSpbill_create_ip(LocalInetAddressUtil.getHostIp());
-        req.setSign(WxBeanUtils.toSignString(req));
-        String res = new HttpsUtils(WxConsSF.WX_PAY_MCHID, new File("E:\\workSpace\\intellij_idea15\\mshop\\shop-admin\\target\\shop-admin\\WEB-INF/files/apiclient_cert.p12"))
-                .sendPostByXML(WxConsSF.URL_PAY_USER, req);
-        System.out.println(res);
     }
 
     /**

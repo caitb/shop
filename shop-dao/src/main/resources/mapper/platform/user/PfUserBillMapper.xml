@@ -77,4 +77,11 @@
         where user_id = #{0} and DATE_FORMAT(balance_date,'%Y%m')=#{1}
         order by balance_date desc
     </select>
+
+    <select id="selectBillNumsByDate" resultType="java.lang.Long">
+        select count(id)
+        from pf_user_bill
+        where create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+    </select>
 </mapper>

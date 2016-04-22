@@ -114,10 +114,11 @@ body .he {
   border-bottom: 1px solid #f6f6f6;
 }
 body .he h1 {
-  background: url("../images/shenqing_2.png") no-repeat;
-  background-size: 20%;
+  background: url("../images/shenqing_2.png") no-repeat 10px;
+  background-size: 5%;
   color: #333333;
-  padding-left: 25px;
+  padding-left: 42px;
+  width: 100%;
 }
 body main {
   margin: 0 5px;
@@ -131,6 +132,7 @@ body main {
   border-radius: 5px;
   overflow: hidden;
   background: white;
+  margin-bottom: 6em;
 }
 body main .sec1 {
   width: 100%;
@@ -199,13 +201,15 @@ body main .sec1_2 div {
   display: block;;
 }
 body .sec2 {
-  margin: 0 10px;
+  /* margin: 0 10px; */
   display: -webkit-box;
   display: -moz-box;
   height: 42px;
   margin-top: 1rem;
-  padding-bottom: 7rem;
-
+  /* padding-bottom: 7rem; */
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }
 body .sec2 p {
   display: -webkit-box;
@@ -213,7 +217,7 @@ body .sec2 p {
   -webkit-box-pack: center;
   -webkit-box-flex: 1;
   background: #F74A11;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 body .sec2 p a {
   width: 100%;

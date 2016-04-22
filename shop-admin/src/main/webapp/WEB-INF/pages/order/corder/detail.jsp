@@ -118,6 +118,7 @@
                                                 <c:if test="${order.pfCorder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待收货</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已收货</span></c:if>
                                             </div>
@@ -272,7 +273,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="remark">${order.pfCorder.remark}</span>
+                                                <span class="bgarea" id="remark">${order.pfCorder.userMessage}</span>
                                             </div>
                                         </div>
 
@@ -305,13 +306,15 @@
 
                                             <div class="profile-info-value">
                                                 <span class="bgarea" id="order_status">
-                                                    <c:if test="${order.pfCorder.orderStatus == 0}">未处理</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 1}">已付款</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 2}">已取消</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 3}">已完成</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 4}">退款中</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 5}">已退款</c:if>
-                                                    <c:if test="${order.pfCorder.orderStatus == 7}">待发货</c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 0}"><span class="" id="orderStatus">未处理</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 1}"><span class="" id="orderStatus">已付款</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 2}"><span class="" id="orderStatus">已取消</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待收货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已收货</span></c:if>
                                                 </span>
                                             </div>
                                         </div>
@@ -776,10 +779,10 @@
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
-                                parent.window.document.getElementById('orderDetail').contentWindow.location.reload(true);
-                                return;
+                                window.location.reload();
+                            }else{
+                                alert('发货失败了!');
                             }
-                            alert(msg);
                         }
                     });
                 });

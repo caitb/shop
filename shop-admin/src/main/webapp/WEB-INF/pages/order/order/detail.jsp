@@ -118,6 +118,7 @@
                                                 <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                             </div>
@@ -306,6 +307,7 @@
                                                 <c:if test="${order.sfOrder.orderStatus == 3}"><span class="" id="orderStatus">已完成</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
+                                                <c:if test="${order.sfOrder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
                                                 <c:if test="${order.sfOrder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                                 </span>
@@ -772,9 +774,10 @@
                                 $('#delivery').collapse('hide');
                                 $('#fahuo').hide();
                                 $('#shiSta').html('已发货');
-                                parent.window.document.getElementById('orderDetail').contentWindow.location.reload(true);
+                                window.location.reload();
+                            }else{
+                                alert('发货失败了!');
                             }
-                            alert(msg);
                         }
                     });
                 });

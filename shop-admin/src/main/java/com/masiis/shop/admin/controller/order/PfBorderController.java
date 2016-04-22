@@ -127,6 +127,6 @@ public class PfBorderController {
             e.printStackTrace();
         }
 
-        return null;
+        return "error";
     }
 }

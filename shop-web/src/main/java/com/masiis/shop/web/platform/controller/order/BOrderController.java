@@ -14,9 +14,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -190,6 +188,7 @@ public class BOrderController extends BaseController {
         ModelAndView mav = new ModelAndView("platform/order/lingquzhengshu");
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         String realName = "";//姓名
+        Integer skuId = 0;//合伙产品id
         String skuName = "";//合作产品
         String levelName = "";//合伙人等级
         String pRealName = "";//上级合伙人
@@ -197,6 +196,7 @@ public class BOrderController extends BaseController {
         ComUser comUser = getComUser(request);
         realName = comUser.getRealName();
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(bOrderId);
+        skuId = pfBorderItems.get(0).getSkuId();
         skuName = pfBorderItems.get(0).getSkuName();
         //获取用户代理等级
         ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(pfBorderItems.get(0).getAgentLevelId());
@@ -217,7 +217,7 @@ public class BOrderController extends BaseController {
         } else if (pfBorder.getSendType() == 2) {
             sendTypeName = "自己发货";
         }
-        Integer skuCount = pfUserSkuMapper.selectUserSkuCount(comUser.getId());
+        Integer skuCount = pfUserSkuMapper.selectUserSkuCount(comUser.getId(), skuId);
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
@@ -235,17 +235,6 @@ public class BOrderController extends BaseController {
         mav.addObject("count", count);
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
         return mav;
-    }
-
-    @RequestMapping("/payReplenishmentOrder.shtml")
-    public ModelAndView payReplenishmentOrder() throws Exception {
-        ModelAndView mv = new ModelAndView();
-        try {
-
-        } catch (Exception ex) {
-
-        }
-        return mv;
     }
 
     @ResponseBody

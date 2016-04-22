@@ -89,9 +89,10 @@ public class ComUserAccountService {
             BigDecimal orderPayment = order.getPayAmount().subtract(order.getBailAmount());
 
             log.info("订单计入计算的金额是:" + orderPayment.doubleValue());
-
+            Long userPId = order.getUserPid();
+            Long userId = order.getUserId();
             // 获取对应的account记录
-            if (order.getUserPid() != 0) {
+            if (userPId != 0) {
                 log.info("订单类型和状态校验通过,进行创建账单子项工作!");
                 // 创建对应的bill_item
                 PfUserBillItem item = createBillItemByBOrder(order);
@@ -99,7 +100,7 @@ public class ComUserAccountService {
 
                 log.info("账单子项创建成功,账单子项金额为:" + item.getOrderPayAmount());
 
-                ComUserAccount account = accountMapper.findByUserId(order.getUserPid());
+                ComUserAccount account = accountMapper.findByUserId(userPId);
                 log.info("增加上级结算中金额");
                 ComUserAccountRecord recordC = createAccountRecord(orderPayment, account, order.getId(), UserAccountRecordFeeType.AddCountingFee);
                 recordC.setPrevFee(account.getCountingFee());
@@ -117,17 +118,17 @@ public class ComUserAccountService {
                 PfSkuAgent pSkuAgent = null;
                 BigDecimal discountAh = BigDecimal.ZERO;
                 BigDecimal sumProfitFee = BigDecimal.ZERO;
-                for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(order.getId())) {
-                    pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(order.getUserPid(), pfBorderItem.getSkuId());
+                for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(userPId)) {
+                    pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPId, pfBorderItem.getSkuId());
                     pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
-                    discountAh = pfBorderItem.getDiscount().subtract(pSkuAgent.getDiscount());
+                    discountAh = pSkuAgent.getDiscount().subtract(pfBorderItem.getDiscount());
                     if (discountAh.compareTo(BigDecimal.ZERO) > 0) {
                         BigDecimal profitFee = pfBorderItem.getTotalPrice().multiply(discountAh);
                         sumProfitFee = sumProfitFee.add(profitFee);
                     }
                 }
                 log.info("开始修改利润");
-                ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, item.getId(), UserAccountRecordFeeType.AddProfitFee);
+                ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, order.getId(), UserAccountRecordFeeType.AddProfitFee);
                 recordP.setPrevFee(account.getProfitFee());
                 account.setProfitFee(account.getProfitFee().add(sumProfitFee));
                 recordP.setNextFee(account.getProfitFee());
@@ -142,7 +143,7 @@ public class ComUserAccountService {
             }
             log.info("开始给进货人增加成本");
 
-            ComUserAccount accountS = accountMapper.findByUserId(order.getUserId());
+            ComUserAccount accountS = accountMapper.findByUserId(userId);
             log.info("增加本级总成本");
             ComUserAccountRecord recordCostFee = createAccountRecord(orderPayment, accountS, order.getId(), UserAccountRecordFeeType.AddCostFee);
             recordCostFee.setPrevFee(accountS.getCostFee());
@@ -154,6 +155,7 @@ public class ComUserAccountService {
             recordBailFee.setPrevFee(accountS.getBailFee());
             accountS.setBailFee(accountS.getBailFee().add(order.getBailAmount()));
             recordBailFee.setNextFee(accountS.getBailFee());
+            log.info("个人账户数据:" + accountS.toString());
             recordMapper.insert(recordBailFee);
             int typeS = accountMapper.updateByIdWithVersion(accountS);
             if (typeS != 1) {

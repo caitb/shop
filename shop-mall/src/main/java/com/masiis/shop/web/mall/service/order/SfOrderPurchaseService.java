@@ -346,7 +346,7 @@ public class SfOrderPurchaseService {
                 }
                 //
                 log.info("向订单orderItem分润map放数据-----start");
-                if (!purchaseUserId.equals(sfUserRelations.get(0).getUserId())) {
+                if (!shopUserId.equals(sfUserRelations.get(0).getUserId())) {
                     log.info("购买不是自己店铺的进行分润");
                     SfOrderItemDistribution orderItemDistribution = generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                     log.info("向map放的key为----"+skuId+"-----value值为----"+orderItemDistribution.toString());

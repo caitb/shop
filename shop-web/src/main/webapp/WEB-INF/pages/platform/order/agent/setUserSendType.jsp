@@ -24,7 +24,7 @@
         <header class="xq_header">
             <a href="${basePath}userApply/register.shtml?skuId=${skuId}">
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>拿货方式</p>
+            <p>选择拿货方式</p>
         </header>
         <div class="xinxi">
             <p>注册信息</p>

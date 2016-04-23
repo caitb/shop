@@ -14,7 +14,7 @@
 <main>
     <header class="xq_header">
         <%--<a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
-        <p>申请合伙人</p>
+        <p>支付成功</p>
     </header>
     <div class="na">
         <p></p>

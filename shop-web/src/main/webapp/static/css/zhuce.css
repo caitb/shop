@@ -4,6 +4,7 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  background: #f6f6f6;
 }
 .wrap #box {
   width: 100%;
@@ -106,6 +107,7 @@
   font-weight: 600;
   border:1px solid #F6F6F6;
   padding: 5px;
+  width:220px;
 }
 .wrap #box main .sec1 div p .btn {
   text-indent: 0;
@@ -124,7 +126,6 @@
 }
 .wrap #box main .sec1 div span {
   float: right;
-  display: block;
   width: 21px;
   height: 21px;
   margin-top: 10px;
@@ -147,10 +148,8 @@
   width: 100%;
 }
 .wrap #box main .sec2 h2 {
-  font-size: 13px;
-  font-weight: 600;
   color: #333333;
-  line-height: 30px;
+  line-height: 40px;
   text-indent: 10px;
   background: white;
 }
@@ -178,7 +177,6 @@
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
   background: white;
-  margin-bottom: 5px;
 }
 .wrap #box main .sec2 div h3 {
   position: relative;
@@ -213,7 +211,6 @@
 }
 .wrap #box main .sec2 div h3 span {
   position: absolute;
-  display: block;
   width: 21px;
   height: 21px;
   top: 10px;
@@ -225,35 +222,44 @@
   color: #999999;
   display: none;
 }
-.wrap #box main .sec2 .dengji{
-  background: white;
+
+.dengji{
+    background: #fff;
+    display: -webkit-box;
+    padding:0 10px;
 }
-.wrap #box main .sec2 .dengji p {
-  display: block;
-  color: #999999;
-  line-height: 25px;
-  border-bottom: 1px solid #F6F6F6;
-  text-indent: 30px;
-  background: url("../images/icon_14.png") no-repeat 6px;
-  background-size: 5%;
-  font-size: 13px;
+.dengji p{
+  width:1px;
+  -webkit-box-flex:1;
+  border:1px solid #949494;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  border-radius: 5px;
+  margin: 10px 0;
 }
-.wrap #box main .sec2 .dengji p label{
-  font-size: 14px;
+.dengji p:nth-child(1){
+  margin-right: 10px;
+}
+.dengji p span{
   display: block;
   color: #333;
 }
-.wrap #box main .sec2 .dengji p span,
-.wrap #box main .sec2 .dengji p b {
-  font-size: 10px;
-  color: #999999;
+.dengji p span:nth-child(2){
+  font-size: 12px;
+  color: #999 ;
 }
-.wrap #box main .sec2 .dengji p b:nth-child(2){
-  padding-left: 30px;
+.dengji .active{
+  border:1px solid #F74A11;
 }
-.wrap #box main .sec2 .dengji .on {
-  background: url("../images/icon_11.png") no-repeat 6px;
-  background-size: 5%;
+.dengji .active span{
+  display: block;
+  color: #F74A11;
+}
+.dengji .active span:nth-child(2){
+  font-size: 12px;
+  color: #F97B5E;
 }
 .wrap #box main .sec2 .jin {
   color: #c5c5c5;

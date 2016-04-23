@@ -145,8 +145,9 @@ $(function () {
     /*
      * 选择合伙人等级
      * */
-    $(".dengji p").on("click", function () {
-        $(this).addClass("on").siblings().removeClass("on")
+    $(".dengji").on("click","p",function(){
+        $(".dengji p").removeClass("active")
+        $(this).addClass("active");
     })
     /*
      * 返回修改

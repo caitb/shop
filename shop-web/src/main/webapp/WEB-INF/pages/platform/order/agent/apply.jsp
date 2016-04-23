@@ -16,15 +16,16 @@
         <img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
-<div class="na">
-    <p></p>
-    <h1>
-        <span>麦链合伙人</span>
-        <span>关注可查资金，管理店铺，发展下级</span>
-    </h1>
-    <label class="add">加关注</label>
-</div>
+
 <div class="wrap">
+    <div class="na">
+        <p></p>
+        <h1>
+            <span>麦链合伙人</span>
+            <span>关注可查资金，管理店铺，发展下级</span>
+        </h1>
+        <label class="add">加关注</label>
+    </div>
     <c:if test="${isQueuing==true}">
         <div class="paidan">
             <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>

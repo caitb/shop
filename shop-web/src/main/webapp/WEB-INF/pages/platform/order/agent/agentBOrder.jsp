@@ -24,7 +24,7 @@
                         <img src="${path}/static/images/xq_rt.png" alt=""></a>
                 </c:otherwise>
             </c:choose>
-            <p>支付订单</p>
+            <p>提交订单</p>
         </header>
         <main>
             <div class="xinxi">

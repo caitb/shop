@@ -181,6 +181,11 @@
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
+<div class="wrapno">
+    <img src="${path}/static/images/yes.png" alt="">
+    <h1>申请过啦！</h1>
+    <p>您已申请过此商品的合伙人， 现在将自动返回管理首页</p>
+</div>
 <div class="back"></div>
 <div class="back_j">
     <p class="biao">绑定账号</p>

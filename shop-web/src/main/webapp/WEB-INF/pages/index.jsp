@@ -115,6 +115,7 @@
                         </ul>
                     </nav>--%>
     </div>
+    </div>
     <div class="back_j" style="display:none;">
         <p>您还没有选择拿货方式，这个功能很重要，请您务必设置。</p>
         <h1 class="j_qu">点击前往</h1>

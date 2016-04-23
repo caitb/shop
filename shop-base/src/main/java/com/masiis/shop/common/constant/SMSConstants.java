@@ -5,6 +5,10 @@ package com.masiis.shop.common.constant;
  */
 public class SMSConstants {
 	/**
+	 * 验证码
+	 */
+	public static final String VERIFICATION_CODE = "72314";
+	/**
 	 * 注册短信通知验证码有效时间(分钟)
 	 */
 	public static final String REGESTER_VALID_TIME = "5";

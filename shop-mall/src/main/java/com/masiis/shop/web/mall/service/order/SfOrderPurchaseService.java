@@ -335,7 +335,7 @@ public class SfOrderPurchaseService {
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
                 log.info("向订单orderItem分润map放数据-----start");
-                if (!shopUserId.equals(sfUserRelations.get(0).getUserId())) {
+                if (!shopUserId.equals(sfUserRelations.get(i).getUserId())) {
                     log.info("购买不是自己店铺的进行分润");
                     SfOrderItemDistribution orderItemDistribution = generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                     log.info("向map放的key为----"+skuId+"-----value值为----"+orderItemDistribution.toString());
@@ -350,7 +350,9 @@ public class SfOrderPurchaseService {
                     }
                     skuDisMap.put(skuId, skuDis);
                     /*一条订单的总的分润*/
+                    log.info("订单之前的分润------"+orderSumDisAmount);
                     orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                    log.info("订单加入商品分润后的分润------"+orderSumDisAmount);
                 }
                 log.info("向map放完后，遍历map查看map有的数据----start");
                 for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {

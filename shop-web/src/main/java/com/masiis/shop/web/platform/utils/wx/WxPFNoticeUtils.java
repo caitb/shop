@@ -204,17 +204,26 @@ public class WxPFNoticeUtils {
      *
      * @param user
      * @param params    (1,提现金额;2,提现时间;3,提现状态)
+     * @param isSuccess
      * @return
      */
-    public Boolean pfExtractApply(ComUser user, String[] params){
+    public Boolean pfExtractApply(ComUser user, String[] params, boolean isSuccess){
         WxPFExtractApply apply = new WxPFExtractApply();
         WxNoticeReq<WxPFExtractApply> req = new WxNoticeReq<>(apply);
 
-        apply.setFirst("您好，您的提现申请已经提交");
-        apply.setKeyword1(params[0] + "元");
-        apply.setKeyword2(params[1]);
-        apply.setKeyword3(params[2]);
-        apply.setRemark("审核结果会在2个工作日内完成，请耐心等待!");
+        if(isSuccess){
+            apply.setFirst("您好，您的提现申请已经提交");
+            apply.setKeyword1(params[0] + "元");
+            apply.setKeyword2(params[1]);
+            apply.setKeyword3(params[2]);
+            apply.setRemark("审核结果会在2个工作日内完成，请耐心等待!");
+        }else{
+            apply.setFirst("您好，您的提现申请被拒绝了");
+            apply.setKeyword1(params[0] + "元");
+            apply.setKeyword2(params[1]);
+            apply.setKeyword3(params[2]);
+            apply.setRemark("拒绝原因，您没有这么多余额，如有问题请联系客服!");
+        }
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -222,6 +231,29 @@ public class WxPFNoticeUtils {
         return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
+    /**
+     * 提现申请结果通知
+     *
+     * @param user
+     * @param params    (1,提现商户(代理商名称);2,提现金额;3,提现账户;4,处理时间)
+     * @return
+     */
+    public Boolean pfExtractApplySuccess(ComUser user, String[] params){
+        WxPFExtractApplySuccess eas = new WxPFExtractApplySuccess();
+        WxNoticeReq<WxPFExtractApplySuccess> req = new WxNoticeReq<>(eas);
+
+        eas.setFirst("提现结果通知");
+        eas.setKeyword1(params[0]);
+        eas.setKeyword2(params[1]);
+        eas.setKeyword3(params[2]);
+        eas.setKeyword4(params[3]);
+        eas.setRemark("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收");
+
+        req.setTouser(getOpenIdByComUser(user));
+        // 调用提现申请成功通知模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS);
+        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
 
     /**
      * 补货成功提醒-平台代发

@@ -134,8 +134,10 @@ public class WxConsPF {
      * 代理提现申请
      */
     public static final String WX_PF_TM_ID_EXTRACT_APPLY = "V7BYNEQv-_3bX9KENLjRmhY-ROXlGmoBHCYoxSqSGhs";
-
-    public static final String WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS = "";
+    /**
+     * 提现结果通知
+     */
+    public static final String WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS = "ze3Hn4bt8_fTxxUv9V3WVeK70RyfxqEcXCOW6IREKto";
     /**
      * 新订单通知(详细)(补货成功提醒;进入排单提醒;处理排单提醒)
      */

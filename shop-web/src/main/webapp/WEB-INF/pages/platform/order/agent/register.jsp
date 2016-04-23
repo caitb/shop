@@ -82,8 +82,6 @@
                         <span>50w元套餐</span>
                         <span>保证金10000元</span>
                     </p>
-                </div>
-                <div class="dengji">
                     <p>
                         <span>10w元套餐</span>
                         <span>保证金7000元</span>
@@ -92,8 +90,6 @@
                         <span>1w元套餐</span>
                         <span>保证金5000元</span>
                     </p>
-                </div>
-                <div class="dengji">
                     <p>
                         <span>5000元套餐</span>
                         <span>保证金3000元</span>

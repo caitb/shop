@@ -56,11 +56,11 @@ public class SMSConstants {
     /**
      * 平台代发补货
      */
-    public static final String ADD_STOCK_PLATFORM = "81460";
+    public static final String ADD_STOCK_PLATFORM = "81455";
 
     /**
      * 自己发货补货
      */
-    public static final String ADD_STOCK_SELF = "81462";
+    public static final String ADD_STOCK_SELF = "81457";
 
 }

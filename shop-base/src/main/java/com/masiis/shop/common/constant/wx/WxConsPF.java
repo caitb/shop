@@ -104,4 +104,48 @@ public class WxConsPF {
      */
     public static final String WX_PAY_URL_UNIORDER_NOTIFY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PAY_URL_UNIORDER_NOTIFY"); //"http://weixin.masiis.com/wxntfy/orderNtfy";
 
+
+    /*===============================================================================================================*/
+    /**
+     * 合伙人申请成功提示
+     */
+    public static final String WX_PF_TM_ID_PTNER_APPLY_OK = "ynmYfDzdSp22Ohaekl3B0TFVZPFVQrX2EfT5soEQo90";
+    /**
+     * 下线加入通知
+     */
+    public static final String WX_PF_TM_ID_PTNER_JOIN_NOTICE = "w6oDOs9sYwujT3bAnimYQi8JC6G__yg1hJt8dJ3N95Q";
+    /**
+     * 实名认证审核结通知
+     */
+    public static final String WX_PF_TM_ID_AUTH_NOTICE = "CLkaQaL4eEuO9TP4VHwBVsuivYPWyqdJ5uSbHrVHrwI";
+    /**
+     * 实名认证资料提交通知
+     */
+    public static final String WX_PF_TM_ID_RM_SUBMIT = "sZEOLMywZ8_GXW44K21oXzCZdc772kX7G1dzIyyyiSQ";
+    /**
+     * 订单发货通知
+     */
+    public static final String WX_PF_TM_ID_ORDER_SHIPPED = "f8k2LudPdd_BfoNCC0HVK-bj53VZc1My0HlDWEH29uU";
+    /**
+     * 新代理订单提醒
+     */
+    public static final String WX_PF_TM_ID_NEW_PF_ORDER = "EJlLVU0QqOgWSfZnlbxHj17tphR3HO68NR4rPk6oI6U";
+    /**
+     * 代理提现申请
+     */
+    public static final String WX_PF_TM_ID_EXTRACT_APPLY = "V7BYNEQv-_3bX9KENLjRmhY-ROXlGmoBHCYoxSqSGhs";
+
+    public static final String WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS = "";
+    /**
+     * 新订单通知(详细)(补货成功提醒;进入排单提醒;处理排单提醒)
+     */
+    public static final String WX_PF_TM_ID_NEW_ORDER_DETAIL = "qWbY38zqoRLz2iWxK6Qtjewflm8W2XNt-DJWYL0R07Y";
+    /**
+     * 库存不足预警
+     */
+    public static final String WX_PF_TM_ID_INVENTORY_SHORTAGE = "H1eh8fdG04b00J2kyZhRDYov3y6NHlrBra822P-fy4I";
+    /**
+     * 小铺新订单提醒
+     */
+    public static final String WX_PF_TM_ID_NEW_SHOP_ORDER = "r0tjUdJA1StfjOxVTYom0UWwL7WSpq9lGwzIApWq3g0";
 }

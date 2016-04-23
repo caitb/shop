@@ -5,9 +5,21 @@ package com.masiis.shop.common.beans.wx.notice;
  * @author lzh
  */
 public class WxNoticeReq<T extends WxNoticeDataBase> {
+    /**
+     * 填用户openid
+     */
     private String touser;
+    /**
+     * 模板id
+     */
     private String template_id;
+    /**
+     * 自己系统url,可按自己需求展示,可不填
+     */
     private String url;
+    /**
+     * 标题颜色
+     */
     private String topcolor;
     private T data;
 

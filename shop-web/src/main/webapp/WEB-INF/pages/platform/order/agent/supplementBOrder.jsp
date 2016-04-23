@@ -16,7 +16,7 @@
         <header class="xq_header">
             <a href="javascript:;" onClick="javascript:history.go(-1);">
                 <img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>支付订单</p>
+            <p>提交订单</p>
         </header>
         <main>
             <c:if test="${bOrderConfirm.sendType==1 && isQueuing==true}">

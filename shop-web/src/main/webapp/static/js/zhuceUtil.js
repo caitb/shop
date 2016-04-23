@@ -123,7 +123,7 @@ $(function () {
                         paraData += "&weiXinId=" + $("#q_weixinId").html();
                         paraData += "&sendType=" + sendType;
                         paraData += "&previousPageType=0";
-                        window.location.href = path + "agent/agentBOrder.shtml" + paraData;
+                        window.location.href = path + "BOrderAdd/agentBOrder.shtml" + paraData;
                     }
                 } else {
                     alert(rdata.message);

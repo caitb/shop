@@ -6,10 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.masiis.shop.admin.beans.product.ProductInfo;
-import com.masiis.shop.admin.service.product.BrandService;
-import com.masiis.shop.admin.service.product.CategoryService;
-import com.masiis.shop.admin.service.product.ProductService;
-import com.masiis.shop.admin.service.product.UnitMeasureService;
+import com.masiis.shop.admin.service.product.*;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -48,6 +45,8 @@ public class ProductController {
     private ProductService productService;
     @Resource
     private UnitMeasureService unitMeasureService;
+    @Resource
+    private AgentLevelService agentLevelService;
 
     @RequestMapping("/add.shtml")
     public ModelAndView add(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
@@ -57,10 +56,12 @@ public class ProductController {
         List<ComBrand> comBrands = brandService.list(new ComBrand());
         List<ComUnitMeasure> comUnitMeasures = unitMeasureService.listAll();
         List<ComCategory> comCategories = categoryService.listByCondition(new ComCategory());
+        List<ComAgentLevel> comAgentLevels = agentLevelService.listAll();
 
         mav.addObject("brands", comBrands);
         mav.addObject("unitMeasures", comUnitMeasures);
         mav.addObject("categories", objectMapper.writeValueAsString(comCategories));
+        mav.addObject("agentLevels", objectMapper.writeValueAsString(comAgentLevels));
 
         return mav;
     }

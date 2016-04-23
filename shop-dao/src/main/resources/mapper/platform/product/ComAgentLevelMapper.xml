@@ -43,8 +43,16 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, create_time, name, img_url, lower, discount, remark
-        from com_agent_level
+        select
+               id,
+               create_time,
+               name,
+               img_url,
+               lower,
+               discount,
+               remark
+        from
+               com_agent_level
     </select>
 
 </mapper>

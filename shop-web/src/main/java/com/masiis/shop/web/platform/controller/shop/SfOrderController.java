@@ -13,6 +13,7 @@ import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ import java.util.List;
 @RequestMapping("/sfOrderController")
 public class SfOrderController extends BaseController {
 
+    private static final Logger logger = Logger.getLogger(SfOrderController.class);
     @Resource
     private SfOrderService sfOrderService;
     @Resource
@@ -52,7 +54,8 @@ public class SfOrderController extends BaseController {
                           @RequestParam(required = true) String shipManName,
                           @RequestParam(required = true) Long orderId,
                           @RequestParam(required = true) String freight,
-                          @RequestParam(required = true) String shipManId) {
+                          @RequestParam(required = true) String shipManId) throws Exception {
+        logger.info("deliverOrder.do");
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
@@ -64,6 +67,7 @@ public class SfOrderController extends BaseController {
                 throw new BusinessException("网络错误", ex);
             }
         }
+        logger.info(json.toString());
         return json.toString();
     }
 

@@ -13,4 +13,8 @@ public class ShopApiConstant {
      * 系统错误
      */
     public static final int ERROR = -1;
+    /**
+     * 数据不存在
+     */
+    public static final int DATA_NOT_EXIST = 1;
 }

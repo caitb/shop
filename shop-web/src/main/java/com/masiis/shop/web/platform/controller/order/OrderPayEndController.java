@@ -1,10 +1,8 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.po.PfBorder;
-import com.masiis.shop.dao.po.PfBorderConsignee;
-import com.masiis.shop.dao.po.PfBorderItem;
-import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
@@ -72,15 +70,13 @@ public class OrderPayEndController extends BaseController {
             mv.addObject("pfBorderConsignee",pfBorderConsignee);
         }
         //send msg 发送短信
-//        ComUser comUser = userService.getUserById(pfBorder.getUserId());
-//
-//        if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
-//            MobileMessageUtil.addStockByPlatform(comUser.getMobile(),)
-//        }
-//        if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
-//            MobileMessageUtil.addStockByUserself()
-//        }
-
+        ComUser comUser = userService.getUserById(pfBorder.getUserId());
+        if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
+            MobileMessageUtil.addStockByPlatform(comUser.getMobile(),String.valueOf(sumQuantity));
+        }
+        if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
+            MobileMessageUtil.addStockByUserself(comUser.getMobile());
+        }
         mv.setViewName("platform/order/ReplenishmentPayments");
         return mv;
     }

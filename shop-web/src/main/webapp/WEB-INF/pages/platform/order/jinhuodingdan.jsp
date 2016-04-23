@@ -495,7 +495,6 @@
             }
            $(function(){
                 $(".que_que").on("click",function(){
-                    orderStatus=3;
                     $(".back_shouhuo").hide();
                     $(".back").hide();
                     var aa="querenshouhuo_"+oid;

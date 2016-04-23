@@ -486,19 +486,22 @@
                 $(".back").css("display","-webkit-box");
                 $(".back_shouhuo").css("display","-webkit-box");
             })
-            function querenshouhuo(orderStatus,id){
-                $(".back").css("display","-webkit-box");
-                $(".back_shouhuo").css("display","-webkit-box");
+
+           var oid = "";
+            function querenshouhuo(orderStatus,id) {
+                $(".back").css("display", "-webkit-box");
+                $(".back_shouhuo").css("display", "-webkit-box");
+                oid = id;
+            }
+           $(function(){
                 $(".que_que").on("click",function(){
-                    orderStatus=3;
                     $(".back_shouhuo").hide();
                     $(".back").hide();
-
-                    var aa="querenshouhuo_"+id;
+                    var aa="querenshouhuo_"+oid;
                     $.ajax({
                         type:"POST",
                         url : "<%=path%>/borderManage/closeDeal.do",
-                        data:{orderStatus:3,shipStatus:9,orderId:id},
+                        data:{orderStatus:3,shipStatus:9,orderId:oid},
                         dataType:"Json",
                         success:function(date){
 //                            if(date.msgs){
@@ -511,7 +514,7 @@
                         }
                     })
                 })
-            }
+           })
             $(".que_qu").on("click",function(){
                 $(".back_shouhuo").hide();
                 $(".back").hide();

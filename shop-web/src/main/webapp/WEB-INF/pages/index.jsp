@@ -23,15 +23,15 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="na">
-        <p></p>
-        <h1>
-            <span>麦链合伙人</span>
-            <span>关注可查资金，管理店铺，发展下级</span>
-        </h1>
-        <label class="add">加关注</label>
-    </div>
     <div class="box">
+        <div class="na">
+            <p></p>
+            <h1>
+                <span>麦链合伙人</span>
+                <span>关注可查资金，管理店铺，发展下级</span>
+            </h1>
+            <label class="add">加关注</label>
+        </div>
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
@@ -114,6 +114,7 @@
                                 </li>
                         </ul>
                     </nav>--%>
+    </div>
     </div>
     <div class="back_j" style="display:none;">
         <p>您还没有选择拿货方式，这个功能很重要，请您务必设置。</p>

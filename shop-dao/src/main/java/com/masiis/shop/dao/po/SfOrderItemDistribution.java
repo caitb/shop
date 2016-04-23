@@ -99,4 +99,19 @@ public class SfOrderItemDistribution extends SfOrderItemDistributionExtends {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "SfOrderItemDistribution{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", sfOrderId=" + sfOrderId +
+                ", sfOrderItemId=" + sfOrderItemId +
+                ", userId=" + userId +
+                ", sfSkuDistributionId=" + sfSkuDistributionId +
+                ", distributionAmount=" + distributionAmount +
+                ", isCounting=" + isCounting +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

@@ -13,6 +13,22 @@ public class MobileMessageUtil {
     private static String sign = "_SMS";
 
     /**
+     * 发送验证码
+     * @param phone
+     * @param code      验证码
+     * @param minute    有效分钟数
+     * @return
+     */
+    public static boolean VerificationCode(String phone, String code, String minute){
+        String[] content = new String[]{code,minute};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFICATION_CODE, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 支付短信
      * @param phone             手机号码
      * @param skuName           商品名称

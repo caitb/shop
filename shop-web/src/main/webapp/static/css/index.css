@@ -228,10 +228,10 @@
 }
 .wrap .na {
   display: -webkit-box;
-  margin-bottom: 5px;
   padding: 0px 10px;
   background: #FFFFFF;
   position: relative;
+  box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.5);
 }
 .wrap .na p {
   margin-top: 3px;

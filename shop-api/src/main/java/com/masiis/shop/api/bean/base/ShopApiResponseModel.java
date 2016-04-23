@@ -23,7 +23,12 @@ public class ShopApiResponseModel extends BaseResponseModel {
 
     private Object data;
 
-    public ShopApiResponseModel(Object data){
+    public ShopApiResponseModel() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    public ShopApiResponseModel(Object data) {
         super();
         this.data = data;
     }

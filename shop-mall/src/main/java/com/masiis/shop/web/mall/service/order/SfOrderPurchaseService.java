@@ -200,17 +200,6 @@ public class SfOrderPurchaseService {
                 for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
-                log.info("循环遍历----map--start");
-                for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
-                    List<SfOrderItemDistribution> list =  entry.getValue();
-                    for (SfOrderItemDistribution sid : list){
-                        log.info("小铺订单id----"+sid.getSfOrderId());
-                        log.info("小铺订单商品子表ID----"+sid.getSfOrderItemId());
-                        log.info("分润金额----"+sid.getDistributionAmount());
-                        log.info("分润人id----"+sid.getUserId());
-                    }
-                }
-                log.info("循环遍历----map--end");
                 log.info("获得分润信息---end");
                 //插入订单表
                 log.info("插入订单---start");
@@ -243,10 +232,8 @@ public class SfOrderPurchaseService {
                                 if (itemDisList != null && itemDisList.size() != 0) {
                                     for (SfOrderItemDistribution orderItemDis : itemDisList) {
                                         log.info("插入子订单分润表--start");
-                                        log.info("----分润人id----"+orderItemDis.getUserId());
-                                        log.info("----分润信息表id----"+orderItemDis.getSfSkuDistributionId());
-                                        log.info("----分润金额----"+orderItemDis.getDistributionAmount());
                                         orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(), sfOrderItem.getId(), orderItemDis);
+                                        log.info("插入的数据----"+orderItemDis.toString());
                                         int iii = orderItemDisService.insert(orderItemDis);
                                         if (iii != 1) {
                                             log.info("插入子订单分润表失败");
@@ -335,35 +322,50 @@ public class SfOrderPurchaseService {
             ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
         }
         List<SfSkuDistribution> sfSkuDistribution = sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
-        /*获得当前用户的分销关系*/
+        /* 获得当前用户的分销关系 */
+        /* 获得当前用户的分销关系规则：父级在list第一位，父父级级在第二位 以此类推(这种排序和skuDis相对应起来) */
         List<SfUserRelation> sfUserRelations = getSfUserRelation(purchaseUserId, null, null);
         if (sfUserRelations != null && sfUserRelations.size() != 0 && sfSkuDistribution != null && sfSkuDistribution.size() != 0) {
             log.info("获得购买人--id为" + purchaseUserId + "---的上级关系共有---" + sfUserRelations.size());
+            /* 此处以realtions为维度，而不是skuDistrion为维度。因为只有关系存在才会商品的分润 但是商品的分润不能为0 */
             for (int i = 0; i < sfUserRelations.size(); i++) {
-                /*一条订单的总的分润*/
-                orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                /*获得一款商品的购买人上级总的分润*/
-                BigDecimal skuDis = skuDisMap.get(skuId);
-                if (skuDis == null) {
-                    skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
-                } else {
-                    skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                }
-                skuDisMap.put(skuId, skuDis);
                 /*获得一款商品对应购买上级分润信息*/
                 List<SfOrderItemDistribution> orderItemDisList = (List<SfOrderItemDistribution>) ordItemDisMap.get(skuId);
                 if (orderItemDisList == null || orderItemDisList.size() == 0) {
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
-
-                if (!purchaseUserId.equals(sfUserRelations.get(0).getUserId())) {
-                    log.info("----purchaseUserId------"+purchaseUserId);
-                    log.info("----purchaseUserId------"+sfUserRelations.get(0).getUserId());
-                    log.info("----skuDisId------"+sfSkuDistribution.get(i).getId());
-                    log.info("----分润金额------"+skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                    orderItemDisList.add(generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount())));
+                log.info("向订单orderItem分润map放数据-----start");
+                log.info("shopUserId-------"+shopUserId+"-----上级userId----"+sfUserRelations.get(i).getUserId());
+                if (!shopUserId.equals(sfUserRelations.get(i).getUserId())) {
+                    log.info("购买不是自己店铺的进行分润");
+                    SfOrderItemDistribution orderItemDistribution = generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                    log.info("向map放的key为----"+skuId+"-----value值为----"+orderItemDistribution.toString());
+                    orderItemDisList.add(orderItemDistribution);
+                    ordItemDisMap.put(skuId, orderItemDisList);
+                    /*获得一款商品的购买人上级总的分润*/
+                    BigDecimal skuDis = skuDisMap.get(skuId);
+                    if (skuDis == null) {
+                        skuDis = skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount());
+                    } else {
+                        skuDis = skuDis.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                    }
+                    skuDisMap.put(skuId, skuDis);
+                    /*一条订单的总的分润*/
+                    log.info("订单之前的分润------"+orderSumDisAmount);
+                    orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
+                    log.info("订单加入商品分润后的分润------"+orderSumDisAmount);
                 }
-                ordItemDisMap.put(skuId, orderItemDisList);
+                log.info("向map放完后，遍历map查看map有的数据----start");
+                for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
+                    log.info("map---key值为----"+entry.getKey());
+                    for(SfOrderItemDistribution oid :entry.getValue()){
+                        log.info("map---value值为---"+oid.toString());
+                    }
+                    log.info("-------------------------");
+                }
+                log.info("向map放完后，遍历map查看map有的数据----end");
+
+                log.info("向订单orderItem分润map放数据-----end");
             }
         }
     }

@@ -25,7 +25,7 @@
     <main>
         <p>您当前可提现金额为<span>￥${userAccount.extractableFee}</span></p>
         <div class="sec1">
-            提现金额：￥<input id="inputAccount" name="inputAccount" type="tel" placeholder="请输入提现金额">
+            提现金额：￥<input id="inputAccount" name="inputAccount" type="text" placeholder="请输入提现金额">
         </div>
         <h1>*请确认您已关注“麦链商城”微信公众账号，否则提现会失败</h1>
         <h2>为保障奖励及时到账，麦链商城采用的是微信转账形式发放。</h2>

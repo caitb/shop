@@ -330,6 +330,18 @@ public class BOrderService {
         if (pfBorder.getPayStatus() != 1) {
             throw new BusinessException("订单还未支付怎么能完成呢？");
         }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 1) {
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())) {
+                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
+            }
+        } else if (pfBorder.getSendType() == 2) {
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.WaitShip.getCode())) {
+                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.WaitShip.getCode());
+            }
+        } else {
+            throw new BusinessException("订单拿货方式异常");
+        }
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
         pfBorderMapper.updateById(pfBorder);
         //添加订单日志
@@ -348,6 +360,7 @@ public class BOrderService {
 
     /**
      * 获取排队订单数量
+     *
      * @param skuId
      * @return
      */

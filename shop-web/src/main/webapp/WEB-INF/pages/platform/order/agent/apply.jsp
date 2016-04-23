@@ -8,6 +8,7 @@
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shenqing.css">
+    <link rel="stylesheet" href="${path}/static/css/fakeloader/fakeLoader.css">
 </head>
 <body>
 <header class="xq_header">
@@ -15,15 +16,16 @@
         <img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>合伙人申请</p>
 </header>
-<div class="na">
-    <p></p>
-    <h1>
-        <span>麦链合伙人</span>
-        <span>关注可查资金，管理店铺，发展下级</span>
-    </h1>
-    <label class="add">加关注</label>
-</div>
+
 <div class="wrap">
+    <div class="na">
+        <p></p>
+        <h1>
+            <span>麦链合伙人</span>
+            <span>关注可查资金，管理店铺，发展下级</span>
+        </h1>
+        <label class="add">加关注</label>
+    </div>
     <c:if test="${isQueuing==true}">
         <div class="paidan">
             <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
@@ -181,6 +183,11 @@
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
+    <div class="wrapno">
+    <img src="${path}/static/images/yes.png" alt="">
+    <h1>申请过啦！</h1>
+    <p>您已申请过此商品的合伙人， 现在将自动返回管理首页</p>
+</div>
 <div class="back"></div>
 <div class="back_j">
     <p class="biao">绑定账号</p>
@@ -211,11 +218,16 @@
 <%--<script src="${path}/static/js/commonAjax.js"></script>--%>
 <script src="${path}/static/js/iscroll.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
+<script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
 <script>
     $(document).ready(function () {
+        $(".fakeloader").fakeLoader({
+            timeToHide:1200,
+            bgColor:"#9b59b6",
+            spinner:"spinner7"
+        });
         validateCodeJS.initPage();
     });
-
     function goVerified(para) {
         if(${user.isBinding!=1}){
             alert("请先绑定手机号");

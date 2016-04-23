@@ -6,7 +6,7 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+ "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/dingdan.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">--%>
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
 </head>

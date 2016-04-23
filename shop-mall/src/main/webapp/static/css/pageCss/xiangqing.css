@@ -207,6 +207,7 @@ footer .sec3 p {
     -webkit-box-align: center;
     -webkit-box-pack: center;
     background: #F74A11;
+    color: #fff;
 }
 footer .sec3 p a {
     display: block;
@@ -345,6 +346,7 @@ footer .sec3 p a {
     -webkit-box-align: center;
     -webkit-box-pack: center;
     z-index: 4;
+    display: none;
 }
 .shoping{
     position: fixed;
@@ -466,10 +468,11 @@ footer .sec3 p a {
     width:96%;
     position: absolute;
     left:2%;
-    top:30%;
+    top:20%;
     background: #fff;
     border-radius: 5px;
     z-index: 11;
+    display: none;
 }
 .back_g p{
     text-align: center;

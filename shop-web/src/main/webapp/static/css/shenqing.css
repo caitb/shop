@@ -430,10 +430,8 @@ body .back {
   margin:15% 0 5% 5%;
 }
 .na{
-  display: none;
 }
 .wrap{
-  display: none;
 }
 .wrapno{
   background: #F6F6F6;
@@ -441,6 +439,7 @@ body .back {
   -webkit-box-orient:vertical;
   -webkit-box-align:center;
   -webkit-box-pack:center;
+    display: none;
 }
 .wrapno img{
   width:15%;

@@ -335,6 +335,7 @@ public class SfOrderPurchaseService {
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
                 log.info("向订单orderItem分润map放数据-----start");
+                log.info("shopUserId-------"+shopUserId+"-----上级userId----"+sfUserRelations.get(i).getUserId());
                 if (!shopUserId.equals(sfUserRelations.get(i).getUserId())) {
                     log.info("购买不是自己店铺的进行分润");
                     SfOrderItemDistribution orderItemDistribution = generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));

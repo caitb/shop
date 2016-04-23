@@ -9,6 +9,7 @@ public class ExtractApply {
 
     private ComUser comUser;
     private ComUserAccount comUserAccount;
+    private SfUserAccount sfUserAccount;
     private ComUserExtractApply comUserExtractApply;
     private SfUserExtractApply sfUserExtractApply;
 
@@ -26,6 +27,14 @@ public class ExtractApply {
 
     public void setComUserAccount(ComUserAccount comUserAccount) {
         this.comUserAccount = comUserAccount;
+    }
+
+    public SfUserAccount getSfUserAccount() {
+        return sfUserAccount;
+    }
+
+    public void setSfUserAccount(SfUserAccount sfUserAccount) {
+        this.sfUserAccount = sfUserAccount;
     }
 
     public ComUserExtractApply getComUserExtractApply() {
@@ -49,6 +58,7 @@ public class ExtractApply {
         return "ExtractApply{" +
                 "comUser=" + comUser +
                 ", comUserAccount=" + comUserAccount +
+                ", sfUserAccount=" + sfUserAccount +
                 ", comUserExtractApply=" + comUserExtractApply +
                 ", sfUserExtractApply=" + sfUserExtractApply +
                 '}';

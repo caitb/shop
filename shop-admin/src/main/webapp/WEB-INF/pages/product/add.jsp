@@ -216,8 +216,8 @@
         <div class="form-group">
             <label for="brandId" class="col-sm-4 control-label">代理等级数</label>
             <div class="col-sm-5">
-                <select class="form-control" id="levelCount">
-                    <option value="-1">请选择商品可代理的等级数</option>
+                <select class="form-control" id="levelCount" name="levelCount">
+                    <option value="">请选择商品可代理的等级数</option>
                 </select>
             </div>
         </div>
@@ -609,6 +609,11 @@
                                 }
                             },
                             brandId: {
+                                validators: {
+                                    notEmpty: {}
+                                }
+                            },
+                            levelCount: {
                                 validators: {
                                     notEmpty: {}
                                 }

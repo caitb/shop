@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
 import com.masiis.shop.admin.service.wx.WxPayUserService;
+import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
+import com.masiis.shop.dao.po.SfUserAccount;
 import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class SfUserExtractApplyService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
-    private ComUserAccountMapper comUserAccountMapper;
+    private SfUserAccountMapper sfUserAccountMapper;
 
     @Resource
     private WxPayUserService wxPayUserService;
@@ -40,24 +42,24 @@ public class SfUserExtractApplyService {
         PageInfo<SfUserExtractApply> pageInfo = new PageInfo<>(sfUserExtractApplies);
 
         Map<String, ComUser> userMap = new HashMap<>();
-        Map<String, ComUserAccount> accountMap = new HashMap<>();
+        Map<String, SfUserAccount> accountMap = new HashMap<>();
         List<ExtractApply> extractApplies = new ArrayList<>();
         for(SfUserExtractApply sue : sfUserExtractApplies){
             ComUser comUser = userMap.get("id_"+sue.getComUserId());
-            ComUserAccount account = accountMap.get("id_"+sue.getComUserId());
+            SfUserAccount account = accountMap.get("id_"+sue.getComUserId());
 
             if(comUser == null){
                 comUser = comUserMapper.selectByPrimaryKey(sue.getComUserId());
                 userMap.put("id_"+sue.getComUserId(), comUser);
             }
             if(account == null){
-                account = comUserAccountMapper.findByUserId(sue.getComUserId());
+                account = sfUserAccountMapper.selectByUserId(sue.getComUserId());
                 accountMap.put("id_"+sue.getComUserId(), account);
             }
 
             ExtractApply extractApply = new ExtractApply();
             extractApply.setComUser(comUser);
-            extractApply.setComUserAccount(account);
+            extractApply.setSfUserAccount(account);
             extractApply.setSfUserExtractApply(sue);
 
             extractApplies.add(extractApply);

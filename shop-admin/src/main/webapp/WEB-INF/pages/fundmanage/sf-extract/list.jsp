@@ -393,8 +393,8 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount){
-                                return '￥' + row.comUserAccount.extractableFee;
+                            if(row.sfUserAccount){
+                                return '￥' + row.sfUserAccount.extractableFee;
                             }
                         }
                     },

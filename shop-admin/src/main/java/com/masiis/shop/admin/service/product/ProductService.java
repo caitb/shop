@@ -159,7 +159,7 @@ public class ProductService {
             productInfos.add(productInfo);
         }
 
-        PageInfo<ProductInfo> pageInfo = new PageInfo<>(productInfos);
+        PageInfo<ComSku> pageInfo = new PageInfo<>(comSkus);
 
         Map<String, Object> pageMap = new HashMap<String, Object>();
         pageMap.put("total", pageInfo.getTotal());

@@ -8,6 +8,7 @@
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shenqing.css">
+    <link rel="stylesheet" href="${path}/static/css/fakeloader/fakeLoader.css">
 </head>
 <body>
 <header class="xq_header">
@@ -216,11 +217,16 @@
 <%--<script src="${path}/static/js/commonAjax.js"></script>--%>
 <script src="${path}/static/js/iscroll.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
+<script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
 <script>
     $(document).ready(function () {
+        $(".fakeloader").fakeLoader({
+            timeToHide:1200,
+            bgColor:"#9b59b6",
+            spinner:"spinner7"
+        });
         validateCodeJS.initPage();
     });
-
     function goVerified(para) {
         if(${user.isBinding!=1}){
             alert("请先绑定手机号");

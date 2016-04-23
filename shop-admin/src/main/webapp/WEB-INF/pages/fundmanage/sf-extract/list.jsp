@@ -393,8 +393,8 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.comUserAccount){
-                                return '￥' + row.comUserAccount.extractableFee;
+                            if(row.sfUserAccount){
+                                return '￥' + row.sfUserAccount.extractableFee;
                             }
                         }
                     },
@@ -448,7 +448,7 @@
                                 $('#applyTime').html(new Date(row.sfUserExtractApply.applyTime).pattern('yyyy-MM-dd HH:mm:ss'));
                                 $('#realName').html(row.comUser.realName);
                                 $('#extractFee').html(row.sfUserExtractApply.extractFee);
-                                $('#extractableFee').html(row.comUserAccount.extractableFee);
+                                $('#extractableFee').html(row.sfUserAccount.extractableFee);
                                 $('#extractWay').html(row.sfUserExtractApply.extractWay);
                                 $('#bankCard').html(row.sfUserExtractApply.bankCard);
                                 $('#bankName').html(row.sfUserExtractApply.bankName);

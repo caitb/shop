@@ -1,5 +1,6 @@
 package com.masiis.shop.scheduler.platform.business.order;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.interfaces.IParallelThread;
 import com.masiis.shop.common.util.CurrentThreadUtils;
 import com.masiis.shop.common.util.DateUtil;
@@ -70,7 +71,8 @@ public class PfBOrderTaskService {
 
         // 查询已发货状态且发货时间距离现在超过7天
         // 查询代理订单
-        List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime, 7, 1);
+        List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime,
+                BOrderStatus.Ship.getCode(), 1);
         if (bList == null) {
             log.info("暂无超7天未收货代理订单!");
         } else {

@@ -73,7 +73,8 @@ public class SfOrderTaskService {
 
         // 查询已发货状态且发货时间距离现在超过7天
         // 查询代理订单
-        List<SfOrder> bList = orderService.findListByStatusAndDate(expiraTime, 7, 1);
+        List<SfOrder> bList = orderService.findListByStatusAndDate(expiraTime,
+                SfOrderStatusEnum.ORDER_SHIPED.getCode(), 1);
         if (bList == null) {
             log.info("暂无超7天未收货代理订单!");
         } else {

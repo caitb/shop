@@ -27,7 +27,7 @@
        <img src="${path}/static/images/icon_66.png" alt="">
        <p>提现申请已经提交</p>
        <h1>您的提现申请提交成功，工作人员会在一个工作日内处理，提现结果会通过短信和微信的方式通知您，请注意查收。</h1>
-       <a href="${basepath}index">返回首页</a>
+       <a href="${basepath}sfOrderManagerController/borderManagement.html">返回首页</a>
     </div>
 </body>
 </html>

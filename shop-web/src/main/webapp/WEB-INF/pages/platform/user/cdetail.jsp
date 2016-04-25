@@ -34,17 +34,7 @@
                 <p>合作产品：<span>${comSku.name}</span></p>
 
                 <p>合伙人等级：<span>
-                    <c:choose>
-                    <c:when test="${cdetail.agentLevelId==1}">
-                        <em>高级合伙人</em>
-                    </c:when>
-                    <c:when test="${cdetail.agentLevelId==2}">
-                        <em>中级合伙人</em>
-                    </c:when>
-                    <c:when test="${cdetail.agentLevelId==3}">
-                        <em>初级合伙人</em>
-                    </c:when>
-                </c:choose></span></p>
+                  ${ctname}</span></p>
                 <p>上级合伙人：<span>${cdetail.sjName}</span></p>
             </div>
             <div class="sec2">

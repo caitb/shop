@@ -234,14 +234,16 @@ public class UserCertificateController extends BaseController {
         PfUserSku pfUserSku = userSkuService.getUserSkuById(pfuId);
         ComUser comUser = userService.getUserById(pfUserSku.getUserId());
         PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(pfuId);
+        String ctName = userCertificateService.getCtname(cdetail.getAgentLevelId());
         ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
         mav.addObject("cdetail", cdetail);
         mav.addObject("comUser", comUser);
         mav.addObject("comSku", comSku);
+        mav.addObject("ctname", ctName);
         return mav;
     }
     /**
-     * @Author 贾晶豪
+     * @Author jjh
      * @Date 2016/3/18 0018 下午 1:50
      * 上级信息
      */
@@ -255,6 +257,7 @@ public class UserCertificateController extends BaseController {
         String sDate=sdf.format(userInfo.getCreateTime());
         ComSku comSku = skuService.getSkuById(pfUserSku.getSkuId());
         PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+        String ctName = userCertificateService.getCtname(pfUserCertificate.getAgentLevelId());
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
         pfUserCertificate.setImgUrl(ctValue + pfUserCertificate.getImgUrl());
         mav.addObject("userInfo", userInfo);
@@ -262,6 +265,7 @@ public class UserCertificateController extends BaseController {
         mav.addObject("comSku", comSku);
         mav.addObject("pfUserCertificate", pfUserCertificate);
         mav.addObject("sDate", sDate);
+        mav.addObject("ctname", ctName);
         return mav;
     }
 }

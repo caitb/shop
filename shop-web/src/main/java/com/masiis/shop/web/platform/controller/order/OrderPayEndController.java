@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.order;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
@@ -8,6 +10,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +40,7 @@ public class OrderPayEndController extends BaseController {
 
     /**
      * 补货订单支付完成
-     * @param bOrderId    订单编码
+     * @param bOrderId    订单id
      * @param request
      * created by wangbingjian
      */
@@ -45,6 +48,9 @@ public class OrderPayEndController extends BaseController {
     public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId",required = true) Long bOrderId,
                                                         HttpServletRequest request)throws Exception{
 
+        if(getComUser(request)==null){
+            throw new BusinessException("请重新登录");
+        }
         log.info("进入补货订单支付完成");
         ModelAndView mv = new ModelAndView();
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
@@ -69,13 +75,29 @@ public class OrderPayEndController extends BaseController {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee",pfBorderConsignee);
         }
-        //send msg 发送短信
+        //send msg 发送短信,微信提醒
         ComUser comUser = userService.getUserById(pfBorder.getUserId());
         if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
-            MobileMessageUtil.addStockByPlatform(comUser.getMobile(),String.valueOf(sumQuantity));
+            for(PfBorderItem pfBorderItem:items){
+                MobileMessageUtil.addStockByPlatform(comUser.getMobile(),String.valueOf(pfBorderItem.getQuantity()));
+                String[] param = new String[3];
+                param[0] = pfBorderItem.getSkuName();
+                param[1] = pfBorderItem.getTotalPrice().toString();
+                param[2] = String.valueOf(pfBorderItem.getQuantity());
+                param[3] = BOrderStatus.Complete.getDesc();
+                WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser,param);
+            }
         }
         if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
-            MobileMessageUtil.addStockByUserself(comUser.getMobile());
+            for(PfBorderItem pfBorderItem:items){
+                MobileMessageUtil.addStockByUserself(comUser.getMobile());
+                String[] param = new String[3];
+                param[0] = pfBorderItem.getSkuName();
+                param[1] = pfBorderItem.getTotalPrice().toString();
+                param[2] = String.valueOf(pfBorderItem.getQuantity());
+                param[3] = BOrderStatus.accountPaid.getDesc();
+                WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser,param);
+            }
         }
         mv.setViewName("platform/order/ReplenishmentPayments");
         return mv;

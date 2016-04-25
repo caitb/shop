@@ -25,8 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -187,6 +189,22 @@ public class BOrderController extends BaseController {
         }
         attrs.addAttribute("param", JSONObject.toJSONString(req));
         return "redirect:/wxpay/wtpay";
+    }
+
+    /**
+     * 线下支付
+     * @author hanzengzhi
+     * @date 2016/4/25 14:44
+     */
+    @RequestMapping(value = "offinePayment.html")
+    public ModelAndView offinePayment(HttpServletRequest request, HttpServletResponse response,
+                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId){
+        ModelAndView mav = new ModelAndView("platform/order/agent/payBOrdersSuccess");
+        Map<String,Object> map = payBOrderService.offinePayment(bOrderId);
+        if (map != null){
+            mav.addObject("supplierBank",map.get("supplierBank"));
+        }
+        return mav;
     }
 
     /**

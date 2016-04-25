@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.PfSupplierBankMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSupplierBank" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="is_default" property="isDefault" jdbcType="INTEGER" />
+        <result column="supplier_id" property="supplierId" jdbcType="INTEGER" />
+        <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+        <result column="account_name" property="accountName" jdbcType="VARCHAR" />
+        <result column="card_number" property="cardNumber" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from pf_supplier_bank
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSupplierBank" >
+        insert into pf_supplier_bank (id, create_time, is_default, 
+            supplier_id, bank_name, account_name, 
+            card_number, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{isDefault,jdbcType=INTEGER}, 
+            #{supplierId,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+            #{cardNumber,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSupplierBank" >
+        update pf_supplier_bank
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            is_default = #{isDefault,jdbcType=INTEGER},
+            supplier_id = #{supplierId,jdbcType=INTEGER},
+            bank_name = #{bankName,jdbcType=VARCHAR},
+            account_name = #{accountName,jdbcType=VARCHAR},
+            card_number = #{cardNumber,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, is_default, supplier_id, bank_name, account_name, card_number, 
+        remark
+        from pf_supplier_bank
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <!--获得默认银行-->
+    <select id="getDefaultBank" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select id, create_time, is_default, supplier_id, bank_name, account_name, card_number,
+        remark
+        from pf_supplier_bank
+        where is_default = 1
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, is_default, supplier_id, bank_name, account_name, card_number, 
+        remark
+        from pf_supplier_bank
+    </select>
+
+</mapper>

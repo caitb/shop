@@ -8,6 +8,7 @@
         <result column="cost_fee" property="costFee" jdbcType="DECIMAL" />
         <result column="profit_fee" property="profitFee" jdbcType="DECIMAL" />
         <result column="extractable_fee" property="extractableFee" jdbcType="DECIMAL" />
+        <result column="applied_fee" property="appliedFee" jdbcType="DECIMAL" />
         <result column="counting_fee" property="countingFee" jdbcType="DECIMAL" />
         <result column="bail_fee" property="bailFee" jdbcType="DECIMAL" />
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
@@ -23,12 +24,12 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserAccount"  useGeneratedKeys="true" keyProperty="id">
         insert into com_user_account (id, com_user_id, total_income_fee,
-            cost_fee, profit_fee, extractable_fee,
+            cost_fee, profit_fee, extractable_fee, applied_fee,
             counting_fee, bail_fee, created_time,
             changed_time, changed_by, version
             )
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
-            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL},
+            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL}, #{appliedFee,jdbcType=DECIMAL}
             #{countingFee,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL}, #{createdTime,jdbcType=TIMESTAMP},
             #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
             )
@@ -41,6 +42,7 @@
             cost_fee = #{costFee,jdbcType=DECIMAL},
             profit_fee = #{profitFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
+            applied_fee = #{appliedFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
             bail_fee = #{bailFee,jdbcType=DECIMAL},
             created_time = #{createdTime,jdbcType=TIMESTAMP},
@@ -51,19 +53,19 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, counting_fee, bail_fee,
+        select id, com_user_id, total_income_fee, cost_fee, extractable_fee, applied_fee, counting_fee, bail_fee,
         created_time, changed_time, changed_by, version
         from com_user_account
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee,
+        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
         counting_fee, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
     </select>
     <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee,
+        select id, com_user_id, total_income_fee, cost_fee, profit_fee, extractable_fee, applied_fee,
         counting_fee, bail_fee, created_time, changed_time, changed_by, version
         from com_user_account
         where com_user_id = #{comUserId}
@@ -90,6 +92,7 @@
             cost_fee = #{costFee,jdbcType=DECIMAL},
             profit_fee = #{profitFee,jdbcType=DECIMAL},
             extractable_fee = #{extractableFee,jdbcType=DECIMAL},
+            applied_fee = #{appliedFee,jdbcType=DECIMAL},
             counting_fee = #{countingFee,jdbcType=DECIMAL},
             bail_fee = #{bailFee,jdbcType=DECIMAL},
             created_time = #{createdTime,jdbcType=TIMESTAMP},

@@ -7,6 +7,7 @@ function withdraw(userId){
         return;
     }
     var extractableFee = $("#extractableFee").val();
+    var appliedFee = $("#appliedFee").val();
     var inputAccount = $("#inputAccount").val();
     if (extractableFee == 0){
         alert("暂无可提现金额");
@@ -16,7 +17,7 @@ function withdraw(userId){
         alert("请输入提现金额");
         return;
     }
-    if (inputAccount > extractableFee){
+    if (inputAccount > extractableFee - appliedFee){
         alert("输入金额大于可提现金额");
         return;
     }

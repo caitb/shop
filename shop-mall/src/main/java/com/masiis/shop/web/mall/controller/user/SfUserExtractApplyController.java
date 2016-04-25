@@ -117,9 +117,15 @@ public class SfUserExtractApplyController extends BaseController{
             return jsonobject.toJSONString();
         }
         BigDecimal b_inputAccount = new BigDecimal(inputAccount);
+        if (b_inputAccount.compareTo(new BigDecimal(1)) < 0){
+            jsonobject.put("isTrue","false");
+            jsonobject.put("message","提现金额不小于1元!");
+            log.info(jsonobject.toJSONString());
+            return jsonobject.toJSONString();
+        }
         //根据userId查询用户账户信息
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
-        if (userAccount == null || b_inputAccount.compareTo(userAccount.getExtractableFee()) == 1 || b_inputAccount.compareTo(new BigDecimal(0)) <= 0){
+        if (userAccount == null || b_inputAccount.compareTo(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee())) == 1 || b_inputAccount.compareTo(new BigDecimal(0)) <= 0){
             jsonobject.put("isTrue","false");
             jsonobject.put("message","可提现余额错误");
             log.info(jsonobject.toJSONString());
@@ -128,7 +134,7 @@ public class SfUserExtractApplyController extends BaseController{
 
         try {
             //提现申请处理
-            sfUserExtractApplyService.applyExtract(b_inputAccount, user);
+            sfUserExtractApplyService.applyExtract(b_inputAccount, user, userAccount);
         }catch (Exception e){
             e.printStackTrace();
             jsonobject.put("isTrue","false");

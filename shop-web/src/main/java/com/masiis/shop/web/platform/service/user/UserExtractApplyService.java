@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserExtractApplyMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
@@ -23,6 +24,8 @@ public class UserExtractApplyService {
 
     @Resource
     private ComUserExtractApplyMapper applyMapper;
+    @Resource
+    private ComUserAccountMapper accountMapper;
 
     public void applyExtract(ComUserAccount account, BigDecimal exMoney, ComUser user, ComUserExtractwayInfo info){
         try{
@@ -42,7 +45,10 @@ public class UserExtractApplyService {
             apply.setExtractFee(exMoney);
             apply.setExtractWay(info.getExtractWay());
             apply.setExtractwayInfoId(info.getId());
+
+            account.setAppliedFee(account.getAppliedFee().add(exMoney));
             applyMapper.insert(apply);
+            accountMapper.updateByPrimaryKey(account);
         } catch (Exception e) {
             log.error("提现申请业务操作失败," + e.getMessage());
             throw new BusinessException(e.getMessage());

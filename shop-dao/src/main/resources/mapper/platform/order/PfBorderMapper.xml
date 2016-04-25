@@ -425,8 +425,9 @@
     </select>
 
     <select id="selectAllQueuingOrder" resultMap="BaseResultMap">
-        select * from pf_border
-        where order_status=6
-        order by case user_pid when 0 then 0 else 1 end,create_time
+--         select * from pf_border
+--         where order_status=6
+--         order by case user_pid when 0 then 0 else 1 end,create_time
+        SELECT * FROM pf_border WHERE order_status = 6 and user_pid > 0 ORDER BY create_time
     </select>
 </mapper>

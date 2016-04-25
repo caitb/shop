@@ -135,6 +135,7 @@
         if ($(para).html() == "正在提交...") {
             return;
         }
+        $(para).html("正在提交...");
         if (sendType == 0) {
             alert("请选择拿货方式");
             return;

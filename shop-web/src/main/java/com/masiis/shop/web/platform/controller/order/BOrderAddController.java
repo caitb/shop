@@ -16,6 +16,7 @@ import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.*;
+import com.sun.javafx.binding.StringFormatter;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * BOrderAddController
@@ -86,7 +90,7 @@ public class BOrderAddController extends BaseController {
         mv.addObject("agentOrderparamForAddress", paramForAddress);
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
-        bOrderConfirm.setWenXinId(weiXinId);
+        bOrderConfirm.setWeiXinId(weiXinId);
         //拿货方式
         bOrderConfirm.setSendType(sendType);
         //获得地址
@@ -100,31 +104,35 @@ public class BOrderAddController extends BaseController {
         ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         bOrderConfirm.setSkuImg(skuImg + comSkuImage.getImgUrl());
+        //货币类型格式化
+//        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
         //获取用户代理等级
-        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(agentLevelId);
-        bOrderConfirm.setAgentLevelId(comAgentLevel.getId());
-        bOrderConfirm.setAgentLevelName(comAgentLevel.getName());
-        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, comAgentLevel.getId());
+        bOrderConfirm.setAgentLevelId(agentLevelId);
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
         bOrderConfirm.setSkuQuantity(pfSkuAgent.getQuantity());
-        bOrderConfirm.setBailAmount(pfSkuAgent.getBail());
+        bOrderConfirm.setBailAmount(pfSkuAgent.getBail().toString());
         BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_DOWN);
-        bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
+        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));
+        bOrderConfirm.setProductTotalPrice(totalPrice.toString());
         BigDecimal highProfit = comSku.getPriceRetail()
                 .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
                 .multiply(BigDecimal.ONE.subtract(pfSkuAgent.getDiscount()))
                 .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
-        bOrderConfirm.setHighProfit(highProfit);
+        bOrderConfirm.setHighProfit(highProfit.toString());
         Integer lowerAgentLevelId = agentLevelId + 1;
-        if (lowerAgentLevelId > 3) {
-            lowerAgentLevelId = 3;
-        }
+        //获取下级代理信息
         PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, lowerAgentLevelId);
-        BigDecimal lowProfit = comSku.getPriceRetail()
-                .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
-                .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
-                .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
-        bOrderConfirm.setLowProfit(lowProfit);
-        bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
+        BigDecimal lowProfit = BigDecimal.ZERO;
+        if (lowerSkuAgent == null) {
+            lowProfit = highProfit;
+        } else {
+            lowProfit = comSku.getPriceRetail()
+                    .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
+                    .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
+                    .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
+        }
+        bOrderConfirm.setLowProfit(lowProfit.toString());
+        bOrderConfirm.setOrderTotalPrice(totalPrice.add(pfSkuAgent.getBail()).toString());
         Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
         boolean isQueuing = false;
         Integer count = 0;
@@ -226,7 +234,7 @@ public class BOrderAddController extends BaseController {
         PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
         BOrderConfirm bOrderConfirm = new BOrderConfirm();
         bOrderConfirm.setOrderType(BOrderType.agent.getCode());
-        bOrderConfirm.setWenXinId(pfUserCertificate.getWxId());
+        bOrderConfirm.setWeiXinId(pfUserCertificate.getWxId());
         //拿货方式
         bOrderConfirm.setSendType(sendType);
         //获得地址
@@ -240,31 +248,35 @@ public class BOrderAddController extends BaseController {
         ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
         String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         bOrderConfirm.setSkuImg(skuImg + comSkuImage.getImgUrl());
+        //货币类型格式化
+        NumberFormat rmb = NumberFormat.getCurrencyInstance(Locale.CHINA);
         //获取用户代理等级
-        ComAgentLevel comAgentLevel = bOrderService.findComAgentLevel(agentLevelId);
-        bOrderConfirm.setAgentLevelId(comAgentLevel.getId());
-        bOrderConfirm.setAgentLevelName(comAgentLevel.getName());
-        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, comAgentLevel.getId());
-        bOrderConfirm.setSkuQuantity(quantity);
-        bOrderConfirm.setBailAmount(BigDecimal.ZERO);
+        bOrderConfirm.setAgentLevelId(agentLevelId);
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
+        bOrderConfirm.setSkuQuantity(pfSkuAgent.getQuantity());
+        bOrderConfirm.setBailAmount(rmb.format(pfSkuAgent.getBail()));
         BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_DOWN);
-        bOrderConfirm.setProductTotalPrice(unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity())));
+        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));
+        bOrderConfirm.setProductTotalPrice(rmb.format(totalPrice));
         BigDecimal highProfit = comSku.getPriceRetail()
                 .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
                 .multiply(BigDecimal.ONE.subtract(pfSkuAgent.getDiscount()))
                 .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
-        bOrderConfirm.setHighProfit(highProfit);
+        bOrderConfirm.setHighProfit(rmb.format(highProfit));
         Integer lowerAgentLevelId = agentLevelId + 1;
-        if (lowerAgentLevelId > 3) {
-            lowerAgentLevelId = 3;
-        }
+        //获取下级代理信息
         PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, lowerAgentLevelId);
-        BigDecimal lowProfit = comSku.getPriceRetail()
-                .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
-                .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
-                .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
-        bOrderConfirm.setLowProfit(lowProfit);
-        bOrderConfirm.setOrderTotalPrice(bOrderConfirm.getProductTotalPrice().add(bOrderConfirm.getBailAmount()).setScale(2, BigDecimal.ROUND_DOWN));
+        BigDecimal lowProfit = BigDecimal.ZERO;
+        if (lowerSkuAgent == null) {
+            lowProfit = highProfit;
+        } else {
+            lowProfit = comSku.getPriceRetail()
+                    .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
+                    .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
+                    .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
+        }
+        bOrderConfirm.setLowProfit(rmb.format(lowProfit));
+        bOrderConfirm.setOrderTotalPrice(rmb.format(totalPrice.add(pfSkuAgent.getBail())));
         //获取排单信息
         boolean isQueuing = false;
         Integer count = 0;

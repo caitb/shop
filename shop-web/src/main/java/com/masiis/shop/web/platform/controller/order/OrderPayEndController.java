@@ -90,7 +90,6 @@ public class OrderPayEndController extends BaseController {
         }
         if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
             for(PfBorderItem pfBorderItem:items){
-                MobileMessageUtil.addStockByUserself(comUser.getMobile());
                 String[] param = new String[3];
                 param[0] = pfBorderItem.getSkuName();
                 param[1] = pfBorderItem.getTotalPrice().toString();
@@ -98,6 +97,7 @@ public class OrderPayEndController extends BaseController {
                 param[3] = BOrderStatus.accountPaid.getDesc();
                 WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser,param);
             }
+            MobileMessageUtil.addStockByUserself(comUser.getMobile());
         }
         mv.setViewName("platform/order/ReplenishmentPayments");
         return mv;

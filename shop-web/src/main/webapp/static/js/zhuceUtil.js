@@ -60,32 +60,28 @@ $(function () {
         }
     }
     $("#next").click(function () {
-        var n = 0;
         if (!weixinCheckFun($("#weixin"))) {
-            n++;
+            return;
+        }
+        if ($("p.active").length == 0) {
+            alert("请选择合伙人等级");
+            return;
         }
         if ($("#q").prop("checked") == true) {
             if (!mobileCheckFun($("#pMobile"))) {
-                n++;
+                return;
             }
             $("#q_pMobile").html($("#pMobile").val());
             $("#q_pMobile").parent().css("display", "-webkit-box");
         } else {
             $("#q_pMobile").parent().css("display", "none");
         }
-        if ($("p.active").length == 0) {
-            alert("请选择合伙人等级");
-            n++;
-        }
-        if (n > 0) {
-            return;
-        }
         // 获取微信号
         $("#q_weixinId").html($("#weixin").val());
         // 获取合伙人等级
         $("#q_levelName").html($("p.active").attr("agentFee") + "元套餐");
         // 获取所缴纳货款
-        $("#q_amount").html($("p.active").attr("agentFee"));
+        $("#q_amount").html("￥"+$("p.active").attr("agentFee"));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");

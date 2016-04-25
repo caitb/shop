@@ -45,29 +45,25 @@ public class BOrderConfirm {
      */
     private Integer agentLevelId;
     /**
-     * 代理等级名称
-     */
-    private String agentLevelName;
-    /**
      * 商品总金额
      */
-    private BigDecimal productTotalPrice;
+    private String productTotalPrice;
     /**
      * 保证金
      */
-    private BigDecimal bailAmount;
+    private String bailAmount;
     /**
      * 最低利润
      */
-    private BigDecimal lowProfit;
+    private String lowProfit;
     /**
      * 最高利润
      */
-    private BigDecimal highProfit;
+    private String highProfit;
     /**
      * 订单总金额
      */
-    private BigDecimal orderTotalPrice;
+    private String orderTotalPrice;
     /**
      * 用户地址id
      */
@@ -129,12 +125,12 @@ public class BOrderConfirm {
         this.skuQuantity = skuQuantity;
     }
 
-    public String getWenXinId() {
+    public String getWeiXinId() {
         return weiXinId;
     }
 
-    public void setWenXinId(String wenXinId) {
-        this.weiXinId = wenXinId;
+    public void setWeiXinId(String weiXinId) {
+        this.weiXinId = weiXinId;
     }
 
     public Integer getAgentLevelId() {
@@ -145,51 +141,43 @@ public class BOrderConfirm {
         this.agentLevelId = agentLevelId;
     }
 
-    public String getAgentLevelName() {
-        return agentLevelName;
-    }
-
-    public void setAgentLevelName(String agentLevelName) {
-        this.agentLevelName = agentLevelName;
-    }
-
-    public BigDecimal getProductTotalPrice() {
+    public String getProductTotalPrice() {
         return productTotalPrice;
     }
 
-    public void setProductTotalPrice(BigDecimal productTotalPrice) {
+    public void setProductTotalPrice(String productTotalPrice) {
         this.productTotalPrice = productTotalPrice;
     }
 
-    public BigDecimal getBailAmount() {
+    public String getBailAmount() {
         return bailAmount;
     }
 
-    public void setBailAmount(BigDecimal bailAmount) {
+    public void setBailAmount(String bailAmount) {
         this.bailAmount = bailAmount;
     }
 
-    public BigDecimal getLowProfit() {
+    public String getLowProfit() {
         return lowProfit;
     }
 
-    public void setLowProfit(BigDecimal lowProfit) {
+    public void setLowProfit(String lowProfit) {
         this.lowProfit = lowProfit;
     }
 
-    public BigDecimal getHighProfit() {
+    public String getHighProfit() {
         return highProfit;
     }
 
-    public void setHighProfit(BigDecimal highProfit) {
+    public void setHighProfit(String highProfit) {
         this.highProfit = highProfit;
     }
 
-    public BigDecimal getOrderTotalPrice() {
+    public String getOrderTotalPrice() {
         return orderTotalPrice;
     }
 
-    public void setOrderTotalPrice(BigDecimal orderTotalPrice) {
+    public void setOrderTotalPrice(String orderTotalPrice) {
         this.orderTotalPrice = orderTotalPrice;
     }
 
@@ -215,5 +203,27 @@ public class BOrderConfirm {
 
     public void setUserMessage(String userMessage) {
         this.userMessage = userMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "BOrderConfirm{" +
+                "orderType=" + orderType +
+                ", sendType=" + sendType +
+                ", skuId=" + skuId +
+                ", skuImg='" + skuImg + '\'' +
+                ", skuName='" + skuName + '\'' +
+                ", skuQuantity=" + skuQuantity +
+                ", weiXinId='" + weiXinId + '\'' +
+                ", agentLevelId=" + agentLevelId +
+                ", productTotalPrice='" + productTotalPrice + '\'' +
+                ", bailAmount='" + bailAmount + '\'' +
+                ", lowProfit='" + lowProfit + '\'' +
+                ", highProfit='" + highProfit + '\'' +
+                ", orderTotalPrice='" + orderTotalPrice + '\'' +
+                ", userAddressId=" + userAddressId +
+                ", comUserAddress=" + comUserAddress +
+                ", userMessage='" + userMessage + '\'' +
+                '}';
     }
 }

@@ -130,15 +130,14 @@
 .wrap .box .sec1 p span:nth-child(2) {
     font-size: 12px;
 }
-
-.wrap .na {
+.na {
     display: -webkit-box;
     margin-bottom: 5px;
     padding: 0px 10px;
     background: #FFFFFF;
     position: relative;
 }
-.wrap .na p {
+.na p {
     margin-top: 3px;
     width: 30px;
     height: 30px;
@@ -146,24 +145,24 @@
     background: #ccc;
     overflow: hidden;
 }
-.wrap .na p img {
+.na p img {
     width: 100%;
 }
-.wrap .na h1 {
+.na h1 {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-box-pack: center;
     margin-left: 10px;
 }
-.wrap .na h1 span {
+.na h1 span {
     display: block;
     font-size: 12px;
 }
-.wrap .na h1 span:last-child{
+.na h1 span:last-child{
     font-size: 10px;
     color: #999;
 }
-.wrap .na label{
+.na label{
     position: absolute;
     line-height: 25px;
     right: 5px;

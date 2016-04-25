@@ -20,7 +20,7 @@
                         <img src="${path}/static/images/xq_rt.png" alt=""></a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${basePath}border/setUserSendType.shtml?skuId=${bOrderConfirm.skuId}&agentLevelId=${bOrderConfirm.agentLevelId}&weiXinId=${bOrderConfirm.wenXinId}">
+                    <a href="${basePath}border/setUserSendType.shtml?skuId=${bOrderConfirm.skuId}&agentLevelId=${bOrderConfirm.agentLevelId}&weiXinId=${bOrderConfirm.weiXinId}">
                         <img src="${path}/static/images/xq_rt.png" alt=""></a>
                 </c:otherwise>
             </c:choose>
@@ -72,8 +72,8 @@
                     <h2> ${bOrderConfirm.skuName}
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
-                    <h3>合伙人等级：<span>${bOrderConfirm.agentLevelName}</span></h3>
-                    <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>保证金:<span>${bOrderConfirm.bailAmount}</span>
+                    <h3>合伙人套餐：<span>${bOrderConfirm.productTotalPrice}元套餐</span></h3>
+                    <p>商品价格:<span>￥${bOrderConfirm.productTotalPrice}</span>保证金:<span>￥${bOrderConfirm.bailAmount}</span>
                     </p>
                 </div>
             </section>
@@ -88,6 +88,7 @@
                 </h1>
             </div>
             <section class="sec4">
+                <p><b>商品总价：</b><span>￥${bOrderConfirm.productTotalPrice}</span></p>
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
                 <p><b>共需支付：</b><span>￥${bOrderConfirm.orderTotalPrice}</span></p>
             </section>
@@ -132,7 +133,7 @@
         paraData.sendType = "${bOrderConfirm.sendType}";
         paraData.skuId = "${bOrderConfirm.skuId}";
         paraData.agentLevelId = "${bOrderConfirm.agentLevelId}";
-        paraData.weiXinId = "${bOrderConfirm.wenXinId}";
+        paraData.weiXinId = "${bOrderConfirm.weiXinId}";
         paraData.userMessage = $("#userMessage").val();
         paraData.userAddressId = $("#addressId").val();
         $.ajax({

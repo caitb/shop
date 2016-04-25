@@ -242,6 +242,9 @@
   color: #333;
   font-size:12px;
 }
+.dengji p span:nth-child(1){
+  font-size: 14px;
+}
 .dengji p span:nth-child(2){
   color: #999 ;
 }

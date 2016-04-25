@@ -94,14 +94,13 @@ public class SfOrderPayService {
                 log.info("更新订单失败----end");
                 throw new BusinessException("更新订单失败----end");
             }
-            //更新订单操作日志
-            log.info("更新订单操作日志---start");
-            SfOrderOperationLog ordOperLog = ordOperLogService.getOrdOperLogByOrderId(order.getId());
-            int iii = updateOrdOperLog(ordOperLog);
+            //插入订单操作日志
+            log.info("插入订单操作日志---start");
+            int iii = insertOrdOperLog(orderPayment);
             if (iii ==1 ){
-                log.info("更新订单操作日志成功----end");
+                log.info("插入订单操作日志成功----end");
             }else{
-                log.info("更新订单操作日志失败----end");
+                log.info("插入订单操作日志失败----end");
                 throw new BusinessException("更新订单操作日志失败----end");
             }
             //更新库存
@@ -149,6 +148,21 @@ public class SfOrderPayService {
         sb.append("修改为").append(1);
         ordOperLog.setSfOrderStatus(1);
         return ordOperLogService.update(ordOperLog);
+    }
+    /**
+     * 插入订单日志
+     * @author hanzengzhi
+     * @date 2016/4/25 15:55
+     */
+    private int insertOrdOperLog(SfOrderPayment orderPayment){
+        SfOrderOperationLog ordOperLog = new SfOrderOperationLog();
+        ordOperLog.setCreateTime(new Date());
+        ordOperLog.setSfOrderId(orderPayment.getSfOrderId());
+        ordOperLog.setSfOrderStatus(1);
+        ordOperLog.setCreateMan(orderPayment.getSfOrderId());
+        ordOperLog.setRemark("订单支付成功,订单状态由0变1");
+        int i = ordOperLogService.insert(ordOperLog);
+        return i;
     }
 
     /**
@@ -247,12 +261,18 @@ public class SfOrderPayService {
      */
     public WxPaySysParamReq callWechatPay(HttpServletRequest request, String orderCode, Long orderId) {
         WxPaySysParamReq wpspr = new WxPaySysParamReq();
-        wpspr.setOrderId(orderCode);
-        wpspr.setSignType("MD5");
-        wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
-        wpspr.setSign(WXBeanUtils.toSignString(wpspr));
+        SfOrder order = ordService.getOrderById(orderId);
+        if (order!=null&&order.getOrderStatus().equals(0)){
+            wpspr.setOrderId(orderCode);
+            wpspr.setSignType("MD5");
+            wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
+            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+            wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
+            wpspr.setSign(WXBeanUtils.toSignString(wpspr));
+        }else{
+            log.info("调用微信支付失败:订单为null或者订单状态不是未支付状态");
+            throw new BusinessException("调用微信支付失败:订单为null或者订单状态不是未支付状态");
+        }
         return wpspr;
     }
 

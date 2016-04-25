@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.utils;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.util.CCPRestSmsSDK;
+import com.masiis.shop.common.util.MobileMessageUtil;
 
 import java.util.Date;
 import java.util.Random;
@@ -30,16 +31,7 @@ public class MobileVerificationUtil {
             code += random.nextInt(10);
         }
         SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
-
-        String[] content = new String[2];
-        content[0] = code;
-        content[1] = SMSConstants.REGESTER_VALID_TIME;
-
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.REGESTER_TEMPLETE_ID, content);
-        if (!"0".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return MobileMessageUtil.VerificationCode(phone, code, SMSConstants.REGESTER_TEMPLETE_ID);
     }
 
     /**

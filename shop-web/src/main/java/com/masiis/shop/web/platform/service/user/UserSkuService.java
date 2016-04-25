@@ -113,9 +113,6 @@ public class UserSkuService {
             if (null == pfUserSku || pfUserSku.getIsPay() == 0) {
                 throw new BusinessException("您的推荐人还未代理此款商品");
             }
-            if(pfUserSku.getAgentLevelId()==SysConstants.MAX_AGENT_LEVEL){
-                throw new BusinessException("您的推荐人不能发展下级");
-            }
         }
         if (comUser.getSendType() != 0 && comUser.getSendType() != pUser.getSendType()) {
             throw new BusinessException(" 您和您的上级合伙人的拿货方式不一致不能建立关系!");

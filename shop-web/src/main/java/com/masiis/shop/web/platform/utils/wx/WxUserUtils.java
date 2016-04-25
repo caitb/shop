@@ -27,7 +27,7 @@ public class WxUserUtils {
      */
     public static Boolean isUserForcusPF(String openId){
         String url = WxConsPF.URL_CGIBIN_USERINFO
-                + "?access_token=" + WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET)
+                + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET)
                 + "&openid" + openId
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
@@ -48,7 +48,8 @@ public class WxUserUtils {
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID_OR_NOT_LATEST)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_TIMEOUT)){
             // access_token失效
-            String newToken = WxCredentialUtils.refreshCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
+            String newToken = WxCredentialUtils.getInstance()
+                    .refreshCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
             String urlNew = WxConsPF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
                     + "&openid" + openId
@@ -77,7 +78,7 @@ public class WxUserUtils {
      */
     public static Boolean isUserForcusSF(String openId){
         String url = WxConsSF.URL_CGIBIN_USERINFO
-                + "?access_token=" + WxCredentialUtils.getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET)
+                + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET)
                 + "&openid" + openId
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
@@ -98,7 +99,8 @@ public class WxUserUtils {
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID_OR_NOT_LATEST)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_TIMEOUT)){
             // access_token失效
-            String newToken = WxCredentialUtils.refreshCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
+            String newToken = WxCredentialUtils.getInstance()
+                    .refreshCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
             String urlNew = WxConsSF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
                     + "&openid" + openId

@@ -20,12 +20,55 @@ public class WxCredentialUtils {
     private static final String REDIS_CREDENTIAL_ACCESS_TOKEN_NAME = "credential_access_token_RSs&^%$";
     private static final String REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME = "credential_access_token_expires_RSs&^%$";
 
+    private static class Holder {
+        private static final WxCredentialUtils INSTANCE = new WxCredentialUtils();
+    }
+    private WxCredentialUtils (){}
+    // 单例懒加载
+    public static final WxCredentialUtils getInstance() {
+        return Holder.INSTANCE;
+    }
+
     /**
      * 获取公众平台access_token
      *
      * @return
      */
-    public static String getCredentialAccessToken(String appId, String secret) {
+    public String getCredentialAccessToken(String appId, String secret) {
+        String resTokne = getTokenFromRedis(appId, secret);
+        if(StringUtils.isNotBlank(resTokne)){
+            return resTokne;
+        }
+        try {
+            synchronized(this){
+                resTokne = getTokenFromRedis(appId, secret);
+                if(StringUtils.isNotBlank(resTokne)){
+                    return resTokne;
+                }
+                // 重新请求token
+                String tokenUrl = WxConsPF.URL_JSSDK_ACCESS_TOKEN
+                        + "?grant_type=" + WxConsPF.JSSDK_GRANT_TYPE
+                        + "&appid=" + appId
+                        + "&secret=" + secret;
+                String res = HttpClientUtils.httpGet(tokenUrl);
+                CredentialAccessTokenRes tokenRes = JSONObject.parseObject(res, CredentialAccessTokenRes.class);
+                if (StringUtils.isNotBlank(tokenRes.getAccess_token())) {
+                    String token = tokenRes.getAccess_token();
+                    Long expire = Long.valueOf(tokenRes.getExpires_in());
+                    Date expireDate = new Date(new Date().getTime() + expire);
+                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
+                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
+                            expire - 10l);
+                    return token;
+                }
+            }
+        } catch (Exception e) {
+            log.error(e);
+        }
+        return null;
+    }
+
+    private String getTokenFromRedis(String appId, String secret){
         String tokenOri = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, String.class);
         Date exDate = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, Date.class);
         if(StringUtils.isNotBlank(tokenOri)
@@ -33,27 +76,6 @@ public class WxCredentialUtils {
                 && exDate.compareTo(new Date()) > 0){
             // token有效
             return tokenOri;
-        }
-        try {
-            // 重新请求token
-            String tokenUrl = WxConsPF.URL_JSSDK_ACCESS_TOKEN
-                    + "?grant_type=" + WxConsPF.JSSDK_GRANT_TYPE
-                    + "&appid=" + appId
-                    + "&secret=" + secret;
-            String res = HttpClientUtils.httpGet(tokenUrl);
-            CredentialAccessTokenRes tokenRes = JSONObject.parseObject(res, CredentialAccessTokenRes.class);
-            if (StringUtils.isNotBlank(tokenRes.getAccess_token())) {
-                String token = tokenRes.getAccess_token();
-                Long expire = Long.valueOf(tokenRes.getExpires_in());
-                Date expireDate = new Date(new Date().getTime() + expire);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
-                        expire - 10l);
-
-                return token;
-            }
-        } catch (Exception e) {
-            log.error(e);
         }
         return null;
     }
@@ -65,7 +87,7 @@ public class WxCredentialUtils {
      * @param secret
      * @return
      */
-    public static String refreshCredentialAccessToken(String appId, String secret) {
+    public synchronized String refreshCredentialAccessToken(String appId, String secret) {
         // 重新请求token
         String tokenUrl = WxConsPF.URL_JSSDK_ACCESS_TOKEN
                 + "?grant_type=" + WxConsPF.JSSDK_GRANT_TYPE

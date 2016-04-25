@@ -17,6 +17,10 @@
            id = #{id,jdbcType=INTEGER}
   </select>
 
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from  com_ship_man
+    </select>
+
   <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.ComShipMan" resultMap="BaseResultMap">
     select
            id,

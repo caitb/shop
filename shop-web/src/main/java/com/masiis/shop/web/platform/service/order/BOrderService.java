@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
@@ -268,6 +269,7 @@ public class BOrderService {
                 pfBorderOperationLog.setPfBorderId(pfBorder.getId());
                 pfBorderOperationLog.setRemark("订单完成");
                 pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+                MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
             }
         } else if (pfBorder.getSendType() == 2) {//自己发货
             pfBorder.setShipStatus(5);
@@ -287,6 +289,7 @@ public class BOrderService {
             pfBorderOperationLog.setPfBorderId(pfBorder.getId());
             pfBorderOperationLog.setRemark("订单完成");
             pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+            MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
         }
     }
 

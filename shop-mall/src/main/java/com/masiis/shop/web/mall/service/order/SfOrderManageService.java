@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
@@ -124,7 +125,7 @@ public class SfOrderManageService {
      * @date 2016/4/1 18:12
      */
     @Transactional
-    public void deliver( Long orderId) throws Exception {
+    public void deliver(Long orderId ,ComUser user) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
         // 进行订单分润和代理商销售额、收入计算
         sfUserAccountService.countingSfOrder(sfOrder);
@@ -138,5 +139,6 @@ public class SfOrderManageService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+        MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
     }
 }

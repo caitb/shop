@@ -26,7 +26,7 @@ public class JsapiTicketTask {
             String accessTocken = SpringRedisUtil.get("jsapi_access_tocken", String.class);
             if(accessTocken == null){
                 log.info("从redis获取的jsapi_access_tocken=null");
-                accessTocken = WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
+                accessTocken = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
             }
             log.info("[jsapi_access_tocken="+accessTocken+"]");
 

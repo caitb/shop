@@ -109,6 +109,11 @@ body .biao table td{
   background: white;
   padding:5px 0;
 }
+body .biao table td img{
+  display: block;
+  width:20px;
+  margin:-5px auto;
+}
 body .biao>table tr:nth-child(1)>td{
   background: #CED8E3;
 }

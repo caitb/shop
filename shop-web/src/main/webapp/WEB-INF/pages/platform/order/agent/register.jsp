@@ -70,9 +70,9 @@
                             <p levelId="${view.agent.agentLevelId}"
                                agentFee="${view.agentFee}"
                                agentBailFee="${view.agent.bail}">
-                                <span>${view.sinFee}元套餐</span>
+                                <span>${view.agentFee}元套餐</span>
                                 <span>保证金${view.agent.bail}元</span>
-                                <span>包含商品(123123)件</span>
+                                <span>包含商品${view.agent.quantity}件</span>
                             </p>
                         </c:if>
                     </c:forEach>

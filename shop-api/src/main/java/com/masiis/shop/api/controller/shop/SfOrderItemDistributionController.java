@@ -1,7 +1,7 @@
 package com.masiis.shop.api.controller.shop;
 
 import com.masiis.shop.api.bean.base.ShopApiConstant;
-import com.masiis.shop.api.bean.base.ShopApiResponseModel;
+import com.masiis.shop.api.bean.base.ShopApiResModel;
 import com.masiis.shop.api.bean.shop.DistributionRecord;
 import com.masiis.shop.api.bean.shop.SfDistribution;
 import com.masiis.shop.api.controller.base.BaseController;
@@ -48,28 +48,28 @@ public class SfOrderItemDistributionController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/home.do",method = RequestMethod.GET)
-    public ShopApiResponseModel itemDistributionHome(@RequestParam(value = "userId",required = true) Long userId,
-                                                     @RequestParam(value = "yDate",required = true) String yDate,
-                                                     @RequestParam(value = "currentPage",required = true) Integer currentPage,
-                                                     @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
+    public ShopApiResModel itemDistributionHome(@RequestParam(value = "userId",required = true) Long userId,
+                                                @RequestParam(value = "yDate",required = true) String yDate,
+                                                @RequestParam(value = "currentPage",required = true) Integer currentPage,
+                                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
         logger.info("分销记录查询");
         logger.info("userCode="+userId);
         logger.info("yDate="+yDate);
         logger.info("currentPage="+currentPage);
-        ShopApiResponseModel responseModel = new ShopApiResponseModel();
+        ShopApiResModel responseModel = new ShopApiResModel();
         if (userId == null){
-            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
-            responseModel.setMsg("userId");
+            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
+            responseModel.setResMsg("userId");
             return responseModel;
         }
         if (!StringUtils.isNotBlank(yDate)){
-            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
-            responseModel.setMsg("yDate");
+            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
+            responseModel.setResMsg("yDate");
             return responseModel;
         }
         if (currentPage < 1){
-            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
-            responseModel.setMsg("currentPage不大于0");
+            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
+            responseModel.setResMsg("currentPage不大于0");
             return responseModel;
         }
         Date date = DateUtil.String2Date(yDate);
@@ -77,8 +77,8 @@ public class SfOrderItemDistributionController extends BaseController {
         Date end = DateUtil.getLastTimeInMonth(date);
         Integer totalCount = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
         if (totalCount == 0){
-            responseModel.setCode(ShopApiConstant.DATA_NOT_EXIST);
-            responseModel.setMsg("noData");
+            responseModel.setResCode(ShopApiConstant.DATA_NOT_EXIST + "");
+            responseModel.setResMsg("noData");
             return responseModel;
         }
         try {
@@ -124,16 +124,16 @@ public class SfOrderItemDistributionController extends BaseController {
                 distributionRecord.setSfDistributions(sfDistributions);
             }
             responseModel.setData(distributionRecord);
-            responseModel.setCode(ShopApiConstant.SUCCESS);
-            responseModel.setMsg(SUCCESS);
+            responseModel.setResCode(ShopApiConstant.SUCCESS + "");
+            responseModel.setResMsg(SUCCESS);
             responseModel.setCurrentPage(currentPage);
             responseModel.setTotalCount(totalCount);
             responseModel.setTotalPage(totalPage);
             responseModel.setData(distributionRecord);
         }catch (Exception e){
             e.printStackTrace();
-            responseModel.setCode(ShopApiConstant.ERROR);
-            responseModel.setMsg(ERROR);
+            responseModel.setResCode(ShopApiConstant.ERROR + "");
+            responseModel.setResMsg(ERROR);
             return responseModel;
         }
         return responseModel;

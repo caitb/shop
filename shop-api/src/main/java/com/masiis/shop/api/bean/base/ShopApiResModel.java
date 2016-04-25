@@ -3,7 +3,7 @@ package com.masiis.shop.api.bean.base;
 /**
  * Created by wangbingjian on 2016/4/22.
  */
-public class ShopApiResponseModel extends BaseResponseModel {
+public class ShopApiResModel extends BaseResModel {
     /**
      * 总数量
      */
@@ -23,17 +23,17 @@ public class ShopApiResponseModel extends BaseResponseModel {
 
     private Object data;
 
-    public ShopApiResponseModel() {
+    public ShopApiResModel() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public ShopApiResponseModel(Object data) {
+    public ShopApiResModel(Object data) {
         super();
         this.data = data;
     }
 
-    public ShopApiResponseModel(int code, String msg){
+    public ShopApiResModel(String code, String msg){
         super(code, msg);
     }
 

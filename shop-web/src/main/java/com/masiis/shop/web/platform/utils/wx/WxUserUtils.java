@@ -30,7 +30,7 @@ public class WxUserUtils {
         private static WxUserUtils INSTANCE = new WxUserUtils();
     }
 
-    public WxUserUtils getInstance(){
+    public static WxUserUtils getInstance(){
         return Holder.INSTANCE;
     }
 

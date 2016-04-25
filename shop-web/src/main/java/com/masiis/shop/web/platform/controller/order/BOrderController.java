@@ -217,14 +217,12 @@ public class BOrderController extends BaseController {
         } else if (pfBorder.getSendType() == 2) {
             sendTypeName = "自己发货";
         }
-        Integer skuCount = pfUserSkuMapper.selectUserSkuCount(comUser.getId(), skuId);
         mav.addObject("realName", realName);
         mav.addObject("skuName", skuName);
         mav.addObject("levelName", levelName);
         mav.addObject("pRealName", pRealName);
         mav.addObject("sendTypeName", sendTypeName);
         mav.addObject("pfBorder", pfBorder);
-        mav.addObject("skuCount", skuCount);
         boolean isQueuing = false;
         Integer count = 0;
         if (pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {

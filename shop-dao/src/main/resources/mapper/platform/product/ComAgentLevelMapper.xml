@@ -1,58 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.product.ComAgentLevelMapper" >
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComAgentLevel" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-        <result column="lower" property="lower" jdbcType="DECIMAL" />
-        <result column="discount" property="discount" jdbcType="DECIMAL" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+<mapper namespace="com.masiis.shop.dao.platform.product.ComAgentLevelMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComAgentLevel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from com_agent_level
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComAgentLevel" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComAgentLevel">
         insert into com_agent_level (id, create_time, name, 
-            img_url, lower, discount, 
-            remark)
-        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
-            #{imgUrl,jdbcType=VARCHAR}, #{lower,jdbcType=DECIMAL}, #{discount,jdbcType=DECIMAL}, 
-            #{remark,jdbcType=VARCHAR})
+            img_url, remark)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR},
+            #{imgUrl,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComAgentLevel" >
-        update com_agent_level
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComAgentLevel">
+      update com_agent_level
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             name = #{name,jdbcType=VARCHAR},
             img_url = #{imgUrl,jdbcType=VARCHAR},
-            lower = #{lower,jdbcType=DECIMAL},
-            discount = #{discount,jdbcType=DECIMAL},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, create_time, name, img_url, lower, discount, remark
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id, create_time, name, img_url, remark
         from com_agent_level
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap" >
-        select
-               id,
-               create_time,
-               name,
-               img_url,
-               lower,
-               discount,
-               remark
-        from
-               com_agent_level
+    <select id="selectAll" resultMap="BaseResultMap">
+      select id, create_time, name, img_url, remark
+        from com_agent_level
     </select>
 
 </mapper>

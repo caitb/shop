@@ -53,7 +53,5 @@ public class SysConstants {
     /*身份证存储路径*/
     public static final String ID_CARD_PATH = "/static/upload/user/idCard/";
 
-    public static final Integer MAX_AGENT_LEVEL = 3;//最低代理等级
-
     public static final String  MALL_DOMAIN_NAME_ADDRESS = PropertiesUtils.getStringValue("mall.domain.name.address");//小铺域名地址
 }

@@ -25,22 +25,11 @@
         <label class="add">加关注</label>
     </div>
     <div class="wrap">
-        <c:choose>
-            <c:when test="${skuCount<=0}">
-                <div class="xinxi">
-                    <p>注册信息</p>
-                    <p style="color:#F74A11;">选择拿货方式</p>
-                    <p style="color:#F74A11;">支付订单</p>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="xinxi two" style="display: -webkit-box;">
-                    <p>信息填写</p>
-                    <p style="color:#F74A11;">支付订单</p>
-                    <p style="color:#F74A11;">完成合伙</p>
-                </div>
-            </c:otherwise>
-        </c:choose>
+        <div class="xinxi">
+            <p>注册信息</p>
+            <p>确定拿货方式</p>
+            <p>支付订单</p>
+        </div>
 
         <div class="main">
             <div class="drap">

@@ -65,39 +65,16 @@
 
                 <h2>选择合伙人等级：</h2>
                 <div class="dengji">
-<%--                    <c:forEach items="${agentSkuViews}" var="view">
+                    <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId > pUserLevelId}">
-                            <p levelId="${view.agent.agentLevelId}" agentFee="${view.agentFee}">
-                                <label>${view.level.name}</label>
-                                <b>商品数量：</b> <span>${view.agent.quantity}</span> <b>金额：</b> <span>${view.sinFee}</span>
-                                <b>保证金：</b> <span>${view.agent.bail}</span>
+                            <p levelId="${view.agent.agentLevelId}"
+                               agentFee="${view.agentFee}"
+                               agentBailFee="${view.agent.bail}">
+                                <span>${view.sinFee}元套餐</span>
+                                <span>保证金${view.agent.bail}元</span>
                             </p>
                         </c:if>
-                    </c:forEach>--%>
-                    <p>
-                        <span>100w元套餐</span>
-                        <span>保证金15000元</span>
-                    </p>
-                    <p>
-                        <span>50w元套餐</span>
-                        <span>保证金10000元</span>
-                    </p>
-                    <p>
-                        <span>10w元套餐</span>
-                        <span>保证金7000元</span>
-                    </p>
-                    <p>
-                        <span>1w元套餐</span>
-                        <span>保证金5000元</span>
-                    </p>
-                    <p>
-                        <span>5000元套餐</span>
-                        <span>保证金3000元</span>
-                    </p>
-                    <p>
-                        <span>1000元套餐</span>
-                        <span>保证金1000元</span>
-                    </p>
+                    </c:forEach>
                 </div>
             </section>
             <section class="sec3">

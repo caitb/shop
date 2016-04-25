@@ -5,6 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -46,7 +47,7 @@ public class BOrderService {
     @Resource
     private PfBorderOperationLogMapper pfBorderOperationLogMapper;
     @Resource
-    private ComAgentLevelsMapper comAgentLevelsMapper;
+    private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfBorderFreightMapper pfBorderFreightMapper;
     @Resource
@@ -93,7 +94,7 @@ public class BOrderService {
      * @date 2016/3/9 18:52
      */
     public ComAgentLevel findComAgentLevel(Integer id) {
-        return comAgentLevelsMapper.selectByPrimaryKey(id);
+        return comAgentLevelMapper.selectByPrimaryKey(id);
     }
 
     /**

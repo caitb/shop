@@ -8,9 +8,9 @@
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shenqing.css">
-    <link rel="stylesheet" href="${path}/static/css/fakeloader/fakeLoader.css">
 </head>
 <body>
+<div class="fakeloader"></div>
 <header class="xq_header">
     <a href="${basePath}product/${skuId}">
         <img src="${path}/static/images/xq_rt.png" alt=""></a>
@@ -183,7 +183,7 @@
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
-    <div class="wrapno">
+<div class="wrapno">
     <img src="${path}/static/images/yes.png" alt="">
     <h1>申请过啦！</h1>
     <p>您已申请过此商品的合伙人， 现在将自动返回管理首页</p>
@@ -218,18 +218,12 @@
 <%--<script src="${path}/static/js/commonAjax.js"></script>--%>
 <script src="${path}/static/js/iscroll.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
-<script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
 <script>
     $(document).ready(function () {
-        $(".fakeloader").fakeLoader({
-            timeToHide:1200,
-            bgColor:"#9b59b6",
-            spinner:"spinner7"
-        });
         validateCodeJS.initPage();
     });
     function goVerified(para) {
-        if(${user.isBinding!=1}){
+        if (${user.isBinding!=1}) {
             alert("请先绑定手机号");
             return false;
         }
@@ -240,7 +234,7 @@
     }
 
     function reSubmitIdentityAuth() {
-        if(${user.isBinding!=1}){
+        if (${user.isBinding!=1}) {
             alert("请先绑定手机号");
             return false;
         }

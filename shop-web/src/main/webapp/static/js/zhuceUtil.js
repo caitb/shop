@@ -73,7 +73,7 @@ $(function () {
         } else {
             $("#q_pMobile").parent().css("display", "none");
         }
-        if ($(".on label").length == 0) {
+        if ($("p.active").length == 0) {
             alert("请选择合伙人等级");
             n++;
         }
@@ -83,9 +83,9 @@ $(function () {
         // 获取微信号
         $("#q_weixinId").html($("#weixin").val());
         // 获取合伙人等级
-        $("#q_levelName").html($(".on label").html());
+        $("#q_levelName").html($("p.active").attr("agentFee") + "元套餐");
         // 获取所缴纳货款
-        $("#q_amount").html($(".on").attr("agentFee"));
+        $("#q_amount").html($("p.active").attr("agentFee"));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");
@@ -113,13 +113,13 @@ $(function () {
                     if (sendType == 0) {
                         var paraData = "?";
                         paraData += "skuId=" + skuId;
-                        paraData += "&agentLevelId=" + $(".on").attr("levelId");
+                        paraData += "&agentLevelId=" + $("p.active").attr("levelId");
                         paraData += "&weiXinId=" + $("#q_weixinId").html();
                         window.location.href = path + "border/setUserSendType.shtml" + paraData;
                     } else {
                         var paraData = "?";
                         paraData += "skuId=" + skuId;
-                        paraData += "&agentLevelId=" + $(".on").attr("levelId");
+                        paraData += "&agentLevelId=" + $("p.active").attr("levelId");
                         paraData += "&weiXinId=" + $("#q_weixinId").html();
                         paraData += "&sendType=" + sendType;
                         paraData += "&previousPageType=0";
@@ -145,7 +145,7 @@ $(function () {
     /*
      * 选择合伙人等级
      * */
-    $(".dengji").on("click","p",function(){
+    $(".dengji").on("click", "p", function () {
         $(".dengji p").removeClass("active")
         $(this).addClass("active");
     })

@@ -34,14 +34,6 @@ public class ComAgentLevel {
      * 图片地址
      */
     private String imgUrl;
-    /**
-     * 拿货门槛
-     */
-    private BigDecimal lower;
-    /**
-     * 折扣
-     */
-    private BigDecimal discount;
     private String remark;
 
     public Integer getId() {
@@ -68,22 +60,21 @@ public class ComAgentLevel {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl == null ? null : imgUrl.trim();
     }
-    public BigDecimal getLower() {
-        return lower;
-    }
-    public void setLower(BigDecimal lower) {
-        this.lower = lower;
-    }
-    public BigDecimal getDiscount() {
-        return discount;
-    }
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
     public String getRemark() {
         return remark;
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "ComAgentLevel{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", name='" + name + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

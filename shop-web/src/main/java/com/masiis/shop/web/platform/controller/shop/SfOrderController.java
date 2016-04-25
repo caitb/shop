@@ -83,6 +83,7 @@ public class SfOrderController extends BaseController {
     public ModelAndView sfOrderDetal(HttpServletRequest request, Long id) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
+
         SfOrder order = sfOrderService.findSforderByorderId(id);
         ComUser Buser = userService.getUserById(order.getUserId());
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);

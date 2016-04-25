@@ -31,6 +31,7 @@ public class WxPFNoticeUtils {
     public static final WxPFNoticeUtils getInstance() {
         return Holder.INSTANCE;
     }
+
     /**
      * 调用模板发消息
      *
@@ -69,7 +70,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
 
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -94,7 +96,8 @@ public class WxPFNoticeUtils {
         // 调用下线加入模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_JOIN_NOTICE);
 
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -125,7 +128,8 @@ public class WxPFNoticeUtils {
         // 调用下实名认证结果通知模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_AUTH_NOTICE);
 
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -147,7 +151,8 @@ public class WxPFNoticeUtils {
         // 调用实名认证申请提交模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RM_SUBMIT);
 
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -172,7 +177,8 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用发货模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_ORDER_SHIPPED);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -196,7 +202,8 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_PF_ORDER);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -228,7 +235,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_EXTRACT_APPLY);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -252,7 +260,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用提现申请成功通知模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -277,7 +286,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -302,7 +312,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -327,7 +338,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -352,7 +364,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -377,7 +390,8 @@ public class WxPFNoticeUtils {
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_ORDER_DETAIL);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -402,7 +416,8 @@ public class WxPFNoticeUtils {
         req.setUrl(url);
         // 调用库存不足提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_INVENTORY_SHORTAGE);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     /**
@@ -429,7 +444,8 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用库存不足提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_SHOP_ORDER);
-        return wxNotice(WxCredentialUtils.getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
 
     private String getOpenIdByComUser(ComUser user){

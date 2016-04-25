@@ -28,21 +28,21 @@ public class MobileMessageUtil {
         return true;
     }
 
-    /**
-     * 支付短信
-     * @param phone             手机号码
-     * @param skuName           商品名称
-     * @param agentLevelName    代理等级名称
-     * @return
-     */
-    public static boolean sendMessageForToPay(String phone, String skuName, String agentLevelName) {
-        String[] content = new String[]{skuName,agentLevelName};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.TOPAY_TEMPLETE_ID, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * 支付短信
+//     * @param phone             手机号码
+//     * @param skuName           商品名称
+//     * @param agentLevelName    代理等级名称
+//     * @return
+//     */
+//    public static boolean sendMessageForToPay(String phone, String skuName, String agentLevelName) {
+//        String[] content = new String[]{skuName,agentLevelName};
+//        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.TOPAY_TEMPLETE_ID, content);
+//        if (!"000000".equals(smsRes[0])) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     /**
      * 合伙人申请成功提示
@@ -93,16 +93,29 @@ public class MobileMessageUtil {
     }
 
     /**
-     * 订单状态
+     * 订单发货提醒
      * @param phone
      * @param orderCode     订单编号
      * @param shipName      快递公司名称
      * @param shipCode      快递单号
      * @return
      */
-    public static boolean goodsOrderStatus(String phone, String orderCode, String shipName, String shipCode){
+    public static boolean goodsOrderShipRemind(String phone, String orderCode, String shipName, String shipCode){
         String[] content = new String[]{orderCode, shipName, shipCode};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ORDER_STATUS, content);
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ORDER_SHIP_REMIND, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 有新的下级订单
+     * @param phone
+     * @return
+     */
+    public static boolean haveNewLowerOrder(String phone){
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_LOWER_ORDER, null);
         if (!"000000".equals(smsRes[0])) {
             return false;
         }
@@ -169,6 +182,21 @@ public class MobileMessageUtil {
     }
 
     /**
+     * 提现申请审核拒绝-c
+     * @param phone
+     * @param reason    拒绝原因
+     * @return
+     */
+    public static boolean withdrawVerifyRefuse_C(String phone, String reason){
+        String[] content = new String[]{reason};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE_C, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * 补货-平台代发
      * @param phone
      * @param quantity   补货数量
@@ -196,4 +224,123 @@ public class MobileMessageUtil {
         return true;
     }
 
+    /**
+     * 进入排单提醒
+     * @param phone
+     * @param orderCode   订单编号
+     * @return
+     */
+    public static boolean joinQueueOrder(String phone, String orderCode){
+        String[] content = new String[]{orderCode};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 处理排单提醒-平台代发
+     * @param phone
+     * @param orderCode     订单编号
+     * @return
+     */
+    public static boolean dealQueueOrderPlatform(String phone, String orderCode){
+        String[] content = new String[]{orderCode};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.DEAL_QUEUE_ORDER_PLATFORM, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 处理排单提醒-自己发货
+     * @param phone
+     * @param orderCode     订单编号
+     * @param shipName      快递公司名称
+     * @param shipCode      快递单号
+     * @return
+     */
+    public static boolean dealQueueOrderSelf(String phone, String orderCode, String shipName, String shipCode){
+        String[] content = new String[]{orderCode, shipName, shipCode};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.DEAL_QUEUE_ORDER_SELF, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 库存不足预警
+     * @param phone
+     * @param skuName
+     * @return
+     */
+    public static boolean stockNotEnoughWarning(String phone, String skuName){
+        String[] content = new String[]{skuName};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.STOCK_NOT_ENOUGH_WARNINT, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 新店铺订单提醒
+     * @param phone
+     * @return
+     */
+    public static boolean newMallOrderRemind(String phone){
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_MALL_ORDER_REMIND, null);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 消费者下单提醒
+     * @param phone
+     * @param skuName   商品名称
+     * @return
+     */
+    public static boolean consumerOrderRemind(String phone, String skuName){
+        String[] content = new String[]{skuName};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_ORDER_REMIND, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 消费者发货提醒
+     * @param phone
+     * @param orderCode    订单编码
+     * @return
+     */
+    public static boolean consumerShipRemind(String phone, String orderCode){
+        String[] content = new String[]{orderCode};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_SHIP_REMIND, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 消费者交易成功提醒
+     * @param phone
+     * @param orderCode
+     * @return
+     */
+    public static boolean consumerConsumeSuccessRemind(String phone, String orderCode){
+        String[] content = new String[]{orderCode};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_CONSUME_SUCCESS_REMIND, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -26,6 +26,10 @@ public class SfUserAccount {
      */
     private BigDecimal extractableFee;
     /**
+     * 已经申请提现金额
+     */
+    private BigDecimal appliedFee;
+    /**
      * 结算中
      */
     private BigDecimal countingFee;
@@ -57,6 +61,12 @@ public class SfUserAccount {
     }
     public void setExtractableFee(BigDecimal extractableFee) {
         this.extractableFee = extractableFee;
+    }
+    public BigDecimal getAppliedFee() {
+        return appliedFee;
+    }
+    public void setAppliedFee(BigDecimal appliedFee) {
+        this.appliedFee = appliedFee;
     }
     public BigDecimal getCountingFee() {
         return countingFee;

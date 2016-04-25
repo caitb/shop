@@ -8,6 +8,7 @@ import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
+import com.masiis.shop.web.platform.service.order.ComShipManService;
 import com.masiis.shop.web.platform.service.shop.SfOrderService;
 import com.masiis.shop.web.platform.service.shop.SfOrderShopService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
@@ -46,6 +47,8 @@ public class SfOrderController extends BaseController {
     private ComDictionaryService comDictionaryService;
     @Resource
     private UserService userService;
+    @Resource
+    private ComShipManService comShipManService;
 
 
     @RequestMapping("/deliverOrder.do")
@@ -80,6 +83,7 @@ public class SfOrderController extends BaseController {
     public ModelAndView sfOrderDetal(HttpServletRequest request, Long id) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
+
         SfOrder order = sfOrderService.findSforderByorderId(id);
         ComUser Buser = userService.getUserById(order.getUserId());
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -114,6 +118,8 @@ public class SfOrderController extends BaseController {
         orderMallDetail.setSfOrderFreights(sfOrderFreights);
         orderMallDetail.setSfOrderConsignee(sfOrderConsignee);
         ModelAndView modelAndView = new ModelAndView();
+        List<ComShipMan> comShipMans = comShipManService.list();
+        modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("stringBuffer", stringBuffer.toString());
         modelAndView.addObject("orderMallDetail", orderMallDetail);
         modelAndView.setViewName("platform/shop/shopxiangqing");
@@ -142,6 +148,8 @@ public class SfOrderController extends BaseController {
             index="3";//待收货
         }
         ModelAndView modelAndView = new ModelAndView();
+        List<ComShipMan> comShipMans = comShipManService.list();
+        modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
         modelAndView.setViewName("platform/shop/dingdanguanli");
@@ -160,6 +168,8 @@ public class SfOrderController extends BaseController {
         try {
             ComUser user = getComUser(request);
             Long shopId =(Long) request.getSession().getAttribute("shopId");
+            List<ComShipMan> comShipMans = comShipManService.list();
+            request.getSession().setAttribute("comShipMans", comShipMans);
             if(index==0){
                 sfOrders = sfOrderService.findOrdersByShopUserId(user.getId(), null, shopId);
             }else if(index==1){

@@ -34,6 +34,8 @@ public class CertificateInfo extends PfUserSku {
 
     private String backimg;//证书等级背景图
 
+    private String levelName;//合伙人等级名称
+
     public String getCtName() {
         return ctName;
     }
@@ -120,5 +122,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setBackimg(String backimg) {
         this.backimg = backimg;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 }

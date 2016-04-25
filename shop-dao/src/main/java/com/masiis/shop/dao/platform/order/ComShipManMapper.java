@@ -11,6 +11,8 @@ public interface ComShipManMapper {
 
     ComShipMan selectById(Integer id);
 
+    List<ComShipMan> selectAll();
+
     List<ComShipMan> selectByCondition(ComShipMan comShipMan);
 
     void insert(ComShipMan comShipMan);

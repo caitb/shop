@@ -30,31 +30,11 @@
             <p>上级合伙人信息详情</p>
             <h1><span>${userInfo.realName}</span>${comSku.name}</h1>
             <h2><img src="<%=path%>/static/images/lv.png" alt="">合伙人等级
-                <c:choose>
-                    <c:when test="${pfUserSku.agentLevelId==1}">
-                        <b>高级合伙人</b>
-                    </c:when>
-                    <c:when test="${pfUserSku.agentLevelId==2}">
-                        <b>中级合伙人</b>
-                    </c:when>
-                    <c:when test="${pfUserSku.agentLevelId==3}">
-                        <b>初级合伙人</b>
-                    </c:when>
-                </c:choose>
+             <b>${ctname}</b>
             </h2>
         </div>
         <p><span>等级</span>
-            <c:choose>
-                <c:when test="${pfUserSku.agentLevelId==1}">
-                    <span>高级合伙人</span>
-                </c:when>
-                <c:when test="${pfUserSku.agentLevelId==2}">
-                    <span>中级合伙人</span>
-                </c:when>
-                <c:when test="${pfUserSku.agentLevelId==3}">
-                    <span>初级合伙人</span>
-                </c:when>
-            </c:choose>
+            <span>${ctname}</span>
         </p>
         <p><span>手机号</span><span>${pfUserCertificate.mobile}</span></p>
         <p><span>微信号</span><span>${pfUserCertificate.wxId}</span></p>

@@ -92,7 +92,7 @@
             <div>
                 <p>合伙产品</p>
                 <h1>${cet.skuName}</h1>
-                <h2>等级：<span>${cet.agentLevelId} A级合伙人</span>保证金：<span>${cet.bail}</span>元</h2>
+                <h2>等级：<span>${cet.levelName}</span>保证金：<span>${cet.bail}</span>元</h2>
                 <h3>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span><b><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></b></h3>
                 <img src="<%=path%>${cet.backimg}" alt="">
             </div>

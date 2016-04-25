@@ -319,7 +319,7 @@
        </div>
        <div class="back_que">
            <p>确认发货?</p>
-           <h4>快递公司:<select id="select"><option value="1">顺风</option><option value="2">EMS</option></select></h4>
+           <h4>快递公司:<select id="select"><c:forEach items="${comShipMans}" var="comShipMans"><option value="${comShipMans.id}">${comShipMans.name}</option></c:forEach></select></h4>
            <h4>快递单号:<input type="text" id="input"/></h4>
            <h3 id="faHuo">发货</h3>
        </div>

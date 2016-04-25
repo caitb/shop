@@ -21,15 +21,20 @@
         <p>支付订单</p>
     </div>
     <div class="sec1">
+        <h1>订单信息：</h1>
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">
             <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>
+            <p><span>合伙人套餐：</span><span>${pfBorderItem.skuName}</span></p>
+            <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
+            <p><span>拿货门槛：</span><span>￥${pfBorder.bailAmount}</span></p>
             <p><span>数量：</span><span>${pfBorderItem.quantity}</span></p>
-            <p><span>商品总金额：</span><span>￥${pfBorderItem.totalPrice}</span></p>
+            <%--<p><span>商品总金额：</span><span>￥${pfBorderItem.totalPrice}</span></p>--%>
         </c:forEach>
-        <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
-        <p><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></p>
+        <h1>需付金额：</h1>
+        <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
     </div>
-    <button id="submit">微信支付</button>
+    <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
+    <button class="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>

@@ -10,6 +10,7 @@ import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
+import com.masiis.shop.dao.po.ComAgentLevel;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserCertificate;
@@ -68,6 +69,8 @@ public class UserCertificateService {
                 PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(certificateInfo.getSkuId(), certificateInfo.getAgentLevelId());
                 String basePath ="/static/images/certificate/backgroundimg/";
                 certificateInfo.setBackimg(basePath + pfSkuAgent.getBackImg());
+                ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(certificateInfo.getAgentLevelId());
+                certificateInfo.setLevelName(comAgentLevel.getName());
             }
         }
         return certificateInfoList;
@@ -105,5 +108,12 @@ public class UserCertificateService {
      */
     public List<PfUserCertificate> selectSkuWeChatInfo(Long userId){
         return pfUserCertificateMapper.selectSkuWeChatInfo(userId);
+    }
+
+    /**
+     * 获取证书等级名称
+     */
+    public String getCtname(Integer agentLevelId){
+        return comAgentLevelMapper.selectByPrimaryKey(agentLevelId).getName();
     }
 }

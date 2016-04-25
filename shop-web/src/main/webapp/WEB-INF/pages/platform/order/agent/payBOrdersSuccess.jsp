@@ -61,8 +61,8 @@
                 <p>${skuName}</p>
             </div>
             <div class="Name">
-                <p>合伙人等级：</p>
-                <p>${levelName}</p>
+                <p>合伙人套餐：</p>
+                <p>${pfBorder.orderAmount}元套餐</p>
             </div>
             <div class="Name">
                 <p>上级合伙人：</p>

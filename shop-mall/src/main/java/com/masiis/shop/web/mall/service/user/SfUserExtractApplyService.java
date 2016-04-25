@@ -1,8 +1,11 @@
 package com.masiis.shop.web.mall.service.user;
 
 import com.github.pagehelper.PageHelper;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfUserAccount;
 import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,8 @@ public class SfUserExtractApplyService {
     private final Logger logger = Logger.getLogger(SfUserExtractApplyService.class);
     @Autowired
     private SfUserExtractApplyMapper sfUserExtractApplyMapper;
-
+    @Autowired
+    private SfUserAccountMapper sfUserAccountMapper;
     /**
      * 用户提现申请处理
      * @param exMoney
@@ -31,7 +35,7 @@ public class SfUserExtractApplyService {
      * @author:wbj
      */
     @Transactional
-    public void applyExtract(BigDecimal exMoney, ComUser user) throws Exception{
+    public void applyExtract(BigDecimal exMoney, ComUser user, SfUserAccount userAccount) throws Exception{
         logger.info("用户提现申请处理");
         SfUserExtractApply apply = new SfUserExtractApply();
         apply.setComUserId(user.getId());
@@ -42,7 +46,13 @@ public class SfUserExtractApplyService {
         apply.setAuditType(0);      //设置为待审核状态
         apply.setAuditCause("分销用户提现申请");
         apply.setRemark("分销用户提现申请");
-        sfUserExtractApplyMapper.insert(apply);
+        userAccount.setAppliedFee(userAccount.getAppliedFee().add(exMoney));
+        if (sfUserExtractApplyMapper.insert(apply) == 0){
+            throw new BusinessException("插入用户提现记录表失败");
+        }
+        if (sfUserAccountMapper.updateByPrimaryKey(userAccount) == 0){
+            throw new BusinessException("更新分销用户账户表失败");
+        }
     }
 
     /**

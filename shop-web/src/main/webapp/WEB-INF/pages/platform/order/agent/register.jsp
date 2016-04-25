@@ -101,7 +101,7 @@
                 <h4><b>推荐人微信:</b><span id="q_pWx">${pWxNkName}</span></h4>
             </c:otherwise>
         </c:choose>
-        <h4><b>合伙人等级:</b><span id="q_levelName"></span></h4>
+        <h4><b>合伙人套餐:</b><span id="q_levelName"></span></h4>
         <h4><b>需要缴纳货款:</b><span id="q_amount"></span></h4>
         <h3>
             <span class="que_qu" id="getBack">返回修改</span>

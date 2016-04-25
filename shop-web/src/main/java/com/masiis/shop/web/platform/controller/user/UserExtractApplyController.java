@@ -79,11 +79,13 @@ public class UserExtractApplyController extends BaseController {
         }
 
         String extractMoney = account == null?"0.00":account.getExtractableFee().toString();
+        String appliedFee = account == null?"0.00":account.getAppliedFee().toString();
         if (extractwayInfo != null){
             String cardCode = extractwayInfo.getBankCard();
             extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));
         }
         model.addAttribute("extractMoney", extractMoney);
+        model.addAttribute("appliedFee", appliedFee);
         model.addAttribute("extractwayInfo", extractwayInfo);
         model.addAttribute("hasCard", hasCard);
         model.addAttribute("extractWay", extractWay);
@@ -119,6 +121,10 @@ public class UserExtractApplyController extends BaseController {
                 log.error("系统错误,用户资产未找到");
                 throw new BusinessException("系统错误,用户资产未找到");
             }
+            if (exMoney.compareTo(account.getExtractableFee().subtract(account.getAppliedFee())) == 1 || exMoney.compareTo(new BigDecimal(0)) <= 0){
+                throw new BusinessException("可提现余额错误");
+            }
+
             // 查询默认的支付方式
             ComUserExtractwayInfo info = extractwayInfoService.findDefaultInfo(user.getId());
             if(info == null){

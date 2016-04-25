@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
+import com.masiis.shop.web.platform.service.order.ComShipManService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -46,13 +47,11 @@ public class BorderManageController extends BaseController {
     @Resource
     private ComDictionaryService comDictionaryService;
     @Resource
-    private ComUserAccountService comUserAccountService;
-    @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private PfBorderPaymentMapper pfBorderPaymentMapper;
     @Resource
-    private BOrderSkuStockService borderSkuStockService;
+    private ComShipManService comShipManService;
 
     /**
      * 确认收货
@@ -149,6 +148,7 @@ public class BorderManageController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
+
             if(index==0){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), null, null);
             }else if(index==1){
@@ -405,6 +405,7 @@ public class BorderManageController extends BaseController {
     public ModelAndView deliveryDouckBorder(HttpServletRequest request, Integer orderStatus, Integer sendType) throws Exception {
         ComUser comUser = getComUser(request);
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, sendType);
+//        List<ComShipMan> comShipMans = comShipManService.list();
         String index=null;
         Integer borderNum =0;
         if(orderStatus==null && sendType==null){
@@ -445,6 +446,11 @@ public class BorderManageController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("pfBorders", pfBorders);
         modelAndView.addObject("borderNum10", borderNum);
+//        modelAndView.addObject("comShipMans",comShipMans);
+        if(request.getSession().getAttribute("comShipMans")==null || request.getSession().getAttribute("comShipMans")==""){
+            List<ComShipMan> comShipMans = comShipManService.list();
+            request.getSession().setAttribute("comShipMans", comShipMans);
+        }
         modelAndView.addObject("index",index);
         modelAndView.setViewName("platform/order/chuhuodingdan");
         return modelAndView;
@@ -539,6 +545,8 @@ public class BorderManageController extends BaseController {
         borderDetail.setPfBorderFreights(pfBorderFreights);
         borderDetail.setPfBorderConsignee(pfBorderConsignee);
         ModelAndView modelAndView = new ModelAndView();
+        List<ComShipMan> comShipMans = comShipManService.list();
+        modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("borderDetail", borderDetail);
         modelAndView.setViewName("platform/order/chuhuoxiangqing");
         return modelAndView;
@@ -607,6 +615,8 @@ public class BorderManageController extends BaseController {
             }
         }
         ModelAndView modelAndView = new ModelAndView();
+        List<ComShipMan> comShipMans = comShipManService.list();
+        modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("pfBorders", pfBorderss);
         modelAndView.addObject("borderNum10", borderNum10);
         modelAndView.setViewName("platform/order/chuhuodingdan");

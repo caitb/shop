@@ -82,6 +82,8 @@ public class BOrderPayService {
     private SfUserRelationMapper sfUserRelationMapper;
     @Resource
     private ComSkuMapper skuMapper;
+    @Resource
+    private PfSupplierBankService supplierBankService;
 
     /**
      * 支付回调统一入口
@@ -519,4 +521,72 @@ public class BOrderPayService {
 
         return view;
     }
+
+    /**
+     * 线下支付
+     * @author hanzengzhi
+     * @date 2016/4/25 14:46
+     */
+    public Map<String,Object> offinePayment(Long bOrderId){
+        Map<String,Object> map = null;
+        PfBorder pfBorder  = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(),bOrderId);
+        if (pfBorder!=null){
+            int i = insertOrderLog(pfBorder);
+            if (i==1){
+                PfSupplierBank supplierBank = getDefaultBack();
+                map = new LinkedHashMap<String, Object>();
+                map.put("supplierBank",supplierBank);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * 修改订单的状态
+     * @author hanzengzhi
+     * @date 2016/4/25 14:49
+     */
+    private PfBorder updateOrderStatus(Integer status,Long bOrderId){
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        if (pfBorder != null){
+            pfBorder.setOrderStatus(status);
+        }else{
+            throw new BusinessException("线下支付查询订单失败");
+        }
+        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
+            throw new BusinessException("订单状态不是未支付状态，线下支付失败");
+        }
+        int i = pfBorderMapper.updateById(pfBorder);
+        if (i != 1){
+            throw new BusinessException("线下支付更新订单状态失败");
+        }
+        return pfBorder;
+    }
+    /**
+     * 更新订单日志
+     * @author hanzengzhi
+     * @date 2016/4/25 15:21
+     */
+    private Integer insertOrderLog(PfBorder pfBorder){
+        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
+        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
+        pfBorderOperationLog.setCreateTime(new Date());
+        pfBorderOperationLog.setPfBorderStatus(BOrderStatus.offLineNoPay.getCode());
+        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
+        pfBorderOperationLog.setRemark("订单线下已支付");
+        int i = pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        if (i!=1){
+            throw new BusinessException("线下支付插入订单日志失败");
+        }
+        return i;
+    }
+    /**
+     * 获得运营商的默认银行卡信息
+     * @author hanzengzhi
+     * @date 2016/4/25 14:50
+     */
+    private PfSupplierBank getDefaultBack(){
+        return   supplierBankService.getDefaultBank();
+    }
+
 }

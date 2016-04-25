@@ -30,8 +30,8 @@ function getExtractApplyList(year,month){
     var yearLast = $("#year").val();
     var monthLast = $("#month").val();
     if(yearLast==year && monthLast==month){
-        var currentPage = $("#currentPage").val();
-        var totalPage = $("#totalPage").val();
+        var currentPage = parseInt($("#currentPage").val());
+        var totalPage = parseInt($("#totalPage").val());
         if (currentPage >= totalPage){
             alert("已经加载全部数据");
         }else {

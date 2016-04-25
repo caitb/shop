@@ -1,13 +1,14 @@
 package com.masiis.shop.common.enums.BOrder;
 
 /**
-* 订单状态枚举类
-* @author muchaofeng
-* @date 2016/4/5 15:22
-*/
+ * 订单状态枚举类
+ *
+ * @author muchaofeng
+ * @date 2016/4/5 15:22
+ */
 
 public enum BOrderStatus {
-    NotPaid{
+    NotPaid {
         public Integer getCode() {
             return 0;
         }
@@ -16,7 +17,7 @@ public enum BOrderStatus {
             return "未付款";
         }
     },
-    accountPaid{
+    accountPaid {
         public Integer getCode() {
             return 1;
         }
@@ -25,7 +26,7 @@ public enum BOrderStatus {
             return "已付款";
         }
     },
-    Disabled{
+    Disabled {
         public Integer getCode() {
             return 2;
         }
@@ -33,7 +34,7 @@ public enum BOrderStatus {
         public String getDesc() {
             return "已取消";
         }
-    },Complete{
+    }, Complete {
         public Integer getCode() {
             return 3;
         }
@@ -41,7 +42,7 @@ public enum BOrderStatus {
         public String getDesc() {
             return "已完成";
         }
-    },Refund{
+    }, Refund {
         public Integer getCode() {
             return 4;
         }
@@ -49,7 +50,7 @@ public enum BOrderStatus {
         public String getDesc() {
             return "退款中";
         }
-    },RefundComplete{
+    }, RefundComplete {
         public Integer getCode() {
             return 5;
         }
@@ -57,7 +58,7 @@ public enum BOrderStatus {
         public String getDesc() {
             return "已退款";
         }
-    },MPS{
+    }, MPS {
         public Integer getCode() {
             return 6;
         }
@@ -65,7 +66,7 @@ public enum BOrderStatus {
         public String getDesc() {
             return "排单中";
         }
-    },WaitShip{
+    }, WaitShip {
         public Integer getCode() {
             return 7;
         }
@@ -73,13 +74,21 @@ public enum BOrderStatus {
         public String getDesc() {
             return "待发货";
         }
-    },Ship{
+    }, Ship {
         public Integer getCode() {
             return 8;
         }
 
         public String getDesc() {
             return "已发货";
+        }
+    }, offLineNoPay {
+        public Integer getCode() {
+            return 9;
+        }
+
+        public String getDesc() {
+            return "线下支付未付款";
         }
     };
 
@@ -94,12 +103,14 @@ public enum BOrderStatus {
 //    CodeBorderStatus8("8","已发货");
 
     public abstract Integer getCode();
+
     public abstract String getDesc();
-    public static BOrderStatus getByCode(Integer code){
-        if(code == null){
+
+    public static BOrderStatus getByCode(Integer code) {
+        if (code == null) {
             return null;
         }
-        for(BOrderStatus pt: BOrderStatus.values()){
+        for (BOrderStatus pt : BOrderStatus.values()) {
             if (pt.getCode().intValue() == code.intValue()) {
                 return pt;
             }

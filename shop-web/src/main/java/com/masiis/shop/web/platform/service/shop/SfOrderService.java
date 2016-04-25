@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.shop;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.po.*;
@@ -104,6 +105,7 @@ public class SfOrderService {
             sfOrderOperationLog.setSfOrderId(sfOrder.getId());
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+            MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);
@@ -123,6 +125,7 @@ public class SfOrderService {
             sfOrderOperationLog.setSfOrderId(sfOrder.getId());
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+            MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
         }
     }
 }

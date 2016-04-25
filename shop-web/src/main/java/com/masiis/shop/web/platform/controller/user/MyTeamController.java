@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfUserCertificate;
@@ -29,13 +30,15 @@ public class MyTeamController extends BaseController {
 
     @Resource
     private MyTeamService myTeamService;
+    @Resource
+    private ComUserMapper comUserMapper;
 
     @RequestMapping("/teamlist")
     public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-            ComUser comUser = getComUser(request);
+            ComUser comUser = getComUser(request);comUser =comUserMapper.selectByPrimaryKey(85L);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
             Integer totalChild = 0;

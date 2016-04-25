@@ -77,7 +77,7 @@ public class MyTeamService {
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
             Map<String, String> curMap = countChild(pus.getId());
-            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length+1);
+            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length+1);      //团队人数(包括自己)
             agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
 
             agentSkuMaps.add(agentSkuMap);
@@ -96,7 +96,7 @@ public class MyTeamService {
         String curUserIds = "";
         StringBuilder childIds = new StringBuilder(4000);
         StringBuilder userIds = new StringBuilder(4000);
-        childIds.append("," + curPIds);
+
 
         while (curPIds != null){
            Map<String, String> curMap = pfUserSkuMapper.countChild(curPIds);
@@ -104,12 +104,12 @@ public class MyTeamService {
            curPIds = curMap.get("sPIds");
            curUserIds = curMap.get("sUserIds");
 
-           if(curPIds != null) childIds.append("," + curPIds);
+           if(curPIds != null)    childIds.append("," + curPIds);
            if(curUserIds != null) userIds.append("," + curUserIds);
         }
 
-        childIds.deleteCharAt(0);
-        userIds.deleteCharAt(0);
+        if(childIds.length()>0) childIds.deleteCharAt(0);
+        if(userIds.length()>0)  userIds.deleteCharAt(0);
 
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("childIds", childIds.toString());

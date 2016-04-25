@@ -49,11 +49,12 @@ public class SfOrderManagerController extends BaseController {
      */
     @RequestMapping("/deliverSfOrder.do")
     @ResponseBody
-    public String deliverSfOrder(@RequestParam(required = true) Long orderId) {
+    public String deliverSfOrder(@RequestParam(required = true) Long orderId,HttpServletRequest request) {
         JSONObject json = new JSONObject();
         try {
             log.info("deliverSfOrder进来了");
-            sfOrderManageService.deliver(orderId);
+            ComUser user = getComUser(request);
+            sfOrderManageService.deliver(orderId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);

@@ -85,7 +85,12 @@ public class BOrderController extends BaseController {
         return modelAndView;
     }
 
-
+    /**
+     * 收银台结算页
+     * @param request
+     * @param bOrderId
+     * @return
+     */
     @RequestMapping("/goToPayBOrder.shtml")
     public ModelAndView toPayBOrder(HttpServletRequest request,
                                     @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
@@ -101,6 +106,14 @@ public class BOrderController extends BaseController {
         return modelAndView;
     }
 
+    /**
+     * 去微信支付
+     * @param request
+     * @param attrs
+     * @param bOrderId
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/payBOrder.shtml")
     public String payBOrder(HttpServletRequest request,
                             RedirectAttributes attrs,
@@ -235,6 +248,14 @@ public class BOrderController extends BaseController {
         return mav;
     }
 
+    /**
+     * 选择拿货方式
+     * @param request
+     * @param bOrderId
+     * @param sendType
+     * @param userAddressId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/setUserSendType/save.do")
     public String setUserSendTypeSave(HttpServletRequest request,

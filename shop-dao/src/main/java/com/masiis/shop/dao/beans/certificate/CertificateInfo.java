@@ -32,6 +32,8 @@ public class CertificateInfo extends PfUserSku {
 
     private String beginTime;//加入时间
 
+    private String backimg;//证书等级背景图
+
     public String getCtName() {
         return ctName;
     }
@@ -110,5 +112,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setBeginTime(String beginTime) {
         this.beginTime = beginTime;
+    }
+
+    public String getBackimg() {
+        return backimg;
+    }
+
+    public void setBackimg(String backimg) {
+        this.backimg = backimg;
     }
 }

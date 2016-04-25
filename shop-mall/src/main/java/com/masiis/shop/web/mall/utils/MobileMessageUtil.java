@@ -34,7 +34,7 @@ public class MobileMessageUtil {
         content[0] = code;
         content[1] = SMSConstants.REGESTER_VALID_TIME;
 
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.REGESTER_TEMPLETE_ID, content);
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.VERIFICATION_CODE, content);
         if (!"0".equals(smsRes[0])) {
             return false;
         }

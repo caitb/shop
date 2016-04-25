@@ -10,6 +10,8 @@
   width: 100%;
   height: 100%;
   overflow: auto;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
 }
 .paidan{
   width:100%;
@@ -45,22 +47,18 @@
   width: 100%;
   padding-bottom: 20px;
   display: -webkit-box;
-  display: -moz-box;
   -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
+  background: #fff;
 }
 .wrap #box main .sec1 {
   width: 100%;
   padding: 10px 0;
-  background: white;
   border-bottom: 1px solid #F6F6F6;
 }
 .wrap #box main .sec1 div {
   width: 100%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-orient: vertical;
 }
 .wrap #box main .sec1 div p {
   text-indent: 10px;
@@ -151,13 +149,11 @@
   color: #333333;
   line-height: 40px;
   text-indent: 10px;
-  background: white;
 }
 .wrap #box main .sec2 > h3 {
   padding: 0 10px;
   border-bottom: 1px solid #f6f6f6;
   line-height: 40px;
-  background: white;
 }
 .wrap #box main .sec2 > h3 input {
   display: none;
@@ -176,7 +172,6 @@
 .wrap #box main .sec2 #hehuo {
   width: 100%;
   border-bottom: 1px solid #F6F6F6;
-  background: white;
 }
 .wrap #box main .sec2 div h3 {
   position: relative;
@@ -226,7 +221,7 @@
 .dengji{
     background: #fff;
     padding:0 3%;
-    padding-bottom: 190px;
+
 }
 .dengji p{
   width:48%;
@@ -245,10 +240,16 @@
 .dengji p span{
   display: block;
   color: #333;
+  font-size:12px;
+}
+.dengji p span:nth-child(1){
+  font-size: 14px;
 }
 .dengji p span:nth-child(2){
-  font-size: 12px;
   color: #999 ;
+}
+.dengji p span:nth-child(3){
+  color: #999;
 }
 .dengji .active{
   border:1px solid #F74A11;
@@ -258,7 +259,9 @@
   color: #F74A11;
 }
 .dengji .active span:nth-child(2){
-  font-size: 12px;
+  color: #F97B5E;
+}
+.dengji .active span:nth-child(3){
   color: #F97B5E;
 }
 .wrap #box main .sec2 .jin {

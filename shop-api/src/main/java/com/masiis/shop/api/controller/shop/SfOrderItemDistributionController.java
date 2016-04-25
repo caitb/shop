@@ -1,6 +1,5 @@
 package com.masiis.shop.api.controller.shop;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.base.ShopApiConstant;
 import com.masiis.shop.api.bean.base.ShopApiResponseModel;
 import com.masiis.shop.api.bean.shop.DistributionRecord;
@@ -12,6 +11,7 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.po.SfShop;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +48,7 @@ public class SfOrderItemDistributionController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/home.do",method = RequestMethod.GET)
-    public ShopApiResponseModel itemDistributionHome(@RequestParam(value = "userCode",required = true) Long userId,
+    public ShopApiResponseModel itemDistributionHome(@RequestParam(value = "userId",required = true) Long userId,
                                                      @RequestParam(value = "yDate",required = true) String yDate,
                                                      @RequestParam(value = "currentPage",required = true) Integer currentPage,
                                                      @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
@@ -57,6 +57,21 @@ public class SfOrderItemDistributionController extends BaseController {
         logger.info("yDate="+yDate);
         logger.info("currentPage="+currentPage);
         ShopApiResponseModel responseModel = new ShopApiResponseModel();
+        if (userId == null){
+            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
+            responseModel.setMsg("userId");
+            return responseModel;
+        }
+        if (!StringUtils.isNotBlank(yDate)){
+            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
+            responseModel.setMsg("yDate");
+            return responseModel;
+        }
+        if (currentPage < 1){
+            responseModel.setCode(ShopApiConstant.PARAMETER_ERROR);
+            responseModel.setMsg("currentPage不大于0");
+            return responseModel;
+        }
         Date date = DateUtil.String2Date(yDate);
         Date start = DateUtil.getFirstTimeInMonth(date);
         Date end = DateUtil.getLastTimeInMonth(date);
@@ -123,4 +138,33 @@ public class SfOrderItemDistributionController extends BaseController {
         }
         return responseModel;
     }
+
+
+//    public static void main(String[] args){
+//        try{
+//            byte[] info ="待签名信息".getBytes();
+//
+//            //产生RSA密钥对(myKeyPair)
+//            KeyPairGenerator myKeyGen= KeyPairGenerator.getInstance("RSA");
+//            myKeyGen.initialize(1024);
+//            KeyPair myKeyPair = myKeyGen.generateKeyPair();
+//            System.out.println( "得到RSA密钥对    "+myKeyPair);
+//
+//            //产生Signature对象,用私钥对信息(info)签名.
+//            Signature mySig = Signature.getInstance("SHA1WithRSA");  //用指定算法产生签名对象
+//            mySig.initSign(myKeyPair.getPrivate());  //用私钥初始化签名对象
+//            mySig.update(info);  //将待签名的数据传送给签名对象(须在初始化之后)
+//            byte[] sigResult = mySig.sign();  //返回签名结果字节数组
+//            System.out.println("签名后信息: "+ new String(sigResult) );
+//
+//            //用公钥验证签名结果
+//            mySig.initVerify(myKeyPair.getPublic());  //使用公钥初始化签名对象,用于验证签名
+//            System.out.println("########"+myKeyPair.getPublic());
+//            mySig.update(info); //更新签名内容
+//            boolean verify= mySig.verify(sigResult); //得到验证结果
+//            System.out.println( "签名验证结果: " +verify);
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }
+//    }
 }

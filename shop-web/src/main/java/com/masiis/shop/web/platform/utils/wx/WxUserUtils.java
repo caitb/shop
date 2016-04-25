@@ -7,8 +7,14 @@ import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComWxUser;
+import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
 import com.masiis.shop.web.platform.constants.WxResCodeCons;
+import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,17 +24,32 @@ import java.util.Map;
  * @auth:lzh
  */
 public class WxUserUtils {
+    private WxUserUtils(){}
+
+    private static class Holder {
+        private static WxUserUtils INSTANCE = new WxUserUtils();
+    }
+
+    public WxUserUtils getInstance(){
+        return Holder.INSTANCE;
+    }
+
+    private WxUserService wxUserService = (WxUserService) ApplicationContextUtil.getBean("wxUserService");
 
     /**
      * 判断用户是否关注麦链合伙人
      *
-     * @param openId
+     * @param user
      * @return
      */
-    public static Boolean isUserForcusPF(String openId){
+    public Boolean isUserForcusPF(ComUser user){
+        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
+        if(wxUser == null){
+            return false;
+        }
         String url = WxConsPF.URL_CGIBIN_USERINFO
                 + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET)
-                + "&openid" + openId
+                + "&openid" + wxUser.getOpenid()
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
@@ -52,7 +73,7 @@ public class WxUserUtils {
                     .refreshCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
             String urlNew = WxConsPF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
-                    + "&openid" + openId
+                    + "&openid" + wxUser.getOpenid()
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);
@@ -76,10 +97,15 @@ public class WxUserUtils {
      * @param openId
      * @return
      */
-    public static Boolean isUserForcusSF(String openId){
+    public Boolean isUserForcusSF(ComUser user){
+        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
+        if(wxUser == null){
+            return false;
+        }
+
         String url = WxConsSF.URL_CGIBIN_USERINFO
                 + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET)
-                + "&openid" + openId
+                + "&openid" + wxUser.getOpenid()
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
@@ -103,7 +129,7 @@ public class WxUserUtils {
                     .refreshCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
             String urlNew = WxConsSF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
-                    + "&openid" + openId
+                    + "&openid" + wxUser.getOpenid()
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);

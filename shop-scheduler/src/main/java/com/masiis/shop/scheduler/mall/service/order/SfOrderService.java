@@ -1,6 +1,7 @@
 package com.masiis.shop.scheduler.mall.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
@@ -45,7 +46,7 @@ public class SfOrderService {
      * @return
      */
     public List<SfOrder> findListByStatusAndDate(Date expiraTime, int orderStatus, int payStatus) {
-        log.info("查询创建时间大于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
+        log.info("查询创建时间小于:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss")
                 + ",订单状态为:" + orderStatus + ",支付状态为:" + payStatus + "的订单");
         // 查询
         List<SfOrder> resList = sfOrderMapper.selectByStatusAndDate(expiraTime, orderStatus, payStatus);
@@ -75,7 +76,7 @@ public class SfOrderService {
             }
             log.info("订单状态和支付状态校验通过!");
             // 修改订单的状态为已取消状态
-            int result = sfOrderMapper.updateOrderCancelById(sfOrder.getId(), 3);
+            int result = sfOrderMapper.updateOrderCancelById(sfOrder.getId(), SfOrderStatusEnum.ORDER_CANCEL.getCode());
             if(result != 1){
                 sfOrder = sfOrderMapper.selectByPrimaryKey(sfOrder.getId());
                 throw new BusinessException("订单取消失败,订单此时状态为:" + sfOrder.getOrderStatus()
@@ -87,7 +88,7 @@ public class SfOrderService {
             oLog.setCreateTime(new Date());
             oLog.setSfOrderId(sfOrder.getId());
             // 取消状态
-            oLog.setSfOrderStatus(2);
+            oLog.setSfOrderStatus(SfOrderStatusEnum.ORDER_CANCEL.getCode());
             oLog.setRemark("超过72小时未支付,系统自动取消");
             logMapper.insert(oLog);
         } catch (Exception e) {

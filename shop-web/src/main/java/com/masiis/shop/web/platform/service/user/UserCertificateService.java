@@ -6,10 +6,12 @@ import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,8 @@ public class UserCertificateService {
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
     private PfUserSkuMapper userSkuMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
     public void addUserCertificate(PfUserCertificate pfUserCertificate) {
         pfUserCertificateMapper.insert(pfUserCertificate);
@@ -60,6 +64,10 @@ public class UserCertificateService {
                 if (pfUserCertificate == null) {
                     certificateInfo.setPfUserCertificateInfo(pfUserCertificate);
                 }
+                //获取背景等级图片
+                PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(certificateInfo.getSkuId(), certificateInfo.getAgentLevelId());
+                String basePath ="/static/images/certificate/backgroundimg/";
+                certificateInfo.setBackimg(basePath + pfSkuAgent.getBackImg());
             }
         }
         return certificateInfoList;

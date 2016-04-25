@@ -34,6 +34,11 @@ public class PfSkuAgent {
      * 拿货数量
      */
     private Integer quantity;
+    /**
+     * 证书等级背景图
+     */
+    private String backImg;
+
     private String remark;
 
     public Integer getId() {
@@ -85,5 +90,13 @@ public class PfSkuAgent {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getBackImg() {
+        return backImg;
+    }
+
+    public void setBackImg(String backImg) {
+        this.backImg = backImg;
     }
 }

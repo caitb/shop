@@ -55,9 +55,6 @@ public class BOrderController extends BaseController {
      *
      * @param request
      * @param skuId
-     * @param levelId
-     * @param weixinId
-     * @param pUserId
      * @return
      * @throws Exception
      */

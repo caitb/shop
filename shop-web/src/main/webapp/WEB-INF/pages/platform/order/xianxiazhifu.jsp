@@ -31,13 +31,13 @@
     <div class="sec1">
         <div>
             <h1>￥1,000,000元</h1>
-            <p>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</p>
+            <p>您需要在${latestTime}前将￥1,000,000.00转到麦链合伙人对公账户。</p>
         </div>
-        <p>*请在汇款单的附言处注明“抗引力合伙申请100万元套餐+您的手机号”（<span>非常重要！</span>）</p>
+        <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.productAmount}万元套餐+您的手机号”（<span>非常重要！</span>）</p>
         <h1><span></span>麦链对公账户信息</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>
         <h2><span>开户名：</span><span>${supplierBank.accountName}</span></h2>
-        <h2><span>卡号：</span><span>${supplierBank.cardNumber}/span></h2>
+        <h2><span>卡号：</span><span>${supplierBank.cardNumber}</span></h2>
     </div>
     <h1>线下支付流程：</h1>
     <img src="${path}/static/images/zhifu.png" alt="">

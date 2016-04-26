@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
@@ -200,6 +201,9 @@ public class BOrderController extends BaseController {
         Map<String,Object> map = payBOrderService.offinePayment(bOrderId);
         if (map != null){
             mav.addObject("supplierBank",map.get("supplierBank"));
+            mav.addObject("latestTime", map.get("latestTime"));
+            mav.addObject("orderItem",map.get("orderItem"));
+            mav.addObject("border",map.get("border"));
         }
         return mav;
     }

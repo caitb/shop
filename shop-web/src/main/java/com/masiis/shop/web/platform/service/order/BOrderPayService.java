@@ -17,6 +17,7 @@ import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.order.OrderPayView;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -539,8 +540,10 @@ public class BOrderPayService {
                 List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
                 if (orderItems!=null&&orderItems.size()!=0){
                     map = new LinkedHashMap<String, Object>();
+                    map.put("latestTime",DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
                     map.put("supplierBank",supplierBank);
                     map.put("orderItem",orderItems.get(0));
+                    map.put("border",pfBorder);
                 }else{
                     throw new BusinessException("线下支付失败:查询子帐单为null");
                 }

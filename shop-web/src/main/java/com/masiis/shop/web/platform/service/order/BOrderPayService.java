@@ -534,8 +534,15 @@ public class BOrderPayService {
             int i = insertOrderLog(pfBorder);
             if (i==1){
                 PfSupplierBank supplierBank = getDefaultBack();
-                map = new LinkedHashMap<String, Object>();
-                map.put("supplierBank",supplierBank);
+                List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+                if (orderItems!=null&&orderItems.size()!=0){
+                    map = new LinkedHashMap<String, Object>();
+                    map.put("supplierBank",supplierBank);
+                    map.put("orderItem",orderItems.get(0));
+                }else{
+                    throw new BusinessException("线下支付失败:查询子帐单为null");
+                }
+
             }
         }
         return map;

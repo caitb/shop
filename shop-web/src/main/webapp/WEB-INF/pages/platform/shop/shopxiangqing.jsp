@@ -44,7 +44,7 @@
                 <c:if test="${orderMallDetail.sfOrder.orderStatus==0}">
                     <span>待处理</span>
                 </c:if>
-                <c:if test="${orderMallDetail.sfOrder.orderStatus==7}">
+                <c:if test="${orderMallDetail.sfOrder.orderStatus==7 && orderMallDetail.sfOrder.sendType==2}">
                     <span>未发货</span><a class="fah">发货</a>
                 </c:if>
             </p>

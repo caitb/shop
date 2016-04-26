@@ -21,8 +21,6 @@ import java.util.Locale;
  */
 public class WxPFNoticeUtils {
     private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
-    private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-    private SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
     @Resource
     private WxUserService wxUserService;
 
@@ -69,10 +67,10 @@ public class WxPFNoticeUtils {
 
         applyOK.setFirst("恭喜您，合伙人申请支付成功");
         applyOK.setRemark("恭喜您已成为合伙人。");
-        applyOK.setKeyword1(rmbFormat.format(params[0]));
+        applyOK.setKeyword1(params[0]);
         applyOK.setKeyword2(params[1]);
         applyOK.setKeyword3(params[2]);
-        applyOK.setKeyword4(timeFormart.format(params[3]));
+        applyOK.setKeyword4(params[3]);
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
@@ -96,7 +94,7 @@ public class WxPFNoticeUtils {
         join.setFirst("下线代理加入通知");
         join.setRemark("麦链合伙人，感谢有您!");
         join.setKeyword1(user.getMobile());
-        join.setKeyword2(timeFormart.format(joinTime));
+        join.setKeyword2(joinTime);
         join.setKeyword3(user.getWxNkName());
 
         req.setTouser(getOpenIdByComUser(pUser));
@@ -202,7 +200,7 @@ public class WxPFNoticeUtils {
 
         newOrder.setFirst("您有新的合伙人订单,请到店铺查看");
         newOrder.setKeyword1(params[0]);
-        newOrder.setKeyword2(timeFormart.format(params[1]));
+        newOrder.setKeyword2(params[1]);
         newOrder.setRemark("请及时发货，点击查看详情");
 
         req.setTouser(getOpenIdByComUser(user));
@@ -227,13 +225,13 @@ public class WxPFNoticeUtils {
 
         if (isSuccess) {
             apply.setFirst("您好，您的提现申请已经提交");
-            apply.setKeyword1(rmbFormat.format(params[0]));
+            apply.setKeyword1(params[0]);
             apply.setKeyword2(params[1]);
-            apply.setKeyword3(timeFormart.format(params[2]));
+            apply.setKeyword3(params[2]);
             apply.setRemark("审核结果会在2个工作日内完成，请耐心等待!");
         } else {
             apply.setFirst("您好，您的提现申请被拒绝了");
-            apply.setKeyword1(rmbFormat.format(params[0]));
+            apply.setKeyword1(params[0]);
             apply.setKeyword2(params[1]);
             apply.setKeyword3(params[2]);
             apply.setRemark("拒绝原因，您没有这么多余额，如有问题请联系客服!");
@@ -259,9 +257,9 @@ public class WxPFNoticeUtils {
 
         eas.setFirst("提现结果通知");
         eas.setKeyword1(params[0]);
-        eas.setKeyword2(rmbFormat.format(params[1]));
+        eas.setKeyword2(params[1]);
         eas.setKeyword3(params[2]);
-        eas.setKeyword4(timeFormart.format(params[3]));
+        eas.setKeyword4(params[3]);
         eas.setRemark("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收");
 
         req.setTouser(getOpenIdByComUser(user));
@@ -284,7 +282,7 @@ public class WxPFNoticeUtils {
 
         order.setFirst("补货成功");
         order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
+        order.setKeyword2(params[1]);
         order.setKeyword3(params[2]);
         order.setKeyword4("补货");
         order.setKeyword5(params[3]);
@@ -310,7 +308,7 @@ public class WxPFNoticeUtils {
 
         order.setFirst("您的补货订单支付成功");
         order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
+        order.setKeyword2(params[1]);
         order.setKeyword3(params[2]);
         order.setKeyword4("补货");
         order.setKeyword5(params[3]);
@@ -336,7 +334,7 @@ public class WxPFNoticeUtils {
 
         order.setFirst("您的订单进入排单");
         order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
+        order.setKeyword2(params[1]);
         order.setKeyword3(params[2]);
         order.setKeyword4(params[3]);
         order.setKeyword5(params[4]);
@@ -362,7 +360,7 @@ public class WxPFNoticeUtils {
 
         order.setFirst("您的排单订单已发货");
         order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
+        order.setKeyword2(params[1]);
         order.setKeyword3(params[2]);
         order.setKeyword4(params[3]);
         order.setKeyword5(params[4]);
@@ -388,7 +386,7 @@ public class WxPFNoticeUtils {
 
         order.setFirst("您的排单订单已发货");
         order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
+        order.setKeyword2(params[1]);
         order.setKeyword3(params[2]);
         order.setKeyword4(params[3]);
         order.setKeyword5(params[4]);

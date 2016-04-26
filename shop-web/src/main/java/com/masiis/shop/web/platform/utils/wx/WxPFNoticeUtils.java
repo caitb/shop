@@ -8,6 +8,7 @@ import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
@@ -23,8 +24,7 @@ public class WxPFNoticeUtils {
     private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
     private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
     private SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
-    @Resource
-    private WxUserService wxUserService;
+    private WxUserService wxUserService = (WxUserService) ApplicationContextUtil.getBean("wxUserService");
 
 
     private static class Holder {

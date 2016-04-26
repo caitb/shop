@@ -129,7 +129,7 @@
             success: function (data) {
                 if (data.isError == false) {
                     $(para).html("正在提交...");
-                    window.location.href = "${basePath}BOrderAdd/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
+                    window.location.href = "${basePath}border/goToPayBOrder.shtml?bOrderId=" + data.bOrderId;
                 }
             }
         });

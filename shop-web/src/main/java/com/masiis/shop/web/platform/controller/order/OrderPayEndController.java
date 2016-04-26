@@ -40,15 +40,15 @@ public class OrderPayEndController extends BaseController {
 
     /**
      * 补货订单支付完成
-     * @param bOrderId    订单id
-     * @param request
-     * created by wangbingjian
+     *
+     * @param bOrderId 订单id
+     * @param request  created by wangbingjian
      */
     @RequestMapping(value = "replenishment.shtml")
-    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId",required = true) Long bOrderId,
-                                                        HttpServletRequest request)throws Exception{
+    public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                                        HttpServletRequest request) throws Exception {
 
-        if(getComUser(request)==null){
+        if (getComUser(request) == null) {
             throw new BusinessException("请重新登录");
         }
         log.info("进入补货订单支付完成");
@@ -59,45 +59,21 @@ public class OrderPayEndController extends BaseController {
         List<PfBorderItem> its = new ArrayList<>();
         Integer sumQuantity = 0;
         PfUserSkuStock pfUserSkuStock;
-        for (PfBorderItem pfBorderItem:items){
+        for (PfBorderItem pfBorderItem : items) {
             sumQuantity += pfBorderItem.getQuantity();
-            pfUserSkuStock = borderSkuStockService.getUserSkuStockByUserIdAndSkuId(pfBorder.getUserId(),pfBorderItem.getSkuId());
-            pfBorderItem.setRealStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
+            pfUserSkuStock = borderSkuStockService.getUserSkuStockByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+            pfBorderItem.setRealStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());
             its.add(pfBorderItem);
         }
-        mv.addObject("pfBorder",pfBorder);
-        mv.addObject("pfBorderItems",its);
-        mv.addObject("skuImg",skuImg);
-        mv.addObject("sumQuantity",sumQuantity);
+        mv.addObject("pfBorder", pfBorder);
+        mv.addObject("pfBorderItems", its);
+        mv.addObject("skuImg", skuImg);
+        mv.addObject("sumQuantity", sumQuantity);
         //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
         //orderType 1:补货 2:拿货 0:代理
-        if (pfBorder.getSendType() == 2||pfBorder.getOrderType() == 2){
+        if (pfBorder.getSendType() == 2 || pfBorder.getOrderType() == 2) {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
-            mv.addObject("pfBorderConsignee",pfBorderConsignee);
-        }
-        //send msg 发送短信,微信提醒
-        ComUser comUser = userService.getUserById(pfBorder.getUserId());
-        if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
-            for(PfBorderItem pfBorderItem:items){
-                MobileMessageUtil.addStockByPlatform(comUser.getMobile(),String.valueOf(pfBorderItem.getQuantity()));
-                String[] param ={};
-                param[0] = pfBorderItem.getSkuName();
-                param[1] = pfBorderItem.getTotalPrice().toString();
-                param[2] = String.valueOf(pfBorderItem.getQuantity());
-                param[3] = BOrderStatus.Complete.getDesc();
-                WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser,param);
-            }
-        }
-        if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
-            for(PfBorderItem pfBorderItem:items){
-                String[] param ={};
-                param[0] = pfBorderItem.getSkuName();
-                param[1] = pfBorderItem.getTotalPrice().toString();
-                param[2] = String.valueOf(pfBorderItem.getQuantity());
-                param[3] = BOrderStatus.accountPaid.getDesc();
-                WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser,param);
-            }
-            MobileMessageUtil.addStockByUserself(comUser.getMobile());
+            mv.addObject("pfBorderConsignee", pfBorderConsignee);
         }
         mv.setViewName("platform/order/ReplenishmentPayments");
         return mv;

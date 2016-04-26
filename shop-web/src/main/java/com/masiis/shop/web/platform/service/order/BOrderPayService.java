@@ -83,42 +83,6 @@ public class BOrderPayService {
     private SfShopSkuMapper sfShopSkuMapper;
     @Resource
     private PfSupplierBankService supplierBankService;
-
-    public void test() {
-        log.info("***************************************微信短信提醒S***********************************************");
-        //订单类型(0代理1补货2拿货)
-//        if (pfBorder.getOrderType() == 0) {
-//            SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
-//            //合伙人申请成功提示(微信)
-//            String[] params = new String[4];
-//            params[0] = pfBorder.getPayAmount().toString();
-//            params[1] = pfBorderPayment.getPayTypeName();
-//            params[2] = skuName + "-" + agentLevelName;
-//            params[3] = timeFormart.format(pfBorder.getPayTime());
-//            WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
-//            //下线加入通知(微信)
-//            ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-//            WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
-//        } else if (pfBorder.getOrderType() == 1) {
-//            //拿货方式(0未选择1平台代发2自己发货)
-//            if(pfBorder.getSendType()==1){
-//
-//            }else if(pfBorder.getSendType()==2){
-//                String[] param = {};
-//                param[0] = skuName;
-//                param[1] = pfBorder.getOrderAmount().toString();
-//                param[2] = totalQuantity.toString();
-//                param[3] = BOrderStatus.accountPaid.getDesc();
-//                WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
-//                MobileMessageUtil.addStockByUserself(comUser.getMobile());
-//            }
-//        }
-//        log.info("***************************************微信短信提醒E***********************************************");
-        //发送支付成功短信
-//        MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), skuName, agentLevelName);
-    }
-
-
     /**
      * 订单支付回调入口
      *
@@ -169,19 +133,21 @@ public class BOrderPayService {
             params[3] = timeFormart.format(pfBorder.getPayTime());
             WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
             //下线加入通知(微信)
-            ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-            WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
+            if (pfBorder.getUserPid() > 0) {
+                ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+                WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
+            }
         } else if (pfBorder.getOrderType() == 1) {
             //拿货方式(0未选择1平台代发2自己发货)
             if (pfBorder.getSendType() == 1) {
-                String[] param = {};
+                String[] param = new String[4];
                 param[0] = pfBorderItems.get(0).getSkuName();
                 param[1] = rmbFormat.format(pfBorder.getOrderAmount());
                 param[2] = pfBorderItems.get(0).getQuantity().toString();
                 param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
                 WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
             } else if (pfBorder.getSendType() == 2) {
-                String[] param = {};
+                String[] param = new String[4];
                 param[0] = pfBorderItems.get(0).getSkuName();
                 param[1] = rmbFormat.format(pfBorder.getOrderAmount());
                 param[2] = pfBorderItems.get(0).getQuantity().toString();

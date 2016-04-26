@@ -24,11 +24,12 @@
         <h1>订单信息：</h1>
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">
             <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>
-            <p><span>合伙人套餐：</span><span>${pfBorderItem.skuName}</span></p>
-            <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
-            <p><span>拿货门槛：</span><span>￥${pfBorder.bailAmount}</span></p>
+            <p><span>合伙人套餐：</span><span>${pfBorder.orderAmount}元套餐</span></p>
+            <c:if test="${pfBorder.orderType==0}">
+                <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
+                <p><span>拿货门槛：</span><span>￥${pfBorder.productAmount}</span></p>
+            </c:if>
             <p><span>数量：</span><span>${pfBorderItem.quantity}</span></p>
-            <%--<p><span>商品总金额：</span><span>￥${pfBorderItem.totalPrice}</span></p>--%>
         </c:forEach>
         <h1>需付金额：</h1>
         <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
@@ -47,7 +48,7 @@
         window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
     })
     $("#downPay").click(function (event) {
-        if (${pfBorder.orderStatus!=0}){
+        if (${pfBorder.orderStatus!=0}) {
             alert("订单已支付");
             return false;
         }

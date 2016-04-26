@@ -89,7 +89,7 @@
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" id="skuForm">
                             <!-- #section:elements.form -->
                             <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label">商品名称</label>
@@ -561,6 +561,14 @@
                                 </div>
                             </div>
                         </div>
+
+                        <row>
+                            <label class="col-sm-5"></label>
+                            <div class="col-sm-6">
+                                <button type="reset" class="btn btn-lg btn-default">重置</button>
+                                <button type="submit" class="btn btn-lg btn-info" id="skuSave">保存</button>
+                            </div>
+                        </row>
                         <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -595,7 +603,7 @@
 <script type="text/javascript">
 
     Dropzone.autoDiscover = false;
-    function initDropzone(selector,dictMessage){
+    function initDropzone(selector,dictMessage, callback){
         var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品主图</span> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
@@ -609,7 +617,17 @@
                 dictResponseError: '上传文件出错了!',
 
                 //change the previewTemplate to use Bootstrap progress bars
-                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
+                previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>",
+                success: function(file){
+                    console.log('file: ' + file.name);
+
+                    if((typeof callback)=='function'){
+                        callback(file);
+                    }
+                    if (file.previewElement) {
+                        return file.previewElement.classList.add("dz-success");
+                    }
+                }
             });
 
             return myDropzone;
@@ -618,12 +636,22 @@
         }
     }
 
-    initDropzone('#dropzone');
+    initDropzone('#dropzone', null, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="mainImgUrls" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="mainImgNames" value="'+res.title+'" />');
+        $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
+    });
     var dictMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>等级图标</span> <br /> \
                                      <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
                                      <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
                                      <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
-    initDropzone('#dropzone1', dictMessage);
+    initDropzone('#dropzone1', dictMessage, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="iconImgUrls" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="iconImgNames" value="'+res.title+'" />');
+//        $('#skuForm').append('<input type="hidden" name="iconImgOriginalNames" value="'+res.original+'" />');
+    });
 </script>
 <script>
 
@@ -701,8 +729,11 @@
         });
     });
 
+    $('#skuSave').on('click', function(){
+        $('#skuForm').submit();
+    });
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('#skuForm').bootstrapValidator({
                     message: '必须填写',
                     feedbackIcons: {
@@ -745,6 +776,11 @@
                                 notEmpty: {}
                             }
                         },
+                        levelCount: {
+                            validators: {
+                                notEmpty: {}
+                            }
+                        },
                         priceCost: {
                             validators: {
                                 notEmpty: {}
@@ -777,7 +813,7 @@
                         }
                     }
                 })
-                .on('success.form.bv', function (e) {
+                .on('success.form.bv', function(e) {
                     // Prevent form submission
                     e.preventDefault();
 
@@ -793,7 +829,7 @@
                         url: '<%=basePath%>product/add.do',
                         type: 'post',
                         data: $('#skuForm').serialize(),
-                        success: function (msg) {
+                        success: function(msg){
                             alert(msg);
                         }
                     });

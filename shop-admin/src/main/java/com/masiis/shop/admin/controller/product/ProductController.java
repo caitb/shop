@@ -106,7 +106,9 @@ public class ProductController {
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
                       @RequestParam("mainImgNames")String[] mainImgNames,
-                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames) throws FileNotFoundException {
+                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames,
+                      @RequestParam("iconImgUrls")String[] iconImgUrls,
+                      @RequestParam("iconImgNames")String[] iconImgNames) throws FileNotFoundException {
 
         try{
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
@@ -120,6 +122,9 @@ public class ProductController {
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
 
+                String realPath = request.getServletContext().getRealPath("/");
+                realPath = realPath.substring(0, realPath.lastIndexOf("/"));
+
                 //代理分润
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
                 for(int i=0; i<discounts.length; i++){
@@ -128,8 +133,16 @@ public class ProductController {
                     pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setIcon(iconImgNames[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
+
+                    //上传代理等级图标到OSS
+                    String imgAbsoluteUrl = realPath + iconImgUrls[i];
+                    File iconFile = new File(imgAbsoluteUrl);
+                    OSSObjectUtils.uploadFile(iconFile, "static/product/agent_icon/");
+
+                    iconFile.delete();
                 }
 
                 //分销分润
@@ -143,8 +156,6 @@ public class ProductController {
                 }
 
                 List<ComSkuImage> comSkuImages = new ArrayList<>();
-                String realPath = request.getServletContext().getRealPath("/");
-                realPath = realPath.substring(0, realPath.lastIndexOf("/"));
                 String folderPath = realPath + "/current";
                 int[] imgPxs = {220, 308, 800};
                 File folder = new File(folderPath);

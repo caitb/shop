@@ -266,37 +266,4 @@ public class BOrderController extends BaseController {
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
         return mav;
     }
-
-    /**
-     * 选择拿货方式
-     * @param request
-     * @param bOrderId
-     * @param sendType
-     * @param userAddressId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/setUserSendType/save.do")
-    public String setUserSendTypeSave(HttpServletRequest request,
-                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId,
-                                      @RequestParam(value = "sendType", required = true) Integer sendType,
-                                      @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("isError", true);
-        try {
-            if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
-                throw new BusinessException("用户自发货，请选择收货地址。");
-            }
-            ComUser comUser = getComUser(request);
-            payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
-            jsonObject.put("isError", false);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return jsonObject.toJSONString();
-    }
 }

@@ -35,6 +35,12 @@ public class LoginController extends BaseController {
     @Resource
     private ComUserService userService;
 
+    @RequestMapping("/loginByWx")
+    @ResponseBody
+    public void loginByWx(){
+
+    }
+
     @RequestMapping("/loginByPhone")
     @ResponseBody
     public LoginByPhoneRes loginByPhone(String phoneNum, String validcode){

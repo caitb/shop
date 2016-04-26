@@ -23,7 +23,7 @@
 </div>
 <div class="wrap">
     <header>
-        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品详情</p>
     </header>
     <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">
@@ -192,16 +192,18 @@
     $(".number").on("change",function(){
         i=$(this).val();
     })
-    $(".jian").on("tap",function(){
+    $(".jian").on("touchend",function(){
         if(i<=1){
             return false;
         }
         i--;
-        $(".number").val(i)
+        $(".number").val(i);
+        event.preventDefault();
     })
-    $(".jia").on("tap",function(){
+    $(".jia").on("touchend",function(){
         i++;
-        $(".number").val(i)
+        $(".number").val(i);
+        event.preventDefault();
     })
     $(".add").on("tap",function () {
         $(".back_g").show()

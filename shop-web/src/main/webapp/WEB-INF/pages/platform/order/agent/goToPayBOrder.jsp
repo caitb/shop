@@ -47,6 +47,10 @@
         window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
     })
     $("#downPay").click(function (event) {
+        if (${pfBorder.orderStatus!=0}){
+            alert("订单已支付");
+            return false;
+        }
         if ($(this).html() == "正在提交...") {
             return;
         }

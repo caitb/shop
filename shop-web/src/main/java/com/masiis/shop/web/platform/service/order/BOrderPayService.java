@@ -560,8 +560,11 @@ public class BOrderPayService {
      */
     private PfBorder updateOrderStatus(Integer status,Long bOrderId){
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder == null&&!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
+/*        if (pfBorder == null||!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
             throw new BusinessException("订单状态不是未支付状态，线下支付失败");
+        }*/
+        if (pfBorder == null){
+            throw new BusinessException("线下支付失败:查询订单信息失败");
         }
         pfBorder.setOrderStatus(status);
         int i = pfBorderMapper.updateById(pfBorder);

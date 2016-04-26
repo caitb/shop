@@ -80,7 +80,7 @@ public class OrderPayEndController extends BaseController {
         if(pfBorder.getSendType() ==1 && pfBorder.getOrderType()==1){//平台代发 补货
             for(PfBorderItem pfBorderItem:items){
                 MobileMessageUtil.addStockByPlatform(comUser.getMobile(),String.valueOf(pfBorderItem.getQuantity()));
-                String[] param = new String[3];
+                String[] param ={};
                 param[0] = pfBorderItem.getSkuName();
                 param[1] = pfBorderItem.getTotalPrice().toString();
                 param[2] = String.valueOf(pfBorderItem.getQuantity());
@@ -90,7 +90,7 @@ public class OrderPayEndController extends BaseController {
         }
         if(pfBorder.getSendType() ==2 && pfBorder.getOrderType()==1){//自己拿货 补货
             for(PfBorderItem pfBorderItem:items){
-                String[] param = new String[3];
+                String[] param ={};
                 param[0] = pfBorderItem.getSkuName();
                 param[1] = pfBorderItem.getTotalPrice().toString();
                 param[2] = String.valueOf(pfBorderItem.getQuantity());

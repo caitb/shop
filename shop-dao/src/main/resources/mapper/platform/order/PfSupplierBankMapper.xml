@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.PfSupplierBankMapper" >
+<mapper namespace="com.masiis.shop.dao.platform.order.PfSupplierBankMapper" >
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSupplierBank" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -45,7 +45,7 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
     <!--获得默认银行-->
-    <select id="getDefaultBank" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="getDefaultBank" resultMap="BaseResultMap">
         select id, create_time, is_default, supplier_id, bank_name, account_name, card_number,
         remark
         from pf_supplier_bank

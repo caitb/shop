@@ -20,6 +20,7 @@ import com.masiis.shop.web.platform.beans.order.OrderPayView;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -527,6 +528,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public Map<String,Object> offinePayment(Long bOrderId){
         Map<String,Object> map = null;
         PfBorder pfBorder  = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(),bOrderId);
@@ -555,14 +557,10 @@ public class BOrderPayService {
      */
     private PfBorder updateOrderStatus(Integer status,Long bOrderId){
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder != null){
-            pfBorder.setOrderStatus(status);
-        }else{
-            throw new BusinessException("线下支付查询订单失败");
-        }
-        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
+        if (pfBorder == null&&!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
             throw new BusinessException("订单状态不是未支付状态，线下支付失败");
         }
+        pfBorder.setOrderStatus(status);
         int i = pfBorderMapper.updateById(pfBorder);
         if (i != 1){
             throw new BusinessException("线下支付更新订单状态失败");

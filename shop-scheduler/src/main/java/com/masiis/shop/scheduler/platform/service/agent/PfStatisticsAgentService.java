@@ -35,6 +35,10 @@ public class PfStatisticsAgentService {
      * 上一级list
      */
     private List<PfUserSku> parentList;
+    /**
+     * 当前处理的代理级别
+     */
+    private Integer currentLevel;
 
     /**
      * 每日统计代理下级人数
@@ -42,7 +46,10 @@ public class PfStatisticsAgentService {
      */
     public void statisticsAgent() throws Exception{
         logger.info("每日统计代理下级人数");
-        logger.info("查找最低级别的上一级");
+        logger.info("处理之前将下级代理数量都设置为0");
+        int updateCount = pfUserSkuMapper.updateResetAgentNum();
+        logger.info("受影响数量："+updateCount);
+        logger.info("查找倒数第二级");
         secondLastList = pfUserSkuMapper.selectSecondLastLevel();
         if (secondLastList == null || secondLastList.size() == 0){
             logger.info("各个代理没有下一级代理");
@@ -58,6 +65,7 @@ public class PfStatisticsAgentService {
                 pfUserSkuUpdateList.add(pfUserSku);
                 secondLastList.set(i,pfUserSku);
             }
+            currentLevel = pfUserSku.getAgentLevelId();
         }
         //处理数据以pid分组 Map<Integer,List>
         lookForParent(secondLastList);
@@ -83,6 +91,22 @@ public class PfStatisticsAgentService {
      */
     private void lookForParent(List<PfUserSku> pfUserSkus){
         logger.info("处理寻找上级代理");
+        List<PfUserSku> allList = pfUserSkuMapper.selectByLevel(currentLevel);
+        if (allList.size() == pfUserSkus.size()){
+            operateMap(pfUserSkus);
+        }else {
+            for (int i = 0; i < allList.size(); i++){
+                for (int j = 0; j < pfUserSkus.size(); j++){
+                    if (allList.get(i).getId() == pfUserSkus.get(j).getId()){
+                        allList.set(i,pfUserSkus.get(j));
+                    }
+                }
+            }
+            operateMap(allList);
+        }
+    }
+
+    private void operateMap(List<PfUserSku> pfUserSkus){
         map = new HashMap<>();
         List<PfUserSku> list;
         for (PfUserSku pfUserSku : pfUserSkus){
@@ -118,9 +142,10 @@ public class PfStatisticsAgentService {
         }
         pfUserSkus = pfUserSkuMapper.selectByListId(pids);
         List<PfUserSku> value;
-        Long sumAgentnum = 0l;
         for (int i = 0; i < pfUserSkus.size(); i++){
+            Long sumAgentnum = 0l;
             PfUserSku pfUserSku = pfUserSkus.get(i);
+            logger.info(pfUserSku.getId());
             value = map.get(pfUserSku.getId());
             for (PfUserSku userSku : value){
                 sumAgentnum += userSku.getAgentNum();
@@ -148,6 +173,7 @@ public class PfStatisticsAgentService {
         //计算上一级代理数量
         parentList = computeParentAgentNum();
         if (parentList != null && parentList.size() > 0){
+            currentLevel = currentLevel - 1;
             recursion(parentList);
         }
     }

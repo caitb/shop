@@ -124,6 +124,10 @@
         id = #{id,jdbcType=INTEGER}
     </update>
 
+    <update id="updateResetAgentNum" >
+        update pf_user_sku u set u.agent_num = 0 where agent_num &gt; 0
+    </update>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select id, create_time, code, pid, user_id, user_pid, sku_id, agent_level_id, is_pay,
         is_certificate, pf_border_id, bail, agent_num, remark
@@ -377,12 +381,19 @@
 
     <select id="selectByListId" resultMap="BaseResultMap">
         select
-        *
+          *
         from pf_user_sku
         where id in
         <foreach item="item" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="selectByLevel" resultMap="BaseResultMap">
+        select
+          *
+        from pf_user_sku
+        where agent_level_id = #{0}
     </select>
 
     <select id="selectUserSkuCount" resultType="java.lang.Integer">

@@ -27,6 +27,8 @@ public interface PfUserSkuMapper {
 
     int updateByPrimaryKey(PfUserSku record);
 
+    int updateResetAgentNum();
+
     List<PfUserSku> selectAgentNum(Long userId);
 
     PfUserSku selectByUserIdAndSkuId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
@@ -80,6 +82,12 @@ public interface PfUserSkuMapper {
      */
     List<PfUserSku> selectByListId(List<Integer> list);
 
+    /**
+     * 根据代理登记查询
+     * @param level
+     * @return
+     */
+    List<PfUserSku> selectByLevel(Integer level);
     /**
      * 获取用户代理商品种类的数量
      *

@@ -12,7 +12,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+<%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
     <div class="na">
@@ -30,8 +30,8 @@
     </div>
     <div class="sec1">
         <div>
-            <h1>￥1,000,000元</h1>
-            <p>您需要在${latestTime}前将￥1,000,000.00转到麦链合伙人对公账户。</p>
+            <h1>￥${border.productAmount}元</h1>
+            <p>您需要在${latestTime}前将￥${border.productAmount}转到麦链合伙人对公账户。</p>
         </div>
         <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.productAmount}万元套餐+您的手机号”（<span>非常重要！</span>）</p>
         <h1><span></span>麦链对公账户信息</h1>

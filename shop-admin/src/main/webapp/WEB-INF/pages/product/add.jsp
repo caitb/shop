@@ -627,6 +627,21 @@
                     if (file.previewElement) {
                         return file.previewElement.classList.add("dz-success");
                     }
+                },
+                removedfile: function(file) {
+                    var _ref;
+                    if (file.previewElement) {
+                        if ((_ref = file.previewElement) != null) {
+                            _ref.parentNode.removeChild(file.previewElement);
+                        }
+                    }
+
+                    var res = file.xhr.response ? window.eval('(' + file.xhr.response + ')') : '';
+                    $('#skuForm').find('input[value="'+res.url+'"]').remove();
+                    $('#skuForm').find('input[value="'+res.title+'"]').remove();
+                    $('#skuForm').find('input[value="'+res.original+'"]').remove();
+
+                    return this._updateMaxFilesReachedClass();
                 }
             });
 

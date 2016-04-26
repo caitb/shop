@@ -627,6 +627,19 @@
                     if (file.previewElement) {
                         return file.previewElement.classList.add("dz-success");
                     }
+                },
+                removedfile: function(file) {
+                    var res = window.eval('(' + file.xhr.response + ')');
+                    var _ref;
+                    if (file.previewElement) {
+                        if ((_ref = file.previewElement) != null) {
+                            _ref.parentNode.removeChild(file.previewElement);
+                        }
+                    }
+                    $('#skuForm').find('input[value="'+res.url+'"]').remove();
+                    $('#skuForm').find('input[value="'+res.title+'"]').remove();
+                    $('#skuForm').find('input[value="'+res.original+'"]').remove();
+                    return this._updateMaxFilesReachedClass();
                 }
             });
 
@@ -650,7 +663,6 @@
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="iconImgUrls" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="iconImgNames" value="'+res.title+'" />');
-//        $('#skuForm').append('<input type="hidden" name="iconImgOriginalNames" value="'+res.original+'" />');
     });
 </script>
 <script>

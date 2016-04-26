@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.system;
 
+import com.masiis.shop.api.bean.system.LoginByPhoneRes;
 import com.masiis.shop.api.bean.system.RegisterValidCodeRes;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
@@ -27,8 +28,26 @@ public class LoginController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
 
     @RequestMapping("/loginByPhone")
-    public void loginByPhone(String phoneNum, String validcode){
+    public LoginByPhoneRes loginByPhone(String phoneNum, String validcode){
+        LoginByPhoneRes res = new LoginByPhoneRes();
+        try{
+            if(StringUtils.isBlank(phoneNum)){
+                // 电话号码为空
+                res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_BLANK);
+                res.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
+            }
+        } catch (Exception e) {
 
+
+
+
+
+
+
+
+        }
+        return res;
     }
 
     @RequestMapping("/getPhoneValidCode")

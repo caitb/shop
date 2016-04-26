@@ -25,7 +25,7 @@
         <property name="connectionFactory" ref="redisConnectionFactory" />
     </bean>
 
-    <!-- 连接公共redis -->
+    <!-- 连接公共redis
     <bean id="rdCommonConnectFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
         <property name="poolConfig" ref="poolConfig" />
         <property name="hostName" value="${redis.hostName}" />
@@ -35,7 +35,7 @@
     </bean>
     <bean id="rdCommonTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="rdCommonConnectFactory"/>
-    </bean>
+    </bean>-->
 
     <!-- 将session放入redis -->
     <bean id="redisHttpSessionConfiguration"

@@ -78,8 +78,8 @@ public class PfOrderTask {
      */
     @Scheduled(fixedDelay = 1000*60*10)
     public void doSomethingWithDelay(){
-        log.info("定时任务开始执行……开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
+        log.info("处理排队订单:定时任务开始执行……开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
         orderQueueTimeDealService.commonQueuingOrder();
-        log.info("定时任务开始执行……结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
+        log.info("处理排队订单:定时任务开始执行……结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
     }
 }

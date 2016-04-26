@@ -77,7 +77,7 @@ public class WxUserUtils {
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);
-            String subscribeNew = (String) res.get("subscribe");
+            String subscribeNew = res.get("subscribe").toString();
             if(StringUtils.isNotBlank(subscribeNew)){
                 if(subscribeNew.equals("1")){
                     return true;
@@ -108,7 +108,7 @@ public class WxUserUtils {
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
-        String subscribe = (String) res.get("subscribe");
+        String subscribe = res.get("subscribe").toString();
         if(StringUtils.isNotBlank(subscribe)){
             if(subscribe.equals("1")){
                 return true;
@@ -132,7 +132,7 @@ public class WxUserUtils {
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);
-            String subscribeNew = (String) res.get("subscribe");
+            String subscribeNew = res.get("subscribe").toString();
             if(StringUtils.isNotBlank(subscribeNew)){
                 if(subscribeNew.equals("1")){
                     return true;

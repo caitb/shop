@@ -63,7 +63,7 @@ public class WxUserUtils {
             }
             throw new BusinessException("请求异常:" + result);
         }
-        String errcode = ((Integer) res.get("errcode")).toString();
+        String errcode = res.get("errcode").toString();
         if(StringUtils.isNotBlank(errcode)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID_OR_NOT_LATEST)

@@ -106,6 +106,13 @@ public class PfBorderController {
         return "error";
     }
 
+    /**
+     * 发货
+     * @param request
+     * @param response
+     * @param pfBorderFreight
+     * @return
+     */
     @RequestMapping("/delivery.do")
     @ResponseBody
     public Object delivery(HttpServletRequest request, HttpServletResponse response,
@@ -126,6 +133,21 @@ public class PfBorderController {
             log.error("合伙人订单发货失败![pfBorderFreight="+pfBorderFreight+"]");
             e.printStackTrace();
         }
+
+        return "error";
+    }
+
+    /**
+     * 确认收款
+     * @param request
+     * @param response
+     * @param pfBorderId
+     * @param serialNumber 银行流水号
+     * @return
+     */
+    @RequestMapping("/receipt.do")
+    @ResponseBody
+    public Object receipt(HttpServletRequest request, HttpServletResponse response, Long pfBorderId, String serialNumber){
 
         return "error";
     }

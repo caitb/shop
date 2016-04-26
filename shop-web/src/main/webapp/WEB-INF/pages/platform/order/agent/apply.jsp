@@ -44,12 +44,12 @@
                 <c:choose>
                     <c:when test="${user.isBinding==1}">
                         <td>绑定手机号</td>
-                        <td>是</td>
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
                         <td>--</td>
                     </c:when>
                     <c:otherwise>
                         <td>绑定手机号</td>
-                        <td><span style="color: #FF5200">否</span></td>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
                         <td><a href="javascript:void(0);" onclick="validateCodeJS.applyTrial('agent')"
                                style="color: #FF5200;text-decoration: underline">去完成</a></td>
                     </c:otherwise>
@@ -59,11 +59,11 @@
                 <td>实名认证</td>
                 <c:choose>
                     <c:when test="${user.auditStatus == 2}">
-                        <td>是</td>
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
                         <td>--</td>
                     </c:when>
                     <c:otherwise>
-                        <td><span style="color: #FF5200">否</span></td>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
                         <c:if test="${user.auditStatus == 1}">
                             <td><span style="color: #FF5200">审核中</span></td>
                         </c:if>

@@ -7,9 +7,10 @@
  */
 package com.masiis.shop.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PfSupplierBank {
+public class PfSupplierBank implements Serializable{
 
     private Integer id;
     /**

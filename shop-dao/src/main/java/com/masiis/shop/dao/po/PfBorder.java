@@ -158,11 +158,20 @@ public class PfBorder {
      */
     private Integer totalQuantity = 0;
     private String pidUserName;
+    private String payTimes;//线下支付到期时间
     /**
      * 订单商品
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
+
+    public void setPayTimes(String payTimes) {
+        this.payTimes = payTimes;
+    }
+
+    public String getPayTimes() {
+        return payTimes;
+    }
 
     public void setPidUserName(String pidUserName) {this.pidUserName = pidUserName;}
 

@@ -23,15 +23,15 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="box">
+    <div class="box"><c:if test="${forcusPF!=true}">
         <div class="na">
-            <p></p>
+            <p><img src="${user.wxHeadImg}" alt=""></p>
             <h1>
                 <span>麦链合伙人</span>
                 <span>关注可查资金，管理店铺，发展下级</span>
             </h1>
             <label class="add">加关注</label>
-        </div>
+        </div></c:if>
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">

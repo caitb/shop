@@ -31,6 +31,7 @@
                     <ul>
                         <li><a href="javascript:;" class="on">全部</a></li>
                         <li><a href="javascript:;">待付款</a></li>
+                        <li><a href="javascript:;">线下支付中</a></li>
                         <li><a href="javascript:;">待发货</a></li>
                         <li><a href="javascript:;">待收货</a></li>
                         <li><a href="javascript:;">已完成</a></li>
@@ -93,10 +94,11 @@
                                 <h2>
                                     订单号：<span>${pb.orderCode}</span>
                                     <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
-                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                    <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
@@ -126,6 +128,9 @@
                                     <c:if test="${pb.orderStatus ==0 }">
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
+                                    <c:if test="${pb.orderStatus ==9 }">
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                    </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa"  name="querenshouhuo_${pb.id}"
                                               onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -145,6 +150,7 @@
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
@@ -171,6 +177,9 @@
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0}">
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                    </c:if>
+                                    <c:if test="${pb.orderStatus ==9 }">
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -191,6 +200,7 @@
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
@@ -217,6 +227,9 @@
                                     <c:if test="${pb.sendType==0 && pb.orderStatus !=0}"><span class="jixu">选择拿货方式</span></c:if>
                                     <c:if test="${pb.orderStatus ==0}">
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                    </c:if>
+                                    <c:if test="${pb.orderStatus ==9 }">
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                     <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -237,6 +250,7 @@
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                     <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                     <div class="shangpin">
@@ -264,6 +278,9 @@
                                     <c:if test="${pb.orderStatus ==0}">
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
+                                    <c:if test="${pb.orderStatus ==9 }">
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                    </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                     <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                         确认收货
@@ -283,6 +300,7 @@
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                         <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                         <div class="shangpin">
@@ -310,6 +328,9 @@
                                         <c:if test="${pb.orderStatus ==0}">
                                             <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
+                                        <c:if test="${pb.orderStatus ==9 }">
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                        </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
                                                 确认收货
@@ -329,6 +350,7 @@
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                         <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
                                         <div class="shangpin">
@@ -357,6 +379,61 @@
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==0 }">
                                             <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        </c:if>
+                                        <c:if test="${pb.orderStatus ==9 }">
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                        </c:if>
+                                        <c:if test="${pb.orderStatus ==8}">
+                                            <span class="fa"  name="querenshouhuo_${pb.id}"
+                                                  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">确认收货</span>
+                                        </c:if>
+                                    </div>
+                                </section>
+                            </c:forEach>
+                        </div>
+                        <div class="all">
+                            <c:forEach items="${pfBorders}" var="pb">
+                                <section class="sec1">
+                                    <p>时间： <span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
+                                    <h2>
+                                        订单号：<span>${pb.orderCode}</span>
+                                        <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                        <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
+                                        <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
+                                    </h2>
+                                    <c:forEach items="${pb.pfBorderItems}" var="pbi">
+                                        <div class="shangpin">
+                                            <p class="photo">
+                                                <a href="javascript:void(0);">
+                                                    <img src="${pbi.skuUrl}" alt="">
+                                                </a>
+                                            </p>
+                                            <div>
+                                                <h2>${pbi.skuName}</h2>
+                                                <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
+                                            </div>
+                                        </div></c:forEach>
+                                    <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                    <h1><b>发货方：</b>
+                                        <span>${pb.pidUserName}</span>
+                                        <c:if test="${pb.orderType==2 && pb.sendType==1}">
+                                            <b>类型：</b><span>拿货</span></c:if><c:if test="${pb.orderType==0}">
+                                            <b>类型：</b><span>合伙订单</span></c:if><c:if test="${pb.orderType==1}">
+                                            <b>类型：</b><span>补货</span></c:if>
+                                    </h1>
+                                    <div class="ding">
+                                        <p><a href="<%=path%>/borderManage/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
+                                        <c:if test="${pb.sendType==0 && pb.orderStatus !=0}">
+                                            <span class="jixu">选择拿货方式</span>
+                                        </c:if>
+                                        <c:if test="${pb.orderStatus ==0 }">
+                                            <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
+                                        </c:if>
+                                        <c:if test="${pb.orderStatus ==9 }">
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"
@@ -389,15 +466,19 @@
            </div>
            <div class="back_pay">
                <div>
-                   <h1>￥1,000,000元</h1>
-                   <p>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</p>
+                   <h1>￥<span id="1">1,000,000</span>元</h1>
+                   <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
                </div>
+               <%--<div>--%>
+                   <%--<h1>￥1,000,000元</h1>--%>
+                   <%--<p>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</p>--%>
+               <%--</div>--%>
                <p>*请在汇款单的附言处注明绑定的手机号”（<span>非常重要！</span>）</p>
                <h1><span></span>麦链对公账户信息</h1>
-               <h2><span>开户行：</span><span>建设银行朝阳门支行</span></h2>
-               <h2><span>开户名：</span><span>北京麦士网络科技有限公司</span></h2>
-               <h2><span>卡号：</span><span>62220000000000000000</span></h2>
-               <button>我知道了</button>
+               <h2><span>开户行：</span><span>${defaultBank.bankName}</span></h2>
+               <h2><span>开户名：</span><span>${defaultBank.accountName}</span></h2>
+               <h2><span>卡号：</span><span>${defaultBank.cardNumber}</span></h2>
+               <button class="xinxn">我知道了</button>
            </div>
             <div class="back" style="display: none">
 
@@ -410,6 +491,20 @@
        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
        <script src="<%=path%>/static/js/hideWXShare.js"></script>
        <script>
+
+           function xinxi(orderAmount,payTimes){
+               $(".back").css("display","-webkit-box");
+               $(".back_pay").show();
+               $("#1").html(orderAmount);
+               $("#3").html(orderAmount);
+               $("#2").html(payTimes);
+           }
+
+           $(".xinxn").on("click",function(){
+               $(".back_pay").hide();
+               $(".back").hide();
+           })
+
            $(function(){
             $("li").on("click",function(){
                 var index=$(this).index();
@@ -440,6 +535,8 @@
                                 StatusName="待收货";
                             }else if(pfBorder.orderStatus ==3){
                                 StatusName="交易成功";
+                            }else if(pfBorder.orderStatus ==9){
+                                StatusName="线下支付中";
                             }
                             trHtml+="<h2>订单号：<span>"+pfBorder.orderCode+"</span><b class='querenshouhuo_"+pfBorder.id+"' >"+StatusName+"</b ></h2>";
                             $.each(pfBorder.pfBorderItems, function(i, pfBorderItem) {
@@ -470,6 +567,8 @@
                                 trHtml+="<span class=\"jixu\">选择拿货方式</span></a>";
                             }else if(pfBorder.orderStatus ==0){
                                 trHtml+="<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">继续支付</a></span></a>";
+                            }else if(pfBorder.orderStatus ==9){
+                                trHtml+="<span class=\"jixu\" onclick=\"xinxi('"+pfBorder.orderAmount+"','"+pfBorder.payTimes+"')\">支付信息</span></a>";
                             }else{
                                 trHtml+="</a>";
                             }

@@ -140,5 +140,6 @@ public class SfOrderManageService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
+
     }
 }

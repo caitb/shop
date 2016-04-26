@@ -38,6 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -144,7 +145,9 @@ public class BOrderPayService {
         //重新获取改变后的订单数据
         pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         //微信推送通知
-        ComUser comUser = comUserMapper.selectByPrimaryKey(bOrderId);
+        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
+        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
             String[] param = {};
@@ -160,10 +163,10 @@ public class BOrderPayService {
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
             //合伙人申请成功提示(微信)
             String[] params = new String[4];
-            params[0] = pfBorder.getPayAmount().toString();
+            params[0] = rmbFormat.format(pfBorder.getPayAmount());
             params[1] = pfBorderPayment.getPayTypeName();
             params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
-            params[3] = pfBorder.getPayTime().toString();
+            params[3] = timeFormart.format(pfBorder.getPayTime());
             WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
             //下线加入通知(微信)
             ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
@@ -173,21 +176,21 @@ public class BOrderPayService {
             if (pfBorder.getSendType() == 1) {
                 String[] param = {};
                 param[0] = pfBorderItems.get(0).getSkuName();
-                param[1] = pfBorder.getOrderAmount().toString();
+                param[1] = rmbFormat.format(pfBorder.getOrderAmount());
                 param[2] = pfBorderItems.get(0).getQuantity().toString();
                 param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
                 WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
             } else if (pfBorder.getSendType() == 2) {
                 String[] param = {};
                 param[0] = pfBorderItems.get(0).getSkuName();
-                param[1] = pfBorder.getOrderAmount().toString();
+                param[1] = rmbFormat.format(pfBorder.getOrderAmount());
                 param[2] = pfBorderItems.get(0).getQuantity().toString();
                 param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
                 WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
                 if (pfBorder.getUserPid() != 0) {
                     String[] paramIn = {};
                     paramIn[0] = pfBorder.getOrderCode();
-                    paramIn[1] = pfBorder.getCreateTime().toString();
+                    paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                     String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
                     WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
                 }

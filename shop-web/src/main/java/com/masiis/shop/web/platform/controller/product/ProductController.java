@@ -159,6 +159,7 @@ public class ProductController extends BaseController {
         mav.addObject("comSku", comSku);
         mav.addObject("comSkuImage", productImgValue + comSkuImage.getImgUrl());
         mav.addObject("levelStock", objectMap.get("levelStock"));
+        mav.addObject("priceDiscount", objectMap.get("priceDiscount"));
         return mav;
     }
 

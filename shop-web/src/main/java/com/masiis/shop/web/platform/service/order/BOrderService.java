@@ -18,6 +18,7 @@ import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -249,6 +250,8 @@ public class BOrderService {
         if (freight == null || freight == "") {
             throw new BusinessException("请重新输入快递单号");
         }
+        PfBorderItem pfBorderItems = pfBorderItemMapper.selectByOrderId(pfBorder.getId());
+        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.getAgentLevelId());
         if (pfBorder.getSendType() == 1) {//平台代发
             if (pfBorder.getOrderType() == 2) {//拿货
                 pfBorder.setShipStatus(5);
@@ -271,6 +274,17 @@ public class BOrderService {
                 pfBorderOperationLog.setRemark("订单完成");
                 pfBorderOperationLogMapper.insert(pfBorderOperationLog);
                 MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
+                String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/borderManage/deliveryBorderDetils.html?id="+pfBorder.getId().toString();
+                String[] params=new String[5];
+                params[0]=pfBorderItems.getSkuName();
+                params[1]=comAgentLevel.getName();
+                params[2]=pfBorder.getOrderCode();
+                params[3]=shipManName;
+                params[4]=freight;
+                Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+                if(aBoolean==false){
+                    throw new BusinessException("订单发货微信提示失败");
+                }
             }
         } else if (pfBorder.getSendType() == 2) {//自己发货
             pfBorder.setShipStatus(5);
@@ -291,6 +305,17 @@ public class BOrderService {
             pfBorderOperationLog.setRemark("订单完成");
             pfBorderOperationLogMapper.insert(pfBorderOperationLog);
             MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
+            String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/borderManage/deliveryBorderDetils.html?id="+pfBorder.getId().toString();
+            String[] params=new String[5];
+            params[0]=pfBorderItems.getSkuName();
+            params[1]=comAgentLevel.getName();
+            params[2]=pfBorder.getOrderCode();
+            params[3]=shipManName;
+            params[4]=freight;
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            if(aBoolean==false){
+                throw new BusinessException("订单发货微信提示失败");
+            }
         }
     }
 

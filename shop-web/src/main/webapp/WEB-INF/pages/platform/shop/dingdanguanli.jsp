@@ -327,7 +327,7 @@
                                 }else{
                                     trHtml+="";
                                 }
-                                 if(sfOrder.orderStatus ==7){
+                                 if(sfOrder.orderStatus ==7 && sfOrder.sendType==2){
                                     trHtml+="<button class=\"fa\" name=\"fahuo_"+sfOrder.id+"\" onclick=\"fahuo('"+sfOrder.id+"')\">发货</button>";
                                 }else{
                                     trHtml+="";

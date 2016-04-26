@@ -213,7 +213,7 @@ public class SfOrderManagerController extends BaseController {
     public ModelAndView borderManagement(HttpServletRequest request,Integer fm) throws Exception{
         ComUser user = getComUser(request);
         if (user == null) {
-            user = userService.getUserById(1l);
+            user = userService.getUserById(127l);
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
         /*if(sfUserRelation==null){

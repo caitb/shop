@@ -119,8 +119,8 @@ public class IndexController extends BaseController {
             user = userService.getUserById(1l);
             req.getSession().setAttribute("comUser", user);
         }
-        shopId = 6L;
-        userPid = 19L;
+        shopId = 52L;
+        userPid = 128L;
         if (req.getSession().getAttribute("userPid") == null) {
             req.getSession().setAttribute("userPid", userPid);
         }

@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +107,17 @@ public class SfOrderService {
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
             MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
+            String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
+            String[] params=new String[5];
+            params[0]=null;
+            params[1]=null;
+            params[2]=sfOrder.getOrderCode();
+            params[3]=shipManName;
+            params[4]=freight;
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            if(aBoolean==false){
+                throw new BusinessException("消费者订单发货微信提示失败");
+            }
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);
@@ -126,6 +138,17 @@ public class SfOrderService {
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
             MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
+            String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
+            String[] params=new String[5];
+            params[0]=null;
+            params[1]=null;
+            params[2]=sfOrder.getOrderCode();
+            params[3]=shipManName;
+            params[4]=freight;
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            if(aBoolean==false){
+                throw new BusinessException("消费者订单发货微信提示失败");
+            }
         }
     }
 }

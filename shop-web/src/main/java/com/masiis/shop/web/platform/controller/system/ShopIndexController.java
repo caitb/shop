@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.system;
 
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
@@ -42,7 +43,7 @@ public class ShopIndexController extends BaseController {
         ComUser user = getComUser(req);
 //        ComUser user = userService.getUserById(1l);
         if (user == null) {
-            user = userService.getUserById(1l);
+            user = userService.getUserById(127l);
             req.getSession().setAttribute("comUser", user);
         }
         ModelAndView modelAndView = new ModelAndView();
@@ -55,6 +56,9 @@ public class ShopIndexController extends BaseController {
         }
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
+        if(comUserAccount==null ){
+            throw  new BusinessException("comUserAccount 统计为空");
+        }
         Long num =0l;
         List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
         if(agentNum!= null){

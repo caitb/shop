@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
@@ -21,6 +22,7 @@ import java.util.Locale;
 public class WxPFNoticeUtils {
     private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
     private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
+    private SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
     @Resource
     private WxUserService wxUserService;
 
@@ -70,7 +72,7 @@ public class WxPFNoticeUtils {
         applyOK.setKeyword1(rmbFormat.format(params[0]));
         applyOK.setKeyword2(params[1]);
         applyOK.setKeyword3(params[2]);
-        applyOK.setKeyword4(params[3]);
+        applyOK.setKeyword4(timeFormart.format(params[3]));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
@@ -94,7 +96,7 @@ public class WxPFNoticeUtils {
         join.setFirst("下线代理加入通知");
         join.setRemark("麦链合伙人，感谢有您!");
         join.setKeyword1(user.getMobile());
-        join.setKeyword2(joinTime);
+        join.setKeyword2(timeFormart.format(joinTime));
         join.setKeyword3(user.getWxNkName());
 
         req.setTouser(getOpenIdByComUser(pUser));
@@ -187,7 +189,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 新代理订单提醒
+     * 有新的下级补货订单
      *
      * @param user
      * @param params   (1,订单编号(不是id);2,时间)
@@ -200,7 +202,7 @@ public class WxPFNoticeUtils {
 
         newOrder.setFirst("您有新的合伙人订单,请到店铺查看");
         newOrder.setKeyword1(params[0]);
-        newOrder.setKeyword2(params[1]);
+        newOrder.setKeyword2(timeFormart.format(params[1]));
         newOrder.setRemark("请及时发货，点击查看详情");
 
         req.setTouser(getOpenIdByComUser(user));
@@ -227,7 +229,7 @@ public class WxPFNoticeUtils {
             apply.setFirst("您好，您的提现申请已经提交");
             apply.setKeyword1(rmbFormat.format(params[0]));
             apply.setKeyword2(params[1]);
-            apply.setKeyword3(params[2]);
+            apply.setKeyword3(timeFormart.format(params[2]));
             apply.setRemark("审核结果会在2个工作日内完成，请耐心等待!");
         } else {
             apply.setFirst("您好，您的提现申请被拒绝了");
@@ -259,7 +261,7 @@ public class WxPFNoticeUtils {
         eas.setKeyword1(params[0]);
         eas.setKeyword2(rmbFormat.format(params[1]));
         eas.setKeyword3(params[2]);
-        eas.setKeyword4(params[3]);
+        eas.setKeyword4(timeFormart.format(params[3]));
         eas.setRemark("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收");
 
         req.setTouser(getOpenIdByComUser(user));

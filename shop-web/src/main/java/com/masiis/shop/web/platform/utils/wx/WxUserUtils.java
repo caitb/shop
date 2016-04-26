@@ -53,7 +53,7 @@ public class WxUserUtils {
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
-        String subscribe = (String) res.get("subscribe");
+        String subscribe = res.get("subscribe").toString();
         if(StringUtils.isNotBlank(subscribe)){
             if(subscribe.equals("1")){
                 return true;
@@ -63,7 +63,7 @@ public class WxUserUtils {
             }
             throw new BusinessException("请求异常:" + result);
         }
-        String errcode = (String) res.get("errcode");
+        String errcode = ((Integer) res.get("errcode")).toString();
         if(StringUtils.isNotBlank(errcode)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID)
                 || errcode.equals(WxResCodeCons.ACCESS_TOKEN_INVALID_OR_NOT_LATEST)

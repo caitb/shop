@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @auth:lzh
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/sys")
 public class LoginController extends BaseController {
     private Logger log = Logger.getLogger(this.getClass());
 
@@ -54,7 +54,9 @@ public class LoginController extends BaseController {
             }
             // 保存验证码到redis
 
-            SpringRedisUtil.saveEx(code, code, 5 * 60);
+            SpringRedisUtil.saveEx(code,
+                    ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum),
+                    Integer.valueOf(SMSConstants.REGESTER_VALID_TIME) * 60);
             // 返回结果
         } catch (Exception e) {
             log.error(e);

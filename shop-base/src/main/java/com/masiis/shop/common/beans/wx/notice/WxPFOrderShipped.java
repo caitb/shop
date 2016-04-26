@@ -8,61 +8,61 @@ public class WxPFOrderShipped extends WxNoticeDataBase {
     /**
      * 内容标题
      */
-    private String first;
+    private WxNoticeDataItem first;
     /**
      * 订单编号
      */
-    private String keyword1;
+    private WxNoticeDataItem keyword1;
     /**
      * 快递公司
      */
-    private String keyword2;
+    private WxNoticeDataItem keyword2;
     /**
      * 快递单号
      */
-    private String keyword3;
+    private WxNoticeDataItem keyword3;
     /**
      * 备注
      */
-    private String remark;
+    private WxNoticeDataItem remark;
 
-    public String getFirst() {
+    public WxNoticeDataItem getFirst() {
         return first;
     }
 
-    public void setFirst(String first) {
+    public void setFirst(WxNoticeDataItem first) {
         this.first = first;
     }
 
-    public String getKeyword1() {
+    public WxNoticeDataItem getKeyword1() {
         return keyword1;
     }
 
-    public void setKeyword1(String keyword1) {
+    public void setKeyword1(WxNoticeDataItem keyword1) {
         this.keyword1 = keyword1;
     }
 
-    public String getKeyword2() {
+    public WxNoticeDataItem getKeyword2() {
         return keyword2;
     }
 
-    public void setKeyword2(String keyword2) {
+    public void setKeyword2(WxNoticeDataItem keyword2) {
         this.keyword2 = keyword2;
     }
 
-    public String getKeyword3() {
+    public WxNoticeDataItem getKeyword3() {
         return keyword3;
     }
 
-    public void setKeyword3(String keyword3) {
+    public void setKeyword3(WxNoticeDataItem keyword3) {
         this.keyword3 = keyword3;
     }
 
-    public String getRemark() {
+    public WxNoticeDataItem getRemark() {
         return remark;
     }
 
-    public void setRemark(String remark) {
+    public void setRemark(WxNoticeDataItem remark) {
         this.remark = remark;
     }
 }

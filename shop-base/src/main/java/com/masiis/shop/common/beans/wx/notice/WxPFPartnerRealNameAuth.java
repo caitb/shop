@@ -8,49 +8,49 @@ public class WxPFPartnerRealNameAuth extends WxNoticeDataBase{
     /**
      * 内容标题
      */
-    private String first;
+    private WxNoticeDataItem first;
     /**
      * 认证详情
      */
-    private String keyword1;
+    private WxNoticeDataItem keyword1;
     /**
      * 认证结果
      */
-    private String keyword2;
+    private WxNoticeDataItem keyword2;
     /**
      * 备注
      */
-    private String remark;
+    private WxNoticeDataItem remark;
 
-    public String getFirst() {
+    public WxNoticeDataItem getFirst() {
         return first;
     }
 
-    public void setFirst(String first) {
+    public void setFirst(WxNoticeDataItem first) {
         this.first = first;
     }
 
-    public String getKeyword1() {
+    public WxNoticeDataItem getKeyword1() {
         return keyword1;
     }
 
-    public void setKeyword1(String keyword1) {
+    public void setKeyword1(WxNoticeDataItem keyword1) {
         this.keyword1 = keyword1;
     }
 
-    public String getKeyword2() {
+    public WxNoticeDataItem getKeyword2() {
         return keyword2;
     }
 
-    public void setKeyword2(String keyword2) {
+    public void setKeyword2(WxNoticeDataItem keyword2) {
         this.keyword2 = keyword2;
     }
 
-    public String getRemark() {
+    public WxNoticeDataItem getRemark() {
         return remark;
     }
 
-    public void setRemark(String remark) {
+    public void setRemark(WxNoticeDataItem remark) {
         this.remark = remark;
     }
 }

@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
@@ -22,7 +21,6 @@ import java.util.Locale;
 public class WxPFNoticeUtils {
     private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
     private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-    private SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
     @Resource
     private WxUserService wxUserService;
 
@@ -67,12 +65,12 @@ public class WxPFNoticeUtils {
         WxPFPartnerApplyOK applyOK = new WxPFPartnerApplyOK();
         WxNoticeReq<WxPFPartnerApplyOK> req = new WxNoticeReq<>(applyOK);
 
-        applyOK.setFirst("恭喜您，合伙人申请支付成功");
-        applyOK.setRemark("恭喜您已成为合伙人。");
-        applyOK.setKeyword1(rmbFormat.format(params[0]));
-        applyOK.setKeyword2(params[1]);
-        applyOK.setKeyword3(params[2]);
-        applyOK.setKeyword4(timeFormart.format(params[3]));
+        applyOK.setFirst(new WxNoticeDataItem("恭喜您，合伙人申请支付成功", null));
+        applyOK.setRemark(new WxNoticeDataItem("恭喜您已成为合伙人。", null));
+        applyOK.setKeyword1(new WxNoticeDataItem(params[0], null));
+        applyOK.setKeyword2(new WxNoticeDataItem(params[1], null));
+        applyOK.setKeyword3(new WxNoticeDataItem(params[2], null));
+        applyOK.setKeyword4(new WxNoticeDataItem(params[3], null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_PTNER_APPLY_OK);
@@ -93,11 +91,11 @@ public class WxPFNoticeUtils {
         WxPFPartnerJoin join = new WxPFPartnerJoin();
         WxNoticeReq<WxPFPartnerJoin> req = new WxNoticeReq<>(join);
 
-        join.setFirst("下线代理加入通知");
-        join.setRemark("麦链合伙人，感谢有您!");
-        join.setKeyword1(user.getMobile());
-        join.setKeyword2(timeFormart.format(joinTime));
-        join.setKeyword3(user.getWxNkName());
+        join.setFirst(new WxNoticeDataItem("下线代理加入通知", null));
+        join.setRemark(new WxNoticeDataItem("麦链合伙人，感谢有您!", null));
+        join.setKeyword1(new WxNoticeDataItem(user.getMobile(), null));
+        join.setKeyword2(new WxNoticeDataItem(joinTime, null));
+        join.setKeyword3(new WxNoticeDataItem(user.getWxNkName(), null));
 
         req.setTouser(getOpenIdByComUser(pUser));
         // 调用下线加入模板id
@@ -119,15 +117,15 @@ public class WxPFNoticeUtils {
         WxPFPartnerRealNameAuth auth = new WxPFPartnerRealNameAuth();
         WxNoticeReq<WxPFPartnerRealNameAuth> req = new WxNoticeReq<>(auth);
 
-        auth.setFirst("实名认证");
+        auth.setFirst(new WxNoticeDataItem("实名认证", null));
         if (isSuccess) {
-            auth.setRemark("您的实名认证已经通过，点击继续申请合伙人!");
-            auth.setKeyword1("恭喜您认证通过");
-            auth.setKeyword2("认证通过");
+            auth.setRemark(new WxNoticeDataItem("您的实名认证已经通过，点击继续申请合伙人!", null));
+            auth.setKeyword1(new WxNoticeDataItem("恭喜您认证通过", null));
+            auth.setKeyword2(new WxNoticeDataItem("认证通过", null));
         } else {
-            auth.setRemark("认证失败，点击重新认证。");
-            auth.setKeyword1("非常抱歉，由于您提供的身份信息有误，实名认证失败，请重新认证。");
-            auth.setKeyword2("认证失败");
+            auth.setRemark(new WxNoticeDataItem("认证失败，点击重新认证。", null));
+            auth.setKeyword1(new WxNoticeDataItem("非常抱歉，由于您提供的身份信息有误，实名认证失败，请重新认证。", null));
+            auth.setKeyword2(new WxNoticeDataItem("认证失败", null));
         }
 
         req.setTouser(getOpenIdByComUser(user));
@@ -143,21 +141,22 @@ public class WxPFNoticeUtils {
      * 实名认证申请提交通知
      *
      * @param user
+     * @param params    (第一个,手机号; 第二个,日期)
      * @return
      */
-    public Boolean partnerRealNameSubmit(ComUser user) {
+    public Boolean partnerRealNameSubmit(ComUser user, String[] params) {
         WxPFPartnerRealNameSubmit sub = new WxPFPartnerRealNameSubmit();
         WxNoticeReq<WxPFPartnerRealNameSubmit> req = new WxNoticeReq<>(sub);
 
-        sub.setFirst("实名认证已经提交");
-        sub.setRemark("您已实名信息已经提交，审核将会在1个工作日完成。请耐心等待审核结果!");
-        sub.setKeyword1(user.getWxNkName());
-        sub.setKeyword2("");
+        sub.setFirst(new WxNoticeDataItem("实名认证已经提交", null));
+        sub.setRemark(new WxNoticeDataItem("您已实名信息已经提交，审核将会在1个工作日完成。请耐心等待审核结果!", null));
+        sub.setKeyword1(new WxNoticeDataItem(user.getWxNkName(), null));
+        sub.setKeyword2(new WxNoticeDataItem(params[0], null));
+        sub.setKeyword3(new WxNoticeDataItem(params[1], null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用实名认证申请提交模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_RM_SUBMIT);
-
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
@@ -174,11 +173,11 @@ public class WxPFNoticeUtils {
         WxPFOrderShipped shipped = new WxPFOrderShipped();
         WxNoticeReq<WxPFOrderShipped> req = new WxNoticeReq<>(shipped);
 
-        shipped.setFirst("您好，您的" + params[0] + params[1] + "订单已发货");
-        shipped.setKeyword1(params[2]);
-        shipped.setKeyword2(params[3]);
-        shipped.setKeyword3(params[4]);
-        shipped.setRemark("点击查看订单详情。");
+        shipped.setFirst(new WxNoticeDataItem("您好，您的" + params[0] + params[1] + "订单已发货", null));
+        shipped.setKeyword1(new WxNoticeDataItem(params[2], null));
+        shipped.setKeyword2(new WxNoticeDataItem(params[3], null));
+        shipped.setKeyword3(new WxNoticeDataItem(params[4], null));
+        shipped.setRemark(new WxNoticeDataItem("点击查看订单详情。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(orderUrl);
@@ -189,7 +188,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 有新的下级补货订单
+     * 新代理订单提醒
      *
      * @param user
      * @param params   (1,订单编号(不是id);2,时间)
@@ -200,10 +199,10 @@ public class WxPFNoticeUtils {
         WxPFNewOrder newOrder = new WxPFNewOrder();
         WxNoticeReq<WxPFNewOrder> req = new WxNoticeReq<>(newOrder);
 
-        newOrder.setFirst("您有新的合伙人订单,请到店铺查看");
-        newOrder.setKeyword1(params[0]);
-        newOrder.setKeyword2(timeFormart.format(params[1]));
-        newOrder.setRemark("请及时发货，点击查看详情");
+        newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到店铺查看", null));
+        newOrder.setKeyword1(new WxNoticeDataItem(params[0], null));
+        newOrder.setKeyword2(new WxNoticeDataItem(params[1], null));
+        newOrder.setRemark(new WxNoticeDataItem("请及时发货，点击查看详情", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(orderUrl);
@@ -226,17 +225,17 @@ public class WxPFNoticeUtils {
         WxNoticeReq<WxPFExtractApply> req = new WxNoticeReq<>(apply);
 
         if (isSuccess) {
-            apply.setFirst("您好，您的提现申请已经提交");
-            apply.setKeyword1(rmbFormat.format(params[0]));
-            apply.setKeyword2(params[1]);
-            apply.setKeyword3(timeFormart.format(params[2]));
-            apply.setRemark("审核结果会在2个工作日内完成，请耐心等待!");
+            apply.setFirst(new WxNoticeDataItem("您好，您的提现申请已经提交", null));
+            apply.setKeyword1(new WxNoticeDataItem(params[0], null));
+            apply.setKeyword2(new WxNoticeDataItem(params[1], null));
+            apply.setKeyword3(new WxNoticeDataItem(params[2], null));
+            apply.setRemark(new WxNoticeDataItem("审核结果会在2个工作日内完成，请耐心等待!", null));
         } else {
-            apply.setFirst("您好，您的提现申请被拒绝了");
-            apply.setKeyword1(rmbFormat.format(params[0]));
-            apply.setKeyword2(params[1]);
-            apply.setKeyword3(params[2]);
-            apply.setRemark("拒绝原因，您没有这么多余额，如有问题请联系客服!");
+            apply.setFirst(new WxNoticeDataItem("您好，您的提现申请被拒绝了", null));
+            apply.setKeyword1(new WxNoticeDataItem(params[0], null));
+            apply.setKeyword2(new WxNoticeDataItem(params[1], null));
+            apply.setKeyword3(new WxNoticeDataItem(params[2], null));
+            apply.setRemark(new WxNoticeDataItem("拒绝原因，您没有这么多余额，如有问题请联系客服!", null));
         }
 
         req.setTouser(getOpenIdByComUser(user));
@@ -257,12 +256,12 @@ public class WxPFNoticeUtils {
         WxPFExtractApplySuccess eas = new WxPFExtractApplySuccess();
         WxNoticeReq<WxPFExtractApplySuccess> req = new WxNoticeReq<>(eas);
 
-        eas.setFirst("提现结果通知");
-        eas.setKeyword1(params[0]);
-        eas.setKeyword2(rmbFormat.format(params[1]));
-        eas.setKeyword3(params[2]);
-        eas.setKeyword4(timeFormart.format(params[3]));
-        eas.setRemark("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收");
+        eas.setFirst(new WxNoticeDataItem("提现结果通知", null));
+        eas.setKeyword1(new WxNoticeDataItem(params[0], null));
+        eas.setKeyword2(new WxNoticeDataItem(params[1], null));
+        eas.setKeyword3(new WxNoticeDataItem(params[2], null));
+        eas.setKeyword4(new WxNoticeDataItem(params[3], null));
+        eas.setRemark(new WxNoticeDataItem("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用提现申请成功通知模板id
@@ -282,13 +281,13 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst("补货成功");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
-        order.setKeyword3(params[2]);
-        order.setKeyword4("补货");
-        order.setKeyword5(params[3]);
-        order.setRemark("您的在线库存已更新。");
+        order.setFirst(new WxNoticeDataItem("补货成功", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem("补货", null));
+        order.setKeyword5(new WxNoticeDataItem(params[3], null));
+        order.setRemark(new WxNoticeDataItem("您的在线库存已更新。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -308,13 +307,13 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst("您的补货订单支付成功");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
-        order.setKeyword3(params[2]);
-        order.setKeyword4("补货");
-        order.setKeyword5(params[3]);
-        order.setRemark("您的补货订单支付成功，我们将尽快发货请耐心等待收获。");
+        order.setFirst(new WxNoticeDataItem("您的补货订单支付成功", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem("补货", null));
+        order.setKeyword5(new WxNoticeDataItem(params[3], null));
+        order.setRemark(new WxNoticeDataItem("您的补货订单支付成功，我们将尽快发货请耐心等待收获。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -334,13 +333,13 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst("您的订单进入排单");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
-        order.setKeyword3(params[2]);
-        order.setKeyword4(params[3]);
-        order.setKeyword5(params[4]);
-        order.setRemark("由于库存不足，您的订单已进入排单，我们会加快生产，请耐心等待。");
+        order.setFirst(new WxNoticeDataItem("您的订单进入排单", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("由于库存不足，您的订单已进入排单，我们会加快生产，请耐心等待。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -360,13 +359,13 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst("您的排单订单已发货");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
-        order.setKeyword3(params[2]);
-        order.setKeyword4(params[3]);
-        order.setKeyword5(params[4]);
-        order.setRemark("您的排单订单已处理，在线库存已更新。");
+        order.setFirst(new WxNoticeDataItem("您的排单订单已发货", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的排单订单已处理，在线库存已更新。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -386,13 +385,13 @@ public class WxPFNoticeUtils {
         WxPFNewOrderDetail order = new WxPFNewOrderDetail();
         WxNoticeReq<WxPFNewOrderDetail> req = new WxNoticeReq<>(order);
 
-        order.setFirst("您的排单订单已发货");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(rmbFormat.format(params[1]));
-        order.setKeyword3(params[2]);
-        order.setKeyword4(params[3]);
-        order.setKeyword5(params[4]);
-        order.setRemark("您的排单订单已发货，请耐心等待收获。");
+        order.setFirst(new WxNoticeDataItem("您的排单订单已发货", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("您的排单订单已发货，请耐心等待收获。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -413,11 +412,11 @@ public class WxPFNoticeUtils {
         WxPFInventoryShortage shortage = new WxPFInventoryShortage();
         WxNoticeReq<WxPFInventoryShortage> req = new WxNoticeReq<>(shortage);
 
-        shortage.setFirst(user.getRealName() + "你好，您有商品的库存数量低于10件，请及时补充库存。");
-        shortage.setKeyword1(params[0]);
-        shortage.setKeyword2(params[1]);
-        shortage.setKeyword3(params[2]);
-        shortage.setRemark("点击查看详情");
+        shortage.setFirst(new WxNoticeDataItem(user.getRealName() + "你好，您有商品的库存数量低于10件，请及时补充库存。", null));
+        shortage.setKeyword1(new WxNoticeDataItem(params[0], null));
+        shortage.setKeyword2(new WxNoticeDataItem(params[1], null));
+        shortage.setKeyword3(new WxNoticeDataItem(params[2], null));
+        shortage.setRemark(new WxNoticeDataItem("点击查看详情", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(url);
@@ -439,13 +438,13 @@ public class WxPFNoticeUtils {
         WxPFNewShopOrder order = new WxPFNewShopOrder();
         WxNoticeReq<WxPFNewShopOrder> req = new WxNoticeReq<>(order);
 
-        order.setFirst("你有新的店铺订单啦");
-        order.setKeyword1(params[0]);
-        order.setKeyword2(params[1]);
-        order.setKeyword3(params[2]);
-        order.setKeyword4(params[3]);
-        order.setKeyword5(params[4]);
-        order.setRemark("点击查看详情！");
+        order.setFirst(new WxNoticeDataItem("你有新的店铺订单啦", null));
+        order.setKeyword1(new WxNoticeDataItem(params[0], null));
+        order.setKeyword2(new WxNoticeDataItem(params[1], null));
+        order.setKeyword3(new WxNoticeDataItem(params[2], null));
+        order.setKeyword4(new WxNoticeDataItem(params[3], null));
+        order.setKeyword5(new WxNoticeDataItem(params[4], null));
+        order.setRemark(new WxNoticeDataItem("点击查看详情！", null));
 
         req.setTouser(getOpenIdByComUser(pUser));
         req.setUrl(orderUrl);

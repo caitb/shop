@@ -40,5 +40,8 @@
       select id, create_time, name, img_url, remark
         from com_agent_level
     </select>
-
+    <select id="getMaxAgentLevel" resultType="int">
+        select MAX(id)
+        from com_agent_level
+    </select>
 </mapper>

@@ -44,6 +44,8 @@ public class ProductService {
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
     private ComBrandMapper comBrandMapper;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
     /**
      * @Author 贾晶豪
@@ -190,7 +192,8 @@ public class ProductService {
     public Map<String,Object> getLowerCount(Integer skuId,Integer stock,Integer level){
         Map<String,Object> param = new HashMap();
         Integer countLevel = 0;
-        if (level == 3 || stock == 0) {
+        int endLevel = comAgentLevelMapper.getMaxAgentLevel();
+        if (level == endLevel || stock == 0) {
             param.put("countLevel",countLevel);
             return param;
         } else {

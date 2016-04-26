@@ -1,5 +1,7 @@
 package com.masiis.shop.admin.service.fundmanage;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
@@ -12,6 +14,7 @@ import com.masiis.shop.dao.po.ComUserExtractApply;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +26,8 @@ import java.util.Map;
  */
 @Service
 public class ExtractApplyService {
+
+    private final static Log log = LogFactory.getLog(ExtractApplyService.class);
 
     @Resource
     private ComUserMapper comUserMapper;
@@ -71,7 +76,36 @@ public class ExtractApplyService {
         return pageMap;
     }
 
+    /**
+     * 合伙人提现申请审核
+     * @param comUserExtractApply
+     */
     public void audit(ComUserExtractApply comUserExtractApply){
-        comUserExtractApplyMapper.updateByPrimaryKey(comUserExtractApply);
+        if(comUserExtractApply.getAuditType().intValue()==3){//打款业务
+            int auditType = comUserExtractApply.getAuditType();
+            comUserExtractApply = comUserExtractApplyMapper.findById(comUserExtractApply.getId());
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUserExtractApply.getComUserId());
+
+            log.info("审核前的账户数据[comUserAccount="+comUserAccount+"]");
+            log.info("审核前的申请提现数据[comUserExtractApply="+comUserExtractApply+"]");
+            double accountExtractableFee = comUserAccount.getExtractableFee().doubleValue();  //可提现额度
+            double appliedExtractableFee = comUserAccount.getAppliedFee().doubleValue();      //已申请提现额度
+            double applyExtractableFee = comUserExtractApply.getExtractFee().doubleValue();   //申请提现额度
+            if(accountExtractableFee-applyExtractableFee>=0 && appliedExtractableFee>=applyExtractableFee){
+                comUserAccount.setExtractableFee(new BigDecimal(accountExtractableFee-applyExtractableFee));
+                comUserAccount.setAppliedFee(new BigDecimal(appliedExtractableFee-applyExtractableFee));
+
+                comUserAccountMapper.updateByPrimaryKey(comUserAccount);
+                comUserExtractApply.setAuditType(auditType);
+                comUserExtractApplyMapper.updateByPrimaryKey(comUserExtractApply);
+
+                log.info("审核后的账户数据[comUserAccount="+comUserAccount+"]");
+                log.info("审核后的申请提现数据[comUserExtractApply="+comUserExtractApply+"]");
+            }else{
+                throw new RuntimeException("申请提现金额数据出错![comUserExtractApply="+comUserExtractApply+"]");
+            }
+        }else{
+            comUserExtractApplyMapper.updateByPrimaryKey(comUserExtractApply);
+        }
     }
 }

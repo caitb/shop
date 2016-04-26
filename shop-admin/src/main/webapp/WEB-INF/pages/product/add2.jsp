@@ -268,110 +268,35 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <div class="col-xs-12 col-sm-4 text-success">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
+                                <label for="brandId" class="col-sm-2 control-label">代理等级数</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="levelCount" name="levelCount">
+                                        <option value="">请选择商品可代理的等级数</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            高级&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="advanced"
-                                                                   name="discounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        每件商品
-                                                        <small class="text-info dfenrun"></small>
-                                                        元
-                                                    </div>
-
-                                                    <hr>
-
-                                                    <div>
-                                                        <label for="advancedCount">
-                                                            拿货数量&nbsp;
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control" id="advancedCount"
-                                                                   name="quantitys" placeholder="">
-                                                        </div>
-                                                        金额门槛
-                                                        <small class="text-info threshold"></small>
-                                                        元
-                                                    </div>
-
-                                                    <hr>
-
-                                                    <div>
-                                                        <label for="advancedBail">
-                                                            保证金
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control" id="advancedBail"
-                                                                   name="bails" placeholder="">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="form-group">
+                                <label for="brandId" class="col-sm-2 control-label">代理等级图标</label>
+                                <div class="col-sm-9" id="levelIcon">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone1">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4 text-warning">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <div class="col-xs-12 col-sm-4">
                                         <div class="widget-box">
                                             <div class="widget-header">
                                             </div>
 
                                             <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            中级&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="intermediate"
-                                                                   name="discounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        每件商品
-                                                        <small class="text-info dfenrun"></small>
-                                                        元
-                                                    </div>
+                                                <div class="widget-main" id="discounts">
 
-                                                    <hr>
-
-                                                    <div>
-                                                        <label for="advancedCount">
-                                                            拿货数量&nbsp;
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control"
-                                                                   id="intermediateCount" name="quantitys"
-                                                                   placeholder="">
-                                                        </div>
-                                                        金额门槛
-                                                        <small class="text-info threshold"></small>
-                                                        元
-                                                    </div>
-
-                                                    <hr>
-
-                                                    <div>
-                                                        <label for="intermediateBail">
-                                                            保证金
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control"
-                                                                   id="intermediateBail" name="bails" placeholder="">
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -382,49 +307,20 @@
                                             </div>
 
                                             <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            初级&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="primary"
-                                                                   name="discounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        每件商品
-                                                        <small class="text-info dfenrun"></small>
-                                                        元
-                                                    </div>
+                                                <div class="widget-main" id="quantitys">
 
-                                                    <hr>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="widget-box">
+                                            <div class="widget-header">
+                                            </div>
 
-                                                    <div>
-                                                        <label for="advancedCount">
-                                                            拿货数量&nbsp;
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control" id="primaryCount"
-                                                                   name="quantitys" placeholder="">
-                                                        </div>
-                                                        金额门槛
-                                                        <small class="text-info threshold"></small>
-                                                        元
-                                                    </div>
+                                            <div class="widget-body">
+                                                <div class="widget-main" id="bails">
 
-                                                    <hr>
-
-                                                    <div>
-                                                        <label for="primaryBail">
-                                                            保证金
-                                                        </label>
-                                                        <div>
-                                                            <input type="text" class="form-control" id="primaryBail"
-                                                                   name="bails" placeholder="">
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -536,7 +432,7 @@
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
-                                    <form action="<%=basePath%>ueditor.do" class="dropzone" id="dropzone">
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -697,43 +593,111 @@
 <script src="<%=basePath%>static/ace2/js/dropzone.min.js"></script>
 
 <script type="text/javascript">
-    jQuery(function ($) {
 
-        Dropzone.autoDiscover = false;
+    Dropzone.autoDiscover = false;
+    function initDropzone(selector,dictMessage){
+        var dictDefaultMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品主图</span> \
+                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
         try {
-            var myDropzone = new Dropzone("#dropzone", {
+            var myDropzone = new Dropzone(selector, {
                 paramName: "file", // The name that will be used to transfer the file
                 maxFilesize: 0.5, // MB
 
                 addRemoveLinks: true,
-                dictDefaultMessage: '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品主图</span> \
-                        <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
-                        <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>'
-                ,
-                dictResponseError: 'Error while uploading file!',
+                dictDefaultMessage: dictMessage ? dictMessage : dictDefaultMessage,
+                dictResponseError: '上传文件出错了!',
 
                 //change the previewTemplate to use Bootstrap progress bars
                 previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n  <div class=\"dz-details\">\n    <div class=\"dz-filename\"><span data-dz-name></span></div>\n    <div class=\"dz-size\" data-dz-size></div>\n    <img data-dz-thumbnail />\n  </div>\n  <div class=\"progress progress-small progress-striped active\"><div class=\"progress-bar progress-bar-success\" data-dz-uploadprogress></div></div>\n  <div class=\"dz-success-mark\"><span></span></div>\n  <div class=\"dz-error-mark\"><span></span></div>\n  <div class=\"dz-error-message\"><span data-dz-errormessage></span></div>\n</div>"
             });
+
+            return myDropzone;
         } catch (e) {
             alert('Dropzone.js does not support older browsers!');
         }
+    }
 
-    });
+    initDropzone('#dropzone');
+    var dictMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>等级图标</span> <br /> \
+                                     <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
+                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+    initDropzone('#dropzone1', dictMessage);
 </script>
 <script>
 
-    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function () {
-        var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0;
-        $('input[name="quantitys"]').each(function (i, o) {
+    var agentLevels = window.eval('(${agentLevels})');
+    for(var i=0; i<agentLevels.length; i++){
+        var levelCount = i + 1;
+        $('#levelCount').append('<option value="'+i+'">'+levelCount+'</option>');
+    }
+
+    $('#levelCount').change(function(){
+        $('#discounts').empty();
+        $('#quantitys').empty();
+        $('#bails').empty();
+        appendLevelInput($(this).val());
+    });
+
+    function appendLevelInput(levelCount){
+        var discounts = '';
+        var quantitys = '';
+        var bails     = '';
+        for(var i=0; i<agentLevels.length; i++){
+            if(i>levelCount){
+                break;
+            }
+            discounts += '<div> \
+                                        <label for="advanced">';
+            discounts +=     agentLevels[i].name;
+            discounts +=           '</label> \
+                                        <div class="input-group"> \
+                                            <input type="text" class="form-control" id="advanced" name="discounts" placeholder=""> \
+                                                <span class="input-group-addon"> \
+                                                    % \
+                                                </span> \
+                                        </div> \
+                                        每件商品<small class="text-info dfenrun"></small>元 \
+                                    </div>';
+
+            quantitys +=           '<div> \
+                                        <label for="advancedCount"> \
+                                            拿货数量&nbsp; \
+                                        </label> \
+                                        <div> \
+                                            <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder=""> \
+                                        </div> \
+                                        金额门槛<small class="text-info threshold"></small>元 \
+                                    </div>';
+
+            bails    +=            '<div> \
+                                        <label for="advancedBail"> \
+                                            保证金 \
+                                        </label> \
+                                        <div> \
+                                            <input type="text" class="form-control" id="advancedBail" name="bails" placeholder=""> \
+                                        </div> \
+                                        &nbsp; \
+                                    </div>';
+        }
+
+        $('#discounts').append(discounts);
+        $('#quantitys').append(quantitys);
+        $('#bails').append(bails);
+    }
+
+    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
+        var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
+        $('input[name="quantitys"]').each(function(i,o){
             var discount = $($('input[name="discounts"]').get(i)).val();
-            discount = discount == null || discount == 'undefined' ? 0.00 : discount * 0.01;
+            discount = discount==null||discount=='undefined' ? 0.00 : discount*0.01;
             var quantity = $(o).val() ? $(o).val() : 0;
             var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
-            distributionDiscount = distributionDiscount == null || distributionDiscount == 'undefined' ? 0.00 : distributionDiscount * 0.01;
-            $($('.dfenrun').get(i)).html((priceRetail * discount).toFixed(2));
-            $($('.threshold').get(i)).html((priceRetail * discount * quantity).toFixed(2));
-            $($('.ffenrun').get(i)).html((priceRetail * distributionDiscount).toFixed(2));
+            distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
+            $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
+            $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
+            $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
         });
     });
 

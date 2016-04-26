@@ -51,7 +51,7 @@
     </div>
 </div>
 <footer>
-    <button>返回市场</button>
+    <button onclick="returnMarket()">返回市场</button>
 </footer>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
@@ -61,6 +61,9 @@
     $(".close").on("click", function () {
         $(".back_box").hide()
     })
+    function returnMarket(){
+        window.location.href = "${path}/marketGood/market";
+    }
 </script>
 </body>
 </html>

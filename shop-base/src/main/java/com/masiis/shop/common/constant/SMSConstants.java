@@ -27,7 +27,7 @@ public class SMSConstants {
 	/**
 	 * 实名认证审核结果
 	 */
-	public static final String VERIFIED_COMPLETE = "80802";
+	public static final String VERIFIED_COMPLETE = "82351";
 	/**
 	 * 订单发货提醒
 	 */

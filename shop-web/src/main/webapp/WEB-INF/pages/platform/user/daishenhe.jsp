@@ -12,17 +12,13 @@
     <link rel="stylesheet" href="${path}/static/css/jixuguangguang.css">
 </head>
 <body>
+<div class="na">
+    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+    <label class="close">×</label>
+</div>
 <header class="xq_header" style="margin:0;">
     <p>等待审核</p>
 </header>
-<div class="na">
-    <p></p>
-    <h1>
-        <span>麦链合伙人</span>
-        <span>关注可查资金，管理店铺，发展下级</span>
-    </h1>
-    <label class="add">加关注</label>
-</div>
 <div class="drap">
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
@@ -35,18 +31,23 @@
 <div class="back_box">
     <div class="back"></div>
     <div class="back_f">
-        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <img src="${path}/static/images/asd.JPG" alt="">
+        <div>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
+        </div>
     </div>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(".add").on("click",function () {
+    $(".add").on("tap",function () {
         $(".back_box").show()
+        $(".back_f").show()
     })
-    $(".close").on("click",function () {
+    $(".close").on("tap",function () {
         $(".back_box").hide()
+        $(this).parent().hide()
     })
 </script>
 </body>

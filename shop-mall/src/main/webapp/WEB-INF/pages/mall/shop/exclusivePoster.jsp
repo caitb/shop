@@ -30,9 +30,6 @@
             color: #F73C8C;
             width: 100%;
         }
-        body{
-            position: relative;
-        }
         .back_box{
             width:100%;
             height:100%;
@@ -49,16 +46,40 @@
             top:0;
         }
         .back_f{
-            width:96%;
-            position: absolute;
-            left:2%;
-            top:30%;
+            width:90%;
+            position: fixed;
+            left:5%;
+            top:25%;
             background: #fff;
-            border-radius: 5px;
+            /* border-radius: 5px; */
+            z-index:11;
+            padding-bottom: 50px;
         }
-        .back_f p{
+        .back_f>p{
             text-align: center;
             margin-top: 3em;
+            font-size: 16px;
+        }
+        .back_f div{
+            display: -webkit-box;
+            margin-top: 1em;
+        }
+        .back_f div p{
+            width:1px;
+            -webkit-box-flex:1;
+            display: -webkit-box;
+            -webkit-box-orient:vertical;
+            -webkit-box-align:center;
+            -webkit-box-pack:center;
+        }
+        .back_f div p span{
+            display: block;
+            font-size: 12px;
+        }
+        .back_f div p img{
+            display: block;
+            width:100px;
+            height:100px;
         }
         .back_f .close{
             position: absolute;
@@ -68,72 +89,52 @@
             height: 25px;
             border-radius: 15px;
             text-align: center;
-            line-height: 24px;
-            font-size: 18px;
+            line-height: 21px;
+            font-size: 26px;
             border: 1px solid #ccc;
-        }
-        .back_f img{
-            width:90%;
-            margin:15% 0 5% 5%;
-        }
-        .wrap .na {
-            display: -webkit-box;
-            margin-bottom: 5px;
-            padding: 0px 10px;
-            background: #FFFFFF;
-            position: relative;
-        }
-        .wrap .na p {
-            margin-top: 3px;
-            width: 30px;
-            height: 30px;
-            border-radius: 25px;
-            background: #ccc;
-            overflow: hidden;
-        }
-        .wrap .na p img {
-            width: 100%;
-        }
-        .wrap .na h1 {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-box-pack: center;
-            margin-left: 10px;
-        }
-        .wrap .na h1 span {
-            display: block;
-            font-size: 12px;
-        }
-        .wrap .na h1 span:last-child{
-            font-size: 10px;
             color: #999;
         }
-        .wrap .na label{
-            position: absolute;
-            line-height: 25px;
-            right: 5px;
-            top: 6px;
-            color: #fff;
-            padding: 0 15px;
-            background: #ff0000;
-            border-radius: 5px;
+        .na {
+            display: -webkit-box;
+            padding: 5px 10px;
+            background: #F7E911;
+            position: relative;
+            box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.5);
+        }
+        .na p {
+            color: #F75140;
+            font-size:12px;
+        }
+        .na p span{
             font-size: 12px;
+            color: #421405;
+            text-decoration: underline;
+        }
+        .na label{
+            display: block;
+            width: 20px;
+            height: 20px;
+            line-height: 19px;
+            text-align: center;
+            background: #FDFBCF;
+            font-size: 16px;
+            border-radius: 10px;
+            color: #7C7A65;
+            position: absolute;
+            right: 5px;
+            top: 4px;
         }
     </style>
 </head>
 <body>
 <header>
     <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-    <p>店铺分享专属海报</p>
+    <p>我的专属海报</p>
 </header>
 <div class="wrap">
     <div class="na">
-        <p></p>
-        <h1>
-            <span>麦链合伙人</span>
-            <span>关注可查资金，管理店铺，发展下级</span>
-        </h1>
-        <label class="add">加关注</label>
+        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+        <label class="close">×</label>
     </div>
     <canvas id="canvasOne" style="display: none;">
         Your browser does not support HTML5 Canvas.
@@ -144,9 +145,12 @@
 <div class="back_box">
     <div class="back"></div>
     <div class="back_f">
-        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <img src="${path}/static/images/asd.JPG" alt="">
+        <div>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
+        </div>
     </div>
 </div>
 </body>
@@ -222,9 +226,11 @@
 <script>
     $(".add").on("tap",function () {
         $(".back_box").show()
+        $(".back_f").show()
     })
     $(".close").on("tap",function () {
         $(".back_box").hide()
+        $(this).parent().hide()
     })
 </script>
 </html>

@@ -34,7 +34,7 @@
         <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
     </div>
     <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
-    <button class="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
@@ -45,6 +45,13 @@
         }
         $(this).html("正在提交...");
         window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+    })
+    $("#downPay").click(function (event) {
+        if ($(this).html() == "正在提交...") {
+            return;
+        }
+        $(this).html("正在提交...");
+        window.location.href = "${basePath}border/offinePayment.html?bOrderId=${pfBorder.id}";
     })
 </script>
 </html>

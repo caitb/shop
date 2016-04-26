@@ -1,4 +1,4 @@
-package com.masiis.shop.api.controller.user;
+package com.masiis.shop.api.controller.system;
 
 import com.masiis.shop.api.bean.user.RegisterValidCodeRes;
 import com.masiis.shop.api.constants.SysResCodeCons;

@@ -5,7 +5,9 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.scheduler.platform.business.order.PfBOrderTaskService;
 import com.masiis.shop.scheduler.platform.business.order.PfUserBillTaskService;
+import com.masiis.shop.scheduler.platform.service.order.OrderQueueTimeDealService;
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,6 +24,8 @@ public class PfOrderTask {
     private PfUserBillTaskService billTaskService;
     @Resource
     private PfBOrderTaskService bOrderTaskService;
+    @Resource
+    private OrderQueueTimeDealService orderQueueTimeDealService;
 
     /**
      * 创建每日结算账单
@@ -67,5 +71,15 @@ public class PfOrderTask {
             log.error("订单发货7天后自动确认收货job失败," + e.getMessage());
         }
         log.info("订单发货7天后自动确认收货job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
+    }
+
+    /**
+     * 处理排队订单
+     */
+    @Scheduled(fixedDelay = 1000*60*10)
+    public void doSomethingWithDelay(){
+        log.info("处理排队订单:定时任务开始执行……开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
+        orderQueueTimeDealService.commonQueuingOrder();
+        log.info("处理排队订单:定时任务开始执行……结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
     }
 }

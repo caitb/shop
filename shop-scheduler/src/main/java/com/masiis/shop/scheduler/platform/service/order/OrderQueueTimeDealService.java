@@ -225,16 +225,12 @@ public class OrderQueueTimeDealService {
         return a - quantity;
     }
 
-    public static void main(String[] args)throws Exception{
-        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-        context.setValidating(false);
-        context.load("classpath*:/spring/*.xml");
-        context.refresh();
-        OrderQueueTimeDealService orderQueueTimeDealService = context.getBean(OrderQueueTimeDealService.class);
-        orderQueueTimeDealService.commonQueuingOrder();
-//        while (true) {
-//            pfStatisticsAgentService.statisticsAgent();
-//            Thread.sleep(10000);
-//        }
-    }
+//    public static void main(String[] args)throws Exception{
+//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+//        context.setValidating(false);
+//        context.load("classpath*:/spring/*.xml");
+//        context.refresh();
+//        OrderQueueTimeDealService orderQueueTimeDealService = context.getBean(OrderQueueTimeDealService.class);
+//        orderQueueTimeDealService.commonQueuingOrder();
+//    }
 }

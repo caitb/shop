@@ -54,4 +54,8 @@ public class SysConstants {
     public static final String ID_CARD_PATH = "/static/upload/user/idCard/";
 
     public static final String  MALL_DOMAIN_NAME_ADDRESS = PropertiesUtils.getStringValue("mall.domain.name.address");//小铺域名地址
+
+    /*线下支付最晚往后推迟几天 */
+    public static final int  OFFINE_PAYMENT_LATEST_TIME = 7;
+
 }

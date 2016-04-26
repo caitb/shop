@@ -1,0 +1,19 @@
+.wrapno{
+  background: #F6F6F6;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+}
+.wrapno img{
+  width:15%;
+  display: block;
+  margin-top: 2.5em;
+}
+.wrapno h1{
+  font-size: 16px;
+  margin-top: 1em;
+}
+.wrapno p{
+  margin:2.5em 10px 0 10px;
+}

@@ -72,15 +72,21 @@ public class UserApplyController extends BaseController {
         Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
         if (temPUserId == 0) {
             if (pUserId != null && pUserId > 0) {
-                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                userSkuService.checkParentData(user, pUserId, skuId);
-                PfUserRelation pfUserRelation = new PfUserRelation();
-                pfUserRelation.setUserId(user.getId());
-                pfUserRelation.setSkuId(skuId);
-                pfUserRelation.setCreateTime(new Date());
-                pfUserRelation.setIsEnable(1);
-                pfUserRelation.setUserPid(pUserId);
-                pfUserRelationService.insert(pfUserRelation);
+                PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+                if (pfUserSku != null && pfUserSku.getIsCertificate() == 1) {
+                    res = new ModelAndView("platform/order/agent/applied");
+                    return res;
+                } else {
+                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                    userSkuService.checkParentData(user, pUserId, skuId);
+                    PfUserRelation pfUserRelation = new PfUserRelation();
+                    pfUserRelation.setUserId(user.getId());
+                    pfUserRelation.setSkuId(skuId);
+                    pfUserRelation.setCreateTime(new Date());
+                    pfUserRelation.setIsEnable(1);
+                    pfUserRelation.setUserPid(pUserId);
+                    pfUserRelationService.insert(pfUserRelation);
+                }
             } else {
                 pUserId = 0l;
             }

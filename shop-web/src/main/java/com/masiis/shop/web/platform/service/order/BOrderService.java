@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.order;
 
+import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -340,13 +341,15 @@ public class BOrderService {
                 throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
             }
         } else if (pfBorder.getSendType() == 2) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.WaitShip.getCode())) {
-                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.WaitShip.getCode());
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.Ship.getCode());
             }
         } else {
             throw new BusinessException("订单拿货方式异常");
         }
-        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());
+        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
+        pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
+        pfBorder.setReceiptTime(new Date());//收货时间
         pfBorderMapper.updateById(pfBorder);
         //添加订单日志
         PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();

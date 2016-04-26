@@ -1,6 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -11,7 +12,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+<%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
     <div class="na">
@@ -29,14 +30,14 @@
     </div>
     <div class="sec1">
         <div>
-            <h1>￥1,000,000元</h1>
-            <p>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</p>
+            <h1>￥${border.productAmount}元</h1>
+            <p>您需要在${latestTime}前将￥${border.productAmount}转到麦链合伙人对公账户。</p>
         </div>
-        <p>*请在汇款单的附言处注明“抗引力合伙申请100万元套餐+您的手机号”（<span>非常重要！</span>）</p>
+        <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.productAmount}万元套餐+您的手机号”（<span>非常重要！</span>）</p>
         <h1><span></span>麦链对公账户信息</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>
         <h2><span>开户名：</span><span>${supplierBank.accountName}</span></h2>
-        <h2><span>卡号：</span><span>${supplierBank.cardNumber}/span></h2>
+        <h2><span>卡号：</span><span>${supplierBank.cardNumber}</span></h2>
     </div>
     <h1>线下支付流程：</h1>
     <img src="${path}/static/images/zhifu.png" alt="">
@@ -50,7 +51,7 @@
     </div>
 </div>
 <footer>
-    <button>返回市场</button>
+    <button onclick="returnMarket()">返回市场</button>
 </footer>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
@@ -60,6 +61,9 @@
     $(".close").on("click", function () {
         $(".back_box").hide()
     })
+    function returnMarket(){
+        window.location.href = "${path}/marketGood/market";
+    }
 </script>
 </body>
 </html>

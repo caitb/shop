@@ -5,10 +5,10 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
-import com.masiis.shop.web.platform.service.system.SpuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,7 +75,9 @@ public class ShopIndexController extends BaseController {
             }
         }
         Integer borderNum = pfBorders10.size()+pfBorders6.size();
+        Boolean forcusPF = WxUserUtils.getInstance().isUserForcusPF(user);
         modelAndView.addObject("borderNum",borderNum);//订单数量
+        modelAndView.addObject("forcusPF",forcusPF);
         modelAndView.addObject("num",num);//订单数量
         modelAndView.addObject("comUserAccount",comUserAccount);//封装用户统计信息
         modelAndView.addObject("urls",urls);//封装图片地址集合

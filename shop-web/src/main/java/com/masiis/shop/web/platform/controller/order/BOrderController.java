@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
@@ -55,9 +56,6 @@ public class BOrderController extends BaseController {
      *
      * @param request
      * @param skuId
-     * @param levelId
-     * @param weixinId
-     * @param pUserId
      * @return
      * @throws Exception
      */
@@ -203,6 +201,9 @@ public class BOrderController extends BaseController {
         Map<String,Object> map = payBOrderService.offinePayment(bOrderId);
         if (map != null){
             mav.addObject("supplierBank",map.get("supplierBank"));
+            mav.addObject("latestTime", map.get("latestTime"));
+            mav.addObject("orderItem",map.get("orderItem"));
+            mav.addObject("border",map.get("border"));
         }
         return mav;
     }
@@ -264,38 +265,5 @@ public class BOrderController extends BaseController {
         mav.addObject("count", count);
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
         return mav;
-    }
-
-    /**
-     * 选择拿货方式
-     * @param request
-     * @param bOrderId
-     * @param sendType
-     * @param userAddressId
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/setUserSendType/save.do")
-    public String setUserSendTypeSave(HttpServletRequest request,
-                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId,
-                                      @RequestParam(value = "sendType", required = true) Integer sendType,
-                                      @RequestParam(value = "userAddressId", required = false) Long userAddressId) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("isError", true);
-        try {
-            if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
-                throw new BusinessException("用户自发货，请选择收货地址。");
-            }
-            ComUser comUser = getComUser(request);
-            payBOrderService.updateBOrderSendType(comUser, bOrderId, sendType, userAddressId);
-            jsonObject.put("isError", false);
-        } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
-        }
-        return jsonObject.toJSONString();
     }
 }

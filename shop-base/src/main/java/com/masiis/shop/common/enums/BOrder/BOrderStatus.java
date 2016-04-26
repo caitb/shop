@@ -80,7 +80,7 @@ public enum BOrderStatus {
         }
 
         public String getDesc() {
-            return "已发货";
+            return "待收货";
         }
     }, offLineNoPay {
         public Integer getCode() {

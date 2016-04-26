@@ -26,7 +26,7 @@ $(function(){
             success:function(response){
                 if(response.resCode == "success"){
                     window.location.href = basepath + response.resUrl;
-                    sendMessage();
+                    sendMessage(money);
                 } else if (response.resCode == "fail") {
                     alert(response.resMsg);
                 }
@@ -56,11 +56,12 @@ function backLastPage(){
 /**
  * 申请提现成功发送短信
  */
-function sendMessage(){
+function sendMessage(money){
     var options = {
         url:basepath + "extract/sendMessageWithdrawRequest.do",
         type:"POST",
         dataType:"JSON",
+        data:{money : money},
         success:function(response){
 
         },

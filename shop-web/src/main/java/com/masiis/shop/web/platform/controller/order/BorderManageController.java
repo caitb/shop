@@ -2,6 +2,7 @@ package com.masiis.shop.web.platform.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BorderDetail;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
@@ -12,6 +13,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.order.ComShipManService;
+import com.masiis.shop.web.platform.service.order.PfSupplierBankService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.system.ComDictionaryService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
@@ -52,6 +54,8 @@ public class BorderManageController extends BaseController {
     private PfBorderPaymentMapper pfBorderPaymentMapper;
     @Resource
     private ComShipManService comShipManService;
+    @Resource
+    private PfSupplierBankService pfSupplierBankService;
 
     /**
      * 确认收货
@@ -93,17 +97,24 @@ public class BorderManageController extends BaseController {
                 user = userService.getUserById(1l);
                 request.getSession().setAttribute("comUser", user);
             }
+            if(request.getSession().getAttribute("defaultBank")==null || request.getSession().getAttribute("defaultBank")==""){
+                PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
+                request.getSession().setAttribute("defaultBank", defaultBank);
+            }
+
             if(index==0){
                 pfBorder = bOrderService.findPfBorder(user.getId(), null, null);
             }else if(index==1){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 0, null);
             }else if(index==2){
-                pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
+                pfBorder = bOrderService.findPfBorder(user.getId(), 9, null);
             }else if(index==3){
-                pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
+                pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
             }else if(index==4){
-                pfBorder = bOrderService.findPfBorder(user.getId(), 3, null);
+                pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
             }else if(index==5){
+                pfBorder = bOrderService.findPfBorder(user.getId(), 3, null);
+            }else if(index==6){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 6, null);
                 Iterator<PfBorder> chk_itw = pfBorder.iterator();
                 while (chk_itw.hasNext()) {
@@ -122,6 +133,8 @@ public class BorderManageController extends BaseController {
                     ComUser users = userService.getUserById(pfBorders.getUserPid());
                     pfBorders.setPidUserName(users.getRealName());
                 }
+                String insertDay = DateUtil.insertDay(pfBorders.getCreateTime());
+                pfBorders.setPayTimes(insertDay);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -357,11 +370,13 @@ public class BorderManageController extends BaseController {
         }else if (orderStatus == 0) {
             index="1";//待付款
         }else if (orderStatus == 8 ){
-            index="3";//待收货
+            index="4";//待收货
+        }else if (orderStatus == 9 ){
+            index="2";//线下支付待付款
         }else if (orderStatus == 7) {
-            index="2";//代发货
+            index="3";//代发货
         }else if (orderStatus == 6){
-            index="5";//排单中
+            index="6";//排单中
             Iterator<PfBorder> chk_itw = pfBorders.iterator();
             while (chk_itw.hasNext()) {
                 PfBorder pfBorder = chk_itw.next();
@@ -370,7 +385,7 @@ public class BorderManageController extends BaseController {
                 }
             }
         } else if (orderStatus == 3) {
-            index="4";//已完成
+            index="5";//已完成
         }
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (pfBorders != null && pfBorders.size() != 0) {

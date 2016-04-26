@@ -104,9 +104,16 @@ public class ProductController {
                       @RequestParam("quantitys")Integer[] quantitys,
                       @RequestParam("bails")Integer[] bails,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
+                      String proIconUrl,
+                      String proIconName,
                       @RequestParam("mainImgUrls")String[] mainImgUrls,
                       @RequestParam("mainImgNames")String[] mainImgNames,
-                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames) throws FileNotFoundException {
+                      @RequestParam("mainImgOriginalNames")String[] mainImgOriginalNames,
+                      @RequestParam("iconImgUrls")String[] iconImgUrls,
+                      @RequestParam("iconImgNames")String[] iconImgNames) throws FileNotFoundException {
+
+        String realPath = request.getServletContext().getRealPath("/");
+        realPath = realPath.substring(0, realPath.lastIndexOf("/"));
 
         try{
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
@@ -119,6 +126,14 @@ public class ProductController {
 
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
+                comSku.setIcon(proIconName);
+
+                //上传代理等级图标到OSS
+                String proIconAbsoluteUrl = realPath + proIconUrl;
+                File proIconFile = new File(proIconAbsoluteUrl);
+                OSSObjectUtils.uploadFile(proIconFile, "static/product/product_icon/");
+
+                proIconFile.delete();
 
                 //代理分润
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
@@ -128,8 +143,16 @@ public class ProductController {
                     pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setIcon(iconImgNames[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
+
+                    //上传代理等级图标到OSS
+                    String imgAbsoluteUrl = realPath + iconImgUrls[i];
+                    File iconFile = new File(imgAbsoluteUrl);
+                    OSSObjectUtils.uploadFile(iconFile, "static/product/agent_icon/");
+
+                    iconFile.delete();
                 }
 
                 //分销分润
@@ -143,8 +166,6 @@ public class ProductController {
                 }
 
                 List<ComSkuImage> comSkuImages = new ArrayList<>();
-                String realPath = request.getServletContext().getRealPath("/");
-                realPath = realPath.substring(0, realPath.lastIndexOf("/"));
                 String folderPath = realPath + "/current";
                 int[] imgPxs = {220, 308, 800};
                 File folder = new File(folderPath);

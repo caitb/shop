@@ -935,9 +935,21 @@ public class DateUtil {
 	public static String addDays(int days){
 		Calendar calendar=Calendar.getInstance();
 		calendar.add(Calendar.DATE, days);
-		System.out.println(calendar.getTime());
 		return Date2String(calendar.getTime(), DEFAULT_DATE_FMT_2);
 	}
+	/**
+	 * 指定日期增加几天，返回字符串类型为 2016-05-03
+	 * @author hanzengzhi
+	 * @date 2016/4/26 10:31
+	 */
+	public static String insertDay(Date days){
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(days);
+		int day = calendar.get(Calendar.DATE);
+		calendar.set(Calendar.DATE, day+7);
+		return Date2String(calendar.getTime(), DEFAULT_DATE_FMT_2);
+	}
+
 
 	public static void main(String[] args){
 		System.out.println(addDays(7));

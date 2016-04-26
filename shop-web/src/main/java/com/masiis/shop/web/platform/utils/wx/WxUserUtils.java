@@ -49,7 +49,7 @@ public class WxUserUtils {
         }
         String url = WxConsPF.URL_CGIBIN_USERINFO
                 + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET)
-                + "&openid" + wxUser.getOpenid()
+                + "&openid=" + wxUser.getOpenid()
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
@@ -73,7 +73,7 @@ public class WxUserUtils {
                     .refreshCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
             String urlNew = WxConsPF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
-                    + "&openid" + wxUser.getOpenid()
+                    + "&openid=" + wxUser.getOpenid()
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);
@@ -104,7 +104,7 @@ public class WxUserUtils {
 
         String url = WxConsSF.URL_CGIBIN_USERINFO
                 + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET)
-                + "&openid" + wxUser.getOpenid()
+                + "&openid=" + wxUser.getOpenid()
                 + "&lang=zh_CN";
         String result = HttpClientUtils.httpGet(url);
         HashMap<String, Object> res = JSONObject.parseObject(result, HashMap.class);
@@ -128,7 +128,7 @@ public class WxUserUtils {
                     .refreshCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
             String urlNew = WxConsSF.URL_CGIBIN_USERINFO
                     + "?access_token=" + newToken
-                    + "&openid" + wxUser.getOpenid()
+                    + "&openid=" + wxUser.getOpenid()
                     + "&lang=zh_CN";
             String resultNew = HttpClientUtils.httpGet(urlNew);
             HashMap<String, Object> resNew = JSONObject.parseObject(result, HashMap.class);

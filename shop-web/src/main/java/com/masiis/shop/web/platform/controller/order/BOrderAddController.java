@@ -337,17 +337,4 @@ public class BOrderAddController extends BaseController {
         }
         return jsonObject.toJSONString();
     }
-
-    @RequestMapping("/goToPayBOrder.shtml")
-    public ModelAndView toPayBOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId) {
-        ModelAndView modelAndView = new ModelAndView("platform/user/orderProview");
-        if (bOrderId == null || bOrderId <= 0) {
-            throw new BusinessException("订单号不正确");
-        }
-        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
-        modelAndView.addObject("pfBorder", pfBorder);
-        modelAndView.addObject("pfBorderItems", pfBorderItems);
-        return modelAndView;
-    }
 }

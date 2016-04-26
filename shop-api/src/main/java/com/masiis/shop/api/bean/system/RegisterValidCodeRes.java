@@ -1,4 +1,4 @@
-package com.masiis.shop.api.bean.user;
+package com.masiis.shop.api.bean.system;
 
 import com.masiis.shop.api.bean.base.BaseResModel;
 

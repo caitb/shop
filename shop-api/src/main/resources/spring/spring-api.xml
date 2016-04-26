@@ -73,7 +73,7 @@
         <context:exclude-filter expression="org.springframework.stereotype.Service" type="annotation"/>
     </context:component-scan>
 
-    <bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
+    <!--<bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>-->
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
 

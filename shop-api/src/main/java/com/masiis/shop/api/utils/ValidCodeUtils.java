@@ -12,7 +12,7 @@ public class ValidCodeUtils {
 
     public static String generareValidCode(){
         StringBuilder str = new StringBuilder();
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 4; i++){
             str.append(charArrs[(int)(Math.random() * charArrs.length)]);
         }
         return str.toString();

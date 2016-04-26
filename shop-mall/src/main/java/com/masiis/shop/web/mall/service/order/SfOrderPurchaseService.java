@@ -52,12 +52,12 @@ public class SfOrderPurchaseService {
     @Resource
     private UserService userService;
 
-    private static BigDecimal orderSumDisAmount;//一条订单的总的分润
-    private static Map<Integer, BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
-    private static Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的购买上级的分润信息
+    private  BigDecimal orderSumDisAmount;//一条订单的总的分润
+    private  Map<Integer, BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
+    private  Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的购买上级的分润信息
 
-    private static BigDecimal skuTotalPrice = null;
-    private static Integer totalQuantity = null;
+    private  BigDecimal skuTotalPrice = null;
+    private  Integer totalQuantity = null;
 
     /**
      * 获得确认订单界面，地址信息和商品信息
@@ -228,6 +228,11 @@ public class SfOrderPurchaseService {
                             if (ii == 1) {
                                 log.info("插入订单子表成功---end");
                                 //插入子订单分润表
+
+                                log.info("服务器上打印出 ordItemDisMap数据---start");
+                                printlnOrdItemDisMapDate();
+                                log.info("服务器上打印出 ordItemDisMap数据---end");
+
                                 List<SfOrderItemDistribution> itemDisList = ordItemDisMap.get(sfShopCartSkuDetail.getComSku().getId());
                                 if (itemDisList != null && itemDisList.size() != 0) {
                                     for (SfOrderItemDistribution orderItemDis : itemDisList) {
@@ -355,16 +360,6 @@ public class SfOrderPurchaseService {
                     orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
                     log.info("订单加入商品分润后的分润------"+orderSumDisAmount);
                 }
-                log.info("向map放完后，遍历map查看map有的数据----start");
-                for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
-                    log.info("map---key值为----"+entry.getKey());
-                    for(SfOrderItemDistribution oid :entry.getValue()){
-                        log.info("map---value值为---"+oid.toString());
-                    }
-                    log.info("-------------------------");
-                }
-                log.info("向map放完后，遍历map查看map有的数据----end");
-
                 log.info("向订单orderItem分润map放数据-----end");
             }
         }
@@ -521,6 +516,24 @@ public class SfOrderPurchaseService {
         orderItemDis.setDistributionAmount(disAmount);
         return orderItemDis;
     }
+
+    /**
+     *  服务器上打印出 ordItemDisMap数据
+     * @author hanzengzhi
+     * @date 2016/4/26 16:25
+     */
+    private void printlnOrdItemDisMapDate(){
+        log.info("遍历map查看map有的数据----start");
+        for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
+            log.info("map---key值为----"+entry.getKey());
+            for(SfOrderItemDistribution oid :entry.getValue()){
+                log.info("map---value值为---"+oid.toString());
+            }
+            log.info("-------------------------");
+        }
+        log.info("遍历map查看map有的数据----end");
+    }
+
 
     /**
      * 生成订单订单商品分润表数据

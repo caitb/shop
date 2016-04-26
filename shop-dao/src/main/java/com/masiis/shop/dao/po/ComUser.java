@@ -95,6 +95,14 @@ public class ComUser implements Serializable{
      * 注册来源: 0,微信注册; 1,app注册
      */
     private Integer registerSource;
+    /**
+     * app身份令牌
+     */
+    private String appToken;
+    /**
+     * appToken过期时间
+     */
+    private Date appTokenExpire;
 
     public Long getId() {
         return id;
@@ -226,5 +234,21 @@ public class ComUser implements Serializable{
 
     public void setIsBinding(Integer isBinding) {
         this.isBinding = isBinding;
+    }
+
+    public String getAppToken() {
+        return appToken;
+    }
+
+    public void setAppToken(String appToken) {
+        this.appToken = appToken;
+    }
+
+    public Date getAppTokenExpire() {
+        return appTokenExpire;
+    }
+
+    public void setAppTokenExpire(Date appTokenExpire) {
+        this.appTokenExpire = appTokenExpire;
     }
 }

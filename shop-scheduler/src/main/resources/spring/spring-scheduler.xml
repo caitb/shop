@@ -27,6 +27,7 @@
 
         <!-- 每日统计下级代理数量 -->
         <task:scheduled ref="pfAgentTask" method="agentStatisticsJob" cron="0 40 0 * * ?"/>
+        <task:scheduled ref="replenishStockTask" method="replenishStockRemindJob" cron="0 9 0 ? * MON"/>
     </task:scheduled-tasks>
 
 </beans>

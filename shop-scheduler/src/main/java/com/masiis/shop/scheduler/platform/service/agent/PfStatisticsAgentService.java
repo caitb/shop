@@ -159,9 +159,5 @@ public class PfStatisticsAgentService {
 //        context.refresh();
 //        PfStatisticsAgentService pfStatisticsAgentService = context.getBean(PfStatisticsAgentService.class);
 //        pfStatisticsAgentService.statisticsAgent();
-////        while (true) {
-////            pfStatisticsAgentService.statisticsAgent();
-////            Thread.sleep(10000);
-////        }
 //    }
 }

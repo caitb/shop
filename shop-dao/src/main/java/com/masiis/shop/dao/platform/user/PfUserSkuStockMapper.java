@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -31,4 +32,6 @@ public interface PfUserSkuStockMapper {
     List<PfUserSkuStock> selectByUserId(Long userId);
 
     PfUserSkuStock selectByUserIdAndSkuId(Long userId, Integer skuId);
+
+    List<Map<String,String>> selectReplenishStock();
 }

@@ -9,12 +9,11 @@
         <result column="discount" property="discount" jdbcType="DECIMAL"/>
         <result column="bail" property="bail" jdbcType="DECIMAL"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
-        <result column="back_img" property="backImg" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,back_img, remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark
         FROM
                pf_sku_agent
         WHERE
@@ -27,12 +26,28 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
-        insert into pf_sku_agent (id, sku_id, agent_level_id, icon,
-            discount, bail, quantity,
-            remark)
-        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},#{icon,jdbcType=VARCHAR},
-            #{discount,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
-            #{remark,jdbcType=VARCHAR})
+        insert into pf_sku_agent
+                   (
+                   id,
+                   sku_id,
+                   agent_level_id,
+                   icon,
+                   discount,
+                   bail,
+                   quantity,
+                   remark
+                   )
+        values
+                   (
+                   #{id,jdbcType=INTEGER},
+                   #{skuId,jdbcType=INTEGER},
+                   #{agentLevelId,jdbcType=INTEGER},
+                   #{icon,jdbcType=VARCHAR},
+                   #{discount,jdbcType=DECIMAL},
+                   #{bail,jdbcType=DECIMAL},
+                   #{quantity,jdbcType=INTEGER},
+                   #{remark,jdbcType=VARCHAR}
+                   )
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
@@ -48,13 +63,13 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, back_img,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,back_img, remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark
         from pf_sku_agent
     </select>
 
@@ -71,13 +86,13 @@
     </select>
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, back_img,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, back_img,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}

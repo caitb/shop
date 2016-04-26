@@ -92,4 +92,16 @@
                user_id = #{[0],jdbcType=BIGINT}
                AND sku_id = #{[1],jdbcType=BIGINT}
     </select>
+
+    <select id="selectReplenishStock" resultType="java.util.HashMap">
+        SELECT
+          sku.`name` as name,
+          u.mobile as mobile
+        FROM
+          pf_user_sku_stock s
+        LEFT JOIN com_sku sku ON s.sku_id = sku.id
+        LEFT JOIN com_user u ON s.user_id = u.id
+        WHERE
+          stock - frozen_stock &lt; 10
+    </select>
 </mapper>

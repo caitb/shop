@@ -23,6 +23,8 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="pwd_salt" property="pwdSalt" jdbcType="VARCHAR" />
         <result column="register_source" property="registerSource" jdbcType="INTEGER" />
+        <result column="app_token" property="appToken" jdbcType="VARCHAR" />
+        <result column="app_token_expire" property="appTokenExpire" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -37,14 +39,14 @@
             id_card_back_url, wx_id, is_binding, is_agent,
             send_type, audit_status, audit_reason,
             wx_unionid, password, pwd_salt,
-            register_source)
+            register_source, app_token, app_token_expire)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR},
             #{userMail,jdbcType=VARCHAR}, #{wxHeadImg,jdbcType=VARCHAR}, #{wxNkName,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
             #{realName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{idCardFrontUrl,jdbcType=VARCHAR},
             #{idCardBackUrl,jdbcType=VARCHAR}, #{wxId,jdbcType=VARCHAR}, #{isBinding,jdbcType=INTEGER}, #{isAgent,jdbcType=INTEGER},
             #{sendType,jdbcType=INTEGER}, #{auditStatus,jdbcType=INTEGER}, #{auditReason,jdbcType=VARCHAR},
             #{wxUnionid,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{pwdSalt,jdbcType=VARCHAR},
-            #{registerSource,jdbcType=INTEGER})
+            #{registerSource,jdbcType=INTEGER}, #{appToken, jdbcType=VARCHAR}, #{appTokenExpire, jdbcType=TIMESTAMP})
     </insert>
 
     <update id="updatePhone" parameterType="com.masiis.shop.dao.po.ComUser">
@@ -118,6 +120,12 @@
             <if test="registerSource != null">
                 register_source = #{registerSource,jdbcType=INTEGER},
             </if>
+            <if test="appToken != null">
+                app_token = #{appToken, jdbcType=VARCHAR},
+            </if>
+            <if test="appTokenExpire != null">
+                app_token_expire = #{appTokenExpire, jdbcType=TIMESTAMP},
+            </if>
         </set>
         where
               id = #{id,jdbcType=BIGINT}
@@ -126,7 +134,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from com_user
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -135,7 +143,7 @@
     <select id="selectAll" resultMap="BaseResultMap">
         select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from com_user
     </select>
     <select id="findByPid" resultType="string">
@@ -147,7 +155,7 @@
     <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String">
         select id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from com_user
         where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
@@ -165,7 +173,7 @@
         select
         id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from
                com_user
         <where>
@@ -200,7 +208,7 @@
         select
         id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding,is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from
         com_user
         <where>
@@ -233,7 +241,7 @@
         select
         id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
         id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-        password, pwd_salt, register_source
+        password, pwd_salt, register_source, app_token, app_token_expire
         from
                 com_user
         WHERE
@@ -247,7 +255,7 @@
         select
             id, create_time, mobile, user_mail, wx_head_img, wx_nk_name, sex, real_name, id_card, id_card_front_url,
             id_card_back_url, wx_id, is_binding, is_agent, send_type, audit_status, audit_reason, wx_unionid,
-            password, pwd_salt, register_source
+            password, pwd_salt, register_source, app_token, app_token_expire
         from
             com_user
         WHERE

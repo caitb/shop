@@ -97,6 +97,18 @@
                                     <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label for="brandId" class="col-sm-2 control-label">商品标志</label>
+                                <div class="col-sm-9">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label for="artNo" class="col-sm-2 control-label">商品货号</label>
                                 <div class="col-sm-9">
@@ -651,21 +663,28 @@
         }
     }
 
+    var dictMessage1 = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>等级图标</span> <br /> \
+                                     <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
+                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
+    var dictMessage2 = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>商品标志</span> <br /> \
+                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
+                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
     initDropzone('#dropzone', null, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="mainImgUrls" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="mainImgNames" value="'+res.title+'" />');
         $('#skuForm').append('<input type="hidden" name="mainImgOriginalNames" value="'+res.original+'" />');
     });
-    var dictMessage = '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i>等级图标</span> <br /> \
-                                     <span class="smaller-80 grey">按顺序上传(由高到低)</span> <br /> \
-                                     <span class="smaller-80 grey">拖拽(或者点击)上传图片</span> <br /> \
-                                     <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>';
-    initDropzone('#dropzone1', dictMessage, function(file){
+    initDropzone('#dropzone1', dictMessage1, function(file){
         var res = window.eval('(' + file.xhr.response + ')');
         $('#skuForm').append('<input type="hidden" name="iconImgUrls" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="iconImgNames" value="'+res.title+'" />');
-//        $('#skuForm').append('<input type="hidden" name="iconImgOriginalNames" value="'+res.original+'" />');
+    });
+    initDropzone('#dropzone2', dictMessage2, function(file){
+        var res = window.eval('(' + file.xhr.response + ')');
+        $('#skuForm').append('<input type="hidden" name="proIconUrl" value="'+res.url+'" />');
+        $('#skuForm').append('<input type="hidden" name="proIconName" value="'+res.title+'" />');
     });
 </script>
 <script>

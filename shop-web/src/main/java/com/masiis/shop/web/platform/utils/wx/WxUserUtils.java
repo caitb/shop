@@ -94,7 +94,6 @@ public class WxUserUtils {
     /**
      * 判断用户是否关注麦链商城
      *
-     * @param openId
      * @return
      */
     public Boolean isUserForcusSF(ComUser user){

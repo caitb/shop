@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -193,15 +194,18 @@ public class ProductService {
         Map<String,Object> param = new HashMap();
         Integer countLevel = 0;
         int endLevel = comAgentLevelMapper.getMaxAgentLevel();
+        PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
+        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (level == endLevel || stock == 0) {
             param.put("countLevel",countLevel);
+            param.put("priceDiscount",comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
             return param;
         } else {
-            PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
             countLevel = stock / pfSkuAgent.getQuantity();
             param.put("countLevel", countLevel);
             param.put("levelStock",pfSkuAgent.getQuantity());
         }
+        param.put("priceDiscount",comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
         return param;
     }
 }

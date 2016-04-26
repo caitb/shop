@@ -84,7 +84,7 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean verifiedComplete(String phone, boolean approved){
-        String[] content = new String[]{approved==true?"通过审核":"未通过审核"};
+        String[] content = new String[]{approved==true?"通过审核":"未通过审核", approved==true?"继续申请合伙人":"重新提交实名认证"};
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_COMPLETE, content);
         if (!"000000".equals(smsRes[0])) {
             return false;

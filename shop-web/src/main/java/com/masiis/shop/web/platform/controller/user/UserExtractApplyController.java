@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import com.masiis.shop.web.platform.service.user.UserExtractwayInfoService;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.tags.Param;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -145,7 +147,7 @@ public class UserExtractApplyController extends BaseController {
     }
 
     @RequestMapping("/success")
-    public String applySuccess(HttpServletRequest request){
+    public String applySuccess(HttpServletRequest request) throws Exception{
 
         return "platform/user/extract_success";
     }
@@ -254,13 +256,22 @@ public class UserExtractApplyController extends BaseController {
      */
     @RequestMapping(value = "/sendMessageWithdrawRequest.do")
     @ResponseBody
-    public String sendMessageWithdrawRequest(HttpServletRequest request){
+    public String sendMessageWithdrawRequest(@RequestParam(value = "money",required = true) BigDecimal money,
+                                             HttpServletRequest request){
         log.info("提现申请成功发送短信");
         ComUser user = getComUser(request);
         if (user == null){
             throw new BusinessException("该用户未登录");
         }
-        boolean flag = MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"1");
-        return String.valueOf(flag);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        //提现申请成功发送微信
+        String[] params = new String[]{money.toString(),dateFormat.format(new Date()),"审核中"};
+        boolean mobile = MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"1");
+        boolean wechat = WxPFNoticeUtils.getInstance().pfExtractApply(user, params, true);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mobile",mobile);
+        jsonObject.put("wechat",wechat);
+        log.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
     }
 }

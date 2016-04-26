@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
+import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -149,6 +150,11 @@ public class ComUserService {
         comUserMapper.updateByPrimaryKey(comUser);
         if(comUser.getAuditStatus()==2 || comUser.getAuditStatus()==3){
             MobileMessageUtil.verifiedComplete(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
+
+            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
+                                                                    comUser.getAuditStatus()==2?true:false,
+                                                                    comUser.getAuditStatus()==2?"http://m.qc.iimai.com/index":"http://m.qc.iimai.com/identityAuth/toInentityAuthPage.html?defaultValue=3");
         }
     }
 

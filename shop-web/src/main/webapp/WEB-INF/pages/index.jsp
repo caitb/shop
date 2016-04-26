@@ -22,16 +22,14 @@
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
+<c:if test="${forcusPF!=true}">
+<div class="na">
+    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+    <label class="close">×</label>
+</div>
+</c:if>
 <div class="wrap">
-    <div class="box"><c:if test="${forcusPF!=true}">
-        <div class="na">
-            <p><img src="${user.wxHeadImg}" alt=""></p>
-            <h1>
-                <span>麦链合伙人</span>
-                <span>关注可查资金，管理店铺，发展下级</span>
-            </h1>
-            <label class="add">加关注</label>
-        </div></c:if>
+    <div class="box">
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
@@ -128,9 +126,12 @@
 
     </div>
     <div class="back_f">
-        <p>关注公众账号查资金，管理店铺，发展下级</p>
+        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <img src="${path}/static/images/asd.JPG" alt="">
+        <div>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
+            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
+        </div>
     </div>
     <div class="bottom">
         <footer>

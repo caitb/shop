@@ -26,49 +26,35 @@
   line-height: 40px;
   color: white;
 }
-
- .na {
-  display: -webkit-box;
-  margin-bottom: 5px;
-  padding: 0px 10px;
-  background: #FFFFFF;
-  position: relative;
+.na {
+    display: -webkit-box;
+    padding: 5px 10px;
+    background: #F7E911;
+    position: relative;
+    box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.5);
 }
- .na p {
-  margin-top: 3px;
-  width: 30px;
-  height: 30px;
-  border-radius: 25px;
-  background: #ccc;
-  overflow: hidden;
+.na p {
+    color: #F75140;
+    font-size:12px;
 }
- .na p img {
-  width: 100%;
+.na p span{
+    font-size: 12px;
+    color: #421405;
+    text-decoration: underline;
 }
- .na h1 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
-  margin-left: 10px;
-}
- .na h1 span {
-  display: block;
-  font-size: 12px;
-}
- .na h1 span:last-child {
-   font-size: 10px;
-   color: #999;
- }
- .na label{
-  position: absolute;
-  line-height: 25px;
-  right: 5px;
-  top: 6px;
-  color: #fff;
-  padding: 0 15px;
-  background: #ff0000;
-  border-radius: 5px;
-  font-size: 12px;
+.na label{
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+    text-align: center;
+    background: #FDFBCF;
+    font-size: 16px;
+    border-radius: 10px;
+    color: #7C7A65;
+    position: absolute;
+    right: 5px;
+    top: 4px;
 }
 .back_box{
    width:100%;
@@ -86,30 +72,51 @@
   top:0;
 }
 .back_f{
-  width:96%;
-  position: absolute;
-  left:2%;
-  top:25%;
-  background: #fff;
-  border-radius: 5px;
+    width:90%;
+    position: fixed;
+    left:5%;
+    top:25%;
+    background: #fff;
+    /* border-radius: 5px; */
+    z-index:11;
+    padding-bottom: 50px;
 }
-.back_f p{
-  text-align: center;
-  margin-top: 3em;
+.back_f>p{
+    text-align: center;
+    margin-top: 3em;
+    font-size: 16px;
+}
+.back_f div{
+    display: -webkit-box;
+    margin-top: 1em;
+}
+.back_f div p{
+    width:1px;
+    -webkit-box-flex:1;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+}
+.back_f div p span{
+    display: block;
+    font-size: 12px;
+}
+.back_f div p img{
+    display: block;
+    width:100px;
+    height:100px;
 }
 .back_f .close{
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  width: 25px;
-  height: 25px;
-  border-radius: 15px;
-  text-align: center;
-  line-height: 24px;
-  font-size: 18px;
-  border: 1px solid #ccc;
-}
-.back_f img{
-  width:90%;
-  margin:15% 0 5% 5%;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 21px;
+    font-size: 26px;
+    border: 1px solid #ccc;
+    color: #999;
 }

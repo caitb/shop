@@ -4,12 +4,15 @@ import com.masiis.shop.dao.platform.order.PfSupplierBankMapper;
 import com.masiis.shop.dao.po.PfSupplierBank;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * Created by hzz on 2016/4/25.
  */
 @Service
 public class PfSupplierBankService {
 
+    @Resource
     private PfSupplierBankMapper supplierBankMapper;
 
     /**

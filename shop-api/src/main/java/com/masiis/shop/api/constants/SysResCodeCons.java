@@ -16,4 +16,7 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_VALIDCODE_SMS_FAIL = "100003";
     public static final String RES_CODE_VALIDCODE_SMS_FAIL_MSG = "验证码短信发送失败";
+
+    public static final String RES_CODE_VALIDCODE_REQ_OFTEN = "100004";
+    public static final String RES_CODE_VALIDCODE_REQ_OFTEN_MSG = "验证码请求过于频繁";
 }

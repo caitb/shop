@@ -21,4 +21,8 @@ public class ValidCodeUtils {
     public static String getRedisPhoneNumValidCodeName(String phoneNum){
         return phoneNum + SysRedisNameCons.PHONENUM_VALIDCODE_REDIS_NAME_SUFFIX;
     }
+
+    public static String getRdPhoneNumVcodeNextOpTimeName(String phoneNum){
+        return phoneNum + SysRedisNameCons.PHONENUM_VALIDCODE_REQUEST_EXPIRE_REDIS_NAME_SUFFIX;
+    }
 }

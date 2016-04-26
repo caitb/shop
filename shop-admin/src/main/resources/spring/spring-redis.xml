@@ -9,20 +9,8 @@
         <property name="testOnBorrow" value="${redis.testOnBorrow}" />
     </bean>
 
-    <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="poolConfig" ref="poolConfig" />
-        <property name="hostName" value="${redis.hostName}" />
-        <property name="port" value="${redis.port}"/>
-        <property name="database" value="${redis.database}"/>
-        <property name="password" value="${redis.password}"/>
-    </bean>
-
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-        <property name="connectionFactory" ref="redisConnectionFactory"/>
-    </bean>
-
     <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
-        <property name="connectionFactory" ref="redisConnectionFactory" />
+        <property name="connectionFactory" ref="rdCommonConnectFactory" />
     </bean>
 
     <!-- 连接公共redis -->

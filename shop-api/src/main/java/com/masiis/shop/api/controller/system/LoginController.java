@@ -14,9 +14,11 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Date;
+
 /**
- * @Date:2016/4/25
- * @auth:lzh
+ * @date 2016/4/25
+ * @author lzh
  */
 @Controller
 @RequestMapping("/sys")
@@ -42,9 +44,16 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_INVALID_MSG);
             }
             // 查询请求频率
-
+            Date exTime = SpringRedisUtil.get(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum), Date.class);
+            if(exTime == null || exTime.compareTo(new Date()) > 0){
+                res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN);
+                res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN_MSG);
+                throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN_MSG);
+            }
             // 获取验证码
             String code = ValidCodeUtils.generareValidCode();
+            Date exNewTime = new Date();
+            exNewTime.setTime(exTime.getTime() + 60 * 1000);
             // 发送短信
             if(!MobileMessageUtil.VerificationCode(phoneNum, code, SMSConstants.REGESTER_VALID_TIME)){
                 // 验证码短信发送失败
@@ -53,11 +62,13 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_SMS_FAIL_MSG);
             }
             // 保存验证码到redis
-
-            SpringRedisUtil.saveEx(code,
-                    ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum),
+            SpringRedisUtil.saveEx(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum),
+                    exNewTime, 60);
+            SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), code,
                     Integer.valueOf(SMSConstants.REGESTER_VALID_TIME) * 60);
             // 返回结果
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             log.error(e);
         }

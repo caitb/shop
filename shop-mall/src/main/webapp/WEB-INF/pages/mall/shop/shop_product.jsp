@@ -16,19 +16,16 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <body>
-<header>
-    <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-    <p>商品详情</p>
-</header>
+
 <div class="addb">
-    <p></p>
-    <h1>
-        <span>麦链合伙人</span>
-        <span>关注可查资金，管理店铺，发展下级</span>
-    </h1>
-    <label class="add">加关注</label>
+    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+    <label class="close">×</label>
 </div>
 <div class="wrap">
+    <header>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <p>商品详情</p>
+    </header>
     <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">
         <div class="na">
             <p><img src="${fromUser.wxHeadImg}" alt=""></p>
@@ -136,9 +133,12 @@
 <div class="back">
 </div>
 <div class="back_g">
-    <p>关注公众账号查资金，管理店铺，发展下级</p>
+    <p>关注公众账号查佣金、查订单</p>
     <span class="close">×</span>
-    <img src="${path}/static/images/asd.JPG" alt="">
+    <div>
+        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
+        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
+    </div>
 </div>
 <div class="shoping">
     <img src="${defaultSkuImage.fullImgUrl}" alt="">
@@ -169,7 +169,7 @@
 <footer>
     <section class="sec3">
         <p class="shi" id="share"><a>分享</a></p>
-        <p style="background: #DA3600;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
+        <p style="background: #fff;color:#333;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
     </section>
 </footer>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>

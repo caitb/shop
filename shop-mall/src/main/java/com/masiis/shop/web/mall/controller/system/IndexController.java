@@ -13,6 +13,7 @@ import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -93,7 +94,8 @@ public class IndexController extends BaseController {
             sfShopDetail.setSkuName(comSku.getName());
             sfShopDetail.setPriceRetail(comSku.getPriceRetail());//销售价
             sfShopDetail.setAgentLevelName(shopSku.getAgentName());//代理等级名称
-            sfShopDetail.setIcon(shopSku.getIcon());//商品代理图标
+            SfShopSku sfSkuLevelImage = skuService.findSfSkuLevelImage(shopId, sfShopSku.getSkuId());
+            sfShopDetail.setIcon(sfSkuLevelImage.getIcon());//商品代理图标
             sfShopDetail.setSkuId(comSku.getId());
             sfShopDetail.setSlogan(comSpu.getSlogan());//一句话介绍
 //            bail=sfShopSku.getBail().add(bail);//保证金
@@ -101,6 +103,8 @@ public class IndexController extends BaseController {
             SfShopDetails.add(sfShopDetail);
         }
         ModelAndView modelAndView = new ModelAndView();
+        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+        modelAndView.addObject("forcusSF",forcusSF);
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);

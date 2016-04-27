@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.shop.SfShopSkuExtendMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.*;
@@ -33,7 +34,7 @@ public class SkuService {
     @Resource
     private ComSkuExtensionMapper comSkuExtensionMapper;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private SfShopSkuExtendMapper sfShopSkuExtendMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
 
@@ -110,6 +111,20 @@ public class SkuService {
             comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
         }
         return comSkuImage;
+    }
+
+    /**
+     * 获取代理等级图标
+     * @author muchaofeng
+     * @date 2016/4/27 12:02
+     */
+    public SfShopSku findSfSkuLevelImage(Long shopId,Integer skuId) throws Exception {
+        String ImgValue = PropertiesUtils.getStringValue("agent_level_product_icon_url");
+        SfShopSku sfShopSku = sfShopSkuExtendMapper.selectShopviewByShopIdAndSkuId(shopId, skuId);
+        if (sfShopSku != null) {
+            sfShopSku.setIcon(ImgValue + sfShopSku.getIcon());
+        }
+        return sfShopSku;
     }
 
     /**

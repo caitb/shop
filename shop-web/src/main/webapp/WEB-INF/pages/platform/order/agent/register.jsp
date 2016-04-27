@@ -44,7 +44,7 @@
             <section class="sec2">
                 <c:if test="${pWxNkName==''}">
                     <h3 class="tui" style="display: block">
-                        <span>是否有推荐人：</span>
+                        <span style="font-size: 12px;">是否有推荐人：</span>
                         <input type="radio" id="q" name="danx" class="shi" checked="checked">
                         <label for="q" style="margin-left:5px;">是</label>
                         <input type="radio" id="b" name="danx" class="fou"/>
@@ -63,7 +63,7 @@
                     </div>
                 </c:if>
 
-                <h2>选择合伙人等级：</h2>
+                <h2>选择合伙人套餐：</h2>
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId > pUserLevelId}">

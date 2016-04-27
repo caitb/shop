@@ -38,7 +38,7 @@
         <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
-<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script src="${path}/static/js/zepto.min.js"></script>
 <script>
     $(".add").on("tap",function () {
         $(".back_box").show()

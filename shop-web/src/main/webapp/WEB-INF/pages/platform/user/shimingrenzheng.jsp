@@ -51,7 +51,7 @@
 
         <main>
             <div class="sf">
-                姓名：
+                姓名：　　
                 <input type="text" id="name" name="name">
             </div>
             <div class="sf">

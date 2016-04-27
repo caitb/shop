@@ -63,7 +63,7 @@
 .wrap #box main .sec1 div p {
   text-indent: 10px;
   color: #333333;
-  font-size: 14px;
+  font-size: 12px;
   position: relative;
 }
 .wrap #box main .sec1 div h1{
@@ -147,13 +147,14 @@
 }
 .wrap #box main .sec2 h2 {
   color: #333333;
-  line-height: 40px;
+  line-height: 44px;
   text-indent: 10px;
+  font-size: 12px;
 }
 .wrap #box main .sec2 > h3 {
   padding: 0 10px;
   border-bottom: 1px solid #f6f6f6;
-  line-height: 40px;
+  line-height: 44px;
 }
 .wrap #box main .sec2 > h3 input {
   display: none;
@@ -162,7 +163,7 @@
   background: url("../images/icon_14.png") no-repeat;
   padding-left: 25px;
   background-size: contain;
-
+  font-size: 12px;
 }
 .wrap #box main .sec2 > h3 input:checked + label {
   background: url("../images/icon_11.png") no-repeat;
@@ -178,8 +179,8 @@
   margin-right: 10px;
   text-indent: 10px;
   color: #333333;
-  line-height: 40px;
-  font-size: 14px;
+  line-height: 44px;
+  font-size: 12px;
 }
 .wrap #box main .sec2 div h3 .gao {
   position: absolute;
@@ -219,8 +220,8 @@
 }
 
 .dengji{
-    background: #fff;
-    padding:0 3%;
+  background: #fff;
+  padding:0 3%;
   -webkit-tap-highlight-color: transparent;
 }
 .dengji p{
@@ -373,7 +374,6 @@
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;

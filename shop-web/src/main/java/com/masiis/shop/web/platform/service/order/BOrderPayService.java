@@ -136,9 +136,6 @@ public class BOrderPayService {
         if (pfBorder.getPayStatus() == 1) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
         }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
-        }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
         pfBorder.setPayTime(new Date());
@@ -335,9 +332,6 @@ public class BOrderPayService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder.getPayStatus() == 1) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
-        }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));

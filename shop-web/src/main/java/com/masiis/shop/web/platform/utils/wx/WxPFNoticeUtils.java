@@ -190,7 +190,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 新代理订单提醒
+     * 有新的下级订单
      *
      * @param user
      * @param params   (1,订单编号(不是id);2,时间)

@@ -48,7 +48,7 @@ public class SysSignUtils {
                     if (sf != null) {
                         continue;
                     }
-                    String value = (String) f.get(obj);
+                    String value = f.get(obj) == null ? null : f.get(obj).toString();
                     if (StringUtils.isNotBlank(value)) {
                         list.add(key + "=" + f.get(obj) + "&");
                     }
@@ -77,11 +77,20 @@ public class SysSignUtils {
     }
 
     public static void main(String... args){
-        LoginByWxRes req = new LoginByWxRes();
-        req.setResMsg("aa");
-        req.setUserKey("ssdfsdf");
-        String result = JSONObject.toJSONString(req);
-        LoginWxReq res = JSONObject.parseObject(result, LoginWxReq.class);
-        System.out.println(toSignString(req, null));
+        LoginWxReq req = new LoginWxReq();
+        req.setAppid("sssddsdaajsdkfjdfkjsdfjksskj");
+        req.setNickName("测试");
+        req.setOpenId("sldkfjIjhsjd_0438skjdhfdskjghgasdkjfh");
+        req.setUnionid("sdkjfhd2s7-sldkhHGsldkhjU");
+        req.setCity("北京");
+        req.setCountry("中国");
+        req.setSign(toSignString(req, null));
+        String result = HttpClientUtils.httpPost("http://localhost:8083/sys/loginByWx", JSONObject.toJSONString(req));
+        LoginByWxRes res = JSONObject.parseObject(result, LoginByWxRes.class);
+        if(res.getSign().equals(toSignString(res, null))){
+            System.out.println(true);
+        } else {
+            System.out.println(false);
+        }
     }
 }

@@ -99,6 +99,7 @@ public class LoginController extends BaseController {
             res.setExpireUnit("天");
             res.setSign(SysSignUtils.toSignString(res, null));
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             if(e instanceof JSONException){
                 res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
                 res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);

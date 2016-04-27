@@ -15,6 +15,7 @@
 <%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
+    <c:if test="${isUserForcus==false}">
     <div class="na">
         <p></p>
         <h1>
@@ -23,6 +24,7 @@
         </h1>
         <label class="add">加关注</label>
     </div>
+    </c:if>
     <div class="xinxi">
         <p>注册信息</p>
         <p style="color:#F74A11;">选择拿货方式</p>

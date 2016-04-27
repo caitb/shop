@@ -188,6 +188,7 @@
         $(".back").css("display", "none");
         $(".back_b").hide();
     })
+
     $(".b_que").on("click", function () {
         var skuId = $("#skuId").val();
         $.ajax({
@@ -225,15 +226,18 @@
     $(".paidan").on("click", function () {
         $(".back").css("display", "-webkit-box");
         $(".back_q").show();
+        $(".back_box").show();
     })
     $(".zhidao").on("click", function () {
         $(".back").css("display", "none");
         $(".back_q").hide();
         $(".back_login").hide();
+        $(".back_box").hide();
     })
     function gotoBuhuo() {
         $(".back").css("display", "-webkit-box");
         $(".back_login").show();
+        $(".back_box").show()
     }
 </script>
 </body>

@@ -635,7 +635,7 @@ public class BOrderPayService {
         orderPayment.setAmount(pfBorder.getOrderAmount());
         orderPayment.setCreateTime(new Date());
         orderPayment.setOutOrderId("");
-        orderPayment.setPaySerialNum("");
+        orderPayment.setPaySerialNum(UUID.randomUUID().toString());
         orderPayment.setRemark("线下支付插入");
         PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(),1,0);
         if (_orderPayment == null){

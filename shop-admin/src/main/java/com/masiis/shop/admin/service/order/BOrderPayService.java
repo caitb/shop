@@ -133,11 +133,8 @@ public class BOrderPayService {
         Long bOrderId = pfBorderPayment.getPfBorderId();
         log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getPayStatus() == 1) {
+        if (pfBorder.getPayStatus() != BOrderStatus.NotPaid.getCode() && pfBorder.getPayStatus() != BOrderStatus.offLineNoPay.getCode()) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
-        }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
@@ -333,11 +330,8 @@ public class BOrderPayService {
         Long bOrderId = pfBorderPayment.getPfBorderId();
         log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getPayStatus() == 1) {
+        if (pfBorder.getPayStatus() != BOrderStatus.NotPaid.getCode() && pfBorder.getPayStatus() != BOrderStatus.offLineNoPay.getCode()) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
-        }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));

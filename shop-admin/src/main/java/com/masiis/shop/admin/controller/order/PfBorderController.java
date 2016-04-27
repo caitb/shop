@@ -123,21 +123,22 @@ public class PfBorderController {
      * 合伙人线下支付订单收款确认
      * @param request
      * @param response
-     * @param pfBorderId  合伙人订单ID
+     * @param bOrderId  合伙人订单ID
      * @param outOrderId  银行流水号
      * @return
      */
     @RequestMapping("/offline/Receipt.do")
     @ResponseBody
-    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long pfBorderId, String outOrderId){
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId){
 
         try {
-            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(pfBorderId);
+            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
             bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"));
 
             return "success";
         } catch (Exception e) {
-            log.error("合伙人线下支付收款确认失败![pfBorderId="+pfBorderId+"][outOrderId="+outOrderId+"]");
+            log.error("合伙人线下支付收款确认失败![bOrderId="+bOrderId+"][outOrderId="+outOrderId+"]");
+            e.printStackTrace();
         }
 
         return null;

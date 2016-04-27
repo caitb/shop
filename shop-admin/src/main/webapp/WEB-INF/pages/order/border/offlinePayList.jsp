@@ -454,6 +454,7 @@
                             },
                             'click .receipt': function(e, value, row, index){
                                 $('#bOrderId').val(row.pfBorder.id);
+                                $('#outOrderId').val('');
                                 $('#modal-receipt').modal('show');
                             }
                         }

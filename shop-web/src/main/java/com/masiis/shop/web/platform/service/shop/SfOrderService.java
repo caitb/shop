@@ -83,6 +83,7 @@ public class SfOrderService {
     @Transactional
     public void deliver(String shipManName, Long orderId, String freight, String shipManId, ComUser user) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
         if(sfOrder.getSendType() == 0){
             throw new BusinessException("请选择发货方式");
         }
@@ -91,6 +92,7 @@ public class SfOrderService {
         }
         if (sfOrder.getSendType() == 1) {//平台代发
             sfOrder.setShipStatus(5);
+            sfOrder.setShipTime(new Date());
             sfOrder.setOrderStatus(8);
             SfOrderFreight sforderFreight = new SfOrderFreight();
             sforderFreight.setCreateTime(new Date());
@@ -110,12 +112,10 @@ public class SfOrderService {
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
 
-            ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
-            MobileMessageUtil.consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
             String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
             String[] params=new String[5];
-            params[0]=null;
-            params[1]=null;
+            params[0]="";
+            params[1]="";
             params[2]=sfOrder.getOrderCode();
             params[3]=shipManName;
             params[4]=freight;
@@ -123,6 +123,7 @@ public class SfOrderService {
             if(aBoolean==false){
                 throw new BusinessException("消费者订单发货微信提示失败");
             }
+            MobileMessageUtil.consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);
@@ -142,18 +143,19 @@ public class SfOrderService {
             sfOrderOperationLog.setSfOrderId(sfOrder.getId());
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
-            MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
+
             String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
             String[] params=new String[5];
-            params[0]=null;
-            params[1]=null;
+            params[0]="";
+            params[1]="";
             params[2]=sfOrder.getOrderCode();
             params[3]=shipManName;
             params[4]=freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if(aBoolean==false){
                 throw new BusinessException("消费者订单发货微信提示失败");
             }
+            MobileMessageUtil.consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
         }
     }
 }

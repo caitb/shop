@@ -55,7 +55,7 @@ public class IndexController extends BaseController {
                               @PathVariable("userPid") Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
-            user = userService.getUserById(1l);
+            user = userService.getUserById(160l);
             req.getSession().setAttribute("comUser", user);
         }
         req.getSession().setAttribute("userPid", userPid);

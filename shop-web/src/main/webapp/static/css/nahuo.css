@@ -314,7 +314,7 @@
   line-height: 50px;
   margin-bottom: 15px;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
 }
 .back_que input{
   display: none;
@@ -328,6 +328,8 @@
   padding-left: 20px;
   margin:0 10px;
   margin-bottom: 20px;
+  -webkit-tap-highlight-color: transparent;
+  padding-bottom: 5px;
 }
 .back_que input:checked+label{
   background: url("/static/images/j.png") no-repeat 0 2px;

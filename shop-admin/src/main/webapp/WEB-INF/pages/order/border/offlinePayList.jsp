@@ -147,7 +147,7 @@
                                                             <div class="profile-info-value" id="jjF">
                                                                 <form id="auditForm">
                                                                     <input type="hidden" name="id" id="bOrderId" value="" />
-                                                                    <input type="text" name="serialNumber" id="serialNumber" value="" placeholder="银行流水号" />
+                                                                    <input type="text" name="outOrderId" id="outOrderId" value="" placeholder="银行流水号" />
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -621,9 +621,9 @@
     });
 
     $('.ok').on('click', function(){
-        var serialNumber = $('input[name="serialNumber"]').val();
+        var outOrderId = $('input[name="outOrderId"]').val();
 
-        if(!serialNumber){
+        if(!outOrderId){
             $.gritter.add({
                 title: '温馨提示',
                 text: '请填写银行流水号!',

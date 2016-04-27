@@ -88,7 +88,7 @@
     <%--</main>--%>
     <c:forEach items="${pfUserCertificates}" var="cet">
         <div class="sec1">
-            <img src="<%=path%>/static/images/icon_61.png" alt="">
+            <img src="" alt="${cet.skuIcon}">
             <div>
                 <p>合伙产品</p>
                 <h1>${cet.skuName}</h1>

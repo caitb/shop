@@ -37,10 +37,11 @@ public class ReplenishStockService {
         String skuId;
         Long userId;
         Integer stock;
-        String url = "";
+        String url;
         String[] params;
         for (Map<String, Object> map : mapList){
             stock = Integer.parseInt(map.get("stock")==null?"0":map.get("stock").toString());
+            logger.info("检测代理库存是否充足："+stock);
             if (stock < 10){
                 skuName = map.get("name") == null?"" : map.get("name").toString();
                 mobile = map.get("mobile") == null  ?"" : map.get("mobile").toString();
@@ -50,6 +51,7 @@ public class ReplenishStockService {
                 skuId = map.get("skuId").toString();
                 userId = Long.valueOf(map.get("userId").toString());
                 url = PropertiesUtils.getStringValue("web.domain.name.address") + "product/user/" + userId;
+                logger.info("url:" + url);
                 params = new String[3];
                 params[0] = skuId;
                 params[1] = skuName;
@@ -60,12 +62,12 @@ public class ReplenishStockService {
         }
     }
 
-    public static void main(String[] args)throws Exception{
-        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-        context.setValidating(false);
-        context.load("classpath*:/spring/*.xml");
-        context.refresh();
-        ReplenishStockService replenishStockService = context.getBean(ReplenishStockService.class);
-        replenishStockService.replenishStockRemind();
-    }
+//    public static void main(String[] args)throws Exception{
+//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
+//        context.setValidating(false);
+//        context.load("classpath*:/spring/*.xml");
+//        context.refresh();
+//        ReplenishStockService replenishStockService = context.getBean(ReplenishStockService.class);
+//        replenishStockService.replenishStockRemind();
+//    }
 }

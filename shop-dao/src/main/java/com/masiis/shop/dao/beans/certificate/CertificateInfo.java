@@ -36,6 +36,8 @@ public class CertificateInfo extends PfUserSku {
 
     private String levelName;//合伙人等级名称
 
+    private String skuIcon;//商品lOGO
+
     public String getCtName() {
         return ctName;
     }
@@ -130,5 +132,13 @@ public class CertificateInfo extends PfUserSku {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public String getSkuIcon() {
+        return skuIcon;
+    }
+
+    public void setSkuIcon(String skuIcon) {
+        this.skuIcon = skuIcon;
     }
 }

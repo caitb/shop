@@ -1,5 +1,7 @@
-package com.masiis.shop.web.platform.service.order;
+package com.masiis.shop.admin.service.order;
 
+import com.masiis.shop.admin.service.user.ComUserAccountService;
+import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -20,8 +22,6 @@ import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -79,9 +79,9 @@ public class BOrderPayService {
     @Resource
     private SfShopSkuMapper sfShopSkuMapper;
     @Resource
-    private PfSupplierBankService supplierBankService;
-    @Resource
     private BOrderOperationLogService bOrderOperationLogService;
+    @Resource
+    private ComUserAccountService comUserAccountService;
 
     /**
      * 订单支付回调入口
@@ -427,7 +427,45 @@ public class BOrderPayService {
         pfBorder.setShipTime(new Date());
         pfBorder.setIsShip(1);
         pfBorder.setReceiptTime(new Date());
-        bOrderService.completeBOrder(pfBorder);
+        completeBOrder(pfBorder);
+    }
+
+    /**
+     * 订单完成处理统一入口
+     *
+     * @author ZhaoLiang
+     * @date 2016/4/9 11:22
+     */
+    @Transactional
+    public void completeBOrder(PfBorder pfBorder) throws Exception {
+        if (pfBorder == null) {
+            throw new BusinessException("订单为空对象");
+        }
+        if (pfBorder.getPayStatus() != 1) {
+            throw new BusinessException("订单还未支付怎么能完成呢？");
+        }
+        //拿货方式(0未选择1平台代发2自己发货)
+        if (pfBorder.getSendType() == 1) {
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())) {
+                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
+            }
+        } else if (pfBorder.getSendType() == 2) {
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.Ship.getCode());
+            }
+        } else {
+            throw new BusinessException("订单拿货方式异常");
+        }
+        pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
+        pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
+        pfBorder.setReceiptTime(new Date());//收货时间
+        pfBorderMapper.updateById(pfBorder);
+        //添加订单日志
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
+        //订单类型(0代理1补货2拿货)
+        if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
+            comUserAccountService.countingByOrder(pfBorder);
+        }
     }
 
     /**
@@ -443,7 +481,7 @@ public class BOrderPayService {
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
         String value1 = certificateInfo.getAgentLevelId().toString();
         String value2 = String.format("%04d", certificateInfo.getSkuId());
-        String value3 = String.format("%05d", certificateInfo.getUserId());
+        String value3 = String.format("%04d", certificateInfo.getUserId());
         certificateCode = Code.append(value1).append(value2).append(value).append(value3).toString();
         return certificateCode;
     }
@@ -571,90 +609,8 @@ public class BOrderPayService {
         }
     }
 
-    /**
-     * 线下支付
-     *
-     * @author hanzengzhi
-     * @date 2016/4/25 14:46
-     */
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public Map<String, Object> offinePayment(Long bOrderId) {
-        Map<String, Object> map = null;
-        PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
-        if (pfBorder != null) {
-            //插入订单支付表
-            insertOrderPayment(pfBorder);
-            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下已支付");
-            PfSupplierBank supplierBank = getDefaultBack();
-            List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-            if (orderItems != null && orderItems.size() != 0) {
-                map = new LinkedHashMap<String, Object>();
-                map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
-                map.put("supplierBank", supplierBank);
-                map.put("orderItem", orderItems.get(0));
-                map.put("border", pfBorder);
-            } else {
-                throw new BusinessException("线下支付失败:查询子帐单为null");
-            }
-        }
-        return map;
-    }
 
-    /**
-     * 修改订单的状态
-     *
-     * @author hanzengzhi
-     * @date 2016/4/25 14:49
-     */
-    private PfBorder updateOrderStatus(Integer status, Long bOrderId) {
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-/*        if (pfBorder == null||!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
-            throw new BusinessException("订单状态不是未支付状态，线下支付失败");
-        }*/
-        if (pfBorder == null) {
-            throw new BusinessException("线下支付失败:查询订单信息失败");
-        }
-        pfBorder.setOrderStatus(status);
-        int i = pfBorderMapper.updateById(pfBorder);
-        if (i != 1) {
-            throw new BusinessException("线下支付更新订单状态失败");
-        }
-        return pfBorder;
-    }
-    /**
-     * 插入订单支付表
-     * @author hanzengzhi
-     * @date 2016/4/27 14:19
-     */
-    private void insertOrderPayment(PfBorder pfBorder){
-        PfBorderPayment orderPayment = new PfBorderPayment();
-        orderPayment.setPayTypeId(1);
-        orderPayment.setPayTypeName("线下支付");
-        orderPayment.setPfBorderId(pfBorder.getId());
-        orderPayment.setIsEnabled(0);
-        orderPayment.setAmount(pfBorder.getOrderAmount());
-        orderPayment.setCreateTime(new Date());
-        orderPayment.setOutOrderId("");
-        orderPayment.setPaySerialNum(UUID.randomUUID().toString());
-        orderPayment.setRemark("线下支付插入");
-        PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(),1,0);
-        if (_orderPayment == null){
-            log.info("线下支付:订单支付表中没有输入，插入数据----start");
-            int i = pfBorderPaymentMapper.insert(orderPayment);
-            if (i!=1){
-                throw new BusinessException("线下支付往订单支付表插入失败");
-            }
-            log.info("线下支付:订单支付表中没有输入，插入数据----end");
-        }
-    }
 
-    /**
-     * 获得运营商的默认银行卡信息
-     *
-     * @author hanzengzhi
-     * @date 2016/4/25 14:50
-     */
-    private PfSupplierBank getDefaultBack() {
-        return supplierBankService.getDefaultBank();
-    }
+
+
 }

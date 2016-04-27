@@ -3,10 +3,13 @@ package com.masiis.shop.admin.controller.order;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
+import com.masiis.shop.admin.service.order.BOrderPayService;
+import com.masiis.shop.admin.service.order.BOrderPaymentService;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.order.OrderQueueDealService;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderFreight;
+import com.masiis.shop.dao.po.PfBorderPayment;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +35,10 @@ public class PfBorderController {
     private BOrderService bOrderService;
     @Resource
     private OrderQueueDealService orderQueueDealService;
+    @Resource
+    private BOrderPaymentService bOrderPaymentService;
+    @Resource
+    private BOrderPayService bOrderPayService;
 
     @RequestMapping("/list.shtml")
     public String list(){
@@ -106,6 +113,31 @@ public class PfBorderController {
             return pageMap;
         } catch (Exception e) {
             log.error("查询合伙人线下支付订单列表失败![pfBorder="+pfBorder+"]");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 合伙人线下支付订单收款确认
+     * @param request
+     * @param response
+     * @param bOrderId  合伙人订单ID
+     * @param outOrderId  银行流水号
+     * @return
+     */
+    @RequestMapping("/offline/Receipt.do")
+    @ResponseBody
+    public Object Receipt(HttpServletRequest request, HttpServletResponse response, Long bOrderId, String outOrderId){
+
+        try {
+            PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
+            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"));
+
+            return "success";
+        } catch (Exception e) {
+            log.error("合伙人线下支付收款确认失败![bOrderId="+bOrderId+"][outOrderId="+outOrderId+"]");
             e.printStackTrace();
         }
 

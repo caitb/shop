@@ -90,6 +90,7 @@ public class DevelopingController extends BaseController {
                     ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
 
                     Map<String, Object> agentMap = new HashMap<>();
+                    agentMap.put("levelId", comAgentLevel.getId());
                     agentMap.put("levelName", comAgentLevel.getName());
                     agentMap.put("skuName", comSku.getName());
                     agentMap.put("skuId", comSku.getId());

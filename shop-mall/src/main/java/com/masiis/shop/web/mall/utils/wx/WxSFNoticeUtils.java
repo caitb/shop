@@ -26,7 +26,7 @@ public class WxSFNoticeUtils {
     }
 
     // 单例懒加载
-    public static final WxSFNoticeUtils getInstance() {
+    public static WxSFNoticeUtils getInstance() {
         return Holder.INSTANCE;
     }
 

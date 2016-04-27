@@ -150,7 +150,7 @@ public class WxPFNoticeUtils {
         WxNoticeReq<WxPFPartnerRealNameSubmit> req = new WxNoticeReq<>(sub);
 
         sub.setFirst(new WxNoticeDataItem("实名认证已经提交", null));
-        sub.setRemark(new WxNoticeDataItem("您已实名信息已经提交，审核将会在1个工作日完成。请耐心等待审核结果!", null));
+        sub.setRemark(new WxNoticeDataItem("您的实名信息已经提交，审核将会在1个工作日完成。请耐心等待审核结果!", null));
         sub.setKeyword1(new WxNoticeDataItem(user.getWxNkName(), null));
         sub.setKeyword2(new WxNoticeDataItem(params[0], null));
         sub.setKeyword3(new WxNoticeDataItem(params[1], null));

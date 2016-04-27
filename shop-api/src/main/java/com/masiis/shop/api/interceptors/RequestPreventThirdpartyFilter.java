@@ -1,5 +1,7 @@
 package com.masiis.shop.api.interceptors;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,10 +12,10 @@ import java.io.IOException;
  * Created by wangbingjian on 2016/4/23.
  */
 public class RequestPreventThirdpartyFilter implements Filter {
-
+    private static final Logger logger = Logger.getLogger(RequestPreventThirdpartyFilter.class);
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("init");
+        logger.info("init");
     }
 
     //防盗链：用于保护自己独有的消息，防止被其他的网站直接连接浏览，利于保护自己的信息
@@ -27,12 +29,12 @@ public class RequestPreventThirdpartyFilter implements Filter {
         if (!request.getServletPath().contains("index")) {
             if(referer==null||!referer.startsWith(basePath))
             {
-                System.out.println(basePath+"index.jsp");
+                logger.info(basePath+"index.jsp");
                 response.sendRedirect(basePath+"index.jsp");
                 return;
             }
         }
-        String data="haha";
+        String data="非法请求";
         response.getWriter().write(data);
     }
 

@@ -10,10 +10,11 @@
         <result column="bail" property="bail" jdbcType="DECIMAL"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="back_img" property="backImg" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark,back_img
         FROM
                pf_sku_agent
         WHERE
@@ -63,13 +64,13 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark,back_img
         from pf_sku_agent
     </select>
 
@@ -86,13 +87,13 @@
     </select>
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark
+        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}

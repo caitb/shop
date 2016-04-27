@@ -95,13 +95,14 @@
 
     <select id="selectReplenishStock" resultType="java.util.HashMap">
         SELECT
-          sku.`name` as name,
-          u.mobile as mobile
+            sku.name as name,
+            u.mobile as mobile,
+            sku.id as skuId,
+            u.id as userId,
+        case when u.send_type = 1 then s.stock - s.frozen_stock when u.send_type = 2 then s.custom_stock end as stock
         FROM
-          pf_user_sku_stock s
+	      pf_user_sku_stock s
         LEFT JOIN com_sku sku ON s.sku_id = sku.id
         LEFT JOIN com_user u ON s.user_id = u.id
-        WHERE
-          stock - frozen_stock &lt; 10
     </select>
 </mapper>

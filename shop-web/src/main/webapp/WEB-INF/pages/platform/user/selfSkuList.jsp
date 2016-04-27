@@ -47,7 +47,7 @@
                             </div>
                         </section>
                         <section class="sec3">
-                            <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}')">库存维护</p>
+                            <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}','${sku.pfuId}')">库存维护</p>
                             <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}',${sku.id})">补货</p>
                         </section>
                     </c:forEach>
@@ -84,6 +84,7 @@
             <p>补货信息</p>
             <h4>商品:　　<span id="addsku"></span></h4>
             <input type="text" id="addSkuId" style="display: none">
+            <input type="text" id="userStockId" style="display: none">
             <h4>本次最多可补货数量:　　<span id="maxStock"></span></h4>
             <h4>补货数量:　　<div>
                 <span class="jian">-</span>
@@ -104,9 +105,11 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
-    function jiankucun(a,b){
+    function jiankucun(a,b,c){
+        $("#stockNumber").val("");
         $("#skuName").html(a);
         $("#skuStock").html(b);
+        $("#userStockId").val(c);
         $(".back").css("display","-webkit-box");
         $(".back_j").show();
     }
@@ -123,6 +126,7 @@
         $("#stock3").html(stockNumber);
         $(".back_j").hide();
         $(".back_que").css("display","-webkit-box");
+        $("#stockNumber").blur();
     })
     $(".que_qu").on("tap",function(){
         $(".back").css("display","none");
@@ -130,7 +134,7 @@
     })
     //ajax
     $('.que_que').on('tap', function () {
-        var pfuId = $("#pfuId").val();
+        var pfuId = $("#userStockId").val();
         var stockNumber = $("#stockNumber").val();
         $.ajax({
             url: '<%=basePath%>product/selfUser/updateStock.do',

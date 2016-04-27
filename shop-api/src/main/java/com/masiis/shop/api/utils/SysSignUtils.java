@@ -85,9 +85,10 @@ public class SysSignUtils {
         req.setCity("北京");
         req.setCountry("中国");
         req.setSign(toSignString(req, null));
-        String result = HttpClientUtils.httpPost("http://localhost:8083/sys/loginByWx", JSONObject.toJSONString(req));
+        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/loginByWx", JSONObject.toJSONString(req));
+        System.out.println(result);
         LoginByWxRes res = JSONObject.parseObject(result, LoginByWxRes.class);
-        if(res.getSign().equals(toSignString(res, null))){
+        if(StringUtils.isNotBlank(res.getSign()) && res.getSign().equals(toSignString(res, null))){
             System.out.println(true);
         } else {
             System.out.println(false);

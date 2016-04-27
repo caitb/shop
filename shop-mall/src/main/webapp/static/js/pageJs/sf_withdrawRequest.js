@@ -32,7 +32,7 @@ function withdraw(userId){
                 alert(data.message);
             }else {
                 fullShow();
-                sendMessage();
+                sendMessage(inputAccount);
                 window.location.href = basepath + data.resUrl;
             }
         },
@@ -43,11 +43,12 @@ function withdraw(userId){
     });
 }
 
-function sendMessage(){
+function sendMessage(money){
     $.ajax({
         type:"POST",
         async:true,
         url : basepath+"/withdraw/sendMessageWithdrawRequest.do",
+        data:{money:money},
         dataType:"Json",
         success:function(data){
         },

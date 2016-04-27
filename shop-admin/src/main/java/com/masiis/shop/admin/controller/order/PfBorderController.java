@@ -76,6 +76,42 @@ public class PfBorderController {
         return null;
     }
 
+    @RequestMapping("/offline/list.shtml")
+    public String offlineList(){
+        return "order/border/offlinePayList";
+    }
+
+    /**
+     * 合伙人线下支付订单
+     * @param request
+     * @param response
+     * @param pageNumber
+     * @param pageSize
+     * @param sortOrder
+     * @param pfBorder
+     * @return
+     */
+    @RequestMapping("/offline/list.do")
+    @ResponseBody
+    public Object offlineList(HttpServletRequest request, HttpServletResponse response,
+                       Integer pageNumber,
+                       Integer pageSize,
+                       String sortOrder,
+                       PfBorder pfBorder){
+
+        try {
+            pfBorder.setOrderStatus(9);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, pfBorder);
+
+            return pageMap;
+        } catch (Exception e) {
+            log.error("查询合伙人线下支付订单列表失败![pfBorder="+pfBorder+"]");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * 处理排单
      * @param request

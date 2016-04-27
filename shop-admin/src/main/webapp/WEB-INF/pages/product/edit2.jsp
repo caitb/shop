@@ -305,8 +305,8 @@
                             <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">代理等级数</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="levelCount" name="levelCount">
-                                        <option value="">请选择商品可代理的等级数</option>
+                                    <select class="form-control" id="levelCount" name="levelCount" disabled>
+                                        <option value="">${productInfo.pfSkuAgents.size()}</option>
                                     </select>
                                 </div>
                             </div>
@@ -333,7 +333,9 @@
                                                 <div class="widget-main" id="discounts">
                                                     <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
                                                     <div>
-                                                        <label for="advanced">AAA级</label>
+                                                        <c:forEach items="${agentLevels}" var="agentLevel">
+                                                            <c:if test="${agentLevel.id == pfSkuAgent.agentLevelId}"><label for="advanced">${agentLevel.name}</label></c:if>
+                                                        </c:forEach>
                                                         <div class="input-group">
                                                             <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
                                                             <input type="text" class="form-control" id="advanced" name="discounts" value="${pfSkuAgent.discount}" placeholder="">

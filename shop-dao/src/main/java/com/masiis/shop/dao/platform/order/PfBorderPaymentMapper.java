@@ -42,12 +42,5 @@ public interface PfBorderPaymentMapper {
      */
     PfBorderPayment selectOfflinePayByBOrderId(Long bOrderId);
 
-    /**
-     * 查找线下支付记录
-     * @param bOrderId
-     * @return
-     */
-    PfBorderPayment selectOfflinePayByBOrderId(Long bOrderId);
-
 
 }

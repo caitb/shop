@@ -181,7 +181,6 @@
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
-<div class="back_box">
     <div class="back"></div>
     <div class="back_j">
         <p class="biao">绑定账号</p>
@@ -201,7 +200,6 @@
         <span class="close">×</span>
         <img src="${path}/static/images/b.png" alt="">
     </div>
-</div>
 <div id="realNameVerifyDiv" class="back_login" style="display:none;">
     <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
     <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified(this);">去认证</span></h1>

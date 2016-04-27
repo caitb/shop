@@ -41,13 +41,13 @@
                         <c:forEach items="${pfskuAgents}" var="skuAgent">
                             <c:choose>
                                 <c:when test="${skuAgent.agentLevelId==3 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}/${skuAgent.icon}" alt="">抗引力A</span>
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgent.}A</span>
                                 </c:when>
                                 <c:when test="${skuAgent.agentLevelId==2 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}/${skuAgent.icon}" alt="">抗引力AA</span>
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">抗引力AA</span>
                                 </c:when>
                                 <c:when test="${skuAgent.agentLevelId==1 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}/${skuAgent.icon}" alt="">抗引力AAA</span>
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">抗引力AAA</span>
                                 </c:when>
                             </c:choose>
                         </c:forEach>

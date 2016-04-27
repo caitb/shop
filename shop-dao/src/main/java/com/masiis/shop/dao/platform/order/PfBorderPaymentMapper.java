@@ -32,4 +32,8 @@ public interface PfBorderPaymentMapper {
 
     PfBorderPayment selectBySerialNum(String paySerialNum);
 	PfBorderPayment selectByPaySerialNumAndAmount(@Param("paySerialNum") String paySerialNum, @Param("amount") BigDecimal amount);
+
+    PfBorderPayment selectByOrderIdAndPayTypeIdAndIsEnabled(@Param("pfBorderId") Long pfBorderId, @Param("payTypeId") Integer payTypeId,@Param("isEnabled") Integer isEnabled);
+
+
 }

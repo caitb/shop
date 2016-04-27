@@ -11,7 +11,6 @@ import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;

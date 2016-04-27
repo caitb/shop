@@ -3,6 +3,8 @@ package com.masiis.shop.api.controller.base;
 import com.masiis.shop.common.util.AESUtils;
 import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * 基础controller,用来编写一些基础方法
@@ -60,6 +62,48 @@ public class BaseController {
         }
 
         return res;
+    }
+
+    protected String getRequestBody(HttpServletRequest request) throws IOException {
+        InputStream is = null;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        String res = null;
+        is = request.getInputStream();
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        while ((len = is.read(buffer)) != -1) {
+            os.write(buffer, 0, len);
+        }
+
+        res = new String(os.toByteArray(), "UTF-8");
+
+        if (is != null) {
+            is.close();
+        }
+        os.close();
+
+        return res;
+    }
+
+    protected void sendResponseBody(HttpServletResponse response, String res) {
+        try {
+            OutputStream os = response.getOutputStream();
+            ByteArrayInputStream is = new ByteArrayInputStream(res.getBytes("UTF-8"));
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            if (is != null) {
+                is.close();
+            }
+            os.flush();
+            os.close();
+        } catch (UnsupportedEncodingException e) {
+
+        } catch (IOException e) {
+
+        }
     }
 
     /**

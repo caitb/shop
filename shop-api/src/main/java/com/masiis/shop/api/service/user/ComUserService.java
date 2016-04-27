@@ -1,12 +1,10 @@
 package com.masiis.shop.api.service.user;
 
+import com.masiis.shop.api.bean.system.LoginWxReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
-import com.masiis.shop.dao.platform.user.ComUserAddressMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.ComWxUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -41,6 +39,8 @@ public class ComUserService {
     private ComWxUserMapper wxUserMapper;
     @Resource
     private SfUserAccountService sfAccountService;
+    @Resource
+    private ComUserKeyboxMapper keyboxMapper;
 
     /**
      * 根据用户id获取用户
@@ -218,6 +218,110 @@ public class ComUserService {
         return comUserMapper.selectByUnionid(unionid);
     }
 
+    @Transactional
+    public ComUser signWithCreateUserByWX(LoginWxReq req) {
+        // 检查openid是否已经存在数据库
+        List<ComWxUser> wxUsers = wxUserMapper.selectByUnionid(req.getUnionid());
+        ComWxUser wxUser = null;
+        ComUser user = null;
+        user = getUserByUnionid(req.getUnionid());
+
+        if(wxUsers != null && wxUsers.size() > 0){
+            // 有unionid
+            if(user == null){
+                log.error("系统数据错误,请联系管理员!");
+                throw new BusinessException("");
+            }
+            wxUser = getWxUserByOpenidInList(req.getOpenId(), wxUsers);
+            log.info("wxUser:" + wxUser);
+        }
+
+        // 无unionid,创建comuser和comwxuser
+        if(user == null){
+            log.info("创建新comUser");
+            user = createComUser(req);
+            insertComUser(user);
+            accountService.createAccountByUser(user);
+            sfAccountService.createSfAccountByUser(user);
+        }
+
+        if(wxUser == null) {
+            log.info("创建新comWxUser");
+            // 无openid创建新的wxUser
+            wxUser = createWxUserInit(req, user);
+            wxUserMapper.insert(wxUser);
+        } else {
+            log.info("更新comWxUser");
+            // 有openid,更新这个openid数据
+            updateWxUserByActkn(req, wxUser);
+            wxUserMapper.updateByPrimaryKey(wxUser);
+        }
+
+        return user;
+    }
+
+    /**
+     * 创建ComWxUser(注册微信用户)
+     *
+     * @param req
+     * @param user
+     * @return
+     */
+    private ComWxUser createWxUserInit(LoginWxReq req, ComUser user) {
+        ComWxUser wxUser = new ComWxUser();
+
+        wxUser.setCreateTime(new Date());
+        wxUser.setAccessToken(req.getAccessToken());
+        wxUser.setUnionid(req.getUnionid());
+        wxUser.setCity(req.getCity());
+        wxUser.setCountry(req.getCountry());
+        wxUser.setHeadImgUrl(req.getHeadImgUrl());
+        wxUser.setNkName(req.getNickName());
+        wxUser.setOpenid(req.getOpenId());
+        wxUser.setProvince(req.getProvince());
+        wxUser.setSex(req.getSex());
+        wxUser.setAppid(req.getAppid());
+        wxUser.setComUserId(user.getId());
+
+        return wxUser;
+    }
+
+    private ComUser createComUser(LoginWxReq req) {
+        ComUser user = new ComUser();
+
+        user.setWxNkName(req.getNickName());
+        user.setWxHeadImg(req.getHeadImgUrl());
+        user.setCreateTime(new Date());
+        user.setWxUnionid(req.getUnionid());
+        user.setIsAgent(0);
+        user.setIsBinding(0);
+        user.setAuditStatus(0);
+        user.setSendType(0);
+        user.setRegisterSource(0);
+
+        return user;
+    }
+
+    /**
+     * 根据最新请求数据更新wxUser
+     *
+     * @param req
+     * @param wxUser
+     */
+    private void updateWxUserByActkn(LoginWxReq req, ComWxUser wxUser) {
+        if(wxUser == null){
+            throw new BusinessException("传入目标对象为null");
+        }
+
+        wxUser.setAccessToken(req.getAccessToken());
+        wxUser.setCity(req.getCity());
+        wxUser.setCountry(req.getCountry());
+        wxUser.setHeadImgUrl(req.getHeadImgUrl());
+        wxUser.setNkName(req.getNickName());
+        wxUser.setProvince(req.getProvince());
+        wxUser.setSex(req.getSex());
+    }
+
     /**
      * 根据openid在list获取wxuser
      *
@@ -256,7 +360,26 @@ public class ComUserService {
         user.setSendType(0);
         user.setRegisterSource(0);
 
-
         return user;
+    }
+
+    public ComUserKeybox createKeyboxByUser(ComUser user) {
+        ComUserKeybox keybox = new ComUserKeybox();
+
+
+
+        return keybox;
+    }
+
+    public ComUserKeybox getKeyboxByUserid(Long userId) {
+        return keyboxMapper.getByComUserId(userId);
+    }
+
+    public void insertKeybox(ComUserKeybox keybox) {
+        keyboxMapper.insert(keybox);
+    }
+
+    public int updateKeybox(ComUserKeybox keybox) {
+        return keyboxMapper.updateByPrimaryKey(keybox);
     }
 }

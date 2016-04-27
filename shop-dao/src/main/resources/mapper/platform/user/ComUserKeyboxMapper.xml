@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.user.ComUserKeyboxMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComUserKeybox" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="app_token" property="appToken" jdbcType="VARCHAR" />
+        <result column="user_key" property="userKey" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from com_user_keybox
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserKeybox" >
+        insert into com_user_keybox (id, com_user_id, app_token, 
+            user_key)
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{appToken,jdbcType=VARCHAR}, 
+            #{userKey,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserKeybox" >
+        update com_user_keybox
+        set com_user_id = #{comUserId,jdbcType=BIGINT},
+            app_token = #{appToken,jdbcType=VARCHAR},
+            user_key = #{userKey,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, com_user_id, app_token, user_key
+        from com_user_keybox
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, com_user_id, app_token, user_key
+        from com_user_keybox
+    </select>
+
+    <select id="getByComUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, com_user_id, app_token, user_key
+        from com_user_keybox
+        WHERE com_user_id = #{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

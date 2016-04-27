@@ -21,7 +21,7 @@
            <div class="box">
                 <header class="xq_header">
                    <a href="<%=path%>/shop/manage/index"><img src="<%=path%>/static/shop/images/xq_rt.png" alt=""></a>
-                        <p>我的订单</p>  
+                        <p>出货订单</p>
                 </header>
                 <nav>
                     <ul>

@@ -136,14 +136,14 @@ public class MobileMessageUtil {
     }
 
     /**
-     * 提现申请审核
+     * 代理提现申请审核
      * @param phone
      * @param days     工作日天数
      * @return
      */
-    public static boolean withdrawRequestVerify(String phone, String days){
+    public static boolean withdrawRequestVerifyAgent(String phone, String days){
         String[] content = new String[]{days};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY, content);
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_AGENT, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
         }
@@ -151,21 +151,49 @@ public class MobileMessageUtil {
     }
 
     /**
-     * 提现审核通过
+     * 小铺提现申请审核
      * @param phone
-     * @param days      工作日天数
-     * @param theWay    打款方式{1:微信 2:支付宝 3:银行卡}
+     * @param days     工作日天数
      * @return
      */
-    public static boolean withdrawVerifyApprove(String phone, String days, Integer theWay){
-        String[] content = new String[]{days,theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":""};
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE, content);
+    public static boolean withdrawRequestVerifyCustomer(String phone, String days){
+        String[] content = new String[]{days};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_CUSTOMER, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
         }
         return true;
     }
-
+    /**
+     * 消费者提现审核通过
+     * @param phone
+     * @param days      工作日天数
+     * @param theWay    打款方式{1:微信 2:支付宝 3:银行卡}
+     * @return
+     */
+    public static boolean withdrawVerifyApproveCustomer(String phone, String days, Integer theWay){
+        String[] content = new String[]{days,theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":""};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_CUSTOMER, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * 代理提现审核通过
+     * @param phone
+     * @param days      工作日天数
+     * @param theWay    打款方式{1:微信 2:支付宝 3:银行卡}
+     * @return
+     */
+    public static boolean withdrawVerifyApproveAgent(String phone, String days, Integer theWay){
+        String[] content = new String[]{days,theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":""};
+        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_AGENT, content);
+        if (!"000000".equals(smsRes[0])) {
+            return false;
+        }
+        return true;
+    }
     /**
      * 提现申请审核拒绝
      * @param phone

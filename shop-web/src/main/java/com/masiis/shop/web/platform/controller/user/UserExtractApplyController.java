@@ -266,7 +266,7 @@ public class UserExtractApplyController extends BaseController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //提现申请成功发送微信
         String[] params = new String[]{money.toString(),dateFormat.format(new Date()),"审核中"};
-        boolean mobile = MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"2");
+        boolean mobile = MobileMessageUtil.withdrawRequestVerifyAgent(user.getMobile(),"2");
         boolean wechat = WxPFNoticeUtils.getInstance().pfExtractApply(user, params, true);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mobile",mobile);

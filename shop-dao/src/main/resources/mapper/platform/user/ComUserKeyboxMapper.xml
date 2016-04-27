@@ -13,7 +13,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserKeybox" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserKeybox" useGeneratedKeys="true" keyProperty="id">
         insert into com_user_keybox (id, com_user_id, app_token, 
             user_key)
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{appToken,jdbcType=VARCHAR}, 

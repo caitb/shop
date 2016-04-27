@@ -221,7 +221,7 @@
 .dengji{
     background: #fff;
     padding:0 3%;
-
+  -webkit-tap-highlight-color: transparent;
 }
 .dengji p{
   width:48%;
@@ -233,6 +233,7 @@
   border-radius: 5px;
   margin: 10px 0;
   float: left;
+  -webkit-tap-highlight-color: transparent;
 }
 .dengji p:nth-child(1),.dengji p:nth-child(3),.dengji p:nth-child(5){
   margin-right: 2%;

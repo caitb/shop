@@ -134,6 +134,7 @@ public class UserIdentityAuthService {
                 if (!MobileMessageUtil.verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
+                //发送微信提示
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
             }

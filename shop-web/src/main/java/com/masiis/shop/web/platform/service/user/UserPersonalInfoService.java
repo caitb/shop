@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +39,7 @@ public class UserPersonalInfoService {
         List<PfSkuAgent> pfSkuAgents = skuAgentService.getSkuLevelIconByUserId(comUser.getId());
         ComUserAccount comUserAccount = accountService.findAccountByUserid(comUser.getId());
         Map<String,Object> map = new LinkedHashMap<String, Object>();
+        map.put("agentLevelIConUrl", SysConstants.AGENT_LEVEL_PRODUCT_ICON_URL);
         map.put("pfskuAgents",pfSkuAgents);
         map.put("comUserAccount",comUserAccount);
         return map;

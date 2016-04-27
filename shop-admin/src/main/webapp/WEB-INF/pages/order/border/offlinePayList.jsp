@@ -147,7 +147,7 @@
                                                             <div class="profile-info-value" id="jjF">
                                                                 <form id="auditForm">
                                                                     <input type="hidden" name="id" id="bOrderId" value="" />
-                                                                    <input type="text" name="serialNumber" id="serialNumber" placeholder="银行流水号" />
+                                                                    <input type="text" name="serialNumber" id="serialNumber" value="" placeholder="银行流水号" />
                                                                 </form>
                                                             </div>
                                                         </div>

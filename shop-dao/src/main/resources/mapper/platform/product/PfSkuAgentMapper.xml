@@ -116,7 +116,7 @@
                 quantity = #{quantity,jdbcType=INTEGER},
             </if>
             <if test="icon != null">
-                remark = #{icon,jdbcType=VARCHAR},
+                icon = #{icon,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},

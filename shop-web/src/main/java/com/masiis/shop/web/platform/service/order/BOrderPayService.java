@@ -11,7 +11,6 @@ import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
@@ -22,7 +21,6 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -153,7 +151,7 @@ public class BOrderPayService {
         }
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
-        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "");
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单支付成功");
         log.info("<4>修改用户为已代理如果用户没有选择拿货方式更新用户的拿货方式为订单的拿货方式");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {

@@ -11,10 +11,12 @@
 </head>
 <body>
 <div class="fakeloader"></div>
-<div class="na">
-    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
-    <label class="close">×</label>
-</div>
+<c:if test="${isUserForcus==false}">
+    <div class="na">
+        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
+        <label class="close">×</label>
+    </div>
+</c:if>
 <div class="wrap">
     <header class="xq_header">
         <a href="${basePath}product/${skuId}">

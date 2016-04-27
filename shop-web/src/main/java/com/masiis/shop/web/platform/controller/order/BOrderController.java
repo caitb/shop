@@ -16,6 +16,7 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;
+import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -264,6 +265,8 @@ public class BOrderController extends BaseController {
         mav.addObject("isQueuing", isQueuing);
         mav.addObject("count", count);
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
+        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(comUser);
+        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }
 }

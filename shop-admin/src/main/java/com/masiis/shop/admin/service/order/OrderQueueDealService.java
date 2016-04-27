@@ -5,10 +5,12 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.PfSkuStock;
+import com.masiis.shop.dao.po.PfUserSkuStock;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class OrderQueueDealService {
     @Autowired
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Autowired
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
 
     /**
      * 排单处理入口
@@ -46,7 +48,7 @@ public class OrderQueueDealService {
      * @throws Exception
      */
     @Transactional
-    public Map<Long,String> commonQueuingOrder(Map<Long, String> orderMap) throws Exception {
+    public Map<Long, String> commonQueuingOrder(Map<Long, String> orderMap) throws Exception {
         if (orderMap == null) {
             throw new BusinessException("参数为空");
         }
@@ -65,13 +67,14 @@ public class OrderQueueDealService {
             if (value.equals("2")) {
                 receiveMsg = userQueuingOrder(key);
             }
-            map.put(key,receiveMsg);
+            map.put(key, receiveMsg);
         }
         return map;
     }
 
     /**
      * 平台代发处理排单
+     *
      * @param orderId 订单id
      * @throws Exception
      */
@@ -88,7 +91,7 @@ public class OrderQueueDealService {
             throw new BusinessException("平台代发:该订单不是排单状态，orderId=" + orderId);
         }
         //判断库存是否充足,库存不足直接返回
-        if (!checkBOrderStock(pfBorder)){
+        if (!checkBOrderStock(pfBorder)) {
             return "false";
         }
         List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
@@ -141,13 +144,7 @@ public class OrderQueueDealService {
             throw new BusinessException("平台代发:修改订单状态失败");
         }
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单完成，平台代发处理排单订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成，平台代发处理排单订单");
 //        //递归处理下级
 //        List<PfBorder> pfBorders = pfBorderMapper.selectByUserPid(pfBorder.getUserId(), 6, 0);
 //        for (PfBorder order : pfBorders) {
@@ -158,7 +155,8 @@ public class OrderQueueDealService {
 
     /**
      * 用户自发货订单排单处理
-     * @param orderId       订单id
+     *
+     * @param orderId 订单id
      * @throws Exception
      */
     private String userQueuingOrder(Long orderId) throws Exception {
@@ -174,7 +172,7 @@ public class OrderQueueDealService {
             throw new BusinessException("自发货:该订单不是排单状态，orderCode=" + orderId);
         }
         //判断库存是否充足,库存不足直接返回
-        if (!checkBOrderStock(pfBorder)){
+        if (!checkBOrderStock(pfBorder)) {
             return "false";
         }
         List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
@@ -198,13 +196,7 @@ public class OrderQueueDealService {
             throw new BusinessException("自发货:修改订单状态失败");
         }
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单待发货，自发货处理排单订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单待发货，自发货处理排单订单");
         return "success";
     }
 

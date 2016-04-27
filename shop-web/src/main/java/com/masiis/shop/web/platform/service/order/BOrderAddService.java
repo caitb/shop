@@ -1,16 +1,12 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderConfirm;
-import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -21,18 +17,13 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * BOrderAddService

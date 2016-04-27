@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -100,10 +101,12 @@ public class UserApplyController extends BaseController {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
+        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(user);
         res.addObject("user", userService.getUserById(user.getId()));
         res.addObject("skuId", skuId);
         res.addObject("isQueuing", isQueuing);
         res.addObject("count", count);
+        res.addObject("isUserForcus", isUserForcus);
         return res;
     }
 

@@ -96,6 +96,9 @@
                                 <div class="col-sm-9">
                                     <input type="hidden" name="spuId" value="${productInfo.comSpu.id}" />
                                     <input type="hidden" name="skuId" value="${productInfo.comSku.id}" />
+                                    <c:forEach items="${productInfo.comSkuImages}" var="skuImage">
+                                    <input type="hidden" name="skuImageIds" value="${skuImage.id}">
+                                    </c:forEach>
                                     <input type="text" class="form-control" id="name" name="name" value="${productInfo.comSku.name}" placeholder="商品名称">
                                 </div>
                             </div>

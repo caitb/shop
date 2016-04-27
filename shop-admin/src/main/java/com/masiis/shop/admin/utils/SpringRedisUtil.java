@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class SpringRedisUtil {
 
     private static RedisTemplate<Serializable, Serializable> redisTemplate
-            = (RedisTemplate<Serializable, Serializable>) ApplicationContextUtil.getBean("redisTemplate");
+            = (RedisTemplate<Serializable, Serializable>) ApplicationContextUtil.getBean("rdCommonTemplate");
 
     public static void save(final String key, Object value) {
 

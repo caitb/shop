@@ -106,4 +106,30 @@ public class WxConsSF {
      * 企业给用户打款证书路径
      */
     public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
+
+    /*==================================================================================================================*/
+    /**
+     * 小铺订单下单通知(通知麦链商城)
+     */
+    public static final String WX_SF_TM_ID_ORDER_CREATE = "G4sZsZ9AQilP-bO-WPMPkDnwkcjpROn4h-ErZJKcoZU";
+    /**
+     * 小铺订单发货通知
+     */
+    public static final String WX_SF_TM_ID_ORDER_SHIP = "pcOehP8XA9o1pTTB9aX_fRJxnP7xZxesNE78SmIAVIE";
+    /**
+     * 小铺订单确认收货
+     */
+    public static final String WX_SF_TM_ID_ORDER_CONFIRM = "fwJRl-yYTGgbzdlcktSPdezOmBgtsRENB_EEBLztJCo";
+    /**
+     * 佣金提醒
+     */
+    public static final String WX_SF_TM_ID_PROFIT_IN = "hkCjoUlNOAg56hRD7QtOZ4mHG06pZ04fMY6aW0bwuOY";
+    /**
+     * 提现申请通知
+     */
+    public static final String WX_SF_TM_ID_EXTRACT_APPLY = "OEzsSSLWz10Xcj_c5-cwfavX81lc1kL8jSxH_sBvuVk";
+    /**
+     * 提现结果通知
+     */
+    public static final String WX_SF_TM_ID_EXTRACT_RESULT = "dAzmZlN8YX8N0E4fjFDY2ocVaPxjnQfwuFhrtdZo_Pg";
 }

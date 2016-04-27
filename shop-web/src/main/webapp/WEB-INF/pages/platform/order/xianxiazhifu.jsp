@@ -15,6 +15,7 @@
 <%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
+    <c:if test="${isUserForcus==false}">
     <div class="na">
         <p></p>
         <h1>
@@ -23,6 +24,7 @@
         </h1>
         <label class="add">加关注</label>
     </div>
+    </c:if>
     <div class="xinxi">
         <p>注册信息</p>
         <p style="color:#F74A11;">选择拿货方式</p>
@@ -33,7 +35,7 @@
             <h1>￥${border.productAmount}元</h1>
             <p>您需要在${latestTime}前将￥${border.productAmount}转到麦链合伙人对公账户。</p>
         </div>
-        <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.productAmount}万元套餐+您的手机号”（<span>非常重要！</span>）</p>
+        <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.productAmount}元套餐+您的手机号”（<span>非常重要！</span>）</p>
         <h1><span></span>麦链对公账户信息</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>
         <h2><span>开户名：</span><span>${supplierBank.accountName}</span></h2>

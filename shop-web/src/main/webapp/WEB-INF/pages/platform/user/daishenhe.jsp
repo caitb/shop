@@ -12,10 +12,12 @@
     <link rel="stylesheet" href="${path}/static/css/jixuguangguang.css">
 </head>
 <body>
+<c:if test="${isUserForcus==false}">
 <div class="na">
     <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
     <label class="close">×</label>
 </div>
+</c:if>
 <header class="xq_header" style="margin:0;">
     <p>等待审核</p>
 </header>
@@ -33,10 +35,7 @@
     <div class="back_f">
         <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <div>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-        </div>
+        <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>

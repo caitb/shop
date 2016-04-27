@@ -7,6 +7,7 @@ import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -191,7 +192,7 @@ public class SfOrderPayService {
      * @date 2016/4/10 13:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> paySuccessCallBack(Long orderId){
+    public Map<String,Object> paySuccessCallBack(ComUser comUser,Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址
@@ -206,6 +207,9 @@ public class SfOrderPayService {
             //获得用户的分销关系的父id
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
+            //微信提醒
+            String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
+            WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
         }catch (Exception e){
             throw new BusinessException(e);
         }

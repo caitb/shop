@@ -1,16 +1,12 @@
 package com.masiis.shop.web.platform.service.order;
 
-import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
-import com.masiis.shop.dao.beans.order.BOrderConfirm;
-import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.platform.order.PfBorderConsigneeMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -21,18 +17,13 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
-import com.masiis.shop.web.platform.service.user.UserSkuService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * BOrderAddService
@@ -54,7 +45,7 @@ public class BOrderAddService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
@@ -72,6 +63,7 @@ public class BOrderAddService {
 
     /**
      * 添加订单
+     *
      * @param bOrderAdd
      * @return
      * @throws Exception
@@ -169,13 +161,7 @@ public class BOrderAddService {
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setPfBorderStatus(0);
-        pfBorderOperationLog.setRemark("新增订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "新增订单");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getOrderType() == 2 || pfBorder.getSendType() == 2) {
             //获得地址
@@ -201,6 +187,7 @@ public class BOrderAddService {
         }
         return pfBorder.getId();
     }
+
     /**
      * 添加拿货订单
      *
@@ -284,19 +271,12 @@ public class BOrderAddService {
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
         logger.info("<2>添加订单日志");
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(order.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(order.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(order.getId());
-        pfBorderOperationLog.setRemark("订单已支付,拿货订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-
+        bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
         logger.info("<3>冻结usersku库存 用户加冻结库存存");
         PfUserSkuStock pfUserSkuStock = null;
         //冻结usersku库存 用户加冻结库存
         pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
-        if (pfUserSkuStock == null){
+        if (pfUserSkuStock == null) {
             throw new BusinessException("拿货失败：没有库存信息");
         }
         if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {

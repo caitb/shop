@@ -8,12 +8,14 @@ import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
+import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -155,7 +157,10 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/4/6 15:05
      */
     @RequestMapping(value = "toWaitIdentityPage.html")
-    public String toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response){
-        return "platform/user/daishenhe";
+    public ModelAndView toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response){
+        ModelAndView mav = new ModelAndView("platform/user/daishenhe");
+        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
+        mav.addObject("isUserForcus", isUserForcus);
+        return mav;
     }
 }

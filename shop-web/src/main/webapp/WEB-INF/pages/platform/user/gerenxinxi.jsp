@@ -37,17 +37,17 @@
             <p><img src="${comUser.wxHeadImg}" alt=""></p>
             <div><h1>${comUser.wxNkName}</h1>
                 <h1>
-                    <c:if test="${pfskuAgents!=null}">
-                        <c:forEach items="${pfskuAgents}" var="skuAgent">
+                    <c:if test="${pfSkuAgentDetails!=null}">
+                        <c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">
                             <c:choose>
-                                <c:when test="${skuAgent.agentLevelId==3}">
-                                    <span><img src="${path}/static/images/kangyinli1A.png" alt="">抗引力A</span>
+                                <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==3 && skuAgent.icon!=null}">
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}A</span>
                                 </c:when>
-                                <c:when test="${skuAgent.agentLevelId==2}">
-                                    <span><img src="${path}/static/images/kangyinli2A.png" alt="">抗引力AA</span>
+                                <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==2 && skuAgent.icon!=null}">
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}AA</span>
                                 </c:when>
-                                <c:when test="${skuAgent.agentLevelId==1}">
-                                    <span><img src="${path}/static/images/kangyinli3A.png" alt="">抗引力AAA</span>
+                                <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==1 && skuAgent.icon!=null}">
+                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}AAA</span>
                                 </c:when>
                             </c:choose>
                         </c:forEach>

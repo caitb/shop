@@ -89,7 +89,9 @@
             <p>好赚钱啊，特别赚钱，特别牛x的一款产品</p>
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;">
                 <a name="3f">商品详情</a></h1>
-            <p>${productDetails.content}</p>
+            <%--<p>${productDetails.content}</p>--%>
+            <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
+            <p>拉升的卢卡斯就打了卡时间到了卡上就打了卡时间的拉伸空间的萨拉空间的来看</p>
         </main>
         <div class="fixe">
             <div class="left">
@@ -106,35 +108,6 @@
                 </ul>
             </div>
             <span class="btn">+</span>
-        </div>
-        <div class="back_j" style="display: none">
-            <span class="close">×</span>
-            <p class="biao">绑定账号</p>
-            <div>
-                <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
-            </div>
-            <div class="d">
-                <p>验证码：<input type="tel" id="validateNumberDataId">
-                    <button id="validateNumberId">获取验证码</button>
-                </p>
-            </div>
-            <p class="tishi" id="errorMessageId"></p>
-            <h1 class="j_qu" id="nextPageId">下一步</h1>
-        </div>
-        <div class="back"></div>
-        <div class="back_q">
-            <h1>什么是排单期？</h1>
-            <p>
-                由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
-            </p>
-            <button class="zhidao">我知道了</button>
-        </div>
-        <div class="back_login" style="display:none;">
-            <h2>您已合伙</h2>
-            <p>您已合伙，如需要补货，请在商品管理中补货</p>
-            <h1><span class="zhidao">我知道了</span><span
-                    onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
-            </h1>
         </div>
     </div>
 </div>
@@ -163,6 +136,37 @@
         </c:if>
     </section>
 </footer>
+<div class="back_box">
+    <div class="back_j" style="display: none">
+        <span class="close">×</span>
+        <p class="biao">绑定账号</p>
+        <div>
+            <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
+        </div>
+        <div class="d">
+            <p>验证码：<input type="tel" id="validateNumberDataId">
+                <button id="validateNumberId">获取验证码</button>
+            </p>
+        </div>
+        <p class="tishi" id="errorMessageId"></p>
+        <h1 class="j_qu" id="nextPageId">下一步</h1>
+    </div>
+    <div class="back"></div>
+    <div class="back_q">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="zhidao">我知道了</button>
+    </div>
+    <div class="back_login" style="display:none;">
+        <h2>您已合伙</h2>
+        <p>您已合伙，如需要补货，请在商品管理中补货</p>
+        <h1><span class="zhidao">我知道了</span><span
+                onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
+        </h1>
+    </div>
+</div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/product.js"></script>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>

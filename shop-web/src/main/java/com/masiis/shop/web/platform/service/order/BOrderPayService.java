@@ -11,7 +11,6 @@ import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
@@ -22,7 +21,6 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
-import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -65,8 +63,6 @@ public class BOrderPayService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
-    @Resource
     private PfSkuStatisticMapper pfSkuStatisticMapper;
     @Resource
     private PfSkuStockMapper pfSkuStockMapper;
@@ -84,6 +80,8 @@ public class BOrderPayService {
     private SfShopSkuMapper sfShopSkuMapper;
     @Resource
     private PfSupplierBankService supplierBankService;
+    @Resource
+    private BOrderOperationLogService bOrderOperationLogService;
 
     /**
      * 订单支付回调入口
@@ -100,71 +98,15 @@ public class BOrderPayService {
         if (pfBorderPayment.getIsEnabled() == 1) {
             throw new BusinessException("该支付记录已经被处理成功");
         }
-        Long bOrderId = pfBorderPayment.getPfBorderId();
-        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
         //处理支付逻辑
         if (pfBorder.getOrderType() == 0) {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getSendType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
         }
-        //重新获取改变后的订单数据
-        pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        //微信推送通知
-        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
-        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
-        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
-            String[] param = {};
-            param[0] = pfBorderItems.get(0).getSkuName();
-            param[1] = pfBorder.getOrderAmount().toString();
-            param[2] = pfBorderItems.get(0).getQuantity().toString();
-            param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-            WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
-            return;
-        }
-        //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0) {
-            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
-            //合伙人申请成功提示(微信)
-            String[] params = new String[4];
-            params[0] = rmbFormat.format(pfBorder.getPayAmount());
-            params[1] = pfBorderPayment.getPayTypeName();
-            params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
-            params[3] = timeFormart.format(pfBorder.getPayTime());
-            WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
-            //下线加入通知(微信)
-            if (pfBorder.getUserPid() > 0) {
-                ComUser pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-                WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
-            }
-        } else if (pfBorder.getOrderType() == 1) {
-            //拿货方式(0未选择1平台代发2自己发货)
-            if (pfBorder.getSendType() == 1) {
-                String[] param = new String[4];
-                param[0] = pfBorderItems.get(0).getSkuName();
-                param[1] = rmbFormat.format(pfBorder.getOrderAmount());
-                param[2] = pfBorderItems.get(0).getQuantity().toString();
-                param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-                WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
-            } else if (pfBorder.getSendType() == 2) {
-                String[] param = new String[4];
-                param[0] = pfBorderItems.get(0).getSkuName();
-                param[1] = rmbFormat.format(pfBorder.getOrderAmount());
-                param[2] = pfBorderItems.get(0).getQuantity().toString();
-                param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
-                WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
-                if (pfBorder.getUserPid() != 0) {
-                    String[] paramIn = {};
-                    paramIn[0] = pfBorder.getOrderCode();
-                    paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
-                    String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                    WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
-                }
-//                MobileMessageUtil.addStockByUserself(comUser.getMobile());
-            }
-        }
+        //支付完成推送消息
+        payEndPushMessage(pfBorderPayment);
     }
 
     /**
@@ -191,11 +133,8 @@ public class BOrderPayService {
         Long bOrderId = pfBorderPayment.getPfBorderId();
         log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getPayStatus() == 1) {
+        if (pfBorder.getPayStatus() != BOrderStatus.NotPaid.getCode() && pfBorder.getPayStatus() != BOrderStatus.offLineNoPay.getCode()) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
-        }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
@@ -209,13 +148,7 @@ public class BOrderPayService {
         }
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(bOrderId);
-        pfBorderOperationLog.setRemark("");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单支付成功");
         log.info("<4>修改用户为已代理如果用户没有选择拿货方式更新用户的拿货方式为订单的拿货方式");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (comUser.getIsAgent() == 0) {
@@ -397,11 +330,8 @@ public class BOrderPayService {
         Long bOrderId = pfBorderPayment.getPfBorderId();
         log.info("<2>修改订单数据");
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder.getPayStatus() == 1) {
+        if (pfBorder.getPayStatus() != BOrderStatus.NotPaid.getCode() && pfBorder.getPayStatus() != BOrderStatus.offLineNoPay.getCode()) {
             throw new BusinessException("订单号:" + pfBorder.getId() + ",已经支付成功.");
-        }
-        if (pfBorder.getOrderStatus() != BOrderStatus.NotPaid.getCode()) {
-            throw new BusinessException("订单号:" + pfBorder.getId() + ",状态异常为：" + pfBorder.getOrderStatus());
         }
         pfBorder.setReceivableAmount(pfBorder.getReceivableAmount().subtract(payAmount));
         pfBorder.setPayAmount(pfBorder.getPayAmount().add(payAmount));
@@ -415,13 +345,7 @@ public class BOrderPayService {
         }
         pfBorderMapper.updateById(pfBorder);
         log.info("<3>添加订单日志");
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(bOrderId);
-        pfBorderOperationLog.setRemark("");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "");
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             log.info("<4>处理发货库存");
             if (pfBorder.getUserPid() == 0) {
@@ -519,7 +443,7 @@ public class BOrderPayService {
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
         String value1 = certificateInfo.getAgentLevelId().toString();
         String value2 = String.format("%04d", certificateInfo.getSkuId());
-        String value3 = String.format("%04d", certificateInfo.getUserId());
+        String value3 = String.format("%05d", certificateInfo.getUserId());
         certificateCode = Code.append(value1).append(value2).append(value).append(value3).toString();
         return certificateCode;
     }
@@ -577,6 +501,77 @@ public class BOrderPayService {
     }
 
     /**
+     * 支付完成推送消息
+     */
+    private void payEndPushMessage(PfBorderPayment pfBorderPayment) {
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
+        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
+        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
+        ComUser pComUser = null;
+        if (pfBorder.getUserPid() > 0) {
+            pComUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+        }
+        List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfBorderItems.get(0).getAgentLevelId());
+        log.info("****************************处理推送通知***********************************************");
+        if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
+            //排单推送通知
+            String[] param = {};
+            param[0] = pfBorderItems.get(0).getSkuName();
+            param[1] = pfBorder.getOrderAmount().toString();
+            param[2] = pfBorderItems.get(0).getQuantity().toString();
+            param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+            WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
+            MobileMessageUtil.joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
+        } else {
+            //订单类型(0代理1补货2拿货)
+            if (pfBorder.getOrderType() == 0) {
+                //合伙人申请成功提示
+                String[] params = new String[4];
+                params[0] = rmbFormat.format(pfBorder.getPayAmount());
+                params[1] = pfBorderPayment.getPayTypeName();
+                params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
+                params[3] = timeFormart.format(pfBorder.getPayTime());
+                WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
+                MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
+                //给上级推送
+                if (pComUser != null) {
+                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
+                    MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
+                }
+            } else if (pfBorder.getOrderType() == 1) {
+                //拿货方式(0未选择1平台代发2自己发货)
+                if (pfBorder.getSendType() == 1) {
+                    String[] param = new String[4];
+                    param[0] = pfBorderItems.get(0).getSkuName();
+                    param[1] = rmbFormat.format(pfBorder.getOrderAmount());
+                    param[2] = pfBorderItems.get(0).getQuantity().toString();
+                    param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+                    WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
+                    MobileMessageUtil.addStockByPlatform(comUser.getMobile(), pfBorderItems.get(0).getQuantity().toString());
+                } else if (pfBorder.getSendType() == 2) {
+                    String[] param = new String[4];
+                    param[0] = pfBorderItems.get(0).getSkuName();
+                    param[1] = rmbFormat.format(pfBorder.getOrderAmount());
+                    param[2] = pfBorderItems.get(0).getQuantity().toString();
+                    param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+                    WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
+                    MobileMessageUtil.addStockByUserself(comUser.getMobile());
+                    if (pfBorder.getUserPid() != 0) {
+                        String[] paramIn = new String[2];
+                        paramIn[0] = pfBorder.getOrderCode();
+                        paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
+                        String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
+                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
+                        MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 线下支付
      *
      * @author hanzengzhi
@@ -587,20 +582,19 @@ public class BOrderPayService {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
-            int i = insertOrderLog(pfBorder);
-            if (i == 1) {
-                PfSupplierBank supplierBank = getDefaultBack();
-                List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-                if (orderItems != null && orderItems.size() != 0) {
-                    map = new LinkedHashMap<String, Object>();
-                    map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
-                    map.put("supplierBank", supplierBank);
-                    map.put("orderItem", orderItems.get(0));
-                    map.put("border", pfBorder);
-                } else {
-                    throw new BusinessException("线下支付失败:查询子帐单为null");
-                }
-
+            //插入订单支付表
+            insertOrderPayment(pfBorder);
+            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下已支付");
+            PfSupplierBank supplierBank = getDefaultBack();
+            List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            if (orderItems != null && orderItems.size() != 0) {
+                map = new LinkedHashMap<String, Object>();
+                map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
+                map.put("supplierBank", supplierBank);
+                map.put("orderItem", orderItems.get(0));
+                map.put("border", pfBorder);
+            } else {
+                throw new BusinessException("线下支付失败:查询子帐单为null");
             }
         }
         return map;
@@ -627,25 +621,31 @@ public class BOrderPayService {
         }
         return pfBorder;
     }
-
     /**
-     * 更新订单日志
-     *
+     * 插入订单支付表
      * @author hanzengzhi
-     * @date 2016/4/25 15:21
+     * @date 2016/4/27 14:19
      */
-    private Integer insertOrderLog(PfBorder pfBorder) {
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(BOrderStatus.offLineNoPay.getCode());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单线下已支付");
-        int i = pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-        if (i != 1) {
-            throw new BusinessException("线下支付插入订单日志失败");
+    private void insertOrderPayment(PfBorder pfBorder){
+        PfBorderPayment orderPayment = new PfBorderPayment();
+        orderPayment.setPayTypeId(1);
+        orderPayment.setPayTypeName("线下支付");
+        orderPayment.setPfBorderId(pfBorder.getId());
+        orderPayment.setIsEnabled(0);
+        orderPayment.setAmount(pfBorder.getOrderAmount());
+        orderPayment.setCreateTime(new Date());
+        orderPayment.setOutOrderId("");
+        orderPayment.setPaySerialNum(UUID.randomUUID().toString());
+        orderPayment.setRemark("线下支付插入");
+        PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(),1,0);
+        if (_orderPayment == null){
+            log.info("线下支付:订单支付表中没有输入，插入数据----start");
+            int i = pfBorderPaymentMapper.insert(orderPayment);
+            if (i!=1){
+                throw new BusinessException("线下支付往订单支付表插入失败");
+            }
+            log.info("线下支付:订单支付表中没有输入，插入数据----end");
         }
-        return i;
     }
 
     /**

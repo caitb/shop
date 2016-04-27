@@ -25,7 +25,7 @@
     <div class="box">
         <header class="xq_header">
             <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>我要成为合伙人</p>
+            <p>好货市场</p>
         </header>
         <div class="banner">
             <div class="swiper-container">
@@ -57,23 +57,23 @@
                         </p>
                         <div>
                             <h2>${Sku.comSku.name}</h2>
-                            <h3><span
-                                    style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
-                                <b>${Sku.discountLevel}</b>
-                            </h3>
                             <c:if test="${Sku.isTrial==1}"><h3>试用费用：<span>${Sku.shipAmount}</span>元</h3></c:if>
                             <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
+                            <h3><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
+                                <b>${Sku.discountLevel}</b>
+                            </h3>
+
+                            <h2>
+                                超过<span>${Sku.agentNum}</span>人合伙
+                                <c:if test="${empty Sku.uid}">
+                                    <button>我要合伙</button>
+                                </c:if>
+                                <c:if test="${not empty Sku.uid}">
+                                    <button>您已合伙</button>
+                                </c:if>
+                            </h2>
                         </div>
                     </section>
-                    <h2>
-                        超过<span>${Sku.agentNum}</span>人合伙
-                        <c:if test="${empty Sku.uid}">
-                            <button>我要合伙</button>
-                        </c:if>
-                        <c:if test="${not empty Sku.uid}">
-                            <button>您已合伙</button>
-                        </c:if>
-                    </h2>
                 </a>
             </c:forEach>
         </div>

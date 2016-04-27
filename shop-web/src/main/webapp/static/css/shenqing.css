@@ -357,8 +357,8 @@ body .back {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
-  top: 0;
-  left: 0;
+  left:0;
+  top:0;
   display: none;
 }
 .na {
@@ -395,11 +395,9 @@ body .back {
   width:90%;
   position: fixed;
   left:5%;
-  top:25%;
+  top: 18%;
   background: #fff;
-  /* border-radius: 5px; */
   z-index:11;
-  padding-bottom: 50px;
   display: none;
 }
 .back_f>p{
@@ -407,26 +405,9 @@ body .back {
   margin-top: 3em;
   font-size: 16px;
 }
-.back_f div{
-  display: -webkit-box;
-  margin-top: 1em;
-}
-.back_f div p{
-  width:1px;
-  -webkit-box-flex:1;
-  display: -webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-box-align:center;
-  -webkit-box-pack:center;
-}
-.back_f div p span{
-  display: block;
-  font-size: 12px;
-}
-.back_f div p img{
-  display: block;
-  width:100px;
-  height:100px;
+.back_f img{
+  width: 90%;
+  margin-left: 5%;
 }
 .back_f .close{
   position: absolute;
@@ -441,3 +422,11 @@ body .back {
   border: 1px solid #ccc;
   color: #999;
 }
+.back_box {
+   width: 100%;
+   height: 100%;
+   position: fixed;
+   top: 0;
+   background: rgba(255,255,255,0);
+    display: none;
+ }

@@ -10,10 +10,13 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
+import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class SfOrderManageService {
     private SfOrderManageMapper sfOrderManageMapper;
     @Autowired
     private SfOrderMapper sfOrderMapper;
-    @Autowired
-    private SfOrderConsigneeMapper sfOrderConsigneeMapper;
+    @Resource
+    private SfOrderItemMapper sfOrderItemMapper;
     @Autowired
     private ComSkuImageMapper comSkuImageMapper;
     @Autowired
@@ -127,6 +130,7 @@ public class SfOrderManageService {
     @Transactional
     public void deliver(Long orderId ,ComUser user) throws Exception {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(orderId);
+        List<SfOrderItem> orderItemByOrderId = sfOrderItemMapper.getOrderItemByOrderId(sfOrder.getId());
         // 进行订单分润和代理商销售额、收入计算
         sfUserAccountService.countingSfOrder(sfOrder);
         // 进行订单状态修改
@@ -140,6 +144,17 @@ public class SfOrderManageService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
-
+        String[] params = new String[5];
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        params[0] = sfOrder.getOrderCode();
+        if(orderItemByOrderId.size()==1){
+            params[1] = orderItemByOrderId.get(0).getSkuName();
+        }else if(orderItemByOrderId.size()>1){
+            params[1] = orderItemByOrderId.get(0).getSkuName()+"等";
+        }
+        params[2] =sdf.format(sfOrder.getCreateTime());//下单时间
+        params[3] = sdf.format(sfOrder.getShipTime());//发货时间
+        params[3] = sdf.format(sfOrder.getReceiptTime());//收货时间
+        WxSFNoticeUtils.getInstance().orderConfirmNotice(user,params);
     }
 }

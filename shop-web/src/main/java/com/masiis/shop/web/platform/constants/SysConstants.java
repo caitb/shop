@@ -58,4 +58,7 @@ public class SysConstants {
     /*线下支付最晚往后推迟几天 */
     public static final int  OFFINE_PAYMENT_LATEST_TIME = 7;
 
+    /*商品等级图片*/
+    public static final String  AGENT_LEVEL_PRODUCT_ICON_URL = PropertiesUtils.getStringValue("agent_level_product_icon_url");
+
 }

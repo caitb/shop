@@ -11,10 +11,12 @@
 </head>
 <body>
 <div class="fakeloader"></div>
-<div class="na">
-    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
-    <label class="close">×</label>
-</div>
+<c:if test="${isUserForcus==false}">
+    <div class="na">
+        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
+        <label class="close">×</label>
+    </div>
+</c:if>
 <div class="wrap">
     <header class="xq_header">
         <a href="${basePath}product/${skuId}">
@@ -179,28 +181,25 @@
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
-<div class="back"></div>
-<div class="back_j">
-    <p class="biao">绑定账号</p>
-    <div>
-        <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
+    <div class="back"></div>
+    <div class="back_j">
+        <p class="biao">绑定账号</p>
+        <div>
+            <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
+        </div>
+        <div class="d">
+            <p>验证码：<input type="tel" id="validateNumberDataId">
+                <button id="validateNumberId">获取验证码</button>
+            </p>
+        </div>
+        <p class="tishi" id="errorMessageId"></p>
+        <h1 class="j_qu" id="nextPageId">下一步</h1>
     </div>
-    <div class="d">
-        <p>验证码：<input type="tel" id="validateNumberDataId">
-            <button id="validateNumberId">获取验证码</button>
-        </p>
+    <div class="back_f">
+        <p>关注公众账号查佣金、查订单</p>
+        <span class="close">×</span>
+        <img src="${path}/static/images/b.png" alt="">
     </div>
-    <p class="tishi" id="errorMessageId"></p>
-    <h1 class="j_qu" id="nextPageId">下一步</h1>
-</div>
-<div class="back_f">
-    <p>关注公众账号查佣金、查订单</p>
-    <span class="close">×</span>
-    <div>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-    </div>
-</div>
 <div id="realNameVerifyDiv" class="back_login" style="display:none;">
     <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
     <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified(this);">去认证</span></h1>

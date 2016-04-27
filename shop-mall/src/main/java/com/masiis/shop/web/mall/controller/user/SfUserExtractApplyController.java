@@ -6,13 +6,13 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.dao.po.SfUserAccount;
 import com.masiis.shop.dao.po.SfUserExtractApply;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserExtractApplyService;
 import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -269,15 +269,25 @@ public class SfUserExtractApplyController extends BaseController{
      */
     @RequestMapping(value = "/sendMessageWithdrawRequest.do")
     @ResponseBody
-    public String sendMessageWithdrawRequest(HttpServletRequest request){
+    public String sendMessageWithdrawRequest(@RequestParam(value = "money",required = true) BigDecimal money,
+                                             HttpServletRequest request){
         log.info("提现申请成功发送短信");
         ComUser user = getComUser(request);
         if (user == null){
             throw new BusinessException("该用户未登录");
         }
+        boolean mobile = false;
         if (user.getMobile()==null || "".equals(user.getMobile())){
-            return "false";
+            mobile = MobileMessageUtil.withdrawRequestVerifyCustomer(user.getMobile(),"2");
         }
-        return String.valueOf(MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"1"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        //提现申请成功发送微信
+        String[] params = new String[]{money.toString(),dateFormat.format(new Date()),"审核中"};
+        boolean wechat = WxSFNoticeUtils.getInstance().extractApplyNotice(user, params, true);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mobile",mobile);
+        jsonObject.put("wechat",wechat);
+        log.info(jsonObject.toJSONString());
+        return jsonObject.toJSONString();
     }
 }

@@ -29,7 +29,8 @@
             changed_time, changed_by, version
             )
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{totalIncomeFee,jdbcType=DECIMAL},
-            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL}, #{appliedFee,jdbcType=DECIMAL}
+            #{costFee,jdbcType=DECIMAL}, #{profitFee,jdbcType=DECIMAL}, #{extractableFee,jdbcType=DECIMAL},
+            #{appliedFee,jdbcType=DECIMAL},
             #{countingFee,jdbcType=DECIMAL}, #{bailFee,jdbcType=DECIMAL}, #{createdTime,jdbcType=TIMESTAMP},
             #{changedTime,jdbcType=TIMESTAMP}, #{changedBy,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
             )

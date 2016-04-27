@@ -42,15 +42,11 @@ public class BOrderService {
     @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
-    private SfUserRelationMapper sfUserRelationMapper;
-    @Resource
-    private SfOrderItemMallMapper sfOrderItemMallMapper;
-    @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
 
     /**
      * 根据条件查询记录
@@ -147,13 +143,7 @@ public class BOrderService {
         updateOrderStock(pfBorder);
 
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(8);
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单完成");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"订单完成");
     }
 
     /**

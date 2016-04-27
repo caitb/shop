@@ -12,10 +12,12 @@
 </head>
 <body>
 <main>
-    <div class="na">
-        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
-        <label class="close">×</label>
-    </div>
+    <c:if test="${isUserForcus==false}">
+        <div class="na">
+            <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+            <label class="close">×</label>
+        </div>
+    </c:if>
     <div class="wrap">
         <header class="xq_header">
             <%--<a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
@@ -115,21 +117,18 @@
     <div class="back_f">
         <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <div>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-        </div>
+        <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script>
-    $(".add").on("tap",function () {
+    $(".add").on("tap", function () {
         $(".back_box").show()
         $(".back_f").show()
     })
-    $(".close").on("tap",function () {
-            $(".back_box").hide()
-            $(this).parent().hide()
+    $(".close").on("tap", function () {
+        $(".back_box").hide()
+        $(this).parent().hide()
     })
 </script>
 </body>

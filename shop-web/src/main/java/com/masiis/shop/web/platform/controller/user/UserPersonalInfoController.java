@@ -45,9 +45,10 @@ public class UserPersonalInfoController extends BaseController {
             map = userPersonalInfoService.getPersonalHomePageInfo(comUser);
         }
         if (map != null) {
-            model.addAttribute("pfskuAgents", map.get("pfskuAgents"));
+            model.addAttribute("pfSkuAgentDetails", map.get("pfSkuAgentDetails"));
         }
         model.addAttribute("comUser", comUser);
+        model.addAttribute("agentLevelIConUrl", map.get("agentLevelIConUrl"));
         model.addAttribute("auditStatusName", AuditStatusEnum.getName(comUser.getAuditStatus()));
         model.addAttribute("comUserAccount", map.get("comUserAccount"));
         return "platform/user/gerenxinxi";

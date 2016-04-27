@@ -22,7 +22,11 @@ public class ReplenishStockTask {
      */
     public void replenishStockRemindJob(){
         logger.info("补货提醒:定时任务开始执行……开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
-        replenishStockService.replenishStockRemind();
+        try {
+            replenishStockService.replenishStockRemind();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         logger.info("补货提醒:定时任务开始执行……结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss:SSS"));
     }
 

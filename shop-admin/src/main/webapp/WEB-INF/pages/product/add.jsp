@@ -710,7 +710,7 @@
             if(i>levelCount){
                 break;
             }
-            discounts += '<div> \
+            discounts +=           '<div> \
                                         <label for="advanced">';
             discounts +=     agentLevels[i].name;
             discounts +=           '</label> \

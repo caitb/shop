@@ -48,7 +48,7 @@ public class BOrderService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
     @Resource
@@ -244,6 +244,7 @@ public class BOrderService {
     @Transactional
     public void deliver(String shipManName, Long orderId, String freight, String shipManId, ComUser user) throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (pfBorder.getSendType() == 0) {
             throw new BusinessException("请选择发货方式");
         }
@@ -266,23 +267,18 @@ public class BOrderService {
                 pfBorderMapper.updateById(pfBorder);
                 pfBorderFreightMapper.insert(pfBorderFreight);
                 //添加订单日志
-                PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-                pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-                pfBorderOperationLog.setCreateTime(new Date());
-                pfBorderOperationLog.setPfBorderStatus(8);
-                pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-                pfBorderOperationLog.setRemark("订单完成");
-                pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-                MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
-                String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/borderManage/deliveryBorderDetils.html?id="+pfBorder.getId().toString();
-                String[] params=new String[5];
-                params[0]=pfBorderItems.getSkuName();
-                params[1]=comAgentLevel.getName();
-                params[2]=pfBorder.getOrderCode();
-                params[3]=shipManName;
-                params[4]=freight;
-                Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
-                if(aBoolean==false){
+                bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
+
+                MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
+                String[] params = new String[5];
+                params[0] = pfBorderItems.getSkuName();
+                params[1] = comAgentLevel.getName();
+                params[2] = pfBorder.getOrderCode();
+                params[3] = shipManName;
+                params[4] = freight;
+                Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
+                if (aBoolean == false) {
                     throw new BusinessException("订单发货微信提示失败");
                 }
             }
@@ -297,23 +293,17 @@ public class BOrderService {
             pfBorderMapper.updateById(pfBorder);
             pfBorderFreightMapper.insert(pfBorderFreight);
             //添加订单日志
-            PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-            pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-            pfBorderOperationLog.setCreateTime(new Date());
-            pfBorderOperationLog.setPfBorderStatus(8);
-            pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-            pfBorderOperationLog.setRemark("订单完成");
-            pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-            MobileMessageUtil.goodsOrderShipRemind(user.getMobile(),pfBorder.getOrderCode(),shipManName,freight);
-            String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/borderManage/deliveryBorderDetils.html?id="+pfBorder.getId().toString();
-            String[] params=new String[5];
-            params[0]=pfBorderItems.getSkuName();
-            params[1]=comAgentLevel.getName();
-            params[2]=pfBorder.getOrderCode();
-            params[3]=shipManName;
-            params[4]=freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
-            if(aBoolean==false){
+            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
+            MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
+            String[] params = new String[5];
+            params[0] = pfBorderItems.getSkuName();
+            params[1] = comAgentLevel.getName();
+            params[2] = pfBorder.getOrderCode();
+            params[3] = shipManName;
+            params[4] = freight;
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
+            if (aBoolean == false) {
                 throw new BusinessException("订单发货微信提示失败");
             }
         }
@@ -377,13 +367,7 @@ public class BOrderService {
         pfBorder.setReceiptTime(new Date());//收货时间
         pfBorderMapper.updateById(pfBorder);
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(BOrderStatus.Complete.getCode());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单完成");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
         //订单类型(0代理1补货2拿货)
         if (pfBorder.getOrderType() == 0 || pfBorder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(pfBorder);

@@ -427,7 +427,7 @@
                             if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
-                            if(row.pfBorderPayments[i].payTypeId == 9){
+                            if(row.pfBorderPayments[0].payTypeId == 9){
                                 arr.push('&nbsp;&nbsp;<a class="receipt" href="javascript:void(0);">确认收款</a>');
                             }
 

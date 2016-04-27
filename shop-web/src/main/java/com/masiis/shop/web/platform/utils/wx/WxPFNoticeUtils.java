@@ -11,7 +11,6 @@ import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -190,7 +189,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 新代理订单提醒
+     * 有新的下级订单
      *
      * @param user
      * @param params   (1,订单编号(不是id);2,时间)

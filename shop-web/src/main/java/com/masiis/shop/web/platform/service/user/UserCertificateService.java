@@ -10,10 +10,7 @@ import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.po.ComAgentLevel;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfSkuAgent;
-import com.masiis.shop.dao.po.PfUserCertificate;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +42,7 @@ public class UserCertificateService {
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
 
+
     public void addUserCertificate(PfUserCertificate pfUserCertificate) {
         pfUserCertificateMapper.insert(pfUserCertificate);
     }
@@ -57,6 +55,7 @@ public class UserCertificateService {
     public List<CertificateInfo> CertificateByUser(Integer userId) throws Exception{
         List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
         if (certificateInfoList != null) {
+            String ctValue = PropertiesUtils.getStringValue("product_icon_url");
             for (CertificateInfo certificateInfo : certificateInfoList) {
                 if (certificateInfo.getPid() != 0) {
                     certificateInfo.setUpperName(comUserMapper.selectByPrimaryKey(certificateInfo.getUserPid()).getRealName());
@@ -71,6 +70,8 @@ public class UserCertificateService {
                 certificateInfo.setBackimg(basePath + pfSkuAgent.getBackImg());
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(certificateInfo.getAgentLevelId());
                 certificateInfo.setLevelName(comAgentLevel.getName());
+                ComSku comSku = comSkuMapper.selectByPrimaryKey(certificateInfo.getSkuId());
+                certificateInfo.setSkuIcon(ctValue + comSku.getIcon());
             }
         }
         return certificateInfoList;

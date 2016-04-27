@@ -94,7 +94,9 @@
                             <div class="form-group">
                                 <label for="name" class="col-sm-2 control-label">商品名称</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="商品名称">
+                                    <input type="hidden" name="spuId" value="${productInfo.comSpu.id}" />
+                                    <input type="hidden" name="skuId" value="${productInfo.comSku.id}" />
+                                    <input type="text" class="form-control" id="name" name="name" value="${productInfo.comSku.name}" placeholder="商品名称">
                                 </div>
                             </div>
 
@@ -112,14 +114,13 @@
                             <div class="form-group">
                                 <label for="artNo" class="col-sm-2 control-label">商品货号</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="artNo" name="artNo" placeholder="商品货号">
+                                    <input type="text" class="form-control" id="artNo" name="artNo" value="${productInfo.comSpu.artNo}" placeholder="商品货号">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="barCode" class="col-sm-2 control-label">商品条码</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="barCode" name="barCode"
-                                           placeholder="商品条码">
+                                    <input type="text" class="form-control" id="barCode" name="barCode" value="${productInfo.comSku.barCode}" placeholder="商品条码">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -143,21 +144,21 @@
                                     var c2 = {};//二级类别
                                     var c3 = {};//三级类别
 
-                                    c1['sub' + 0] = [];
-                                    for (var i in categories) {
-                                        if (categories[i].level == 1) {
+                                    c1['sub'+0] = [];
+                                    for(var i in categories){
+                                        if(categories[i].level == 1){
 
-                                            c1['sub' + 0].push(categories[i]);
+                                            c1['sub'+0].push(categories[i]);
 
-                                            c2['sub' + categories[i].id] = [];
-                                            for (var sub in categories) {
-                                                if (categories[sub].pid == categories[i].id) c2['sub' + categories[i].id].push(categories[sub]);
+                                            c2['sub'+categories[i].id] = [];
+                                            for(var sub in categories){
+                                                if(categories[sub].pid == categories[i].id) c2['sub'+categories[i].id].push(categories[sub]);
                                             }
 
-                                            for (var sub in c2['sub' + categories[i].id]) {
-                                                c3['sub' + c2['sub' + categories[i].id][sub].id] = [];
-                                                for (var ss in categories) {
-                                                    if (categories[ss].pid == c2['sub' + categories[i].id][sub].id) c3['sub' + c2['sub' + categories[i].id][sub].id].push(categories[ss]);
+                                            for(var sub in c2['sub'+categories[i].id]){
+                                                c3['sub'+c2['sub'+categories[i].id][sub].id] = [];
+                                                for(var ss in categories){
+                                                    if(categories[ss].pid == c2['sub'+categories[i].id][sub].id) c3['sub'+c2['sub'+categories[i].id][sub].id].push(categories[ss]);
                                                 }
                                             }
 
@@ -168,31 +169,55 @@
                                     var $skuC1 = $('#skuC1');
                                     var $skuC2 = $('#skuC2');
                                     var $skuC3 = $('#skuC3');
+                                    var c1id = '${c1id}';
+                                    var c2id = '${c2id}';
+                                    var c3id = '${c3id}';
 
                                     $skuC1.html('<option value="-1">请选择</option>');
-                                    for (var sub in c1['sub' + 0]) {
-                                        $skuC1.append('<option value="' + c1['sub' + 0][sub].id + '">' + c1['sub' + 0][sub].name + '</option>');
+                                    for(var sub in c1['sub'+0]){
+                                        if(c1['sub'+0][sub].id == c1id){
+                                            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '" selected>' + c1['sub'+0][sub].name + '</option>');
+                                        }else{
+                                            $skuC1.append('<option value="' + c1['sub'+0][sub].id + '">' + c1['sub'+0][sub].name + '</option>');
+                                        }
                                     }
 
-                                    $skuC1.change(function () {
+                                    for(var sub in c2['sub'+c1id]){
+                                        if(c2['sub'+c1id][sub].id == c2id){
+                                            $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'" selected>'+ c2['sub'+c1id][sub].name+'</option>');
+                                        }else{
+                                            $skuC2.append('<option value="'+ c2['sub'+c1id][sub].id +'">'+ c2['sub'+c1id][sub].name+'</option>');
+                                        }
+                                    }
+
+                                    for(var sub in c3['sub'+c2id]){
+                                        if(c3['sub'+c2id][sub].id == c3id){
+                                            $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'" selected>'+ c3['sub'+c2id][sub].name+'</option>');
+                                        }else{
+                                            $skuC3.append('<option value="'+ c3['sub'+c2id][sub].id +'">'+ c3['sub'+c2id][sub].name+'</option>');
+                                        }
+                                    }
+
+
+                                    $skuC1.change(function(){
                                         $skuC2.empty().html('<option value="-1">请选择</option>');
                                         $skuC3.empty().html('<option value="-1">请选择</option>');
 
-                                        for (var sub in c2['sub' + $(this).val()]) {
-                                            $skuC2.append('<option value="' + c2['sub' + $(this).val()][sub].id + '">' + c2['sub' + $(this).val()][sub].name + '</option>');
+                                        for(var sub in c2['sub'+$(this).val()]){
+                                            $skuC2.append('<option value="'+ c2['sub'+$(this).val()][sub].id +'">'+ c2['sub'+$(this).val()][sub].name+'</option>');
                                         }
                                     });
 
-                                    $skuC2.change(function () {
+                                    $skuC2.change(function(){
                                         $skuC3.empty().html('<option value="-1">请选择</option>');
 
-                                        for (var sub in c3['sub' + $(this).val()]) {
-                                            $skuC3.append('<option value="' + c3['sub' + $(this).val()][sub].id + '">' + c3['sub' + $(this).val()][sub].name + '</option>');
+                                        for(var sub in c3['sub'+$(this).val()]){
+                                            $skuC3.append('<option value="'+ c3['sub'+$(this).val()][sub].id +'">'+ c3['sub'+$(this).val()][sub].name+'</option>');
                                         }
                                     });
 
-                                    $skuC3.change(function () {
-                                        $('#categoryName').val($(this).find('option[value="' + $(this).val() + '"]').html());
+                                    $skuC3.change(function(){
+                                        $('#categoryName').val($(this).find('option[value="'+$(this).val()+'"]').html());
                                     });
                                 </script>
                             </div>
@@ -200,8 +225,9 @@
                                 <label for="brandId" class="col-sm-2 control-label">商品品牌</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="brandId" name="brandId">
+                                        <option>请选择</option>
                                         <c:forEach items="${brands}" var="brand">
-                                            <option value="${brand.id}">${brand.cname}</option>
+                                            <option value="${brand.id}" <c:if test="${productInfo.comSpu.brandId == brand.id}">selected</c:if> >${brand.cname}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -211,8 +237,8 @@
                                 <label for="brandId" class="col-sm-2 control-label">计量单位</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="unitId" name="unit">
-                                        <c:forEach items="${unitMeasures}" var="unit">
-                                            <option value="${unit.id}">${unit.name}</option>
+                                        <c:forEach items="${comUnitMeasures}" var="comUnitMeasure">
+                                            <option value="${comUnitMeasure.id}" <c:if test="${productInfo.comSpu.unit == comUnitMeasure.id}">selected</c:if> >${comUnitMeasure.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -229,21 +255,19 @@
                             <div class="form-group">
                                 <label for="priceCost" class="col-sm-2 control-label">成本价</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceCost" name="priceCost" placeholder="成本价">
+                                    <input type="text" class="form-control" id="priceCost" name="priceCost" value="${productInfo.comSku.priceCost}" placeholder="成本价">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="priceMarket" class="col-sm-2 control-label">市场零售价</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceMarket" name="priceMarket"
-                                           placeholder="市场零售价">
+                                    <input type="text" class="form-control" id="priceMarket" name="priceMarket" value="${productInfo.comSku.priceMarket}" placeholder="市场零售价">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="priceRetail" class="col-sm-2 control-label">微信零售价</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="priceRetail" name="priceRetail"
-                                           placeholder="微信零售价">
+                                    <input type="text" class="form-control" id="priceRetail" name="priceRetail" value="${productInfo.comSku.priceRetail}" placeholder="微信零售价">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -251,13 +275,13 @@
                                 <div class="col-sm-9">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="isTrial" id="isTrial1" value="1" checked>
+                                            <input type="radio" name="isTrial" id="isTrial1" value="1" <c:if test="${productInfo.comSpu.isTrial == 1}">checked</c:if> >
                                             是
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="isTrial" id="isTrial2" value="0">
+                                            <input type="radio" name="isTrial" id="isTrial2" value="0" <c:if test="${productInfo.comSpu.isTrial == 0}">checked</c:if> >
                                             否
                                         </label>
                                     </div>
@@ -266,8 +290,7 @@
                             <div class="form-group">
                                 <label for="shipAmount" class="col-sm-2 control-label">运费设置</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="shipAmount" name="shipAmount"
-                                           placeholder="运费设置">
+                                    <input type="text" class="form-control" id="shipAmount" name="shipAmount" value="${productInfo.comSpu.shipAmount}" placeholder="运费设置">
                                 </div>
                             </div>
 
@@ -308,7 +331,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="discounts">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advanced">AAA级</label>
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
+                                                            <input type="text" class="form-control" id="advanced" name="discounts" value="${pfSkuAgent.discount}" placeholder="">
+                                                            <span class="input-group-addon">%</span>
+                                                        </div>
+                                                        每件商品<small class="text-info dfenrun"></small>元
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -320,7 +353,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="quantitys">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advancedCount">
+                                                            拿货数量&nbsp;
+                                                        </label>
+                                                        <div>
+                                                            <input type="text" class="form-control" id="advancedCount" name="quantitys" value="${pfSkuAgent.quantity}" placeholder="">
+                                                        </div>
+                                                        金额门槛<small class="text-info threshold"></small>元
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -332,7 +375,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="bails">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advancedBail">
+                                                            保证金
+                                                        </label>
+                                                        <div>
+                                                            <input type="text" class="form-control" id="advancedBail" name="bails" value="${pfSkuAgent.bail}" placeholder="">
+                                                        </div>
+                                                        &nbsp;
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -350,6 +403,7 @@
 
                             <div class="form-group">
                                 <div class="col-sm-10 col-sm-offset-1">
+                                    <c:forEach items="${productInfo.sfSkuDistributions}" var="sfSkuDistribution">
                                     <div class="col-xs-12 col-sm-4 text-success">
                                         <div class="widget-box">
                                             <div class="widget-header">
@@ -358,83 +412,30 @@
                                             <div class="widget-body">
                                                 <div class="widget-main">
                                                     <div>
-                                                        <label for="advanced">
-                                                            倒数第一&nbsp;
+                                                        <label for="distribution1">
+                                                            <c:if test="${sfSkuDistribution.sort == 1}">倒数第一</c:if>
+                                                            <c:if test="${sfSkuDistribution.sort == 2}">倒数第二</c:if>
+                                                            <c:if test="${sfSkuDistribution.sort == 3}">倒数第三</c:if>
                                                         </label>
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal1"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
+                                                            <input type="hidden" name="skuDistributionIds" value="${sfSkuDistribution.id}" />
+                                                            <input type="text" class="form-control" id="distribution1" name="distributionDiscounts" value="${sfSkuDistribution.discount}" placeholder="">
+                                                            <span class="input-group-addon">%</span>
                                                         </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
+                                                        返利<small class="text-info ffenrun"></small>元
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-12 col-sm-4 text-warning">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
-
-                                            <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            倒数第二&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal2"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-4">
-                                        <div class="widget-box">
-                                            <div class="widget-header">
-                                            </div>
-
-                                            <div class="widget-body">
-                                                <div class="widget-main">
-                                                    <div>
-                                                        <label for="advanced">
-                                                            倒数第三&nbsp;
-                                                        </label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" id="reciprocal3"
-                                                                   name="distributionDiscounts" placeholder="">
-                                        <span class="input-group-addon">
-                                            %
-                                        </span>
-                                                        </div>
-                                                        返利
-                                                        <small class="text-info ffenrun"></small>
-                                                        元
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </c:forEach>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="inShort" class="col-sm-2 control-label">一句话介绍</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inShort" name="slogan" placeholder="一句话介绍">
+                                    <input type="text" class="form-control" id="inShort" name="slogan" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
                                 </div>
                             </div>
                             <textarea rows="500" cols="300" id="content" name="content"
@@ -710,7 +711,7 @@
             if(i>levelCount){
                 break;
             }
-            discounts +=           '<div> \
+            discounts += '<div> \
                                         <label for="advanced">';
             discounts +=     agentLevels[i].name;
             discounts +=           '</label> \
@@ -748,8 +749,12 @@
         $('#quantitys').append(quantitys);
         $('#bails').append(bails);
     }
+</script>
+<script>
 
-    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
+    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(calculate);
+
+    function calculate(){
         var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
         $('input[name="quantitys"]').each(function(i,o){
             var discount = $($('input[name="discounts"]').get(i)).val();
@@ -761,13 +766,22 @@
             $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
             $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
         });
-    });
+    }
 
     $('#skuSave').on('click', function(){
         $('#skuForm').submit();
     });
 
     $(document).ready(function() {
+
+        $('input[name="discounts"]').each(function(i,o){
+            $(this).val($(this).val()*100);
+        });
+        $('input[name="distributionDiscounts"]').each(function(i,o){
+            $(this).val($(this).val()*100);
+        });
+        calculate();
+
         $('#skuForm').bootstrapValidator({
                     message: '必须填写',
                     feedbackIcons: {
@@ -806,11 +820,6 @@
                             }
                         },
                         brandId: {
-                            validators: {
-                                notEmpty: {}
-                            }
-                        },
-                        levelCount: {
                             validators: {
                                 notEmpty: {}
                             }
@@ -860,7 +869,7 @@
                     // Use Ajax to submit form data
                     $('#content').val(UE.getEditor('editor').getContent());
                     $.ajax({
-                        url: '<%=basePath%>product/add.do',
+                        url: '<%=basePath%>product/update.do',
                         type: 'post',
                         data: $('#skuForm').serialize(),
                         success: function(msg){

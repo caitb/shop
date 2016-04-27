@@ -68,6 +68,7 @@
 <script>
     var isRuningF = false;
     var isRuningB = false;
+    var isReUpload = false;
     oNly()
     function oNly() {
         var oNlywidth = $(".only").width();
@@ -79,6 +80,7 @@
         document.getElementById("idCardImg").click();
     }
     function uploadIdCardImg() {
+        isReUpload = true;
         var selector = !checkImg ? 'idCardFront' : 'idCardBack';
 
         $('#' + selector).attr('src', '${path}/static/images/loading2.gif');
@@ -131,9 +133,11 @@
             alert("请上传身份证反面!");
             return;
         }
-        if (!isRuningF || !isRuningB) {
-            alert("图片正在上传中，请稍后!");
-            return;
+        if (isReUpload){
+            if (!isRuningF || !isRuningB) {
+                alert("图片正在上传中，请稍后!");
+                return;
+            }
         }
         fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
         bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);

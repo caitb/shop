@@ -177,6 +177,7 @@
         $(".back_b").hide();
     })
     $(".b_que").on("tap",function(){
+        i = $(".number").val();
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;

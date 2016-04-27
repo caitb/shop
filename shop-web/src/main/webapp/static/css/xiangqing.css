@@ -375,7 +375,7 @@ body footer .sec3 p a {
     font-size: 12px;
     padding-left: 20px;
 }
-.wrap .back_login {
+.back_login {
     width: 90%;
     position: fixed;
     top: 30%;
@@ -386,34 +386,34 @@ body footer .sec3 p a {
     padding: 0px 0 20px 0;
     display: none;
 }
-.wrap .back_login > p {
+.back_login > p {
     margin: 0 5%;
 }
-.wrap .back_login h1 {
+.back_login h1 {
     height: 30px;
     line-height: 30px;
     margin: 30px 20px 0 20px;
     text-align: center;
     display: -webkit-box;
 }
-.wrap .back_login h1 span {
+.back_login h1 span {
     display: block;
     -webkit-box-flex: 1;
     border-radius: 5px;
     line-height: 30px;
     width: 1px;
 }
-.wrap .back_login h1 span:first-child {
+.back_login h1 span:first-child {
     background: #F6F6F6;
     color: #999999;
     margin-right: 5px;
 }
-.wrap .back_login h1 span:last-child {
+.back_login h1 span:last-child {
     background: #F74A11;
     color: white;
     margin-left: 5px;
 }
-.wrap .back_login h2{
+.back_login h2{
     margin: 0 5px;
     border-bottom: 1px solid #F74A11;
     text-indent: 10px;

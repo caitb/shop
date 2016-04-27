@@ -23,7 +23,7 @@
 </div>
 <div class="wrap">
     <header>
-        <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品详情</p>
     </header>
     <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">

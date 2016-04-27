@@ -208,8 +208,10 @@ public class SfOrderPayService {
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
             //微信提醒
+            log.info("微信提醒-----start");
             String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
             WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
+            log.info("微信提醒-----end");
         }catch (Exception e){
             throw new BusinessException(e);
         }

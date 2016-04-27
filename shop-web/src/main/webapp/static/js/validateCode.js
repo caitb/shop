@@ -18,7 +18,8 @@
                 })
                 $(".close").on("click", function () {
                     $(this).parent().hide();
-                    $(".back").hide()
+                    $(".back").hide();
+                    $(".back_box").hide();
                 })
                 $(".add").on("click", function () {
                     $(".back_f").show();

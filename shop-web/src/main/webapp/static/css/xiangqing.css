@@ -32,18 +32,19 @@ body .wrap .box .price {
 }
 body .wrap .box .price p:nth-child(3) {
     text-indent: 8px;
+    margin-top: 12px;
 }
 body .wrap .box .price p:nth-child(2) span {
-    color: #666;
+    color: #999;
 }
 body .wrap .box .price p {
     color: #333;
-    font-size: 13px;
+    font-size: 14px;
     text-indent: 10px;
 }
 body .wrap .box .price p b {
     color: #FF7D54;
-    font-size: 13px;
+    font-size: 14px;
 }
 body .wrap .box .price p span {
     color: #999;
@@ -65,7 +66,7 @@ body .wrap .box .dlpople {
 body .wrap .box .dlpople p {
     text-indent: 10px;
     color: #666868;
-    font-size: 14px;
+    font-size: 12px;
 }
 body .wrap .box .dlpople p b {
     color: white;
@@ -81,7 +82,7 @@ body .wrap .box .dlpople p b {
     margin-left:5px;
 }
 body .wrap .box .dlpople p span {
-    color: #FF7D56;
+    color: #333;
     font-size: 12px;
 }
 .laba{
@@ -128,7 +129,7 @@ body .wrap .box nav ul li {
 }
 body .wrap .box nav ul li h1 img {
     display: block;
-    width: 60%;
+    width: 22px;
     margin: 0 auto;
 }
 body .wrap .box nav ul li span {
@@ -136,7 +137,7 @@ body .wrap .box nav ul li span {
     text-align: center;
     margin-top: 4px;
     color: #666666;
-    font-size: 14px;
+    font-size: 12px;
 }
 body .wrap .box .tuw {
     width: 100%;
@@ -161,6 +162,8 @@ main h1{
     text-indent:20px;
     margin-top: 5px;
     background: #fff;
+    box-shadow: 0 2px 0px -2px rgba(0,0,0,0.2);
+    margin-bottom: 1px;
 }
 main img{
     width:100%;
@@ -169,6 +172,7 @@ main p{
     padding:10px;
     color: #666666;
     background: #fff;
+    font-size: 12px;
 }
 body .back_j {
     width: 90%;
@@ -257,14 +261,7 @@ body .back {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: -webkit-box;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
     z-index: 5;
-
 }
 body footer {
     width: 100%;
@@ -289,6 +286,7 @@ body footer .sec3 p {
     -moz-box-align: center;
     -moz-box-pack: center;
     background: #F74A11;
+    color: #fff;
 }
 body footer .sec3 p a {
     display: block;
@@ -330,6 +328,7 @@ body footer .sec3 p a {
     border-radius: 5px;
 }
 .fixe{
+    box-shadow: 0px 4px 6px -2px rgba(0,0,0,0.3);
     position: fixed;
     right: 10px;
     bottom: 70px;
@@ -339,7 +338,7 @@ body footer .sec3 p a {
     background: #f0f0f0;
     overflow: hidden;
     display: -webkit-box;
-    z-index: 11;
+    z-index: 10;
 }
 .active{
     border-bottom-left-radius: 0px;
@@ -422,4 +421,13 @@ body footer .sec3 p a {
     font-weight: 600;
     margin-bottom: 5px;
     color: #FF5200;
+}
+.back_box{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background: rgba(255,255,255,0);
+    z-index: 11;
+    display: none;
 }

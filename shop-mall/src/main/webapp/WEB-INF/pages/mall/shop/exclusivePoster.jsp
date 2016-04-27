@@ -49,37 +49,19 @@
             width:90%;
             position: fixed;
             left:5%;
-            top:25%;
+            top: 18%;
             background: #fff;
-            /* border-radius: 5px; */
             z-index:11;
-            padding-bottom: 50px;
+            display: none;
         }
         .back_f>p{
             text-align: center;
             margin-top: 3em;
             font-size: 16px;
         }
-        .back_f div{
-            display: -webkit-box;
-            margin-top: 1em;
-        }
-        .back_f div p{
-            width:1px;
-            -webkit-box-flex:1;
-            display: -webkit-box;
-            -webkit-box-orient:vertical;
-            -webkit-box-align:center;
-            -webkit-box-pack:center;
-        }
-        .back_f div p span{
-            display: block;
-            font-size: 12px;
-        }
-        .back_f div p img{
-            display: block;
-            width:100px;
-            height:100px;
+        .back_f img{
+            width: 90%;
+            margin-left: 5%;
         }
         .back_f .close{
             position: absolute;
@@ -147,10 +129,7 @@
     <div class="back_f">
         <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <div>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-        </div>
+        <img src="${path}/static/images/duan.png" alt="">
     </div>
 </div>
 </body>

@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
@@ -41,6 +42,8 @@ public class SfOrderService {
     private SfOrderItemMallMapper sfOrderItemMallMapper;
     @Autowired
     private SkuService skuService;
+    @Autowired
+    private ComUserMapper comUserMapper;
 
 
     /**
@@ -106,7 +109,9 @@ public class SfOrderService {
             sfOrderOperationLog.setSfOrderId(sfOrder.getId());
             sfOrderOperationLog.setRemark("订单完成");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
-            MobileMessageUtil.consumerShipRemind(user.getMobile(),sfOrder.getOrderCode());
+
+            ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
+            MobileMessageUtil.consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
             String url = PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderController/sfOrderDetal.html?id="+sfOrder.getId().toString();
             String[] params=new String[5];
             params[0]=null;
@@ -114,7 +119,7 @@ public class SfOrderService {
             params[2]=sfOrder.getOrderCode();
             params[3]=shipManName;
             params[4]=freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if(aBoolean==false){
                 throw new BusinessException("消费者订单发货微信提示失败");
             }

@@ -41,8 +41,8 @@
         </div>
         <div>
             <p>
-                <span>麦链商城官方认证</span>
-                <span>商家已缴纳${bail}保证金</span>
+                <span>麦链官方认证</span>
+                <span>已缴${bail}保证金</span>
             </p>
             <%--<c:forEach begin="0" end="${size}" step="2" var="i">--%>
             <p><c:forEach items="${SfShopDetails}" begin="0" end="0" var="sf">
@@ -122,10 +122,7 @@
 <div class="back_g">
     <p>关注公众账号查佣金、查订单</p>
     <span class="close">×</span>
-    <div>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-    </div>
+    <img src="${path}/static/images/duan.png" alt="">
 </div>
 <div class="back"></div>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>

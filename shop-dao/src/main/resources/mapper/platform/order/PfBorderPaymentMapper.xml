@@ -182,4 +182,23 @@
         pay_serial_num=#{paySerialNum}
         and amount=#{amount}
     </select>
+    <select id="selectByOrderIdAndPayTypeIdAndIsEnabled" resultMap="BaseResultMap">
+        select
+        id,
+        create_time,
+        pf_border_id,
+        amount,
+        pay_type_id,
+        pay_type_name,
+        is_enabled,
+        remark,
+        out_order_id,
+        pay_serial_num
+        from
+        pf_border_payment
+        where
+        pf_border_id=#{pfBorderId}
+        and pay_type_id=#{payTypeId}
+        AND is_enabled =#{isEnabled}
+    </select>
 </mapper>

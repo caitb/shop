@@ -588,6 +588,8 @@ public class BOrderPayService {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
+            //插入订单支付表
+            insertOrderPayment(pfBorder);
             bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下已支付");
             PfSupplierBank supplierBank = getDefaultBack();
             List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
@@ -624,6 +626,32 @@ public class BOrderPayService {
             throw new BusinessException("线下支付更新订单状态失败");
         }
         return pfBorder;
+    }
+    /**
+     * 插入订单支付表
+     * @author hanzengzhi
+     * @date 2016/4/27 14:19
+     */
+    private void insertOrderPayment(PfBorder pfBorder){
+        PfBorderPayment orderPayment = new PfBorderPayment();
+        orderPayment.setPayTypeId(1);
+        orderPayment.setPayTypeName("线下支付");
+        orderPayment.setPfBorderId(pfBorder.getId());
+        orderPayment.setIsEnabled(0);
+        orderPayment.setAmount(pfBorder.getOrderAmount());
+        orderPayment.setCreateTime(new Date());
+        orderPayment.setOutOrderId("");
+        orderPayment.setPaySerialNum("");
+        orderPayment.setRemark("线下支付插入");
+        PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(),1,0);
+        if (_orderPayment == null){
+            log.info("线下支付:订单支付表中没有输入，插入数据----start");
+            int i = pfBorderPaymentMapper.insert(orderPayment);
+            if (i!=1){
+                throw new BusinessException("线下支付往订单支付表插入失败");
+            }
+            log.info("线下支付:订单支付表中没有输入，插入数据----end");
+        }
     }
 
     /**

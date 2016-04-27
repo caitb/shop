@@ -16,11 +16,12 @@
 }
 .wrap .box .cp {
   width: 100%;
-  color: #333333;
+  color: #666;
   text-indent: 10px;
-  height: 38px;
-  line-height: 38px;
+  /* height: 38px; */
+  /* line-height: 38px; */
   font-size: 14px;
+  padding: 14px 0 2px 0;
 }
 .wrap .box .cp h1{
   font-size:12px;
@@ -52,6 +53,8 @@
   height: 20px;
   border: none;
   -webkit-box-flex: 1;
+  border: 1px solid #f6f6f6;
+  margin-right: 10px;
 }
 .wrap .box main .sfphoto {
   margin: 0 10px 0px 10px;

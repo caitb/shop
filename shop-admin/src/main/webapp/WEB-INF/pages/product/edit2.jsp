@@ -236,7 +236,7 @@
                             <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">计量单位</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="unitId" name="unit">
+                                    <select class="form-control" id="unitId" name="unitId">
                                         <c:forEach items="${comUnitMeasures}" var="comUnitMeasure">
                                             <option value="${comUnitMeasure.id}" <c:if test="${productInfo.comSpu.unit == comUnitMeasure.id}">selected</c:if> >${comUnitMeasure.name}</option>
                                         </c:forEach>
@@ -689,68 +689,6 @@
         $('#skuForm').append('<input type="hidden" name="proIconUrl" value="'+res.url+'" />');
         $('#skuForm').append('<input type="hidden" name="proIconName" value="'+res.title+'" />');
     });
-</script>
-<script>
-
-    var agentLevels = window.eval('(${agentLevels})');
-    for(var i=0; i<agentLevels.length; i++){
-        var levelCount = i + 1;
-        $('#levelCount').append('<option value="'+i+'">'+levelCount+'</option>');
-    }
-
-    $('#levelCount').change(function(){
-        $('#discounts').empty();
-        $('#quantitys').empty();
-        $('#bails').empty();
-        appendLevelInput($(this).val());
-    });
-
-    function appendLevelInput(levelCount){
-        var discounts = '';
-        var quantitys = '';
-        var bails     = '';
-        for(var i=0; i<agentLevels.length; i++){
-            if(i>levelCount){
-                break;
-            }
-            discounts += '<div> \
-                                        <label for="advanced">';
-            discounts +=     agentLevels[i].name;
-            discounts +=           '</label> \
-                                        <div class="input-group"> \
-                                            <input type="text" class="form-control" id="advanced" name="discounts" placeholder=""> \
-                                                <span class="input-group-addon"> \
-                                                    % \
-                                                </span> \
-                                        </div> \
-                                        每件商品<small class="text-info dfenrun"></small>元 \
-                                    </div>';
-
-            quantitys +=           '<div> \
-                                        <label for="advancedCount"> \
-                                            拿货数量&nbsp; \
-                                        </label> \
-                                        <div> \
-                                            <input type="text" class="form-control" id="advancedCount" name="quantitys" placeholder=""> \
-                                        </div> \
-                                        金额门槛<small class="text-info threshold"></small>元 \
-                                    </div>';
-
-            bails    +=            '<div> \
-                                        <label for="advancedBail"> \
-                                            保证金 \
-                                        </label> \
-                                        <div> \
-                                            <input type="text" class="form-control" id="advancedBail" name="bails" placeholder=""> \
-                                        </div> \
-                                        &nbsp; \
-                                    </div>';
-        }
-
-        $('#discounts').append(discounts);
-        $('#quantitys').append(quantitys);
-        $('#bails').append(bails);
-    }
 </script>
 <script>
 

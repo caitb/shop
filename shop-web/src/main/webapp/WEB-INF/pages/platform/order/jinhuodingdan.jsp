@@ -136,7 +136,7 @@
                                             确认收货</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9}">
-                                        <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                     </c:if>
                                 </div>
                             </section>
@@ -189,7 +189,7 @@
                                             确认收货</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9}">
-                                        <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                     </c:if>
                                 </div>
                             </section>
@@ -243,7 +243,7 @@
                                     </span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9}">
-                                        <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                     </c:if>
                                 </div>
                             </section>
@@ -299,7 +299,7 @@
                                     </span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9}">
-                                        <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                        <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                     </c:if>
                                 </div>
                             </section>
@@ -353,7 +353,7 @@
                                             </span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9}">
-                                            <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                         </c:if>
                                     </div>
                                 </section>
@@ -408,7 +408,7 @@
                                                   onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">确认收货</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9}">
-                                            <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                         </c:if>
                                     </div>
                                 </section>
@@ -463,7 +463,7 @@
                                                   onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">确认收货</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9}">
-                                            <span class="fa"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
+                                            <span><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">改变支付方式</a></span>
                                         </c:if>
                                     </div>
                                 </section>
@@ -602,7 +602,7 @@
                                 orderStatusName="确认收货";
                                 trHtml+="<span class=\"fa\"  name=\"querenshouhuo_"+pfBorder.id+"\"  onclick=\"querenshouhuo('"+pfBorder.orderStatus+"','"+pfBorder.id+"')\">"+orderStatusName+"</span>";
                             }if(pfBorder.orderStatus ==9){
-                                trHtml+="<span class=\"fa\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">改变支付方式</a></span>";
+                                trHtml+="<span><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">改变支付方式</a></span>";
                             }else{
                                 trHtml+="";
                             }

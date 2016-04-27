@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.*;
@@ -156,7 +157,9 @@ public class SfOrderManageService {
         params[3] = sdf.format(sfOrder.getShipTime());//发货时间
         params[4] = sdf.format(sfOrder.getReceiptTime());//收货时间
         Boolean aBoolean = WxSFNoticeUtils.getInstance().orderConfirmNotice(user, params);
-
+        if (aBoolean == false) {
+            throw new BusinessException("订单完成微信提示失败");
+        }
         MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
     }
 }

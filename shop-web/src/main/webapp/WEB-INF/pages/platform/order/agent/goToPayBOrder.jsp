@@ -48,10 +48,15 @@
         window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
     })
     $("#downPay").click(function (event) {
-        if (${pfBorder.orderStatus!=0}) {
-            alert("订单已支付");
+        if (${pfBorder.orderStatus==9}) {
+            alert("已选择线下支付无需再次选择");
             return false;
         }
+        if (${pfBorder.orderStatus!=0}){
+            alert("支付状态异常");
+            return false;
+        }
+
         if ($(this).html() == "正在提交...") {
             return;
         }

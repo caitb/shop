@@ -331,7 +331,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="discounts">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advanced">AAA级</label>
+                                                        <div class="input-group">
+                                                            <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
+                                                            <input type="text" class="form-control" id="advanced" name="discounts" value="${pfSkuAgent.discount}" placeholder="">
+                                                            <span class="input-group-addon">%</span>
+                                                        </div>
+                                                        每件商品<small class="text-info dfenrun"></small>元
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -343,7 +353,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="quantitys">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advancedCount">
+                                                            拿货数量&nbsp;
+                                                        </label>
+                                                        <div>
+                                                            <input type="text" class="form-control" id="advancedCount" name="quantitys" value="${pfSkuAgent.quantity}" placeholder="">
+                                                        </div>
+                                                        金额门槛<small class="text-info threshold"></small>元
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -355,7 +375,17 @@
 
                                             <div class="widget-body">
                                                 <div class="widget-main" id="bails">
-
+                                                    <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
+                                                    <div>
+                                                        <label for="advancedBail">
+                                                            保证金
+                                                        </label>
+                                                        <div>
+                                                            <input type="text" class="form-control" id="advancedBail" name="bails" value="${pfSkuAgent.bail}" placeholder="">
+                                                        </div>
+                                                        &nbsp;
+                                                    </div>
+                                                    </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
@@ -405,7 +435,7 @@
                             <div class="form-group">
                                 <label for="inShort" class="col-sm-2 control-label">一句话介绍</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inShort" name="slogan" placeholder="一句话介绍">
+                                    <input type="text" class="form-control" id="inShort" name="slogan" value="${productInfo.comSpu.slogan}" placeholder="一句话介绍">
                                 </div>
                             </div>
                             <textarea rows="500" cols="300" id="content" name="content"
@@ -719,8 +749,12 @@
         $('#quantitys').append(quantitys);
         $('#bails').append(bails);
     }
+</script>
+<script>
 
-    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
+    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(calculate);
+
+    function calculate(){
         var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
         $('input[name="quantitys"]').each(function(i,o){
             var discount = $($('input[name="discounts"]').get(i)).val();
@@ -732,13 +766,22 @@
             $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
             $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
         });
-    });
+    }
 
     $('#skuSave').on('click', function(){
         $('#skuForm').submit();
     });
 
     $(document).ready(function() {
+
+        $('input[name="discounts"]').each(function(i,o){
+            $(this).val($(this).val()*100);
+        });
+        $('input[name="distributionDiscounts"]').each(function(i,o){
+            $(this).val($(this).val()*100);
+        });
+        calculate();
+
         $('#skuForm').bootstrapValidator({
                     message: '必须填写',
                     feedbackIcons: {
@@ -777,11 +820,6 @@
                             }
                         },
                         brandId: {
-                            validators: {
-                                notEmpty: {}
-                            }
-                        },
-                        levelCount: {
                             validators: {
                                 notEmpty: {}
                             }
@@ -831,7 +869,7 @@
                     // Use Ajax to submit form data
                     $('#content').val(UE.getEditor('editor').getContent());
                     $.ajax({
-                        url: '<%=basePath%>product/add.do',
+                        url: '<%=basePath%>product/update.do',
                         type: 'post',
                         data: $('#skuForm').serialize(),
                         success: function(msg){

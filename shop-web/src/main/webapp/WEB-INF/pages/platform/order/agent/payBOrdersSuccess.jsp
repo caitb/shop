@@ -117,10 +117,7 @@
     <div class="back_f">
         <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
-        <div>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-            <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-        </div>
+        <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
 <script src="${path}/static/js/zepto.min.js"></script>

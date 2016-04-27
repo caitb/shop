@@ -135,10 +135,7 @@
 <div class="back_g">
     <p>关注公众账号查佣金、查订单</p>
     <span class="close">×</span>
-    <div>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>麦链商城</span></p>
-        <p><img src="${path}/static/images/zhiwen.png" alt=""><span>长按左侧二维码关注</span></p>
-    </div>
+    <img src="${path}/static/images/duan.png" alt="">
 </div>
 <div class="shoping">
     <img src="${defaultSkuImage.fullImgUrl}" alt="">

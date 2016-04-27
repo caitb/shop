@@ -25,7 +25,7 @@
            <div class="box">
                 <header class="xq_header">
                    <a href="<%=path%>/sfOrderManagerController/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>我的订单</p>  
+                        <p>进货订单</p>
                 </header>
                 <nav>
                     <ul>

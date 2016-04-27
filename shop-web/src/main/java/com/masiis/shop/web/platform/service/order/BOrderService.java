@@ -244,6 +244,7 @@ public class BOrderService {
     @Transactional
     public void deliver(String shipManName, Long orderId, String freight, String shipManId, ComUser user) throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(orderId);
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         if (pfBorder.getSendType() == 0) {
             throw new BusinessException("请选择发货方式");
         }
@@ -267,7 +268,8 @@ public class BOrderService {
                 pfBorderFreightMapper.insert(pfBorderFreight);
                 //添加订单日志
                 bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-                MobileMessageUtil.goodsOrderShipRemind(user.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+
+                MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
                 String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
                 String[] params = new String[5];
                 params[0] = pfBorderItems.getSkuName();
@@ -275,7 +277,7 @@ public class BOrderService {
                 params[2] = pfBorder.getOrderCode();
                 params[3] = shipManName;
                 params[4] = freight;
-                Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+                Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
                 if (aBoolean == false) {
                     throw new BusinessException("订单发货微信提示失败");
                 }
@@ -292,7 +294,7 @@ public class BOrderService {
             pfBorderFreightMapper.insert(pfBorderFreight);
             //添加订单日志
             bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-            MobileMessageUtil.goodsOrderShipRemind(user.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+            MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
             String[] params = new String[5];
             params[0] = pfBorderItems.getSkuName();
@@ -300,7 +302,7 @@ public class BOrderService {
             params[2] = pfBorder.getOrderCode();
             params[3] = shipManName;
             params[4] = freight;
-            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(user, params, url);
+            Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if (aBoolean == false) {
                 throw new BusinessException("订单发货微信提示失败");
             }

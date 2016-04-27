@@ -52,12 +52,14 @@
                             }
                         } else {
                             //显示绑定手机号
+                            $(".back_box").show();
                             $(".back").show();
                             $(".back_j").show();
                         }
                     },
                     error: function () {
                         //显示绑定手机号
+                        $(".back_box").show();
                         $(".back").show();
                         $(".back_j").show();
                     }

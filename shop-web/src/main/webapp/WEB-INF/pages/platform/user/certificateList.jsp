@@ -27,65 +27,6 @@
         <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>我的证书</p>
     </header>
-    <%--<main>--%>
-        <%--<div id="box">--%>
-            <%--<c:forEach items="${pfUserCertificates}" var="cet">--%>
-                <%--<c:choose>--%>
-                    <%--<c:when test="${cet.agentLevelId==1}">--%>
-                        <%--<div class="big">--%>
-                            <%--<div class="sec1 sec">--%>
-                                <%--<p>合伙产品</p>--%>
-                                <%--<h1>${cet.skuName}</h1>--%>
-                            <%--</div>--%>
-                            <%--<div class="small">--%>
-                                <%--<div class="left">--%>
-                                    <%--<p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>--%>
-                                    <%--<h1>合伙人等级：<span>高级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>--%>
-                                <%--</div>--%>
-                                <%--<div class="right">--%>
-                                    <%--<p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</c:when>--%>
-                    <%--<c:when test="${cet.agentLevelId==2}">--%>
-                        <%--<div class="big">--%>
-                            <%--<div class="sec1 sec2">--%>
-                                <%--<p>合伙产品</p>--%>
-                                <%--<h1>${cet.skuName}</h1>--%>
-                            <%--</div>--%>
-                            <%--<div class="small">--%>
-                                <%--<div class="left">--%>
-                                    <%--<p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>--%>
-                                    <%--<h1>合伙人等级：<span>中级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>--%>
-                                <%--</div>--%>
-                                <%--<div class="right">--%>
-                                    <%--<p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</c:when>--%>
-                    <%--<c:when test="${cet.agentLevelId==3}">--%>
-                        <%--<div class="big">--%>
-                            <%--<div class="sec1 sec3">--%>
-                                <%--<p>合伙产品</p>--%>
-                                <%--<h1>${cet.skuName}</h1>--%>
-                            <%--</div>--%>
-                            <%--<div class="small">--%>
-                                <%--<div class="left">--%>
-                                    <%--<p>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span></p>--%>
-                                    <%--<h1>合伙人等级：<span>初级合伙人</span>  保证金：<span>${cet.bail}</span>元</h1>--%>
-                                <%--</div>--%>
-                                <%--<div class="right">--%>
-                                    <%--<p><img src="<%=path%>/static/images/see.png" alt=""><a href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></p>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</c:when>--%>
-                <%--</c:choose>--%>
-            <%--</c:forEach>--%>
-        <%--</div>--%>
-    <%--</main>--%>
     <c:forEach items="${pfUserCertificates}" var="cet">
         <div class="sec1">
             <img src="" alt="${cet.skuIcon}">

@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShopSku;
 import com.masiis.shop.dao.po.SfUserShopView;
@@ -52,12 +53,18 @@ public class SfUserShopViewController extends BaseController {
         //默认设置每页显示20条
         Integer totalPage = count%20 == 0 ? count/20 : count/20 + 1;
         List<SfUserShopView> sfUserShopViews = new ArrayList<>();
+        String url = PropertiesUtils.getStringValue("agent_level_product_icon_url");
         if (count > 0){
             logger.info("用户查看浏览过的店铺userId="+userId);
             List<SfUserShopView> shopViews = sfUserShopViewService.findShopViewByUserIdByLimit(userId,1,20);
             List<SfShopSku> sfShopSkus;
             for (SfUserShopView sfUserShopView : shopViews){
                 sfShopSkus = sfShopSkuService.findShopSkuByShopId(sfUserShopView.getShopId());
+                for (int i = 0; i < sfShopSkus.size(); i++){
+                    SfShopSku sfShopSku = sfShopSkus.get(i);
+                    sfShopSku.setIcon(url + sfShopSku.getIcon());
+                    sfShopSkus.set(i,sfShopSku);
+                }
                 sfUserShopView.setShopSkus(sfShopSkus);
                 sfUserShopViews.add(sfUserShopView);
             }
@@ -108,6 +115,7 @@ public class SfUserShopViewController extends BaseController {
         List<SfShopSku> sfShopSkus;
         StringBuffer str = new StringBuffer();
         String path = request.getContextPath();
+        String url = PropertiesUtils.getStringValue("agent_level_product_icon_url");
         for (SfUserShopView sfUserShopView : shopViews){
             sfShopSkus = sfShopSkuService.findShopSkuByShopId(sfUserShopView.getShopId());
             sfUserShopView.setShopSkus(sfShopSkus);
@@ -117,7 +125,7 @@ public class SfUserShopViewController extends BaseController {
             str.append("</p>");
             str.append("<div class=\"shop\"><h2>"+sfUserShopView.getShopName()+"</h2><h1>");
             for (SfShopSku sku : sfShopSkus){
-                str.append("<img src=\""+ path + sku.getIcon() +"\" alt=\"\">");
+                str.append("<img src=\""+ url + sku.getIcon() +"\" alt=\"\">");
             }
             str.append(sfUserShopView.getBailFee()+"保证金</h1><h3>"+sfUserShopView.getExplanation()+"</h3>");
             if (sfUserShopView.getDays() == 0){

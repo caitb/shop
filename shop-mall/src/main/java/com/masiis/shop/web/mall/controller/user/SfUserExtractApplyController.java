@@ -278,7 +278,7 @@ public class SfUserExtractApplyController extends BaseController{
         }
         boolean mobile = false;
         if (user.getMobile()==null || "".equals(user.getMobile())){
-            mobile = MobileMessageUtil.withdrawRequestVerify(user.getMobile(),"2");
+            mobile = MobileMessageUtil.withdrawRequestVerifyCustomer(user.getMobile(),"2");
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //提现申请成功发送微信

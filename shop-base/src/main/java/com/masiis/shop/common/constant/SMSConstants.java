@@ -40,22 +40,22 @@ public class SMSConstants {
 	 * 发货订单
 	 */
 	public static final String SHIP_ORDER = "80843";
-//	/**
-//	 * 提现申请审核
-//	 */
-//	public static final String WITHDRAW_REQUEST_VERIFY = "80847";
 	/**
 	 * 提现申请审核
 	 */
-	public static final String WITHDRAW_REQUEST_VERIFY = "81478";
-//	/**
-//	 * 提现审核通过
-//	 */
-//	public static final String WITHDRAW_VERIFY_APPROVE = "80851";
+	public static final String WITHDRAW_REQUEST_VERIFY_AGENT = "80847";
 	/**
-	 * 提现审核通过
+	 * 小铺提现申请审核
 	 */
-	public static final String WITHDRAW_VERIFY_APPROVE = "81482";
+	public static final String WITHDRAW_REQUEST_VERIFY_CUSTOMER = "81478";
+	/**
+	 * 代理提现审核通过
+	 */
+	public static final String WITHDRAW_VERIFY_APPROVE_AGENT = "80851";
+	/**
+	 * 消费者提现审核通过
+	 */
+	public static final String WITHDRAW_VERIFY_APPROVE_CUSTOMER = "81482";
 	/**
 	 * 提现申请审核拒绝
 	 */

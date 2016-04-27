@@ -219,7 +219,7 @@
 
     function initTable() {
         $table.bootstrapTable({
-            url: '<%=basePath%>order/border/list.do',
+            url: '<%=basePath%>order/border/offline/list.do',
             //height: getHeight(),
             locale: 'zh-CN',
             striped: true,
@@ -426,6 +426,9 @@
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
                             if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
+                            }
+                            if(row.pfBorder && row.pfBorder.orderStatus == 9){
+                                arr.push('&nbsp;&nbsp;<a class="receipt" href="javascript:void(0);">确认收款</a>');
                             }
 
                             return arr.join('');

@@ -54,7 +54,7 @@ public class BOrderAddService {
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
@@ -72,6 +72,7 @@ public class BOrderAddService {
 
     /**
      * 添加订单
+     *
      * @param bOrderAdd
      * @return
      * @throws Exception
@@ -169,13 +170,7 @@ public class BOrderAddService {
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setPfBorderStatus(0);
-        pfBorderOperationLog.setRemark("新增订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "新增订单");
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getOrderType() == 2 || pfBorder.getSendType() == 2) {
             //获得地址
@@ -201,6 +196,7 @@ public class BOrderAddService {
         }
         return pfBorder.getId();
     }
+
     /**
      * 添加拿货订单
      *
@@ -284,19 +280,12 @@ public class BOrderAddService {
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);
         logger.info("<2>添加订单日志");
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(order.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(order.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(order.getId());
-        pfBorderOperationLog.setRemark("订单已支付,拿货订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
-
+        bOrderOperationLogService.insertBOrderOperationLog(order, "订单已支付,拿货订单");
         logger.info("<3>冻结usersku库存 用户加冻结库存存");
         PfUserSkuStock pfUserSkuStock = null;
         //冻结usersku库存 用户加冻结库存
         pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
-        if (pfUserSkuStock == null){
+        if (pfUserSkuStock == null) {
             throw new BusinessException("拿货失败：没有库存信息");
         }
         if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {

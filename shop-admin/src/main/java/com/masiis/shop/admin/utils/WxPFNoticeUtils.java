@@ -10,8 +10,8 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
@@ -21,8 +21,8 @@ import java.util.Locale;
 public class WxPFNoticeUtils {
     private static Logger log = Logger.getLogger(WxPFNoticeUtils.class);
     private NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-    @Resource
-    private WxUserService wxUserService;
+    private SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
+    private WxUserService wxUserService = (WxUserService) ApplicationContextUtil.getBean("wxUserService");
 
 
     private static class Holder {

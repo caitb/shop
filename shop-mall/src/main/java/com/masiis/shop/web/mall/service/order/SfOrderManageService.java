@@ -135,6 +135,7 @@ public class SfOrderManageService {
         sfUserAccountService.countingSfOrder(sfOrder);
         // 进行订单状态修改
         sfOrder.setOrderStatus(3);
+        sfOrder.setReceiptTime(new Date());
         sfOrderMapper.updateByPrimaryKey(sfOrder);
         SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
         sfOrderOperationLog.setCreateMan(sfOrder.getUserId());
@@ -143,7 +144,6 @@ public class SfOrderManageService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
-        MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
         String[] params = new String[5];
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
         params[0] = sfOrder.getOrderCode();
@@ -154,7 +154,9 @@ public class SfOrderManageService {
         }
         params[2] =sdf.format(sfOrder.getCreateTime());//下单时间
         params[3] = sdf.format(sfOrder.getShipTime());//发货时间
-        params[3] = sdf.format(sfOrder.getReceiptTime());//收货时间
-        WxSFNoticeUtils.getInstance().orderConfirmNotice(user,params);
+        params[4] = sdf.format(sfOrder.getReceiptTime());//收货时间
+        Boolean aBoolean = WxSFNoticeUtils.getInstance().orderConfirmNotice(user, params);
+
+        MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
     }
 }

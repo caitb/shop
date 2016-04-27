@@ -175,7 +175,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="profile-info-row" id="auditReason">
+                                                        <div class="profile-info-row">
                                                             <div class="profile-info-name" id="jjT"> 审核备注 </div>
 
                                                             <div class="profile-info-value" id="jjF">
@@ -183,7 +183,7 @@
                                                                   <input type="hidden" name="id" id="userId" value="" />
                                                                   <input type="hidden" name="mobile" id="mobile" value="" />
                                                                   <input type="hidden" name="auditStatus" id="auditStatus" value="2" />
-                                                                  <textarea name="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                  <textarea name="auditReason" id="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -387,6 +387,7 @@
                                         $('#idCardF').attr('src', data.idCardFrontUrl);
                                         $('#idCardB').attr('src', data.idCardBackUrl);
 
+                                        $('#auditReason').val('');
                                         $('#modal-audit').modal('show');
                                     }
                                 })

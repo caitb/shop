@@ -92,7 +92,7 @@
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
                 <span>分享计划</span>
             </p>
-            <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/borderManagement.html');" >
+            <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
                 <span>个人中心</span>
             </p>

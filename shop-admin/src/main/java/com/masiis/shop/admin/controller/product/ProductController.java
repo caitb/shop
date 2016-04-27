@@ -69,7 +69,7 @@ public class ProductController {
     @RequestMapping("/edit.shtml")
     public ModelAndView edit(HttpServletRequest request, HttpServletResponse response, Integer skuId) throws JsonProcessingException {
 
-        ModelAndView mav = new ModelAndView("product/edit");
+        ModelAndView mav = new ModelAndView("product/edit2");
 
         List<ComBrand> comBrands = brandService.list(new ComBrand());
         List<ComUnitMeasure> comUnitMeasures = unitMeasureService.listAll();

@@ -35,5 +35,12 @@ public interface PfBorderPaymentMapper {
 
     PfBorderPayment selectByOrderIdAndPayTypeIdAndIsEnabled(@Param("pfBorderId") Long pfBorderId, @Param("payTypeId") Integer payTypeId,@Param("isEnabled") Integer isEnabled);
 
+    /**
+     * 查找线下支付记录
+     * @param bOrderId
+     * @return
+     */
+    PfBorderPayment selectOfflinePayByBOrderId(Long bOrderId);
+
 
 }

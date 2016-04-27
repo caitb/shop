@@ -8,7 +8,6 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.order.PfBorderOperationLogMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
@@ -39,7 +38,7 @@ public class OrderQueueDealService {
     @Autowired
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Autowired
-    private PfBorderOperationLogMapper pfBorderOperationLogMapper;
+    private BOrderOperationLogService bOrderOperationLogService;
     @Autowired
     private ComUserService comUserService;
 
@@ -146,13 +145,7 @@ public class OrderQueueDealService {
             throw new BusinessException("平台代发:修改订单状态失败");
         }
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单完成，平台代发处理排单订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"订单完成，平台代发处理排单订单");
         this.sendMessage(pfBorder);
         return "success";
     }
@@ -199,13 +192,7 @@ public class OrderQueueDealService {
             throw new BusinessException("自发货:修改订单状态失败");
         }
         //添加订单日志
-        PfBorderOperationLog pfBorderOperationLog = new PfBorderOperationLog();
-        pfBorderOperationLog.setCreateMan(pfBorder.getUserId());
-        pfBorderOperationLog.setCreateTime(new Date());
-        pfBorderOperationLog.setPfBorderStatus(pfBorder.getOrderStatus());
-        pfBorderOperationLog.setPfBorderId(pfBorder.getId());
-        pfBorderOperationLog.setRemark("订单待发货，自发货处理排单订单");
-        pfBorderOperationLogMapper.insert(pfBorderOperationLog);
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"订单待发货，自发货处理排单订单");
         this.sendMessage(pfBorder);
         return "success";
     }

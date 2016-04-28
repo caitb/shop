@@ -14,7 +14,6 @@ import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.service.user.WxUserService;
 import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 import com.masiis.shop.web.mall.utils.wx.WxAuthUrlUtils;
-import com.masiis.shop.web.platform.beans.wxauth.*;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

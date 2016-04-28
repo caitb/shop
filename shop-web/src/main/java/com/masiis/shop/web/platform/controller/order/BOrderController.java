@@ -205,6 +205,7 @@ public class BOrderController extends BaseController {
             mav.addObject("latestTime", map.get("latestTime"));
             mav.addObject("orderItem",map.get("orderItem"));
             mav.addObject("border",map.get("border"));
+            mav.addObject("payAmount",map.get("payAmount"));
         }
         boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
         mav.addObject("isUserForcus", isUserForcus);

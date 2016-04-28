@@ -16,11 +16,12 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <body>
-
-<div class="addb">
-    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
-    <label class="close">×</label>
-</div>
+<c:if test="${forcusSF==false}">
+    <div class="addb">
+        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+        <label class="close">×</label>
+    </div>
+</c:if>
 <div class="wrap">
     <header>
         <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -33,7 +34,13 @@
                 <span>我是${fromUser.wxNkName},我为麦链商城呐喊!</span>
                 <span>跟我一起：呐喊得红包，分享赚佣金</span>
             </h1>
-        </div>
+    <div class="price">
+        <p>${skuInfo.comSku.name}</p>
+        <p><span style="padding:0;">${skuInfo.slogan}</span></p>
+        <p><b>${skuInfo.comSku.priceRetail}</b></p>
+    </div>
+    <div class="dlpople">
+    </div>
     </c:if>
     <div class="banner">
         <div class="swiper-container">
@@ -46,12 +53,6 @@
             <div class="swiper-pagination"></div>
         </div>
     </div>
-    <div class="price">
-        <p>${skuInfo.comSku.name}</p>
-        <p><span style="padding:0;">${skuInfo.slogan}</span></p>
-        <p><b>${skuInfo.comSku.priceRetail}</b></p>
-    </div>
-    <div class="dlpople">
         <p>快递：
             <c:if test="${empty skuInfo.shipAmount}">
             <span>包邮</span></p>

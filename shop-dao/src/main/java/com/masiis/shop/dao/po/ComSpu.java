@@ -110,6 +110,11 @@ public class ComSpu {
      */
     private String remark;
 
+    /**
+     * 商业政策
+     */
+    private String policy;
+
     public Integer getId() {
         return id;
     }
@@ -259,5 +264,45 @@ public class ComSpu {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(String policy) {
+        this.policy = policy;
+    }
+
+    @Override
+    public String toString() {
+        return "ComSpu{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", brandId=" + brandId +
+                ", createTime=" + createTime +
+                ", createMan=" + createMan +
+                ", upTime=" + upTime +
+                ", downTime=" + downTime +
+                ", modifyTime=" + modifyTime +
+                ", modifyMan=" + modifyMan +
+                ", categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", status=" + status +
+                ", slogan='" + slogan + '\'' +
+                ", isSale=" + isSale +
+                ", isDelete=" + isDelete +
+                ", isTrial=" + isTrial +
+                ", content='" + content + '\'' +
+                ", weight=" + weight +
+                ", packLength=" + packLength +
+                ", packWidth=" + packWidth +
+                ", packHeight=" + packHeight +
+                ", shipAmount=" + shipAmount +
+                ", artNo='" + artNo + '\'' +
+                ", unit=" + unit +
+                ", remark='" + remark + '\'' +
+                ", policy='" + policy + '\'' +
+                '}';
     }
 }

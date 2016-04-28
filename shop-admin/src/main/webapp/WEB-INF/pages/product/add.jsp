@@ -437,6 +437,7 @@
                                     <input type="text" class="form-control" id="inShort" name="slogan" placeholder="一句话介绍">
                                 </div>
                             </div>
+                            <textarea rows="500" cols="300" id="policy" name="policy" style="display: none;"></textarea>
                             <textarea rows="500" cols="300" id="content" name="content" style="display: none;"></textarea>
                         </form>
 
@@ -456,6 +457,26 @@
                         <div class="form-group">
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div class="alert alert-success" role="alert" style="margin:20px 0 0 0;">
+                                    <strong>商业政策</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                <div>
+                                    <script id="policyUEditor" type="text/plain" style="height: 500px"></script>
+                                    <script type="text/javascript">
+                                        //实例化编辑器
+                                        //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+                                        var policyUEditor = UE.getEditor('policyUEditor');
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="alert alert-success" role="alert" style="margin:20px 0 0 0;">
                                     <strong>商品详情</strong>
                                 </div>
                             </div>
@@ -463,11 +484,11 @@
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
-                                    <script id="spuUEditor" type="text/plain" style="height: 500px"></script>
+                                    <script id="contentUEditor" type="text/plain" style="height: 500px"></script>
                                     <script type="text/javascript">
                                         //实例化编辑器
                                         //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-                                        var spuUEditor = UE.getEditor('spuUEditor');
+                                        var contentUEditor = UE.getEditor('contentUEditor');
                                     </script>
                                 </div>
                             </div>
@@ -757,7 +778,8 @@
                     var bv = $form.data('bootstrapValidator');
 
                     // Use Ajax to submit form data
-                    $('#content').val(UE.getEditor('spuUEditor').getContent());
+                    $('#policy').val(UE.getEditor('policyUEditor').getContent());
+                    $('#content').val(UE.getEditor('contentUEditor').getContent());
                     $.ajax({
                         url: '<%=basePath%>product/add.do',
                         type: 'post',

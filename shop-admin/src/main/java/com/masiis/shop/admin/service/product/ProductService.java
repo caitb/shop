@@ -51,6 +51,7 @@ public class ProductService {
         PfSkuStatistic pfSkuStatistic = new PfSkuStatistic();
         pfSkuStatistic.setSkuId(comSku.getId());
         pfSkuStatistic.setAgentNum(0);
+        pfSkuStatistic.setTrialNum(0);
         pfSkuStatisticMapper.insert(pfSkuStatistic);
 
         //库存量

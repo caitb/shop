@@ -19,6 +19,7 @@
         <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
         <result column="is_trial" property="isTrial" jdbcType="INTEGER"/>
         <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+        <result column="policy" property="policy" jdbcType="LONGVARCHAR"/>
         <result column="weight" property="weight" jdbcType="DECIMAL"/>
         <result column="pack_length" property="packLength" jdbcType="DECIMAL"/>
         <result column="pack_width" property="packWidth" jdbcType="DECIMAL"/>
@@ -36,7 +37,7 @@
     <sql id="Base_Column_List">
         id, name, brand_id, create_time, create_man, up_time, down_time, modify_time,
         modify_man, category_id, category_name, status, slogan, is_sale, is_delete, is_trial,
-        content, weight, pack_length, pack_width, pack_height, ship_amount, art_no, unit,
+        content, policy, weight, pack_length, pack_width, pack_height, ship_amount, art_no, unit,
         remark
     </sql>
 
@@ -76,7 +77,7 @@
             down_time, modify_time, modify_man,
             category_id, category_name, status,
             slogan, is_sale, is_delete,
-            is_trial, content, weight,
+            is_trial, content, policy, weight,
             pack_length, pack_width, pack_height,
             ship_amount, art_no, unit,
             remark)
@@ -85,7 +86,7 @@
             #{downTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifyMan,jdbcType=BIGINT},
             #{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
             #{slogan,jdbcType=VARCHAR}, #{isSale,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER},
-            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL},
+            #{isTrial,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{policy,jdbcType=LONGVARCHAR}, #{weight,jdbcType=DECIMAL},
             #{packLength,jdbcType=DECIMAL}, #{packWidth,jdbcType=DECIMAL}, #{packHeight,jdbcType=DECIMAL},
             #{shipAmount,jdbcType=DECIMAL}, #{artNo,jdbcType=VARCHAR}, #{unit,jdbcType=INTEGER},
             #{remark,jdbcType=VARCHAR})
@@ -141,6 +142,9 @@
             </if>
             <if test="content != null">
                 content = #{content, jdbcType=LONGVARCHAR},
+            </if>
+            <if test="policy != null">
+                policy = #{policy, jdbcType=LONGVARCHAR},
             </if>
             <if test="weight != null">
                 weight = #{weight,jdbcType=DECIMAL},

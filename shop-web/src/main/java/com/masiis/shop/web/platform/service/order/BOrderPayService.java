@@ -537,7 +537,7 @@ public class BOrderPayService {
                 MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
                 //给上级推送
                 if (pComUser != null) {
-                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
+                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
                     MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
                 }
             } else if (pfBorder.getOrderType() == 1) {
@@ -621,12 +621,14 @@ public class BOrderPayService {
         }
         return pfBorder;
     }
+
     /**
      * 插入订单支付表
+     *
      * @author hanzengzhi
      * @date 2016/4/27 14:19
      */
-    private void insertOrderPayment(PfBorder pfBorder){
+    private void insertOrderPayment(PfBorder pfBorder) {
         PfBorderPayment orderPayment = new PfBorderPayment();
         orderPayment.setPayTypeId(1);
         orderPayment.setPayTypeName("线下支付");
@@ -637,11 +639,11 @@ public class BOrderPayService {
         orderPayment.setOutOrderId("");
         orderPayment.setPaySerialNum(UUID.randomUUID().toString());
         orderPayment.setRemark("线下支付插入");
-        PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(),1,0);
-        if (_orderPayment == null){
+        PfBorderPayment _orderPayment = pfBorderPaymentMapper.selectByOrderIdAndPayTypeIdAndIsEnabled(pfBorder.getId(), 1, 0);
+        if (_orderPayment == null) {
             log.info("线下支付:订单支付表中没有输入，插入数据----start");
             int i = pfBorderPaymentMapper.insert(orderPayment);
-            if (i!=1){
+            if (i != 1) {
                 throw new BusinessException("线下支付往订单支付表插入失败");
             }
             log.info("线下支付:订单支付表中没有输入，插入数据----end");

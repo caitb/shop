@@ -634,7 +634,7 @@
             return false;
         }
 
-        $(this).attr('disabled', 'disabled');
+        $('.ok').attr('disabled', 'disabled');
 
         $.ajax({
             url: '<%=basePath%>order/border/offline/Receipt.do',
@@ -646,7 +646,7 @@
                     $('#modal-receipt').modal('hide');
                     msg = '确认收款成功!';
                 }else{
-                    $(this).removeAttr('disabled');
+                    $('.ok').removeAttr('disabled');
                     msg = '确认收款失败!';
                 }
                 $.gritter.add({

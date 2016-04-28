@@ -571,7 +571,7 @@
             return false;
         }
 
-        $(this).attr('disabled', 'disabled');
+        $('.audit').attr('disabled', 'disabled');
 
         $.ajax({
             url: '<%=basePath%>comuser/audit.do',
@@ -583,7 +583,7 @@
                     $('#modal-audit').modal('hide');
                     msg = '审核成功!';
                 }else{
-                    $(this).removeAttr('disabled');
+                    $('.audit').removeAttr('disabled');
                     msg = '审核失败!';
                 }
                 $.gritter.add({

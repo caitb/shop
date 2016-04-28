@@ -634,22 +634,26 @@
             return false;
         }
 
+        $('.ok').attr('disabled', 'disabled');
+
         $.ajax({
             url: '<%=basePath%>order/border/offline/Receipt.do',
             type: 'POST',
             data: $('#auditForm').serialize(),
             success: function(msg){
                 if('success' == msg){
-                    $('#modal-audit').modal('hide');
+                    $('#table').bootstrapTable('refresh');
+                    $('#modal-receipt').modal('hide');
+                    msg = '确认收款成功!';
+                }else{
+                    $('.ok').removeAttr('disabled');
+                    msg = '确认收款失败!';
                 }
-                msg = msg=='success' ? '确认收款成功!':'确认收款失败!';
                 $.gritter.add({
                     title: '消息',
                     text: msg,
                     class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                 });
-                $('#table').bootstrapTable('refresh');
-                $('#modal-receipt').modal('hide');
             }
         })
     });

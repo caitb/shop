@@ -197,6 +197,7 @@ public class SfOrderPurchaseService {
             if (isEnoughStock(sfShopCartSkuDetails)) {
                 //获得每款商品的分润信息
                 log.info("获得分润信息---start");
+                initData();
                 for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
@@ -309,6 +310,16 @@ public class SfOrderPurchaseService {
         log.info("判断商品是否有足够的库存----end");
         return bl;
     }
+    /**
+     * 初始化数据
+     * @author hanzengzhi
+     * @date 2016/4/28 12:19
+     */
+    private void initData(){
+        skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
+        orderSumDisAmount = new BigDecimal(0);
+        ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
+    }
 
     /**
      * 获得订单中一款商品的分润总额
@@ -317,20 +328,6 @@ public class SfOrderPurchaseService {
      * @date 2016/4/9 17:44
      */
     private void getDisDetail(Long purchaseUserId, Long shopUserId, Integer skuId, BigDecimal skuTotalPrice) {
-        if (skuDisMap == null) {
-            skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
-        }
-        if (orderSumDisAmount == null) {
-            orderSumDisAmount = new BigDecimal(0);
-        }
-        if (ordItemDisMap == null || ordItemDisMap.size() == 0) {
-            log.info("ordItemDisMap----之前数据为null");
-            ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
-        }else{
-            log.info("ordItemDisMap----之前有数据,打印之前的数据----start");
-            printlnOrdItemDisMapDate();
-            log.info("ordItemDisMap----之前有数据,打印之前的数据----end");
-        }
         List<SfSkuDistribution> sfSkuDistribution = sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         /* 获得当前用户的分销关系 */
         /* 获得当前用户的分销关系规则：父级在list第一位，父父级级在第二位 以此类推(这种排序和skuDis相对应起来) */

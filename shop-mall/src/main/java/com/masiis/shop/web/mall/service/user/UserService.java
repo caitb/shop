@@ -255,14 +255,16 @@ public class UserService {
             if (sfUserPRelation == null) {
                 sfNewUserRelation.setLevel(1);
                 sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
-            } else {
+            } else if(sfUserPRelation.getLevel()!=null){
                 sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
                 sfNewUserRelation.setUserPid(userPid);
             }
             sfUserRelationMapper.insert(sfNewUserRelation);
         } else {
             if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
-                sfUserRelation.setUserPid(sfUserPRelation.getUserId());
+                if(sfUserPRelation.getUserId()!=null){
+                    sfUserRelation.setUserPid(sfUserPRelation.getUserId());
+                }
                 sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
             }
         }

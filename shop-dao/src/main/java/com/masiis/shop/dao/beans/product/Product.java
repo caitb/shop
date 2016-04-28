@@ -53,6 +53,8 @@ public class Product extends ComSku {
 
     private String policy;//商业政策
 
+    private Long userPid;//上级
+
     public String getSpuName() {
         return spuName;
     }
@@ -219,5 +221,13 @@ public class Product extends ComSku {
 
     public void setPolicy(String policy) {
         this.policy = policy;
+    }
+
+    public Long getUserPid() {
+        return userPid;
+    }
+
+    public void setUserPid(Long userPid) {
+        this.userPid = userPid;
     }
 }

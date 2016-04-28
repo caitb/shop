@@ -41,12 +41,12 @@
         </div>
         <div>
             <p>
-                <span>麦链官方认证</span>
-                <span>已缴${bail}保证金</span>
+                <span>麦链商城官方认证</span>
+                <span>商家已缴纳${bail}保证金</span>
             </p>
             <%--<c:forEach begin="0" end="${size}" step="2" var="i">--%>
             <p><c:forEach items="${SfShopDetails}" begin="0" end="0" var="sf">
-                <span style="background:url('${sf.icon}')no-repeat 0;background-size: 14px 14px;">${sf.skuName}${sf.agentLevelName}认证</span>
+                <span style="background:url('${sf.icon}')no-repeat 0;background-size: 14px 14px;">${sf.skuName}${sf.agentLevelName}级认证</span>
             </c:forEach>
             </p>
             <%--</c:forEach>--%>

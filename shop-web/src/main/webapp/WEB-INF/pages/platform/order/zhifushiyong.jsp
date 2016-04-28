@@ -46,12 +46,12 @@
         </div>
     </section>
     <section class="sec3">
-        <p>运费<span>${product.shipAmount}</span></p>
+        <p>运费：<span>￥${product.shipAmount}</span></p>
         <p><em>试用理由：</em><input type="text" id="trialReasonId" ></p>
         <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
     </section>
     <section class="sec4">
-        <p>运费：<b>${product.shipAmount}</b></p>
+        <p>运费：<b>￥${product.shipAmount}</b></p>
         <p>共支付：<span>￥${product.shipAmount}</span></p>
     </section>
     <a href="javascript:weChatPay();" class="weixin">微信支付</a>

@@ -64,7 +64,7 @@
                             </h3>
 
                             <h2>
-                                超过<span>${Sku.agentNum}</span>人合伙
+                                <c:if test="${Sku.agentNum>=9999}">超过</c:if><span>${Sku.agentNum}</span>人合伙
                                 <c:if test="${empty Sku.uid}">
                                     <button>我要合伙</button>
                                 </c:if>

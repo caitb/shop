@@ -86,7 +86,9 @@ function viewMore(userId){
 
 function showDetail(){
     $("#detail").show();
+    $(".back").show();
 }
 function hideDetail(){
     $("#detail").hide();
+    $(".back").hide();
 }

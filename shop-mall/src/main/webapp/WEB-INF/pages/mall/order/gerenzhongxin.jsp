@@ -43,7 +43,7 @@
             <span>待发货</span></a>
         </p>
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=8">
-            <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" style="width: 29px;"></span>
+            <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" ></span>
             <span>待收货</span></a>
         </p>
     </div>

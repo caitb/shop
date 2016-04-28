@@ -162,7 +162,7 @@ public class DevelopingController extends BaseController {
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
                     //下载用户微信头像
                     if(comUser.getWxHeadImg() != null){
-                        String headImgHttpUrl = comUser.getWxHeadImg().substring(0, comUser.getWxHeadImg().lastIndexOf("/")) + "/132";
+                        String headImgHttpUrl = comUser.getWxHeadImg();
                         DownloadImage.download(headImgHttpUrl, headImgName, headImgPath);
                         headImgPath += File.separator+headImgName;
                     }else{//没有微信头像,用默认头像
@@ -224,7 +224,7 @@ public class DevelopingController extends BaseController {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
 
-        g.drawImage(headImage, 88, 619, null);
+        g.drawImage(headImage, 88, 619, 130, 130, null);
         g.drawImage(bImage, 0, 0, null);
         g.drawImage(qrcodeImage, 566, 776, null);
 

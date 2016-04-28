@@ -22,18 +22,18 @@
 </header>
 
 <div class="wrap">
-    <form action="<%=basePath%>shop/manage/updateShop" method="post">
+    <form action="<%=basePath%>shop/manage/updateShop" method="post" id="shopForm">
     <p>
         <label for="">店铺名称</label>
         <input type="hidden" name="id" value="${sfShop.id}">
-        <input type="text" name="name" value="${sfShop.name}">
+        <input type="text" name="name" value="${sfShop.name}" id="name">
     </p>
         <p>
             不超过10个字
         </p>
     <p>
         <label for="">店铺介绍</label>
-        <textarea name="explanation" value="${sfShop.explanation}" id="" cols="30" rows="10">${sfShop.explanation}</textarea>
+        <textarea name="explanation" value="${sfShop.explanation}" id="explanation" cols="30" rows="10">${sfShop.explanation}</textarea>
     </p>
         <p>
             不超过25个字
@@ -42,6 +42,18 @@
     <button type="submit">保存</button>
     </form>
 </div>
-
 </body>
+<script src="<%=basePath%>static/js/jquery/jquery-1.8.3.min.js"></script>
+<script>
+    $('input[name="name"]').keyup(function(){
+       if($(this).val().length>10){
+           $(this).val($(this).val().substring(0,10));
+       }
+    });
+    $('textarea[name="explanation"]').keyup(function(){
+        if($(this).val().length>25){
+            $(this).val($(this).val().substring(0,25));
+        }
+    });
+</script>
 </html>

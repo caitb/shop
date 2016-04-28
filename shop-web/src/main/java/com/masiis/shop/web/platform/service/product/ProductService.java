@@ -144,6 +144,8 @@ public class ProductService {
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(product.getId());
                 product.setIsQueue(pfSkuStock.getIsQueue());
+                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId,product.getId());
+                product.setUserPid(pfUserSku.getUserPid());
             }
         }
         return userProducts;

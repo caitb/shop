@@ -48,7 +48,7 @@
                         </section>
                         <section class="sec3">
                             <p class="jianku" onclick="jiankucun('${sku.name}','${sku.customStock}','${sku.pfuId}')">库存维护</p>
-                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}',${sku.id})">补货</p>
+                            <p class="buhuo" onclick="buhuokucun('${sku.name}','${sku.upperStock}',${sku.id},'${sku.userPid}')">补货</p>
                         </section>
                     </c:forEach>
                 </div>
@@ -85,6 +85,7 @@
             <h4>商品:　　<span id="addsku"></span></h4>
             <input type="text" id="addSkuId" style="display: none">
             <input type="text" id="userStockId" style="display: none">
+            <input type="text" id="userPid" style="display: none">
             <h4>本次最多可补货数量:　　<span id="maxStock"></span></h4>
             <h4>补货数量:　　<div>
                 <span class="jian">-</span>
@@ -168,13 +169,14 @@
         i--;
         $(".number").val(i)
     })
-    function buhuokucun(a,b,d){
+    function buhuokucun(a,b,d,e){
         $(".number").val(1);
         $("#addsku").html(a);
         $("#maxStock").html(b);
         $("#addSkuId").val(d);
         $(".back").css("display","-webkit-box");
         $(".back_b").show();
+        $("#userPid").val(e);
     }
     $(".b_qu").on("tap",function(){
         $(".back").css("display","none");
@@ -185,24 +187,32 @@
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;
-        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
-        <%--var skuId = $("#addSkuId").val();--%>
-        <%--$.ajax({--%>
-            <%--url: '<%=basePath%>product/user/addStock.do',--%>
-            <%--type: 'post',--%>
-            <%--data: {stock:i,skuId:skuId},--%>
-            <%--dataType: 'json',--%>
-            <%--success: function (data) {--%>
-                <%--if(data['isError'] == false){--%>
-                    <%--if(data['isQueue'] == true){--%>
-                        <%--alert(data['message']);--%>
-                    <%--}--%>
-                    <%--window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId="+data.orderCode+"";--%>
-                <%--}else{--%>
-                    <%--alert(data['message']);--%>
-                <%--}--%>
-            <%--}--%>
-        <%--});--%>
+        // 检查库存
+        var paramData = {};
+        paramData.skuId = $("#addSkuId").val();
+        paramData.stock = i;
+        paramData.pUserId = $("#userPid").val();
+        $.ajax({
+            url: '<%=basePath%>product/checkStock.do',
+            type: 'GET',
+            data: paramData,
+            dataType: 'json',
+            success: function (data) {
+                if(data.isError==false){
+                    if(data.stockStatus==2){
+                        alert("库存不足，不可下单！");
+                        return;
+                    }else if(data.stockStatus==1){
+                        alert("库存不足，将进入排单");
+                        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+                    }else{
+                        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+                    }
+                }else{
+                    alert(data.message);
+                }
+            }
+        });
     })
 </script>
 </body>

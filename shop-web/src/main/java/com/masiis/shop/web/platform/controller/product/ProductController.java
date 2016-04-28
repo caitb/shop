@@ -180,4 +180,28 @@ public class ProductController extends BaseController {
         mav.addObject("comSku", comSku);
         return mav;
     }
+
+    /**
+     * 补货验证
+     * JJH
+     */
+    @RequestMapping("/checkStock.do")
+    @ResponseBody
+    public String checkStock(HttpServletRequest request,
+                             HttpServletResponse response,
+                                   @RequestParam(value = "skuId",required = true) Integer skuId,
+                                   @RequestParam(value = "stock",required = true) Integer stock,
+                                   @RequestParam(value = "pUserId",required = true) Long pUserId
+                                   ) throws Exception {
+        JSONObject object = new JSONObject();
+         try{
+             int status = skuService.getSkuStockStatus(skuId,stock,pUserId);
+             object.put("isError", false);
+             object.put("stockStatus", status);
+         }catch (Exception ex){
+             object.put("isError", true);
+             object.put("message", ex.getMessage());
+         }
+        return object.toJSONString();
+    }
 }

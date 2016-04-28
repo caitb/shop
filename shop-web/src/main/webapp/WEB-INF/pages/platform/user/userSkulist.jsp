@@ -51,7 +51,7 @@
                                onclick="javascript:window.location.replace('<%=basePath%>product/user/applySkuInfo.list/?id=${sku.pfuId}');">
                                 申请拿货</p>
                             <p class="buhuo"
-                               onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}')">
+                               onclick="buhuokucun('${sku.name}','${sku.upperStock}','${sku.isQueue}','${sku.id}','${sku.userPid}')">
                                 补货</p>
                         </section>
                     </c:forEach>
@@ -64,6 +64,7 @@
             <p>补货信息</p>
             <h4>商品:　　<span id="addsku"></span></h4>
             <input type="text" id="addSkuId" style="display: none">
+            <input type="text" id="userPid" style="display: none">
             <h4 id="xianshi">本次最多可补货数量:　　<span id="maxStock"></span></h4>
             <h4>补货数量:　　
                 <div>
@@ -102,7 +103,7 @@
         i--;
         $(".number").val(i)
     })
-    function buhuokucun(a, b, c, d) {
+    function buhuokucun(a, b, c, d,e) {
         $(".number").val(1);
         $(".queue").hide();//init
         $("#addsku").html(a);
@@ -112,6 +113,7 @@
             $("#xianshi").hide();
         }
         $("#addSkuId").val(d);
+        $("#userPid").val(e);
         $(".back").css("display", "-webkit-box");
         $(".back_b").show();
     }
@@ -124,23 +126,32 @@
         var paraData = "?";
         paraData += "&skuId=" + $("#addSkuId").val();
         paraData += "&quantity=" + i;
-        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
-        <%--$.ajax({--%>
-        <%--url: '<%=basePath%>product/user/addStock.do',--%>
-        <%--type: 'post',--%>
-        <%--data: {stock: i, skuId: skuId},--%>
-        <%--dataType: 'json',--%>
-        <%--success: function (data) {--%>
-        <%--if (data['isError'] == false) {--%>
-        <%--if (data['isQueue'] == true) {--%>
-        <%--alert(data['message']);--%>
-        <%--}--%>
-        <%--window.location.href = "<%=basePath%>border/payBOrder.shtml/?bOrderId=" + data.orderCode + "";--%>
-        <%--} else {--%>
-        <%--alert(data['message']);--%>
-        <%--}--%>
-        <%--}--%>
-        <%--});--%>
+        // 检查库存
+        var paramData = {};
+        paramData.skuId = $("#addSkuId").val();
+        paramData.stock = i;
+        paramData.pUserId = $("#userPid").val();
+        $.ajax({
+        url: '<%=basePath%>product/checkStock.do',
+        type: 'GET',
+        data: paramData,
+        dataType: 'json',
+            success: function (data) {
+                if(data.isError==false){
+                    if(data.stockStatus==2){
+                        alert("库存不足，不可下单！");
+                        return;
+                    }else if(data.stockStatus==1){
+                        alert("库存不足，将进入排单");
+                        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+                    }else{
+                        window.location.href = "<%=basePath%>BOrderAdd/supplementBOrder.shtml" + paraData;
+                    }
+                }else{
+                    alert(data.message);
+                }
+            }
+        });
     })
 </script>
 </body>

@@ -14,7 +14,7 @@
 <main>
     <c:if test="${isUserForcus==false}">
         <div class="na">
-            <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+            <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
             <label class="close">×</label>
         </div>
     </c:if>
@@ -115,7 +115,6 @@
 <div class="back_box">
     <div class="back"></div>
     <div class="back_f">
-        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
         <img src="${path}/static/images/b.png" alt="">
     </div>

@@ -14,7 +14,7 @@
 <body>
 <c:if test="${isUserForcus==false}">
 <div class="na">
-    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+    <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
     <label class="close">×</label>
 </div>
 </c:if>
@@ -24,7 +24,6 @@
 <div class="drap">
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
-    <p>实名认证已经提交</p>
     <h2>您的实名认证已经提交，审核结果会在1个工作日内下发到您的手机请注意查收。</h2>
 </div>
 <a href="${path}/marketGood/market" class="jixu">

@@ -19,7 +19,7 @@
 </head>
 <body><c:if test="${forcusSF!=true}">
 <div class="addb">
-    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+    <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
     <label class="close">×</label>
 </div>
 </c:if>
@@ -120,7 +120,6 @@
     <span class="close">×</span>
 </div>
 <div class="back_g">
-    <p>关注公众账号查佣金、查订单</p>
     <span class="close">×</span>
     <img src="${path}/static/images/duan.png" alt="">
 </div>

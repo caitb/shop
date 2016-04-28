@@ -39,6 +39,7 @@
     </div>
     <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
     <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    <p>大额转账请选择线下支付</p>
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>

@@ -37,11 +37,13 @@
     display: -webkit-box;
     padding: 10px;
     background: #fff;
+    margin-top: 10px;
 }
 .wrap main section .sec1 img {
     display: block;
     width: 70px;
     height: 70px;
+    border: 1px solid #ddd;
 }
 .wrap main section .sec1 div {
     -webkit-box-flex: 1;
@@ -54,20 +56,23 @@
     display: -webkit-box;
     -webkit-box-pack: justify;
     background: #fff;
-    padding: 0 10px;
     border-top: 1px solid #eee;
     padding: 5px;
-    margin-bottom: 5px;
 }
 .wrap main section .sec2 p {
-    width: 60px;
-    line-height: 20px;
-    border: 1px solid #999999;
+    -webkit-box-flex: 1;
+    line-height: 11px;
     text-align: center;
-    color: #666666;
+    color: #333;
+    width: 1px;
+    margin: 5px 0;
+}
+.wrap main section .sec2 p img{
+    width:18px;
+    margin-right: 6px;
 }
 .wrap main section .sec2 p:nth-child(1) {
-    color: #333;
+    border-right: 1px solid #666;
 }
 .back_que {
     position: fixed;
@@ -177,4 +182,6 @@
     right: -15px;
     font-size: 20px;
 }
-
+.sec1 div p{
+    font-size:12px;
+}

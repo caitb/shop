@@ -317,7 +317,7 @@ public class ProductController {
                     if(!folder.exists()){
                         folder.mkdir();
                     }
-                    for(int i=0; i<mainImgUrls.length; i++){
+                    for(int i=0; i<skuImageIds.length; i++){
                         ComSkuImage comSkuImage = new ComSkuImage();
                         comSkuImage.setId(skuImageIds[i]);
                         comSkuImage.setModifyTime(new Date());

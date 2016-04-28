@@ -19,7 +19,7 @@ $(function () {
                 return false;
             }
             var para = {};
-            var checkLevel = $(".on");
+            var checkLevel = $("p.active");
             if (checkLevel != null) {
                 para.agentLevel = checkLevel.attr("levelId");
             }

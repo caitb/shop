@@ -29,7 +29,7 @@
     </header>
     <c:forEach items="${pfUserCertificates}" var="cet">
         <div class="sec1">
-            <img src="" alt="${cet.skuIcon}">
+            <img src="${cet.skuIcon}" alt="">
             <div>
                 <p>合伙产品</p>
                 <h1>${cet.skuName}</h1>

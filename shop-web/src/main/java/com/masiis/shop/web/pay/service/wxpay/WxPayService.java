@@ -1,5 +1,6 @@
 package com.masiis.shop.web.pay.service.wxpay;
 
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
@@ -60,6 +61,10 @@ public class WxPayService {
                 if (order == null) {
                     throw new BusinessException("订单号错误,不存在该订单号!");
                 }
+                if(order.getOrderStatus().intValue() != BOrderStatus.offLineNoPay.getCode().intValue()
+                        && order.getOrderStatus().intValue() != BOrderStatus.NotPaid.getCode().intValue()){
+                    throw new BusinessException("订单状态错误，不是可支付状态!");
+                }
                 List<PfBorderItem> orderList = bOrderService.getPfBorderItemByOrderId(order.getId());
                 StringBuilder body = new StringBuilder();
                 for (PfBorderItem item : orderList) {
@@ -76,6 +81,9 @@ public class WxPayService {
                 PfCorder order = cOrderService.findByOrderCode(req.getOrderId());
                 if (order == null) {
                     throw new BusinessException("订单号错误,不存在该订单号!");
+                }
+                if(order.getOrderStatus().intValue() != 0){
+                    throw new BusinessException("订单状态错误，不是可支付状态!");
                 }
                 ComSku sku = skuService.getSkuById(order.getSkuId());
                 if(sku == null){

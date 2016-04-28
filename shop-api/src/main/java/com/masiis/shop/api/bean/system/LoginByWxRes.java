@@ -1,13 +1,13 @@
 package com.masiis.shop.api.bean.system;
 
-import com.masiis.shop.api.bean.base.BaseResModel;
+import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.common.annotation.SignField;
 
 /**
  * @Date 2016/4/27
  * @Auther lzh
  */
-public class LoginByWxRes extends BaseResModel{
+public class LoginByWxRes extends BaseRes {
     private String token;
     private Integer expire;
     private String expireUnit;

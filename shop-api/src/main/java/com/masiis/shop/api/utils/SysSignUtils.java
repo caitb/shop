@@ -2,6 +2,7 @@ package com.masiis.shop.api.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.masiis.shop.api.bean.system.GetPhoneValidCodeReq;
 import com.masiis.shop.api.bean.system.LoginByWxRes;
 import com.masiis.shop.api.bean.system.LoginWxReq;
 import com.masiis.shop.common.annotation.SignField;
@@ -68,7 +69,7 @@ public class SysSignUtils {
         if(StringUtils.isNotBlank(userkey)) {
             result += "key=" + userkey;
         } else {
-            if(size > 1){
+            if(size > 0){
                 result = result.substring(0, result.length() - 1);
             }
         }
@@ -77,7 +78,7 @@ public class SysSignUtils {
     }
 
     public static void main(String... args){
-        LoginWxReq req = new LoginWxReq();
+        /*LoginWxReq req = new LoginWxReq();
         req.setAppid("sssddsdaajsdkfjdfkjsdfjksskj");
         req.setNickName("测试");
         req.setOpenId("sldkfjIjhsjd_0438skjdhfdskjghgasdkjfh");
@@ -92,6 +93,10 @@ public class SysSignUtils {
             System.out.println(true);
         } else {
             System.out.println(false);
-        }
+        }*/
+        GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
+        req.setPhoneNum("13671324096");
+        req.setSign(toSignString(req, null));
+        System.out.println(req);
     }
 }

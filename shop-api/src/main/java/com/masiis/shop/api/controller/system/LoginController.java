@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.system.LoginByPhoneRes;
 import com.masiis.shop.api.bean.system.LoginByWxRes;
 import com.masiis.shop.api.bean.system.LoginWxReq;
-import com.masiis.shop.api.bean.system.RegisterValidCodeRes;
+import com.masiis.shop.api.bean.system.GetPhoneValidCodeRes;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.ComUserService;
@@ -181,8 +181,8 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/getPhoneValidCode")
     @ResponseBody
-    public RegisterValidCodeRes getPhoneValidCode(String phoneNum){
-        RegisterValidCodeRes res = new RegisterValidCodeRes();
+    public GetPhoneValidCodeRes getPhoneValidCode(String phoneNum){
+        GetPhoneValidCodeRes res = new GetPhoneValidCodeRes();
         try {
             if (StringUtils.isBlank(phoneNum)) {
                 // 电话号码为空

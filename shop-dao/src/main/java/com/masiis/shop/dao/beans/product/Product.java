@@ -51,6 +51,8 @@ public class Product extends ComSku {
 
     private Integer frozenStock;
 
+    private String policy;//商业政策
+
     public String getSpuName() {
         return spuName;
     }
@@ -209,5 +211,13 @@ public class Product extends ComSku {
 
     public void setFrozenStock(Integer frozenStock) {
         this.frozenStock = frozenStock;
+    }
+
+    public String getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(String policy) {
+        this.policy = policy;
     }
 }

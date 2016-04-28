@@ -85,13 +85,10 @@
             <p>${productDetails.brand}</p>
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;">
                 <a name="2f">商业政策</a></h1>
-            <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
-            <p>好赚钱啊，特别赚钱，特别牛x的一款产品</p>
+            <p>${productDetails.policy}</p>
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_3.png') no-repeat 10px;background-size: 15px;">
                 <a name="3f">商品详情</a></h1>
-            <%--<p>${productDetails.content}</p>--%>
-            <img src="<%=path%>/static/images/chanpin%20(1).png" alt="">
-            <p>拉升的卢卡斯就打了卡时间到了卡上就打了卡时间的拉伸空间的萨拉空间的来看</p>
+            <p>${productDetails.content}</p>
         </main>
         <div class="fixe">
             <div class="left">

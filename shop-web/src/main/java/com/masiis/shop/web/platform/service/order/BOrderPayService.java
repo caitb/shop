@@ -219,6 +219,7 @@ public class BOrderPayService {
                     thisUS.setPid(parentUS.getId());
                     thisUS.setUserPid(parentUS.getUserId());
                 }
+                thisUS.setAgentNum(0l);
                 thisUS.setUserId(pfBorder.getUserId());
                 thisUS.setSkuId(pfBorderItem.getSkuId());
                 thisUS.setAgentLevelId(pfBorderItem.getAgentLevelId());
@@ -307,7 +308,7 @@ public class BOrderPayService {
             }
         }
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }

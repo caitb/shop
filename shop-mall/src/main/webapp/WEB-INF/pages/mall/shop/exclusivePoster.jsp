@@ -115,7 +115,7 @@
 </header>
 <div class="wrap">
     <div class="na">
-        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，差佣金，查订单。</p>
+        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
         <label class="close">×</label>
     </div>
     <canvas id="canvasOne" style="display: none;">
@@ -127,7 +127,6 @@
 <div class="back_box">
     <div class="back"></div>
     <div class="back_f">
-        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
         <img src="${path}/static/images/duan.png" alt="">
     </div>

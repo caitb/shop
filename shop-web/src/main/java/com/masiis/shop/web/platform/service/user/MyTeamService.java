@@ -14,6 +14,7 @@ import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -76,9 +77,11 @@ public class MyTeamService {
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
 
-            Map<String, String> curMap = countChild(pus.getId());
-            agentSkuMap.put("countChild", curMap.get("childIds").split(",").length+1);      //团队人数(包括自己)
-            agentSkuMap.put("countSales", pfBorderMapper.countSales(curMap.get("userIds")));
+            Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
+            Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
+            Double countSales = pfBorderMapper.countSales(curMap.get("userIds"));
+            agentSkuMap.put("countChild", countChild);      //团队人数(不包括自己)
+            agentSkuMap.put("countSales", countSales==null?0:countSales);
 
             agentSkuMaps.add(agentSkuMap);
         }

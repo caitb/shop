@@ -91,6 +91,7 @@ public class BOrderPayService {
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
+    @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");

@@ -98,5 +98,10 @@ public class SysSignUtils {
         req.setPhoneNum("13671324096");
         req.setSign(toSignString(req, null));
         System.out.println(req);*/
+
+        /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
+        req.setPhoneNum("18671038857");
+        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/getPhoneValidCode", JSONObject.toJSONString(req));
+        System.out.println(result);*/
     }
 }

@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <body>
-<%--<c:if test="${forcusSF==false}">--%>
+<c:if test="${forcusSF !=true}">
     <div class="addb">
         <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
         <label class="close">×</label>
     </div>
-<%--</c:if>--%>
+</c:if>
 <div class="wrap">
     <header>
         <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>

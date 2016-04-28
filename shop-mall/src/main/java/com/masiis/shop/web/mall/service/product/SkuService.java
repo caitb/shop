@@ -154,7 +154,7 @@ public class SkuService {
      * @return
      */
     public List<ComSkuImage> findComSkuImages(Integer skuId) throws Exception {
-        String productImgValue = PropertiesUtils.getStringValue("index_product_308_308_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         List<ComSkuImage> comSkuImageList = comSkuImageMapper.selectBySkuId(skuId);
         if (comSkuImageList != null) {
             for (ComSkuImage comSkuImage : comSkuImageList) {

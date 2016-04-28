@@ -67,7 +67,7 @@ public class ProductService {
         product.setLogoUrl(comBrand.getLogoUrl());
         product.setBrand(comBrand.getContent());
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
-        String productImgValue = PropertiesUtils.getStringValue("index_product_308_308_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         if (skuImgList != null && skuImgList.size() > 0) {
             for (ComSkuImage comSkuImage : skuImgList) {
                 comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

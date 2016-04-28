@@ -156,7 +156,7 @@ public class DevelopingController extends BaseController {
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
                 if(pfUserCertificate.getPoster() == null){
-                    String headImgName = "h-" + comUser.getId() + ".png";
+                    String headImgName = "headimg.png";
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
                     String qrcodeName = "qrcode.png";
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
@@ -176,6 +176,8 @@ public class DevelopingController extends BaseController {
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
+                    //删除本地头像
+                    new File(headImgPath).delete();
                     //保存二维码海报图片地址
                     pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
                     pfUserCertificateMapper.updateById(pfUserCertificate);

@@ -78,7 +78,7 @@ public class SysSignUtils {
     }
 
     public static void main(String... args){
-        /*LoginWxReq req = new LoginWxReq();
+        LoginWxReq req = new LoginWxReq();
         req.setAppid("sssddsdaajsdkfjdfkjsdfjksskj");
         req.setNickName("测试");
         req.setOpenId("sldkfjIjhsjd_0438skjdhfdskjghgasdkjfh");
@@ -86,17 +86,17 @@ public class SysSignUtils {
         req.setCity("北京");
         req.setCountry("中国");
         req.setSign(toSignString(req, null));
-        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/loginByWx", JSONObject.toJSONString(req));
+        String result = HttpClientUtils.httpPost("http://localhost:8083/sys/loginByWx", JSONObject.toJSONString(req));
         System.out.println(result);
         LoginByWxRes res = JSONObject.parseObject(result, LoginByWxRes.class);
         if(StringUtils.isNotBlank(res.getSign()) && res.getSign().equals(toSignString(res, null))){
             System.out.println(true);
         } else {
             System.out.println(false);
-        }*/
-        GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
+        }
+        /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
         req.setPhoneNum("13671324096");
         req.setSign(toSignString(req, null));
-        System.out.println(req);
+        System.out.println(req);*/
     }
 }

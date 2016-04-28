@@ -3,6 +3,7 @@ package com.masiis.shop.api.controller.system;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.system.*;
+import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.ComUserService;
@@ -43,6 +44,7 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/loginByWx")
     @ResponseBody
+    @SignValid(paramType = LoginWxReq.class)
     public LoginByWxRes loginByWx(HttpServletRequest request) throws IOException {
         LoginWxReq req = null;
         LoginByWxRes res = new LoginByWxRes();

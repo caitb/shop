@@ -2,19 +2,22 @@ package com.masiis.shop.web.mall.utils;
 
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.common.constant.SMSConstants;
-import com.masiis.shop.common.util.CCPRestSmsSDK;
+import com.masiis.shop.common.util.MobileMessageUtil;
 
 import java.util.Random;
 
 /**
- * MobileMessageUtil
+ * MobileVerificationUtil
  *
  * @author ZhaoLiang
  * @date 2016/3/9
  */
-public class MobileMessageUtil {
+public class MobileVerificationUtil {
 
-    private static String  sign = "_SMS";
+    private static String sign = "_SMS";
+
+
+
 
     /**
      * 发送短信验证码
@@ -29,24 +32,16 @@ public class MobileMessageUtil {
             code += random.nextInt(10);
         }
         SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
-
-        String[] content = new String[2];
-        content[0] = code;
-        content[1] = SMSConstants.REGESTER_VALID_TIME;
-
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResult(phone, SMSConstants.VERIFICATION_CODE, content);
-        if (!"0".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return MobileMessageUtil.VerificationCode(phone, code, SMSConstants.REGESTER_VALID_TIME);
     }
 
     /**
      * 获取手机验证码
+     *
      * @author ZhaoLiang
      * @date 2016/3/9 13:33
      */
-    public static  String getIdentifyingCode(String phone) {
+    public static String getIdentifyingCode(String phone) {
         String code = "";
         if (StringUtil.isNotEmpty(SpringRedisUtil.get(phone + sign, String.class))) {
             code = SpringRedisUtil.get(phone + sign, String.class);

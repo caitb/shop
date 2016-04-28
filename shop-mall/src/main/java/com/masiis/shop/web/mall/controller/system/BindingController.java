@@ -1,7 +1,8 @@
 package com.masiis.shop.web.mall.controller.system;
 
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.web.mall.service.user.UserService;
-import com.masiis.shop.web.mall.utils.MobileMessageUtil;
+import com.masiis.shop.web.mall.utils.MobileVerificationUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +43,7 @@ public class BindingController {
     @ResponseBody
     public String SecurityCode(HttpServletRequest request, HttpServletResponse response, String phone ) throws Exception{
         JSONObject result = new JSONObject();
-        result.put("msg", MobileMessageUtil.sendIdentifyingCode(phone));
+        result.put("msg", MobileVerificationUtil.sendIdentifyingCode(phone));
         return  result.toString();
     }
 
@@ -56,7 +57,7 @@ public class BindingController {
     @ResponseBody
     public String VerificationCode(HttpServletRequest request, HttpServletResponse response, String phone ,String verificationCode) throws Exception{
         JSONObject result = new JSONObject();
-        String identifyingCode = MobileMessageUtil.getIdentifyingCode(phone);
+        String identifyingCode = MobileVerificationUtil.getIdentifyingCode(phone);
         if(identifyingCode.equals(verificationCode)) {
             return "true";
         }else{

@@ -14,10 +14,9 @@
   -moz-box-orient: vertical;
 }
 .Type,.Type2{
-  padding: 5px 0;
 }
 .Type p{
- padding: 0 10px;
+  padding: 0 10px;
   font-size: 12px;
 }
 .Type p span,.Type p b{
@@ -31,8 +30,10 @@
   font-size: 12px;
 }
 .Type2 p{
-  text-align: center;
+  text-align: left;
   font-size: 12px;
+  padding-left: 10px;
+  margin-top: 18px;
 }
 .Type2 h1{
   margin: 0 10px;
@@ -243,10 +244,11 @@
   display: inline-block;
   border:1px solid #f3f4f5;
   padding: 5px 0;
+  font-size: 12px;
+  margin-top: -2px;
 }
 .sec3+div{
-  margin:0 5px;
-  background: #F3F4F5;
+  background: #fff;
   display: -webkit-box;
   -webkit-box-align:center;
   padding: 10px 0;
@@ -325,7 +327,7 @@
 }
 .wrap .box main .sec4 p span {
   display: block;
-  color: #FF5200;
+  color: #666;
   font-size: 12px;
   text-align: left;
 }
@@ -334,6 +336,7 @@
   text-align: right;
   display: block;
   width: 70px;
+  color: #666;
 }
 .wrap .box main .weixin{
   display: block;
@@ -346,4 +349,9 @@
   margin-top: 3rem;
   margin-bottom: 3rem;
   background: #0FC420;
+}
+main>h1{
+  color: #333;
+  font-size: 12px;
+  margin: 20px 0 5px 10px;
 }

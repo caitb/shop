@@ -106,8 +106,10 @@ public class BOrderPayService {
         //处理支付逻辑
         if (pfBorder.getOrderType() == 0) {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
-        } else if (pfBorder.getSendType() == 1) {
+        } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
+        }else{
+            throw new BusinessException("订单类型有误");
         }
         //支付完成推送消息
         payEndPushMessage(pfBorderPayment);

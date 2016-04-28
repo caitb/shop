@@ -61,7 +61,6 @@
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span></p>
-                    <h1>支付成功后，您的在线库存将会增加</h1>
                 </div>
             </c:if>
             <section class="sec2">
@@ -87,10 +86,11 @@
                     <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
                 </h1>
             </div>
+            <h1>支付成功后，您的在线库存将会增加</h1>
             <section class="sec4">
                 <p><b>商品总价：</b><span>￥${bOrderConfirm.productTotalPrice}</span></p>
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>
-                <p><b>共需支付：</b><span>￥${bOrderConfirm.orderTotalPrice}</span></p>
+                <p><b>共需支付：</b><span style="color:#f74a11">￥${bOrderConfirm.orderTotalPrice}</span></p>
             </section>
             <a href="javascript:;" onclick="submit(this);" class="weixin">下一步</a>
         </main>

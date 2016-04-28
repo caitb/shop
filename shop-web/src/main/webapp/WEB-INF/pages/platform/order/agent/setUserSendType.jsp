@@ -99,15 +99,15 @@
     <div class="back_que">
         <p>数据确认</p>
         <input type="checkbox" id="a"><label for="a">我已了解自己发货需要-自建仓库<br/>
-        （每200瓶仓库成本200元）</label>
+        <span>（每200瓶仓库成本200元）</span></label>
 
         <input type="checkbox" id="b"><label for="b">我已了解自己发货需要-自己发货<br/>
-        （每200瓶的物流费用2500元）</label>
+        <span>（每200瓶的物流费用2500元）</span></label>
 
         <input type="checkbox" id="c"><label for="c">我已了解自己发货-下级合伙人不支持平台代发</label>
 
         <input type="checkbox" id="f"><label for="f">我已了解自己发货-店铺发货需要自己发货<br/>
-        （每200瓶需要3000元的人工和物流费用）</label>
+        <span>（每200瓶需要3000元的人工和物流费用）</span></label>
 
         <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供</label>
 

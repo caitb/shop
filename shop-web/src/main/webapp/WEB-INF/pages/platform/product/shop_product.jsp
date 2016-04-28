@@ -24,8 +24,8 @@
 <div class="wrap">
     <nav>
         <p></p>
-        <p><label for="" class="on active" id="onsale">出售中</label></p>
-        <p><label for="" class="on" id="outsale">仓库中</label></p>
+        <p><label class="on active" id="onsale">出售中</label></p>
+        <p><label class="on" id="outsale">仓库中</label></p>
         <p></p>
     </nav>
     <main>
@@ -38,15 +38,15 @@
                     <div>
                         <h1>${sku.comSku.name}</h1>
 
-                        <p>${sku.comSku.priceMarket}</p>
+                        <p style="color: #ff5200;">${sku.comSku.priceMarket}</p>
 
-                        <p>已售：<span>${sku.saleNum}</span> 库存: <span>${sku.stock}</span></p>
+                        <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span> 库存: <span>${sku.stock}</span></p>
                     </div>
                 </div>
                 <div class="sec2">
-                    <p onclick="xiajia('${sku.shopSkuId}')">下架</p>
+                    <p onclick="xiajia('${sku.shopSkuId}')"><img src="${path}/static/images/set1.png" alt="">下架</p>
 
-                    <p onclick="share('${sku.comSku.id}')">分享</p>
+                    <p onclick="share('${sku.comSku.id}')"><img src="${path}/static/images/set2.png" alt="">分享</p>
                 </div>
                 </c:forEach>
             </section>

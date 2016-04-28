@@ -13,13 +13,13 @@
 }
 .wrap main {
   width: 100%;
-  margin-top: 5px;
+  margin-top: 16px;
 }
 .wrap main > p {
   background: #fff;
-  line-height: 25px;
-  text-indent: 10px;
   border-bottom: 1px solid #F6F6F6;
+  padding: 5px 10px;
+  font-size: 12px;
 }
 .wrap main .sec1 {
   display: -webkit-box;
@@ -47,19 +47,21 @@
 }
 .wrap main .sec1 div {
   margin-left: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 .wrap main .sec1 div p span {
   display: block;
-  margin-bottom: -5px;
+  font-size: 12px;
 }
-.wrap main .sec1 div p b {
-  font-weight: 600;
-}
+.wrap main .sec1 div p b {}
 .wrap main .sec1 div h1 {
-  font-size: 13px;
+  font-size: 12px;
   background: url("../images/icon_60.png") no-repeat 0;
   text-indent: 20px;
-  background-size: 8%;
+  background-size: 10%;
+  color: #666;
+  margin-top: 10px;
 }
 .wrap main .sec1 div h2 {
   font-size: 12px;

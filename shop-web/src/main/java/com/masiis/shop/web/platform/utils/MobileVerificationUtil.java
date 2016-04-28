@@ -18,6 +18,9 @@ public class MobileVerificationUtil {
 
     private static String sign = "_SMS";
 
+
+
+
     /**
      * 发送短信验证码
      *

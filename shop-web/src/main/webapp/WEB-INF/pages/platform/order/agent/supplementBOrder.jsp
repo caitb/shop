@@ -19,13 +19,14 @@
             <p>提交订单</p>
         </header>
         <main>
-            <c:if test="${bOrderConfirm.sendType==1 && isQueuing==true}">
+            <c:if test="${isQueuing==true}">
                 <div class="paidan">
                     <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
 
                     <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
                 </div>
             </c:if>
+
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
                     <p>拿货方式：<span>自己发货</span></p>

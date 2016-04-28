@@ -22,7 +22,7 @@ public class WxCredentialUtils {
     private static class Holder {
         private static final WxCredentialUtils INSTANCE = new WxCredentialUtils();
     }
-    private WxCredentialUtils(){}
+    private WxCredentialUtils (){}
     // 单例懒加载
     public static final WxCredentialUtils getInstance() {
         return Holder.INSTANCE;

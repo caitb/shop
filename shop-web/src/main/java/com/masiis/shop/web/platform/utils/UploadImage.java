@@ -40,11 +40,12 @@ public class UploadImage {
 			InputStream is = upload.getInputStream();
 			FileOutputStream fos = new FileOutputStream(imagesSavePath + "/"
 					+ newFileName);
-			byte[] buffer = new byte[8192];
+/*			byte[] buffer = new byte[8192];
 			int count = 0;
 			while ((count = is.read(buffer)) > 0) {
 				fos.write(buffer, 0, count);
-			}
+			}*/
+			fos.write(readClass(is,true));
 			fos.close();
 			is.close();
 		} else {
@@ -52,6 +53,66 @@ public class UploadImage {
 		}
 		return newFileName;
 	}
+
+
+	private static byte[] readClass(final InputStream is, boolean close)
+			throws IOException {
+		if (is == null) {
+			throw new IOException("Class not found");
+		}
+		try {
+			//inputstream.available()方法返回的值是该inputstream在不被阻塞的情况下一次可以读取到的数据长度。
+			// 如果数据还没有传输过来，那么这个inputstream势必会被阻塞，
+			// 从而导致inputstream.available返回0
+			//is.available()不一定是is的长度，肯定小于或等于is的长度
+			byte[] b = new byte[is.available()];
+			int len = 0;
+			while (true) {
+				//从输入流中最多 b.length - len 个数据字节读入byte数组。
+				//尝试读取len个字节
+				//但读取的字节可能小于该值
+				//以整形形式返回实际读取的字节数
+
+				// 参数：
+				//b - 读入数据的缓冲区。
+				//len - 数组 b 中将写入数据的初始偏移量。
+				//b.length - len - 要读取的最大字节数。
+				int n = is.read(b, len, b.length - len);
+				if (n == -1) {
+					//n==-1标识读取流结束
+					//标识一次性读完的情况下
+					if (len < b.length) {
+						byte[] c = new byte[len];
+						System.arraycopy(b, 0, c, 0, len);
+						b = c;
+					}
+					return b;
+				}
+				//下面代码标示流没有读取完，好比实际上10个字节，只读取了5个字节
+				//断断续续读的情况下。
+				len += n;   //len = 5
+				if (len == b.length) {
+					int last = is.read();
+					if (last < 0) {
+						//标示is都读取完了
+						//is.available() 等于is的长度
+						return b;
+					}
+					//标示is没有读取完要进行自动扩容
+					byte[] c = new byte[b.length + 1000];
+					System.arraycopy(b, 0, c, 0, len);
+					c[len++] = (byte) last;
+					b = c;
+				}
+			}
+		} finally {
+			if (close) {
+				is.close();
+			}
+		}
+	}
+
+
 
 	/**
 	 * 上传多个图片

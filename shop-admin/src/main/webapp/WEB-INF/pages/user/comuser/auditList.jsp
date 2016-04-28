@@ -571,21 +571,26 @@
             return false;
         }
 
+        $(this).attr('disabled', 'disabled');
+
         $.ajax({
             url: '<%=basePath%>comuser/audit.do',
             type: 'POST',
             data: $('#auditForm').serialize(),
             success: function(msg){
                 if('success' == msg){
+                    $('#table').bootstrapTable('refresh');
                     $('#modal-audit').modal('hide');
+                    msg = '审核成功!';
+                }else{
+                    $(this).removeAttr('disabled');
+                    msg = '审核失败!';
                 }
-                msg = msg=='success' ? '审核成功!' : '审核失败!';
                 $.gritter.add({
                     title: '消息',
                     text: msg,
                     class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                 });
-                $('#table').bootstrapTable('refresh');
             }
         })
     });

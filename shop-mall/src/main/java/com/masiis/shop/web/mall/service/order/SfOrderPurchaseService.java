@@ -195,9 +195,10 @@ public class SfOrderPurchaseService {
             }
             //判断商品是否有足够的库存
             if (isEnoughStock(sfShopCartSkuDetails)) {
+                //初始化全局数据
+                initData();
                 //获得每款商品的分润信息
                 log.info("获得分润信息---start");
-                initData();
                 for (SfShopCartSkuDetail sfShopCartSkuDetail : sfShopCartSkuDetails) {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
@@ -316,9 +317,11 @@ public class SfOrderPurchaseService {
      * @date 2016/4/28 12:19
      */
     private void initData(){
+        log.info("初始化数据----skuDisMap,orderSumDisAmount,ordItemDisMap----start");
         skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
         orderSumDisAmount = new BigDecimal(0);
         ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
+        log.info("初始化数据----skuDisMap,orderSumDisAmount,ordItemDisMap----end");
     }
 
     /**

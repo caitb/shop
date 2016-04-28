@@ -38,7 +38,11 @@
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：超过${productDetails.agentNum}</span>
+            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：
+                <c:if test="${productDetails.agentNum >9999}">
+                   超过9999</span>
+                </c:if>
+                ${productDetails.agentNum}</span>
             </p>
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>

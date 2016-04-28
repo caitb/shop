@@ -177,6 +177,7 @@ public class BOrderPayService {
             sfShop.setSaleAmount(BigDecimal.ZERO);
             sfShop.setShipAmount(BigDecimal.ZERO);
             sfShop.setShoutNum(0l);
+            sfShop.setVersion(0l);
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
         }

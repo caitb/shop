@@ -583,9 +583,9 @@
                     $('#modal-audit').modal('hide');
                     msg = '审核成功!';
                 }else{
-                    $('.audit').removeAttr('disabled');
                     msg = '审核失败!';
                 }
+                $('.audit').removeAttr('disabled');
                 $.gritter.add({
                     title: '消息',
                     text: msg,

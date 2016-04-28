@@ -646,9 +646,9 @@
                     $('#modal-receipt').modal('hide');
                     msg = '确认收款成功!';
                 }else{
-                    $('.ok').removeAttr('disabled');
                     msg = '确认收款失败!';
                 }
+                $('.ok').removeAttr('disabled');
                 $.gritter.add({
                     title: '消息',
                     text: msg,

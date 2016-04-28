@@ -47,7 +47,7 @@ public class SfOrderItemDistributionController extends BaseController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/home.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/home.do",method = RequestMethod.POST)
     public ShopApiResModel itemDistributionHome(@RequestParam(value = "userId",required = true) Long userId,
                                                 @RequestParam(value = "yDate",required = true) String yDate,
                                                 @RequestParam(value = "currentPage",required = true) Integer currentPage,
@@ -134,8 +134,10 @@ public class SfOrderItemDistributionController extends BaseController {
             e.printStackTrace();
             responseModel.setResCode(ShopApiConstant.ERROR + "");
             responseModel.setResMsg(ERROR);
+            logger.info(responseModel);
             return responseModel;
         }
+        logger.info(responseModel);
         return responseModel;
     }
 

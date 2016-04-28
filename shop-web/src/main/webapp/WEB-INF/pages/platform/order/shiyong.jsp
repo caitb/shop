@@ -27,7 +27,7 @@
             <h2>${product.name}</h2>
             <h3>规格：<span>默认</span><b>x1</b></h3>
             <p>零售价： 非卖品</p>
-            <p style="color:#333;">运费<span>${product.shipAmount}</span></p>
+            <p style="color:#333;">运费：<span>￥${product.shipAmount}</span></p>
         </div>
     </section>
     <section class="sec3">

@@ -324,7 +324,12 @@ public class SfOrderPurchaseService {
             orderSumDisAmount = new BigDecimal(0);
         }
         if (ordItemDisMap == null || ordItemDisMap.size() == 0) {
+            log.info("ordItemDisMap----之前数据为null");
             ordItemDisMap = new LinkedHashMap<Integer, List<SfOrderItemDistribution>>();
+        }else{
+            log.info("ordItemDisMap----之前有数据,打印之前的数据----start");
+            printlnOrdItemDisMapDate();
+            log.info("ordItemDisMap----之前有数据,打印之前的数据----end");
         }
         List<SfSkuDistribution> sfSkuDistribution = sfSkuDistributionService.getSfSkuDistributionBySkuIdAndSortAsc(skuId);
         /* 获得当前用户的分销关系 */

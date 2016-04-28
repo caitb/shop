@@ -63,6 +63,7 @@ public class LoginFilter implements Filter{
             if (uri.startsWith(request.getContextPath() + "/static/")
                     || (request.getContextPath() + "/verify/actk").equals(uri)
                     || (request.getContextPath() + "/verify/wxcheck").equals(uri)
+                    || (request.getContextPath() + "/verify/bactk").equals(uri)
                     || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
                 // 放行
                 chain.doFilter(request, response);

@@ -7,13 +7,15 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.web.mall.beans.wxauth.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
-import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.constants.WxResCodeCons;
 import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.user.ComUserAccountService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.service.user.WxUserService;
 import com.masiis.shop.web.mall.utils.SpringRedisUtil;
 import com.masiis.shop.web.mall.utils.wx.WxAuthUrlUtils;
+import com.masiis.shop.web.platform.beans.wxauth.*;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -22,10 +24,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 
@@ -39,6 +42,8 @@ public class VerifyController extends BaseController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private ComUserAccountService accountService;
     @Resource
     private WxUserService wxUserService;
 
@@ -105,17 +110,8 @@ public class VerifyController extends BaseController {
 
                 session.invalidate();
                 session = request.getSession();
-                // 登录
-                setComUser(request,user);
-                // 保存Cookie
-                String unionidkey = getEncrypt(userRes.getUnionid());
-                CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
-                        unionidkey, 3600 * 24 * 7, true);
-                // 保存redis
-                SpringRedisUtil.save(unionidkey, userRes.getUnionid());
-                SpringRedisUtil.save(userRes.getUnionid() + res.getOpenid() + "_token", res.getAccess_token());
-                SpringRedisUtil.save(userRes.getUnionid() + res.getOpenid() + "_rftoken", res.getRefresh_token());
-
+                loginByWx(request, response, user, res.getOpenid(), res.getUnionid(),
+                        res.getAccess_token(), res.getRefresh_token());
                 return createRedirectRes(rp.getSurl());
             } catch (Exception e) {
                 log.error("" + e.getMessage());
@@ -153,25 +149,38 @@ public class VerifyController extends BaseController {
             return "common/500";
         }
 
+        String stateStr = MD5Utils.encrypt(state);
+        session.setAttribute(stateStr, state);
+
         try{
             // 验证cookie
             Cookie cookie = CookieUtils.getCookie(request, SysConstants.COOKIE_WX_ID_NAME);
             if (cookie == null) {
-                throw new BusinessException("cookie为空!");
+                // 静默授权
+                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                return createRedirectRes(auth_base_url);
             }
             String val = cookie.getValue();
             String unionid = null;
             String token = null;
-            if (StringUtils.isBlank(val)
-                    || StringUtils.isBlank(unionid = SpringRedisUtil.get(val, String.class))) {
-                System.out.println("err_val:" + val);
-                throw new BusinessException("cookie中unionid信息为空!");
+            try {
+                unionid = SpringRedisUtil.get(val, String.class);
+                if (StringUtils.isBlank(val) || StringUtils.isBlank(unionid)) {
+                    log.error("cookie中unionid信息为空,err_val:" + val);
+                    throw new BusinessException("cookie中unionid信息为空!");
+                }
+            } catch (Exception e) {
+                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                return createRedirectRes(auth_base_url);
             }
             System.out.println("val:" + val);
-            // 根据openid获取用户对象
+            log.info("unionid:" + unionid);
+            // 根据unionid获取用户对象
             ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(unionid, WxConsSF.APPID);
             if(wxUser == null){
-                throw new BusinessException("该unionid无效,需要重新对该用户授权!");
+                log.error("该unionid无效,需要重新对该用户授权!");
+                String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                return createRedirectRes(auth_base_url);
             }
             // 从redis获取token
             token = SpringRedisUtil.get(wxUser.getUnionid() + wxUser.getOpenid() + "_token", String.class);
@@ -202,9 +211,11 @@ public class VerifyController extends BaseController {
                     String rftoken_url = WxAuthUrlUtils.createRefreshTokenUrl(rftoken);
                     String rfResult = HttpClientUtils.httpGet(rftoken_url);
                     ErrorRes rfRes = JSONObject.parseObject(rfResult, ErrorRes.class);
-                    if (resBean != null && StringUtils.isNotBlank(resBean.getErrcode())) {
+                    if (rfRes != null && StringUtils.isNotBlank(rfRes.getErrcode())) {
                         log.error("刷新token失败...");
-                        throw new BusinessException(rfRes.getErrmsg());
+                        // 静默授权
+                        String auth_base_url = WxAuthUrlUtils.createAuthorizeBaseUrl(basepath, stateStr);
+                        return createRedirectRes(auth_base_url);
                     }
                     log.info("刷新token成功,进行登录操作...");
                     RefreshTokenRes rfResBean = JSONObject.parseObject(rfResult, RefreshTokenRes.class);
@@ -223,21 +234,15 @@ public class VerifyController extends BaseController {
                     // 登录
                     session.invalidate();
                     session = request.getSession();
-                    setComUser(request,user);
-                    // 保存Cookie
-                    String openidkey = getEncrypt(userRes.getUnionid());
-                    CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
-                            openidkey, 3600 * 24 * 7, true);
-                    // 保存redis
-                    SpringRedisUtil.save(openidkey, rfResBean.getOpenid());
-                    SpringRedisUtil.save(userRes.getUnionid() + userRes.getOpenid() + "_token", rfResBean.getAccess_token());
-                    SpringRedisUtil.save(userRes.getUnionid() + userRes.getOpenid() + "_rftoken", rfResBean.getRefresh_token());
+                    loginByWx(request, response, user, rfResBean.getOpenid(), userRes.getUnionid(),
+                            rfResBean.getAccess_token(), rfResBean.getRefresh_token());
                 } else {
                     log.error("校验openid和accesstoken未知错误,重新授权");
                     throw new BusinessException("校验openid和accesstoken未知错误,重新授权");
                 }
                 log.info("跳转目标页面,targetUrl:" + rp.getSurl());
                 // 跳转目标页面;
+                session.removeAttribute(stateStr);
                 return createRedirectRes(rp.getSurl());
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -246,13 +251,136 @@ public class VerifyController extends BaseController {
         }catch (Exception e) {
             log.error(e.getMessage());
         }
-        String stateStr = MD5Utils.encrypt(state);
-        session.setAttribute(stateStr, state);
         // 创建微信授权链接,需用户点击确认
+        session.setAttribute(stateStr, state);
         String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, stateStr);
-
-        // 向微信获取授权code
         return "redirect:" + redirect_url;
+    }
+
+    @RequestMapping("/bactk")
+    public String baseAuth(HttpServletRequest request, HttpServletResponse response,
+                           String code, String state) throws UnsupportedEncodingException {
+        if(StringUtils.isBlank(code)
+                || StringUtils.isBlank(state)){
+            log.error("请求参数不合法!");
+            return "common/500";
+        }
+
+        String basepath = request.getScheme()+"://"+request.getServerName()
+                + ("80".equals(request.getServerPort() + "") ? "" : ":"+request.getServerPort())
+                + request.getContextPath()+"/";
+        HttpSession session = request.getSession();
+
+        // 解析state,并验证有效性
+        String stateStr = (String) session.getAttribute(state);
+        RedirectParam rp = null;
+        try{
+            rp = JSONObject.parseObject(URLDecoder.decode(stateStr, "UTF-8"), RedirectParam.class);
+            log.info("微信访问授权通信成功,参数:" + rp.toString());
+        } catch (Exception e) {
+            log.error("json解析错误:" + e.getMessage());
+            rp = null;
+            return "common/500";
+        }
+
+        // 获取access_token
+        log.info("bactk_开始获取access_token...");
+        String url = WxAuthUrlUtils.createAccessTokenUrl(code);
+        String result = HttpClientUtils.httpGet(url);
+        log.info("bactk_getAccessToken请求成功:" + result);
+        AccessTokenRes res = JSONObject.parseObject(result, AccessTokenRes.class);
+        if(StringUtils.isNotBlank(res.getOpenid())) {
+            ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(res.getOpenid(), WxConsSF.APPID);
+            if(wxUser == null){
+                // 跳到授权页面
+                String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
+                return "redirect:" + redirect_url;
+            }
+            // 移除state
+            session.removeAttribute(state);
+
+            log.info("bactk_微信访问授权成功{openid:" + res.getOpenid() + "}");
+            log.info("bactk_开始获取微信用户的信息...");
+
+            String infoUrl = WxAuthUrlUtils.createUserInfoUrl(res.getAccess_token(), res.getOpenid());
+            String infoRes = HttpClientUtils.httpGet(infoUrl);
+
+            System.out.println("bactk_info:" + infoRes);
+            try {
+                WxUserInfo userRes = JSONObject.parseObject(infoRes, WxUserInfo.class);
+                if (userRes == null || StringUtils.isBlank(userRes.getOpenid())) {
+                    log.error("bactk_userRes:空!");
+                    throw new BusinessException("userRes:空!");
+                }
+                if (StringUtils.isBlank(userRes.getUnionid()) || !userRes.getUnionid().equals(wxUser.getUnionid())) {
+                    log.error("bactk_没有unionid或unionid错误");
+                    throw new BusinessException("没有unionid或unionid错误");
+                }
+                // 更新信息
+                updateWxUserByInfo(res, userRes, wxUser);
+                wxUserService.updateWxUser(wxUser);
+                ComUser user = userService.getUserByUnionid(wxUser.getUnionid());
+                // 登录
+                session.invalidate();
+                session = request.getSession();
+                loginByWx(request, response, user, userRes.getOpenid(), userRes.getUnionid(),
+                        res.getAccess_token(), res.getRefresh_token());
+                log.info("bactk_登录成功");
+            } catch (Exception e) {
+                log.error(e);
+                // 跳到授权页面
+                session.setAttribute(state, stateStr);
+                String redirect_url = WxAuthUrlUtils.createAuthorizeInfoUrl(basepath, state);
+                return createRedirectRes(redirect_url);
+            }
+            log.info("跳转目标页面,targetUrl:" + rp.getSurl());
+            // 跳转目标页面;
+            session.removeAttribute(state);
+            return createRedirectRes(rp.getSurl());
+        }
+        // 请求失败
+        return "common/500";
+    }
+
+    private void loginByWx(HttpServletRequest request, HttpServletResponse response,
+                           ComUser user, String openId, String unionId, String acToken, String rfToken){
+        setComUser(request, user);
+        // 保存Cookie
+        String openidkey = getEncrypt(unionId);
+        CookieUtils.setCookie(response, SysConstants.COOKIE_WX_ID_NAME,
+                openidkey, 3600 * 24 * 7, true);
+        // 保存redis
+        SpringRedisUtil.save(openidkey, openId);
+        SpringRedisUtil.save(unionId + openId + "_token", acToken);
+        SpringRedisUtil.save(unionId + openId + "_rftoken", rfToken);
+    }
+
+    /**
+     * 静默授权下更新用户信息
+     *
+     * @param res
+     * @param userRes
+     * @param wxUser
+     */
+    private void updateWxUserByInfo(AccessTokenRes res, WxUserInfo userRes, ComWxUser wxUser) {
+        if(wxUser == null){
+            throw new BusinessException("传入目标对象为null");
+        }
+
+        wxUser.setAccessToken(res.getAccess_token());
+        Long atoken_ex = Long.valueOf(res.getExpires_in());
+        if(atoken_ex == null || atoken_ex <= 0){
+            atoken_ex = 7200L * 1000;
+        }
+        wxUser.setAtokenExpire(new Date(new Date().getTime() + atoken_ex));
+        wxUser.setCity(userRes.getCity());
+        wxUser.setCountry(userRes.getCountry());
+        wxUser.setHeadImgUrl(userRes.getHeadimgurl());
+        wxUser.setNkName(userRes.getNickname());
+        wxUser.setProvince(userRes.getProvince());
+        wxUser.setRefreshToken(res.getRefresh_token());
+        wxUser.setRtokenExpire(new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000));
+        wxUser.setSex(Integer.valueOf(userRes.getSex()));
     }
 
     /**
@@ -279,6 +407,7 @@ public class VerifyController extends BaseController {
         wxUser.setNkName(userInfo.getNickname());
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
+        wxUser.setRtokenExpire(new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000));
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
     }
 

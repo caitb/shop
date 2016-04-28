@@ -288,7 +288,7 @@
                                 }else if(sfOrder.orderStatus ==7){
                                     StatusName="待发货";
                                 }else if(sfOrder.orderStatus ==8){
-                                    StatusName="已发货";
+                                    StatusName="待收货";
                                 }else if(sfOrder.orderStatus ==3){
                                     StatusName="交易成功";
                                 }

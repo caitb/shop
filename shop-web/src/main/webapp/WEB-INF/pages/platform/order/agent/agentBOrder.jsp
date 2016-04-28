@@ -72,7 +72,7 @@
                     <h2> ${bOrderConfirm.skuName}
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
-                    <h3>合伙人套餐：<span>${bOrderConfirm.productTotalPrice}元套餐</span></h3>
+                    <h3>合伙人套餐：<span>${bOrderConfirm.orderTotalPrice}元套餐</span></h3>
                     <p>商品价格:<span>￥${bOrderConfirm.productTotalPrice}</span>保证金:<span>￥${bOrderConfirm.bailAmount}</span>
                     </p>
                 </div>

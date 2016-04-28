@@ -21,6 +21,7 @@ import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.DownloadImage;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
+import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -283,7 +284,7 @@ public class SfShopController extends BaseController {
         ComUser fromUser = userService.getUserById(fromUserId);
         userService.getShareUser(user.getId(),fromUserId);//来自分享人的信息
         //是否关注
-//        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
         //jssdk
         String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId;
                curUrl += fromUser==null ? "" : "&fromUserId="+fromUserId;
@@ -305,7 +306,7 @@ public class SfShopController extends BaseController {
         mav.addObject("fromUserId", fromUserId);
         mav.addObject("loginUser", user);
         mav.addObject("shareMap", shareMap);
-//        mav.addObject("forcusSF",forcusSF);
+        mav.addObject("forcusSF",forcusSF);
         return mav;
     }
 

@@ -180,9 +180,11 @@ public class ProductService {
         Integer upperStock = 0;
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(UserId, skuId);//当前代理关系
         if (pfUserSku!=null && pfUserSku.getPid() == 0) {
-            upperStock = pfSkuStockMapper.selectBySkuId(skuId).getStock();
+            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            upperStock = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
-            upperStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId).getStock();
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
+            upperStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
         return upperStock;
     }

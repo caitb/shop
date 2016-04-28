@@ -61,6 +61,7 @@ public class SfShop {
      * 备注
      */
     private String remark;
+    private Long version;
 
     public Long getId() {
         return id;
@@ -139,5 +140,13 @@ public class SfShop {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

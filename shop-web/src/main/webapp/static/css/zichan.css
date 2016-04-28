@@ -7,6 +7,7 @@
 }
 * a {
   text-decoration: none;
+  color: #333;
 }
 * b {
   font-weight: normal;
@@ -82,7 +83,7 @@
   display: block;
   width: 70px;
   height: 18px;
-  border-radius: 5px;
+  border-radius: 2px;
   line-height: 18px;
   text-align: center;
   font-size: 12px;
@@ -91,6 +92,7 @@
 }
 .wrap main nav ul li p span a {
   color: #FB5F09;
+  font-size: 12px;
 }
 .wrap main nav ul li p b {
   width: 20px;
@@ -126,7 +128,10 @@
   margin-right: 10px;
   background: url("../images/zichan_1.png") no-repeat 0;
   background-size: 12px;
-  padding-left: 5px;
+  padding-left: 10px;
+}
+.wrap main nav ul li h2 a{
+  font-size:12px;;
 }
 .wrap main .sec1 {
   width: 100%;

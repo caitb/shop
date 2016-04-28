@@ -24,10 +24,13 @@
         <h1>订单信息：</h1>
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">
             <p><span>商品信息：</span><span>${pfBorderItem.skuName}</span></p>
-            <p><span>合伙人套餐：</span><span>${pfBorder.orderAmount}元套餐</span></p>
             <c:if test="${pfBorder.orderType==0}">
+                <p><span>合伙人套餐：</span><span>${pfBorder.orderAmount}元套餐</span></p>
                 <p><span>保证金：</span><span>￥${pfBorder.bailAmount}</span></p>
                 <p><span>拿货门槛：</span><span>￥${pfBorder.productAmount}</span></p>
+            </c:if>
+            <c:if test="${pfBorder.orderType==1}">
+                <p><span>单价：</span><span>￥${pfBorderItem.unitPrice}</span></p>
             </c:if>
             <p><span>数量：</span><span>${pfBorderItem.quantity}</span></p>
         </c:forEach>

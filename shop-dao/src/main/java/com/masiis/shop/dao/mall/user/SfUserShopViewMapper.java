@@ -25,4 +25,11 @@ public interface SfUserShopViewMapper {
     int updateByPrimaryKey(SfUserShopView record);
 
     SfUserShopView selectByShopIdAndUserId(@Param(value = "userId") Long userId, @Param(value = "shopId") Long shopId);
+
+    /**
+     * 统计店铺浏览量
+     * @param shopId
+     * @return
+     */
+    Integer countByShopId(Long shopId);
 }

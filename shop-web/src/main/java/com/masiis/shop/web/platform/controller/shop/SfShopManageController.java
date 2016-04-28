@@ -6,6 +6,7 @@ import com.masiis.shop.dao.beans.order.SfDistributionRecord;
 import com.masiis.shop.dao.mall.order.SfDistributionRecordMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.user.SfUserShopViewMapper;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
@@ -56,6 +57,8 @@ public class SfShopManageController extends BaseController {
     private ComSkuImageMapper comSkuImageMapper;
     @Resource
     private JSSDKService jssdkService;
+    @Resource
+    private SfUserShopViewMapper sfUserShopViewMapper;
 
     /**
      * 店铺管理首页
@@ -78,15 +81,14 @@ public class SfShopManageController extends BaseController {
 
             Integer orderCount = sfOrderMapper.countByShopId(sfShop.getId()); //总订单数
 
-            SfDistributionRecord sfCount = sfDistributionRecordMapper.selectCountByUserId(comUser.getId());
-            Integer sumLevel = sfCount.getSumLevel(); //总参与人数
+            Integer shopView = sfUserShopViewMapper.countByShopId(sfShop.getId()); //店铺浏览量
 
             String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + sfShop.getId()+"/"+comUser.getId()+"/shop.shtml";
 
             mav.addObject("comUser", comUser);
             mav.addObject("sfShop", sfShop);
             mav.addObject("orderCount", orderCount);
-            mav.addObject("sumLevel", sumLevel);
+            mav.addObject("shopView", shopView);
             mav.addObject("shopUrl", shopUrl);
 
             return mav;

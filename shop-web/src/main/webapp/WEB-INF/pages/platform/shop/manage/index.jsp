@@ -51,8 +51,8 @@
             <p onclick="javascript:window.location.replace('<%=basePath%>sfOrderController/stockShipOrder');"><span>${orderCount}</span><span>店铺总订单</span></p>
             <p><span>${sfShop.saleAmount}</span><span>店铺总销售额</span></p>
             <p><span>
-                <c:if test="${sumLevel == null}">0</c:if>
-                <c:if test="${sumLevel != null}">${sumLevel}</c:if>
+                <c:if test="${shopView == null}">0</c:if>
+                <c:if test="${shopView != null}">${shopView}</c:if>
                </span>
                 <span>店铺总参与人数</span>
             </p>

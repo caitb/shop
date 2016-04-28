@@ -2,6 +2,8 @@ package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
 
+import java.util.Random;
+
 /**
  * MobileMessageUtil
  *
@@ -11,6 +13,8 @@ import com.masiis.shop.common.constant.SMSConstants;
 public class MobileMessageUtil {
 
     private static String sign = "_SMS";
+
+
 
     /**
      * 发送验证码

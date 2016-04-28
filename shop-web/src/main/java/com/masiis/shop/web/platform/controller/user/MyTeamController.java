@@ -38,7 +38,7 @@ public class MyTeamController extends BaseController {
         try {
             ModelAndView mav = new ModelAndView("platform/user/teamList");
 
-            ComUser comUser = getComUser(request);comUser =comUserMapper.selectByPrimaryKey(85L);
+            ComUser comUser = getComUser(request);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
             Integer totalChild = 0;

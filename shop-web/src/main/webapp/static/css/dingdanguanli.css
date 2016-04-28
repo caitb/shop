@@ -14,7 +14,7 @@
   padding: 0 10px;
   background: #fff;
   line-height: 30px;
-  font-weight: 600;
+  font-weight: normal;
   border-bottom: 1px solid #F6F6F6;
 }
 .wrap main .sec1 ul {
@@ -41,6 +41,7 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   position: relative;
+  font-size: 12px;
 }
 .wrap main .sec1 ul li h1 img {
   display: block;

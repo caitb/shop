@@ -33,7 +33,7 @@ public class MobileVerificationUtil {
         for (int i = 0; i < 4; i++) {
             code += random.nextInt(10);
         }
-        return MobileMessageUtil.VerificationCode(phone,code,String.valueOf(new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000));
+        return MobileMessageUtil.VerificationCode(phone,code,String.valueOf(new Integer(SMSConstants.REGESTER_VALID_TIME)));
         //SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
         //return MobileMessageUtil.VerificationCode(phone, code, SMSConstants.REGESTER_VALID_TIME);
     }

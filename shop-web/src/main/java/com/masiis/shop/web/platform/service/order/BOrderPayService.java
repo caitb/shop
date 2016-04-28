@@ -610,7 +610,6 @@ public class BOrderPayService {
                 map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
                 map.put("supplierBank", supplierBank);
                 map.put("orderItem", orderItems.get(0));
-                map.put("payAmount",pfBorder.getOrderAmount().add(pfBorder.getBailAmount()));
                 map.put("border", pfBorder);
             } else {
                 throw new BusinessException("线下支付失败:查询子帐单为null");

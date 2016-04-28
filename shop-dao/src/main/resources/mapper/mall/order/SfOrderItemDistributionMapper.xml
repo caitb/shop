@@ -93,7 +93,7 @@
         <if test="isCounting != null">
             AND is_counting = #{isCounting}
         </if>
-        <if test="remark != null || remark != ''">
+        <if test="remark != null">
             AND remark = #{remark}
         </if>
     </select>

@@ -29,7 +29,7 @@
                         <h2>${userShopView.shopName}</h2>
                         <h1>
                             <c:forEach items="${userShopView.shopSkus}" var="shopSku">
-                                <img src="${path}${shopSku.icon}" alt="">
+                                <img src="${shopSku.icon}" alt="">
                             </c:forEach>
                                 ${userShopView.bailFee}保证金
                         </h1>

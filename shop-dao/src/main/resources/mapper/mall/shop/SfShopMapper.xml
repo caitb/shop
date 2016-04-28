@@ -37,7 +37,8 @@
                     sale_amount,
                     ship_amount,
                     qr_code,
-                    remark
+                    remark,
+                    version
                     )
         values      (
                     #{id,jdbcType=BIGINT},
@@ -52,7 +53,8 @@
                     #{saleAmount,jdbcType=DECIMAL},
                     #{shipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
-                    #{remark,jdbcType=VARCHAR}
+                    #{remark,jdbcType=VARCHAR},
+                    #{version.jdbcType=BIGINT}
                     )
     </insert>
 
@@ -95,6 +97,9 @@
             <if test="remark != null" >
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
+            <if test="version != null" >
+                version = #{version.jdbcType=BIGINT},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
@@ -113,7 +118,8 @@
                sale_amount,
                ship_amount,
                qr_code,
-               remark
+               remark,
+               version
         from
                sf_shop
         where
@@ -134,7 +140,8 @@
                sale_amount,
                 ship_amount,
                qr_code,
-               remark
+               remark,
+               version
         from
                sf_shop
     </select>
@@ -153,7 +160,8 @@
         sale_amount,
         ship_amount,
         qr_code,
-        remark
+        remark,
+        version
         from
         sf_shop
         where
@@ -173,7 +181,8 @@
         sale_amount,
         ship_amount,
         qr_code,
-        remark
+        remark,
+        version
         from
         sf_shop
         where
@@ -194,7 +203,8 @@
                 sale_amount,
                 ship_amount,
                 qr_code,
-                remark
+                remark,
+                version
         from
                 sf_shop
         <where>

@@ -34,13 +34,8 @@
                 <span>我是${fromUser.wxNkName},我为麦链商城呐喊!</span>
                 <span>跟我一起：呐喊得红包，分享赚佣金</span>
             </h1>
-    <div class="price">
-        <p>${skuInfo.comSku.name}</p>
-        <p><span style="padding:0;">${skuInfo.slogan}</span></p>
-        <p><b>${skuInfo.comSku.priceRetail}</b></p>
-    </div>
-    <div class="dlpople">
-    </div>
+            </div>
+
     </c:if>
     <div class="banner">
         <div class="swiper-container">
@@ -53,7 +48,14 @@
             <div class="swiper-pagination"></div>
         </div>
     </div>
-        <p>快递：
+    <div class="price">
+        <p>${skuInfo.comSku.name}</p>
+        <p><span style="padding:0;">${skuInfo.slogan}</span></p>
+        <p><b>${skuInfo.comSku.priceRetail}</b></p>
+    </div>
+    <div class="dlpople">
+
+    <p>快递：
             <c:if test="${empty skuInfo.shipAmount}">
             <span>包邮</span></p>
         </c:if>
@@ -106,7 +108,6 @@
         </section>
 
     </main>
-
 </div>
 <div class="back_j" style="display: none">
     <span class="close">×</span>

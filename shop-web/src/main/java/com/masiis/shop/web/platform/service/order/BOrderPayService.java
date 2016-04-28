@@ -377,7 +377,7 @@ public class BOrderPayService {
             }
         }
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
+        if (pfBorder.getSendType() == 1) {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }

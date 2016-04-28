@@ -57,9 +57,9 @@
                         </p>
                         <div>
                             <h2>${Sku.comSku.name}</h2>
-                            <c:if test="${Sku.isTrial==1}"><h3>试用费用：<span>${Sku.shipAmount}</span>元</h3></c:if>
+                            <h3 class="hid"> <c:if test="${Sku.isTrial==1}">试用费用：<span>${Sku.shipAmount}</span>元</c:if></h3>
                             <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
-                            <h3><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
+                            <h3 class="three"><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
                                 <b>${Sku.discountLevel}</b>
                             </h3>
 
@@ -92,6 +92,12 @@
         // 如果需要分页器
         pagination: '.swiper-pagination'
     })
+//    $(document).ready(function(){
+//        var html= $(".hid").html();
+//        if(html=="" || html==null){
+//            $(this).css("visibility","hidden");
+//        }
+//    })
 </script>
 </body>
 </html>

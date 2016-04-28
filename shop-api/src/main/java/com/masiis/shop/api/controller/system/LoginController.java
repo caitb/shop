@@ -2,10 +2,7 @@ package com.masiis.shop.api.controller.system;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.system.LoginByPhoneRes;
-import com.masiis.shop.api.bean.system.LoginByWxRes;
-import com.masiis.shop.api.bean.system.LoginWxReq;
-import com.masiis.shop.api.bean.system.GetPhoneValidCodeRes;
+import com.masiis.shop.api.bean.system.*;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.ComUserService;
@@ -115,24 +112,26 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/loginByPhone")
     @ResponseBody
-    public LoginByPhoneRes loginByPhone(String phoneNum, String validcode){
+    public LoginByPhoneRes loginByPhone(HttpServletRequest request){
         LoginByPhoneRes res = new LoginByPhoneRes();
+        LoginByPhoneReq req = null;
         try{
-            if(StringUtils.isBlank(phoneNum)){
+            req = JSONObject.parseObject(getRequestBody(request), LoginByPhoneReq.class);
+            if(StringUtils.isBlank(req.getPhoneNum())){
                 // 电话号码为空
                 res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_BLANK);
                 res.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
             }
-            if(StringUtils.isBlank(validcode)){
+            if(StringUtils.isBlank(req.getValidcode())){
                 // 检查验证码为空
                 res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_BLANK);
                 res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_IS_BLANK_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_BLANK_MSG);
             }
             // 去除首尾空格
-            phoneNum = phoneNum.trim();
-            validcode = validcode.trim();
+            String phoneNum = req.getPhoneNum().trim();
+            String validcode = req.getValidcode().trim();
             // 获取redis存在的验证码
             String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), String.class);
             if(codeRd == null){
@@ -181,16 +180,18 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/getPhoneValidCode")
     @ResponseBody
-    public GetPhoneValidCodeRes getPhoneValidCode(String phoneNum){
+    public GetPhoneValidCodeRes getPhoneValidCode(HttpServletRequest request){
         GetPhoneValidCodeRes res = new GetPhoneValidCodeRes();
+        GetPhoneValidCodeReq req = null;
         try {
-            if (StringUtils.isBlank(phoneNum)) {
+            req = JSONObject.parseObject(getRequestBody(request), GetPhoneValidCodeReq.class);
+            if (StringUtils.isBlank(req.getPhoneNum())) {
                 // 电话号码为空
                 res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_BLANK);
                 res.setResMsg(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_BLANK_MSG);
             }
-            phoneNum = phoneNum.trim();
+            String phoneNum = req.getPhoneNum().trim();
             // 检测手机号格式
             if(!PhoneNumUtils.isPhoneNum(phoneNum)){
                 // 手机号码格式不正确

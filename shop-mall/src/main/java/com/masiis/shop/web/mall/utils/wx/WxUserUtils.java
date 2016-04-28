@@ -92,7 +92,7 @@ public class WxUserUtils {
      * @return
      */
     public Boolean isUserForcusSF(ComUser user){
-        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
+        ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsSF.APPID);
         if(wxUser == null){
             return false;
         }

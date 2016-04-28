@@ -135,7 +135,10 @@ public class SfUserAccountService {
             SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
             sfShop.setSaleAmount(sfShop.getSaleAmount().add(countFee));
             sfShop.setShipAmount(sfShop.getShipAmount().add(order.getShipAmount()));
-            shopMapper.updateWithVersion(sfShop);
+            int shopRes = shopMapper.updateWithVersion(sfShop);
+            if(shopRes != 1){
+                throw new BusinessException("修改店铺总销售额失败");
+            }
 
             log.info("计算店主的结算中金额增加,总销售额增加,总利润增加");
             // 店主account

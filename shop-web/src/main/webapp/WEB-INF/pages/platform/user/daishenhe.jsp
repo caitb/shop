@@ -32,7 +32,6 @@
 <div class="back_box">
     <div class="back"></div>
     <div class="back_f">
-        <p>关注公众账号查佣金、查订单</p>
         <span class="close">×</span>
         <img src="${path}/static/images/b.png" alt="">
     </div>

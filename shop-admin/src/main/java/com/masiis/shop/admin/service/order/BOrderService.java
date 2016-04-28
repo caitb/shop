@@ -4,10 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.mall.order.SfOrderItemMallMapper;
 import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.*;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
@@ -47,6 +50,8 @@ public class BOrderService {
     private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private BOrderOperationLogService bOrderOperationLogService;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
     /**
      * 根据条件查询记录
@@ -144,6 +149,19 @@ public class BOrderService {
 
         //添加订单日志
         bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"订单完成");
+
+        //通知客户 * @param params   (1,商品名称;2,代理等级;3,订单编号(不是id);4,快递公司;5,快递单号)
+        PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pfBorder.getId());
+        ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorderConsignee.getUserId());
+        List<PfBorderItem> borderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+        String skuNames = "";
+        String levelNames = "";
+        for(PfBorderItem borderItem : borderItems){
+            skuNames += borderItem.getSkuName();
+            levelNames += comAgentLevelMapper.selectByPrimaryKey(borderItem.getAgentLevelId()).getName();
+        }
+        MobileMessageUtil.goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight. getFreight());
+        WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, "http://m.qc.iimai.com/borderManage/borderDetils.html?id="+pfBorder.getId());
     }
 
     /**

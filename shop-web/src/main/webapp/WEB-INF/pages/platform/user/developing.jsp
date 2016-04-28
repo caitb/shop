@@ -35,8 +35,8 @@
             <div class="sec1 toShare" userSkuId="${agentMap.userSkuId}" skuId="${agentMap.skuId}">
                 <img src="${agentMap.brandLogo}" alt="">
                 <div>
-                    <p><span>合伙产品</span><b>${agentMap.skuName}</b></p>
-                    <h1>合伙人等级:<span>${agentMap.levelName}</span></h1>
+                    <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
+                    <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
                     <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
                 </div>
                 <botton>我要推广</botton>

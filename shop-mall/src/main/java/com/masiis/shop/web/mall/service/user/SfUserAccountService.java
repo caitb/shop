@@ -131,10 +131,13 @@ public class SfUserAccountService {
                 throw new BusinessException("不合法的拿货方式");
             }
 
+            // 计算销售额
+            BigDecimal saleAmount = order.getPayAmount().subtract(order.getShipAmount());
+
             log.info("计算店铺的总销售额");
 
             SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
-            sfShop.setSaleAmount(sfShop.getSaleAmount().add(countFee));
+            sfShop.setSaleAmount(sfShop.getSaleAmount().add(saleAmount));
             sfShop.setShipAmount(sfShop.getShipAmount().add(order.getShipAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
             if(shopRes != 1){
@@ -160,7 +163,7 @@ public class SfUserAccountService {
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
                     UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
+            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(saleAmount));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
             log.info("小铺店主的结算中和总销售额增加金额:" + countFee);

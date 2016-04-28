@@ -22,6 +22,7 @@
   background: #f6f6f6;
   padding: 0 10px;
   padding-top: 10px;
+  padding-bottom: 5px;
 }
 .wrap .sec1 p {
   padding: 10px 0;
@@ -72,8 +73,8 @@
   color: #fff;
 }
 .wePay img{
-    display:block;
-    width:20px;
+  display:block;
+  width:20px;
   margin-top: 10px;
   float: left;
 }
@@ -84,7 +85,7 @@
   border-radius: 5px;
   background: #3C3E42;
   color: #fff;
-  margin: 2em 10% 0 10%;
+  margin: 1em 10% 0 10%;
 }
 .downPay span{
   display: block;
@@ -98,4 +99,9 @@
   width:20px;
   margin-top: 10px;
   float: left;
+}
+.wrap>p{
+  text-align: center;
+  padding: 6px 0 2em 0;
+  font-size: 12px;
 }

@@ -205,18 +205,4 @@ public class PfBorderController {
         return "error";
     }
 
-    /**
-     * 确认收款
-     * @param request
-     * @param response
-     * @param pfBorderId
-     * @param serialNumber 银行流水号
-     * @return
-     */
-    @RequestMapping("/receipt.do")
-    @ResponseBody
-    public Object receipt(HttpServletRequest request, HttpServletResponse response, Long pfBorderId, String serialNumber){
-
-        return "error";
-    }
 }

@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
 import com.masiis.shop.admin.service.wx.WxPayUserService;
+import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
@@ -15,10 +17,7 @@ import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by cai_tb on 16/4/18.
@@ -82,5 +81,23 @@ public class SfUserExtractApplyService {
         sfUserExtractApply.setAuditType(auditType);
         sfUserExtractApply.setAuditCause(auditCause);
         sfUserExtractApplyMapper.updateByPrimaryKey(sfUserExtractApply);
+    }
+
+    public void sendWxNotice(Long id) {
+        SfUserExtractApply apply = sfUserExtractApplyMapper.selectByPrimaryKey(id);
+        ComUser user = comUserMapper.selectByPrimaryKey(apply.getComUserId());
+        String[] params = new String[4];
+
+        params[0] = user.getRealName();
+        params[1] = apply.getExtractFee().toString();
+        params[3] = DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss");
+        if(apply.getExtractWay().intValue() == 1){
+            params[2] = "微信零钱";
+        }else if(apply.getExtractWay().intValue() == 3){
+            String cardNum = apply.getBankCard();
+            params[2] = apply.getBankName() + ":" + cardNum.substring(0, 3) + " **** **** " + cardNum.substring(cardNum.length() - 4);
+        }
+
+        WxSFNoticeUtils.getInstance().extractResultNotice(user, params);
     }
 }

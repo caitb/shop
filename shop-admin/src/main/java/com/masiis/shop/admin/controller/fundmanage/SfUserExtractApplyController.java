@@ -3,6 +3,9 @@ package com.masiis.shop.admin.controller.fundmanage;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.service.fundmanage.SfUserExtractApplyService;
+import com.masiis.shop.admin.utils.WxNoticeUtils;
+import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +63,7 @@ public class SfUserExtractApplyController {
         try {
             sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"));
             // 发送微信通知
-
+            sfUserExtractApplyService.sendWxNotice(id);
             // 发送短信
             return "success";
         } catch (Exception e) {

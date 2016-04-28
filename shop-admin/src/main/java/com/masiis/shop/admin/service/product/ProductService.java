@@ -103,23 +103,24 @@ public class ProductService {
             comSkuMapper.updateById(comSku);
 
             //保存sku图片
-//            int i = 0;
-//            for(ComSkuImage comSkuImage : comSkuImages){
-//                comSkuImage.setSpuId(comSpu.getId());
-//                comSkuImage.setSkuId(comSku.getId());
-//                comSkuImage.setSort(i++);
-//
-//                comSkuImageMapper.insert(comSkuImage);
-//            }
+            if(comSkuImages != null){
+                for(ComSkuImage comSkuImage : comSkuImages){
+                    comSkuImageMapper.updateByPrimaryKey(comSkuImage);
+                }
+            }
 
             //保存代理分润
-            for(PfSkuAgent pfSkuAgent : pfSkuAgents){
-                pfSkuAgentMapper.updateById(pfSkuAgent);
+            if(pfSkuAgents != null){
+                for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+                    pfSkuAgentMapper.updateById(pfSkuAgent);
+                }
             }
 
             //保存分销分润
-            for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
-                sfSkuDistributionMapper.updateById(sfSkuDistribution);
+            if(sfSkuDistributions != null){
+                for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
+                    sfSkuDistributionMapper.updateById(sfSkuDistribution);
+                }
             }
         }
 

@@ -7,6 +7,7 @@ package com.masiis.shop.web.mall.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
+import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "orderPay")
-public class SfOrderPayController {
+public class SfOrderPayController extends BaseController {
     @Resource
     private SfOrderPayService orderPayService;
 
@@ -68,7 +69,7 @@ public class SfOrderPayController {
     public String paySuccessCallBack(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
-        Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
+        Map<String,Object> map = orderPayService.paySuccessCallBack(getComUser(request),orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));

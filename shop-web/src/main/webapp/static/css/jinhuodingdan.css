@@ -180,9 +180,12 @@
   border: 1px solid #FF0000;
   color: #FF5200;
 }
+.wrap .box main .all .sec1 .ding span a{
+  color: #FF5200;
+}
 .wrap .box main .all .sec1 .ding .jixu,
 .wrap .box main .all .sec1 .ding .quxiao {
-  right: 100px;
+  right: 124px;
   border: 1px solid #999999;
   color: #999999;
 }

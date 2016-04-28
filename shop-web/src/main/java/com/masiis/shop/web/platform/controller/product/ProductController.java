@@ -91,6 +91,10 @@ public class ProductController extends BaseController {
                                      @RequestParam(required = true) Integer id) {
         JSONObject object = new JSONObject();
         try {
+            if(stock>100000){
+                object.put("message", "可维护的库存数量不能高于10万！");
+                return object.toJSONString();
+            }
             productService.updateStock(stock, id);
             object.put("isError", false);
             object.put("message", "√库存更改成功 ");

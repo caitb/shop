@@ -45,11 +45,12 @@ public class LoginController extends BaseController {
     @RequestMapping("/loginByWx")
     @ResponseBody
     @SignValid(paramType = LoginWxReq.class)
-    public LoginByWxRes loginByWx(HttpServletRequest request) throws IOException {
-        LoginWxReq req = null;
+    public LoginByWxRes loginByWx(HttpServletRequest request, LoginWxReq req) throws IOException {
         LoginByWxRes res = new LoginByWxRes();
         try{
-            req = JSONObject.parseObject(getRequestBody(request), LoginWxReq.class);
+            if(req == null){
+                System.out.println("空");
+            }
             if(StringUtils.isBlank(req.getOpenId())){
                 res.setResCode(SysResCodeCons.RES_CODE_WXLOGIN_OPENID_NULL);
                 res.setResMsg(SysResCodeCons.RES_CODE_WXLOGIN_OPENID_NULL_MSG);

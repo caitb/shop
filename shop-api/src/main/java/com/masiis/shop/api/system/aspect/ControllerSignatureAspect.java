@@ -20,7 +20,7 @@ import java.io.InputStream;
  */
 @Aspect
 @Component
-public class ControllerBeforeAspect {
+public class ControllerSignatureAspect {
 
     @Before("within(com.masiis.shop.api.controller..*) && @annotation(rl)")
     public void signatureValid(JoinPoint jp, SignValid rl) {
@@ -31,30 +31,33 @@ public class ControllerBeforeAspect {
         for(Object obj:parames){
             if(obj instanceof HttpServletRequest){
                 HttpServletRequest request = (HttpServletRequest) obj;
-                InputStream is = null;
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                String res = null;
-                try {
-                    is = request.getInputStream();
-
-                    byte[] buffer = new byte[1024];
-                    int len = 0;
-                    while ((len = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, len);
-                    }
-
-                    res = new String(os.toByteArray(), "UTF-8");
-
-                    if (is != null) {
-                        is.close();
-                    }
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                String res = getRequestBody(request);
                 System.out.println("aspect:" + res);
             }
         }
+    }
+
+    private String getRequestBody(HttpServletRequest request) {
+        InputStream is = null;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        String res = null;
+        try {
+            is = request.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = is.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            res = new String(os.toByteArray(), "UTF-8");
+            if (is != null) {
+                is.close();
+            }
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return res;
     }
 }

@@ -37,7 +37,7 @@ public class WxConsSF {
     /**
      * 静默授权的可选参数
      */
-    public static final String SCOPE_AUTH_BASE = "snsapi_BASE";
+    public static final String SCOPE_AUTH_BASE = "snsapi_base";
     /**
      * 授权链接尾部带着部分
      */

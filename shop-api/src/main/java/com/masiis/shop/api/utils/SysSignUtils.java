@@ -78,7 +78,7 @@ public class SysSignUtils {
     }
 
     public static void main(String... args){
-        LoginWxReq req = new LoginWxReq();
+        /*LoginWxReq req = new LoginWxReq();
         req.setAppid("sssddsdaajsdkfjdfkjsdfjksskj");
         req.setNickName("测试");
         req.setOpenId("sldkfjIjhsjd_0438skjdhfdskjghgasdkjfh");
@@ -93,10 +93,15 @@ public class SysSignUtils {
             System.out.println(true);
         } else {
             System.out.println(false);
-        }
+        }*/
         /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
         req.setPhoneNum("13671324096");
         req.setSign(toSignString(req, null));
         System.out.println(req);*/
+
+        GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
+        req.setPhoneNum("18671038857");
+        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/getPhoneValidCode", JSONObject.toJSONString(req));
+        System.out.println(result);
     }
 }

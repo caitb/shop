@@ -21,8 +21,11 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,7 +94,8 @@ public class BOrderPayService {
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    @Transactional
+    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
@@ -124,7 +128,7 @@ public class BOrderPayService {
      * <11>处理收货库存
      */
     @Transactional
-    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -322,7 +326,7 @@ public class BOrderPayService {
      * <4>处理发货库存
      */
     @Transactional
-    private void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    public void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -377,7 +381,7 @@ public class BOrderPayService {
             }
         }
         //拿货方式(0未选择1平台代发2自己发货)
-        if (pfBorder.getSendType() == 1) {
+        if (pfBorder.getSendType() == 1 && pfBorder.getOrderStatus() == BOrderStatus.accountPaid.getCode()) {
             //处理平台发货类型订单
             saveBOrderSendType(pfBorder);
         }
@@ -393,11 +397,14 @@ public class BOrderPayService {
      * <2>增加收货方库存
      * <3>订单完成处理
      */
-    private void saveBOrderSendType(PfBorder pfBorder) throws Exception {
+    private void saveBOrderSendType(PfBorder pfBorder) {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+                if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                    throw new BusinessException("库存不足，操作失败");
+                }
                 //减少平台库存
                 pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
                 //减少冻结库存
@@ -407,6 +414,9 @@ public class BOrderPayService {
                 }
             } else {
                 PfUserSkuStock parentSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
+                if (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                    throw new BusinessException("库存不足，操作失败");
+                }
                 //减少上级合伙人库存
                 parentSkuStock.setStock(parentSkuStock.getStock() - pfBorderItem.getQuantity());
                 //减少上级合伙人冻结库存
@@ -437,7 +447,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/3/31 11:26
      */
-    private String getCertificateCode(PfUserCertificate certificateInfo) throws Exception {
+    private String getCertificateCode(PfUserCertificate certificateInfo) {
         String certificateCode = "";
         String value = "";
         StringBuffer Code = new StringBuffer("MASIIS");
@@ -455,7 +465,7 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/3/31 11:26
      */
-    private String uploadFile(String filePath, String[] markContent) throws Exception {
+    private String uploadFile(String filePath, String[] markContent) {
         String pname = getRandomFileName();
         ImageIcon imgIcon = new ImageIcon(filePath);
         Image theImg = imgIcon.getImage();
@@ -480,8 +490,12 @@ public class BOrderPayService {
         g.drawString(markContent[2], 180, 520);
         g.dispose();
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
-        ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
-        ImageIO.write(bimage, "png", imOut);
+        try {
+            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(bimage, "png", imOut);
+        } catch (Exception ex) {
+            throw new BusinessException("生成证书异常");
+        }
         InputStream is = new ByteArrayInputStream(bs.toByteArray());
         OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
         return pname;

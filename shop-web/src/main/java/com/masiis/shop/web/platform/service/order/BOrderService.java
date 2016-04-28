@@ -343,7 +343,7 @@ public class BOrderService {
      * @date 2016/4/9 11:22
      */
     @Transactional
-    public void completeBOrder(PfBorder pfBorder) throws Exception {
+    public void completeBOrder(PfBorder pfBorder) {
         if (pfBorder == null) {
             throw new BusinessException("订单为空对象");
         }

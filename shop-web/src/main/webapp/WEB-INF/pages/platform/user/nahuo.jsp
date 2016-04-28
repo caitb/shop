@@ -93,7 +93,7 @@
                 <p>您申请的货物将由您自行保管；<br/>您只能使用在线库存发展下级合伙人，您得到的货物不再支持在线人合伙的发展</p>
             </div>
             <input type="checkbox" id="active">
-            <label for="active"><b>拿货风险：</b>请确认以了解申请拿货的部分不能继续发展下线，货物又我自行销售</label>
+            <label for="active"><b>拿货风险：</b>请确认已了解申请拿货的部分不能继续发展下级，货物由我自行销售</label>
             <button onclick="submit();">确认拿货</button>
         </section>
     </main>

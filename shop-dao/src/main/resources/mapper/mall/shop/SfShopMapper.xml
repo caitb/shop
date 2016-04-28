@@ -54,7 +54,7 @@
                     #{shipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR},
-                    #{version.jdbcType=BIGINT}
+                    #{version,jdbcType=BIGINT}
                     )
     </insert>
 
@@ -98,7 +98,7 @@
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
             <if test="version != null" >
-                version = #{version.jdbcType=BIGINT},
+                version = #{version,jdbcType=BIGINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

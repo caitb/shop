@@ -59,7 +59,9 @@ public class SfUserExtractApplyController {
                         String auditCause){
         try {
             sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"));
+            // 发送微信通知
 
+            // 发送短信
             return "success";
         } catch (Exception e) {
             log.error("提现申请审核失败![id="+id+"][auditType="+auditType+"][auditCause="+auditCause+"]");

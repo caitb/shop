@@ -26,16 +26,20 @@ public class RequestPreventThirdpartyFilter implements Filter {
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
         String referer=request.getHeader("shop-api");
-        if (!request.getServletPath().contains("index")) {
-            if(referer==null||!referer.startsWith(basePath))
-            {
-                logger.info(basePath+"index.jsp");
-                response.sendRedirect(basePath+"index.jsp");
+        logger.info("referer:"+referer);
+        logger.info(request.getServletPath());
+        if ("shop-api".equals(referer)){
+            chain.doFilter(req,res);
+            return;
+        }else {
+            if (request.getServletPath().contains("index")){
+                chain.doFilter(req,res);
                 return;
+            }else {
+                response.sendRedirect(basePath+"index.jsp");
             }
         }
-        String data="非法请求";
-        response.getWriter().write(data);
+//        response.getWriter().write(data);
     }
 
     @Override

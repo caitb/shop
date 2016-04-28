@@ -1,12 +1,12 @@
 package com.masiis.shop.api.bean.system;
 
-import com.masiis.shop.api.bean.base.BaseResModel;
+import com.masiis.shop.api.bean.base.BaseRes;
 
 /**
  * @Date 2016/4/26
  * @Auther lzh
  */
-public class LoginByPhoneRes extends BaseResModel {
+public class LoginByPhoneRes extends BaseRes {
     private String token;
     private Integer expire;
     private String expireUnit;

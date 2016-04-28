@@ -121,7 +121,7 @@ public class BOrderController extends BaseController {
                             @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         WxPaySysParamReq req = null;
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())) {
+        if (!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode()) && !pfBorder.getOrderStatus().equals(BOrderStatus.offLineNoPay.getCode())) {
             throw new BusinessException("订单状态异常");
         }
         //切换开发模式和测试模式

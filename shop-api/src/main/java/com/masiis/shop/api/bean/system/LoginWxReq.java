@@ -1,12 +1,13 @@
 package com.masiis.shop.api.bean.system;
 
+import com.masiis.shop.api.bean.base.BaseReq;
 import com.masiis.shop.common.annotation.SignField;
 
 /**
  * @Date 2016/4/27
  * @Auther lzh
  */
-public class LoginWxReq {
+public class LoginWxReq extends BaseReq{
     private String accessToken;
     private String appid;
     /**
@@ -21,15 +22,6 @@ public class LoginWxReq {
     private String headImgUrl;
     private String privilege;
     private String unionid;
-    /**
-     * 随机字符串
-     */
-    private String nonceStr;
-    /**
-     * 签名字段
-     */
-    @SignField
-    private String sign;
 
     public String getAccessToken() {
         return accessToken;
@@ -119,19 +111,4 @@ public class LoginWxReq {
         this.unionid = unionid;
     }
 
-    public String getNonceStr() {
-        return nonceStr;
-    }
-
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
-    }
-
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
 }

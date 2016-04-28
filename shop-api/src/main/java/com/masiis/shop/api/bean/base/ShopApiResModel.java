@@ -3,7 +3,7 @@ package com.masiis.shop.api.bean.base;
 /**
  * Created by wangbingjian on 2016/4/22.
  */
-public class ShopApiResModel extends BaseResModel {
+public class ShopApiResModel extends BaseRes {
     /**
      * 总数量
      */

@@ -575,7 +575,7 @@ public class BOrderPayService {
                 MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
                 //给上级推送
                 if (pComUser != null) {
-                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, pfBorder.getCreateTime().toString());
+                    WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
                     MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
                 }
             } else if (pfBorder.getOrderType() == 1) {

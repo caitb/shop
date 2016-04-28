@@ -99,10 +99,13 @@
   font-size: 12px;
   color: #999;
 }
-.wrap .box .main .sec1 div h3:nth-child(4) {
+.wrap .box .main .sec1 div h3.three {
   border-bottom: 1px solid #f6f6f6;
   padding-bottom: 4px;
   margin-top: 9px;
+}
+.hid{
+  height: 18px;
 }
 .wrap .box .main .sec1 div h3:nth-child(4) b {
   float: right;

@@ -60,8 +60,8 @@ public class WXBeanUtils {
                 if(sf != null){
                     continue;
                 }
-                String value = (String) f.get(obj);
-                if (StringUtils.isNotBlank(value)) {
+                Object value = f.get(obj);
+                if (value != null && StringUtils.isNotBlank(value.toString())) {
                     list.add(key + "=" + f.get(obj) + "&");
                 }
             }

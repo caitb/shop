@@ -15,6 +15,7 @@
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="BIGINT" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -208,4 +209,49 @@
             </if>
         </where>
     </select>
+
+    <update id="updateWithVersion" parameterType="com.masiis.shop.dao.po.SfShop">
+        update sf_shop
+        <set >
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="logo != null" >
+                logo = #{logo,jdbcType=VARCHAR},
+            </if>
+            <if test="explanation != null" >
+                explanation = #{explanation,jdbcType=VARCHAR},
+            </if>
+            <if test="shoutNum != null" >
+                shout_num = #{shoutNum,jdbcType=BIGINT},
+            </if>
+            <if test="pageviews != null" >
+                pageviews = #{pageviews,jdbcType=BIGINT},
+            </if>
+            <if test="saleAmount != null" >
+                sale_amount = #{saleAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="shipAmount != null" >
+                ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="qrCode != null" >
+                qr_code = #{qrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            version = version + 1
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+        and version = #{version,jdbcType=BIGINT}
+    </update>
 </mapper>

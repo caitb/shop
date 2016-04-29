@@ -142,6 +142,7 @@ public class DevelopingController extends BaseController {
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
 
             ComUser comUser = getComUser(request);
+            log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
@@ -170,6 +171,7 @@ public class DevelopingController extends BaseController {
                     }
                     //生成二维码
                     //CreateParseCode.createCode(220,220, shareLink, qrcodePath);
+                    log.info("发展合伙人[headImgPath="+headImgPath+"]");
                     QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
@@ -224,7 +226,7 @@ public class DevelopingController extends BaseController {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
 
-        g.drawImage(headImage, 88, 619, 130, 130, null);
+        g.drawImage(headImage, 88, 619, 132, 132, null);
         g.drawImage(bImage, 0, 0, null);
         g.drawImage(qrcodeImage, 566, 776, null);
 

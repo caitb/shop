@@ -156,7 +156,7 @@ public class DevelopingController extends BaseController {
             List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
-                if(pfUserCertificate.getPoster() == null){
+                //if(pfUserCertificate.getPoster() == null){
                     String headImgName = "headimg.png";
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
                     String qrcodeName = "qrcode.png";
@@ -183,7 +183,7 @@ public class DevelopingController extends BaseController {
                     //保存二维码海报图片地址
                     pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
                     pfUserCertificateMapper.updateById(pfUserCertificate);
-                }
+                //}
                 resultMap.put("poster", pfUserCertificate.getPoster());
             }
 

@@ -69,7 +69,7 @@ public class SfShopController extends BaseController {
     private JSSDKService jssdkService;
 
     @RequestMapping("/index")
-    public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("mall/shop/index");
 
         return mav;
@@ -77,6 +77,7 @@ public class SfShopController extends BaseController {
 
     /**
      * 呐喊
+     *
      * @param request
      * @param response
      * @param shopId
@@ -84,7 +85,7 @@ public class SfShopController extends BaseController {
      */
     @RequestMapping("/shout")
     @ResponseBody
-    public Object shout(HttpServletRequest request, HttpServletResponse response, Long shopId){
+    public Object shout(HttpServletRequest request, HttpServletResponse response, Long shopId) {
 
         try {
             ComUser comUser = getComUser(request);
@@ -93,7 +94,7 @@ public class SfShopController extends BaseController {
 
             return result;
         } catch (Exception e) {
-            log.error("呐喊失败![shopId="+shopId+"][comUser="+getComUser(request)+"]");
+            log.error("呐喊失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
             e.printStackTrace();
         }
 
@@ -101,35 +102,35 @@ public class SfShopController extends BaseController {
     }
 
     @RequestMapping("/getPoster")
-    public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId){
+    public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId) {
         ModelAndView mav = new ModelAndView("mall/shop/exclusivePoster");
 
         try {
             ComUser comUser = getComUser(request);
-                    comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             SfShop sfShop = sfShopService.getSfShopById(shopId);
             String realPath = request.getServletContext().getRealPath("/");
             String posterName = comUser.getId() + ".jpg";
 
             File posterDir = new File(realPath + "static/images/shop/poster/");
-            if(!posterDir.exists()) posterDir.mkdirs();
+            if (!posterDir.exists()) posterDir.mkdirs();
 
             //二维码
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            String shopUrl = basePath+shopId+"/"+comUser.getId()+"/shop.shtml";
+            String qrCodePath = posterDir.getAbsolutePath() + "/" + posterName;
+            String shopUrl = basePath + shopId + "/" + comUser.getId() + "/shop.shtml";
             CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
 
             //用户头像
-            String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
-            DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
+            String headImgPath = posterDir.getAbsolutePath() + "/h-" + comUser.getId() + ".jpg";
+            DownloadImage.download(comUser.getWxHeadImg(), "h-" + comUser.getId() + ".jpg", posterDir.getAbsolutePath());
             ImageUtils.scale2(headImgPath, headImgPath, 130, 130, false);
 
             //画专属海报
             String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
-            String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg";
-            String content = "我是"+comUser.getWxNkName();
+            String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-" + comUser.getId() + ".jpg";
+            String content = "我是" + comUser.getWxNkName();
             Map<String, Integer> positionMap = new HashMap<>();
             positionMap.put("headImg-left", 195);
             positionMap.put("headImg-top", 130);
@@ -137,21 +138,21 @@ public class SfShopController extends BaseController {
             positionMap.put("bgImg-top", 0);
             positionMap.put("qrCodeImg-left", 160);
             positionMap.put("qrCodeImg-top", 368);
-            positionMap.put("content-left", 520/2-content.length()/2*28-(content.length()%2*14));
+            positionMap.put("content-left", 520 / 2 - content.length() / 2 * 28 - (content.length() % 2 * 14));
             positionMap.put("content-top", 306);
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247,60,140));
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247, 60, 140));
 
 
-            String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
+            String curUrl = request.getRequestURL().toString() + "?shopId=" + shopId;
             /** 获取调用jssdk所需数据 **/
             Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
             //要分享的数据
-            shareMap.put("shareTitle", "我是"+comUser.getRealName()+",我为朋友呐喊!");
+            shareMap.put("shareTitle", "我是" + comUser.getRealName() + ",我为朋友呐喊!");
             shareMap.put("shareDesc", "在家靠父母，出外靠朋友。我为朋友呐喊，分享赚佣金。");
             shareMap.put("shareImg", sfShop.getLogo());
             shareMap.put("shareLink", shopUrl);
 
-            mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-"+comUser.getId()+".jpg");
+            mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-" + comUser.getId() + ".jpg");
             mav.addObject("shareMap", shareMap);
             return mav;
         } catch (Exception e) {
@@ -163,7 +164,7 @@ public class SfShopController extends BaseController {
         return mav;
     }
 
-    private void drawPoster(String headImgPath, String qrCodePath, String bgPath, String[] content, String shopPosterPath, Map<String, Integer> positionMap, Font font, Color color){
+    private void drawPoster(String headImgPath, String qrCodePath, String bgPath, String[] content, String shopPosterPath, Map<String, Integer> positionMap, Font font, Color color) {
         ImageIcon headImgIcon = new ImageIcon(headImgPath);
         ImageIcon qrCodeIcon = new ImageIcon(qrCodePath);
         ImageIcon bgIcon = new ImageIcon(bgPath);
@@ -182,8 +183,8 @@ public class SfShopController extends BaseController {
 
         g.setFont(font);
         g.setColor(color);
-        for(int i=0; i<content.length; i++){
-            g.drawString(content[i], positionMap.get("content-left"), positionMap.get("content-top")+(font.getSize()+15)*i);
+        for (int i = 0; i < content.length; i++) {
+            g.drawString(content[i], positionMap.get("content-left"), positionMap.get("content-top") + (font.getSize() + 15) * i);
         }
         g.dispose();
 
@@ -198,7 +199,7 @@ public class SfShopController extends BaseController {
 
     @RequestMapping("/getSkuPoster")
     @ResponseBody
-    public Object getSkuPoster(HttpServletRequest request, HttpServletResponse response, Long shopId, Integer skuId){
+    public Object getSkuPoster(HttpServletRequest request, HttpServletResponse response, Long shopId, Integer skuId) {
         //ModelAndView mav = new ModelAndView("mall/shop/skuPoster");
 
         try {
@@ -208,21 +209,21 @@ public class SfShopController extends BaseController {
             String posterName = comUser.getId() + "-" + shopId + "-" + skuId + ".jpg";
 
             File posterDir = new File(realPath + "static/images/shop/poster/");
-            if(!posterDir.exists()) posterDir.mkdirs();
+            if (!posterDir.exists()) posterDir.mkdirs();
 
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
-            CreateParseCode.createCode(300, 300, basePath+"shop/detail.shtml?skuId="+skuId+"&shopId="+shopId+"&fromUserId="+comUser.getId(), qrCodePath);
+            String qrCodePath = posterDir.getAbsolutePath() + "/" + posterName;
+            CreateParseCode.createCode(300, 300, basePath + "shop/detail.shtml?skuId=" + skuId + "&shopId=" + shopId + "&fromUserId=" + comUser.getId(), qrCodePath);
 
             //用户头像
-            String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
-            DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
+            String headImgPath = posterDir.getAbsolutePath() + "/h-" + comUser.getId() + ".jpg";
+            DownloadImage.download(comUser.getWxHeadImg(), "h-" + comUser.getId() + ".jpg", posterDir.getAbsolutePath());
             ImageUtils.scale2(headImgPath, headImgPath, 90, 90, false);
 
             //画专属海报
-            String bgPath = realPath + "static/images/shop/background-img/sku-"+skuId+".png";
-            String skuPosterPath = realPath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg";
+            String bgPath = realPath + "static/images/shop/background-img/sku-" + skuId + ".png";
+            String skuPosterPath = realPath + "static/images/shop/poster/sku-poster-" + comUser.getId() + ".jpg";
             Map<String, Integer> positionMap = new HashMap<>();
             positionMap.put("headImg-left", 46);
             positionMap.put("headImg-top", 44);
@@ -233,13 +234,13 @@ public class SfShopController extends BaseController {
             positionMap.put("content-left", 170);
             positionMap.put("content-top", 76);
             String skuName = skuService.getSkuById(skuId).getName();
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是"+comUser.getWxNkName(),"我为"+skuName+"代言!"}, skuPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
+            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{"我是" + comUser.getWxNkName(), "我为" + skuName + "代言!"}, skuPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51, 51, 51));
 
             Map<String, Object> dataMap = new HashMap<String, Object>();
-            dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-"+comUser.getId()+".jpg");
+            dataMap.put("skuPoster", basePath + "static/images/shop/poster/sku-poster-" + comUser.getId() + ".jpg");
             return dataMap;
         } catch (Exception e) {
-            log.error("获取专属海报失败![shopId=" + shopId + "][skuId="+skuId+"][comUser=" + getComUser(request) + "]");
+            log.error("获取专属海报失败![shopId=" + shopId + "][skuId=" + skuId + "][comUser=" + getComUser(request) + "]");
             e.printStackTrace();
         }
 
@@ -248,7 +249,7 @@ public class SfShopController extends BaseController {
     }
 
     @RequestMapping("/sharePlan")
-    public String sharePlan(HttpServletRequest request, HttpServletResponse response, Model model, Integer shopId){
+    public String sharePlan(HttpServletRequest request, HttpServletResponse response, Model model, Integer shopId) {
         model.addAttribute("shopId", shopId);
 
         return "mall/shop/sharePlan";
@@ -262,19 +263,19 @@ public class SfShopController extends BaseController {
     @RequestMapping("/detail.shtml")
     public ModelAndView getSkuDetail(HttpServletRequest request,
                                      HttpServletResponse response,
-                                     @RequestParam(value="skuId",required = true) Integer skuId,
-                                     @RequestParam(value="shopId",required = true) Long shopId,
-                                     @RequestParam(value="fromUserId",required = false) Long fromUserId) throws Exception {
-        SfShop sfShop =sfShopService.getSfShopById(shopId);
-        if(sfShop==null){
+                                     @RequestParam(value = "skuId", required = true) Integer skuId,
+                                     @RequestParam(value = "shopId", required = true) Long shopId,
+                                     @RequestParam(value = "fromUserId", required = false) Long fromUserId) throws Exception {
+        SfShop sfShop = sfShopService.getSfShopById(shopId);
+        if (sfShop == null) {
             throw new BusinessException("该店铺不存在！");
         }
         ComSku comSku = skuService.getSkuById(skuId);
-        if(comSku==null){
+        if (comSku == null) {
             throw new BusinessException("该商品不存在！");
         }
         SkuInfo skuInfo = skuService.getSkuInfoBySkuId(shopId, skuId);
-        List<ComSkuImage> comSkuImageList =  skuService.findComSkuImages(skuId);
+        List<ComSkuImage> comSkuImageList = skuService.findComSkuImages(skuId);
         ComSkuImage comSkuImage = skuService.findDefaultComSkuImage(skuId);
         ComUser user = getComUser(request);
         //店铺浏览量
@@ -282,16 +283,16 @@ public class SfShopController extends BaseController {
             sfUserShopViewService.addShopView(user.getId(), shopId);
         }
         ComUser fromUser = userService.getUserById(fromUserId);
-        userService.getShareUser(user.getId(),fromUserId);//来自分享人的信息
+        userService.getShareUser(user.getId(), fromUserId);//来自分享人的信息
         //是否关注
         Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
         //jssdk
-        String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&shopId="+shopId;
-               curUrl += fromUser==null ? "" : "&fromUserId="+fromUserId;
+        String curUrl = request.getRequestURL().toString() + "?skuId=" + skuId + "&shopId=" + shopId;
+        curUrl += fromUser == null ? "" : "&fromUserId=" + fromUserId;
         /** 获取调用jssdk所需数据 **/
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
         //要分享的数据
-        shareMap.put("shareTitle", "我是"+user.getWxNkName()+",我为"+skuInfo.getComSku().getName()+"代言!");
+        shareMap.put("shareTitle", "我是" + user.getWxNkName() + ",我为" + skuInfo.getComSku().getName() + "代言!");
         shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
         shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
         shareMap.put("shareLink", curUrl);
@@ -306,7 +307,7 @@ public class SfShopController extends BaseController {
         mav.addObject("fromUserId", fromUserId);
         mav.addObject("loginUser", user);
         mav.addObject("shareMap", shareMap);
-        mav.addObject("forcusSF",forcusSF);
+        mav.addObject("forcusSF", forcusSF);
         return mav;
     }
 

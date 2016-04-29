@@ -55,7 +55,7 @@
             </c:forEach>
         </div>
         <%--<p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId},${fn:length(orderItemDistributions)})">查看更多></a></p>--%>
-        <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
+        <p style="text-align: center;margin-top: 10px;font-size: 12px;color: #666;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
     </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>

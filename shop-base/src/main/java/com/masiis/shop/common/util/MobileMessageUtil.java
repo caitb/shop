@@ -24,7 +24,9 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean VerificationCode(String phone, String code, String minute){
-        String[] content = new String[]{code,minute};
+        String[] content = new String[2];
+        content[0] = code;
+        content[1] = minute;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFICATION_CODE, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -57,7 +59,9 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean partnerApplicationSuccess(String phone, String skuName, String agentLevelName){
-        String[] content = new String[]{skuName,agentLevelName};
+        String[] content = new String[2];
+        content[0] = skuName;
+        content[1] = agentLevelName;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.PARTNER_APPLICATION_SUCCESS, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -73,7 +77,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean verifiedSubmitRemind(String phone, String days){
-        String[] content = new String[]{days};
+        String[] content = new String[1];
+        content[0] = days;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -88,7 +93,9 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean verifiedComplete(String phone, boolean approved){
-        String[] content = new String[]{approved==true?"通过审核":"未通过审核", approved==true?"继续申请合伙人":"重新提交实名认证"};
+        String[] content = new String[2];
+        content[0] = approved==true?"通过审核":"未通过审核";
+        content[1] = approved==true?"继续申请合伙人":"重新提交实名认证";
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_COMPLETE, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -105,7 +112,10 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean goodsOrderShipRemind(String phone, String orderCode, String shipName, String shipCode){
-        String[] content = new String[]{orderCode, shipName, shipCode};
+        String[] content = new String[3];
+        content[0] = orderCode;
+        content[1] = shipName;
+        content[2] = shipCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ORDER_SHIP_REMIND, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -146,7 +156,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean withdrawRequestVerifyAgent(String phone, String days){
-        String[] content = new String[]{days};
+        String[] content = new String[1];
+        content[0] = days;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_AGENT, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -161,7 +172,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean withdrawRequestVerifyCustomer(String phone, String days){
-        String[] content = new String[]{days};
+        String[] content = new String[1];
+        content[0] = days;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_CUSTOMER, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -263,7 +275,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean joinQueueOrder(String phone, String orderCode){
-        String[] content = new String[]{orderCode};
+        String[] content = new String[1];
+        content[0] = orderCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -278,7 +291,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean dealQueueOrderPlatform(String phone, String orderCode){
-        String[] content = new String[]{orderCode};
+        String[] content = new String[1];
+        content[0] = orderCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.DEAL_QUEUE_ORDER_PLATFORM, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -295,7 +309,10 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean dealQueueOrderSelf(String phone, String orderCode, String shipName, String shipCode){
-        String[] content = new String[]{orderCode, shipName, shipCode};
+        String[] content = new String[3];
+        content[0] = orderCode;
+        content[1] = shipName;
+        content[2] = shipCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.DEAL_QUEUE_ORDER_SELF, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -310,7 +327,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean stockNotEnoughWarning(String phone, String skuName){
-        String[] content = new String[]{skuName};
+        String[] content = new String[1];
+        content[0] = skuName;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.STOCK_NOT_ENOUGH_WARNINT, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -338,7 +356,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean consumerOrderRemind(String phone, String skuName){
-        String[] content = new String[]{skuName};
+        String[] content = new String[1];
+        content[0] = skuName;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_ORDER_REMIND, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -353,7 +372,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean consumerShipRemind(String phone, String orderCode){
-        String[] content = new String[]{orderCode};
+        String[] content = new String[1];
+        content[0] = orderCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_SHIP_REMIND, content);
         if (!"000000".equals(smsRes[0])) {
             return false;
@@ -368,7 +388,8 @@ public class MobileMessageUtil {
      * @return
      */
     public static boolean consumerConsumeSuccessRemind(String phone, String orderCode){
-        String[] content = new String[]{orderCode};
+        String[] content = new String[1];
+        content[0] = orderCode;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_CONSUME_SUCCESS_REMIND, content);
         if (!"000000".equals(smsRes[0])) {
             return false;

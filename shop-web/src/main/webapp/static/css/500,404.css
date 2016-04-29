@@ -5,6 +5,10 @@ html {
   height: 100%;
   background: #EFEBE8;
 }
+a{
+  color:#333;
+  text-decoration: none;
+}
 img {
   display: block;
   width: 100%;

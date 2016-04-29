@@ -3,13 +3,14 @@
   width: 100%;
   background: white;
   padding: 12px 0 10px 0;
+  margin-top: 5px;
 }
 .wrap nav ul {
   margin: 0 10px;
   display: -webkit-box;
 }
 .wrap nav ul li:first-child {
-  border-right: 1px solid #C2C2C2;
+  border-right: 1px solid #f6f6f6;
   padding-left: 0;
 }
 .wrap nav ul li:last-child h2 {
@@ -40,12 +41,13 @@
   display: block;
   width: 70px;
   height: 18px;
-  border-radius: 5px;
+  border-radius: 2px;
   line-height: 18px;
   text-align: center;
   font-size: 12px;
-  border: 1px solid #FA570B;
+  border: 1px solid #F73c8c;
   margin-right: 10px;
+  color: #F73c8c;
 }
 .wrap nav ul li p span a {
   color: #FB5F09;
@@ -62,8 +64,8 @@
 }
 .wrap nav ul li h1 {
   text-align: center;
-  color: #F9550C;
-  margin-top: 24px;
+  color: #F73c8c;
+  margin-top: 14px;
   font-size: 18px;
 }
 .wrap nav ul li h1 span {
@@ -72,7 +74,7 @@
 .wrap nav ul li h2 {
   color: #333;
   font-weight: 100;
-  margin-top: 24px;
+  margin-top: 14px;
   float: right;
   display: block;
   width: 70px;
@@ -86,12 +88,15 @@
   background-size: 12px;
   padding-left: 5px;
 }
+.wrap nav ul li h2 a{
+  color:#666;
+}
 .wrap .sec1 {
   display: -webkit-box;
   -webkit-box-pack: justify;
-  padding: 5px 10px;
+  padding: 10px;
   background: #fff;
-  margin-top: 5px;
+  margin-top: 10px;
   border-bottom: 1px solid #f6f6f6;
 }
 .wrap .sec1 p {

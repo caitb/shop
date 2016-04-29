@@ -17,7 +17,7 @@
 </head>
 <body>
 <header>
-    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="<%=basePath%>sfOrderManagerController/borderManagement.html"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>个人信息</p>
 </header>
 <div class="wrap">

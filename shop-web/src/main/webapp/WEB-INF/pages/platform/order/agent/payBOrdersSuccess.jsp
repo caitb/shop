@@ -9,8 +9,10 @@
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/lingquzhengshu.css">
+    <link rel="stylesheet" href="${path}/static/css/fakeLoader.css">
 </head>
 <body>
+<div id="fakeLoader"></div>
 <main>
     <c:if test="${isUserForcus==false}">
         <div class="na">
@@ -119,8 +121,17 @@
         <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
+<%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/zepto.min.js"></script>
+<script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
 <script>
+    $(document).ready(function(){
+        $(".fakeloader").fakeLoader({
+            timeToHide:1200,
+            bgColor:"#3498db",
+            spinner:"spinner4"
+        });
+    });
     $(".add").on("tap", function () {
         $(".back_box").show()
         $(".back_f").show()

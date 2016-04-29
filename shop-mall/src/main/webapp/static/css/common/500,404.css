@@ -9,6 +9,10 @@ img {
   display: block;
   width: 100%;
 }
+a{
+  color: #333;
+  text-decoration: none;
+}
 p {
   width: 100%;
   display: -webkit-box;

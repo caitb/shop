@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/wodedingdan.css">
-    <link rel="stylesheet" href="<%=path%>/static/css/pageCss/dingdan.css">
+    <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/dingdan.css">--%>
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/loading.css">--%>
     <%--<link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">--%>
 
@@ -54,8 +54,8 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -87,8 +87,8 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -120,8 +120,8 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -153,8 +153,8 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -186,8 +186,8 @@
                                     </a>
                                 </p>
                                 <div>
-                                    <h2>${pbi.skuName}<b>x${pbi.quantity}</b></h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span></p>
+                                    <h2>${pbi.skuName}</h2>
+                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -232,7 +232,7 @@
                
            </div>
        <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
-       <script src="<%=path%>/static/js/common/commonAjax.js"></script>
+       <%--<script src="<%=path%>/static/js/common/commonAjax.js"></script>--%>
        <script src="<%=path%>/static/js/pageJs/jinhuoshijian.js"></script>
        <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -271,7 +271,7 @@
                                    trHtml+=" <p class=\"photo\">";
                                    trHtml+="<a href=\"javascript:void(0);\">";
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
-                                   trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p></div></div>";
+                                   trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#f73c8c;\">￥"+sfOrderItem.unitPrice+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
                                })
                                trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderAmount+" （含运费￥"+sfOrder.shipAmount+"）</h1>";
                                trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";

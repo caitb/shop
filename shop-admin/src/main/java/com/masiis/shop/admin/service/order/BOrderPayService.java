@@ -560,7 +560,7 @@ public class BOrderPayService {
         log.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
             //排单推送通知
-            String[] param = {};
+            String[] param = new String[4];
             param[0] = pfBorderItems.get(0).getSkuName();
             param[1] = pfBorder.getOrderAmount().toString();
             param[2] = pfBorderItems.get(0).getQuantity().toString();

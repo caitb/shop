@@ -80,7 +80,9 @@ public class LoginController extends BaseController {
             if(keybox == null){
                 keybox = userService.createKeyboxByUser(user);
             }
+            // 创建token
             String token = TokenUtils.generateToken();
+            // 创建userKey
             String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
             keybox.setAppToken(token);
             keybox.setComUserId(user.getId());

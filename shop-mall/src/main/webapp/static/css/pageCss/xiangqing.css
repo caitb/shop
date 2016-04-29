@@ -63,6 +63,7 @@
 }
 .wrap .price p:nth-child(3) {
     text-indent: 8px;
+    color: #f73c8c;
 }
 .wrap .price p:nth-child(2) span {
     color: #666;
@@ -73,7 +74,7 @@
     text-indent: 10px;
 }
 .wrap .price p b {
-    color: #FF7D54;
+    color: #f72946;
     font-size: 16px;
 }
 .wrap .price p span {
@@ -103,7 +104,7 @@
     font-size: 12px;
 }
 .wrap .dlpople p span {
-    color: #FF7D56;
+    color: #A0A0A0;
     font-size: 12px;
 }
 .wrap nav {
@@ -207,15 +208,17 @@ footer .sec3 p {
     display: -webkit-box;
     -webkit-box-align: center;
     -webkit-box-pack: center;
-    background: #F74A11;
     color: #fff;
+    font-size:12px;
 }
 footer .sec3 p a {
-    display: block;
     -webkit-box-flex: 1;
-    color: #FCFFFF;
-    font-size: 15px;
+    color: #333;
+    font-size: 12px;
     text-align: center;
+    background: url("/static/images/fanli.png") no-repeat 0;
+    background-size: 15px;
+    padding-left: 20px;
 }
 .back_j {
     width: 90%;
@@ -373,7 +376,7 @@ footer .sec3 p a {
 .shoping>p{
     text-indent: 130px;
     padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #f6f6f6;
 }
 .shoping>p span{
     display: block;
@@ -386,10 +389,11 @@ footer .sec3 p a {
     width: 100px;
     height: 100px;
     display: block;
+    box-shadow: 0 3px 6px 0px rgba(0,0,0,0.1);
 }
 .shoping h1{
-    padding: 7px 10px;
-    border-bottom: 1px dashed #ccc;
+    padding: 12px 10px;
+    border-bottom: 1px dashed #ddd;
 }
 .shoping h1 p{
     display: inline-block;
@@ -420,8 +424,9 @@ footer .sec3 p a {
     display: block;
     width: 60%;
     padding: 10px 0;
-    background: #ccc;
+    background: #f73c8c;
     margin: 8px auto;
+    color: #fff;
 }
 .addb {
     display: -webkit-box;
@@ -483,4 +488,11 @@ footer .sec3 p a {
     font-size: 26px;
     border: 1px solid #ccc;
     color: #999;
+}
+#price{
+    color: #f73c8c;
+}
+#price b{
+    color: #f73c8c;
+    font-size:12px;;
 }

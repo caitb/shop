@@ -50,7 +50,7 @@
     <div class="price">
         <p>${skuInfo.comSku.name}</p>
         <p><span style="padding:0;">${skuInfo.slogan}</span></p>
-        <p><b>${skuInfo.comSku.priceRetail}</b></p>
+        <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
     </div>
     <div class="dlpople">
 
@@ -75,16 +75,12 @@
                 <span>正品保障</span>
             </li>
             <li>
-                <h1><img src="<%=path%>/static/images/xq_nav2.png" alt=""></h1>
-                <span>合伙人优惠</span>
-            </li>
-            <li>
                 <h1><img src="<%=path%>/static/images/xq_nav3.png" alt=""></h1>
                 <span>七天退换</span>
             </li>
             <li>
                 <h1><img src="<%=path%>/static/images/xq_nav4.png" alt=""></h1>
-                <span>创业补贴</span>
+                <span>分享赚钱</span>
             </li>
         </ul>
     </nav>
@@ -99,7 +95,7 @@
             <img src="<%=path%>/static/images/chanpin%20(1).jpg" alt="">
         </section>
         <section class="sec2">
-            <h2 style="color:#F74A11;">麦链合伙人提供技术支持</h2>
+            <h2 style="color:#f72946;">麦链合伙人提供技术支持</h2>
             <p>Copyright2005-2016 iimai.com 版权所有</p>
             <p>京ICP证080047号[京ICP备08010314号-6]</p>
             <p>文网文[2009]024号 新出网证（京）字069号</p>
@@ -141,7 +137,7 @@
     <img src="${defaultSkuImage.fullImgUrl}" alt="">
     <p>
         <span id="skuName">${skuInfo.comSku.name}</span>
-        <span id="price">${skuInfo.comSku.priceRetail}</span>
+        <span id="price"><b>￥</b>${skuInfo.comSku.priceRetail}</span>
     </p>
     <h1>
         <span>库存：</span>
@@ -166,7 +162,7 @@
 <footer>
     <section class="sec3">
         <p class="shi" id="share"><a>分享</a></p>
-        <p style="background: #fff;color:#333;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
+        <p style="background: rgba(247,60,140,0.9);color:#fff;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
     </section>
 </footer>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>

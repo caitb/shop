@@ -31,8 +31,8 @@
   color: #5E5E5E;
 }
 .wrap .box nav ul li .on {
-  border-bottom: 2px solid #FF0000;
-  color: #FF6F35;
+  border-bottom: 2px solid #f73c8c;
+  color: #f73c8c;
 }
 .wrap .box main {
   width: 100%;
@@ -59,6 +59,7 @@
   color: #A5A5A5;
   background: #f6f6f6;
   text-indent: 10px;
+  padding-top: 8px;
 }
 .wrap .box main .all .sec1 > p span {
   font-size: 12px;
@@ -67,7 +68,7 @@
   padding: 5px 10px;
   text-align: right;
   font-size: 12px;
-  color: #333;
+  color: #666;
 }
 .wrap .box main .all .sec1 > h2 {
   text-indent: 10px;
@@ -82,7 +83,7 @@
 .wrap .box main .all .sec1 > h2 b {
   float: right;
   margin-right: 10px;
-  color: #FF6F35;
+  color: #f73c8c;
   line-height: 30px;
 }
 .wrap .box main .all .sec1 .shangpin {
@@ -103,7 +104,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap .box main .all .sec1 .shangpin div {
   -webkit-box-flex: 1;
@@ -114,11 +115,11 @@
   display: -moz-box;
   -moz-box-pack: center;
   -moz-box-orient: vertical;
-  margin-left: 6px;
+  margin-left: 12px;
 }
 .wrap .box main .all .sec1 .shangpin div h2 {
   color: #333333;
-  font-size: 12px;
+  font-size: 14px;
   height: 15px;
   margin-bottom: 28px;
 }
@@ -126,6 +127,7 @@
   font-size: 12px;
   float: right;
   margin-right: 10px;
+  color: #999;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
   height: 15px;
@@ -147,7 +149,7 @@
 }
 .wrap .box main .all .sec1 .shangpin div .defult b {
   font-size: 12px;
-  color: #333;
+  color: #666;
   float: right;
 }
 .wrap .box main .all .sec1 .shangpin div .defult b em {
@@ -176,15 +178,20 @@
   position: relative;
   border-top: 1px solid #f6f6f6;
   -webkit-box-pack: justify;
+  padding: 4px 0;
 }
 .wrap .box main .all .sec1 .ding p {
   text-indent: 10px;
   font-size: 12px;
   background: url("/static/images/icon_26.png") no-repeat 10px;
-  background-size: 14%;
-  padding-left: 18px;
+  background-size: 12px;
+  padding-left: 15px;
   line-height: 30px;
   margin-right: 10px;
+}
+.wrap .box main .all .sec1 .ding p a{
+  color: #333;
+  font-size: 12px;
 }
 .wrap .box main .all .sec1 .ding p:nth-child(2) {
   background: none;
@@ -193,14 +200,14 @@
 }
 .wrap .box main .all .sec1 .ding button {
   position: absolute;
-  right: 10px;
-  top: 7px;
+  right: 0;
+  top: 4px;
   width: 65px;
   display: block;
   background: #fff;
-  border-radius: 5px;
-  border: 1px solid #FF0000;
-  color: #FF5200;
+  border: 1px solid #f73c8c;
+  color: #f73c8c;
+  padding: 2px 0;
 }
 .wrap .box main .all .sec1 .ding .jixu,
 .wrap .box main .all .sec1 .ding .quxiao {
@@ -359,7 +366,6 @@
   letter-spacing: 1px;
 }
 .back_shouhuo h3 {
-  margin-top: 10px;
   display: -webkit-box;
   -webkit-box-align: center;
   margin: 15px 10px;
@@ -372,7 +378,6 @@
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;

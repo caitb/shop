@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +44,7 @@
                         <b>
                             <span>${distribution.nkName}</span>
                             在您的分享
-                            <a href="" onclick="showDetail(${distribution.skuId})">${distribution.skuName}</a>
+                            <a href="#">${distribution.skuName}</a>
                             中产生了购买
                         </b>
                     </p>
@@ -55,7 +55,9 @@
             </c:forEach>
         </div>
         <%--<p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId},${fn:length(orderItemDistributions)})">查看更多></a></p>--%>
-        <p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
+        <c:if test="${orderItemDistributions != null && fn:length(orderItemDistributions) < totalCount}">
+            <p id="showMore" style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
+        </c:if>
     </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>

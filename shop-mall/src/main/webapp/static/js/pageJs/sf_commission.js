@@ -45,7 +45,7 @@ function withdraw(userId,extractableFee){
  * @param length
  */
 function viewMore(userId){
-    var totalCount = $("#totalCount").val();
+    var totalCount = parseInt($("#totalCount").val());
     //获取当前页面的佣金记录数
     var count = $(".sec2").length;
     if (totalCount == 0){
@@ -62,19 +62,25 @@ function viewMore(userId){
         $.ajax({
             type:"POST",
             async:true,
-            url : basepath+"/sfuser/moreCommission.do",
+            url : basepath+"/sfaccount/moreCommission.do",
             data:{userId:userId,currentPage:currentPage,count:count},
             dataType:"Json",
             success:function(data){
                 var arr=eval(data);
+                var html = "";
                 for(var i=0;i<arr.length;i++)
                 {
-                    $("#itemDistributions").append("<div class='sec2'><p>");
-                    $("#itemDistributions").append("<b>￥"+arr[i].distributionAmount+"</b>");
-                    $("#itemDistributions").append("<b><span>"+arr[i].nkName+"</span><p>在您的分享 <a href='' onclick='showDetail("+arr[i].skuId+")'>"+arr[i].skuName+"</a> 中产生了购买 </b></p>");
-                    $("#itemDistributions").append("<h1><span>"+arr[i].orderTime+"</span></h1></div>");
+                    html += "<div class='sec2'><p>";
+                    html += "<b>￥"+arr[i].distributionAmount+"</b>"
+                    html += "<b><span>"+arr[i].nkName+"</span>在您的分享 <a href='#'>"+arr[i].skuName+"</a> 中产生了购买 </b></p>";
+                    html += "<h1><span>"+arr[i].orderTime+"</span></h1></div>";
                 }
+                $("#itemDistributions").append(html);
                 $("#currentPage").attr(currentPage + 1);
+
+                if (totalCount <= $(".sec2").length){
+                    $("#showMore").html("");
+                }
             },
             error: function(){
                 //请求出错处理

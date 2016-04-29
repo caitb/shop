@@ -16,7 +16,7 @@ body {
 }
 .wrap main .tai {
   width: 100%;
-  background: #F6410C;
+  background: #f73c8c;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -39,6 +39,7 @@ body {
 .wrap main .kuaidi {
   background: white;
   text-indent: 10px;
+  margin-top: 10px;
   padding: 5px 0;
 }
 .wrap main .kuaidi p {
@@ -209,17 +210,19 @@ body {
 }
 .wrap main .sec3 p {
   text-indent: 10px;
-  line-height: 40px;
   font-size: 12px;
+  padding: 10px 0;
 }
 .wrap main .sec3 p input {
-  border: none;
+  border: 1px solid #ddd;
+  width: 230px;
 }
 .wrap main .sec4 {
   width: 100%;
   border-top: 1px solid #f6f6f6;
   background: white;
   padding-bottom: 5px;
+  margin-top: 10px;
 }
 .wrap main .sec4 p {
   margin: 0 10px;

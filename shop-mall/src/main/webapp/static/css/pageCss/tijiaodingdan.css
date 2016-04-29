@@ -22,13 +22,13 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: justify;
+  position: relative;
 }
 .wrap .sec1 img {
   display: inline-block;
   width: 15px;
   height: 20px;
   margin-left: 10px;
-  margin-top: 10px;
 }
 .wrap .sec1 div {
   width: 88%;
@@ -39,22 +39,23 @@
 }
 .wrap .sec1 div h2 span {
   float: right;
-  margin-right: 10px;
+  margin-right: 40%;
+  font-size: 12px;
 }
 .wrap .sec1 div p {
   width: 100%;
   overflow: hidden;
-  position: relative;
+  font-size: 12px;
 }
 .wrap .sec1 div p span {
   font-size: 12px;
 }
-.wrap .sec1 div p img {
+.wrap .sec1 .next {
   position: absolute;
   right: 10px;
-  top: -5px;
+  top: 20px;
   display: block;
-  width: 10px;
+  width: 9px;
   height: 15px;
 }
 .wrap .sec2 {
@@ -69,7 +70,7 @@
 .wrap .sec2 .photo {
   width: 62px;
   margin-left: 10px;
-  border: 1px solid #999;
+  border: 1px solid #ddd;
 }
 .wrap .sec2 .photo img {
   display: block;
@@ -90,18 +91,20 @@
 }
 .wrap .sec2 div h2 span {
   float: right;
-  color: #FF5200;
+  color: #666;
   margin-right: 10px;
+  font-size: 12px;
 }
 .wrap .sec2 div h3 {
   color: #666666;
+  font-size: 12px;
 }
 .wrap .sec2 div p {
-  color: #FF5200;
+  color: #f73c8c;
 }
 .wrap .sec3 {
   width: 100%;
-  background: white;
+  /* background: white; */
 }
 .wrap .sec3 p {
   width: 100%;
@@ -112,6 +115,7 @@
   display: -webkit-box;
   padding: 8px 0;
   -webkit-box-pack: justify;
+  background: #fff;
 }
 .wrap .sec3 p em {
   display: block;
@@ -128,7 +132,7 @@
 }
 .wrap .sec3 p span,
 .wrap .sec3 p b {
-  color: #FF5200;
+  color: #f73c8c;
   display: block;
   margin-right: 10px;
   font-size: 12px;
@@ -138,15 +142,15 @@
 }
 .wrap .sec3 h1 {
   width: 100%;
-  height: 40px;
-  line-height: 40px;
-  border-bottom: 1px solid #f6f6f6;
   color: #666666;
   font-size: 12px;
-  text-align: right;
+  text-align: center;
+  margin-top: 20px;
+  background: #fff;
+  padding: 10px 0 0px 0;
 }
 .wrap .sec3 h1 span {
-  color: #FF5200;
+  color: #f73c8c;
   font-size: 12px;
   padding-right: 10px;
 }
@@ -157,13 +161,13 @@
   -webkit-box-pack: center;
   -webkit-box-align: center;
   background: white;
-  padding: 10px 0;
+  padding: 0px 0 10px 0;
 }
 .wrap .sec4 p {
-  font-size: 12px;
+  font-size: 14px;
 }
 .wrap .sec4 span {
-  color: #FF5200;
+  color: #f73c8c;
   font-size: 12px;
 }
 .wrap .sec4 b {
@@ -178,4 +182,8 @@
   text-align: center;
   font-size: 16px;
   margin: 20px 10px 20px 10px;
+}
+
+.sec1 h2,.sec1 span,.sec1 b{
+  font-size: 12px;
 }

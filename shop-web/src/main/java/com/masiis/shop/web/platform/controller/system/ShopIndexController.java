@@ -43,7 +43,7 @@ public class ShopIndexController extends BaseController {
         ComUser user = getComUser(req);
 //        ComUser user = userService.getUserById(1l);
         if (user == null) {
-            user = userService.getUserById(133l);
+            user = userService.getUserById(217l);
             req.getSession().setAttribute("comUser", user);
         }
         ModelAndView modelAndView = new ModelAndView();

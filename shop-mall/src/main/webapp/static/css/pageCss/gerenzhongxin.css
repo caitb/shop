@@ -18,7 +18,9 @@
   overflow: hidden;
 }
 .wrap .na p img {
-  width: 100%;
+  width: 40px;
+  height: 40px;
+  display: block;
 }
 .wrap .na h1 {
   display: -webkit-box;
@@ -73,21 +75,23 @@
 }
 .wrap .dynmic p span img {
   display: block;
-  width: 28px;
+  width: 25px;
   margin-bottom: 5px;
 }
 .wrap .dynmic p span b {
   position: absolute;
-  top: -8px;
-  right: -10px;
+  top: -6px;
+  right: -6px;
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 10px;
   border: 1px solid #F73C8C;
   background: #fff;
   font-size: 12px;
+  line-height: 13px;
   text-align: center;
+  color: #f73c8c;
 }
 .wrap nav {
   background: #fff;

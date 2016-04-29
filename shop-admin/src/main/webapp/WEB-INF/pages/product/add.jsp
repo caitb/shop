@@ -542,7 +542,7 @@
         try {
             var myDropzone = new Dropzone(selector, {
                 paramName: "file", // The name that will be used to transfer the file
-                maxFilesize: 0.5, // MB
+                maxFilesize: 3, // MB
 
                 addRemoveLinks: true,
                 dictDefaultMessage: dictMessage ? dictMessage : dictDefaultMessage,

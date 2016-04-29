@@ -9,6 +9,7 @@ import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
+import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +71,8 @@ public class SfOrderPayController extends BaseController {
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
         Map<String,Object> map = orderPayService.paySuccessCallBack(getComUser(request),orderId);
+        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
+        model.addAttribute("isUserForcus", isUserForcus);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));

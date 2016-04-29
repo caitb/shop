@@ -25,19 +25,12 @@
             <h1>支付成功</h1>
             <p>您的订单支付成功，请耐心等待收货</p>
         </div>
-        <div class="kuaidi">
-            <p>发货方式：<span></span></p>
-            <p>承运公司：<span></span></p>
-            <p>运单编号：<span></span></p>
-        </div>
         <section class="sec1">
-
             <img src="${path}/static/images/zhifu_ad.png" alt="">
             <div>
                 <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                 <a href="#"><p>收货地址： <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}</span></p></a>
             </div>
-
         </section>
         <section class="sec2">
             <p class="photo">
@@ -64,7 +57,6 @@
             <p>订单编号：<span>${pfCorder.orderCode}</span></p>
             <p>创建时间：<span><fmt:formatDate value="${pfCorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             <p>付款时间：<span><fmt:formatDate value="${pfCorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
-            <p>发货时间：<span><fmt:formatDate value="${pfCorder.deliveryTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
         </div>
         <p><a href="${path}/index">返回首页</a></p>
     </div>

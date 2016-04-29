@@ -108,7 +108,7 @@ public class BOrderPayService {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
-        }else{
+        } else {
             throw new BusinessException("订单类型有误");
         }
         //支付完成推送消息
@@ -405,11 +405,11 @@ public class BOrderPayService {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-                if (pfSkuStock.getStock() - pfSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
-                    throw new BusinessException("库存不足，操作失败");
-                }
                 //减少平台库存
                 pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
+                if (pfSkuStock.getStock() < 0) {
+                    throw new BusinessException("库存不足，操作失败");
+                }
                 //减少冻结库存
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
                 if (pfSkuStockMapper.updateByIdAndVersion(pfSkuStock) != 1) {
@@ -417,7 +417,7 @@ public class BOrderPayService {
                 }
             } else {
                 PfUserSkuStock parentSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserPid(), pfBorderItem.getSkuId());
-                if (parentSkuStock.getStock() - parentSkuStock.getFrozenStock() < pfBorderItem.getQuantity()) {
+                if (parentSkuStock.getStock() < 0) {
                     throw new BusinessException("库存不足，操作失败");
                 }
                 //减少上级合伙人库存
@@ -535,7 +535,7 @@ public class BOrderPayService {
         log.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
             //排单推送通知
-            String[] param = {};
+            String[] param = new String[4];
             param[0] = pfBorderItems.get(0).getSkuName();
             param[1] = pfBorder.getOrderAmount().toString();
             param[2] = pfBorderItems.get(0).getQuantity().toString();

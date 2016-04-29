@@ -41,7 +41,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a class="herf" href="<%=basePath%>product/user/${productInfo.userId}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>申请拿货</p>
     </header>
     <main>

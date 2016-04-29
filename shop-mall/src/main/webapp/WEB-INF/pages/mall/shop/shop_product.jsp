@@ -24,18 +24,17 @@
 </c:if>
 <div class="wrap">
     <header>
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品详情</p>
     </header>
-    <c:if test=" ${fromUserId !=null && fromUserId != loginUser.id && fromUser != null} ">
+    <c:if test="${not empty fromUser && fromUserId !=loginUser.id}">
         <div class="na">
             <p><img src="${fromUser.wxHeadImg}" alt=""></p>
             <h1>
                 <span>我是${fromUser.wxNkName},我为麦链商城呐喊!</span>
                 <span>跟我一起：呐喊得红包，分享赚佣金</span>
             </h1>
-            </div>
-
+        </div>
     </c:if>
     <div class="banner">
         <div class="swiper-container">

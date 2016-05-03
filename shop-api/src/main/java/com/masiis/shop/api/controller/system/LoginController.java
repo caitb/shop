@@ -173,6 +173,7 @@ public class LoginController extends BaseController {
             res.setToken(token);
             res.setExpire(30);
             res.setExpireUnit("天");
+            return res;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             if(StringUtils.isBlank(res.getResCode())){
@@ -185,11 +186,14 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/getPhoneValidCode")
     @ResponseBody
-    public GetPhoneValidCodeRes getPhoneValidCode(HttpServletRequest request){
+    @SignValid(paramType = GetPhoneValidCodeReq.class)
+    public GetPhoneValidCodeRes getPhoneValidCode(HttpServletRequest request, GetPhoneValidCodeReq req){
         GetPhoneValidCodeRes res = new GetPhoneValidCodeRes();
-        GetPhoneValidCodeReq req = null;
         try {
-            req = JSONObject.parseObject(getRequestBody(request), GetPhoneValidCodeReq.class);
+            //req = JSONObject.parseObject(getRequestBody(request), GetPhoneValidCodeReq.class);
+            if(req == null){
+                throw new BusinessException();
+            }
             if (StringUtils.isBlank(req.getPhoneNum())) {
                 // 电话号码为空
                 res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_BLANK);
@@ -235,6 +239,7 @@ public class LoginController extends BaseController {
                 res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
                 res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
             }
+            return res;
         }
         // 返回结果
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

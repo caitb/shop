@@ -76,7 +76,7 @@ public class BaseController {
         }
 
         res = new String(os.toByteArray(), "UTF-8");
-
+        System.out.println("requestBody:" + res);
         if (is != null) {
             is.close();
         }

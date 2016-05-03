@@ -25,4 +25,6 @@ public interface ComUserKeyboxMapper {
     int updateByPrimaryKey(ComUserKeybox record);
 
     ComUserKeybox getByComUserId(Long userId);
+
+    ComUserKeybox selectByToken(String token);
 }

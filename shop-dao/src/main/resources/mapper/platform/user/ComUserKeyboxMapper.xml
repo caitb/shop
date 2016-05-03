@@ -44,4 +44,10 @@
         from com_user_keybox
         WHERE com_user_id = #{userId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectByToken" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select id, com_user_id, app_token, user_key
+        from com_user_keybox
+        WHERE app_token = #{token,jdbcType=VARCHAR}
+    </select>
 </mapper>

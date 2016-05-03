@@ -225,40 +225,39 @@
   -webkit-tap-highlight-color: transparent;
 }
 .dengji p{
-  width:48%;
-  border:1px solid #949494;
-  display: -webkit-box;
   -webkit-box-orient:vertical;
-  -webkit-box-pack:center;
-  -webkit-box-align:center;
-  border-radius: 5px;
   margin: 10px 0;
-  float: left;
-  -webkit-tap-highlight-color: transparent;
+  background: url("/static/images/check.png") no-repeat 13px 3px;
+  background-size: 15px 15px;
+  padding-left: 40px;
+  border-bottom: 1px solid #f6f6f6;
+  padding-bottom: 10px;
 }
 .dengji p:nth-child(1),.dengji p:nth-child(3),.dengji p:nth-child(5){
   margin-right: 2%;
 }
 .dengji p span{
-  display: block;
   color: #333;
   font-size:12px;
 }
 .dengji p span:nth-child(1){
   font-size: 14px;
+  display: block;
 }
 .dengji p span:nth-child(2){
   color: #999 ;
+  margin-right: 10px;
 }
 .dengji p span:nth-child(3){
   color: #999;
 }
 .dengji .active{
-  border:1px solid #F74A11;
+  background: url("/static/images/checked.png") no-repeat 13px 3px;
+  background-size: 15px 15px;
 }
-.dengji .active span{
-  display: block;
+.dengji .active span:nth-child(1){
   color: #F74A11;
+  display: block;
 }
 .dengji .active span:nth-child(2){
   color: #F97B5E;
@@ -361,7 +360,6 @@
   line-height: 21px;
 }
 .wrap .back_que h3 {
-  margin-top: 10px;
   display: -webkit-box;
   -webkit-box-align: center;
   margin: 15px 10px;

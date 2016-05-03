@@ -40,90 +40,50 @@
                 <h2>独立店铺</h2>
                 <p>拥有自己的独立店铺进行推广装修等</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
+            <%--<img src="${path}/static/images/down.png" alt="" class="down">--%>
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
+        <%--<div>--%>
+            <%--<p></p>--%>
+            <%--<h1>--%>
+                <%--<span>还没有数据</span>--%>
+                <%--<span>还没有数据</span>--%>
+            <%--</h1>--%>
+        <%--</div>--%>
         <section class="sec1">
             <img src="${path}/static/images/shenqing_4.png" alt="">
             <div>
                 <h2>寻找合伙人</h2>
                 <p>可以用采购价格购买商品，赚取利差</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
         <section class="sec1">
             <img src="${path}/static/images/shenqing_5.png" alt="">
             <div>
                 <h2>推广渠道</h2>
                 <p>平台提供多样的推广渠道编辑推广自己商品</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
         <section class="sec1">
             <img src="${path}/static/images/shenqing_6.png" alt="">
             <div>
                 <h2>团队管理</h2>
                 <p>提供完善的售后和团队管理工具</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
         <section class="sec1">
             <img src="${path}/static/images/shenqing_7.png" alt="">
             <div>
                 <h2>平台补助</h2>
                 <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
         <section class="sec1">
             <img src="${path}/static/images/shouquan.png" alt="">
             <div>
                 <h2>授权证书</h2>
                 <p style="margin-right:10px;">官方的授权证书证明你的身份</p>
             </div>
-            <img src="${path}/static/images/down.png" alt="" class="down">
         </section>
-        <div>
-            <p></p>
-            <h1>
-                <span>还没有数据</span>
-                <span>还没有数据</span>
-            </h1>
-        </div>
         <input id="skuId" value="${skuId}" style="display: none"/>
         <%--<input id="skipPageId" value="register" style="display: none"/>--%>
         <input id="type" value="${type}" style="display: none"/>
@@ -141,7 +101,7 @@
                     <c:when test="${user.isBinding==1}">
                         <td>绑定手机号</td>
                         <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>--</td>
+                        <td>已完成</td>
                     </c:when>
                     <c:otherwise>
                         <td>绑定手机号</td>
@@ -156,7 +116,7 @@
                 <c:choose>
                     <c:when test="${user.auditStatus == 2}">
                         <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>--</td>
+                        <td>已完成</td>
                     </c:when>
                     <c:otherwise>
                         <td><img src="${path}/static/images/cuo.png" alt=""></td>

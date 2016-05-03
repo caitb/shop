@@ -55,6 +55,8 @@ public class Product extends ComSku {
 
     private Long userPid;//上级
 
+    private Integer version;
+
     public String getSpuName() {
         return spuName;
     }
@@ -229,5 +231,13 @@ public class Product extends ComSku {
 
     public void setUserPid(Long userPid) {
         this.userPid = userPid;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

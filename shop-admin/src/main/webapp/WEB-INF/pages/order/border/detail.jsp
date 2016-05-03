@@ -121,6 +121,7 @@
                                                 <c:if test="${order.pfBorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
+                                                <c:if test="${order.pfBorder.orderStatus == 9}"><span class="" id="orderStatus">线下支付中</span></c:if>
                                             </div>
                                         </div>
 
@@ -315,6 +316,7 @@
                                                 <c:if test="${order.pfBorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
                                                 <c:if test="${order.pfBorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
+                                                <c:if test="${order.pfBorder.orderStatus == 9}"><span class="" id="orderStatus">线下支付中</span></c:if>
                                                 </span>
                                             </div>
                                         </div>

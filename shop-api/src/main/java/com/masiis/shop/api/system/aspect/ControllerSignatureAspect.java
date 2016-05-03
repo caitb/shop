@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
+import com.masiis.shop.api.service.user.ComUserKeyboxService;
 import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.utils.ApplicationContextUtil;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.po.ComUserKeybox;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,6 +42,8 @@ public class ControllerSignatureAspect {
 
     @Resource
     private ComUserService userService;
+    @Resource
+    private ComUserKeyboxService keyboxService;
 
     @Around("within(com.masiis.shop.api.controller..*) && @annotation(rl)")
     public Object signatureValid(ProceedingJoinPoint point, SignValid rl) throws Throwable {
@@ -58,6 +62,8 @@ public class ControllerSignatureAspect {
             // 对请求参数进行解析，并获取参数对象引用
             req = getReqBean(parames, clazz);
             // 校验token
+            String token = (String) clazz.getDeclaredField("token").get(req);
+            ComUserKeybox keybox = keyboxService.getComUserKeyboxByToken(token);
             //userService.;
             // 校验签名
             String sign = SysSignUtils.toSignString(req, null);
@@ -113,7 +119,6 @@ public class ControllerSignatureAspect {
                     } catch (Exception e) {
                         req = JSONObject.parseObject(URLDecoder.decode(result, "UTF-8"), clazz);
                     }
-                    break;
                 } else {
                     String data = request.getParameter(DATA_NAME);
                     if(StringUtils.isBlank(data)){
@@ -126,8 +131,8 @@ public class ControllerSignatureAspect {
                             req = JSONObject.parseObject(URLDecoder.decode(data, "UTF-8"), clazz);
                         }
                     }
-                    break;
                 }
+                break;
             }
         }
         for(int i = 0; i < parames.length; i++){

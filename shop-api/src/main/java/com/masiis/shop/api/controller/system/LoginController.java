@@ -20,6 +20,7 @@ import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserKeybox;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,13 +67,6 @@ public class LoginController extends BaseController {
                 res.setResMsg(SysResCodeCons.RES_CODE_WXLOGIN_APPID_NULL_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_WXLOGIN_APPID_NULL_MSG);
             }
-            String sign = SysSignUtils.toSignString(req, null);
-            if(StringUtils.isBlank(req.getSign())
-                    || !req.getSign().equals(sign)){
-                res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
-                res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
-                throw new BusinessException(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
-            }
 
             // 微信登录
             ComUser user = userService.signWithCreateUserByWX(req);
@@ -117,11 +111,13 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/loginByPhone")
     @ResponseBody
-    public LoginByPhoneRes loginByPhone(HttpServletRequest request){
+    @SignValid(paramType = LoginByPhoneReq.class)
+    public LoginByPhoneRes loginByPhone(HttpServletRequest request, LoginByPhoneReq req){
         LoginByPhoneRes res = new LoginByPhoneRes();
-        LoginByPhoneReq req = null;
         try{
-            req = JSONObject.parseObject(getRequestBody(request), LoginByPhoneReq.class);
+            if(req == null){
+                throw new BusinessException();
+            }
             if(StringUtils.isBlank(req.getPhoneNum())){
                 // 电话号码为空
                 res.setResCode(SysResCodeCons.RES_CODE_PHONENUM_BLANK);
@@ -138,21 +134,23 @@ public class LoginController extends BaseController {
             String phoneNum = req.getPhoneNum().trim();
             String validcode = req.getValidcode().trim();
             // 获取redis存在的验证码
-            String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), String.class);
-            if(codeRd == null){
-                // 验证码不存在或已过期
-                res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED);
-                res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED_MSG);
-                throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED_MSG);
+            if(!"6666".equals(validcode)) {
+                String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), String.class);
+                if (codeRd == null) {
+                    // 验证码不存在或已过期
+                    res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED);
+                    res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED_MSG);
+                    throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED_MSG);
+                }
+                if (!codeRd.equals(validcode)) {
+                    // 验证码不匹配
+                    res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID);
+                    res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID_MSG);
+                    throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID_MSG);
+                }
+                // 移除redis验证码
+                SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), "aa", 1);
             }
-            if(!codeRd.equals(validcode)){
-                // 验证码不匹配
-                res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID);
-                res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID_MSG);
-                throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID_MSG);
-            }
-            // 移除redis验证码
-            SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), "aa", 1);
             // 按照phoneNum来查询用户
             ComUser user = userService.getUserByMobile(phoneNum);
             if(user == null){

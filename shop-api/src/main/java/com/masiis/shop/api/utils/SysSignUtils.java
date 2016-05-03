@@ -3,6 +3,7 @@ package com.masiis.shop.api.utils;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.api.bean.system.GetPhoneValidCodeReq;
+import com.masiis.shop.api.bean.system.LoginByPhoneReq;
 import com.masiis.shop.api.bean.system.LoginByWxRes;
 import com.masiis.shop.api.bean.system.LoginWxReq;
 import com.masiis.shop.common.annotation.SignField;
@@ -10,12 +11,11 @@ import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.MD5Utils;
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -107,10 +107,9 @@ public class SysSignUtils {
         /*GetPhoneValidCodeReq req = new GetPhoneValidCodeReq();
         req.setPhoneNum("186121");
         req.setSign("skjdfKJHKJH-_LKJSLK");
-        String data = URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8");
-        String result = HttpClientUtils.httpGet("http://localhost:8083/sys/getPhoneValidCode?data=" + data);
-        System.out.println("http://localhost:8083/sys/getPhoneValidCode?data=" + data);*/
-        System.out.println("application/x-www-form-urlencoded; charset=utf-8".contains("application/x-www-form-urlencoded"));
+        String data = JSONObject.toJSONString(req);
+        String result = HttpClientUtils.httpPost("http://api.qc.iimai.com/sys/getPhoneValidCode", data);
+        System.out.println(result);*/
 
         /*String aaa = "%7B%22nonceStr%22%3A%22sduJlKLHSksudj_-sklsdkfklds%22%2C%22sign%22%3A%22HDMSKGDFKAHGDKLAJFDKHKAJHSJK%22%2C%22phoneNum%22%3A%2218811346397%22%7D";
         String bbb = "{\"nonceStr\":\"sduJlKLHSksudj_-sklsdkfklds\",\"sign\":\"HDMSKGDFKAHGDKLAJFDKHKAJHSJK\",\"phoneNum\":\"18811346397\"}";
@@ -120,5 +119,10 @@ public class SysSignUtils {
         byte[] aa = {40, 110,117,108,108,41,61,123,34,110,111,110,99,101,83,116,114,34,58,34,115,100,117,74,108};
         os.write(aa);
         System.out.println(new String(os.toByteArray(), "UTF-8"));*/
+        LoginByPhoneReq req = new LoginByPhoneReq();
+        req.setPhoneNum("13671324096");
+        req.setValidcode("6666");
+        System.out.println(URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8"));
+
     }
 }

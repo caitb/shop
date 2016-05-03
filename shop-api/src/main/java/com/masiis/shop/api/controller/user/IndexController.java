@@ -1,5 +1,8 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.user.PartnerIndexReq;
+import com.masiis.shop.api.bean.user.PartnerIndexRes;
+import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.shop.IndexShowService;
@@ -12,6 +15,7 @@ import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -40,12 +44,15 @@ public class IndexController extends BaseController {
 
 
     @RequestMapping("/index")
-    public void toIndex(HttpServletRequest request, ComUser user){
+    @ResponseBody
+    @SignValid(paramType = PartnerIndexReq.class)
+    public PartnerIndexRes toIndex(HttpServletRequest request, PartnerIndexReq req, ComUser user){
         // 检查参数
         // 检查登录用户是否是合伙人
 
         // 查询订单
         // 如果是合伙人，统计下级合伙人数量
+        PartnerIndexRes res = new PartnerIndexRes();
         try {
             List<String> urls = new ArrayList<>();
             String value = PropertiesUtils.getStringValue("index_banner_url");//获取图片地址常量
@@ -87,5 +94,7 @@ public class IndexController extends BaseController {
         } catch (Exception e) {
 
         }
+
+        return res;
     }
 }

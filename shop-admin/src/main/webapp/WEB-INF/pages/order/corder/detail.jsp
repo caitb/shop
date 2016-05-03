@@ -192,8 +192,8 @@
                                                         </form>
                                                     </div>
                                                 </c:if>
-                                                <c:if test="${order.pfBorder.shipStatus == 5}"><span>已发货</span></c:if>
-                                                <c:if test="${order.pfBorder.shipStatus == 9}"><span>已收货</span></c:if>
+                                                <c:if test="${order.pfCorder.shipStatus == 5}"><span>已发货</span></c:if>
+                                                <c:if test="${order.pfCorder.shipStatus == 9}"><span>已收货</span></c:if>
                                             </div>
                                         </div>
 
@@ -213,7 +213,7 @@
                                             <div class="profile-info-name"> 发货时间 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfCorderFreights}" var="pfBorderFreight">
+                                                <c:forEach items="${order.pfCorderFreights}" var="pfCorderFreight">
                                                     <span class="" id="bfCreateTime"><fmt:formatDate value="${pfCorderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                                 </c:forEach>
                                             </div>

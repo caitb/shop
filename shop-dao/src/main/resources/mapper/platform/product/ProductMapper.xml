@@ -25,6 +25,7 @@
         <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
         <result column="is_trial" property="isTrial" jdbcType="INTEGER"/>
         <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
@@ -75,14 +76,14 @@
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.user_id = #{userId}
     </select>
-    <!-->更新库存<-->
+    <!-->自己维护库存<-->
     <update id="updateStock" parameterType="java.util.HashMap">
-        UPDATE pf_user_sku_stock SET custom_stock = #{selfStock}
-        WHERE id = #{id}
+        UPDATE pf_user_sku_stock SET custom_stock = #{selfStock},version = #{version}+1
+        WHERE id = #{id} AND version = #{version}
     </update>
     <!-->查询库存表<-->
     <select id="getProductStock" resultMap="ProductResultMap" parameterType="int">
-        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock
+        SELECT sku.id,sku.name,sku.price_retail,pfu.stock,pfu.id AS pfuid,pfu.custom_stock,pfu.version
         FROM pf_user_sku_stock pfu
         LEFT JOIN com_sku sku ON pfu.sku_id = sku.id
         WHERE pfu.id = #{id}

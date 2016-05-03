@@ -53,6 +53,7 @@ import java.util.List;
  * @date 2016/3/30
  */
 @Service
+@Transactional
 public class BOrderPayService {
 
     private Logger log = Logger.getLogger(this.getClass());
@@ -95,7 +96,6 @@ public class BOrderPayService {
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
-    @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
@@ -130,7 +130,6 @@ public class BOrderPayService {
      * <10>处理发货库存
      * <11>处理收货库存
      */
-    @Transactional
     public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
@@ -329,7 +328,6 @@ public class BOrderPayService {
      * <3>添加订单日志
      * <4>处理发货库存
      */
-    @Transactional
     public void payBOrderTypeII(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
@@ -597,7 +595,6 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public Map<String, Object> offinePayment(Long bOrderId) {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);

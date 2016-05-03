@@ -119,8 +119,8 @@
                                                 <c:if test="${order.pfCorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
-                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待收货</span></c:if>
-                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已收货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                             </div>
                                         </div>
 
@@ -202,7 +202,7 @@
 
                                             <div class="profile-info-value">
                                                 <span class="" id="extractableFee">
-                                                    <c:forEach items="${order.pfCorderFreights}" var="pfBorderFreight">
+                                                    <c:forEach items="${order.pfCorderFreights}" var="pfCorderFreight">
                                                         ${pfCorderFreight.shipManName}
                                                     </c:forEach>
                                                 </span>
@@ -213,7 +213,7 @@
                                             <div class="profile-info-name"> 发货时间 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfCorderFreights}" var="pfBorderFreight">
+                                                <c:forEach items="${order.pfCorderFreights}" var="pfCorderFreight">
                                                     <span class="" id="bfCreateTime"><fmt:formatDate value="${pfCorderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                                 </c:forEach>
                                             </div>
@@ -223,7 +223,7 @@
                                             <div class="profile-info-name"> 运单单号 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.pfCorderFreights}" var="pfBorderFreight">
+                                                <c:forEach items="${order.pfCorderFreights}" var="pfCorderFreight">
                                                     <span class="" id="freight">${pfCorderFreight.freight}</span>
                                                 </c:forEach>
                                             </div>
@@ -273,7 +273,7 @@
                                             <div class="profile-info-name"> 留言 </div>
 
                                             <div class="profile-info-value" style="border-top: 3px dotted #DCEBF7;">
-                                                <span class="bgarea" id="remark">${order.pfCorder.userMessage}</span>
+                                                <span class="bgarea" id="remark">${order.pfCorder.userMassage}</span>
                                             </div>
                                         </div>
 
@@ -313,8 +313,8 @@
                                                 <c:if test="${order.pfCorder.orderStatus == 4}"><span class="" id="orderStatus">退款中</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 5}"><span class="" id="orderStatus">已退款</span></c:if>
                                                 <c:if test="${order.pfCorder.orderStatus == 6}"><span class="" id="orderStatus">排单中</span></c:if>
-                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待收货</span></c:if>
-                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已收货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 7}"><span class="" id="orderStatus">待发货</span></c:if>
+                                                <c:if test="${order.pfCorder.orderStatus == 8}"><span class="" id="orderStatus">已发货</span></c:if>
                                                 </span>
                                             </div>
                                         </div>

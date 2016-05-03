@@ -162,6 +162,7 @@ public class ProductService {
         if (product != null) {
             param.put("selfStock", selfStock);
             param.put("id", id);
+            param.put("version",product.getVersion());
             ADD:
             productMapper.updateStock(param);
         }

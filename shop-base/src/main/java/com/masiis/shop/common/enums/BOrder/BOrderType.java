@@ -39,4 +39,16 @@ public enum BOrderType {
     public abstract Integer getCode();
 
     public abstract String getDesc();
+
+    public static BOrderType getByCode(Integer code) {
+        if (code == null) {
+            return null;
+        }
+        for (BOrderType pt : BOrderType.values()) {
+            if (pt.getCode().intValue() == code.intValue()) {
+                return pt;
+            }
+        }
+        return null;
+    }
 }

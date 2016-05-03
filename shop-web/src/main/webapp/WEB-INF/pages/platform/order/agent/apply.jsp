@@ -30,55 +30,6 @@
             <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
         </div>
     </c:if>
-    <div class="biao">
-        <h1>申请条件</h1>
-        <table>
-            <tr>
-                <td>申请条件</td>
-                <td>是否完成</td>
-                <td>任务入口</td>
-            </tr>
-            <tr>
-                <c:choose>
-                    <c:when test="${user.isBinding==1}">
-                        <td>绑定手机号</td>
-                        <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>--</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td>绑定手机号</td>
-                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
-                        <td><a href="javascript:void(0);" onclick="validateCodeJS.applyTrial('agent')"
-                               style="color: #FF5200;text-decoration: underline">去完成</a></td>
-                    </c:otherwise>
-                </c:choose>
-            </tr>
-            <tr>
-                <td>实名认证</td>
-                <c:choose>
-                    <c:when test="${user.auditStatus == 2}">
-                        <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>--</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
-                        <c:if test="${user.auditStatus == 1}">
-                            <td><span style="color: #FF5200">审核中</span></td>
-                        </c:if>
-                        <c:if test="${user.auditStatus == 3}">
-                            <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
-                                   style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
-                        </c:if>
-                        <c:if test="${user.auditStatus == 0}">
-                            <td><a href="javascript:void(0);" onclick="goVerified();"
-                                   style="color: #FF5200;text-decoration: underline">去完成</a></td>
-                        </c:if>
-                    </c:otherwise>
-                </c:choose>
-            </tr>
-        </table>
-    </div>
-
     <main>
         <div class="he">
             <h1><img src="${path}/static/images/shenqing_2.png" alt="">成为合伙人后，您将获得以下特权</h1>
@@ -177,28 +128,76 @@
         <%--<input id="skipPageId" value="register" style="display: none"/>--%>
         <input id="type" value="${type}" style="display: none"/>
     </main>
+    <div class="biao">
+        <h1>申请条件</h1>
+        <table>
+            <tr>
+                <td>申请条件</td>
+                <td>是否完成</td>
+                <td>任务入口</td>
+            </tr>
+            <tr>
+                <c:choose>
+                    <c:when test="${user.isBinding==1}">
+                        <td>绑定手机号</td>
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
+                        <td>--</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>绑定手机号</td>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
+                        <td><a href="javascript:void(0);" onclick="validateCodeJS.applyTrial('agent')"
+                               style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                    </c:otherwise>
+                </c:choose>
+            </tr>
+            <tr>
+                <td>实名认证</td>
+                <c:choose>
+                    <c:when test="${user.auditStatus == 2}">
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
+                        <td>--</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
+                        <c:if test="${user.auditStatus == 1}">
+                            <td><span style="color: #FF5200">审核中</span></td>
+                        </c:if>
+                        <c:if test="${user.auditStatus == 3}">
+                            <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
+                                   style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
+                        </c:if>
+                        <c:if test="${user.auditStatus == 0}">
+                            <td><a href="javascript:void(0);" onclick="goVerified();"
+                                   style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+            </tr>
+        </table>
+    </div>
     <section class="sec2">
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
-    <div class="back"></div>
-    <div class="back_j">
-        <p class="biao">绑定账号</p>
-        <div>
-            <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
-        </div>
-        <div class="d">
-            <p>验证码：<input type="tel" id="validateNumberDataId">
-                <button id="validateNumberId">获取验证码</button>
-            </p>
-        </div>
-        <p class="tishi" id="errorMessageId"></p>
-        <h1 class="j_qu" id="nextPageId">下一步</h1>
+<div class="back"></div>
+<div class="back_j">
+    <p class="biao">绑定账号</p>
+    <div>
+        <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
     </div>
-    <div class="back_f">
-        <span class="close">×</span>
-        <img src="${path}/static/images/b.png" alt="">
+    <div class="d">
+        <p>验证码：<input type="tel" id="validateNumberDataId">
+            <button id="validateNumberId">获取验证码</button>
+        </p>
     </div>
+    <p class="tishi" id="errorMessageId"></p>
+    <h1 class="j_qu" id="nextPageId">下一步</h1>
+</div>
+<div class="back_f">
+    <span class="close">×</span>
+    <img src="${path}/static/images/b.png" alt="">
+</div>
 <div id="realNameVerifyDiv" class="back_login" style="display:none;">
     <p>您的账户还未通过实名认证,无法继续申请合伙人,请去认证!</p>
     <h1><span id="quxiao">取消</span><span id="goMark" onclick="goVerified(this);">去认证</span></h1>

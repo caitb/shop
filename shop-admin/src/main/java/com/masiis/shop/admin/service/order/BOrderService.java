@@ -60,8 +60,10 @@ public class BOrderService {
      * @param pfBorder
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, PfBorder pfBorder){
-        PageHelper.startPage(pageNo, pageSize);
+    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, PfBorder pfBorder){
+        String sort = "create_time desc";
+        if(sortName != null) sort = sortName + " " + sortOrder;
+        PageHelper.startPage(pageNo, pageSize, sort);
         List<PfBorder> pfBorders = pfBorderMapper.selectByCondition(pfBorder);
         PageInfo<PfBorder> pageInfo = new PageInfo<>(pfBorders);
 

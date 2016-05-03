@@ -50,11 +50,12 @@ public class PfBorderController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
+                       String sortName,
                        String sortOrder,
                        PfBorder pfBorder){
 
         try {
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, pfBorder);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder);
 
             return pageMap;
         } catch (Exception e) {
@@ -103,12 +104,13 @@ public class PfBorderController {
     public Object offlineList(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
+                       String sortName,
                        String sortOrder,
                        PfBorder pfBorder){
 
         try {
             pfBorder.setOrderStatus(9);
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, pfBorder);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder);
 
             return pageMap;
         } catch (Exception e) {

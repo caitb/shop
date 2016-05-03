@@ -496,7 +496,7 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('orderDetail', '试用订单明细', '<%=basePath%>order/corder/detail.shtml?corderId='+ row.pfCorder.id);
+                                parent.window.$('#myTabbable').add('corder-detail-'+row.pfCorder.id, '试用订单明细', '<%=basePath%>order/corder/detail.shtml?corderId='+ row.pfCorder.id);
                             }
                         }
                     }

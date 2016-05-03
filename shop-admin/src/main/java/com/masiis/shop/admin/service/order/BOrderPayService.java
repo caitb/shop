@@ -4,6 +4,7 @@ import com.masiis.shop.admin.service.user.ComUserAccountService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -560,10 +561,11 @@ public class BOrderPayService {
         log.info("****************************处理推送通知***********************************************");
         if (pfBorder.getOrderStatus() == BOrderStatus.MPS.getCode()) {
             //排单推送通知
-            String[] param = new String[4];
+            String[] param = new String[5];
             param[0] = pfBorderItems.get(0).getSkuName();
             param[1] = pfBorder.getOrderAmount().toString();
             param[2] = pfBorderItems.get(0).getQuantity().toString();
+            param[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
             param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
             WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
             MobileMessageUtil.joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());

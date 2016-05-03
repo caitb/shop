@@ -432,7 +432,7 @@
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
-                                parent.window.$('#myTabbable').add('orderDetail', '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
+                                parent.window.$('#myTabbable').add('border-detail-'+row.pfBorder.id, '合伙人订单明细', '<%=basePath%>order/border/detail.shtml?borderId='+ row.pfBorder.id);
                             },
                             'click .scheduling': function(e, value, row, index){
                                 $.ajax({

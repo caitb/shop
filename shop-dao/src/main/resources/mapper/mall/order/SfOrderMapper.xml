@@ -211,7 +211,7 @@
         SELECT count(1) FROM sf_order WHERE shop_id = #{shopId}
     </select>
 
-    <select id="selectByMap" resultMap="BaseResultMap" >
+    <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap" >
         select
                id,
                create_time,
@@ -252,6 +252,9 @@
         <where>
             <if test="id != null">
                 AND id = #{id}
+            </if>
+            <if test="orderCode != null">
+                AND order_code = #{orderCode}
             </if>
             <if test="createMan != null">
                 AND create_man = #{createMan}

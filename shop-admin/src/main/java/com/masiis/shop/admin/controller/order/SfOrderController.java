@@ -42,12 +42,16 @@ public class SfOrderController extends BaseController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
-                       String sortOrder){
+                       String sortName,
+                       String sortOrder,
+                       String orderCode
+                       ){
 
         Map<String, Object> conditionMap = new HashMap<>();
         try {
+            conditionMap.put("orderCode", orderCode);
 
-            Map<String, Object> pageMap = orderService.listByCondition(pageNumber, pageSize, conditionMap);
+            Map<String, Object> pageMap = orderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;
         } catch (Exception e) {
             log.error("获取店铺订单列表失败![conditionMap="+conditionMap+"]");

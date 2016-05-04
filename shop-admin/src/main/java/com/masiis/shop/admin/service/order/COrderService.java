@@ -39,8 +39,11 @@ public class COrderService extends BaseService {
     @Resource
     private PfCorderOperationLogMapper pfCorderOperationLogMapper;
 
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, PfCorder pfCorder){
-        PageHelper.startPage(pageNumber, pageSize);
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, PfCorder pfCorder){
+        String sort = "create_time desc";
+        if(sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
         List<PfCorder> pfCorders = pfCorderMapper.selectByCondition(pfCorder);
         PageInfo<PfCorder> pageInfo = new PageInfo<>(pfCorders);
 

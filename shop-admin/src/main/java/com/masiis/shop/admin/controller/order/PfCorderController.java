@@ -39,10 +39,12 @@ public class PfCorderController {
     public Object list(HttpServletRequest request, HttpServletResponse response,
                        Integer pageNumber,
                        Integer pageSize,
+                       String sortName,
+                       String sortOrder,
                        PfCorder pfCorder){
 
         try {
-            Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, pfCorder);
+            Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfCorder);
 
             return pageMap;
         } catch (Exception e) {

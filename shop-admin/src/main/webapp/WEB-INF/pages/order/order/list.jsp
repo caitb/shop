@@ -78,36 +78,20 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar" style="display: none;">
-                                        <form class="form-inline">
-                                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
-                                            <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
-                                            <%--</button>--%>
-                                            <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
-                                            <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
-                                            <%--</a>--%>
+                                    <div id="toolbar">
+                                        <div class="form-inline">
                                             <div class="form-group">
-                                                <label for="skuName">商品名称</label>
-                                                <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="categoryName">商品分类</label>
-                                                <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
+                                                <label for="orderCode">订单号</label>
+                                                <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
-                                        </form>
+                                        </div>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
-                                           data-search="true"
-                                           data-show-refresh="true"
-                                           data-show-toggle="true"
-                                    <%--data-show-columns="true"--%>
-                                    <%--data-show-export="true"--%>
                                            data-detail-view="false"
                                            data-detail-formatter="detailFormatter"
                                            data-minimum-count-columns="2"
-                                    <%--data-show-pagination-switch="true"--%>
                                            data-pagination="true"
                                            data-id-field="id"
                                            data-page-list="[10, 25, 50, 100, ALL]"
@@ -298,6 +282,10 @@
             striped: true,
             //multipleSearch: true,
             queryParamsType: 'pageNo',
+            queryParams: function(params){
+                if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                return params;
+            },
             rowStyle: function rowStyle(value, row, index) {
                 return {
                     classes: 'text-nowrap another-class',
@@ -337,7 +325,7 @@
                         }
                     },
                     {
-                        field: 'orderCode',
+                        field: 'order_code',
                         title: '订单号',
                         sortable: true,
                         //editable: true,
@@ -350,7 +338,7 @@
                         }
                     },
                     {
-                        field: 'categoryName',
+                        field: 'create_time',
                         title: '订单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -360,7 +348,7 @@
                         }
                     },
                     {
-                        field: 'priceRetail',
+                        field: 'consignee',
                         title: '收货人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -371,7 +359,7 @@
                         }
                     },
                     {
-                        field: 'store',
+                        field: 'real_name',
                         title: '购买人',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -383,7 +371,7 @@
                         }
                     },
                     {
-                        field: 'upTime',
+                        field: 'product_amount',
                         title: '订单金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -395,19 +383,19 @@
                         }
                     },
                     {
-                        field: 'status',
+                        field: 'pay_amount',
                         title: '实付金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
-                            if(row.sfOrder && row.sfOrder.payAmount){
+                            if(row.sfOrder){
                                 return row.sfOrder.payAmount;
                             }
                         }
                     },
                     {
-                        field: 'orderStatus',
+                        field: 'order_status',
                         title: '订单状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -440,7 +428,7 @@
                         }
                     },
                     {
-                        field: 'payType',
+                        field: 'pay_type_id',
                         title: '支付方式',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -456,7 +444,7 @@
                         }
                     },
                     {
-                        field: 'payStatus',
+                        field: 'pay_status',
                         title: '支付状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -471,7 +459,7 @@
                         }
                     },
                     {
-                        field: 'shipStatus',
+                        field: 'ship_status',
                         title: '物流状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -538,6 +526,10 @@
             $table.bootstrapTable('resetView', {
                 height: getHeight()
             });
+        });
+
+        $('#searchBtn').on('click', function(){
+            $table.bootstrapTable('refresh');
         });
     }
 

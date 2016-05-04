@@ -291,14 +291,6 @@
   left:0;
   display: none;
 }
-.back{
-  width:100%;
-  height:100%;
-  background: rgba(0,0,0,0.7);
-  position: absolute;
-  top:0;
-  left:0;
-}
 .back_que {
   position: absolute;
   left: 3%;

@@ -62,7 +62,12 @@
             </c:if>
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
-                    <p>拿货方式：<span>平台代发</span><a href="">重新选择</a></p>
+                    <p>拿货方式：<span>平台代发</span>
+                        <c:if test="${previousPageType==1}">
+                            <a href="${basePath}border/setUserSendType.shtml?skuId=${bOrderConfirm.skuId}&agentLevelId=${bOrderConfirm.agentLevelId}&weiXinId=${bOrderConfirm.weiXinId}">
+                                重新选择</a>
+                        </c:if>
+                    </p>
                 </div>
             </c:if>
             <section class="sec2">

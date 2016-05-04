@@ -32,10 +32,7 @@
             <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">
-            <div class="paidan">
-                <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
-                <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-            </div>
+            <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
         </c:if>
         <div class="content">
             <div class="sec1">
@@ -95,7 +92,7 @@
     </div>
 </div>
 <div class="back_box">
-    <div class="back"></div>
+    <div class="back" style="display: block;"></div>
     <div class="back_que">
         <p>数据确认</p>
         <input type="checkbox" id="a"><label for="a">我已了解自己发货需要-自建仓库<br/>
@@ -112,7 +109,6 @@
         <input type="checkbox" id="g"><label for="g">我已了解自己发货-消费者产生的发票需要自己提供</label>
 
         <input type="checkbox" id="h"><label for="h">我已阅读并了解自己发货的风险</label>
-
         <h3>
             <span class="que_qu" id="getBack">我再想想</span>
             <span class="que_que" id="getOK">确定选择</span>
@@ -171,6 +167,16 @@
             sendType = 2
             $(".back_box").hide();
         }
+    });
+    $(".row").on("click", function () {
+        $(".back_q").show();
+        $(".back").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_q").hide();
+        $(".back").hide();
     });
 </script>
 </body>

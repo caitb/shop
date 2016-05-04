@@ -566,7 +566,7 @@ public class BOrderPayService {
             param[1] = pfBorder.getOrderAmount().toString();
             param[2] = pfBorderItems.get(0).getQuantity().toString();
             param[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
-            param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
+            param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
             WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
             MobileMessageUtil.joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
         } else {

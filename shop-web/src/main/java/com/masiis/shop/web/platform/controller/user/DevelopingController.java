@@ -134,7 +134,7 @@ public class DevelopingController extends BaseController {
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
 
-            ComUser comUser = getComUser(request);    comUser = comUserMapper.selectByPrimaryKey(234L);
+            ComUser comUser = getComUser(request);
             log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);

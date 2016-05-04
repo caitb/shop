@@ -32,15 +32,17 @@
                 <p>确定拿货方式</p>
                 <p>支付订单</p>
             </div>
+
             <c:if test="${isQueuing==true}">
-                <div class="paidan">
+                <%--<div class="paidan">
                     <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
                     <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-                </div>
+                </div>--%>
+                <p class="row">本次订单将进入排单期。在您前面有<span>6656</span>人拍单。</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span></p>
+                    <p>拿货方式：<span>自己发货</span><a href="">重新选择</a></p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
@@ -60,7 +62,7 @@
             </c:if>
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
-                    <p>拿货方式：<span>平台代发</span></p>
+                    <p>拿货方式：<span>平台代发</span><a href="">重新选择</a></p>
                 </div>
             </c:if>
             <section class="sec2">
@@ -94,6 +96,16 @@
             </section>
             <a href="javascript:;" onclick="submit(this);" class="weixin">下一步</a>
         </main>
+    </div>
+</div>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_q">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="zhidao">我知道了</button>
     </div>
 </div>
 </body>

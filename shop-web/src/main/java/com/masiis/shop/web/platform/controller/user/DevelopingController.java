@@ -130,13 +130,6 @@ public class DevelopingController extends BaseController {
 
         try {
             String curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
-//            String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
-//            if(jsapi_ticket == null){
-//                log.info("从redis获取的jsapi_ticket=null");
-//                jsapi_ticket = new JsapiTicketTask().requestTicket();
-//            }
-//
-//            Map<String, String> resultMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
 
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
@@ -148,7 +141,7 @@ public class DevelopingController extends BaseController {
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            String shareLink = basePath + "userApply/apply.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId();
+            String shareLink = basePath + "product/skuDetails.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId();
 
             PfUserCertificate puc = new PfUserCertificate();
             puc.setUserId(comUser.getId());
@@ -175,7 +168,10 @@ public class DevelopingController extends BaseController {
                     QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
+                    String[] contents = new String[2];
+                             contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
+                             contents[1] = "我在麦链合伙人做抗引力-瘦脸精华执行董事级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
+                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
                     //删除本地头像
@@ -207,13 +203,17 @@ public class DevelopingController extends BaseController {
         return null;
     }
 
+    public static void main(String[] args){
+        System.out.println("test%: " + (18/10));
+    }
+
     /**
      * 画海报
      * @param bPath        海报背景图路径
      * @param qrcodePath   二维码背景图路径
      * @param saveFileName 保存名字
      */
-    public void drawPost(String bPath, String qrcodePath, String headImgPath, String saveFileName, String userName) {
+    public void drawPost(String bPath, String qrcodePath, String headImgPath, String saveFileName, String[] contents) {
         ImageIcon bImgIcon = new ImageIcon(bPath);
         ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
         ImageIcon headImgIcon = new ImageIcon(headImgPath);
@@ -232,7 +232,16 @@ public class DevelopingController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
-        g.drawString(userName, 225, 810);
+        g.drawString(contents[0], 92, 785);
+        for(int i=1; i<contents.length; i++){
+            int length = contents[i].length()/10;
+            int more = contents[i].length() - length*10;
+            for(int j=0; j<length; j++){
+                if((j+1)<=length) g.drawString(contents[i].substring(j*10, (j+1)*10), 92, 780+(i*50)+j*50);
+                if((j+1)>length) g.drawString(contents[i].substring(j*10), 92, 780+(i*50)+j*50);
+            }
+            if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
+        }
         g.dispose();
 
         try {

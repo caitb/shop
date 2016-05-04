@@ -102,6 +102,7 @@ public class BOrderController extends BaseController {
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
         modelAndView.addObject("pfBorder", pfBorder);
+        modelAndView.addObject("downPayLatestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
         modelAndView.addObject("pfBorderItems", pfBorderItems);
         modelAndView.addObject("comUser", getComUser(request));
         return modelAndView;

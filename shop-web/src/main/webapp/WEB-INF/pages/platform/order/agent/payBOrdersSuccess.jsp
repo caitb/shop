@@ -121,6 +121,11 @@
         <img src="${path}/static/images/b.png" alt="">
     </div>
 </div>
+<div class="back_h">
+    <img src="${path}/static/images/hehuo.png" alt="">
+    <span class="close">×</span>
+</div>
+
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>

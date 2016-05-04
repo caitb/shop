@@ -161,7 +161,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <p>所有商品</p>
                     </header>
                 <main><div class="main"><c:forEach items="${indexComSkus}"  var="Sku">
-                    <a href="/product/${Sku.skuId}">
+                    <a href="<%=path%>/product/skuDetails.shtml?skuId=${Sku.skuId}">
                         <section class="sec1">
                             <p class="photo">
                                 <img src="${Sku.imgUrl}" alt="">

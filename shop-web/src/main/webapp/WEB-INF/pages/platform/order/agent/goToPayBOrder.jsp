@@ -41,6 +41,19 @@
     <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
     <p><span style="color:red;">*大额转账请选择线下支付</span></p>
 </div>
+<div class="back_box">
+    <div class="back"></div>
+    <div class="back_que">
+        <p>数据确认</p>
+        <h4>您需要在2016-4-30前将￥1,000,000.00转到麦链合伙人对公账户。</h4>
+        <h4>*请在汇款单的附言处注明“您的手机号+订单号”如：手机18611536163 订单4564646546（非常重要！）</h4>
+        <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
+        <h3>
+            <span class="que_qu" id="getBack">取消</span>
+            <span class="que_que" id="submit">确定</span>
+        </h3>
+    </div>
+</div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>

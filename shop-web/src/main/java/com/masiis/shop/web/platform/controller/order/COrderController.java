@@ -172,10 +172,13 @@ public class COrderController extends BaseController {
         try {
             model = getOrderInfo(request, model, skuId, addressId);
             model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
+            model.addAttribute("pfCorderId",pfCorderId);
+            model.addAttribute("skuId",skuId);
+            model.addAttribute("addressId",addressId);
         } catch (Exception e) {
             e.getStackTrace();
         }
-        return "platform/order/zhifuchenggong";
+        return "platform/order/trialPaySuccess";
     }
 
     /**
@@ -193,6 +196,21 @@ public class COrderController extends BaseController {
         model = getOrderInfo(request, model, skuId, addressId);
         model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
         return "platform/order/zhifushibai";
+    }
+    /**
+     * 获得试用订单详情信息
+     * @author hanzengzhi
+     * @date 2016/5/4 19:52
+     */
+    @RequestMapping(value = "/checkTrialOrderInfo.shtml")
+    public String checkTrialOrderInfo(HttpServletRequest request, HttpServletResponse response,
+                                    @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
+                                    @RequestParam(value = "skuId", required = true) Integer skuId,
+                                    @RequestParam(value = "addressId", required = true) Long addressId,
+                                    Model model){
+        model = getOrderInfo(request, model, skuId, addressId);
+        model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
+        return "platform/order/trialOrderDetail";
     }
 
     /**

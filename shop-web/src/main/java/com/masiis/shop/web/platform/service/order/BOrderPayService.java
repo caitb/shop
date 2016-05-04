@@ -35,6 +35,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
+import javax.xml.datatype.DatatypeConfigurationException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -96,7 +97,9 @@ public class BOrderPayService {
      * @param rootPath        项目相对路径用户获取数据
      * @throws Exception
      */
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) {
+    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
+//        System.out.println(dateFormat.format(new Date()));
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
@@ -112,8 +115,13 @@ public class BOrderPayService {
         } else {
             throw new BusinessException("订单类型有误");
         }
-        //支付完成推送消息
-        payEndPushMessage(pfBorderPayment);
+        //支付完成推送消息(发送失败不回滚事务)
+        try {
+            payEndPushMessage(pfBorderPayment);
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+//        System.out.println(dateFormat.format(new Date()));
     }
 
     /**

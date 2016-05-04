@@ -48,7 +48,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public String isBindPhone(HttpServletRequest request, HttpServletResponse response) {
         ComUser comUser = getComUser(request);
-        if (comUser != null && !StringUtils.isEmpty(comUser.getMobile())) {
+        if (comUser != null && comUser.getIsBinding() == 1) {
             return "true";
         } else {
             return "false";

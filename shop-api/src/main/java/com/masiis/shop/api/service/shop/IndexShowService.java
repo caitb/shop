@@ -23,7 +23,7 @@ public class IndexShowService {
      *
      * @return
      */
-    public List<IndexComSku> findIndexComSku(Long userId) throws Exception{
+    public List<IndexComSku> findIndexComSku(Long userId) {
         return indexShowMapper.selectAllIndexComSku(userId);
     }
     /**
@@ -31,7 +31,7 @@ public class IndexShowService {
      *
      * @return
      */
-    public List<PbBanner> findPbBanner()throws Exception{
+    public List<PbBanner> findPbBanner() {
         return indexShowMapper.selectAllPbBanner();
     }
 }

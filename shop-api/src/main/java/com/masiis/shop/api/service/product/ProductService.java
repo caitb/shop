@@ -53,7 +53,7 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 根据商品ID展示商品属性详情
      */
-    public Product getSkuDetails(String skuId) throws Exception {
+    public Product getSkuDetails(String skuId) {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         if (product != null && product.getName().length() > 40) {
             product.setName(product.getName().substring(0, 41) + "......");
@@ -83,7 +83,7 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 代理商利润
      */
-    public Integer getMaxDiscount(Integer skuId) throws Exception {
+    public Integer getMaxDiscount(Integer skuId) {
         int bb= (int)((1-productMapper.maxDiscount(skuId))*100);
         return bb;
     }
@@ -124,7 +124,7 @@ public class ProductService {
      * @return
      * @throws Exception
      */
-    public ProductSimple getSkuSimple(Integer skuId) throws Exception {
+    public ProductSimple getSkuSimple(Integer skuId) {
         return productSimpleMapper.selectBySkuId(skuId);
     }
 
@@ -133,7 +133,7 @@ public class ProductService {
      * @Date 2016/3/16 0016 上午 10:31
      * 个人中心商品列表
      */
-    public List<Product> productListByUser(Long userId) throws Exception {
+    public List<Product> productListByUser(Long userId) {
         List<Product> userProducts = productMapper.getProductsByUser(userId);
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
@@ -156,7 +156,7 @@ public class ProductService {
      * @Date 2016/3/16 0016 下午 7:38
      * 更新库存
      */
-    public void updateStock(Integer selfStock, Integer id) throws Exception {
+    public void updateStock(Integer selfStock, Integer id) {
         Map<String, Object> param = new HashMap<>();
         Product product = productMapper.getProductStock(id);
         if (product != null) {
@@ -171,7 +171,7 @@ public class ProductService {
       * @Date 2016/3/21 0021 上午 10:13
       * 查看当前库存
       */
-    public PfUserSkuStock getStockByUser(Long id) throws Exception {
+    public PfUserSkuStock getStockByUser(Long id) {
         return pfUserSkuStockMapper.selectByPrimaryKey(id);
     }
 

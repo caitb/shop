@@ -81,6 +81,7 @@ public class LoginController extends BaseController {
             keybox.setAppToken(token);
             keybox.setComUserId(user.getId());
             keybox.setUserKey(userKey);
+            keybox.setExTime(DateUtil.getDateNextdays(30));
             if(keybox.getId() == null ){
                 userService.insertKeybox(keybox);
             } else {
@@ -162,9 +163,21 @@ public class LoginController extends BaseController {
             // 生成token
             String token = TokenUtils.generateToken();
             // 保存token
-            user.setAppToken(token);
-            user.setAppTokenExpire(DateUtil.getDateNextdays(30));
-            userService.updateComUser(user);
+            ComUserKeybox keybox = userService.getKeyboxByUserid(user.getId());
+            if(keybox == null){
+                keybox = userService.createKeyboxByUser(user);
+            }
+            // 创建userKey
+            String userKey = MD5Utils.encrypt(user.getId() + user.getWxUnionid() + System.currentTimeMillis());
+            keybox.setAppToken(token);
+            keybox.setComUserId(user.getId());
+            keybox.setUserKey(userKey);
+            keybox.setExTime(DateUtil.getDateNextdays(30));
+            if(keybox.getId() == null ){
+                userService.insertKeybox(keybox);
+            } else {
+                userService.updateKeybox(keybox);
+            }
             // 返回数据
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

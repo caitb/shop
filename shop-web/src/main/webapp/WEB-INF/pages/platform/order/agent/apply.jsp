@@ -25,10 +25,7 @@
     </header>
 
     <c:if test="${isQueuing==true}">
-        <div class="paidan">
-            <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
-            <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-        </div>
+        <p class="row">本次订单将进入排单期。在您前面有<span>6656</span>人拍单。</p>
     </c:if>
     <main>
         <div class="he">
@@ -134,13 +131,44 @@
                     </c:otherwise>
                 </c:choose>
             </tr>
+            <tr>
+                <td>关注麦链合伙人公众号</td>
+                <c:choose>
+                    <c:when test="${user.auditStatus == 2}">
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
+                        <td>已完成</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
+                        <c:if test="${user.auditStatus == 1}">
+                            <td><span style="color: #FF5200">审核中</span></td>
+                        </c:if>
+                        <c:if test="${user.auditStatus == 3}">
+                            <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
+                                   style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
+                        </c:if>
+                        <c:if test="${user.auditStatus == 0}">
+                            <td><a href="javascript:void(0);" onclick="goVerified();"
+                                   style="color: #FF5200;text-decoration: underline">去完成</a></td>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+            </tr>
         </table>
     </div>
     <section class="sec2">
         <p><a id="goToNext" href="javascript:void(0);">继续</a></p>
     </section>
 </div>
+
 <div class="back"></div>
+<div class="back_q">
+    <h1>什么是排单期？</h1>
+    <p>
+        由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+    </p>
+    <button class="zhidao">我知道了</button>
+</div>
 <div class="back_j">
     <p class="biao">绑定账号</p>
     <div>

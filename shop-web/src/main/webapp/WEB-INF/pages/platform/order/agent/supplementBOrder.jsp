@@ -20,13 +20,8 @@
         </header>
         <main>
             <c:if test="${isQueuing==true}">
-                <div class="paidan">
-                    <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
-
-                    <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-                </div>
+                <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
             </c:if>
-
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
                     <p>拿货方式：<span>自己发货</span></p>
@@ -83,10 +78,20 @@
         </main>
     </div>
 </div>
+<div class="back_box">
+    <div class="back" style="display: block"></div>
+    <div class="back_q" style="display: block;">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="zhidao">我知道了</button>
+    </div>
+</div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="${path}/static/js/hideWXShare.js"> </script>
+<script src="${path}/static/js/hideWXShare.js"></script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -104,7 +109,7 @@
 
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
-        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=supplementOrder&selectedAddressId=" + selectedAddressId + "&supplementOrderParamForAddress="+JSON.stringify(${supplementOrderParamForAddress});
+        window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=supplementOrder&selectedAddressId=" + selectedAddressId + "&supplementOrderParamForAddress=" + JSON.stringify(${supplementOrderParamForAddress});
     }
 
     function submit(para) {
@@ -135,5 +140,13 @@
             }
         });
     }
+    $(".row").on("click", function () {
+        $(".back_box").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_box").hide();
+    });
 </script>
 </html>

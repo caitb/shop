@@ -23,9 +23,8 @@
             <img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>合伙人申请</p>
     </header>
-
     <c:if test="${isQueuing==true}">
-        <p class="row">本次订单将进入排单期。在您前面有<span>6656</span>人拍单。</p>
+        <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
     </c:if>
     <main>
         <div class="he">
@@ -40,11 +39,11 @@
             <%--<img src="${path}/static/images/down.png" alt="" class="down">--%>
         </section>
         <%--<div>--%>
-            <%--<p></p>--%>
-            <%--<h1>--%>
-                <%--<span>还没有数据</span>--%>
-                <%--<span>还没有数据</span>--%>
-            <%--</h1>--%>
+        <%--<p></p>--%>
+        <%--<h1>--%>
+        <%--<span>还没有数据</span>--%>
+        <%--<span>还没有数据</span>--%>
+        <%--</h1>--%>
         <%--</div>--%>
         <section class="sec1">
             <img src="${path}/static/images/shenqing_4.png" alt="">
@@ -255,5 +254,15 @@
         $(this).parent().next().hide();
         $(this).parent().css("borderBottom", "1px solid #f6f6f6")
     })
+    $(".row").on("click", function () {
+        $(".back_q").show();
+        $(".back").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_q").hide();
+        $(".back").hide();
+    });
 </script>
 </html>

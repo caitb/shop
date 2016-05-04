@@ -32,17 +32,17 @@
                 <p>确定拿货方式</p>
                 <p>支付订单</p>
             </div>
-
             <c:if test="${isQueuing==true}">
-                <%--<div class="paidan">
-                    <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
-                    <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-                </div>--%>
-                <p class="row">本次订单将进入排单期。在您前面有<span>6656</span>人拍单。</p>
+                <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
-                    <p>拿货方式：<span>自己发货</span><a href="">重新选择</a></p>
+                    <p>拿货方式：<span>自己发货</span>
+                        <c:if test="${previousPageType==1}">
+                            <a href="${basePath}border/setUserSendType.shtml?skuId=${bOrderConfirm.skuId}&agentLevelId=${bOrderConfirm.agentLevelId}&weiXinId=${bOrderConfirm.weiXinId}">
+                                重新选择</a>
+                        </c:if>
+                    </p>
                 </div>
                 <div class="xinz" onclick="toChooseAddressPage()">
                     <p><a>选择收货地址</a></p>
@@ -74,7 +74,8 @@
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
                     <h3>合伙人套餐：<span>${bOrderConfirm.orderTotalPrice}元套餐</span></h3>
-                    <p>商品价格:<span>￥${bOrderConfirm.productTotalPrice}</span>保证金:<span>￥${bOrderConfirm.bailAmount}</span>
+                    <p>
+                        商品价格:<span>￥${bOrderConfirm.productTotalPrice}</span>保证金:<span>￥${bOrderConfirm.bailAmount}</span>
                     </p>
                 </div>
             </section>
@@ -99,8 +100,8 @@
     </div>
 </div>
 <div class="back_box">
-    <div class="back"></div>
-    <div class="back_q">
+    <div class="back" style="display: block"></div>
+    <div class="back_q" style="display: block;">
         <h1>什么是排单期？</h1>
         <p>
             由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
@@ -120,9 +121,6 @@
             $(".xinz").hide();
             $(".sec1").attr("style", "display:-webkit-box;");
         }
-    })
-    var myScroll = new IScroll(".wrap", {
-        preventDefault: false
     })
 
     function toChooseAddressPage() {
@@ -161,5 +159,14 @@
             }
         });
     }
+
+    $(".row").on("click", function () {
+        $(".back_box").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_box").hide();
+    });
 </script>
 </html>

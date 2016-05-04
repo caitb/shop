@@ -38,8 +38,7 @@
             </div>
             <c:choose>
                 <c:when test="${isQueuing==true}">
-                    <p>本次申请进入排单系统，支付订单时前面有<span>${count}</span>人预约。待产能提升，我们将按照付款先后顺序发货。
-                        <a href="${basePath}borderManage/borderDetils.html?id=${pfBorder.id}"><b>查看订单</b></a></p>
+                    <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${pfBorder.sendType == 1}">
@@ -120,6 +119,13 @@
         <span class="close">×</span>
         <img src="${path}/static/images/b.png" alt="">
     </div>
+    <div class="back_q" style="display: block;">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="zhidao">我知道了</button>
+    </div>
 </div>
 <div class="back_h">
     <img src="${path}/static/images/hehuo.png" alt="">
@@ -130,11 +136,11 @@
 <script src="${path}/static/js/zepto.min.js"></script>
 <script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $(".fakeloader").fakeLoader({
-            timeToHide:1200,
-            bgColor:"#3498db",
-            spinner:"spinner4"
+            timeToHide: 1200,
+            bgColor: "#3498db",
+            spinner: "spinner4"
         });
     });
     $(".add").on("tap", function () {
@@ -145,6 +151,16 @@
         $(".back_box").hide()
         $(this).parent().hide()
     })
+    $(".row").on("click", function () {
+        $(".back_q").show();
+        $(".back").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_q").hide();
+        $(".back").hide();
+    });
 </script>
 </body>
 </html>

@@ -22,7 +22,7 @@
     <script>
         function toProduct(skuId){
             fullShow();
-            window.location.href = "<%=basePath%>product/"+skuId;
+            window.location.href = "<%=basePath%>product/skuDetails.shtml?skuId="+skuId;
         }
 
         function toMarket(){

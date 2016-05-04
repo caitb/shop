@@ -19,7 +19,7 @@
 </c:if>
 <div class="wrap">
     <header class="xq_header">
-        <a href="${basePath}product/${skuId}">
+        <a href="${basePath}product/skuDetails.shtml?skuId=${skuId}">
             <img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>合伙人申请</p>
     </header>

@@ -133,7 +133,7 @@
                     trHtml+="</div>";
                     trHtml+="<div class=\"sec2\">";
                     trHtml+="<p onclick=\"shangjia('"+sku.shopSkuId+"')\">上架</p>";
-                    trHtml+="<p><a href=\"<%=basePath%>product/"+sku.comSku.id+"\">预览</a></p>";
+                    trHtml+="<p><a href=\"<%=basePath%>product/skuDetails.shtml?skuId="+sku.comSku.id+"\">预览</a></p>";
                     trHtml+="</div>";
                 });
                 $(".all").empty().html(trHtml);

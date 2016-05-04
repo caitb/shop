@@ -32,7 +32,7 @@
     </div>
     <div class="sec1">
         <div>
-            <h1>￥${border.receivableAmount}</h1>
+            <h1>订单号:${border.orderCode}</h1>
             <p>您需要在${latestTime}前将￥${border.receivableAmount}转到麦链合伙人对公账户。</p>
         </div>
         <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.receivableAmount}元套餐+您的手机号”（<span>非常重要！</span>）</p>

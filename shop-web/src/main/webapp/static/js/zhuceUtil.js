@@ -4,7 +4,18 @@ $(function () {
             alert("微信号不能为空");
             return false;
         }
+        if(!CheckChinese($(data).val())){
+            alert("微信号不能有汉字");
+            return false;
+        }
         return true;
+        function CheckChinese(val) {
+            var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+            if (reg.test(val)) {
+                return false;
+            }
+            return true;
+        }
     }
     var mobileCheckFun = function (data) {
         var bl = false;
@@ -81,7 +92,7 @@ $(function () {
         // 获取合伙人等级
         $("#q_levelName").html($("p.active").attr("agentFee") + "元套餐");
         // 获取所缴纳货款
-        $("#q_amount").html("￥"+$("p.active").attr("agentFee"));
+        $("#q_amount").html("￥" + $("p.active").attr("agentFee"));
 
         // 弹出确认框
         $(".back_que").css("display", "-webkit-box");

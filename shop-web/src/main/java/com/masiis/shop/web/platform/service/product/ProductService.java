@@ -53,7 +53,7 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 根据商品ID展示商品属性详情
      */
-    public Product getSkuDetails(String skuId) throws Exception {
+    public Product getSkuDetails(Integer skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         if (product != null && product.getName().length() > 40) {
             product.setName(product.getName().substring(0, 41) + "......");

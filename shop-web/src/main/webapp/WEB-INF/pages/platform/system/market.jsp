@@ -56,7 +56,7 @@
             <section class="sec1">
                 <c:forEach items="${indexComS}"  begin="${i}" end="${i+1}" var="Sku">
                     <div>
-                        <a href="/product/${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
+                        <a href="/product/skuDetails.shtml?skuId=${Sku.id}"><img src="${Sku.imgUrl}" alt=""></a>
                         <h2>${Sku.comSku.name}</h2>
                         <h1>￥${Sku.comSku.priceRetail} <span>${Sku.discountLevel}</span></h1>
                         <h3>保证金：${Sku.bail}元</h3>

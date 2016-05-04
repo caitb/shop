@@ -54,7 +54,7 @@
 <script type="text/javascript" src="${path}/static/js/shiyong.js"></script>
 <script>
     function returnPage(skuId){
-        window.location.href="/product/"+skuId;
+        window.location.href="/product/skuDetails.shtml?skuId="+skuId;
     }
 </script>
 </html>

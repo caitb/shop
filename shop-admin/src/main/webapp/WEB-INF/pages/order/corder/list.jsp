@@ -337,7 +337,7 @@
                         }
                     },
                     {
-                        field: 'orderCode',
+                        field: 'order_code',
                         title: '订单号',
                         sortable: true,
                         //editable: true,
@@ -350,7 +350,7 @@
                         }
                     },
                     {
-                        field: 'categoryName',
+                        field: 'create_time',
                         title: '订单日期',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -360,7 +360,7 @@
                         }
                     },
                     {
-                        field: 'priceRetail',
+                        field: 'consignee',
                         title: '收货人',
                         footerFormatter: totalNameFormatter,
                         align: 'center',
@@ -371,9 +371,8 @@
                         }
                     },
                     {
-                        field: 'store',
+                        field: 'real_name',
                         title: '购买人',
-                        sortable: true,
                         footerFormatter: totalNameFormatter,
                         align: 'center',
                         formatter: function(value, row, index){
@@ -383,7 +382,7 @@
                         }
                     },
                     {
-                        field: 'productAmount',
+                        field: 'product_amount',
                         title: '订单金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -395,7 +394,7 @@
                         }
                     },
                     {
-                        field: 'payAmount',
+                        field: 'pay_amount',
                         title: '实付金额',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -407,7 +406,7 @@
                         }
                     },
                     {
-                        field: 'orderStatus',
+                        field: 'order_status',
                         title: '订单状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -440,7 +439,7 @@
                         }
                     },
                     {
-                        field: 'payType',
+                        field: 'pay_type',
                         title: '支付方式',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -456,7 +455,7 @@
                         }
                     },
                     {
-                        field: 'payStatus',
+                        field: 'pay_status',
                         title: '支付状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,
@@ -471,7 +470,7 @@
                         }
                     },
                     {
-                        field: 'shipStatus',
+                        field: 'ship_status',
                         title: '物流状态',
                         sortable: true,
                         footerFormatter: totalNameFormatter,

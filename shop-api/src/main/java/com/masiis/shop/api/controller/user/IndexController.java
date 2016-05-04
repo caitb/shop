@@ -3,6 +3,8 @@ package com.masiis.shop.api.controller.user;
 import com.masiis.shop.api.bean.user.PartnerIndexReq;
 import com.masiis.shop.api.bean.user.PartnerIndexRes;
 import com.masiis.shop.api.constants.SignValid;
+import com.masiis.shop.api.constants.SysConstants;
+import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.shop.IndexShowService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +50,6 @@ public class IndexController extends BaseController {
     @ResponseBody
     @SignValid(paramType = PartnerIndexReq.class)
     public PartnerIndexRes toIndex(HttpServletRequest request, PartnerIndexReq req, ComUser user){
-        // 检查参数
-        // 检查登录用户是否是合伙人
-
-        // 查询订单
-        // 如果是合伙人，统计下级合伙人数量
         PartnerIndexRes res = new PartnerIndexRes();
         try {
             List<String> urls = new ArrayList<>();
@@ -62,18 +60,26 @@ public class IndexController extends BaseController {
                 urls.add(url);
             }
 
-            ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
-            if (comUserAccount == null) {
-                throw new BusinessException("comUserAccount 统计为空");
-            }
-            Long num = 0l;
-            List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
-            if (agentNum != null) {
-                for (PfUserSku pfUserSku : agentNum) {
-                    if (pfUserSku != null && pfUserSku.getAgentNum() != null) {
-                        num = num + pfUserSku.getAgentNum();
+            if(user.getIsAgent().intValue() == 1){
+                // 是合伙人
+                ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
+                if (comUserAccount == null) {
+                    throw new BusinessException("comUserAccount 统计为空");
+                }
+                Long num = 0l;
+                List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
+                if (agentNum != null) {
+                    for (PfUserSku pfUserSku : agentNum) {
+                        if (pfUserSku != null && pfUserSku.getAgentNum() != null) {
+                            num = num + pfUserSku.getAgentNum();
+                        }
                     }
                 }
+
+                res.setPartnerNums(num.intValue());
+                res.setTotalIncomeFee(comUserAccount.getTotalIncomeFee()
+                        .setScale(2, RoundingMode.HALF_UP).toString());
+                res.setProfitFee(comUserAccount.getProfitFee().setScale(2, RoundingMode.HALF_UP).toString());
             }
             List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
             List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
@@ -86,15 +92,18 @@ public class IndexController extends BaseController {
                 }
             }
             Integer borderNum = pfBorders10.size() + pfBorders6.size();
-            /*modelAndView.addObject("borderNum", borderNum);//订单数量
-            modelAndView.addObject("num", num);//下级合伙人数量
-            modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
-            modelAndView.addObject("urls", urls);//封装图片地址集合
-            modelAndView.addObject("user", user);*/
+            // 绑定数据
+            res.setbOrderNums(borderNum);
+            res.setImgs(urls);
+            res.setIsPartner(user.getIsAgent());
+            res.setIsBind(user.getIsBinding());
+            res.setNkName(user.getWxNkName());
+            res.setUserHeadImg(user.getWxHeadImg());
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-
+            log.error(e.getMessage(), e);
         }
-
         return res;
     }
 }

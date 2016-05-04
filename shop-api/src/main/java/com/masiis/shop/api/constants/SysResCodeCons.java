@@ -20,6 +20,12 @@ public class SysResCodeCons {
     public static final String RES_CODE_REQ_SIGN_INVALID = "100002";
     public static final String RES_CODE_REQ_SIGN_INVALID_MSG = "请求签名错误";
 
+    public static final String RES_CODE_REQ_TOKEN_INVALID = "100003";
+    public static final String RES_CODE_REQ_TOKEN_INVALID_MSG = "请求token不合法";
+
+    public static final String RES_CODE_REQ_TOKEN_PASTDUE = "100004";
+    public static final String RES_CODE_REQ_TOKEN_PASTDUE_MSG = "请求token已过期";
+
     /**
      * 获取手机验证码返回码
      */

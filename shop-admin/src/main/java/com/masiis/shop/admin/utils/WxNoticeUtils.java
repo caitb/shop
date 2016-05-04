@@ -18,12 +18,18 @@ import java.net.URLEncoder;
 public class WxNoticeUtils {
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        String token = "poQMZlwx2BkF5pMvr_8q9eyG4rjW2rh9ck_2LU2ktq_TEOVt6700Ce0QDKd87OT7uylw5D6qZsHAaSx_2PheqYr1DQ_-AIWL1wQcWV2PYxUNHIeAAASMN";
+        String token = "kz3f54jAOcf9Kxj_x9kyagYnpH7YwwE30-4KYnsTk_zduAIfCtIqMKWo1S4890krgu_EMzdF_pyqDrBJ43UTaWfgaGQGq_Ciy4pmH3ljV78KUVcACAEOP";
+        String qrTicket = "gQH28DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xLzFVaS05LWpseFBHOVczLS1rbVF2AAIEW5kpVwMEAAAAAA==";
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
         String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsPF.APPID+"&secret=" + WxConsPF.APPSECRET;
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
+
+        String qrUrl = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
+        String result = HttpClientUtils.httpPost(qrUrl, "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 1}}}");
+        System.out.println(result);
+
 
         /*String url2 = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=" + token;
         System.out.println(HttpClientUtils.httpGet(url2));*/

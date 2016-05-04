@@ -9,6 +9,7 @@ import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.utils.ApplicationContextUtil;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserKeybox;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -28,6 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -60,22 +62,13 @@ public class ControllerSignatureAspect {
         Object errRes = returnType.getDeclaredConstructor().newInstance();
         try {
             // 对请求参数进行解析，并获取参数对象引用
-            req = getReqBean(parames, clazz);
-            // 校验token
-            String token = (String) clazz.getDeclaredField("token").get(req);
-            ComUserKeybox keybox = keyboxService.getComUserKeyboxByToken(token);
-            //userService.;
-            // 校验签名
-            String sign = SysSignUtils.toSignString(req, null);
-            // 暂时取父类
-            Field field = clazz.getSuperclass().getDeclaredField("sign");
-            field.setAccessible(true);
-            /*if(!sign.equals(field.get(req))){
-                errRes.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
-                errRes.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
+            req = getReqBean(parames, clazz, (BaseRes) errRes, rl);
+            if(StringUtils.isNotBlank(((BaseRes) errRes).getResCode())){
                 return errRes;
-            }*/
-            log.info("sign:" + field.get(req));
+            }
+            if(req == null){
+
+            }
 
             log.info("进入" + tarName + "......");
 
@@ -104,9 +97,10 @@ public class ControllerSignatureAspect {
      * @param clazz
      * @return
      */
-    private Object getReqBean(Object[] parames, Class clazz) throws UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private Object getReqBean(Object[] parames, Class clazz, BaseRes res, SignValid rl) throws UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Object req = null;
         boolean isSet = true;
+        // 解析参数
         for (Object obj : parames) {
             if (obj instanceof HttpServletRequest) {
                 HttpServletRequest request = (HttpServletRequest) obj;
@@ -122,6 +116,7 @@ public class ControllerSignatureAspect {
                 } else {
                     String data = request.getParameter(DATA_NAME);
                     if(StringUtils.isBlank(data)){
+                        // 类似表单提交,启用springmvc参数绑定
                         isSet = false;
                     } else {
                         data = URLDecoder.decode(data, "UTF-8");
@@ -135,18 +130,72 @@ public class ControllerSignatureAspect {
                 break;
             }
         }
+
+        ComUser user = null;
+        if(rl.hasToken() == true) {
+            // 校验token
+            Field toField = clazz.getDeclaredField("token");
+            toField.setAccessible(true);
+            String token = (String) toField.get(req);
+            ComUserKeybox keybox = keyboxService.getComUserKeyboxByToken(token);
+            if (keybox == null) {
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID_MSG);
+                return null;
+            }
+            if (new Date().compareTo(keybox.getExTime()) >= 0) {
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE_MSG);
+                return null;
+            }
+
+            // 校验签名
+            String sign = SysSignUtils.toSignString(req, null);
+            // 获取请求对象中的签名字符串
+            String reqSign = getFieldValue(clazz, req);
+            /*if(!sign.equals(field.get(req))){
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_SIGN_INVALID_MSG);
+                return null;
+            }*/
+            log.info("sign:" + reqSign);
+
+            user = userService.getUserById(keybox.getComUserId());
+        }
+
         for(int i = 0; i < parames.length; i++){
             if (parames[i].getClass() == clazz) {
                 if(!isSet){
-                    return parames[i];
+                    req = parames[i];
                 } else {
                     parames[i] = req;
-                    break;
                 }
+            }
+            // 绑定comuser
+            if(parames[i] instanceof ComUser){
+                parames[i] = user;
             }
         }
 
         return req;
+    }
+
+    private String getFieldValue(Class clazz, Object req) throws IllegalAccessException {
+        Field field = null;
+        do {
+            try {
+                field = clazz.getSuperclass().getDeclaredField("sign");
+                if(field != null){
+                    break;
+                }
+            } catch (NoSuchFieldException e) {}
+        } while ((clazz = clazz.getSuperclass()) != Object.class);
+        if(field == null){
+            throw new BusinessException();
+        }
+        field.setAccessible(true);
+        Object value = field.get(req);
+        return value == null ? null : value.toString();
     }
 
     private void setResUnknown(BaseRes errRes) {

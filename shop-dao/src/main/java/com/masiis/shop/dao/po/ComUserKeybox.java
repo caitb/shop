@@ -7,12 +7,14 @@
  */
 package com.masiis.shop.dao.po;
 
-public class ComUserKeybox {
+import java.util.Date;
 
+public class ComUserKeybox {
     private Long id;
     private Long comUserId;
     private String appToken;
     private String userKey;
+    private Date exTime;
 
     public Long getId() {
         return id;
@@ -37,5 +39,13 @@ public class ComUserKeybox {
     }
     public void setUserKey(String userKey) {
         this.userKey = userKey == null ? null : userKey.trim();
+    }
+
+    public Date getExTime() {
+        return exTime;
+    }
+
+    public void setExTime(Date exTime) {
+        this.exTime = exTime;
     }
 }

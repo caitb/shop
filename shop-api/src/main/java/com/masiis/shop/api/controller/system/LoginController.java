@@ -45,7 +45,7 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/loginByWx")
     @ResponseBody
-    @SignValid(paramType = LoginWxReq.class)
+    @SignValid(paramType = LoginWxReq.class, hasToken = false)
     public LoginByWxRes loginByWx(HttpServletRequest request, LoginWxReq req) throws IOException {
         LoginByWxRes res = new LoginByWxRes();
         try{
@@ -111,7 +111,7 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/loginByPhone")
     @ResponseBody
-    @SignValid(paramType = LoginByPhoneReq.class)
+    @SignValid(paramType = LoginByPhoneReq.class, hasToken = false)
     public LoginByPhoneRes loginByPhone(HttpServletRequest request, LoginByPhoneReq req){
         LoginByPhoneRes res = new LoginByPhoneRes();
         try{
@@ -184,7 +184,7 @@ public class LoginController extends BaseController {
 
     @RequestMapping("/getPhoneValidCode")
     @ResponseBody
-    @SignValid(paramType = GetPhoneValidCodeReq.class)
+    @SignValid(paramType = GetPhoneValidCodeReq.class, hasToken = false)
     public GetPhoneValidCodeRes getPhoneValidCode(HttpServletRequest request, GetPhoneValidCodeReq req){
         GetPhoneValidCodeRes res = new GetPhoneValidCodeRes();
         try {

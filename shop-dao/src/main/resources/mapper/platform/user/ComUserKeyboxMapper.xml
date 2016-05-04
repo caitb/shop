@@ -6,6 +6,7 @@
         <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
         <result column="app_token" property="appToken" jdbcType="VARCHAR" />
         <result column="user_key" property="userKey" jdbcType="VARCHAR" />
+        <result column="ex_time" property="exTime"  jdbcType="TIMESTAMP" />
     </resultMap>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -15,38 +16,39 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserKeybox" useGeneratedKeys="true" keyProperty="id">
         insert into com_user_keybox (id, com_user_id, app_token, 
-            user_key)
+            user_key, ex_time)
         values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{appToken,jdbcType=VARCHAR}, 
-            #{userKey,jdbcType=VARCHAR})
+            #{userKey,jdbcType=VARCHAR}, #{exTime,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserKeybox" >
         update com_user_keybox
         set com_user_id = #{comUserId,jdbcType=BIGINT},
             app_token = #{appToken,jdbcType=VARCHAR},
-            user_key = #{userKey,jdbcType=VARCHAR}
+            user_key = #{userKey,jdbcType=VARCHAR},
+            ex_time = #{exTime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=BIGINT}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select id, com_user_id, app_token, user_key
+        select id, com_user_id, app_token, user_key, ex_time
         from com_user_keybox
         where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, com_user_id, app_token, user_key
+        select id, com_user_id, app_token, user_key, ex_time
         from com_user_keybox
     </select>
 
     <select id="getByComUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, app_token, user_key
+        select id, com_user_id, app_token, user_key, ex_time
         from com_user_keybox
         WHERE com_user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <select id="selectByToken" resultMap="BaseResultMap" parameterType="java.lang.String">
-        select id, com_user_id, app_token, user_key
+        select id, com_user_id, app_token, user_key, ex_time
         from com_user_keybox
         WHERE app_token = #{token,jdbcType=VARCHAR}
     </select>

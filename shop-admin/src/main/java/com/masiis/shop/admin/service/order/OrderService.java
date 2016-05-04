@@ -50,8 +50,11 @@ public class OrderService {
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
-        PageHelper.startPage(pageNumber, pageSize);
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
+        String sort = "create_time desc";
+        if(sortName != null) sort = sortName + " " + sortOrder;
+
+        PageHelper.startPage(pageNumber, pageSize, sort);
         List<SfOrder> sfOrders = sfOrderMapper.selectByMap(conditionMap);
         PageInfo<SfOrder> pageInfo = new PageInfo<>(sfOrders);
 

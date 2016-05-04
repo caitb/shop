@@ -30,14 +30,13 @@
         <p style="color:#F74A11;">选择拿货方式</p>
         <p style="color:#F74A11;">支付订单</p>
     </div>
-    <p class="cHange">您选择的支付方式：  线下支付<a>更改支付方式</a></p>
+    <p class="cHange">您选择的支付方式：  线下支付<a id="changePayWayId">更改支付方式</a></p>
     <div class="sec1">
         <div>
             <h1>订单号:${border.orderCode}</h1>
             <p>您需要在${latestTime}前将￥${border.receivableAmount}转到麦链合伙人对公账户。</p>
         </div>
-     <%--   <p>*请在汇款单的附言处注明“${orderItem.skuName}合伙申请${border.receivableAmount}元套餐+您的手机号”（<span>非常重要！</span>）</p>--%>
-        <p>*请在汇款单的附言处注明“订单号”如：订单号：4564646546（<span>非常重要！</span>）（查看示例）；</p>
+        <p>*请在汇款单的附言处注明“您的手机号+订单号”如：手机18611536163 订单B201605041814259710974（<span>非常重要！</span>）（查看示例）；</p>
         <p>*线下支付到账时间为T+1天到账，审核时间为1个工作日</p>
         <h1><span></span>麦链对公账户信息</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>
@@ -60,6 +59,9 @@
 </footer>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
+    $("#changePayWayId").on("click", function () {
+        window.location.href = "${path}/border/goToPayBOrder.shtml?bOrderId="+${border.id};
+    })
     $(".add").on("click", function () {
         $(".back_box").show()
     })

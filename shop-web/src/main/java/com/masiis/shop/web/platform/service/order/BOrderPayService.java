@@ -646,7 +646,6 @@ public class BOrderPayService {
         }
         return pfBorder;
     }
-
     /**
      * 插入订单支付表
      *

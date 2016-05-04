@@ -141,7 +141,7 @@ public class DevelopingController extends BaseController {
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            String shareLink = basePath + "product/skuDetails.shtml?type=1&skuId="+skuId+"&pUserId="+comUser.getId();
+            String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
 
             PfUserCertificate puc = new PfUserCertificate();
             puc.setUserId(comUser.getId());

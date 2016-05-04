@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.service.order.BOrderAddService;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -22,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,17 +48,51 @@ public class ProductController extends BaseController {
     private UserAddressService userAddressService;
     @Resource
     private BOrderAddService bOrderAddService;
-    @RequestMapping(value = "/{skuId}", method = RequestMethod.GET)
-    public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response, @PathVariable("skuId") String skuId) throws Exception {
+    @Resource
+    private PfUserRelationService pfUserRelationService;
+
+    /**
+     * 1 商品详细信息
+     * 2 库存信息暂时都显示平台,与上级无关
+     * 3 排单只和商品设置有关
+     * @author jjh
+     * @throws Exception
+     */
+    @RequestMapping("/skuDetails.shtml")
+    public ModelAndView getProductDetails(HttpServletRequest request, HttpServletResponse response,
+                                          @RequestParam(value = "skuId", required = true) Integer skuId,
+                                          @RequestParam(value = "pUserId", required = false) Long pUserId) throws Exception {
         ModelAndView mav = new ModelAndView("/platform/product/product");
-        HttpSession session = request.getSession();
-        ComUser comUser = (ComUser) session.getAttribute("comUser");
+        ComUser user = getComUser(request);
+        if (user == null) {
+            throw new BusinessException("用户未登录!");
+        }
+        ComSku sku = skuService.getSkuById(skuId);
+        if (sku == null) {
+            throw new BusinessException("sku不合法,系统不存在该sku");
+        }
+        Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
+        if (temPUserId == 0) {
+            if (pUserId != null && pUserId > 0) {
+                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                userSkuService.checkParentData(user, pUserId, skuId);
+                PfUserRelation pfUserRelation = new PfUserRelation();
+                pfUserRelation.setUserId(user.getId());
+                pfUserRelation.setSkuId(skuId);
+                pfUserRelation.setCreateTime(new Date());
+                pfUserRelation.setIsEnable(1);
+                pfUserRelation.setUserPid(pUserId);
+                pfUserRelationService.insert(pfUserRelation);
+            } else {
+                pUserId = 0l;
+            }
+        }
         Product productDetails = productService.getSkuDetails(skuId);
-        if (comUser != null && comUser.getIsAgent() == 1) {
+        if (user != null && user.getIsAgent() == 1) {
             productDetails.setIsPartner(true);
         }
-        productDetails.setMaxDiscount(productService.getMaxDiscount(Integer.parseInt(skuId)));
-        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(comUser.getId(), Integer.parseInt(skuId));
+        productDetails.setMaxDiscount(productService.getMaxDiscount(skuId));
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
         mav.addObject("pfUserSku", pfUserSku);//是否代理过该商品
         mav.addObject("productDetails", productDetails);
         return mav;

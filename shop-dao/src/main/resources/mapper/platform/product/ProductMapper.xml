@@ -47,7 +47,7 @@
     </resultMap>
 
 
-    <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="String" >
+    <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="int" >
         SELECT sku.id,sku.name,sku.price_retail,sku.remark,sku.spu_id,
                 spu.name,spu.slogan,spu.content,spu.is_trial,
                 sku_stok.stock,spu.ship_amount,sku_stok.is_queue,
@@ -59,7 +59,7 @@
         WHERE sku.id = #{skuId}
     </select>
 
-    <select id="getSkuImgById" resultMap="SkuImgResultMap" parameterType="String">
+    <select id="getSkuImgById" resultMap="SkuImgResultMap" parameterType="int">
        SELECT img_url,img_name,sort,is_default
        FROM com_sku_image
        WHERE sku_id = #{skuId}

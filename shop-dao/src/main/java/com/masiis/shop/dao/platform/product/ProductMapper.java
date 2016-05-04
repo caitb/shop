@@ -14,9 +14,9 @@ import java.util.Map;
 @Repository
 public interface ProductMapper {
 
-    Product getSkuDetailsBySkuId(String skuId);
+    Product getSkuDetailsBySkuId(Integer skuId);
 
-    List<ComSkuImage> getSkuImgById(String skuId);
+    List<ComSkuImage> getSkuImgById(Integer skuId);
 
     double maxDiscount(Integer skuId);
 

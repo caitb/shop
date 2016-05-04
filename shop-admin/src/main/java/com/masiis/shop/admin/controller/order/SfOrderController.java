@@ -43,11 +43,13 @@ public class SfOrderController extends BaseController {
                        Integer pageNumber,
                        Integer pageSize,
                        String sortName,
-                       String sortOrder
+                       String sortOrder,
+                       String orderCode
                        ){
 
         Map<String, Object> conditionMap = new HashMap<>();
         try {
+            conditionMap.put("orderCode", orderCode);
 
             Map<String, Object> pageMap = orderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
             return pageMap;

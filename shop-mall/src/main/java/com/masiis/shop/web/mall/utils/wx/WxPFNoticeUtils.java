@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.beans.wx.notice.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -209,6 +211,32 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_PF_ORDER);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 小铺订单确认收货
+     *
+     * @param user
+     * @param params (第一个,订单号(ordercode); 第二个,商品名称; 第三个,下单时间;
+     *               第四个,发货时间; 第五个,确认收货时间)
+     * @return
+     */
+    public Boolean orderConfirmNotice(ComUser user, String[] params){
+        WxPFOrderConfirmNotice confirm = new WxPFOrderConfirmNotice();
+        WxNoticeReq<WxPFOrderConfirmNotice> req = new WxNoticeReq<>(confirm);
+
+        confirm.setFirst(new WxNoticeDataItem("亲，您在我们商城买的宝贝已经确认收货。", null));
+        confirm.setKeyword1(new WxNoticeDataItem(params[0], null));
+        confirm.setKeyword2(new WxNoticeDataItem(params[1], null));
+        confirm.setKeyword3(new WxNoticeDataItem(params[2], null));
+        confirm.setKeyword4(new WxNoticeDataItem(params[3], null));
+        confirm.setKeyword5(new WxNoticeDataItem(params[4], null));
+        confirm.setRemark(new WxNoticeDataItem("感谢您的支持与厚爱。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_ORDER_CONFIRM);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }
@@ -451,6 +479,35 @@ public class WxPFNoticeUtils {
         req.setUrl(orderUrl);
         // 调用库存不足提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_SHOP_ORDER);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 线下支付提醒
+     *
+     * @param user  目标人
+     * @param params    (第一个,订单号; 第二个,订单创建时间; 第三个,商品明细(如:抗引力boss级合伙人订单))
+     * @param orderUrl  通知的订单详情页
+     * @return
+     */
+    public Boolean offLinePayNotice(ComUser user, String[] params, String orderUrl){
+        WxPFOffLinePayNotice offLinePayNotice = new WxPFOffLinePayNotice();
+        WxNoticeReq<WxPFOffLinePayNotice> req = new WxNoticeReq<>(offLinePayNotice);
+
+        offLinePayNotice.setFirst(new WxNoticeDataItem("订单未付款提醒", null));
+        offLinePayNotice.setKeyword1(new WxNoticeDataItem(params[0], null));
+        offLinePayNotice.setKeyword2(new WxNoticeDataItem(params[1], null));
+        offLinePayNotice.setKeyword3(new WxNoticeDataItem(params[2], null));
+        Date date = DateUtil.String2Date(params[1], "yyyy-MM-dd HH:mm:ss");
+        date = DateUtil.getDateNextdays(date, 7);
+        offLinePayNotice.setRemark(new WxNoticeDataItem("您选择的是线下支付，请您在"
+                + DateUtil.Date2String(date, "yyyy-MM-dd HH:mm:ss") + "前付款以免过期。点击查看详情。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setUrl(orderUrl);
+        // 调用库存不足提醒模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_OFFLINE_PAY);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
     }

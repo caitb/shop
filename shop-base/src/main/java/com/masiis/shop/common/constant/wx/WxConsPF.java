@@ -150,4 +150,12 @@ public class WxConsPF {
      * 小铺新订单提醒
      */
     public static final String WX_PF_TM_ID_NEW_SHOP_ORDER = "r0tjUdJA1StfjOxVTYom0UWwL7WSpq9lGwzIApWq3g0";
+    /**
+     * 代理订单确认收货通知
+     */
+    public static final String WX_PF_TM_ID_ORDER_CONFIRM = "cmHM5OuaNpnkJvDyBsRFLARSl5MdAV35MZqAp3r_XHI";
+    /**
+     * 线下支付提醒
+     */
+    public static final String WX_PF_TM_ID_OFFLINE_PAY = "AO0NRZmPuWK7TbVjDIP-_oEXwzavqLvgSmnEquYFQMo";
 }

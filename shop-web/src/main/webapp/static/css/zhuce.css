@@ -380,16 +380,6 @@
   background: #0fc420;
   color: white;
 }
-.wrap .back {
-  width: 100%;
-  height: 100%;
-  background: #000;
-  opacity: 0.5;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: none;
-}
 .two{
   display:none;
 }

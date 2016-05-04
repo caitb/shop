@@ -23,10 +23,7 @@
             <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">
-            <div class="paidan">
-                <h1><img src="${path}/static/images/loading.png" alt=""><b>在您前面还有<span>${count}</span>人排单</b></h1>
-                <p style="color: #FF5200">*由于商品火爆导致库存不足,本次申请将进入排单系统,待产能提升,我们会按付款顺序发货</p>
-            </div>
+            <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
         </c:if>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>
@@ -67,8 +64,8 @@
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId > pUserLevelId}">
-                            <p levelId="${view.agent.agentLevelId}"j后
-                              agentFee="${view.agentFee}"
+                            <p levelId="${view.agent.agentLevelId}" j后
+                               agentFee="${view.agentFee}"
                                agentBailFee="${view.agent.bail}">
                                 <span>${view.agentFee}元套餐</span>
                                 <span>保证金：${view.agent.bail}元</span>
@@ -108,7 +105,13 @@
             <span class="que_que" id="submit">我填的正确</span>
         </h3>
     </div>
-    <div class="back">
+    <div class="back"></div>
+    <div class="back_q">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="zhidao">我知道了</button>
     </div>
 </div>
 

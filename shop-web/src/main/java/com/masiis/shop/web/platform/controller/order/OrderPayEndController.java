@@ -47,7 +47,6 @@ public class OrderPayEndController extends BaseController {
     @RequestMapping(value = "replenishment.shtml")
     public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
                                                         HttpServletRequest request) throws Exception {
-
         if (getComUser(request) == null) {
             throw new BusinessException("请重新登录");
         }

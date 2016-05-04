@@ -170,3 +170,58 @@ footer .btm:nth-child(2) span img{
 footer .btm:nth-child(3) span img{
   margin-top: 3px;
 }
+.row{
+  padding: 10px;
+  font-size:12px;
+  background: #fff url("/static/images/row.png") no-repeat 95%;
+  background-size: 15px;
+  margin: 10px 0;
+}
+.row span{
+  color:#F74A11 ;
+  font-size: 12px;
+}
+.back {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  left:0;
+  top:0;
+  display: none;
+}
+.back_q {
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  z-index: 10;
+  background: white;
+  padding-bottom: 15px;
+  border-radius: 5px;
+  display: none;
+}
+.back_q h1 {
+  margin: 0 5px;
+  border-bottom: 1px solid #F74A11;
+  text-indent: 10px;
+  line-height: 40px;
+  margin-bottom: 5px;
+  color: #FF5200;
+}
+.back_q p {
+  margin: 10px;
+  text-indent: 2em;
+  font-size: 12px;
+}
+.back_q button {
+  margin: 0 auto;
+  display: block;
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  background: #0fc420;
+  border-radius: 5px;
+  color: #fff;
+}

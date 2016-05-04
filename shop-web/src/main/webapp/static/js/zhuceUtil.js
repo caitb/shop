@@ -165,5 +165,14 @@ $(function () {
         $(".back_que").hide();
         $(".back").hide();
     })
-
+    $(".row").on("click", function () {
+        $(".back_q").show();
+        $(".back").show();
+    });
+    $(".zhidao").on("click", function (event) {
+        var event = event || event.window;
+        event.stopPropagation();
+        $(".back_q").hide();
+        $(".back").hide();
+    });
 });

@@ -46,7 +46,7 @@ public class ReplenishStockService {
                 skuName = map.get("name") == null?"" : map.get("name").toString();
                 mobile = map.get("mobile") == null  ?"" : map.get("mobile").toString();
                 if (!"".equals(skuName) && !"".equals(mobile)){
-                    MobileMessageUtil.stockNotEnoughWarning(mobile,skuName);
+                    MobileMessageUtil.getInitialization("").stockNotEnoughWarning(mobile,skuName);
                 }
                 skuId = map.get("skuId").toString();
                 userId = Long.valueOf(map.get("userId").toString());

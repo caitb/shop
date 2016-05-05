@@ -168,7 +168,7 @@
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
 <script src="<%=path%>/static/js/plugins/validateCode.js"></script>
-<%--<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>--%>
+<script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/js/plugins/zepto.min.js"></script>
 <script>
     $(document).ready(function () {

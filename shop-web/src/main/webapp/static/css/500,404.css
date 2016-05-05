@@ -25,6 +25,7 @@ p a {
   -webkit-box-flex: 1;
   display: block;
   text-align: center;
+  padding-left: 20px;
 }
 p a:nth-child(1) {
   background: url("../images/fanhui.png") no-repeat 36px;

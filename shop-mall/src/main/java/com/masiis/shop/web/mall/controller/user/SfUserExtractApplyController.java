@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -278,7 +279,7 @@ public class SfUserExtractApplyController extends BaseController{
         }
         boolean mobile = false;
         if (user.getMobile()==null || "".equals(user.getMobile())){
-            mobile = MobileMessageUtil.withdrawRequestVerifyCustomer(user.getMobile(),"2");
+            mobile = MobileMessageUtil.getInitialization("C").withdrawRequestVerifyCustomer(user.getMobile(), SMSConstants.WITHDRAW_DAYS);
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //提现申请成功发送微信

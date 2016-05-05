@@ -413,13 +413,13 @@ public class MobileMessageUtil {
     /**
      * 线下支付提醒
      * @param phone
-     * @param orderCode
-     * @param amount
-     * @param mes
+     * @param orderCode  订单编码
+     * @param amount     支付金额
+     * @param mes        收款信息
      * @return
      */
-    public static boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String mes){
-        String[] content = new String[3];
+    public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String mes){
+        content = new String[3];
         content[0] = orderCode;
         content[1] = amount;
         content[2] = mes;
@@ -431,8 +431,8 @@ public class MobileMessageUtil {
 
     }
 
-    public static void main(String[] args){
-        MobileMessageUtil.getInitialization("B").consumerConsumeSuccessRemind("18800175968","111111");
-        MobileMessageUtil.getInitialization("B").certificationVerifyResult("18800175968",true);
-    }
+//    public static void main(String[] args){
+//        MobileMessageUtil.getInitialization("B").consumerConsumeSuccessRemind("18800175968","111111");
+//        MobileMessageUtil.getInitialization("B").certificationVerifyResult("18800175968",true);
+//    }
 }

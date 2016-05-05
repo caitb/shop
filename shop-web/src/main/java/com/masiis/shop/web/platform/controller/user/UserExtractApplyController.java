@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -20,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.tags.Param;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -266,7 +266,7 @@ public class UserExtractApplyController extends BaseController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         //提现申请成功发送微信
         String[] params = new String[]{money.toString(),dateFormat.format(new Date()),"审核中"};
-        boolean mobile = MobileMessageUtil.getInitialization("B").withdrawRequestVerifyAgent(user.getMobile(),"2");
+        boolean mobile = MobileMessageUtil.getInitialization("B").withdrawRequestVerifyAgent(user.getMobile(), SMSConstants.WITHDRAW_DAYS);
         boolean wechat = WxPFNoticeUtils.getInstance().pfExtractApply(user, params, true);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mobile",mobile);

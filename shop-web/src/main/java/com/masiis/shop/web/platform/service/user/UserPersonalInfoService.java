@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ import java.util.*;
  */
 @Service
 public class UserPersonalInfoService {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserCertificateService userCertificateService;
@@ -56,6 +59,8 @@ public class UserPersonalInfoService {
         Map<Integer,String> map = new HashMap<Integer, String>();
         List<PfSkuAgentDetail> skuAgentDetails = new LinkedList<PfSkuAgentDetail>();
         for (PfSkuAgent skuAgent: pfSkuAgents){
+            log.info("商品等级skuId-----"+skuAgent.getSkuId());
+            log.info("商品等级icon-----"+skuAgent.getIcon());
             PfSkuAgentDetail skuAgentDetail = new PfSkuAgentDetail();
             if (!map.containsKey(skuAgent.getSkuId())){
                 ComSku comSku = skuService.getSkuById(skuAgent.getSkuId());

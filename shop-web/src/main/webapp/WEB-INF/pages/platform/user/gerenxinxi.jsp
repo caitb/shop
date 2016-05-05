@@ -40,14 +40,14 @@
                     <c:if test="${pfSkuAgentDetails!=null}">
                         <c:forEach items="${pfSkuAgentDetails}" var="skuAgentDetail">
                             <c:choose>
-                                <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==3 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}A</span>
+                                <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==3 && skuAgentDetail.pfSkuAgent.icon!=null}">
+                                    <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt="">${skuAgentDetail.skuName}A</span>
                                 </c:when>
                                 <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==2 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}AA</span>
+                                    <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt="">${skuAgentDetail.skuName}AA</span>
                                 </c:when>
                                 <c:when test="${skuAgentDetail.pfSkuAgent.agentLevelId==1 && skuAgent.icon!=null}">
-                                    <span><img src="${agentLevelIConUrl}${skuAgent.icon}" alt="">${skuAgentDetail.skuName}AAA</span>
+                                    <span><img src="${agentLevelIConUrl}${skuAgentDetail.pfSkuAgent.icon}" alt="">${skuAgentDetail.skuName}AAA</span>
                                 </c:when>
                             </c:choose>
                         </c:forEach>

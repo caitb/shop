@@ -32,7 +32,6 @@
                 skipPage();
             }, 1000)
         }
-
         timedMsg();
     }
     function skipPage(){

@@ -131,10 +131,12 @@
     <div class="Modal"></div>
 </div>
 <div class="back_h">
-    <img src="${path}/static/images/hehuo.png" alt="">
-    <span class="close">×</span>
+    <div>
+        <h1>恭喜您，成为合伙人!</h1>
+        <img src="${path}/static/images/hehuo.gif" alt="">
+        <h2>后台正在为您生成店铺，请稍等...</h2>
+    </div>
 </div>
-
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
@@ -160,6 +162,12 @@
     $(".kNow").on("click", function () {
         $(".paidanqi").hide();
     });
+    function timedMsg() {
+        var t = setTimeout(function () {
+                $(".back_h").hide();
+        }, 3000);
+    }
+    timedMsg();
 </script>
 </body>
 </html>

@@ -72,7 +72,7 @@ public class DevelopingController extends BaseController {
         ComUser comUser = null;
 
         try {
-            comUser = getComUser(request); comUser = comUserMapper.selectByPrimaryKey(263L);
+            comUser = getComUser(request);
             PfUserSku userSkuC = new PfUserSku();
             userSkuC.setUserId(comUser.getId());
             List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(userSkuC);

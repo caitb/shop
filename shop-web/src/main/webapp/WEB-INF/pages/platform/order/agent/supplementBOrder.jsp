@@ -20,7 +20,7 @@
         </header>
         <main>
             <c:if test="${isQueuing==true}">
-                <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。getComUser(request)</p>
+                <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">

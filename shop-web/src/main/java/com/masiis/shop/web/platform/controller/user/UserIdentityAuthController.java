@@ -54,6 +54,8 @@ public class UserIdentityAuthController extends BaseController {
         if (comUser!=null&&auditStatusEnum!=null){
             switch (auditStatusEnum){
                 case NOAUDIT://未认证
+                    model.addAttribute("skuId",skuId);
+                    model.addAttribute("returnPageIdentity",returnPageIdentity);
                     jumpPage = "platform/user/shimingrenzheng";
                     break;
                 case AUDITSUCCESS://审核通过
@@ -174,7 +176,7 @@ public class UserIdentityAuthController extends BaseController {
         switch (returnPageIdentity){
             case identityAuthToApply :
                 mav.addObject("returnPagePath","userApply/apply.shtml?skuId="+skuId);
-                mav.addObject("message","自动跳转到申请界面...");
+                mav.addObject("message","自动跳转到合伙人申请界面...");
                 break;
             case identityAuthToPersonInfo :
                 mav.addObject("returnPagePath","personalInfo/personalHomePageInfo.html");

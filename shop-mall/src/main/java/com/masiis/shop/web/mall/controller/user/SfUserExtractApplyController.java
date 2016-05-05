@@ -202,6 +202,7 @@ public class SfUserExtractApplyController extends BaseController{
         }else {
             monthString += month;
         }
+        mv.addObject("totalCount",count);
         mv.addObject("totalPage",pageNums);
         mv.addObject("currentPage",1);
         mv.addObject("pageSize",20);

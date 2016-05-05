@@ -37,7 +37,7 @@
             </div>
             <c:choose>
                 <c:when test="${isQueuing==true}">
-                    <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。getComUser(request)</p>
+                    <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${pfBorder.sendType == 1}">

@@ -4,10 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.ComBrandMapper;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -51,6 +48,8 @@ public class DevelopingController extends BaseController {
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
     private SkuService skuService;
@@ -73,7 +72,7 @@ public class DevelopingController extends BaseController {
         ComUser comUser = null;
 
         try {
-            comUser = getComUser(request);
+            comUser = getComUser(request); comUser = comUserMapper.selectByPrimaryKey(263L);
             PfUserSku userSkuC = new PfUserSku();
             userSkuC.setUserId(comUser.getId());
             List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByCondition(userSkuC);
@@ -88,6 +87,8 @@ public class DevelopingController extends BaseController {
                     ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
                     ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
                     ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+                    /* 统计商品代理等级数 */
+                    Integer skuAgentLevels = pfSkuAgentMapper.countSkuAgentLevel(pus.getSkuId());
 
                     Map<String, Object> agentMap = new HashMap<>();
                     agentMap.put("levelId", comAgentLevel.getId());
@@ -96,6 +97,7 @@ public class DevelopingController extends BaseController {
                     agentMap.put("skuId", comSku.getId());
                     agentMap.put("brandLogo", comBrand.getLogoUrl());
                     agentMap.put("userSkuId", pus.getId());
+                    agentMap.put("canDeveloping", pus.getAgentLevelId()==skuAgentLevels?"no":"yes");
 
                     agentMaps.add(agentMap);
                 }

@@ -46,6 +46,16 @@
         $(".back_box").hide()
         $(this).parent().hide()
     })
+
+
+    $(document).ready(function(){
+        setTimeout(function(){
+            skipPage();
+        },3000)
+    })
+    function skipPage(){
+        window.location.href = ${path}/${returnPagePath};
+    }
 </script>
 </body>
 </html>

@@ -1,16 +1,16 @@
 package com.masiis.shop.web.platform.controller.order;
 
-import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.po.*;
+import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.PfBorderConsignee;
+import com.masiis.shop.dao.po.PfBorderItem;
+import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.order.BOrderSkuStockService;
 import com.masiis.shop.web.platform.service.user.UserService;
-import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +46,9 @@ public class OrderPayEndController extends BaseController {
      */
     @RequestMapping(value = "replenishment.shtml")
     public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                                        @RequestParam(value = "isDetail", required = false) Integer isDetail,
                                                         HttpServletRequest request) throws Exception {
+
         if (getComUser(request) == null) {
             throw new BusinessException("请重新登录");
         }
@@ -74,7 +76,11 @@ public class OrderPayEndController extends BaseController {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee", pfBorderConsignee);
         }
-        mv.setViewName("platform/order/ReplenishmentPayments");
+        if(isDetail!=null && isDetail == 1){ //订单详情
+            mv.setViewName("platform/order/ReplenishmentPayments");
+        }else{
+            mv.setViewName("platform/order/previeworder");
+        }
         return mv;
     }
 }

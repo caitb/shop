@@ -115,6 +115,16 @@
         </h3>
     </div>
 </div>
+<div class="paidanqi">
+    <div class="back_q">
+        <h1>什么是排单期？</h1>
+        <p>
+            由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
+        </p>
+        <button class="kNow">我知道了</button>
+    </div>
+    <div class="Modal"></div>
+</div>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
     var sendType = 1;
@@ -169,14 +179,10 @@
         }
     });
     $(".row").on("click", function () {
-        $(".back_q").show();
-        $(".back").show();
+        $(".paidanqi").show();
     });
-    $(".zhidao").on("click", function (event) {
-        var event = event || event.window;
-        event.stopPropagation();
-        $(".back_q").hide();
-        $(".back").hide();
+    $(".kNow").on("click", function () {
+        $(".paidanqi").hide();
     });
 </script>
 </body>

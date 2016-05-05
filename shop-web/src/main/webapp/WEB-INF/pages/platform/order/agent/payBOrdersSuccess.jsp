@@ -119,13 +119,16 @@
         <span class="close">×</span>
         <img src="${path}/static/images/b.png" alt="">
     </div>
-    <div class="back_q" style="display: block;">
+</div>
+<div class="paidanqi">
+    <div class="back_q">
         <h1>什么是排单期？</h1>
         <p>
             由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
         </p>
-        <button class="zhidao">我知道了</button>
+        <button class="kNow">我知道了</button>
     </div>
+    <div class="Modal"></div>
 </div>
 <div class="back_h">
     <img src="${path}/static/images/hehuo.png" alt="">
@@ -152,14 +155,10 @@
         $(this).parent().hide()
     })
     $(".row").on("click", function () {
-        $(".back_q").show();
-        $(".back").show();
+        $(".paidanqi").show();
     });
-    $(".zhidao").on("click", function (event) {
-        var event = event || event.window;
-        event.stopPropagation();
-        $(".back_q").hide();
-        $(".back").hide();
+    $(".kNow").on("click", function () {
+        $(".paidanqi").hide();
     });
 </script>
 </body>

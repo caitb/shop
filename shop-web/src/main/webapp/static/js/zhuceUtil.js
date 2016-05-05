@@ -166,13 +166,9 @@ $(function () {
         $(".back").hide();
     })
     $(".row").on("click", function () {
-        $(".back_q").show();
-        $(".back").show();
+        $(".paidanqi").show();
     });
-    $(".zhidao").on("click", function (event) {
-        var event = event || event.window;
-        event.stopPropagation();
-        $(".back_q").hide();
-        $(".back").hide();
+    $(".kNow").on("click", function(){
+        $(".paidanqi").hide();
     });
 });

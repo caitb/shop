@@ -46,7 +46,6 @@ public class OrderPayEndController extends BaseController {
      */
     @RequestMapping(value = "replenishment.shtml")
     public ModelAndView replenishmentOrderPaycompletion(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
-                                                        @RequestParam(value = "isDetail", required = false) Integer isDetail,
                                                         HttpServletRequest request) throws Exception {
 
         if (getComUser(request) == null) {
@@ -76,11 +75,7 @@ public class OrderPayEndController extends BaseController {
             PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             mv.addObject("pfBorderConsignee", pfBorderConsignee);
         }
-        if(isDetail!=null && isDetail == 1){ //订单详情
-            mv.setViewName("platform/order/ReplenishmentPayments");
-        }else{
             mv.setViewName("platform/order/previeworder");
-        }
         return mv;
     }
 }

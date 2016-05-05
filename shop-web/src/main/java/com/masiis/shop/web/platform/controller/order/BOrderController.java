@@ -200,7 +200,7 @@ public class BOrderController extends BaseController {
     public ModelAndView offinePayment(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam(value = "bOrderId", required = true) Long bOrderId){
         ModelAndView mav = new ModelAndView("platform/order/xianxiazhifu");
-        Map<String,Object> map = payBOrderService.offinePayment(bOrderId);
+        Map<String,Object> map = payBOrderService.offinePayment(getComUser(request),bOrderId);
         if (map != null){
             mav.addObject("supplierBank",map.get("supplierBank"));
             mav.addObject("latestTime", map.get("latestTime"));

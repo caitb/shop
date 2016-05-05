@@ -51,9 +51,6 @@ public class ProductController extends BaseController {
     @ResponseBody
     @SignValid(paramType = ProAllListReq.class)
     public ProAllListRes toAllPros(HttpServletRequest request, ProAllListReq req, ComUser user){
-        if (user == null) {
-            throw new BusinessException();
-        }
         ProAllListRes res = new ProAllListRes();
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");

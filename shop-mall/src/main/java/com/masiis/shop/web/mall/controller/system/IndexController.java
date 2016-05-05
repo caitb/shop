@@ -120,11 +120,11 @@ public class IndexController extends BaseController {
                                 Long shopId, Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
-            user = userService.getUserById(1l);
+            user = userService.getUserById(218l);
             req.getSession().setAttribute("comUser", user);
         }
-        shopId = 85L;
-        userPid = 218L;
+        shopId =114L;
+        userPid = 220L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

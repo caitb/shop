@@ -71,7 +71,7 @@ public class WxSFNoticeUtils {
     }
 
     /**
-     * 小铺订单下单成功
+     * 小铺订单发货提醒
      *
      * @param user  通知的用户
      * @param params    (第一个,订单号(ordercode); 第二个,快递公司; 第三个,快递单号)

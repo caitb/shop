@@ -604,7 +604,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Map<String, Object> offinePayment(Long bOrderId) {
+    public Map<String, Object> offinePayment(ComUser comUser,Long bOrderId) {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
@@ -614,6 +614,7 @@ public class BOrderPayService {
             PfSupplierBank supplierBank = getDefaultBack();
             List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
             if (orderItems != null && orderItems.size() != 0) {
+                offinePaymentWxNotice(comUser,pfBorder,orderItems.get(0));
                 map = new LinkedHashMap<String, Object>();
                 map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
                 map.put("supplierBank", supplierBank);
@@ -646,6 +647,26 @@ public class BOrderPayService {
             throw new BusinessException("线下支付更新订单状态失败");
         }
         return pfBorder;
+    }
+    /**
+     * 线下支付微信通知
+     * @author hanzengzhi
+     * @date 2016/5/5 10:56
+     */
+    private void offinePaymentWxNotice(ComUser comUser,PfBorder border,PfBorderItem orderItem){
+        StringBuffer sb = new StringBuffer();
+        PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
+        String agentLevelName = null;
+        if (userSku!=null){
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
+            if (comAgentLevel!=null){
+                agentLevelName = comAgentLevel.getName();
+            }
+        }
+        sb.append(orderItem.getSkuName()).append(agentLevelName).append("合伙人订单");
+        String[] param = new String[]{border.getOrderCode(),DateUtil.insertDay(border.getCreateTime()).toString(),sb.toString()};
+        String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+border.getId();
+        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,offinePaymentUrl);
     }
 
     /**

@@ -37,6 +37,7 @@
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/class/zoom/zoom.css" />
     <![endif]-->
 
     <!-- inline styles related to this page -->
@@ -169,9 +170,9 @@
                                                         <div class="profile-info-row">
                                                             <div class="profile-info-name"> 身份证扫描件 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardF" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
-                                                                <img data-src="holder.js/200x200" class="img-thumbnail" id="idCardB" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px; height: 200px;">
+                                                            <div class="profile-info-value" style="height: 200px;">
+                                                                <img data-action="zoom" class="img-thumbnail" id="idCardF" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px;height: 200px;">
+                                                                <img data-action="zoom" class="img-thumbnail" id="idCardB" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px;height: 200px">
                                                             </div>
                                                         </div>
 
@@ -596,5 +597,6 @@
     });
 
 </script>
+<script src="<%=basePath%>static/class/zoom/zoom.js"></script>
 </body>
 </html>

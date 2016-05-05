@@ -80,7 +80,7 @@
                 <div>
                     <h2>${bdpi.skuName}</h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>零售价： <span>${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
+                    <p>零售价： <span>￥${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>
@@ -88,9 +88,15 @@
                 <p>留言： <input type="text"value="${borderDetail.pfBorder.userMessage}"></p>
             </section>
             <section class="sec4">
-                <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}元</span></p>
-                <p>运费：<span>￥${borderDetail.pfBorder.shipAmount}元</span></p>
-                <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　运费：<span>￥${borderDetail.pfBorder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.orderAmount}</span></h1>
+                <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}</span></p>
+                <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
+                <p>运费：<span>到付</span></p>
+                </c:if>
+                <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　
+                    <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
+                        运费：<span>到付</span>
+                    </c:if>　
+                    <b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.orderAmount}</span></h1>
             </section>
             <div class="sec5">
                 <p>订单编号：<span>${borderDetail.pfBorder.orderCode}</span></p>

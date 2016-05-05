@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <body>
-<c:if test="${forcusSF !=true}">
-    <div class="addb">
-        <p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>
-        <label class="close">×</label>
-    </div>
-</c:if>
+<%--<c:if test="${forcusSF !=true}">--%>
+    <%--<div class="addb">--%>
+        <%--<p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>--%>
+        <%--<label class="close">×</label>--%>
+    <%--</div>--%>
+<%--</c:if>--%>
 <div class="wrap">
     <header>
         <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
@@ -43,7 +43,6 @@
                     <div class="swiper-slide"><img src="${img.imgUrl}" alt=""></div>
                 </c:forEach>
             </div>
-            <!-- 如果需要分页器 -->
             <div class="swiper-pagination"></div>
         </div>
     </div>
@@ -223,6 +222,7 @@
                 }
                 else {
                     alert(data.message);
+                    window.location.reload(true);
                 }
             }
         });
@@ -291,12 +291,6 @@
             data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},
             success: function(data){
                 data = window.eval('(' + data + ')');
-                <%--var baseUrl = '<%=basePath%>';--%>
-                <%--var imgSrcs = [baseUrl+data['userImg'], baseUrl+data['skuImg'], baseUrl+data['shopQRCode']];--%>
-                <%--var userName = data['userName'];--%>
-                <%--var skuName = data['skuName'];--%>
-                <%--canvasApp(userName,skuName,imgSrcs);--%>
-
                 $('#skuPoster').attr('src', data['skuPoster']);
                 $('.back_f').show();
                 $('.back').show();

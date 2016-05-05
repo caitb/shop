@@ -1,11 +1,13 @@
 package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
+import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
@@ -43,6 +45,8 @@ public class SfOrderPayService {
     private PfUserSkuStockService skuStockService;
     @Resource
     private SfUserRelationService sfUserRelationService;
+    @Resource
+    private UserService userService;
 
     /**
      * 获得需要支付的订单的信息
@@ -207,11 +211,8 @@ public class SfOrderPayService {
             //获得用户的分销关系的父id
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
-            //微信提醒
-            log.info("微信提醒-----start");
-            String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
-            WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
-            log.info("微信提醒-----end");
+            //微信短信提醒
+            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -254,6 +255,31 @@ public class SfOrderPayService {
         }else{
            return userRelation.getUserPid();
         }
+    }
+
+    /**
+     * 发送微信和短信提醒
+     * @author hanzengzhi
+     * @date 2016/5/5 12:02
+     */
+    private void orderNotice(ComUser comUser,SfOrder order,List<SfOrderItem> orderItems){
+        //微信提醒
+        log.info("订单通知提醒-----start");
+        String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
+        WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
+        //短信提醒
+        /*消费者端提醒*/
+        StringBuffer skuNames = new StringBuffer();
+        for(SfOrderItem orderItem: orderItems){
+            skuNames.append(orderItem.getSkuName());
+        }
+        MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(),skuNames.toString());
+        /*小铺归属人提醒*/
+        ComUser shopUser = userService.getUserById(order.getShopUserId());
+        if (shopUser!=null){
+            MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
+        }
+        log.info("订单通知提醒-----end");
     }
 
     public void addSfOrderPayment(SfOrderPayment payment) {

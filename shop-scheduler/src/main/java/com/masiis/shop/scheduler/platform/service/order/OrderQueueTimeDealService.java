@@ -218,7 +218,7 @@ public class OrderQueueTimeDealService {
     }
 
     /**
-     * 想用户发送信息
+     * 向用户发送信息
      * @param pfBorder
      */
     private void sendMessage(PfBorder pfBorder,List<PfBorderItem> pfBorderItems){
@@ -226,7 +226,7 @@ public class OrderQueueTimeDealService {
         ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         //平台代发货
         if ("1".equals(pfBorder.getSendType())){
-            MobileMessageUtil.dealQueueOrderPlatform(comUser.getMobile(),pfBorder.getOrderCode());
+            MobileMessageUtil.getInitialization("").dealQueueOrderRemind(comUser.getMobile(), pfBorder.getOrderCode() ,pfBorder.getSendType());
             String[] params;
             for (PfBorderItem pfBorderItem : pfBorderItems){
                 params = new String[5];

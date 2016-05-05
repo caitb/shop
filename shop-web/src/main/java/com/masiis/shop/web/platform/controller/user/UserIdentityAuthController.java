@@ -54,6 +54,8 @@ public class UserIdentityAuthController extends BaseController {
         if (comUser!=null&&auditStatusEnum!=null){
             switch (auditStatusEnum){
                 case NOAUDIT://未认证
+                    model.addAttribute("skuId",skuId);
+                    model.addAttribute("returnPageIdentity",returnPageIdentity);
                     jumpPage = "platform/user/shimingrenzheng";
                     break;
                 case AUDITSUCCESS://审核通过

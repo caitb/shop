@@ -137,3 +137,11 @@
   background: #ff5200;
   margin-top: -1px;
 }
+.wrap .box .main .sec1 div> h2:last-child button.btn{
+  float: right;
+  padding: 2px 0px;
+  border-radius: 3px;
+  color: #f74a11;
+  background: transparent;
+  margin-top: -1px;
+}

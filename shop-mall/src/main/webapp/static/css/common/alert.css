@@ -1,20 +1,23 @@
 .alert{
-    width: 80%;
-    position: fixed;
-    left: 10%;
-    top:30%;
-    background: #F5F5F5;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow:0 0 5px 5px #E1E1E1;
     display: block;
+    font-size: 12px;
+    width:200px;
+    left: 50%;
+    line-height: 27px;
+    margin-left: -100px;
+    margin-top: -50px;
+    position: fixed;
+    top: 50%;
+    z-index: 111;
+    background: #fff;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;;
 }
 .alert h1{
-    background: #F84E0E;
-    font-size: 16px;
-    color: white;
-    line-height: 40px;
-    text-indent:10px;
+    padding:10px 10px;
+    font-size:12px;
+    font-weight: normal;
 }
 .alert img{
     display: block;
@@ -23,10 +26,24 @@
     float: left;
     margin: 6px 0 0 20px;
 }
+
+.alert button{
+    display: block;
+    width: 100%;
+    background: #fff;
+    padding: 5px 0;
+    border-top: 1px solid #ccc;
+    color: #007AFF;
+}
 .alert h2{
-    margin:0 10px;
     text-align: center;
     color: #333333;
-    padding: 50px 0;
-    border-bottom: 1px solid #DCDCDC;
+}
+.layer {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    z-index: 11;
 }

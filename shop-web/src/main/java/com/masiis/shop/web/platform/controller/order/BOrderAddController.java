@@ -58,6 +58,18 @@ public class BOrderAddController extends BaseController {
     @Resource
     private PfUserRelationService pfUserRelationService;
 
+    /**
+     * 代理订单确认订单页
+     * @param request
+     * @param skuId 代理skuId
+     * @param agentLevelId 代理等级
+     * @param weiXinId 微信号
+     * @param sendType 拿货方式
+     * @param previousPageType 0：上一页是注册 1：上一页是选择拿货方式
+     * @param userAddressId 用户地址
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/agentBOrder.shtml")
     public ModelAndView agentBOrder(HttpServletRequest request,
                                     @RequestParam(value = "skuId", required = true) Integer skuId,
@@ -147,6 +159,17 @@ public class BOrderAddController extends BaseController {
         return mv;
     }
 
+    /**
+     * 生成代理订单
+     * @param request
+     * @param skuId
+     * @param agentLevelId 代理等级
+     * @param weiXinId 微信号
+     * @param sendType 拿货方式
+     * @param userMessage 用户留言
+     * @param userAddressId 用户地址
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/agentBOrder/add.do")
     public String agentBOrderAdd(HttpServletRequest request,
@@ -212,6 +235,15 @@ public class BOrderAddController extends BaseController {
         return jsonObject.toJSONString();
     }
 
+    /**
+     * 补货订单确认订单页
+     * @param request
+     * @param skuId 补货sku
+     * @param quantity 补货数量
+     * @param userAddressId 用户地址
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/supplementBOrder.shtml")
     public ModelAndView supplementBOrder(HttpServletRequest request,
                                          @RequestParam(value = "skuId", required = true) Integer skuId,

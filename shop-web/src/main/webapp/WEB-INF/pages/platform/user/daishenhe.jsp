@@ -19,15 +19,22 @@
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
     <h2>您的实名认证已经提交，审核结果会在1个工作日内下发到您的手机请注意查收。</h2>
-    <h1>${message}<span></span></h1>
+    <h1>${message}<span class="time">3</span>s</h1>
 </div>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script>
-    $(document).ready(function(){
-        setTimeout(function(){
-            skipPage();
-        },3000)
-    })
+    $(document).ready(function() {
+        function timedMsg() {
+            var t = setTimeout(function () {
+                for (i = 3; i > 0; i--) {
+                    $(".time").val(i);
+                }
+                skipPage();
+            }, 1000)
+        }
+
+        timedMsg();
+    }
     function skipPage(){
         window.location.href = "${path}/${returnPagePath}";
     }

@@ -64,7 +64,7 @@
             <img src="${path}/static/images/shenqing_7.png" alt="">
             <div>
                 <h2>平台补助</h2>
-                <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
+                <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>
             </div>
         </section>
         <section class="sec1">
@@ -79,7 +79,7 @@
         <input id="type" value="${type}" style="display: none"/>
     </main>
     <div class="biao">
-        <h1>申请条件</h1>
+        <h1><img src="${path}/static/images/shenqing_list.png" alt=""><b>申请条件</b></h1>
         <table>
             <tr>
                 <td>申请条件</td>
@@ -125,7 +125,7 @@
                 </c:choose>
             </tr>
             <tr>
-                <td>关注麦链合伙人公众号</td>
+                <td>关注公众号</td>
                 <c:choose>
                     <c:when test="${isUserForcus==true}">
                         <td><img src="${path}/static/images/dui.png" alt=""></td>

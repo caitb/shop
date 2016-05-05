@@ -57,8 +57,8 @@
                         </p>
                         <div>
                             <h2>${Sku.comSku.name}</h2>
-                            <h3 class="hid"> <c:if test="${Sku.isTrial==1}">试用费用：<span>${Sku.shipAmount}</span>元</c:if></h3>
-                            <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
+                            <h3 class="hid"> <c:if test="${Sku.isTrial==1}">试用费：<span>${Sku.shipAmount}</span>元</c:if></h3>
+                            <h3>保证金：<span>${Sku.bailLevel}</span>元</h3>
                             <h3 class="three"><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
                                 <b>${Sku.discountLevel}</b>
                             </h3>
@@ -69,7 +69,7 @@
                                     <button>我要合伙</button>
                                 </c:if>
                                 <c:if test="${not empty Sku.uid}">
-                                    <button>您已合伙</button>
+                                    <button class="btn">您已合伙</button>
                                 </c:if>
                             </h2>
                         </div>

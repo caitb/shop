@@ -43,7 +43,7 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "toInentityAuthPage.html")
     public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam(value = "returnPage",required = false,defaultValue = "0") Integer returnPageIdentity,
+                                     @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
                                      @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
                                      @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
                                      Model model) {

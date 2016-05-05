@@ -1,6 +1,12 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -193,15 +199,14 @@
             alert("请先绑定手机号");
             return;
         }
-        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=0";
+        window.location.href = "${path}/identityAuth/toInentityAuthPage.html?skuId=${skuId}&returnPageIdentity=1&auditStatus=0";
     }
-
     function reSubmitIdentityAuth() {
         if (${user.isBinding!=1}) {
             alert("请先绑定手机号");
             return false;
         }
-        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=3";
+        window.location.href = "${path}/identityAuth/toInentityAuthPage.html?skuId=${skuId}&returnPageIdentity=1&auditStatus=3";
     }
 
     function goGuanZhu() {

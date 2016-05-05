@@ -149,7 +149,7 @@ public class ComUserService {
     public void audit(ComUser comUser){
         comUserMapper.updateByPrimaryKey(comUser);
         if(comUser.getAuditStatus()==2 || comUser.getAuditStatus()==3){
-            MobileMessageUtil.verifiedComplete(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
+            MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
 
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,

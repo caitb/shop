@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
-import com.masiis.shop.dao.mall.order.SfOrderItemMallMapper;
-import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -162,7 +159,7 @@ public class BOrderService {
             skuNames += borderItem.getSkuName();
             levelNames += comAgentLevelMapper.selectByPrimaryKey(borderItem.getAgentLevelId()).getName();
         }
-        MobileMessageUtil.goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight. getFreight());
+        MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight. getFreight());
         WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, "http://m.qc.iimai.com/borderManage/borderDetils.html?id="+pfBorder.getId());
     }
 

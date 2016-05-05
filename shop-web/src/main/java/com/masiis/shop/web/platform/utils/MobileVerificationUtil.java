@@ -34,7 +34,7 @@ public class MobileVerificationUtil {
             code += random.nextInt(10);
         }
         SpringRedisUtil.saveEx(phone + sign, code, new Integer(SMSConstants.REGESTER_VALID_TIME) * 60 * 1000);
-        return MobileMessageUtil.VerificationCode(phone,code,String.valueOf(new Integer(SMSConstants.REGESTER_VALID_TIME)));
+        return MobileMessageUtil.getInitialization("B").verificationCode(phone,code,String.valueOf(new Integer(SMSConstants.REGESTER_VALID_TIME)));
         //return MobileMessageUtil.VerificationCode(phone, code, SMSConstants.REGESTER_VALID_TIME);
     }
 

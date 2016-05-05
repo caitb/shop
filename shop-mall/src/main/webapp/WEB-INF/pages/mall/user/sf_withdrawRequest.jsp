@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +25,7 @@
         </h1>
     </div>
     <main>
-        <p>您当前可提现金额为<span>￥${userAccount.extractableFee}</span><span>&nbsp;&nbsp;&nbsp;已经申请提现金额为￥${userAccount.appliedFee}</span></p>
+        <p>您当前可提现金额为<span>￥<fmt:formatNumber value="${userAccount.extractableFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></span><span>&nbsp;&nbsp;&nbsp;已经申请提现金额为￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></span></p>
         <div class="sec1">
             提现金额：￥<input id="inputAccount" name="inputAccount" type="text" placeholder="请输入提现金额">
         </div>

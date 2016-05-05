@@ -24,7 +24,7 @@
         <p>合伙人申请</p>
     </header>
     <c:if test="${isQueuing==true}">
-        <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
+        <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。getComUser(request)</p>
     </c:if>
     <main>
         <div class="he">

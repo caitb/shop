@@ -5,10 +5,7 @@ import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
-import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.ComBrandMapper;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -52,6 +49,8 @@ public class MyTeamService {
     private ComBrandMapper comBrandMapper;
     @Resource
     private PfBorderMapper pfBorderMapper;
+    @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
 
 
     /**
@@ -70,12 +69,15 @@ public class MyTeamService {
             ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+            /* 商品代理等级数 */
+            Integer skuAgentLevels = pfSkuAgentMapper.countSkuAgentLevel(pus.getSkuId());
 
             Map<String, Object> agentSkuMap = new HashMap<>();
             agentSkuMap.put("userSkuId", pus.getId());
             agentSkuMap.put("skuId", comSku.getId());
             agentSkuMap.put("skuName", comSku.getName());
             agentSkuMap.put("brandLogo", comBrand.getLogoUrl());
+            agentSkuMap.put("isLastLevel", pus.getAgentLevelId()==skuAgentLevels?"yes":"no");//是否代理最后一级
 
             Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
             Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;

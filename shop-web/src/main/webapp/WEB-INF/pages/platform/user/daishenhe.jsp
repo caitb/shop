@@ -26,14 +26,11 @@
     $(document).ready(function() {
         function timedMsg() {
             var t = setTimeout(function () {
-                for (i = 3; i > 0; i--) {
-                    $(".time").val(i);
-                }
                 skipPage();
-            }, 1000)
+            }, 3000)
         }
         timedMsg();
-    }
+    })
     function skipPage(){
         window.location.href = "${path}/${returnPagePath}";
     }

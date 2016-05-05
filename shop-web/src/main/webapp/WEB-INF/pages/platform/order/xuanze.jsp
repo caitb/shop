@@ -14,7 +14,7 @@
        <div class="wrap">
            <div class="box">
                 <header class="xq_header">
-                   <a onclick="returnPage()" style="position: absolute;top: 9px;left: 10px;"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                   <a onclick="returnPage()"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                         <p>选择收货地址</p>
                         <input id="addressId" style="display:none;" value="${addressId}"/>
                         <a href="${path}/userAddress/toManageAddressPage.html" style="position: absolute;right: 10px;

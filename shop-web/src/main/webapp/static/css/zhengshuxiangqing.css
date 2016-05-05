@@ -23,13 +23,19 @@
   background: url("../images/icon_46.png") no-repeat 0;
   background-size: 6%;
   text-indent: 20px;
-  border-bottom: 1px solid #999999;
+  border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  padding-left: 5px;
+  font-size: 12px;
 }
 .wrap main #box .sec1 p {
   margin: 0 20px;
   padding: 5px;
+  font-size: 12px;
   border-bottom: 1px dashed #ddd;
+}
+.wrap main #box .sec1 p span{
+  font-size: 12px;
 }
 .wrap main #box .sec1 p:last-child {
   border: none;
@@ -46,8 +52,10 @@
   background: url("../images/icon_47.png") no-repeat 0;
   background-size: 6%;
   text-indent: 20px;
-  border-bottom: 1px solid #999999;
+  border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  padding-left: 5px;
+  font-size: 12px;
 }
 .wrap main #box .sec2 p {
   margin: 10px 15px 0 15px;

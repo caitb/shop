@@ -13,13 +13,13 @@
   width: 50px;
   height: 100%;
   position: absolute;
-  left: 10px;
-  top: 9px;
 }
 .xq_header a:first-child img {
   display: block;
   width: 10px;
   height: 20px;
+  margin-left: 10px;
+  margin-top: 9px;
 }
 .xq_header a:last-child {
   display: block;

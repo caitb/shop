@@ -33,7 +33,7 @@
                 <p>支付订单</p>
             </div>
             <c:if test="${isQueuing==true}">
-                <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
+                <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
@@ -94,7 +94,6 @@
                     <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
                 </h1>
             </div>
-            <h1>支付成功后，您的在线库存将会增加</h1>
             <section class="sec4">
                 <p><b>商品总价：</b><span>￥${bOrderConfirm.productTotalPrice}</span></p>
                 <p><b>保证金：</b><span>￥${bOrderConfirm.bailAmount}</span></p>

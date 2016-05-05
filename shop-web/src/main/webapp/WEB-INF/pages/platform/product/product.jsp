@@ -37,8 +37,8 @@
         <div class="price">
             <p>${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
-            <p><b>￥${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999;float:right;margin-right:10px">代理人数：
+            <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
+            </span><span style="color: #999999;float:right;margin:4px 10px 0 0;">代理人数：
                 <c:if test="${productDetails.agentNum >9999}">
                    超过9999</span>
                 </c:if>
@@ -98,13 +98,13 @@
             <div class="left">
                 <ul>
                     <li><a href="#1f"
-                           style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 15px;">品牌介绍</a>
+                           style="background:url('<%=path%>/static/images/xiangqing_1.png') no-repeat 0px;background-size: 16px;">品牌介绍</a>
                     </li>
                     <li><a href="#2f"
-                           style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 15px;">商业政策</a>
+                           style="background:url('<%=path%>/static/images/xiangqing_2.png') no-repeat 0px;background-size: 16px;">商业政策</a>
                     </li>
                     <li><a href="#3f"
-                           style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 15px;">商品详情</a>
+                           style="background:url('<%=path%>/static/images/xiangqing_3.png') no-repeat 0px;background-size: 16px;">商品详情</a>
                     </li>
                 </ul>
             </div>
@@ -162,7 +162,7 @@
     </div>
     <div class="back_login" style="display:none;">
         <h2>您已合伙</h2>
-        <p>您已合伙，如需要补货，请在商品管理中补货</p>
+        <p>您已合伙，如需要补货，请在库存管理中补货</p>
         <h1><span class="zhidao">我知道了</span><span
                 onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
         </h1>

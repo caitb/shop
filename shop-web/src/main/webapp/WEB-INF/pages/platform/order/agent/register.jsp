@@ -23,7 +23,7 @@
             <p>支付订单</p>
         </div>
         <c:if test="${isQueuing==true}">
-            <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
+            <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
         </c:if>
         <p class="xuanze">
             选择商品：<span>${skuName}</span>

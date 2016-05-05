@@ -39,7 +39,8 @@
         </div>
         <p>产品团队列表</p>
         <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-        <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');">
+            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1"></c:if>
+            <c:if test="${agentSkuMap.isLastLevel == 'no'}"><div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');"></c:if>
             <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
             <div>
                 <p>${agentSkuMap.skuName}<em>团队</em></p>

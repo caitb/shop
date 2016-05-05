@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -23,6 +24,7 @@
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="totalCount" name="totalCount" value="${totalCount}">
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
@@ -48,16 +50,20 @@
                     </c:forEach>
                     <%--<div class="dropload-load"><span class="loading"></span>加载中...</div>--%>
                 </div>
-                <div class="dropload-load"><span href="#" onclick="getMore()">查看更多></span></div>
             </div>
             <div id="datePlugin"></div>
         </div>
+        <div id="showMore" class="dropload-load">
+            <c:if test="${list != null && fn:length(list) < totalCount}">
+                <span href="#" onclick="getMore()">查看更多></span>
+            </c:if>
+        </div>
      </div>
 <script type="application/javascript" src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
-<script type="application/javascript" src="<%=path%>/static/js/common/commonAjax.js"></script>
-<script type="application/javascript" src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/plugins/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/plugins/iscroll.js" ></script>
+<script type="application/javascript" src="<%=path%>/static/js/common/commonAjax.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 <%--<script type="text/javascript" src="<%=path%>/static/js/plugins/dropload.min.js"></script>--%>
 <script type="text/javascript" src="<%=path%>/static/js/pageJs/sf_withdrawRecord.js"></script>
 <script type="text/javascript">

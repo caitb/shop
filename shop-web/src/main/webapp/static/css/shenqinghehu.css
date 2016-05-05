@@ -11,16 +11,13 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: justify;
+  position: relative;
 }
-.wrap main .sec1 img {
+.wrap main .sec1 img.j {
   display: inline-block;
   width: 15px;
   height: 20px;
   margin-left: 10px;
-  margin-top: 10px;
 }
 .wrap main .sec1 div {
   width: 88%;
@@ -34,7 +31,7 @@
 }
 .wrap main .sec1 div h2 span {
   float: right;
-  margin-right: 10px;
+  margin-right: 4em;
 }
 .wrap main .sec1 div p {
   width: 100%;
@@ -71,7 +68,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap main .sec2 div {
   -webkit-box-flex: 1;
@@ -134,15 +131,16 @@
 .wrap main .sec4 p {
   padding: 6px 10px;
   background: #fff;
-    height: 20px;
+  height: 20px;
 }
 .wrap main .sec4 p em {
   color: #333;
-  font-size: 14px;
-    float: left;
+  font-size: 12px;
+  float: left;
 }
 .wrap main .sec4 p b {
-    float: left;
+  float: left;
+  font-size: 12px;
 }
 .wrap main .sec4 p b label {
   display: inline-block;
@@ -151,14 +149,13 @@
   border: 1px solid #E5E5E5;
   text-align: center;
   line-height: 20px;
-    border-radius: 5px;
-    float: left;
-    padding: 5px;
-    -webkit-tap-highlight-color: transparent;
+  float: left;
+  padding: 2px 0px;
+  -webkit-tap-highlight-color: transparent;
 }
 .wrap main .sec4 p b input {
   display: inline-block;
-  width: 40px;
+  width: 50px;
   height: 20px;
   margin: 0;
   padding: 0;
@@ -166,17 +163,24 @@
   line-height: 20px;
   color: #FF5200;
   border: 1px solid #E5E5E5;
-    float: left;
-    padding: 5px;
+  float: left;
+  padding: 2px 5px;
 }
 .wrap main .sec4 p > span {
   border: 1px solid #ff5200;
   padding: 0 2px;
-  border-radius: 5px;
+  border-radius: 2px;
   margin-right: 5px;
+  font-size: 12px;
+  color: #f74a11;
+  height: 15px;
+  display: inline-block;
+  line-height: 15px;
 }
 .wrap main .sec4 p:nth-child(3) {
   font-size: 12px;
+  padding: 15px 10px;
+  color: #666;
 }
 .wrap main .sec5 div {
   margin: 15px 10px 0 10px;
@@ -185,6 +189,14 @@
   padding: 5px;
   background: #EEEEEE;
   box-shadow: 1px 1px 1px #ccc;
+}
+.wrap main .sec5 div h1{
+  font-size:12px;
+}
+.wrap main .sec5 div p{
+  font-size:12px;
+  color: #666;
+  margin-top: 5px;
 }
 .wrap main input {
   display: none;
@@ -198,6 +210,7 @@
   background-size: 10px 10px;
   padding-left: 20px;
   margin-top: 1em;
+  color: #666;
 }
 .sec5 label b {
   font-size: 12px;
@@ -283,7 +296,6 @@
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;
@@ -303,4 +315,15 @@
   top: 0;
   left: 0;
   display: none;
+}
+.sec1 h2,.sec1 span,.sec1 b,.sec1 p{
+  font-size:12px;
+}
+.ju{
+  margin-top: 7px;
+  position: absolute;
+  right: 7px;
+  top: 13px;
+  width: 10px;
+  height: 16px;
 }

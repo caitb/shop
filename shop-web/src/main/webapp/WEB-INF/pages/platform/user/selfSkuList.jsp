@@ -24,7 +24,7 @@
     <main>
         <header class="xq_header">
             <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>商品管理</p>
+            <p>库存管理</p>
         </header>
         <div id="box">
             <div class="main">
@@ -105,7 +105,9 @@
 <script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script src="<%=path%>/static/js/hideWXShare.js"> </script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script>
+    var re =new RegExp("^\\d+$");
     function jiankucun(a,b,c){
         $("#stockNumber").val("");
         $("#skuName").html(a);
@@ -123,6 +125,10 @@
         $("#sku3").html(skuName);
         var skuStock = $("#skuStock").text();
         var stockNumber = $("#stockNumber").val();
+        if(stockNumber==null || stockNumber=="" || !re.test(stockNumber)){
+           alert("请输入正确的库存数量！");
+            return;
+        }
         $("#stock1").html(skuStock);
         $("#stock3").html(stockNumber);
         $(".back_j").hide();

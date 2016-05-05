@@ -39,4 +39,11 @@ public interface PfSkuAgentMapper {
 
     /*获取用户商品等级标志*/
     List<PfSkuAgent> getSkuLevelIconByUserId(Long userId);
+
+    /**
+     * 统计商品代理等级数
+     * @param skuId
+     * @return
+     */
+    Integer countSkuAgentLevel(Integer skuId);
 }

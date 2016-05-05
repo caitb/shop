@@ -29,7 +29,7 @@
     <div class="box">
         <header class="xq_header">
             <a href="#" onclick="backLastPage()"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-            <p>我的资产</p>
+            <p>我的资金</p>
         </header>
         <main>
             <div class="ban">

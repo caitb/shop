@@ -20,7 +20,7 @@
         </header>
         <main>
             <c:if test="${isQueuing==true}">
-                <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
+                <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==2}">
                 <div class="Type">
@@ -78,14 +78,14 @@
         </main>
     </div>
 </div>
-<div class="back_box">
-    <div class="back" style="display: block"></div>
+<div class="paidanqi">
+    <div class="Modal" style="display: block"></div>
     <div class="back_q" style="display: block;">
         <h1>什么是排单期？</h1>
         <p>
             由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
         </p>
-        <button class="zhidao">我知道了</button>
+        <button class="kNow">我知道了</button>
     </div>
 </div>
 </body>
@@ -103,10 +103,6 @@
             $(".sec1").attr("style", "display:-webkit-box;");
         }
     })
-    var myScroll = new IScroll(".wrap", {
-        preventDefault: false
-    })
-
     function toChooseAddressPage() {
         var selectedAddressId = $("#addressId").val();
         window.location.href = "${path}/userAddress/toChooseAddressPage.html?pageType=supplementOrder&selectedAddressId=" + selectedAddressId + "&supplementOrderParamForAddress=" + JSON.stringify(${supplementOrderParamForAddress});
@@ -141,12 +137,10 @@
         });
     }
     $(".row").on("click", function () {
-        $(".back_box").show();
+        $(".paidanqi").show();
     });
-    $(".zhidao").on("click", function (event) {
-        var event = event || event.window;
-        event.stopPropagation();
-        $(".back_box").hide();
+    $(".kNow").on("click", function () {
+        $(".paidanqi").hide();
     });
 </script>
 </html>

@@ -172,7 +172,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "${path}/identityAuth/toWaitIdentityPage.html";
+                    window.location.href = "${path}/identityAuth/toWaitIdentityPage.html?skuId=${skuId}&returnPageIdentity=${returnPageIdentity}";
                 }
                 else {
                     alert(data.message);

@@ -114,7 +114,7 @@ $(function () {
         if (s <= 0) {
             s = 60;
             $("#yanzhengma").attr("disabled", false);
-            $("#yanzhengma").html("重新获取验证码");
+            $("#yanzhengma").html("重新获取");
             clearTimeout(t);
         }
     }

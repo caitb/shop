@@ -32,35 +32,48 @@
         <main>
             <p>选择您需要发展合伙人的商品</p>
             <c:forEach items="${agentMaps}" var="agentMap">
-            <div class="sec1 toShare" userSkuId="${agentMap.userSkuId}" skuId="${agentMap.skuId}">
-                <img src="${agentMap.brandLogo}" alt="">
-                <div>
-                    <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
-                    <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
-                    <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
-                </div>
-                <botton>我要推广</botton>
-            </div>
+                <c:if test="${agentMap.canDeveloping == 'yes'}">
+                    <div class="sec1 toShare" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');">
+                        <img src="${agentMap.brandLogo}" alt="">
+                        <div>
+                            <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
+                            <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
+                                <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
+                        </div>
+                        <botton>我要推广</botton>
+                    </div>
+                </c:if>
+                <c:if test="${agentMap.canDeveloping == 'no'}">
+                    <div class="sec1 toShare">
+                        <img src="${agentMap.brandLogo}" alt="">
+                        <div>
+                            <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
+                            <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
+                                <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
+                        </div>
+                        此产品无推广功能
+                    </div>
+                </c:if>
             </c:forEach>
         </main>
     </div>
 </div>
 </body>
-<script>
-    $('.toShare').on('click', function(){
-        var userSkuId = $(this).attr('userSkuId');
-        var skuId = $(this).attr('skuId');
-        $.ajax({
-            url: '<%=basePath%>developing/isAudit',
-            data: {userSkuId: userSkuId},
-            success: function(msg){
-                if(msg == 'yes'){
-                    window.location.replace('<%=basePath%>developing/sharelink?skuId='+skuId);
-                }else{
-                    alert('此产品的代理证书未审核!');
-                }
-            }
-        })
-    });
-</script>
+<%--<script>--%>
+    <%--$('.toShare').on('click', function(){--%>
+        <%--var userSkuId = $(this).attr('userSkuId');--%>
+        <%--var skuId = $(this).attr('skuId');--%>
+        <%--$.ajax({--%>
+            <%--url: '<%=basePath%>developing/isAudit',--%>
+            <%--data: {userSkuId: userSkuId},--%>
+            <%--success: function(msg){--%>
+                <%--if(msg == 'yes'){--%>
+                    <%--window.location.replace('<%=basePath%>developing/sharelink?skuId='+skuId);--%>
+                <%--}else{--%>
+                    <%--alert('此产品的代理证书未审核!');--%>
+                <%--}--%>
+            <%--}--%>
+        <%--})--%>
+    <%--});--%>
+<%--</script>--%>
 </html>

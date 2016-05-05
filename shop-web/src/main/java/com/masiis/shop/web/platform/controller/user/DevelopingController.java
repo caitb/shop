@@ -4,10 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
-import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.ComBrandMapper;
-import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -51,6 +48,8 @@ public class DevelopingController extends BaseController {
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
+    private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
     private SkuService skuService;
@@ -88,6 +87,8 @@ public class DevelopingController extends BaseController {
                     ComSku comSku = comSkuMapper.selectById(pus.getSkuId());
                     ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
                     ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
+                    /* 统计商品代理等级数 */
+                    Integer skuAgentLevels = pfSkuAgentMapper.countSkuAgentLevel(pus.getSkuId());
 
                     Map<String, Object> agentMap = new HashMap<>();
                     agentMap.put("levelId", comAgentLevel.getId());
@@ -96,6 +97,7 @@ public class DevelopingController extends BaseController {
                     agentMap.put("skuId", comSku.getId());
                     agentMap.put("brandLogo", comBrand.getLogoUrl());
                     agentMap.put("userSkuId", pus.getId());
+                    agentMap.put("canDeveloping", pus.getAgentLevelId()==skuAgentLevels?"no":"yes");
 
                     agentMaps.add(agentMap);
                 }
@@ -147,6 +149,7 @@ public class DevelopingController extends BaseController {
             puc.setUserId(comUser.getId());
             puc.setSkuId(comSku.getId());
             List<PfUserCertificate> pfUserCertificates = pfUserCertificateMapper.selectByCondition(puc);
+            String[] contents = new String[2];
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
                 //if(pfUserCertificate.getPoster() == null){
@@ -168,9 +171,8 @@ public class DevelopingController extends BaseController {
                     QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    String[] contents = new String[2];
-                             contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
-                             contents[1] = "我在麦链合伙人做抗引力-瘦脸精华执行董事级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
+                    contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
+                    contents[1] = "我在麦链合伙人做抗引力-瘦脸精华执行董事级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
@@ -185,8 +187,8 @@ public class DevelopingController extends BaseController {
 
 
             resultMap.put("appId", WxConsPF.APPID);
-            resultMap.put("shareTitle", "来自合伙人"+comUser.getRealName()+"的邀请");
-            resultMap.put("shareDesc", "我在麦链商城合伙"+comSku.getName()+"，赚了不少钱，邀请你也来试试");
+            resultMap.put("shareTitle", contents[0]);
+            resultMap.put("shareDesc", contents[1]);
             resultMap.put("shareLink", shareLink);
             resultMap.put("shareImg", comBrand.getLogoUrl());
 

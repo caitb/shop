@@ -32,6 +32,10 @@ public class UserIdentityAuthController extends BaseController {
 
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
+
+    private   final int identityAuthToPersonInfo = 0;//实名认证提交审核跳转到个人中心
+    private   final int identityAuthToApply = 1;//实名认证提交审核跳转到合伙人申请页面
+
     /**
      * 跳转到身份认证界面
      * @author hanzengzhi
@@ -39,6 +43,8 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "toInentityAuthPage.html")
     public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
+                                     @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
                                      @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
                                      Model model) {
         ComUser comUser = getComUser(request);
@@ -48,11 +54,13 @@ public class UserIdentityAuthController extends BaseController {
         if (comUser!=null&&auditStatusEnum!=null){
             switch (auditStatusEnum){
                 case NOAUDIT://未认证
+                    model.addAttribute("skuId",skuId);
+                    model.addAttribute("returnPageIdentity",returnPageIdentity);
                     jumpPage = "platform/user/shimingrenzheng";
                     break;
                 case AUDITSUCCESS://审核通过
                 case AUDITFAIL://审核不通过
-                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
+                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do?returnPageIdentity="+returnPageIdentity+"&skuId="+skuId;
                     break;
                 default:
                     break;
@@ -67,12 +75,16 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "getIdentityAuthInfo.do")
     public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
+                                      @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
                                       Model model){
         ComUser comUser = getComUser(request);
         userIdentityAuthService.getIdentityAuthInfo(request,comUser);
         String returnPagePath = null;
         switch (comUser.getAuditStatus()){
             case 3://审核失败
+                model.addAttribute("returnPageIdentity", returnPageIdentity);
+                model.addAttribute("skuId", skuId);
                 model.addAttribute("idCardFrontUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
                 model.addAttribute("idCardBackUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
                 returnPagePath = "platform/user/shimingrenzhengfail";
@@ -157,10 +169,22 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/4/6 15:05
      */
     @RequestMapping(value = "toWaitIdentityPage.html")
-    public ModelAndView toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response){
+    public ModelAndView toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response,
+                                           @RequestParam(value = "skuId",required = false) Integer skuId,
+                                           @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity){
         ModelAndView mav = new ModelAndView("platform/user/daishenhe");
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
-        mav.addObject("isUserForcus", isUserForcus);
+        switch (returnPageIdentity){
+            case identityAuthToApply :
+                mav.addObject("returnPagePath","userApply/apply.shtml?skuId="+skuId);
+                mav.addObject("message","自动跳转到合伙人申请界面...");
+                break;
+            case identityAuthToPersonInfo :
+                mav.addObject("returnPagePath","personalInfo/personalHomePageInfo.html");
+                mav.addObject("message","自动跳转个人中心界面...");
+                break;
+            default:
+                break;
+        }
         return mav;
     }
 }

@@ -9,7 +9,6 @@
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/lingquzhengshu.css">
-    <link rel="stylesheet" href="${path}/static/css/fakeLoader.css">
 </head>
 <body>
 <div id="fakeLoader"></div>
@@ -38,7 +37,7 @@
             </div>
             <c:choose>
                 <c:when test="${isQueuing==true}">
-                    <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
+                    <p class="row">本次订单将进入排单期，在您前面有<span>${count}</span>人排单。</p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${pfBorder.sendType == 1}">
@@ -56,7 +55,7 @@
                 <p>${realName}</p>
             </div>
             <div class="Name">
-                <p>合作产品：</p>
+                <p>合伙产品：</p>
                 <p>${skuName}</p>
             </div>
             <div class="Name">
@@ -88,7 +87,7 @@
                     <img src="${path}/static/images/zs%20(1).png" alt="">
                     <p>
                         <span>查看店铺</span>
-                        <span>系统已经为您生成的店铺，请去管理吧</span>
+                        <span>系统已经为您生成店铺，请去管理吧</span>
                     </p>
                 </div>
             </a>
@@ -131,21 +130,17 @@
     <div class="Modal"></div>
 </div>
 <div class="back_h">
-    <img src="${path}/static/images/hehuo.png" alt="">
-    <span class="close">×</span>
+    <div>
+        <h1>恭喜您，成为合伙人!</h1>
+        <img src="${path}/static/images/hehuo.gif" alt="">
+        <h2>后台正在为您生成店铺，请稍等...</h2>
+    </div>
 </div>
-
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/zepto.min.js"></script>
-<script src="${path}/static/js/fakeloader/fakeLoader.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="${path}/mshop/shop-web/src/main/webapp/static/js/hideWXShare.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".fakeloader").fakeLoader({
-            timeToHide: 1200,
-            bgColor: "#3498db",
-            spinner: "spinner4"
-        });
-    });
     $(".add").on("tap", function () {
         $(".back_box").show()
         $(".back_f").show()
@@ -160,6 +155,12 @@
     $(".kNow").on("click", function () {
         $(".paidanqi").hide();
     });
+    function timedMsg() {
+        var t = setTimeout(function () {
+                $(".back_h").hide();
+        }, 3000);
+    }
+    timedMsg();
 </script>
 </body>
 </html>

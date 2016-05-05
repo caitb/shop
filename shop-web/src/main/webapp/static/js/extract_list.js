@@ -71,7 +71,7 @@ $(function(){
             domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
             domUpdate : '<div class="dropload-update">↓释放加载</div>',
             domLoad : '<div class="dropload-load">加载中…</div>',
-            domNoData:'<div class="dropload-noData">暂无数据</div>'
+            domNoData:'<div class="dropload-noData">暂无更多数据</div>'
         }
     });
 });

@@ -149,7 +149,7 @@
                     $("#validateNumberId").bind("click", function () {
                         validateCodeJS.getValidateNumber();
                     });
-                    $("#validateNumberId").html("重新获取验证码");
+                    $("#validateNumberId").html("重新获取");
                     clearTimeout(validateCodeJS.t);
                 }
             },

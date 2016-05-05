@@ -50,19 +50,18 @@
                 <p>选择收货地址</p>
             </div>
         </div>
-        <div id="sec1">
             <section class="sec1">
-                <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                <img src="<%=path%>/static/images/zhifu_ad.png" alt="" class="j">
                 <div onclick="toChooseAddressPage()">
                     <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
                     <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
                     <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
                     <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                        </span><img src="<%=path%>/static/images/next.png" alt=""></p></a>
+                        </span></p></a>
                 </div>
+                <img src="<%=path%>/static/images/next.png" alt="" class="ju">
             </section>
-        </div>
         <section class="sec2">
             <p class="photo">
                 <img src="${comSkuImage}" alt="">

@@ -24,7 +24,7 @@
     <main>
         <header class="xq_header">
             <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>商品管理</p>
+            <p>库存管理</p>
         </header>
         <div id="box">
             <div class="main">

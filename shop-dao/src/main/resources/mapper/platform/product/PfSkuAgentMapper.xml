@@ -139,4 +139,8 @@
         AND p2.agent_level_id = p1.agent_level_id
     </select>
     <!--获取用户商品等级标志 end-->
+
+    <select id="countSkuAgentLevel" parameterType="Integer" resultType="Integer">
+        SELECT count(1) FROM pf_sku_agent WHERE sku_id = #{skuId}
+    </select>
 </mapper>

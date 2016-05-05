@@ -220,6 +220,7 @@ public class UserExtractApplyController extends BaseController {
             Integer count = applyService.findNumsByUserAndDate(user, start, end);
             if(count == null || count <= 0){
                 log.error("当前时间区间内没有数据");
+                res.put("isLast", true);
                 throw new BusinessException("暂无数据");
             }
             log.info("获取时间区间内的总提现数,总记录数:" + count);

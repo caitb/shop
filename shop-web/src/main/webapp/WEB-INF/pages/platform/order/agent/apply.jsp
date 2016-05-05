@@ -131,29 +131,29 @@
                     </c:otherwise>
                 </c:choose>
             </tr>
-            <tr>
-                <td>关注麦链合伙人公众号</td>
-                <c:choose>
-                    <c:when test="${user.auditStatus == 2}">
-                        <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>已完成</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
-                        <c:if test="${user.auditStatus == 1}">
-                            <td><span style="color: #FF5200">审核中</span></td>
-                        </c:if>
-                        <c:if test="${user.auditStatus == 3}">
-                            <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
-                                   style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
-                        </c:if>
-                        <c:if test="${user.auditStatus == 0}">
-                            <td><a href="javascript:void(0);" onclick="goVerified();"
-                                   style="color: #FF5200;text-decoration: underline">去完成</a></td>
-                        </c:if>
-                    </c:otherwise>
-                </c:choose>
-            </tr>
+            <%--<tr>--%>
+                <%--<td>关注麦链合伙人公众号</td>--%>
+                <%--<c:choose>--%>
+                    <%--<c:when test="${user.auditStatus == 2}">--%>
+                        <%--<td><img src="${path}/static/images/dui.png" alt=""></td>--%>
+                        <%--<td>已完成</td>--%>
+                    <%--</c:when>--%>
+                    <%--<c:otherwise>--%>
+                        <%--<td><img src="${path}/static/images/cuo.png" alt=""></td>--%>
+                        <%--<c:if test="${user.auditStatus == 1}">--%>
+                            <%--<td><span style="color: #FF5200">审核中</span></td>--%>
+                        <%--</c:if>--%>
+                        <%--<c:if test="${user.auditStatus == 3}">--%>
+                            <%--<td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"--%>
+                                   <%--style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>--%>
+                        <%--</c:if>--%>
+                        <%--<c:if test="${user.auditStatus == 0}">--%>
+                            <%--<td><a href="javascript:void(0);" onclick="goVerified();"--%>
+                                   <%--style="color: #FF5200;text-decoration: underline">去完成</a></td>--%>
+                        <%--</c:if>--%>
+                    <%--</c:otherwise>--%>
+                <%--</c:choose>--%>
+            <%--</tr>--%>
         </table>
     </div>
     <section class="sec2">

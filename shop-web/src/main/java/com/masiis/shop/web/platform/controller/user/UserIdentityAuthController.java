@@ -181,8 +181,6 @@ public class UserIdentityAuthController extends BaseController {
             default:
                 break;
         }
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
-        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }
 }

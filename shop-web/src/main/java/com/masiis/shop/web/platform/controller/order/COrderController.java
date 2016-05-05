@@ -201,8 +201,13 @@ public class COrderController extends BaseController {
                                     @RequestParam(value = "skuId", required = true) Integer skuId,
                                     @RequestParam(value = "addressId", required = true) Long addressId,
                                     Model model){
+        log.info("查看订单详情-------start");
+        log.info("pfCorderId======="+pfCorderId);
+        log.info("skuId======="+skuId);
+        log.info("addressId======="+addressId);
         model = getOrderInfo(request, model, skuId, addressId);
         model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
+        log.info("查看订单详情-------end");
         return "platform/order/trialOrderDetail";
     }
 

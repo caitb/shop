@@ -12,12 +12,6 @@
     <link rel="stylesheet" href="${path}/static/css/jixuguangguang.css">
 </head>
 <body>
-<c:if test="${isUserForcus==false}">
-<div class="na">
-    <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
-    <label class="close">×</label>
-</div>
-</c:if>
 <header class="xq_header" style="margin:0;">
     <p>等待审核</p>
 </header>

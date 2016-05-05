@@ -43,14 +43,12 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "toInentityAuthPage.html")
     public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam(value = "returnPage",required = false,defaultValue = "0") Integer returnPageIdentity,
+                                     @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
                                      @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
                                      @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
                                      Model model) {
         ComUser comUser = getComUser(request);
         model.addAttribute("comUser",comUser);
-        model.addAttribute("skuId",skuId);
-        model.addAttribute("returnPageIdentity",returnPageIdentity);
         String jumpPage = "";
         AuditStatusEnum auditStatusEnum = AuditStatusEnum.getAuditStatusEnum(auditStatus) ;
         if (comUser!=null&&auditStatusEnum!=null){
@@ -60,7 +58,7 @@ public class UserIdentityAuthController extends BaseController {
                     break;
                 case AUDITSUCCESS://审核通过
                 case AUDITFAIL://审核不通过
-                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do";
+                    jumpPage = "redirect:/identityAuth/getIdentityAuthInfo.do?returnPageIdentity="+returnPageIdentity+"&skuId="+skuId;
                     break;
                 default:
                     break;
@@ -75,12 +73,16 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "getIdentityAuthInfo.do")
     public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
+                                      @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity,
                                       Model model){
         ComUser comUser = getComUser(request);
         userIdentityAuthService.getIdentityAuthInfo(request,comUser);
         String returnPagePath = null;
         switch (comUser.getAuditStatus()){
             case 3://审核失败
+                model.addAttribute("returnPageIdentity", returnPageIdentity);
+                model.addAttribute("skuId", skuId);
                 model.addAttribute("idCardFrontUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
                 model.addAttribute("idCardBackUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
                 returnPagePath = "platform/user/shimingrenzhengfail";

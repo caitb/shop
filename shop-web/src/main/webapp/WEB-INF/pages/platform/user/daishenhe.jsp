@@ -33,7 +33,7 @@
             }, 1000)
         }
         timedMsg();
-    }
+    })
     function skipPage(){
         window.location.href = "${path}/${returnPagePath}";
     }

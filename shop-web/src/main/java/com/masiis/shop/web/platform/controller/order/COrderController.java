@@ -47,13 +47,6 @@ public class COrderController extends BaseController {
 
     private Logger log = Logger.getLogger(this.getClass());
 
-
-/*    @RequestMapping(value = "testUpdatePayTime")
-    public void testUpdatePayTime(HttpServletRequest request,HttpServletResponse response){
-
-    }*/
-
-
     /**
      * 跳转到使用申请成功界面
      *

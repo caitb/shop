@@ -131,7 +131,7 @@ public class UserIdentityAuthService {
                 //删除最新上传的本地服务器照片
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
-                if (!MobileMessageUtil.verifiedSubmitRemind(comUser.getMobile(),"1")){
+                if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
                 //发送微信提示

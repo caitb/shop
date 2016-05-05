@@ -51,7 +51,7 @@
                             <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
                                 <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
                         </div>
-                        <p>此产品无推广功能</p>
+                        此产品无推广功能
                     </div>
                 </c:if>
             </c:forEach>
@@ -59,21 +59,21 @@
     </div>
 </div>
 </body>
-<script>
-    $('.toShare').on('click', function(){
-        var userSkuId = $(this).attr('userSkuId');
-        var skuId = $(this).attr('skuId');
-        $.ajax({
-            url: '<%=basePath%>developing/isAudit',
-            data: {userSkuId: userSkuId},
-            success: function(msg){
-                if(msg == 'yes'){
-                    window.location.replace('<%=basePath%>developing/sharelink?skuId='+skuId);
-                }else{
-                    alert('此产品的代理证书未审核!');
-                }
-            }
-        })
-    });
-</script>
+<%--<script>--%>
+    <%--$('.toShare').on('click', function(){--%>
+        <%--var userSkuId = $(this).attr('userSkuId');--%>
+        <%--var skuId = $(this).attr('skuId');--%>
+        <%--$.ajax({--%>
+            <%--url: '<%=basePath%>developing/isAudit',--%>
+            <%--data: {userSkuId: userSkuId},--%>
+            <%--success: function(msg){--%>
+                <%--if(msg == 'yes'){--%>
+                    <%--window.location.replace('<%=basePath%>developing/sharelink?skuId='+skuId);--%>
+                <%--}else{--%>
+                    <%--alert('此产品的代理证书未审核!');--%>
+                <%--}--%>
+            <%--}--%>
+        <%--})--%>
+    <%--});--%>
+<%--</script>--%>
 </html>

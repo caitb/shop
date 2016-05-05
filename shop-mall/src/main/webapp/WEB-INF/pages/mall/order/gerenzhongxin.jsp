@@ -39,11 +39,11 @@
             <span>待付款</span></a>
         </p>
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">
-            <span><img src="<%=path%>/static/images/geren%20(3).png" alt=""></span>
+            <span><img src="<%=path%>/static/images/geren%20(3).png" alt=""><c:if test="${sfOrders7 !=0}"><b>${sfOrders7}</b></c:if></span>
             <span>待发货</span></a>
         </p>
         <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=8">
-            <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" ></span>
+            <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" ><c:if test="${sfOrders8 !=0}"><b>${sfOrders8}</b></c:if></span>
             <span>待收货</span></a>
         </p>
     </div>

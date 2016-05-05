@@ -79,7 +79,6 @@ public class ProductController extends BaseController {
             m.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
             PfUserSku pfUserSku = bOrderService.findPfUserSku(user.getId(),indexCom.getSkuId());
             if (pfUserSku !=null){
-                m.setIsPay(pfUserSku.getIsPay());
                 //判断会员权限
                 m.setIsPartner(1);
             } else {

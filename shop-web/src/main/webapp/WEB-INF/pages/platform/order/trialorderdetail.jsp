@@ -58,7 +58,7 @@
             <p>创建时间：<span><fmt:formatDate value="${pfCorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             <p>付款时间：<span><fmt:formatDate value="${pfCorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
         </div>
-        <p><a href="${path}/index">返回市场</a></p>
+        <p><a href="${path}/marketGood/market">返回市场</a></p>
     </div>
 </div>
 </body>

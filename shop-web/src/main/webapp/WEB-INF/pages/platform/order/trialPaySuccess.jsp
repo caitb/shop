@@ -35,7 +35,7 @@
             </h1>
        <div class="oPeration">
            <a href="${path}/corder/checkTrialOrderInfo.shtml?pfCorderId=${pfCorderId}&skuId=${skuId}&addressId=${addressId}" id="checkOrderId">查看订单</a>
-           <a href="${path}/index">返回市场</a>
+           <a href="${path}/marketGood/market">返回市场</a>
        </div>
     </div>
 </body>

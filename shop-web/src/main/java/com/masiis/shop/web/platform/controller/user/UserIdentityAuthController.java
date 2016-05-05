@@ -174,11 +174,11 @@ public class UserIdentityAuthController extends BaseController {
         switch (returnPageIdentity){
             case identityAuthToApply :
                 mav.addObject("returnPagePath","userApply/apply.shtml?skuId="+skuId);
-                mav.addObject("message","自动跳转到申请界面");
+                mav.addObject("message","自动跳转到申请界面...");
                 break;
             case identityAuthToPersonInfo :
                 mav.addObject("returnPagePath","personalInfo/personalHomePageInfo.html");
-                mav.addObject("message","自动跳转个人中心界面");
+                mav.addObject("message","自动跳转个人中心界面...");
                 break;
             default:
                 break;

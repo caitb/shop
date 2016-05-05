@@ -47,6 +47,9 @@ function getExtractApplyList(year,month){
                         $("#divall").append("<div><p><span class='sd'>"+arr[i].date+"</span><span>-"+arr[i].extractFee+"</span></p><h1><span>微信提现</span><span>"+arr[i].status+"</span></h1></div>");
                     }
                     $("#currentPage").val(currentPage + 1);
+                    if(currentPage + 1 >= totalPage){
+                        $("#showMore").html("");
+                    }
                 },
                 error: function(){
                     //请求出错处理
@@ -73,6 +76,9 @@ function getExtractApplyList(year,month){
                 }
                 $("#totalPage").val(totalPage);
                 $("#currentPage").val(1);
+                if (parseInt(totalPage)>1){
+                    $("#showMore").html("<span href=\"#\" onclick=\"getMore()\">查看更多></span>");
+                }
             },
             error: function(){
                 //请求出错处理

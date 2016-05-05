@@ -2,8 +2,6 @@ package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
 
-import java.math.BigDecimal;
-
 /**
  * MobileMessageUtil
  *
@@ -23,6 +21,10 @@ public class MobileMessageUtil {
 
     private String[] content;
 
+    /**
+     * 判断是B端还是C端 短信
+     * @param fromIdentify  B/C/""
+     */
     private MobileMessageUtil(String fromIdentify){
         this.fromIdentify = fromIdentify;
         if ("B".equals(this.fromIdentify)){

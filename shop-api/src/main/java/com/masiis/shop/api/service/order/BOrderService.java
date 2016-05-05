@@ -261,8 +261,7 @@ public class BOrderService {
                 pfBorderFreightMapper.insert(pfBorderFreight);
                 //添加订单日志
                 bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-
-                MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+                MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
                 String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
                 String[] params = new String[5];
                 params[0] = pfBorderItems.getSkuName();
@@ -287,7 +286,7 @@ public class BOrderService {
             pfBorderFreightMapper.insert(pfBorderFreight);
             //添加订单日志
             bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
-            MobileMessageUtil.goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
+            MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/deliveryBorderDetils.html?id=" + pfBorder.getId().toString();
             String[] params = new String[5];
             params[0] = pfBorderItems.getSkuName();

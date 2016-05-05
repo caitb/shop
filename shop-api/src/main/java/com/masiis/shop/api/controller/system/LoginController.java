@@ -231,7 +231,7 @@ public class LoginController extends BaseController {
             Date exNewTime = new Date();
             exNewTime.setTime(exNewTime.getTime() + 60 * 1000);
             // 发送短信
-            if(!MobileMessageUtil.VerificationCode(phoneNum, code, SMSConstants.REGESTER_VALID_TIME)){
+            if(!MobileMessageUtil.getInitialization("B").verificationCode(phoneNum, code, SMSConstants.REGESTER_VALID_TIME)){
                 // 验证码短信发送失败
                 res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_SMS_FAIL);
                 res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_SMS_FAIL_MSG);

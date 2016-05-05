@@ -13,6 +13,7 @@
     border-radius: 5px;
     text-align: center;
     overflow: hidden;;
+    z-index:999;
 }
 .alert h1{
     padding:10px 10px;

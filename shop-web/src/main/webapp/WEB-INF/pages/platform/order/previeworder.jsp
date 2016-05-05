@@ -64,7 +64,7 @@
         您还可以
     </h1>
     <div class="oPeration">
-        <a href="<%=path%>/payEnd/replenishment.shtml?bOrderId=${pfBorder.id}&isDetail=1">查看订单</a>
+        <a href="<%=path%>/borderManage/borderDetils.html?id=${pfBorder.id}">查看订单</a>
         <a href="#" onclick="toMarket()">返回市场</a>
     </div>
 </div>

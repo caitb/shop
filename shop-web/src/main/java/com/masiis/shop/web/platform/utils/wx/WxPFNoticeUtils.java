@@ -499,10 +499,10 @@ public class WxPFNoticeUtils {
         offLinePayNotice.setKeyword1(new WxNoticeDataItem(params[0], null));
         offLinePayNotice.setKeyword2(new WxNoticeDataItem(params[1], null));
         offLinePayNotice.setKeyword3(new WxNoticeDataItem(params[2], null));
-        Date date = DateUtil.String2Date(params[1], "yyyy-MM-dd HH:mm:ss");
-        date = DateUtil.getDateNextdays(date, 7);
+/*        Date date = DateUtil.String2Date(params[1], "yyyy-MM-dd HH:mm:ss");
+        date = DateUtil.getDateNextdays(date, 7);*/
         offLinePayNotice.setRemark(new WxNoticeDataItem("您选择的是线下支付，请您在"
-                + DateUtil.Date2String(date, "yyyy-MM-dd HH:mm:ss") + "前付款以免过期。点击查看详情。", null));
+                + params[1] + "前付款以免过期。点击查看详情。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(orderUrl);

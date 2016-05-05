@@ -151,7 +151,7 @@ public class MobileMessageUtil {
      * @param phone
      * @return
      */
-    public boolean haveNewLowerOrder(String phone){
+    public  boolean haveNewLowerOrder(String phone){
         content = new String[1];
         content[0] = EVENING_MESSAGE;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_LOWER_ORDER, content);

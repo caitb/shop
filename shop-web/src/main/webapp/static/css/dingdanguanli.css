@@ -49,15 +49,15 @@
 }
 .wrap main .sec1 ul li h1 span {
   display: block;
-  padding: 0 10px;
+  padding: 0 5px;
   border-radius: 10px;
   border: 1px solid #ff5200;
   color: #ff5200;
   background: #fff;
   position: absolute;
-  top: 0;
+  top: -4px;
   font-size: 12px;
-  left: 35px;
+  left: 25px;
 }
 .wrap main .sec1:nth-child(2) {
   margin-top: 10px;

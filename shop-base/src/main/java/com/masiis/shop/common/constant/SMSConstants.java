@@ -12,6 +12,10 @@ public class SMSConstants {
 	 * 注册短信通知验证码有效时间(分钟)
 	 */
 	public static final String REGESTER_VALID_TIME = "5";
+	/**
+	 * 提现申请审核天数
+	 */
+	public static final String WITHDRAW_DAYS = "2";
 //	/**
 //	 * 支付短信
 //	 */

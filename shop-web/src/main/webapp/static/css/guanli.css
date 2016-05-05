@@ -43,6 +43,7 @@ body main .wrap .box .sec1 div:nth-child(1) {
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
+  padding-bottom: 7px;
 }
 body main .wrap .box .sec1 div:nth-child(1) h2 span {
   float: right;

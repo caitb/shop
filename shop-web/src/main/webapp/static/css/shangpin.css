@@ -15,17 +15,22 @@
     height: 100%;
 }
 .wrap main #box .main .d_box {
-    background: white;
+    /* background: white; */
     margin-top: 5px;
 }
 .wrap main #box .main .d_box h1{
     border-bottom: 1px solid #e2e2e2;
     line-height: 30px;
+    background: #fff;
+    font-size: 12px;
+}
+.wrap main #box .main .d_box h1 span{
+    font-size: 12px;
 }
 .wrap main #box .main .d_box h1 img{
     display: inline-block;
-    width: 17px;
-    margin-top: 6px;
+    width: 15px;
+    margin-top: 9px;
     float: left;
     margin-left: 10px;
     margin-right: 10px;
@@ -38,6 +43,7 @@
     display: -moz-box;
     -moz-box-align: center;
     border-bottom: 1px solid #f6f6f6;
+    background: #fff;
 }
 .wrap main #box .main .d_box .sec2 .photo {
     width: 62px;
@@ -47,8 +53,10 @@
     display: block;
     width: 62px;
     height: 62px;
-    border: 1px solid #999999;
+    border: 1px solid #ddd;
 }
+
+img {}
 .wrap main #box .main .d_box .sec2 div {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
@@ -89,6 +97,8 @@
 .wrap main #box .main .d_box .sec3 {
     width: 100%;
     display: -webkit-box;
+    margin-bottom: 10px;
+    background: #fff;
 }
 .wrap main #box .main .d_box .sec3 p {
     -webkit-box-flex: 1;
@@ -157,10 +167,9 @@
 .wrap .back_b h4 div .number {
     color: #F74A11;
     float: left;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 30px;
     text-align: center;
-    border-radius: 5px;
     border: 1px solid #E5E5E5;
 }
 .wrap .back_j h4 div span,
@@ -168,13 +177,12 @@
     display: block;
     float: left;
     width: 40px;
-    height: 40px;
+    height: 30px;
     border: 1px solid #E5E5E5;
     text-align: center;
-    line-height: 40px;
+    line-height: 30px;
     text-indent: 0;
     font-size: 20px;
-    border-radius: 5px;
 }
 .wrap .back_j h4 div span:nth-child(2),
 .wrap .back_b h4 div span:nth-child(2) {
@@ -183,7 +191,7 @@
 .wrap .back_j > div,
 .wrap .back_b > div {
     display: -webkit-box;
-    margin: 20px 30px 30px 30px;
+    margin: 10px 30px 30px 30px;
 }
 .wrap .back_j > div h1,
 .wrap .back_b > div h1 {
@@ -291,4 +299,12 @@
     -webkit-box-pack: center;
     display: none;
     z-index: 10;
+}
+.jianku{
+    background: url("/static/images/n.png") no-repeat 26%;
+    background-size: 14px;
+}
+.buhuo{
+    background: url("/static/images/b.png") no-repeat 34%;
+    background-size: 14px;
 }

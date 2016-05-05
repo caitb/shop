@@ -30,23 +30,23 @@
             </header>
             <div class="tai">
                 <c:if test="${borderDetail.pfBorder.orderStatus==0}">
-                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>未付款</h1>
+                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>未付款</h1>
                     <p>亲，未付款的订单可以保留7天~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==7}">
-                    <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 50px;height: 36px;"><h1>待发货</h1>
+                    <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 35px;height: 25px;top: 18px;"><h1>待发货</h1>
                     <p>亲，卖家会很快发货~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.payStatus==8 && borderDetail.pfBorder.sendType ==2}">
-                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;"><h1>已发货</h1>
+                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 48px;height: 25px;top: 18px;"><h1>已发货</h1>
                     <p>亲，卖家已发货~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==3 }">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>已完成</h1>
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>已完成</h1>
                     <p>亲，交易完成~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;"><h1>排单中</h1>
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 16px;"><h1>排单中</h1>
                     <p>亲，订单排单中~~</p>
                 </c:if>
             </div>
@@ -78,9 +78,9 @@
                     </a>
                 </p>
                 <div>
-                    <h2>${bdpi.skuName}</h2>
+                    <h2>${bdpi.skuName}<b>x${bdpi.quantity}</b></h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>零售价： <span>￥${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
+                    <p>零售价： <span>￥${bdpi.unitPrice}</span></p>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>

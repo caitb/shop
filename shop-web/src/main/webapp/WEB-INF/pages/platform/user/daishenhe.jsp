@@ -19,36 +19,17 @@
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
     <h2>您的实名认证已经提交，审核结果会在1个工作日内下发到您的手机请注意查收。</h2>
-</div>
-<a href="${path}/marketGood/market" class="jixu">
-    返回市场
-</a>
-<div class="back_box">
-    <div class="back"></div>
-    <div class="back_f">
-        <span class="close">×</span>
-        <img src="${path}/static/images/b.png" alt="">
-    </div>
+    <h1>${message}<span></span></h1>
 </div>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script>
-    $(".add").on("tap",function () {
-        $(".back_box").show()
-        $(".back_f").show()
-    })
-    $(".close").on("tap",function () {
-        $(".back_box").hide()
-        $(this).parent().hide()
-    })
-
-
     $(document).ready(function(){
         setTimeout(function(){
             skipPage();
         },3000)
     })
     function skipPage(){
-        window.location.href = ${path}/${returnPagePath};
+        window.location.href = "${path}/${returnPagePath}";
     }
 </script>
 </body>

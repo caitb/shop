@@ -43,8 +43,8 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "toInentityAuthPage.html")
     public String toInentityAuthPage(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam(value = "returnPage",required = false,defaultValue = "0") int returnPageIdentity,
-                                     @RequestParam(value = "skuId",required = false) int skuId,
+                                     @RequestParam(value = "returnPage",required = false,defaultValue = "0") Integer returnPageIdentity,
+                                     @RequestParam(value = "skuId",required = false,defaultValue = "0") Integer skuId,
                                      @RequestParam(value = "auditStatus",defaultValue = "0")int auditStatus,
                                      Model model) {
         ComUser comUser = getComUser(request);
@@ -166,8 +166,8 @@ public class UserIdentityAuthController extends BaseController {
      */
     @RequestMapping(value = "toWaitIdentityPage.html")
     public ModelAndView toWaitIdentityPage(HttpServletRequest request,HttpServletResponse response,
-                                           @RequestParam(value = "skuId",required = false) int skuId,
-                                           @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") int returnPageIdentity){
+                                           @RequestParam(value = "skuId",required = false) Integer skuId,
+                                           @RequestParam(value = "returnPageIdentity",required = false,defaultValue = "0") Integer returnPageIdentity){
         ModelAndView mav = new ModelAndView("platform/user/daishenhe");
         switch (returnPageIdentity){
             case identityAuthToApply :

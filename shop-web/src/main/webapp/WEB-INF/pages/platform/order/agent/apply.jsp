@@ -193,9 +193,7 @@
             alert("请先绑定手机号");
             return;
         }
-        var para = "?";
-        para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}");
-        window.location.href = "${basePath}user/userVerified.shtml" + para;
+        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=0";
     }
 
     function reSubmitIdentityAuth() {
@@ -203,7 +201,7 @@
             alert("请先绑定手机号");
             return false;
         }
-        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
+        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=3";
     }
 
     function goGuanZhu() {

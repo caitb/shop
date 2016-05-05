@@ -221,7 +221,24 @@ main{
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
     -webkit-box-align:center;
-    display: none;
+    background: rgba(0,0,0,0.5);
+}
+.back_h div{
+    width:90%;
+    background: #fff;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-align:center;
+    -webkit-box-pack:center;
+    padding: 20px 0 10px 0;
+}
+.back_h div img{
+    display: block;
+    width:200px;
+}
+.back_h div h1{
+    font-size: 18px;
+    color: #f74a11;
 }
 .back_h img{
     display: block;

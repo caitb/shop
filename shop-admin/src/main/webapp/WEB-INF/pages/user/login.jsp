@@ -51,7 +51,7 @@
                 <div class="login-container">
 
                     <div class="position-relative">
-                        <div id="login-box" class="login-box visible widget-box no-border" style="margin-top: 300px;">
+                        <div id="login-box" class="login-box visible widget-box no-border" style="margin-top: 170px;">
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">

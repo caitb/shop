@@ -264,6 +264,7 @@ public class BOrderAddService {
         pfBorderItem.setSkuName(comSku.getName());
         pfBorderItem.setBailAmount(new BigDecimal(0));
         pfBorderItem.setQuantity(quantity);
+        pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
         pfBorderItem.setUnitPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()));
         pfBorderItem.setTotalPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(quantity)));

@@ -11,19 +11,12 @@
 </head>
 <body>
 <div class="fakeloader"></div>
-<c:if test="${isUserForcus==false}">
-    <div class="na">
-        <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
-        <label class="close">×</label>
-    </div>
-</c:if>
 <div class="wrap">
     <header class="xq_header">
         <a href="${basePath}product/skuDetails.shtml?skuId=${skuId}">
             <img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>合伙人申请</p>
     </header>
-
     <c:if test="${isQueuing==true}">
         <p class="row">本次订单将进入排单期。在您前面有<span>${count}</span>人排单。</p>
     </c:if>
@@ -71,7 +64,7 @@
             <img src="${path}/static/images/shenqing_7.png" alt="">
             <div>
                 <h2>平台补助</h2>
-                <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自于平台的补助</p>
+                <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>
             </div>
         </section>
         <section class="sec1">
@@ -86,7 +79,7 @@
         <input id="type" value="${type}" style="display: none"/>
     </main>
     <div class="biao">
-        <h1>申请条件</h1>
+        <h1><img src="${path}/static/images/shenqing_list.png" alt=""><b>申请条件</b></h1>
         <table>
             <tr>
                 <td>申请条件</td>
@@ -131,29 +124,21 @@
                     </c:otherwise>
                 </c:choose>
             </tr>
-            <%--<tr>--%>
-                <%--<td>关注麦链合伙人公众号</td>--%>
-                <%--<c:choose>--%>
-                    <%--<c:when test="${user.auditStatus == 2}">--%>
-                        <%--<td><img src="${path}/static/images/dui.png" alt=""></td>--%>
-                        <%--<td>已完成</td>--%>
-                    <%--</c:when>--%>
-                    <%--<c:otherwise>--%>
-                        <%--<td><img src="${path}/static/images/cuo.png" alt=""></td>--%>
-                        <%--<c:if test="${user.auditStatus == 1}">--%>
-                            <%--<td><span style="color: #FF5200">审核中</span></td>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${user.auditStatus == 3}">--%>
-                            <%--<td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"--%>
-                                   <%--style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${user.auditStatus == 0}">--%>
-                            <%--<td><a href="javascript:void(0);" onclick="goVerified();"--%>
-                                   <%--style="color: #FF5200;text-decoration: underline">去完成</a></td>--%>
-                        <%--</c:if>--%>
-                    <%--</c:otherwise>--%>
-                <%--</c:choose>--%>
-            <%--</tr>--%>
+            <tr>
+                <td>关注公众号</td>
+                <c:choose>
+                    <c:when test="${isUserForcus==true}">
+                        <td><img src="${path}/static/images/dui.png" alt=""></td>
+                        <td>已完成</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
+                        <td><a href="javascript:void(0);" onclick="goGuanZhu();"
+                               style="color: #FF5200;text-decoration: underline">去完成</a>
+                        </td>
+                    </c:otherwise>
+                </c:choose>
+            </tr>
         </table>
     </div>
     <section class="sec2">
@@ -203,15 +188,12 @@
     $(document).ready(function () {
         validateCodeJS.initPage();
     });
-    function goVerified(para) {
+    function goVerified() {
         if (${user.isBinding!=1}) {
             alert("请先绑定手机号");
-            return false;
+            return;
         }
-        $(para).html("正在提交...");
-        var para = "?";
-        para += "goToURL=" + encodeURIComponent("${basePath}userApply/apply.shtml?skuId=${skuId}");
-        window.location.href = "${basePath}user/userVerified.shtml" + para;
+        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=0";
     }
 
     function reSubmitIdentityAuth() {
@@ -219,7 +201,20 @@
             alert("请先绑定手机号");
             return false;
         }
-        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?auditStatus=3";
+        window.location.href = "${basePath}identityAuth/toInentityAuthPage.html?skuId=${skuId}&amp;returnPage=1&amp;auditStatus=3";
+    }
+
+    function goGuanZhu() {
+        if (${user.isBinding!=1}) {
+            alert("请先绑定手机号");
+            return;
+        }
+        if (${user.auditStatus==0}) {
+            alert("请先实名认证");
+            return;
+        }
+        $(".back_f").show();
+        $(".back").show();
     }
 
     $("#goToNext").on("click", function () {
@@ -238,10 +233,14 @@
         } else if (auditStatus == 3) {
             alert("您的实名认证未通过,请重新提交!");
             return;
-        } else if (auditStatus == 2) {
-            $(this).html("请稍后...");
-            window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
         }
+        if (${isUserForcus==false}) {
+            alert("请去完成关注公众号!");
+            return;
+        }
+        $(this).html("请稍后...");
+        window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
+
     });
 
     $("#quxiao").on("click", function () {

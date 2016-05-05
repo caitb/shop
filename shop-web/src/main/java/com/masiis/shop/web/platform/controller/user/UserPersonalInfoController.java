@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserPersonalInfoService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "personalInfo")
 public class UserPersonalInfoController extends BaseController {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserPersonalInfoService userPersonalInfoService;
@@ -47,6 +50,7 @@ public class UserPersonalInfoController extends BaseController {
         if (map != null) {
             model.addAttribute("pfSkuAgentDetails", map.get("pfSkuAgentDetails"));
         }
+        log.info("商品等级标识路径------"+map.get("agentLevelIConUrl"));
         model.addAttribute("comUser", comUser);
         model.addAttribute("agentLevelIConUrl", map.get("agentLevelIConUrl"));
         model.addAttribute("auditStatusName", AuditStatusEnum.getName(comUser.getAuditStatus()));

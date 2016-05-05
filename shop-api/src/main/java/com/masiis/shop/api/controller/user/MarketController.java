@@ -50,9 +50,6 @@ public class MarketController extends BaseController {
     @ResponseBody
     @SignValid(paramType = MarketIndexReq.class)
     public MarketIndexRes toMarket(HttpServletRequest request, MarketIndexReq req, ComUser user){
-        if (user == null) {
-            throw new BusinessException();
-        }
         MarketIndexRes res = new MarketIndexRes();
         //获取图片地址常量
         String value = PropertiesUtils.getStringValue("index_banner_url");

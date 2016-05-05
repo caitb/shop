@@ -50,7 +50,7 @@ public class ProductController extends BaseController {
     @RequestMapping("/alist")
     @ResponseBody
     @SignValid(paramType = ProAllListReq.class)
-    public BaseRes toAllPros(HttpServletRequest request, ProAllListReq req, ComUser user){
+    public ProAllListRes toAllPros(HttpServletRequest request, ProAllListReq req, ComUser user){
         if (user == null) {
             throw new BusinessException();
         }

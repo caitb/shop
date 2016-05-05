@@ -160,6 +160,6 @@ public class SfOrderManageService {
         if (aBoolean == false) {
             throw new BusinessException("订单完成微信提示失败");
         }
-        MobileMessageUtil.consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
+        MobileMessageUtil.getInitialization("C").consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
     }
 }

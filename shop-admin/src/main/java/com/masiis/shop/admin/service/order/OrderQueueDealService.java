@@ -224,7 +224,7 @@ public class OrderQueueDealService {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.getPfBorderItemDetail(pfBorder.getId());
         //平台代发货
         if ("1".equals(pfBorder.getSendType())){
-            MobileMessageUtil.dealQueueOrderPlatform(comUser.getMobile(),pfBorder.getOrderCode());
+            MobileMessageUtil.getInitialization("B").dealQueueOrderRemind(comUser.getMobile(),pfBorder.getOrderCode(), pfBorder.getSendType());
             String[] params;
             for (PfBorderItem pfBorderItem : pfBorderItems){
                 params = new String[5];

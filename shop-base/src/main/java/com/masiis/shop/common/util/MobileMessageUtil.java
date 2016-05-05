@@ -12,8 +12,6 @@ import java.math.BigDecimal;
  */
 public class MobileMessageUtil {
 
-    private static String sign = "_SMS";
-
     /**
      * 短信結束語
      */

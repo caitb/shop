@@ -52,6 +52,7 @@
 <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path%>/static/js/date.js" ></script>
 <script type="text/javascript" src="<%=path%>/static/js/iscroll.js" ></script>
+<script type="text/javascript" src="<%=path%>/static/js/definedAlertWindow.js" ></script>
 <script src="<%=path%>/static/js/dropload.min.js"></script>
 <script type="application/javascript" src="<%=path%>/static/js/extract_list.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>

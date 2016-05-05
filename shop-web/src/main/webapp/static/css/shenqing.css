@@ -92,22 +92,36 @@ body .paidan>h1 span{
 }*/
 body .biao{
   background: #fff;
-  margin: 5px 0;
+  margin: 5px;
   padding-bottom: 5px;
 }
 body .biao h1{
-  padding: 5px 10px;
+  padding: 14px;
+  display: -webkit-box;
+  -webkit-box-align:center;
+  -webkit-box-pack:center;
+  border-bottom: 1px solid #f6f6f6;
+}
+.biao h1 img{
+  display: block;
+  width: 20px;
+  margin-right: 5px;
+}
+.biao h1 b{
+  display: block;
 }
 body .biao table{
   width:96%;
   margin:0 auto;
   border:1px solid #F3F4F5;
+  margin-top: 10px;
 }
 body .biao table td{
   text-align: center;
   border:1px solid #F3F4F5;
   background: white;
-  padding:5px 0;
+  padding: 7px 0;
+  color: #333;
 }
 body .biao table td img{
   display: block;
@@ -186,7 +200,7 @@ body main .sec1 div {
 }
 body main .sec1 div h2 {
   color: #333333;
-  font-size: 15px;
+  font-size: 14px;
 }
 body main .sec1 div p {
   width: 100%;

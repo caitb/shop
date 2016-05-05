@@ -347,8 +347,8 @@
   width: 1px;
   line-height: 21px;
   text-indent: 10px;
-  font-weight: 600;
-  color: #555555;
+  color: #333;
+  font-size: 12px;
 }
 .wrap .back_que h4 span {
   width: 1px;
@@ -356,6 +356,8 @@
   -webkit-box-flex: 1;
   margin-left: 10px;
   line-height: 21px;
+  font-size: 12px;
+  color: #666;
 }
 .wrap .back_que h3 {
   display: -webkit-box;
@@ -374,6 +376,7 @@
   border-radius: 5px;
   color: #333;
   margin-top: 15px;
+  font-size: 12px;
 }
 .wrap .back_que h3 span:nth-child(2) {
   margin-right: 10%;

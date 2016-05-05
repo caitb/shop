@@ -67,7 +67,11 @@ public class SfUserExtractApplyController extends BaseController{
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
         if (userAccount == null){
             userAccount = new SfUserAccount();
-            userAccount.setExtractableFee(new BigDecimal(0));
+            userAccount.setExtractableFee(new BigDecimal(0.00));
+            userAccount.setAppliedFee(new BigDecimal(0.00));
+        }
+        if (userAccount.getAppliedFee() == null){
+            userAccount.setAppliedFee(new BigDecimal(0.00));
         }
         mv.addObject("userAccount",userAccount);
         mv.addObject("comUser",comUser);

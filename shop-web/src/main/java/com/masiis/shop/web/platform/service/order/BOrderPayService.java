@@ -547,9 +547,9 @@ public class BOrderPayService {
             param[1] = pfBorder.getOrderAmount().toString();
             param[2] = pfBorderItems.get(0).getQuantity().toString();
             param[3] = BOrderType.getByCode(pfBorder.getOrderType()).getDesc();
-            param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
+            param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
             WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
-            MobileMessageUtil.getInitialization("B").joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
+            MobileMessageUtil.joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
         } else {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
@@ -560,11 +560,11 @@ public class BOrderPayService {
                 params[2] = pfBorderItems.get(0).getSkuName() + "-" + comAgentLevel.getName();
                 params[3] = timeFormart.format(pfBorder.getPayTime());
                 WxPFNoticeUtils.getInstance().partnerApplySuccessNotice(comUser, params);
-                MobileMessageUtil.getInitialization("B").partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
+                MobileMessageUtil.partnerApplicationSuccess(comUser.getMobile(), pfBorderItems.get(0).getSkuName(), comAgentLevel.getName());
                 //给上级推送
                 if (pComUser != null) {
                     WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
-                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                    MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
                 }
             } else if (pfBorder.getOrderType() == 1) {
                 //拿货方式(0未选择1平台代发2自己发货)
@@ -575,7 +575,7 @@ public class BOrderPayService {
                     param[2] = pfBorderItems.get(0).getQuantity().toString();
                     param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
                     WxPFNoticeUtils.getInstance().replenishmentByPlatForm(comUser, param);
-                    MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
+                    MobileMessageUtil.addStockByPlatform(comUser.getMobile(), pfBorderItems.get(0).getQuantity().toString());
                 } else if (pfBorder.getSendType() == 2) {
                     String[] param = new String[4];
                     param[0] = pfBorderItems.get(0).getSkuName();
@@ -583,14 +583,14 @@ public class BOrderPayService {
                     param[2] = pfBorderItems.get(0).getQuantity().toString();
                     param[3] = BOrderStatus.getByCode(pfBorder.getOrderType()).getDesc();
                     WxPFNoticeUtils.getInstance().replenishmentBySelf(comUser, param);
-                    MobileMessageUtil.getInitialization("B").addStockSuccess(comUser.getMobile(), pfBorder.getSendType(), pfBorderItems.get(0).getQuantity().toString());
+                    MobileMessageUtil.addStockByUserself(comUser.getMobile());
                     if (pfBorder.getUserPid() != 0) {
                         String[] paramIn = new String[2];
                         paramIn[0] = pfBorder.getOrderCode();
                         paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
                         WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
-                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                        MobileMessageUtil.haveNewLowerOrder(pComUser.getMobile());
                     }
                 }
             }
@@ -603,7 +603,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Map<String, Object> offinePayment(Long bOrderId) {
+    public Map<String, Object> offinePayment(ComUser comUser,Long bOrderId) {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
@@ -645,6 +645,21 @@ public class BOrderPayService {
             throw new BusinessException("线下支付更新订单状态失败");
         }
         return pfBorder;
+    }
+    private void offinePaymentWxNotice(ComUser comUser,PfBorder border,PfBorderItem orderItem){
+        StringBuffer sb = new StringBuffer();
+        PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
+        String agentLevelName = null;
+        if (userSku!=null){
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
+            if (comAgentLevel!=null){
+                agentLevelName = comAgentLevel.getName();
+            }
+        }
+        sb.append(orderItem.getSkuName()).append(agentLevelName).append("合伙人订单");
+        String[] param = new String[]{border.getOrderCode(),border.getCreateTime()+"",sb.toString()};
+        String offinePaymentUrl = "";
+        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,null);
     }
 
     /**

@@ -13,12 +13,11 @@ public class MarketProItem {
     private BigDecimal shipAmount;//试用费用
     private Integer skuId;//sku主键id
     private Integer isTrial;//是否允许试用
-    private Integer isPay;//是否付款
     private String imgUrl;//图片地址
     private String discountLevel;//优惠区间
     private String bailLevel;//优惠区间
     private Integer maxDiscount;//优惠%
-    private String skuName;
+    private String skuName;//商品名称
     private String skuPriceRetail;
     private Integer agentNum;//代理人数
     private Integer isPartner ;//是否为合伙人
@@ -45,14 +44,6 @@ public class MarketProItem {
 
     public void setIsTrial(Integer isTrial) {
         this.isTrial = isTrial;
-    }
-
-    public Integer getIsPay() {
-        return isPay;
-    }
-
-    public void setIsPay(Integer isPay) {
-        this.isPay = isPay;
     }
 
     public String getImgUrl() {

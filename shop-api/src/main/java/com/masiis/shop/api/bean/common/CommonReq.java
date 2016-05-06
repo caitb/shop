@@ -1,11 +1,11 @@
-package com.masiis.shop.api.bean.user;
+package com.masiis.shop.api.bean.common;
 
 import com.masiis.shop.api.bean.base.BaseReq;
 
 /**
- * Created by wangbingjian on 2016/5/5.
+ * Created by wangbingjian on 2016/5/6.
  */
-public class PersonalCenterReq extends BaseReq {
+public class CommonReq extends BaseReq{
 
     private String token;
 

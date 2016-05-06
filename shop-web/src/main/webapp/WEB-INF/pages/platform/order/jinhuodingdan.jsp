@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/jinhuodingdan.css">
     <link rel="stylesheet" href="<%=path%>/static/css/loading.css">
-    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
        <div class="wrap">
@@ -25,7 +24,6 @@
                 <header class="xq_header">
                     <a href="<%=path%>/borderManage/borderManagement.html"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                         <p>进货订单</p>
-
                 </header>
                 <nav>
                     <ul>
@@ -37,6 +35,7 @@
                         <li><a href="javascript:;">已完成</a></li>
                         <li><a href="javascript:;">排单中</a></li>
                     </ul>
+                    <img src="${path}/static/images/youdao.png" alt="" class="you">
                 </nav>
                 <main>
                     <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>

@@ -20,6 +20,7 @@ public class ComUserKeyboxService {
     private ComUserKeyboxMapper keyboxMapper;
 
     public ComUserKeybox getComUserKeyboxByToken(String token){
+        log.info("token = " + token);
         if(StringUtils.isBlank(token)){
             return null;
         }

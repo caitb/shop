@@ -95,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             display: block;
             width: 90px;
             height: 90px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
         }
         .wrap .box .main .sec1 div {
             -webkit-box-flex: 1;
@@ -117,7 +117,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             color: #666;
         }
         .wrap .box .main .sec1 div h3:nth-child(2) {
-            border-bottom: 1px solid #ccc;
+            border-bottom: 1px solid #f6f6f6;
             padding-bottom: 4px;
         }
         .wrap .box .main .sec1 div h3:nth-child(2) b {
@@ -129,6 +129,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         .wrap .box .main .sec1 div h3:nth-child(3) {
             padding-top: 4px;
             height: 18px;
+        }
+        .wrap .box .main .sec1 div h3 span{
+            font-size: 12px;;
         }
         .wrap .box .main .sec1 + h2 {
             padding: 10px 10px;
@@ -148,6 +151,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             color: #fff;
             background: #ff5200;
             margin-top: -3px;
+        }
+        .wrap .box .main .sec1 + h2 button.btn{
+            float: right;
+            padding: 2px 0px;
+            border-radius: 3px;
+            color: #f74a11;
+            background: transparent;
+            margin-top: -1px;
         }
 
 
@@ -171,14 +182,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <h3><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
                                     <b>${Sku.discountLevel}</b>
                                 </h3>
-                                <c:if test="${Sku.isTrial==1}"><h3>试用费用：<span>${Sku.shipAmount}</span>元</h3></c:if>
-                                <h3>保 证 金：<span>${Sku.bailLevel}</span>元</h3>
+                                <c:if test="${Sku.isTrial==1}"><h3>试用费：<span>${Sku.shipAmount}</span>元</h3></c:if>
+                                <h3>保证金：<span>${Sku.bailLevel}</span>元</h3>
                             </div>
                         </section>
                         <h2>
                             <c:if test="${Sku.agentNum>=9999}">超过</c:if><span>${Sku.agentNum}</span>人合伙
                             <c:if test="${empty Sku.uid}"><button>我要合伙</button></c:if>
-                            <c:if test="${not empty Sku.uid}"><button>您已合伙</button></c:if>
+                            <c:if test="${not empty Sku.uid}"><button class="btn">您已合伙</button></c:if>
                         </h2></a>
                 </c:forEach></div>
                        <!--<section class="sec1">-->

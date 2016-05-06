@@ -15,14 +15,13 @@
 .wrap .box nav {
   width: 100%;
   background: white;
-  padding: 5px 0;
-  border-bottom: 1px solid #E8E8E8;
+  position: relative;
 }
 .wrap .box nav ul {
   display: -webkit-box;
   width:100%;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding: 5px 0;
 }
 .wrap .box nav ul li {
   width: 95px;
@@ -30,7 +29,7 @@
   border-right: 1px solid #F6F6F6;
 }
 .wrap .box nav ul li a {
-  padding: 0 2px 5px 2px;
+  padding: 0 0 5px 0;
   font-size: 12px;
   color: #5E5E5E;
 }
@@ -101,7 +100,7 @@
   display: block;
   width: 62px;
   height: 62px;
-  border: 1px solid #999999;
+  border: 1px solid #ddd;
 }
 .wrap .box main .all .sec1 .shangpin div {
   -webkit-box-flex: 1;
@@ -146,6 +145,7 @@
 .wrap .box main .all .sec1 h1 span {
   display: inline-block;
   font-size: 12px;
+  margin-right: 10px;
 }
 .wrap .box main .all .sec1 h1 b {
   color: #585858;
@@ -328,4 +328,16 @@
   position: fixed;
   top: 0;
   left: 0;
+}
+.you{
+
+  position: absolute;
+
+  display: block;
+
+  height: 31px;
+
+  right: 0;
+
+  top: 0;
 }

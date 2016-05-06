@@ -26,19 +26,7 @@
             <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>注册链接</p>
         </header>
-        <p>
-            您有两种方式发展合伙人
-        </p>
-        <div class="sec1">
-            <p>方法一</p>
-            <img src="<%=basePath%>static/images/icon_63.png" alt="">
-        </div>
-        <div class="sec2">
-            <p>方法二</p>
-            <h1>宣传海报，将海报发到您的朋友圈</h1>
-            <img src="${shareMap.poster}" alt="">
-            <h3 id="downloadImage2">请长按图片保存海报</h3>
-        </div>
+        <img src="${path}/static/images/asd.JPG" alt="">
     </div>
 </div>
 </body>

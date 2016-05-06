@@ -36,28 +36,46 @@
                     <div class="sec1 toShare" onclick="javascript:window.location.replace('<%=basePath%>developing/sharelink?skuId=${agentMap.skuId}');">
                         <img src="${agentMap.brandLogo}" alt="">
                         <div>
-                            <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
+                            <p>合伙产品</p>
+                            <p><b>${agentMap.skuName}</b></p>
                             <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
                                 <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
                         </div>
                         <botton>我要推广</botton>
                     </div>
                 </c:if>
-                <c:if test="${agentMap.canDeveloping == 'no'}">
+                <c:if test="${agentMap.canDeveloping == 'yes'}">
                     <div class="sec1 toShare">
                         <img src="${agentMap.brandLogo}" alt="">
                         <div>
-                            <p style="margin-top: 10px;"><b>${agentMap.skuName}</b></p>
+                            <p>合伙产品</p>
+                            <p><b>${agentMap.skuName}</b></p>
                             <h1>合伙人等级:<span style="font-size: 12px">${agentMap.levelName}</span></h1>
                                 <%--<h2>介绍介绍介绍介绍介绍介绍介绍介绍</h2>--%>
                         </div>
-                        此产品无推广功能
+                        <p class="wu">此产品无推广功能<img src="${path}/static/images/icon_70.png"/></p>
                     </div>
                 </c:if>
             </c:forEach>
         </main>
     </div>
+    <div class="paidanqi">
+        <div class="back_q">
+            <p style="padding: 20px">非常遗憾，麦链合伙人不支持最低一级合伙人发      展下级。您可以升级合伙等级后使用此功能
+            </p>
+            <button class="kNow" style="font-size: 12px;">我知道了</button>
+        </div>
+        <div class="Modal"></div>
+    </div>
 </div>
+<script>
+    $(".wu").on("click", function () {
+        $(".paidanqi").show();
+    });
+    $(".kNow").on("click", function () {
+        $(".paidanqi").hide();
+    });
+</script>
 </body>
 <%--<script>--%>
     <%--$('.toShare').on('click', function(){--%>

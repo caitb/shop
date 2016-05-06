@@ -79,8 +79,8 @@
                 if(data.isTrue == "false"){
                     alert(data.message);
                 }else {
+                    fullShow();//跳转页面钱展示全屏遮罩loading...
                     if (data.returnJumpType == 0){
-                        fullShow();//跳转页面钱展示全屏遮罩loading...
                         window.location.href = basePath + "extractwayinfo/findExtractwayInfo.shtml";
                     }else if (data.returnJumpType == 1){
                         window.location.href = basePath + "personalInfo/toBankCardPage.html";

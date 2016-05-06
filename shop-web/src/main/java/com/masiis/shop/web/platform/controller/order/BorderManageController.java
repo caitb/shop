@@ -396,7 +396,7 @@ public class BorderManageController extends BaseController {
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                 }
                 if(pfBorder.getUserPid()==0){
-                    pfBorder.setPidUserName("平台代理");
+                    pfBorder.setPidUserName("平台");
                 }else{
                     ComUser user = userService.getUserById(pfBorder.getUserPid());
                     pfBorder.setPidUserName(user.getRealName());

@@ -37,6 +37,7 @@
 .wrap main #box .sec2 {
   width: 100%;
   background: white;
+  padding: 10px 0;
 }
 .wrap main #box .sec2 p {
   margin: 0 10px;
@@ -78,13 +79,13 @@
   width: 15px;
   height: 20px;
   margin-left: 10px;
-  margin-top: 10px;
 }
 .wrap main #box .sec3 .dizhi div {
-  width: 88%;
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
+  -webkit-box-flex: 1;
+  margin-left: 13px;
   display: -moz-box;
   -moz-box-pack: center;
   -moz-box-orient: vertical;
@@ -114,7 +115,7 @@
   width: 100%;
   background: white;
   margin-top: 10px;
-  padding: 5px 0;
+  padding: 10px 0;
 }
 .wrap main #box .sec4 p {
   margin: 0 10px;

@@ -33,6 +33,7 @@
                         <li><a href="javascript:;">已完成</a></li>
                         <li><a href="javascript:;">排单中</a></li>
                     </ul>
+                    <img src="${paht}/static/images/youdao.png" alt="" class="you">
                 </nav>
                 <main>
                     <%--<c:forEach items="${pfBorders}" begin="0" end="${pfBorders.size()}" var="pbs">--%>

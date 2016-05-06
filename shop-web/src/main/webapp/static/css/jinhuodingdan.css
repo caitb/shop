@@ -15,16 +15,12 @@
 .wrap .box nav {
   width: 100%;
   background: white;
-:
-position: relative
-position: relative;
   position: relative;
 }
 .wrap .box nav ul {
   display: -webkit-box;
   width:100%;
   overflow-x: auto;
-  padding-bottom: 4px;
   padding: 5px 0;
 }
 .wrap .box nav ul li {

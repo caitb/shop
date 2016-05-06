@@ -85,4 +85,14 @@ public interface PfBorderMapper {
      * @return
      */
     List<PfBorder> selectAllQueuingOrder();
+
+    /**
+     * 根据上级userid和订单状态查询订单数量
+     *
+     * @param userPid
+     * @param orderStatus
+     * @return
+     */
+    Integer queryOrderNumsByUpidAndStatus(@Param("userPid") Long userPid,
+                                          @Param("orderStatus") Integer orderStatus);
 }

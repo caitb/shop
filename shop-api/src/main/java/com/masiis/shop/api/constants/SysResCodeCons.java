@@ -15,7 +15,7 @@ public class SysResCodeCons {
      * 请求参数校验
      */
     public static final String RES_CODE_REQ_STRUCT_INVALID = "100001";
-    public static final String RES_CODE_REQ_STRUCT_INVALID_MSG = "请求数据结构不合法";
+    public static final String RES_CODE_REQ_STRUCT_INVALID_MSG = "请求数据格式不合法";
 
     public static final String RES_CODE_REQ_SIGN_INVALID = "100002";
     public static final String RES_CODE_REQ_SIGN_INVALID_MSG = "请求签名错误";

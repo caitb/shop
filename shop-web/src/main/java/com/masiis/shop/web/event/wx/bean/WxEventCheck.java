@@ -54,4 +54,15 @@ public class WxEventCheck {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "WxEventCheck{" +
+                "signature='" + signature + '\'' +
+                ", token='" + token + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", nonce='" + nonce + '\'' +
+                ", echostr='" + echostr + '\'' +
+                '}';
+    }
 }

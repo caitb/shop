@@ -18,17 +18,22 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/wxevent")
 public class WxEventController extends BaseController {
+    private final String token = "slkd2H45467GG7622HSLsKsdKJHKS97E";
+    private final String encodingAESKey = "lSICsrmNzJMt3BExrOJrq9uBmrLoLNJ9aQEpq6g4Awc";
     private Logger log = Logger.getLogger(this.getClass());
 
     @RequestMapping("/check")
     @ResponseBody
     public String receiveWxEvent(HttpServletRequest request, WxEventCheck req){
+        System.out.println(req.toString());
+
         if(StringUtils.isBlank(req.getTimestamp())
                 || StringUtils.isBlank(req.getEchostr())
                 || StringUtils.isBlank(req.getNonce())
                 || StringUtils.isBlank(req.getSignature())){
             return "fail";
         }
+        req.setToken(token);
         String sign = WXBeanUtils.toSignBySH1(req);
         if(!req.getSignature().equals(sign)){
             return "fail";

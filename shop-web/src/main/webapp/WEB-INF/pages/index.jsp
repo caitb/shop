@@ -22,12 +22,12 @@
     <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
-<c:if test="${forcusPF!=true}">
-<div class="na">
-    <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
-    <label class="close">×</label>
-</div>
-</c:if>
+<%--<c:if test="${forcusPF!=true}">--%>
+<%--<div class="na">--%>
+    <%--<p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>--%>
+    <%--<label class="close">×</label>--%>
+<%--</div>--%>
+<%--</c:if>--%>
 <div class="wrap">
     <div class="box">
         <div class="banner">

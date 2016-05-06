@@ -64,10 +64,6 @@
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
-    <div class="sec5">
-        <p>关注<b>麦链商城</b>微信公众号，查看订单最新状态</p>
-        <button onclick="returnHomePage()">返回首页</button>
-    </div>
 </div>
 <div class="back" style="display: block"></div>
 <div id="contactSellerDivId" class="back_l">

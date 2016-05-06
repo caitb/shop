@@ -130,21 +130,21 @@
                     </c:otherwise>
                 </c:choose>
             </tr>
-            <tr>
-                <td>关注公众号</td>
-                <c:choose>
-                    <c:when test="${isUserForcus==true}">
-                        <td><img src="${path}/static/images/dui.png" alt=""></td>
-                        <td>已完成</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td><img src="${path}/static/images/cuo.png" alt=""></td>
-                        <td><a href="javascript:void(0);" onclick="goGuanZhu();"
-                               style="color: #FF5200;text-decoration: underline">去完成</a>
-                        </td>
-                    </c:otherwise>
-                </c:choose>
-            </tr>
+            <%--<tr>--%>
+                <%--<td>关注公众号</td>--%>
+                <%--<c:choose>--%>
+                    <%--<c:when test="${isUserForcus==true}">--%>
+                        <%--<td><img src="${path}/static/images/dui.png" alt=""></td>--%>
+                        <%--<td>已完成</td>--%>
+                    <%--</c:when>--%>
+                    <%--<c:otherwise>--%>
+                        <%--<td><img src="${path}/static/images/cuo.png" alt=""></td>--%>
+                        <%--<td><a href="javascript:void(0);" onclick="goGuanZhu();"--%>
+                               <%--style="color: #FF5200;text-decoration: underline">去完成</a>--%>
+                        <%--</td>--%>
+                    <%--</c:otherwise>--%>
+                <%--</c:choose>--%>
+            <%--</tr>--%>
         </table>
     </div>
     <section class="sec2">
@@ -239,10 +239,10 @@
             alert("您的实名认证未通过,请重新提交!");
             return;
         }
-        if (${isUserForcus==false}) {
-            alert("请去完成关注公众号!");
-            return;
-        }
+        <%--if (${isUserForcus==false}) {--%>
+            <%--alert("请去完成关注公众号!");--%>
+            <%--return;--%>
+        <%--}--%>
         $(this).html("请稍后...");
         window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";
 

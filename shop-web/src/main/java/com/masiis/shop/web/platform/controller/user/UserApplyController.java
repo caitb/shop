@@ -102,12 +102,12 @@ public class UserApplyController extends BaseController {
             isQueuing = true;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(user);
+//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(user);
         res.addObject("user", userService.getUserById(user.getId()));
         res.addObject("skuId", skuId);
         res.addObject("isQueuing", isQueuing);
         res.addObject("count", count);
-        res.addObject("isUserForcus", isUserForcus);
+//        res.addObject("isUserForcus", isUserForcus);
         return res;
     }
 

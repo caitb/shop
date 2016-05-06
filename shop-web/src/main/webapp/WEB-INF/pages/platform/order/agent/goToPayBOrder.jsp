@@ -50,7 +50,7 @@
         <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
         <h3>
             <span class="que_qu" id="downPayCancel">取消</span>
-            <span class="que_que" id="downPayConfirm" >确定</span>
+            <span class="que_que" id="downPayConfirm">确定</span>
         </h3>
     </div>
 </div>

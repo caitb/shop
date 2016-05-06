@@ -13,12 +13,12 @@
 <body>
 <div id="fakeLoader"></div>
 <main>
-    <c:if test="${isUserForcus==false}">
-        <div class="na">
-            <p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>
-            <label class="close">×</label>
-        </div>
-    </c:if>
+    <%--<c:if test="${isUserForcus==false}">--%>
+        <%--<div class="na">--%>
+            <%--<p>关注麦链公众号“<span class="add">麦链合伙人</span>”，管理店铺，发展下级。</p>--%>
+            <%--<label class="close">×</label>--%>
+        <%--</div>--%>
+    <%--</c:if>--%>
     <div class="wrap">
         <header class="xq_header">
             <%--<a href="zhifu.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>

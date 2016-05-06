@@ -71,8 +71,8 @@ public class SfOrderPayController extends BaseController {
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
         Map<String,Object> map = orderPayService.paySuccessCallBack(getComUser(request),orderId);
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
-        model.addAttribute("isUserForcus", isUserForcus);
+//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
+//        model.addAttribute("isUserForcus", isUserForcus);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));

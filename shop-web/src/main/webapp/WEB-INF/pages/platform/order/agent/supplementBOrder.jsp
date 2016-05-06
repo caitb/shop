@@ -57,7 +57,7 @@
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>
+                    <p>商品总价:<span>￥${bOrderConfirm.productTotalPrice}</span>
                     </p>
                 </div>
             </section>

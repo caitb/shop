@@ -167,12 +167,14 @@ public class BorderManageController extends BaseController {
             }else if(index==1){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 0, null);
             }else if(index==2){
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 9, null);
             }else if(index==3){
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
             }else if(index==4){
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
             }else if(index==5){
+                pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
+            }else if(index==6){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 6, null);
                 Iterator<PfBorder> chk_itw = pfBorder.iterator();
                 while (chk_itw.hasNext()) {
@@ -428,14 +430,16 @@ public class BorderManageController extends BaseController {
         }else if (orderStatus == 0) {
             index="1";//待付款
         }else if (orderStatus == 7) {
-            index="2";//代发货
+            index="3";//代发货
             borderNum = pfBorders.size();
         } else if (orderStatus == 8 ){
-            index="3";//待收货
+            index="4";//待收货
         }else if (orderStatus == 3) {
-            index="4";//已完成
+            index="5";//已完成
+        }else if (orderStatus == 9 ){
+            index="2";//线下支付待付款
         }else if(orderStatus == 6){
-            index="5";//排单中
+            index="6";//排单中
             Iterator<PfBorder> chk_itw = pfBorders.iterator();
             while (chk_itw.hasNext()) {
                 PfBorder pfBorder = chk_itw.next();

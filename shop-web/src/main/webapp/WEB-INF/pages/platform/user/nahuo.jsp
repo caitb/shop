@@ -16,13 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shenqinghehu.css">
 </head>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
-<%--<script src="<%=path%>/static/js/commonAjax.js"></script>--%>
-<%--<script src="<%=path%>/static/js/checkUtil.js"></script>--%>
-<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-<script src="<%=path%>/static/plugins/zepto.min.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
     $(document).ready(function () {
         var addressId = $("#addressId").val();
@@ -112,6 +105,11 @@
 <div class="back">
 
 </div>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="<%=path%>/static/plugins/zepto.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script type="text/javascript">
     var i = 1;
     $(".number").on("change", function () {

@@ -42,7 +42,7 @@ body .wrap .sec1 > div p {
 body .wrap .sec1 p {
     margin: 0 10px;
     font-size: 12px;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 body .wrap .sec1 p span {
     color: #F7592A;
@@ -71,6 +71,7 @@ body .wrap .sec1 h2 span {
     display: inline-block;
     padding: 8px 0;
     font-size: 12px;
+    letter-spacing: 1px;
 }
 body .wrap .sec1 h2 span:nth-child(1) {
     width: 70px;

@@ -1,7 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
 import com.masiis.shop.api.bean.common.CommonReq;
-import com.masiis.shop.api.bean.user.PersonalCenterReq;
 import com.masiis.shop.api.bean.user.PersonalCenterRes;
 import com.masiis.shop.api.bean.user.SkuAgentDetail;
 import com.masiis.shop.api.constants.AuditStatusEnum;

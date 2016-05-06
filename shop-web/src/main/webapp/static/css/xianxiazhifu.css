@@ -31,7 +31,7 @@ body .wrap .sec1 > div {
 }
 body .wrap .sec1 > div h1 {
     text-align: center;
-    padding: 10px 0;
+    padding: 20px 0 10px 0;
     font-size: 16px;
 }
 body .wrap .sec1 > div p {
@@ -50,7 +50,7 @@ body .wrap .sec1 p span {
 }
 body .wrap .sec1 > h1 {
     margin: 0 10px;
-    margin-top: 1em;
+    margin-top: 20px;
     font-size: 12px;
     margin-bottom: 10px;
 }
@@ -71,7 +71,6 @@ body .wrap .sec1 h2 span {
     display: inline-block;
     padding: 8px 0;
     font-size: 12px;
-    letter-spacing: 1px;
 }
 body .wrap .sec1 h2 span:nth-child(1) {
     width: 70px;
@@ -177,14 +176,16 @@ body button {
     margin:15% 0 5% 5%;
 }
 .cHange{
-    margin: 10px 0;
-    padding: 10px;
-    background: #fff;
+    margin: 10px 0 5px 0;
+    padding: 10px 10px 0 10px;
     font-size: 12px;
 }
 .cHange a{
     font-size:12px;
     color: #F74A11;
     text-decoration: underline;
-    float: right;
+    background: url("/static/images/rese.png") no-repeat 100%;
+    background-size: 15px;
+    padding-right: 18px;
+    margin-left: 10px;
 }

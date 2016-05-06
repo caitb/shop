@@ -131,6 +131,13 @@ public class ControllerSignatureAspect {
             }
         }
 
+        if(req == null){
+            log.error(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            return null;
+        }
+
         ComUser user = null;
         if(rl.hasToken() == true) {
             // 校验token

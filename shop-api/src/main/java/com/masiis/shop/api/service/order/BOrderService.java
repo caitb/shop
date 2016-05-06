@@ -375,4 +375,8 @@ public class BOrderService {
     public Integer selectQueuingOrderCount(Integer skuId) {
         return pfBorderMapper.selectQueuingOrderCount(skuId);
     }
+
+    public Integer queryOrderNumsByUpidAndStatus(Long userPid, Integer orderStatus) {
+        return pfBorderMapper.queryOrderNumsByUpidAndStatus(userPid, orderStatus);
+    }
 }

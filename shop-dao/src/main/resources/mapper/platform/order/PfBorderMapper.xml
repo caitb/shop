@@ -462,7 +462,7 @@
         SELECT * FROM pf_border WHERE order_status = 6 and user_pid > 0 ORDER BY create_time
     </select>
 
-    <select id="queryOrderNumsByUpidAndStatus" resultMap="java.lang.Integer">
+    <select id="queryOrderNumsByUpidAndStatus" resultType="java.lang.Integer">
         select count(id)
         from pf_border
         where user_pid = #{userPid,jdbcType=BIGINT}

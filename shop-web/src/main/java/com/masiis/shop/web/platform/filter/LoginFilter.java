@@ -53,7 +53,7 @@ public class LoginFilter implements Filter{
             log.info("uri:" + uri);
             // 给开发组织一个默认的登录人
             UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
-            ComUser user = userService.getUserById(218l);
+            ComUser user = userService.getUserById(217l);
             request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
 
             chain.doFilter(request, response);
@@ -64,7 +64,8 @@ public class LoginFilter implements Filter{
                     || (request.getContextPath() + "/verify/actk").equals(uri)
                     || (request.getContextPath() + "/verify/bactk").equals(uri)
                     || (request.getContextPath() + "/verify/wxcheck").equals(uri)
-                    || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)) {
+                    || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)
+                    || (request.getContextPath() + "/wxevent/check").equals(uri)) {
                 // 放行
                 chain.doFilter(request, response);
                 return;

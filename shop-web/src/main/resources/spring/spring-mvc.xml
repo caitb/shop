@@ -83,6 +83,10 @@
         <context:exclude-filter expression="org.springframework.stereotype.Repository" type="annotation"/>
         <context:exclude-filter expression="org.springframework.stereotype.Service" type="annotation"/>
     </context:component-scan>
+    <context:component-scan base-package="com.masiis.shop.web.event.wx.controller">
+        <context:exclude-filter expression="org.springframework.stereotype.Repository" type="annotation"/>
+        <context:exclude-filter expression="org.springframework.stereotype.Service" type="annotation"/>
+    </context:component-scan>
 
     <bean id="viewNameTranslator" class="org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator"/>
 

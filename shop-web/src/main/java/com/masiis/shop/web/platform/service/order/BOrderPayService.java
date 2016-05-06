@@ -664,9 +664,9 @@ public class BOrderPayService {
             }
         }
         sb.append(orderItem.getSkuName()).append(agentLevelName).append("合伙人订单");
-        String[] param = new String[]{border.getOrderCode(),DateUtil.insertDay(border.getCreateTime()).toString(),sb.toString()};
+        String[] param = new String[]{border.getOrderCode(),sb.toString()};
         String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+border.getId();
-        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,offinePaymentUrl);
+        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,border.getCreateTime(),offinePaymentUrl);
     }
 
     /**

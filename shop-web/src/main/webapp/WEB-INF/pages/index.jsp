@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
-    <script src="<%=path%>/static/js/iscroll.js"></script>
 </head>
 <body>
 <%--<c:if test="${forcusPF!=true}">--%>

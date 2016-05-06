@@ -79,6 +79,7 @@ public class WxEventController extends BaseController {
                     WxArticleRes res = wxEventService.handleEvent(body);
                     xStream.processAnnotations(WxArticleRes.class);
                     String resStr = xStream.toXML(res);
+                    System.out.println(resStr);
                     return resStr;
             }
 

@@ -17,6 +17,8 @@ public class WxBaseEvent {
     private String msgType;
     @XStreamAlias("Event")
     private String event;
+    @XStreamAlias("MsgID")
+    private String msgID;
 
     public String getToUserName() {
         return toUserName;
@@ -56,5 +58,13 @@ public class WxBaseEvent {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getMsgID() {
+        return msgID;
+    }
+
+    public void setMsgID(String msgID) {
+        this.msgID = msgID;
     }
 }

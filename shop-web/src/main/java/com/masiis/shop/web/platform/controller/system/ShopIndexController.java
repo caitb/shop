@@ -39,7 +39,7 @@ public class ShopIndexController extends BaseController {
     private BOrderService bOrderService;
 
     @RequestMapping("/index")
-    public ModelAndView shopIndexList(HttpServletRequest req)throws Exception{
+    public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
         ComUser user = getComUser(req);
 //        ComUser user = userService.getUserById(1l);
         if (user == null) {
@@ -50,21 +50,21 @@ public class ShopIndexController extends BaseController {
         List<String> urls = new ArrayList<>();
         String value = PropertiesUtils.getStringValue("index_banner_url");//获取图片地址常量
         List<PbBanner> pbBanner = indexShowService.findPbBanner();//获取轮播图片
-        for (PbBanner banner:pbBanner) {
+        for (PbBanner banner : pbBanner) {
             String url = value + banner.getImgUrl();//图片地址
             urls.add(url);
         }
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
-        if(comUserAccount==null ){
-            throw  new BusinessException("comUserAccount 统计为空");
+        if (comUserAccount == null) {
+            throw new BusinessException("comUserAccount 统计为空");
         }
-        Long num =0l;
+        Long num = 0l;
         List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
-        if(agentNum!= null){
-            for (PfUserSku pfUserSku :agentNum) {
-                if(pfUserSku !=null && pfUserSku.getAgentNum()!= null){
-                    num= num + pfUserSku.getAgentNum();
+        if (agentNum != null) {
+            for (PfUserSku pfUserSku : agentNum) {
+                if (pfUserSku != null && pfUserSku.getAgentNum() != null) {
+                    num = num + pfUserSku.getAgentNum();
                 }
             }
         }
@@ -72,19 +72,19 @@ public class ShopIndexController extends BaseController {
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorders) {
-            if (pfBord.getOrderStatus() == 7 ) {
+            if (pfBord.getOrderStatus() == 7) {
                 pfBorders10.add(pfBord);//代发货
             } else if (pfBord.getOrderStatus() == 6) {
                 pfBorders6.add(pfBord);//排单中
             }
         }
-        Integer borderNum = pfBorders10.size()+pfBorders6.size();
-        Boolean forcusPF = WxUserUtils.getInstance().isUserForcusPF(user);
-        modelAndView.addObject("borderNum",borderNum);//订单数量
-        modelAndView.addObject("forcusPF",forcusPF);
-        modelAndView.addObject("num",num);//订单数量
-        modelAndView.addObject("comUserAccount",comUserAccount);//封装用户统计信息
-        modelAndView.addObject("urls",urls);//封装图片地址集合
+        Integer borderNum = pfBorders10.size() + pfBorders6.size();
+//        Boolean forcusPF = WxUserUtils.getInstance().isUserForcusPF(user);
+        modelAndView.addObject("borderNum", borderNum);//订单数量
+//        modelAndView.addObject("forcusPF",forcusPF);
+        modelAndView.addObject("num", num);//订单数量
+        modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
+        modelAndView.addObject("urls", urls);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
         return modelAndView;

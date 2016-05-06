@@ -12,25 +12,15 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-<%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
+        <%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
-    <c:if test="${isUserForcus==false}">
-    <div class="na">
-        <p></p>
-        <h1>
-            <span>麦链合伙人</span>
-            <span>关注可查资金，管理店铺，发展下级</span>
-        </h1>
-        <label class="add">加关注</label>
-    </div>
-    </c:if>
     <div class="xinxi">
         <p>注册信息</p>
         <p style="color:#F74A11;">选择拿货方式</p>
         <p style="color:#F74A11;">支付订单</p>
     </div>
-    <p class="cHange">您选择的支付方式：  线下支付<a id="changePayWayId">更改支付方式</a></p>
+    <p class="cHange">您选择的支付方式： 线下支付<a id="changePayWayId">更改支付方式</a></p>
     <div class="sec1">
         <div>
             <h1>订单号:${border.orderCode}</h1>
@@ -61,7 +51,7 @@
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
     $("#changePayWayId").on("click", function () {
-        window.location.href = "${path}/border/goToPayBOrder.shtml?bOrderId="+${border.id};
+        window.location.href = "${path}/border/goToPayBOrder.shtml?bOrderId=" +${border.id};
     })
     $(".add").on("click", function () {
         $(".back_box").show()
@@ -69,7 +59,7 @@
     $(".close").on("click", function () {
         $(".back_box").hide()
     })
-    function returnIndex(){
+    function returnIndex() {
         window.location.href = "${path}/index";
     }
 </script>

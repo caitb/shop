@@ -208,8 +208,8 @@ public class BOrderController extends BaseController {
             mav.addObject("border",map.get("border"));
             mav.addObject("payAmount",map.get("payAmount"));
         }
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
-        mav.addObject("isUserForcus", isUserForcus);
+//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
+//        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }
 
@@ -269,8 +269,8 @@ public class BOrderController extends BaseController {
         mav.addObject("isQueuing", isQueuing);
         mav.addObject("count", count);
         mav.addObject("quantity", pfBorderItems.get(0).getQuantity());
-        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(comUser);
-        mav.addObject("isUserForcus", isUserForcus);
+//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(comUser);
+//        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }
 }

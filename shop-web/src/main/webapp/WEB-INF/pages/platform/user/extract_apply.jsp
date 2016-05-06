@@ -73,4 +73,5 @@
 <script type="application/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script type="application/javascript" src="${path}/static/js/extract_apply.js"></script>
 <script type="application/javascript" src="${path}/static/js/commonAjax.js"></script>
+<script type="application/javascript" src="${path}/static/js/definedAlertWindow.js"></script>
 </html>

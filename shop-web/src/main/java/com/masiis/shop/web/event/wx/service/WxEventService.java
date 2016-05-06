@@ -62,8 +62,7 @@ public class WxEventService {
             throw new BusinessException();
         }
 
-        String url = PropertiesUtils.getStringValue("web.domain.name.address")
-                + "/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
+        String url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
 
         WxArticleRes res = new WxArticleRes();

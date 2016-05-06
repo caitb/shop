@@ -6,11 +6,6 @@ import java.util.Date;
  * Created by wangbingjian on 2016/5/6.
  */
 public class AccountUserBill {
-
-    /**
-     * 创建人
-     */
-    private Long createMan;
     /**
      * 结算日期
      */
@@ -19,14 +14,6 @@ public class AccountUserBill {
      * 账单结算总金额
      */
     private String billAmount;
-
-    public Long getCreateMan() {
-        return createMan;
-    }
-
-    public void setCreateMan(Long createMan) {
-        this.createMan = createMan;
-    }
 
     public Date getBalanceDate() {
         return balanceDate;

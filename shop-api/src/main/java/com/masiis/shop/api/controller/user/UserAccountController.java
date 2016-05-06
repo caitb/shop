@@ -69,6 +69,7 @@ public class UserAccountController {
             monthString += month;
         }
         String currentMonth = String.valueOf(year)+monthString;
+        logger.info("查询月份="+currentMonth);
         List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),currentMonth,0,0);
         List<AccountUserBill> accountUserBills = new ArrayList<>();
         AccountUserBill accountUserBill;
@@ -76,7 +77,6 @@ public class UserAccountController {
             accountUserBill = new AccountUserBill();
             accountUserBill.setBalanceDate(pfUserBill.getBalanceDate());
             accountUserBill.setBillAmount(pfUserBill.getBillAmount() == null?amount:pfUserBill.getBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-            accountUserBill.setCreateMan(pfUserBill.getCreateMan());
             accountUserBills.add(accountUserBill);
         }
         res.setUserBills(accountUserBills);

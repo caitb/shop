@@ -33,32 +33,34 @@ public class WxEventController extends BaseController {
     public String receiveWxEvent(HttpServletRequest request, WxEventCheck req) throws IOException {
         System.out.println(req.toString());
 
-        /*if(StringUtils.isBlank(req.getTimestamp())
-                || StringUtils.isBlank(req.getEchostr())
+        if(StringUtils.isBlank(req.getTimestamp())
                 || StringUtils.isBlank(req.getNonce())
                 || StringUtils.isBlank(req.getSignature())){
             return "fail";
         }
-        String[] ws = new String[3];
-        ws[0] = req.getNonce();
-        ws[1] = req.getTimestamp();
-        ws[2] = token;
-        Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
-        String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
-        if(!req.getSignature().equals(sign)){
-            return "fail";
-        }*/
 
-        Map<String, String[]> map = request.getParameterMap();
-        for(Map.Entry<String, String[]> en:map.entrySet()){
-            System.out.println(en.getKey() + ":" + en.getValue()[0]);
+        if(StringUtils.isNotBlank(req.getEchostr())){
+            // 修改配置校验
+            String[] ws = new String[3];
+            ws[0] = req.getNonce();
+            ws[1] = req.getTimestamp();
+            ws[2] = token;
+            Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
+
+            String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+            if(!req.getSignature().equals(sign)){
+                return "fail";
+            }
+
+            return req.getEchostr();
         }
 
+        // 解析消息参数
         String requestBody = getRequestBody(request);
         System.out.println(requestBody);
 
 
-        return req.getEchostr();
+        return null;
     }
 
     public static void main(String... args) throws UnsupportedEncodingException {

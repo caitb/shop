@@ -296,7 +296,8 @@ public class ComUserService {
         user.setIsAgent(0);
         user.setIsBinding(0);
         user.setAuditStatus(0);
-        user.setSendType(0);
+        // 默认平台发货
+        user.setSendType(1);
         user.setRegisterSource(0);
 
         return user;

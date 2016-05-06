@@ -7,12 +7,12 @@ import com.masiis.shop.common.annotation.SignField;
  * @Auther lzh
  */
 public class WxEventCheck {
-    @SignField
     private String signature;
     private String token;
     private String timestamp;
+    private String encrypt_type;
+    private String msg_signature;
     private String nonce;
-    @SignField
     private String echostr;
 
     public String getSignature() {
@@ -55,12 +55,30 @@ public class WxEventCheck {
         this.token = token;
     }
 
+    public String getEncrypt_type() {
+        return encrypt_type;
+    }
+
+    public void setEncrypt_type(String encrypt_type) {
+        this.encrypt_type = encrypt_type;
+    }
+
+    public String getMsg_signature() {
+        return msg_signature;
+    }
+
+    public void setMsg_signature(String msg_signature) {
+        this.msg_signature = msg_signature;
+    }
+
     @Override
     public String toString() {
         return "WxEventCheck{" +
                 "signature='" + signature + '\'' +
                 ", token='" + token + '\'' +
                 ", timestamp='" + timestamp + '\'' +
+                ", encrypt_type='" + encrypt_type + '\'' +
+                ", msg_signature='" + msg_signature + '\'' +
                 ", nonce='" + nonce + '\'' +
                 ", echostr='" + echostr + '\'' +
                 '}';

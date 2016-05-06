@@ -333,7 +333,8 @@ public class UserService {
         user.setIsAgent(0);
         user.setIsBinding(0);
         user.setAuditStatus(0);
-        user.setSendType(0);
+        // 只有平台发货方式
+        user.setSendType(1);
         user.setRegisterSource(0);
 
         return user;

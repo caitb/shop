@@ -93,7 +93,8 @@ body .paidan>h1 span{
 body .biao{
   background: #fff;
   margin: 5px;
-  padding-bottom: 5px;
+  margin-top: 10px;
+  padding-bottom: 1px;
 }
 body .biao h1{
   padding: 14px;
@@ -112,9 +113,8 @@ body .biao h1{
 }
 body .biao table{
   width:96%;
-  margin:0 auto;
+  margin: 10px auto;
   border:1px solid #F3F4F5;
-  margin-top: 10px;
 }
 body .biao table td{
   text-align: center;

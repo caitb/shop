@@ -28,23 +28,23 @@
         <div id="box">
             <div class="sec1">
                 <c:if test="${borderDetail.pfBorder.orderStatus ==7}">
-                    <img src="<%=path%>/static/images/icon_40.png" alt="" style="display: block;width: 50px;height: 36px;">
+                    <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 35px;height: 25px;top: 18px;">
                     <h1>未发货</h1><p>亲，请及时发货~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus ==0 }">
-                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 50px;height: 40px;">
+                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>未付款</h1><p>亲，订单还未处理~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus ==8}">
-                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 56px;height: 30px;top: 14px;left: 7px;">
+                    <img src="<%=path%>/static/images/icon_68.png" alt="" style="display: block;width: 48px;height: 25px;top: 18px;">
                     <h1>未收货</h1><p>亲，订单还未完结~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==3}">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;">
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>已完成</h1><p>亲，交易成功~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==6&& borderDetail.pfBorder.sendType==1}">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 50px;height: 40px;">
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
                     <h1>排单中</h1><p>亲，订单排单中~~</p>
                 </c:if>
             </div>

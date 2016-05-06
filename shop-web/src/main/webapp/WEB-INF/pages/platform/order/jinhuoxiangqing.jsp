@@ -46,7 +46,7 @@
                     <p>亲，交易完成~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}">
-                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 16px;"><h1>排单中</h1>
+                    <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>排单中</h1>
                     <p>亲，订单排单中~~</p>
                 </c:if>
             </div>
@@ -80,7 +80,7 @@
                 <div>
                     <h2>${bdpi.skuName}<b>x${bdpi.quantity}</b></h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>零售价： <span>￥${bdpi.unitPrice}</span></p>
+                    <p> 价格：<span>￥${bdpi.unitPrice}</span></p>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>

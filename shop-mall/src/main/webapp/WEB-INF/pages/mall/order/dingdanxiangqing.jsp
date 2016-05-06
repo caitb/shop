@@ -67,7 +67,7 @@
                 <div>
                     <h2>${bdpi.skuName}</h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>零售价： <span>${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
+                    <p> 价格： <span>${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>

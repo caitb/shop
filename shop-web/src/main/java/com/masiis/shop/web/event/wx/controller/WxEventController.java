@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @Date 2016/5/6
@@ -31,7 +32,7 @@ public class WxEventController extends BaseController {
     public String receiveWxEvent(HttpServletRequest request, WxEventCheck req) throws IOException {
         System.out.println(req.toString());
 
-        if(StringUtils.isBlank(req.getTimestamp())
+        /*if(StringUtils.isBlank(req.getTimestamp())
                 || StringUtils.isBlank(req.getEchostr())
                 || StringUtils.isBlank(req.getNonce())
                 || StringUtils.isBlank(req.getSignature())){
@@ -41,18 +42,16 @@ public class WxEventController extends BaseController {
         ws[0] = req.getNonce();
         ws[1] = req.getTimestamp();
         ws[2] = token;
-
         Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
-
         String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+        if(!req.getSignature().equals(sign)){
+            return "fail";
+        }*/
 
         String requestBody = getRequestBody(request);
         System.out.println(requestBody);
 
 
-        if(!req.getSignature().equals(sign)){
-            return "fail";
-        }
         return req.getEchostr();
     }
 
@@ -63,8 +62,9 @@ public class WxEventController extends BaseController {
         ws[2] = token;
         Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
 
-        String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+        /*String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
         System.out.println(sign);
-        System.out.println("f3a9c71cb002192bd186414565dd82b2875505b2".equals(sign));
+        System.out.println("f3a9c71cb002192bd186414565dd82b2875505b2".equals(sign));*/
+        System.out.println(new Date().getTime());
     }
 }

@@ -55,7 +55,12 @@
         <p>运费：<b>￥${product.shipAmount}</b></p>
         <p>共支付：<span>￥${product.shipAmount}</span></p>
     </section>
-    <a href="javascript:weChatPay();" class="weixin">微信支付</a>
+    <c:if test="${payIdentity == 0}">
+        <a href="javascript:weChatPay();" class="weixin">微信支付</a>
+    </c:if>
+    <c:if test="${payIdentity == 1}">
+        <a href="javascript:weChatPay();" class="weixin">继续支付</a>
+    </c:if>
 </main>
 </body>
 

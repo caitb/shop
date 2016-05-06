@@ -37,15 +37,14 @@ import java.util.Map;
 @RequestMapping("/corder")
 public class COrderController extends BaseController {
 
+    private Logger log = Logger.getLogger(this.getClass());
     @Resource
     private COrderService cOrderService;
     @Resource
-    private ProductService productService;
-
-    @Resource
     PfCorderPaymentMapper pfCorderPaymentMapper;
 
-    private Logger log = Logger.getLogger(this.getClass());
+    private final int wxPayIdentity = 0; //第一次支付微信支付(控制界面显示文字内容)
+    private final int continuePayIdentity = 1;//继续支付(控制界面显示文字内容)
 
     /**
      * 跳转到使用申请成功界面
@@ -95,29 +94,6 @@ public class COrderController extends BaseController {
             }
         }
     }
-
-    /**
-     * 跳转到试用申请界面
-     *
-     * @author hanzengzhi
-     * @date 2016/3/5 13:45
-     */
-    @RequestMapping("/applyTrialToPage.do")
-    public String applyTrialToPage(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   @RequestParam(value = "skuId", required = true) Integer skuId,
-                                   Model model) throws Exception {
-        Product productDetails = productService.applyTrialToPageService(skuId);
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        model.addAttribute("skuName", productDetails.getName());
-        if (productDetails.getComSkuImages() != null && productDetails.getComSkuImages().size() > 0) {
-            model.addAttribute("skuDefaultImg", skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
-            model.addAttribute("skuImgAlt", productDetails.getComSkuImages().get(0).getImgName());
-        }
-        model.addAttribute("product", productDetails);
-        return "platform/order/shiyong";
-    }
-
     /**
      * 试用申请支付
      *
@@ -175,7 +151,7 @@ public class COrderController extends BaseController {
     }
 
     /**
-     * 微信支付失败回调
+     * 微信支付失败回调 继续支付
      *
      * @author hanzengzhi
      * @date 2016/3/17 16:45
@@ -188,7 +164,8 @@ public class COrderController extends BaseController {
                                      Model model)throws Exception {
         model = getOrderInfo(request, model, skuId, addressId);
         model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
-        return "platform/order/zhifushibai";
+        model.addAttribute("payIdentity",continuePayIdentity);
+        return "platform/order/zhifushiyong";
     }
     /**
      * 获得试用订单详情信息
@@ -224,6 +201,7 @@ public class COrderController extends BaseController {
                                @RequestParam(value = "selectedAddressId", required = false) Long selectedAddressId,
                                Model model)throws Exception {
         model = getOrderInfo(request, model, skuId, selectedAddressId);
+        model.addAttribute("payIdentity",wxPayIdentity);
         return "platform/order/zhifushiyong";
     }
 

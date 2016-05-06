@@ -31,7 +31,7 @@
 
                 <p>姓名：<span>${comUser.realName}</span></p>
 
-                <p>合作产品：<span>${comSku.name}</span></p>
+                <p>合伙产品：<span>${comSku.name}</span></p>
 
                 <p>合伙人等级：<span>
                   ${ctname}</span></p>

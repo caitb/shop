@@ -45,7 +45,7 @@
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span></p>
-                    <h1>支付成功后，您的在线库存将会增加</h1>
+                    <%--<h1>支付成功后，您的在线库存将会增加</h1>--%>
                 </div>
             </c:if>
             <section class="sec2">
@@ -57,7 +57,7 @@
                         <b style="float:right;margin-right:10px;font-size:12px;">x${bOrderConfirm.skuQuantity}</b>
                     </h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p>商品总价:<span>${bOrderConfirm.productTotalPrice}</span>
+                    <p>商品总价:<span>￥${bOrderConfirm.productTotalPrice} </span>
                     </p>
                 </div>
             </section>

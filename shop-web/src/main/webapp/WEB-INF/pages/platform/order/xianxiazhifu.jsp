@@ -38,6 +38,7 @@
         </div>
         <p>*请在汇款单的附言处注明“订单号”如：订单号：B201605041814259710974（<span>非常重要！</span>）（查看示例）；</p>
         <p>*线下支付到账时间为T+1天到账，审核时间为1个工作日</p>
+        <p>*您可以在【合伙人订单】->【进货订单】中查看支付信息或更改支付方式</p>
         <h1><span></span>麦链对公账户信息</h1>
         <h2><span>开户行：</span><span>${supplierBank.bankName}</span></h2>
         <h2><span>开户名：</span><span>${supplierBank.accountName}</span></h2>

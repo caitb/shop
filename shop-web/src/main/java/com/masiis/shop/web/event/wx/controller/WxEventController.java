@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
@@ -27,7 +28,7 @@ public class WxEventController extends BaseController {
 
     @RequestMapping("/check")
     @ResponseBody
-    public String receiveWxEvent(HttpServletRequest request, WxEventCheck req) throws UnsupportedEncodingException {
+    public String receiveWxEvent(HttpServletRequest request, WxEventCheck req) throws IOException {
         System.out.println(req.toString());
 
         if(StringUtils.isBlank(req.getTimestamp())
@@ -44,6 +45,10 @@ public class WxEventController extends BaseController {
         Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
 
         String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+
+        String requestBody = getRequestBody(request);
+        System.out.println(requestBody);
+
 
         if(!req.getSignature().equals(sign)){
             return "fail";

@@ -66,6 +66,7 @@ public class PersonalCenterController extends BaseController {
         }
         res.setMobile(user.getMobile()==null?"":user.getMobile());
         res.setWxNkName(user.getWxNkName());
+        res.setWxHeadImg(user.getWxHeadImg());
         res.setIsBinding(user.getIsBinding());
         res.setAuditStatus(user.getAuditStatus());
         res.setAuditStatusName(AuditStatusEnum.getName(user.getAuditStatus()));

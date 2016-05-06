@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.PersonalCenterReq;
 import com.masiis.shop.api.bean.user.PersonalCenterRes;
 import com.masiis.shop.api.bean.user.SkuAgentDetail;
@@ -37,8 +38,8 @@ public class PersonalCenterController extends BaseController {
 
     @RequestMapping(value = "/centerHome.do",method = RequestMethod.POST)
     @ResponseBody
-    @SignValid(paramType = PersonalCenterReq.class)
-    public PersonalCenterRes centerHome(HttpServletRequest request, PersonalCenterReq req, ComUser user){
+    @SignValid(paramType = CommonReq.class)
+    public PersonalCenterRes centerHome(HttpServletRequest request, CommonReq req, ComUser user){
         logger.info("个人中心首页");
         PersonalCenterRes res = new PersonalCenterRes();
         Map<String, Object> map = personalCenterService.getPersonalHomePageInfo(user);

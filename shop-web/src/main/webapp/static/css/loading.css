@@ -43,9 +43,10 @@
     z-index: 111;
     text-align: center;
     background: rgba(0, 0, 0, 0.7) url("../images/loading.gif") no-repeat center 32%;
-    background-size:20%;
+    background-size: 44px;
     border-radius: 5px;
 }
 #loadingPage p{
     margin-top: 68px;
+    color: #fff;
 }

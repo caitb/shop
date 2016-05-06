@@ -32,7 +32,7 @@ public class PersonalCenterRes extends BaseRes {
     /**
      * 可提现金额
      */
-    private BigDecimal extractableFee;
+    private String extractableFee;
     /**
      * 等级图标和代理商品名称
      */
@@ -78,11 +78,11 @@ public class PersonalCenterRes extends BaseRes {
         this.auditStatusName = auditStatusName;
     }
 
-    public BigDecimal getExtractableFee() {
+    public String getExtractableFee() {
         return extractableFee;
     }
 
-    public void setExtractableFee(BigDecimal extractableFee) {
+    public void setExtractableFee(String extractableFee) {
         this.extractableFee = extractableFee;
     }
 

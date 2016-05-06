@@ -461,4 +461,13 @@
 --         order by case user_pid when 0 then 0 else 1 end,create_time
         SELECT * FROM pf_border WHERE order_status = 6 and user_pid > 0 ORDER BY create_time
     </select>
+
+    <select id="queryOrderNumsByUpidAndStatus" resultMap="java.lang.Integer">
+        select count(id)
+        from pf_border
+        where user_pid = #{userPid,jdbcType=BIGINT}
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus,jdbcType=INTEGER}
+        </if>
+    </select>
 </mapper>

@@ -13,6 +13,7 @@ import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.ComShipManService;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -134,6 +135,8 @@ public class BOrderManagementController extends BaseController {
                 }
             }
         }
+        Integer waitShipNum = bOrderService.queryOrderNumsByUpidAndStatus(user.getId(), BOrderStatus.WaitShip.getCode());
+
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (pfBorders != null && pfBorders.size() != 0) {
             for (PfBorder pfBorder : pfBorders) {

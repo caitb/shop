@@ -18,6 +18,10 @@ public class PersonalCenterRes extends BaseRes {
      */
     private String wxNkName;
     /**
+     * 微信头像地址
+     */
+    private String wxHeadImg;
+    /**
      * 是否绑定（0否1是）
      */
     private Integer isBinding;
@@ -44,6 +48,14 @@ public class PersonalCenterRes extends BaseRes {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getWxHeadImg() {
+        return wxHeadImg;
+    }
+
+    public void setWxHeadImg(String wxHeadImg) {
+        this.wxHeadImg = wxHeadImg;
     }
 
     public String getWxNkName() {

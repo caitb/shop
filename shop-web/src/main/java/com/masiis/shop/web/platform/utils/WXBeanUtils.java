@@ -122,8 +122,10 @@ public class WXBeanUtils {
                 sb.append(arrayToSort[i]);
             }
             result = sb.toString();
-            result += "key=" + WxConsPF.WX_PAY_SIGN_KEY;
-            result = SHAUtils.encodeSHA1(result.getBytes("UTF-8")).toUpperCase();
+            if(size > 0){
+                result = result.substring(0, result.length() - 1);
+            }
+            result = SHAUtils.encodeSHA1(result.getBytes("UTF-8"));
         } catch (Exception e) {
             log.info(e.getMessage());
         }

@@ -48,7 +48,7 @@
                     <p><a>选择收货地址</a></p>
                 </div>
                 <section class="sec1">
-                    <img src="${path}/static/images/zhifu_ad.png" alt="">
+                    <img src="${path}/static/images/zhifu_ad.png" alt="" class="j">
                     <div onclick="toChooseAddressPage()">
                         <input style="display: none" type="text" id="addressId"
                                value="${bOrderConfirm.comUserAddress.id}"/>
@@ -56,8 +56,9 @@
                             <span>${bOrderConfirm.comUserAddress.mobile}</span></h2></a>
                         <a href="#"><p>收货地址：
                             <span>${bOrderConfirm.comUserAddress.provinceName}  ${bOrderConfirm.comUserAddress.cityName}  ${bOrderConfirm.comUserAddress.regionName} ${bOrderConfirm.comUserAddress.address}
-                            </span><img src="${path}/static/images/next.png" alt=""></p></a>
+                            </span></p></a>
                     </div>
+                    <img src="${path}/static/images/next.png" alt="" class="ju">
                 </section>
             </c:if>
             <c:if test="${bOrderConfirm.sendType==1}">

@@ -42,7 +42,7 @@
     <p><span style="color:red;">*大于5000元的订单建议选择线下支付</span></p>
 </div>
 <div class="back_box" style="display: none">
-    <div class="back"></div>
+    <div class="back" style="display: block"></div>
     <div class="back_que">
         <p>您确定使用线下支付?</p>
         <h4>您需要在${downPayLatestTime}前将￥${pfBorder.receivableAmount}转到麦链合伙人对公账户。</h4>

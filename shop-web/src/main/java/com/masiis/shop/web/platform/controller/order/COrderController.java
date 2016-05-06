@@ -95,29 +95,6 @@ public class COrderController extends BaseController {
             }
         }
     }
-
-    /**
-     * 跳转到试用申请界面
-     *
-     * @author hanzengzhi
-     * @date 2016/3/5 13:45
-     */
-    @RequestMapping("/applyTrialToPage.do")
-    public String applyTrialToPage(HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   @RequestParam(value = "skuId", required = true) Integer skuId,
-                                   Model model) throws Exception {
-        Product productDetails = productService.applyTrialToPageService(skuId);
-        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-        model.addAttribute("skuName", productDetails.getName());
-        if (productDetails.getComSkuImages() != null && productDetails.getComSkuImages().size() > 0) {
-            model.addAttribute("skuDefaultImg", skuImg + productDetails.getComSkuImages().get(0).getImgUrl());
-            model.addAttribute("skuImgAlt", productDetails.getComSkuImages().get(0).getImgName());
-        }
-        model.addAttribute("product", productDetails);
-        return "platform/order/shiyong";
-    }
-
     /**
      * 试用申请支付
      *

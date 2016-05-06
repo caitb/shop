@@ -75,25 +75,17 @@
             url : basePath + "extractwayinfo/add.do",
             data:{bankcard:bankcard,bankid:bankid,depositbankname:depositbankname,cardownername:cardownername,returnJumpType:returnJumpType},
             dataType:"Json",
-            beforeSend:function(){
-
-            },
             success:function(data){
                 if(data.isTrue == "false"){
                     alert(data.message);
                 }else {
+                    fullShow();//跳转页面钱展示全屏遮罩loading...
                     if (data.returnJumpType == 0){
-                        fullShow();//跳转页面钱展示全屏遮罩loading...
                         window.location.href = basePath + "extractwayinfo/findExtractwayInfo.shtml";
                     }else if (data.returnJumpType == 1){
                         window.location.href = basePath + "personalInfo/toBankCardPage.html";
                     }
                 }
-            },
-            //调用执行后调用的函数
-            complete: function(XMLHttpRequest, textStatus){
-//                alert(XMLHttpRequest.responseText);
-//                alert(textStatus);
             },
             error: function(){
                 //请求出错处理

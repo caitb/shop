@@ -34,7 +34,9 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a class="herf" href="<%=basePath%>product/user/${productInfo.userId}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a class="herf" href="<%=basePath%>product/user/${productInfo.userId}"><img
+                src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+
         <p>申请拿货</p>
     </header>
     <main>
@@ -43,25 +45,29 @@
                 <p>选择收货地址</p>
             </div>
         </div>
-            <section class="sec1">
-                <img src="<%=path%>/static/images/zhifu_ad.png" alt="" class="j">
-                <div onclick="toChooseAddressPage()">
-                    <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
-                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                    <a href="#"><p>收货地址：
+        <section class="sec1">
+            <img src="<%=path%>/static/images/zhifu_ad.png" alt="" class="j">
+
+            <div onclick="toChooseAddressPage()">
+                <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
+                <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                <a href="#"><p>收货地址：
                         <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
                         </span></p></a>
-                </div>
-                <img src="<%=path%>/static/images/next.png" alt="" class="ju">
-            </section>
+            </div>
+            <img src="<%=path%>/static/images/next.png" alt="" class="ju">
+        </section>
         <section class="sec2">
             <p class="photo">
                 <img src="${comSkuImage}" alt="">
             </p>
+
             <div>
                 <h2>${comSku.name}</h2>
+
                 <h3>规格：<span>默认</span></h3>
+
                 <p>零售价：<span>${comSku.priceRetail}</span><b
                         style="float:right; margin-right:10px;font-size:12px;">合伙价：<b
                         style="font-size:12px; color:#FF5200">${priceDiscount}</b></b></p>
@@ -73,15 +79,18 @@
         </section>
         <section class="sec4">
             <p><em>在线库存：</em><b style="margin-top:5px">${productInfo.stock}</b></p>
+
             <p>
                 <em>拿货数量：</em><b><label class="jian">-</label><input type="tel" value="1" class="number">
                 <label class="jia">+</label></b>
             </p>
+
             <p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>
         </section>
         <section class="sec5">
             <div>
                 <h1>说明</h1>
+
                 <p>您申请的货物将由您自行保管；<br/>您只能使用在线库存发展下级合伙人，您得到的货物不再支持在线人合伙的发展</p>
             </div>
             <input type="checkbox" id="active">
@@ -96,6 +105,7 @@
     <h4><b>拿货数量:</b><span id="applyStock"></span></h4>
     <h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>
     <h4 style="color:#666666;"><em>注</em>您的拿货数量将不再能发展下级合伙人</h4>
+
     <h3>
         <span class="que_qu">返回修改</span>
         <span class="que_que">确定</span>
@@ -109,7 +119,7 @@
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="<%=path%>/static/js/hideWXShare.js"> </script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script type="text/javascript">
     var i = 1;
     $(".number").on("change", function () {

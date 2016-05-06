@@ -21,6 +21,7 @@
 <div class="wrap">
     <header class="xq_header">
         <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+
         <p>证书详情</p>
     </header>
     <main>
@@ -33,18 +34,20 @@
                 <p>合伙产品：<span>${comSku.name}</span></p>
 
                 <p>合伙人等级：<span>
-                  ${ctname}</span></p>
+                    ${ctname}</span></p>
+
                 <p>上级合伙人：<span>${cdetail.sjName}</span></p>
             </div>
             <div class="sec2">
                 <h1>证书图片</h1>
+
                 <p>
                     <img src="${cdetail.imgUrl}" alt="">
                 </p>
             </div>
         </div>
     </main>
- </div>
+</div>
 <script src="<%=path%>/static/js/iscroll.js"></script>
 </body>
 </html>

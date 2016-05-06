@@ -124,12 +124,14 @@ main .sec3 p em {
   font-size: 12px;
   color: #666;
   margin-top: 0;
+  display: block;
 }
 main .sec3 p em + input {
-}
-main .sec3 p input {
+  display: block;
   color: #999999;
   border: 1px solid #ddd;
+  -webkit-box-flex:1;
+  padding: 3px 0;
 }
 main .sec3 p span,
 main .sec3 p b {

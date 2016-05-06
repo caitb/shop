@@ -16,32 +16,40 @@
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shangjihehuo.css">
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="<%=path%>/static/js/hideWXShare.js"> </script>
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
         <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+
         <p>证书详情</p>
     </header>
     <main>
         <div>
             <p>上级合伙人信息详情</p>
+
             <h1><span>${userInfo.realName}</span>${comSku.name}</h1>
+
             <h2><img src="<%=path%>/static/images/lv.png" alt="">合伙人等级
-             <b>${ctname}</b>
+                <b>${ctname}</b>
             </h2>
         </div>
         <p><span>等级</span>
             <span>${ctname}</span>
         </p>
+
         <p><span>手机号</span><span>${pfUserCertificate.mobile}</span></p>
+
         <p><span>微信号</span><span>${pfUserCertificate.wxId}</span></p>
+
         <p><span>是否认证</span><span class="four"><img src="<%=path%>/static/images/guanli.png" alt="">已通过</span></p>
+
         <p><span>授权证书</span><span><b><img src="${pfUserCertificate.imgUrl}" alt=""></b></span></p>
+
         <p><span>加入时间</span><span>${sDate}</span></p>
     </main>
 </div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
 </body>
 </html>

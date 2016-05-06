@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>订单详情</title>
+    <title>麦链合伙人</title>
     <link rel="stylesheet" href="<%=path%>/static/css/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
@@ -38,14 +38,14 @@
     </header>
     <div class="tai">
         <img src="<%=path%>/static/images/icon_64.png" alt="">
-        <h1>使用支付成功</h1>
-        <p>您的订单支付成功，请耐心等待收获</p>
+        <h1>支付成功</h1>
+        <p>您的订单支付成功，请耐心等待收货</p>
     </div>
     <div class="content">
         <c:if test="${pfBorder.sendType == 1}">
             <c:forEach var="pfBorderItem" items="${pfBorderItems}">
             <div class="paidan">
-                <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${pfBorderItem.quantity}</span>件</b></h1>
+                <h1 style="border:none"><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${pfBorderItem.quantity}</span>件</b></h1>
                 <p>当前平台在线库存量为<span>${pfBorderItem.realStock}</span>件</p>
             </div>
         </c:forEach>

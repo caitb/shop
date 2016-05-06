@@ -29,19 +29,20 @@ main .wrap .box #d_box .sf input {
   border: none;
   font-size: 12px;
   display: inline-block;
-  line-height: 30px;
-  margin-top: -4px;
-  font-weight: 600;
+  padding:10px 0;
   margin-left: 10px;
+   min-width: 221px;
 }
 main .wrap .box #d_box .sf .onc {
   float: right;
   margin: 10px 28px 0 0;
   width: 20px;
   height: 20px;
-  display: none;
+   display: none;
   background: url("../images/no.png") no-repeat;
   background-size: 100% 100%;
+  position: absolute;
+  right: 0px;
 }
 main .wrap .box #d_box .sf .gao {
   position: absolute;

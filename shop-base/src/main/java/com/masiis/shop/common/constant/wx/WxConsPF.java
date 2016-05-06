@@ -85,6 +85,14 @@ public class WxConsPF {
      * JSSDK:jsapi_ticket获取地址
      */
     public static final String URL_JSSDK_JSAPI_TICKET = "https://api.weixin.qq.com/cgi-bin/ticket/getticket";
+    /**
+     * 微信公众号二维码创建地址
+     */
+    public static final String URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE = "https://api.weixin.qq.com/cgi-bin/qrcode/create";
+    /**
+     * 微信公众号二维码请求地址
+     */
+    public static final String URL_WEIXIN_PUBLIC_NUMBER_QRCODE = "https://mp.weixin.qq.com/cgi-bin/showqrcode";
 
     /*===============================================================================================================*/
     /**

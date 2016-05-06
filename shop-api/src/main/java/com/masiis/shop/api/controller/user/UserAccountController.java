@@ -3,6 +3,8 @@ package com.masiis.shop.api.controller.user;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.AccountHomeRes;
 import com.masiis.shop.api.bean.user.AccountUserBill;
+import com.masiis.shop.api.bean.user.AccountUserBillReq;
+import com.masiis.shop.api.bean.user.AccountUserBillRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComUserAccountService;
@@ -10,6 +12,7 @@ import com.masiis.shop.api.service.user.PfUserBillService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,6 +75,42 @@ public class UserAccountController {
         logger.info("查询月份="+currentMonth);
         List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),currentMonth,0,0);
         List<AccountUserBill> accountUserBills = new ArrayList<>();
+        AccountUserBill accountUserBill;
+        for (PfUserBill pfUserBill : userBills){
+            accountUserBill = new AccountUserBill();
+            accountUserBill.setBalanceDate(pfUserBill.getBalanceDate());
+            accountUserBill.setBillAmount(pfUserBill.getBillAmount() == null?amount:pfUserBill.getBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+            accountUserBills.add(accountUserBill);
+        }
+        res.setUserBills(accountUserBills);
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        return res;
+    }
+
+    /**
+     * 通过日期查询收入记录
+     * @param request
+     * @param req
+     * @param comUser
+     * @return
+     */
+    @RequestMapping(value = "/userBillByDate.do")
+    @ResponseBody
+    @SignValid(paramType = AccountUserBillReq.class)
+    public AccountUserBillRes getUserBillByDate(HttpServletRequest request, AccountUserBillReq req, ComUser comUser){
+        logger.info("通过日期查询收入记录");
+        AccountUserBillRes res = new AccountUserBillRes();
+        String date = req.getDate();
+        if (StringUtils.isBlank(date)){
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            return res;
+        }
+        logger.info("查询月份=" + date);
+        List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),date,0,0);
+        List<AccountUserBill> accountUserBills = new ArrayList<>();
+        String amount = new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
         AccountUserBill accountUserBill;
         for (PfUserBill pfUserBill : userBills){
             accountUserBill = new AccountUserBill();

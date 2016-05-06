@@ -18,8 +18,8 @@ import java.net.URLEncoder;
 public class WxNoticeUtils {
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        String token = "kz3f54jAOcf9Kxj_x9kyagYnpH7YwwE30-4KYnsTk_zduAIfCtIqMKWo1S4890krgu_EMzdF_pyqDrBJ43UTaWfgaGQGq_Ciy4pmH3ljV78KUVcACAEOP";
-        String qrTicket = "gQH28DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xLzFVaS05LWpseFBHOVczLS1rbVF2AAIEW5kpVwMEAAAAAA==";
+        String token = "YIwHnABSPhQIQsiBtgvRwBuRw1Lea0Rsbdk71jYZuOt2JnStl6hClXI-hSlk7CByxbRO7_rYmK51rj54VanwmzqSXa6_HgFiNS6lOFC17NMTSMiADAXWQ";
+        String qrTicket = "gQFn7zoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL1kwaWFrajdsNWZHY1RzbWV0MlF2AAIEQE0sVwMEAAAAAA==";
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
         String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsPF.APPID+"&secret=" + WxConsPF.APPSECRET;
         String urlEn = URLEncoder.encode(url1, "UTF-8");
@@ -27,7 +27,7 @@ public class WxNoticeUtils {
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
 
         String qrUrl = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + token;
-        String result = HttpClientUtils.httpPost(qrUrl, "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 1}}}");
+        String result = HttpClientUtils.httpPost(qrUrl, "{\"action_name\": \"QR_LIMIT_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 89}}}");
         System.out.println(result);
 
 

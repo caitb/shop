@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @Date 2016/5/6
@@ -47,6 +48,11 @@ public class WxEventController extends BaseController {
         if(!req.getSignature().equals(sign)){
             return "fail";
         }*/
+
+        Map<String, String[]> map = request.getParameterMap();
+        for(Map.Entry<String, String[]> en:map.entrySet()){
+            System.out.println(en.getKey() + ":" + en.getValue()[0]);
+        }
 
         String requestBody = getRequestBody(request);
         System.out.println(requestBody);

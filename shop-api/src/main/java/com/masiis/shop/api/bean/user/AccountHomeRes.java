@@ -21,10 +21,6 @@ public class AccountHomeRes extends BaseRes {
      * 结算中金额
      */
     private String countingFee;
-    /**
-     * 收入记录
-     */
-    private List<AccountUserBill> userBills;
 
     public String getTotalIncomeFee() {
         return totalIncomeFee;
@@ -50,11 +46,4 @@ public class AccountHomeRes extends BaseRes {
         this.countingFee = countingFee;
     }
 
-    public List<AccountUserBill> getUserBills() {
-        return userBills;
-    }
-
-    public void setUserBills(List<AccountUserBill> userBills) {
-        this.userBills = userBills;
-    }
 }

@@ -47,7 +47,11 @@
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==6 && borderDetail.pfBorder.sendType!=2}">
                     <img src="<%=path%>/static/images/icon_64.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>排单中</h1>
-                    <p>亲，订单排单中~~</p>
+                    <p>亲，您的订单排单中~~</p>
+                </c:if>
+                <c:if test="${borderDetail.pfBorder.orderStatus==9}">
+                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>排单中</h1>
+                    <p>亲，您选择的是线下支付，请及时付款~~</p>
                 </c:if>
             </div>
             <div class="kuaidi">
@@ -57,19 +61,19 @@
                 ${stringBuffer}
                 </c:if>
             </div>
-           <c:choose><c:when test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2}">
-           <div class="paidan">
-               <h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${borderDetail.pfBorder.totalQuantity}</span>件</b></h1>
-               <p>当前平台在线库存量为<span>${stockNum}</span>件</p>
-           </div></c:when><c:otherwise>
+           <%--<div class="paidan"><c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2 && borderDetail.pfBorder.orderStatus!=6}">--%>
+               <%--<h1><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${borderDetail.pfBorder.totalQuantity}</span>件</b></h1>--%>
+               <%--<p>当前平台在线库存量为<span>${stockNum}</span>件</p></c:if>--%>
+               <%--<c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2 && borderDetail.pfBorder.orderStatus==6}">--%>
+           <%--</div>--%>
+           <c:if test="${borderDetail.pfBorder.sendType==2 || borderDetail.pfBorder.orderType==2 && borderDetail.pfBorder.sendType==1}">
             <section class="sec1">
                        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                        <div>
                             <a href="#"><h2>收货人：<b>${borderDetail.pfBorderConsignee.consignee}</b> <span>${borderDetail.pfBorderConsignee.mobile}</span></h2></a>
                             <a href="#"><p>收货地址： <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span><%--<img src="<%=path%>/static/images/next.png" alt="">--%></p></a>
-                        </div>
-
-            </section></c:otherwise></c:choose>
+                       </div>
+            </section></c:if>
            <c:forEach items="${borderDetail.pfBorderItems}" var="bdpi">
             <section class="sec2">
                 <p class="photo">

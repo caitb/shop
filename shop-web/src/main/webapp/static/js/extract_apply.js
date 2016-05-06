@@ -10,6 +10,10 @@ $(function(){
             alert("可提现金额最多为" + maxMoney);
             return;
         }
+        if((+money) <= 0){
+            alert("提现金额为："+money+"  请重新输入");
+            return;
+        }
         // 可以提现
         $("#ex_money").html(money + " 元");
         $(".back").show();

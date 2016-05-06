@@ -42,13 +42,18 @@
         <p>您的订单支付成功，请耐心等待收货</p>
     </div>
     <div class="content">
-        <c:if test="${pfBorder.sendType == 1}">
+        <c:if test="${pfBorder.sendType == 1 && pfBorder.orderStatus == 1}">
             <c:forEach var="pfBorderItem" items="${pfBorderItems}">
             <div class="paidan">
                 <h1 style="border:none"><img src="<%=path%>/static/images/kucun.png" alt=""><b>平台在线库存增加<span>${pfBorderItem.quantity}</span>件</b></h1>
                 <p>当前平台在线库存量为<span>${pfBorderItem.realStock}</span>件</p>
             </div>
         </c:forEach>
+        </c:if>
+        <c:if test="${pfBorder.sendType == 1 && pfBorder.orderStatus == 6}">
+            <div class="paidan">
+            <p>您的订单正在排单，请耐心等待</p>
+            </div>
         </c:if>
         <c:if test="${pfBorder.sendType==2 || pfBorder.orderType==2}">
             <section class="sec1">

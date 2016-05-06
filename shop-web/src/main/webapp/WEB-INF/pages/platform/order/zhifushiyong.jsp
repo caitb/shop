@@ -43,13 +43,10 @@
         <div>
             <h2>${product.name}<span>x1</span></h2>
             <h3>规格：<span>试用装</span></h3>
-            <p>￥0</p>
         </div>
     </section>
     <section class="sec3">
-        <p>运费：<span>￥${product.shipAmount}</span></p>
         <p><em>试用理由：</em><input type="text" id="trialReasonId" ></p>
-        <h1>共<b style="font-size:12px">1</b>件商品　运费：<span>￥${product.shipAmount}</span></h1>
     </section>
     <section class="sec4">
         <p>运费：<b>￥${product.shipAmount}</b></p>

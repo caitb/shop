@@ -12,6 +12,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.service.user.UserCertificateService;
 import com.masiis.shop.web.platform.utils.DownloadImage;
@@ -30,6 +31,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -65,6 +67,8 @@ public class DevelopingController extends BaseController {
     private UserCertificateService userCertificateService;
     @Resource
     private JSSDKService jssdkService;
+    @Resource
+    private WeiXinQRCodeService weiXinQRCodeService;
 
     @RequestMapping("/ui")
     public ModelAndView ui(HttpServletRequest request, HttpServletResponse response){
@@ -155,8 +159,8 @@ public class DevelopingController extends BaseController {
                 //if(pfUserCertificate.getPoster() == null){
                     String headImgName = "headimg.png";
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
-                    String qrcodeName = "qrcode.png";
-                    String qrcodePath = request.getServletContext().getRealPath("/")+"static"+File.separator+qrcodeName;
+                    String qrcodeName = "qrcode"+pfUserCertificate.getPfUserSkuId()+".png";
+                    String qrcodePath = request.getServletContext().getRealPath("/")+"static";
                     //下载用户微信头像
                     if(comUser.getWxHeadImg() != null){
                         String headImgHttpUrl = comUser.getWxHeadImg();
@@ -166,9 +170,10 @@ public class DevelopingController extends BaseController {
                         headImgPath += File.separator+"default.png";
                     }
                     //生成二维码
-                    //CreateParseCode.createCode(220,220, shareLink, qrcodePath);
                     log.info("发展合伙人[headImgPath="+headImgPath+"]");
-                    QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
+                    //QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
+                    DownloadImage.download(weiXinQRCodeService.createAgentQRCode(pfUserCertificate.getPfUserSkuId()), qrcodeName, qrcodePath);
+                    qrcodePath += File.separator+qrcodeName;
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
                     contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
@@ -230,7 +235,7 @@ public class DevelopingController extends BaseController {
 
         g.drawImage(headImage, 88, 619, 132, 132, null);
         g.drawImage(bImage, 0, 0, null);
-        g.drawImage(qrcodeImage, 566, 776, null);
+        g.drawImage(qrcodeImage, 566, 776, 220, 220, null);
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
@@ -244,6 +249,17 @@ public class DevelopingController extends BaseController {
             }
             if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
         }
+
+        Date curDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String startTime = sdf.format(curDate);
+        curDate.setDate(curDate.getDate()+30);
+        String endDate = sdf.format(curDate);
+
+        g.setFont(new Font("华文细黑", Font.PLAIN, 20));
+        g.setColor(new Color(51, 51, 51));
+        g.drawString("该二维码有效期为", 590, 1016);
+        g.drawString(startTime+"-"+endDate, 550, 1046);
         g.dispose();
 
         try {

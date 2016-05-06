@@ -163,7 +163,7 @@
 </div>
 <div class="back"></div>
 <div class="back_j">
-    <p class="biao">绑定账号</p>
+    <p class="biao">绑定手机号</p>
     <div>
         <p>手机号：<input type="tel" class="phone" id="phoneId"></p>
     </div>

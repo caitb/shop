@@ -655,15 +655,18 @@ public class BOrderPayService {
      */
     private void offinePaymentWxNotice(ComUser comUser,PfBorder border,PfBorderItem orderItem){
         StringBuffer sb = new StringBuffer();
+        log.info("用户id----"+comUser.getId()+"-------skuId----"+orderItem.getSkuId());
         PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
         String agentLevelName = null;
         if (userSku!=null){
+            log.info("合伙人等级id--------"+userSku.getAgentLevelId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
             if (comAgentLevel!=null){
                 agentLevelName = comAgentLevel.getName();
+                log.info("合伙人等级名字--------"+agentLevelName);
             }
         }
-        sb.append(orderItem.getSkuName()).append(agentLevelName).append("合伙人订单");
+        sb.append(orderItem.getSkuName()).append(agentLevelName).append("订单");
         String[] param = new String[]{border.getOrderCode(),sb.toString()};
         String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+border.getId();
         WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,border.getCreateTime(),offinePaymentUrl);

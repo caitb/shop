@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 /**
  * @Date 2016/5/6
@@ -35,11 +36,30 @@ public class WxEventController extends BaseController {
                 || StringUtils.isBlank(req.getSignature())){
             return "fail";
         }
-        String ws = req.getNonce() + req.getTimestamp() + token;
-        String sign = SHAUtils.encodeSHA1(ws.getBytes("UTF-8")).toLowerCase();
+        String[] ws = new String[3];
+        ws[0] = req.getNonce();
+        ws[1] = req.getTimestamp();
+        ws[2] = token;
+
+        Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
+
+        String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+
         if(!req.getSignature().equals(sign)){
             return "fail";
         }
         return req.getEchostr();
+    }
+
+    public static void main(String... args) throws UnsupportedEncodingException {
+        String[] ws = new String[3];
+        ws[0] = "1462514180";
+        ws[1] = "443041202";
+        ws[2] = token;
+        Arrays.sort(ws, String.CASE_INSENSITIVE_ORDER);
+
+        String sign = SHAUtils.encodeSHA1((ws[0] + ws[1] + ws[2]).getBytes("UTF-8")).toLowerCase();
+        System.out.println(sign);
+        System.out.println("f3a9c71cb002192bd186414565dd82b2875505b2".equals(sign));
     }
 }

@@ -59,9 +59,9 @@ public class PersonalCenterController extends BaseController {
             res.setSkuAgentDetails(skuAgentDetails);
             comUserAccount = (ComUserAccount) map.get("comUserAccount");
             if (comUserAccount != null){
-                res.setExtractableFee(comUserAccount.getExtractableFee()==null?new BigDecimal(0.00):comUserAccount.getExtractableFee());
+                res.setExtractableFee(comUserAccount.getExtractableFee()==null?new BigDecimal(0l).setScale(2,BigDecimal.ROUND_HALF_UP).toString():comUserAccount.getExtractableFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             }else {
-                res.setExtractableFee(new BigDecimal(0.00));
+                res.setExtractableFee(new BigDecimal(0l).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             }
         }
         res.setMobile(user.getMobile()==null?"":user.getMobile());

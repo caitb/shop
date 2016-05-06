@@ -10,12 +10,12 @@ import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.PersonalCenterService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfSkuAgentDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,15 +35,15 @@ public class PersonalCenterController extends BaseController {
     @Autowired
     private PersonalCenterService personalCenterService;
 
-    @RequestMapping(value = "/centerHome.do")
+    @RequestMapping(value = "/centerHome.do",method = RequestMethod.POST)
     @ResponseBody
     @SignValid(paramType = PersonalCenterReq.class)
     public PersonalCenterRes centerHome(HttpServletRequest request, PersonalCenterReq req, ComUser user){
         logger.info("个人中心首页");
         PersonalCenterRes res = new PersonalCenterRes();
         Map<String, Object> map = personalCenterService.getPersonalHomePageInfo(user);
-        List<PfSkuAgentDetail> pfSkuAgentDetails = null;
-        ComUserAccount comUserAccount = null;
+        List<PfSkuAgentDetail> pfSkuAgentDetails;
+        ComUserAccount comUserAccount;
         List<SkuAgentDetail> skuAgentDetails = new ArrayList<>();
         if (map != null){
             SkuAgentDetail skuAgentDetail;

@@ -62,7 +62,7 @@ public class UserAccountController {
             res.setExtractableFee(account.getExtractableFee() == null?amount:account.getExtractableFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setCountingFee(account.getCountingFee() == null?amount:account.getCountingFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
         }
-        Calendar calendar = Calendar.getInstance();
+        /*Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         String monthString = "";
@@ -82,7 +82,7 @@ public class UserAccountController {
             accountUserBill.setBillAmount(pfUserBill.getBillAmount() == null?amount:pfUserBill.getBillAmount().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             accountUserBills.add(accountUserBill);
         }
-        res.setUserBills(accountUserBills);
+        res.setUserBills(accountUserBills);*/
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         return res;

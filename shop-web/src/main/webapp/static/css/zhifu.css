@@ -41,7 +41,7 @@
   text-align: left;
   font-size: 12px;
   padding-left: 10px;
-  margin-top: 18px;
+  padding-top: 4px;
 }
 .Type2 h1{
   margin: 0 10px;
@@ -96,9 +96,6 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-box-align: center;
-  display: -moz-box;
-  -moz-box-orient: vertical;
-  -moz-box-align: center;
   padding: 20px 0 20px 0;
 }
 .wrap .box main .drap h2 img {
@@ -134,12 +131,10 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: justify;
   display: none;
+  position: relative;;
 }
-.wrap .box main .sec1 img {
+.wrap .box main .sec1 img.j {
   display: inline-block;
   width: 15px;
   height: 20px;
@@ -152,13 +147,10 @@
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
 }
 .wrap .box main .sec1 div h2 span {
   float: right;
-  margin-right: 10px;
+  margin-right: 4em;
 }
 .wrap .box main .sec1 div p {
   width: 100%;
@@ -183,8 +175,6 @@
   background: white;
   display: -webkit-box;
   -webkit-box-align: center;
-  display: -moz-box;
-  -moz-box-align: center;
   border-bottom: 1px solid #f6f6f6;
 }
 .wrap .box main .sec2 .photo {
@@ -199,14 +189,10 @@
 }
 .wrap .box main .sec2 div {
   -webkit-box-flex: 1;
-  -moz-box-flex: 1;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
   margin-left: 10px;
 }
 .wrap .box main .sec2 div h2 {
@@ -378,4 +364,11 @@ main>h1{
   top:0;
   left:0;
   display: none;
+}
+.ju{
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  width: 10px;
+  height: 16px;
 }

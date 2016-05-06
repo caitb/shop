@@ -31,6 +31,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -248,6 +249,17 @@ public class DevelopingController extends BaseController {
             }
             if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
         }
+
+        Date curDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String startTime = sdf.format(curDate);
+        curDate.setDate(curDate.getDate()+30);
+        String endDate = sdf.format(curDate);
+
+        g.setFont(new Font("华文细黑", Font.PLAIN, 20));
+        g.setColor(new Color(51, 51, 51));
+        g.drawString("该二维码有效期为", 590, 1016);
+        g.drawString(startTime+"-"+endDate, 550, 1046);
         g.dispose();
 
         try {

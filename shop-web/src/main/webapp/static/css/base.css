@@ -6,7 +6,7 @@ body {
   background: #F3F4F5;
   min-width: 320px;
 }
-a {
+a,button{
   -webkit-tap-highlight-color: transparent;
 }
 .xinz {
@@ -126,9 +126,9 @@ a {
 }
 
 .bottom{
-    position: fixed;
-    bottom: 0;
-    width:100%;
+  position: fixed;
+  bottom: 0;
+  width:100%;
 }
 .bottom footer{
   display: -webkit-box;
@@ -207,9 +207,9 @@ footer .btm:nth-child(3) span img{
   display: none;
 }
 .back_q {
-  width: 90%;
+  width: 80%;
   position: fixed;
-  left: 5%;
+  left: 10%;
   top: 30%;
   background: white;
   padding-bottom: 15px;
@@ -225,18 +225,22 @@ footer .btm:nth-child(3) span img{
   color: #FF5200;
 }
 .back_q p {
-  margin: 10px;
+  margin: 10px 20px;
   text-indent: 2em;
   font-size: 12px;
+  color: #333;
+  line-height: 22px;
 }
 .back_q button {
   margin: 0 auto;
   display: block;
-  width: 100px;
-  height: 30px;
+  width: 90px;
+  height: 26px;
   text-align: center;
-  line-height: 30px;
+  line-height: 26px;
   background: #0fc420;
   border-radius: 5px;
   color: #fff;
+  font-size: 12px;
+  margin-top: 20px;
 }

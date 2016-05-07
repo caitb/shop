@@ -20,4 +20,6 @@ public interface SfUserShareParamMapper {
     List<SfUserShareParam> selectAll();
 
     int updateByPrimaryKey(SfUserShareParam record);
+
+    SfUserShareParam selectByCondition(SfUserShareParam sfUserShareParam);
 }

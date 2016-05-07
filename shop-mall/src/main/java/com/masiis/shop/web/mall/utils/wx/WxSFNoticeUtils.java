@@ -204,10 +204,12 @@ public class WxSFNoticeUtils {
 
     private String getOpenIdByComUser(ComUser user) {
         if (user == null) {
+            log.info("user为空");
             throw new BusinessException("user为空");
         }
         ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsSF.APPID);
         if (wxUser == null) {
+            log.info("wxUser为空");
             throw new BusinessException("wxUser为空");
         }
         return wxUser.getOpenid();

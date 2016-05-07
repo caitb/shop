@@ -65,7 +65,6 @@
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
 </div>
-<div class="back" style="display: block"></div>
 <div id="contactSellerDivId" class="back_l">
     <p>联系卖家</p>
     <p>请联系：00000000</p>
@@ -78,16 +77,6 @@
     <button onclick="closeAskForInvoice()">知道了</button>
     <span onclick="closeAskForInvoice()" class="close">×</span>
 </div>
-<c:if test="${isUserForcus==false}">
-    <div id="shareDivId"class="back_f">
-        <p>支付成功！</p>
-        <p>关注麦链商城微信公众账号，查看订单最新状态</p>
-        <img src="<%=path%>/static/images/mailianshangcheng.jpg" alt="">
-        <p>长按识别二维码</p>
-        <p>或微信搜索“麦链商城”公众账号，关注麦链商城微信公众账号</p>
-        <span onclick="closeShare()" class="close">×</span>
-    </div>
-</c:if>
 <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script>
     function contactSeller(){

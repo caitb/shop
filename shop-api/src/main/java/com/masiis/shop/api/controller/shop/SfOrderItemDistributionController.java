@@ -40,7 +40,7 @@ public class SfOrderItemDistributionController extends BaseController {
     private SfShopService sfShopService;
 
     /**
-     * 分校记录首页
+     * 分销记录首页
      * @param userId    用户id
      * @param yDate      日期字符串精确到月份 格式为"yyyyMM"
      * @author:wbj

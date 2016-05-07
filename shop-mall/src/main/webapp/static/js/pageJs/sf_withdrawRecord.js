@@ -78,6 +78,8 @@ function getExtractApplyList(year,month){
                 $("#currentPage").val(1);
                 if (parseInt(totalPage)>1){
                     $("#showMore").html("<span href=\"#\" onclick=\"getMore()\">查看更多></span>");
+                }else {
+                    $("#showMore").html("");
                 }
             },
             error: function(){

@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +15,7 @@
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="count" name="count" value="${count}">
     <header>
         <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>浏览过的店铺</p>
@@ -44,7 +46,11 @@
                 </section>
             </c:forEach>
         </div>
-        <p style="text-align: center;"><a href="#" onclick="showMore()">查看更多></a></p>
+        <p id="show" style="text-align: center;">
+            <c:if test="${sfUserShopViews != null && fn:length(sfUserShopViews) < count}">
+                <a href="#" onclick="showMore()">查看更多></a>
+            </c:if>
+        </p>
     </div>
 <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
 <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>

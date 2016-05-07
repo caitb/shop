@@ -15,6 +15,7 @@ import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.product.SkuImageService;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.product.SpuService;
+import com.masiis.shop.web.mall.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.mall.service.shop.JSSDKService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
@@ -66,6 +67,8 @@ public class SfShopController extends BaseController {
     private SfUserShopViewService sfUserShopViewService;
     @Resource
     private JSSDKService jssdkService;
+    @Resource
+    private WeiXinQRCodeService weiXinQRCodeService;
 
     @RequestMapping("/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
@@ -117,9 +120,12 @@ public class SfShopController extends BaseController {
             //二维码
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            String qrCodePath = posterDir.getAbsolutePath() + "/" + posterName;
+            String qrCodePath = posterDir.getAbsolutePath();
             String shopUrl = basePath + shopId + "/" + comUser.getId() + "/shop.shtml";
-            CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
+            //CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
+            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), posterName, qrCodePath);
+            qrCodePath += "/"+posterName;
+
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath() + "/h-" + comUser.getId() + ".jpg";
@@ -178,7 +184,7 @@ public class SfShopController extends BaseController {
 
         g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), 130, 130, null);
         g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);
-        g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), null);
+        g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), 200, 200, null);
 
         g.setFont(font);
         g.setColor(color);

@@ -6,7 +6,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @Date 2016/5/6
  * @Auther lzh
  */
-@XStreamAlias("xml")
 public class WxBaseEvent {
     @XStreamAlias("ToUserName")
     private String toUserName;

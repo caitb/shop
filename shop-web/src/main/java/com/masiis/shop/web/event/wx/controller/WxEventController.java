@@ -77,6 +77,9 @@ public class WxEventController extends BaseController {
                     xStream.processAnnotations(res.getClass());
                     String resStr = xStream.toXML(res);
                     System.out.println(resStr);
+                    if("<null/>".equals(resStr)){
+                        return "success";
+                    }
                     return resStr;
                 default:
                     return "success";

@@ -4,6 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +83,11 @@ public class WxEventService {
             pfUserSkuId = Integer.valueOf(body.getEventKey());
         }
         if("subscribe".equals(body.getEvent())){
-            pfUserSkuId = Integer.valueOf(body.getEventKey().replaceAll("qrscene_", ""));
+            if(StringUtils.isNotBlank(body.getEventKey())) {
+                pfUserSkuId = Integer.valueOf(body.getEventKey().replaceAll("qrscene_", ""));
+            } else {
+                return null;
+            }
         }
         if(pfUserSkuId == null){
             throw new BusinessException();

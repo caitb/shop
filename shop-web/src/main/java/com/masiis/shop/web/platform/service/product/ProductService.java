@@ -55,6 +55,7 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        product.setStock(product.getStock()-product.getFrozenStock());
         if (product != null && product.getName().length() > 40) {
             product.setName(product.getName().substring(0, 41) + "......");
         }
@@ -189,6 +190,9 @@ public class ProductService {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
             upperStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
+        if(upperStock<0){
+            upperStock=0;
+        }
         return upperStock;
     }
     /**
@@ -205,6 +209,7 @@ public class ProductService {
         if (level == endLevel || stock == 0) {
             param.put("countLevel",countLevel);
             param.put("priceDiscount",comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
+            param.put("levelStock",pfSkuAgent.getQuantity());
             return param;
         } else {
             countLevel = stock / pfSkuAgent.getQuantity();

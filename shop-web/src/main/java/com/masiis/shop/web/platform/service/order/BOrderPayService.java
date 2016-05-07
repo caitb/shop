@@ -554,7 +554,6 @@ public class BOrderPayService {
         } else {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
-
                 //合伙人申请成功提示
                 String[] params = new String[4];
                 params[0] = rmbFormat.format(pfBorder.getPayAmount());

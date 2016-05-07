@@ -58,6 +58,7 @@ public class SfOrderItemDistributionController extends BaseController {
         Integer count = sfCount.getCount();
         //默认设置每页显示10条
         Integer totalPage = 0;
+        Integer num = 0;
         logger.info("count:"+count);
         Integer sumLevel = sfCount.getSumLevel();
         logger.info("sumLevel:"+sumLevel);
@@ -70,7 +71,7 @@ public class SfOrderItemDistributionController extends BaseController {
         }else {
             Date start = DateUtil.getFirstTimeInMonth(new Date());
             Date end = DateUtil.getLastTimeInMonth(new Date());
-            Integer num = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
+            num = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
             totalPage = num%10 == 0 ? num/10 : num/10 + 1;
             List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,1,10);
             List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
@@ -101,6 +102,7 @@ public class SfOrderItemDistributionController extends BaseController {
         }
         mv.addObject("year",year);
         mv.addObject("month",monthString);
+        mv.addObject("totalCount",num);
         mv.addObject("totalPage",totalPage);
         mv.addObject("currentPage",1);
         mv.addObject("sfShop",sfShop);
@@ -134,6 +136,7 @@ public class SfOrderItemDistributionController extends BaseController {
         Date start = DateUtil.getFirstTimeInMonth(date);
         Date end = DateUtil.getLastTimeInMonth(date);
         Integer totalCount = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
+        Integer totalPage = totalCount%10 == 0 ? totalCount/10 : totalCount/10 + 1;
         JSONObject jsonObject = new JSONObject();
         if (totalCount == 0){
             jsonObject.put("isTrue","false");
@@ -162,6 +165,8 @@ public class SfOrderItemDistributionController extends BaseController {
             str.append("<h1><span><b>"+persons.size()+"</b>人分佣</span><span>￥"+amount+"</span><span onclick=\"showDetails("+persons+")\">分佣明细></span></h1></div>");
         }
         jsonObject.put("isTrue","true");
+        jsonObject.put("totalCount",totalCount);
+        jsonObject.put("totalPage",totalPage);
         jsonObject.put("message",str);
         logger.info(jsonObject.toJSONString());
         return jsonObject.toJSONString();

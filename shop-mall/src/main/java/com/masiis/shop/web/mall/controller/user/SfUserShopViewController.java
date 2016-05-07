@@ -70,6 +70,7 @@ public class SfUserShopViewController extends BaseController {
             }
         }
         ModelAndView mv = new ModelAndView();
+        mv.addObject("count",count);
         mv.addObject("totalPage",totalPage);
         mv.addObject("currentPage",1);
         mv.addObject("sfUserShopViews",sfUserShopViews);

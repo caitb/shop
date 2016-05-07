@@ -1,4 +1,4 @@
-package com.masiis.shop.web.event.wx.bean;
+package com.masiis.shop.web.event.wx.bean.event;
 
 /**
  * @Date 2016/5/6

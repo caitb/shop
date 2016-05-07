@@ -1,4 +1,4 @@
-package com.masiis.shop.web.event.wx.bean;
+package com.masiis.shop.web.event.wx.bean.event;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @Date 2016/5/6
  * @Auther lzh
  */
+@XStreamAlias("xml")
 public class WxBaseEvent {
     @XStreamAlias("ToUserName")
     private String toUserName;
@@ -17,8 +18,6 @@ public class WxBaseEvent {
     private String msgType;
     @XStreamAlias("Event")
     private String event;
-    @XStreamAlias("MsgID")
-    private String msgID;
 
     public String getToUserName() {
         return toUserName;
@@ -58,13 +57,5 @@ public class WxBaseEvent {
 
     public void setEvent(String event) {
         this.event = event;
-    }
-
-    public String getMsgID() {
-        return msgID;
-    }
-
-    public void setMsgID(String msgID) {
-        this.msgID = msgID;
     }
 }

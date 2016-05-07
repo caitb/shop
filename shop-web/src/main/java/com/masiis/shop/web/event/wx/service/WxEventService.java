@@ -41,6 +41,8 @@ public class WxEventService {
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);
+                break;
+            default:
         }
         return res;
     }
@@ -61,12 +63,8 @@ public class WxEventService {
         res.setCreateTime(new Date().getTime());
         res.setMsgType("text");
         res.setContent("您可以通过两种方式联系我们：\n" +
-                "\n" +
-                "\n" +
-                "1.直接在公众账号内输入您想要说的话，发送给我们\n" +
-                "\n" +
-                "\n" +
-                "2.拨打我们的客服电话：010-4548878");
+                "1.直接在公众账号内输入您想要说的话，发送给我们。\n" +
+                "2.拨打我们的客服电话：010-4548878。");
 
         return res;
     }
@@ -79,12 +77,18 @@ public class WxEventService {
      */
     private WxArticleRes handleQRScanEvent(WxEventBody body) {
         Integer pfUserSkuId = null;
+        String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
-            pfUserSkuId = Integer.valueOf(body.getEventKey());
+            if(StringUtils.isNotBlank(eventStr)) {
+                pfUserSkuId = Integer.valueOf(eventStr);
+            } else {
+                return null;
+            }
         }
         if("subscribe".equals(body.getEvent())){
-            if(StringUtils.isNotBlank(body.getEventKey())) {
-                pfUserSkuId = Integer.valueOf(body.getEventKey().replaceAll("qrscene_", ""));
+            if(StringUtils.isNotBlank(eventStr)) {
+                eventStr = eventStr.replaceAll("qrscene_", "");
+                pfUserSkuId = Integer.valueOf(eventStr);
             } else {
                 return null;
             }

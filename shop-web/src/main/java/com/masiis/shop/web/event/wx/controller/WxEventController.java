@@ -70,20 +70,21 @@ public class WxEventController extends BaseController {
             WxEventBody body = (WxEventBody) xStream.fromXML(requestBody);
 
             // 分事件处理
+            WxBaseMessage res = null;
             switch (body.getMsgType()) {
                 case "event":
                     // 事件推送
-                    WxBaseMessage res = wxEventService.handleEvent(body);
-                    xStream.processAnnotations(res.getClass());
-                    String resStr = xStream.toXML(res);
-                    System.out.println(resStr);
-                    if("<null/>".equals(resStr)){
-                        return "success";
-                    }
-                    return resStr;
+                    res = wxEventService.handleEvent(body);
+                    break;
                 default:
-                    return "success";
+                    break;
             }
+            if(res == null){
+                return "success";
+            }
+            String resStr = toXML(xStream, res);
+            System.out.println(resStr);
+            return resStr;
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -109,7 +110,7 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=WU1oT3BGSLbjIhHK1gFVhk59k26TJeDGnEOngIx3svmh_cCV_fpoqMFuAZ40-aSaafc_b1qBHEkD6KwhKItylO7rmBZ9S_zc_FYPD4jvZXo6ZS8p3aEXUFl0BiMkElviQIHhAFAFXW";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ULmwoKWXmgnXo-9SnZihlRWYqWKO6FTdKCDV-Zxmoa-ljZ3-IMuXgXx9HyM4qSydtmn_3xXbAD55_bYB593qNl-RIklOVC74AUuhTSSweNwRBUjEai_2g-BOvOr3TCvCGKKcABAPTT";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
@@ -120,7 +121,7 @@ public class WxEventController extends BaseController {
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
 
-        Button b2 = new Button("使用帮助", "view_limited", null);
+        Button b2 = new Button("使用帮助", "media_id", null);
         b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
         sub_button2.add(b2);
         sub_button2.add(new Button("最新活动", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));

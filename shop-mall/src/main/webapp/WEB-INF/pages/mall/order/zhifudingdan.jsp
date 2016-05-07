@@ -43,7 +43,7 @@
                             商品信息：<span>${orderItem.skuName}</span>
                         </p>
                        </c:forEach>
-                       <p>需付款　：<span>${order.receivableAmount}</span></p>
+                       <p>需付款　：<span>￥${order.receivableAmount}</span></p>
                     </main>
                    <button onclick="callWeChatPay()">微信支付</button>
         </div>

@@ -205,6 +205,9 @@
             <if test="auditStatus != null">
                 AND audit_status = #{auditStatus}
             </if>
+            <if test="isBuy != null">
+                AND is_buy = #{isBuy,jdbcType=INTEGER}
+            </if>
         </where>
     </select>
 

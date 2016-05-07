@@ -63,4 +63,12 @@ public interface SfOrderMapper {
      */
     int updateOrderCancelById(@Param("orderId") Long orderId,
                               @Param("orderStatus") Integer orderStatus);
+
+    /**
+     * 查询出C端没有提现权限用户的小铺订单
+     * @param userId
+     * @param status
+     * @return
+     */
+    SfOrder selectNotIsBuyByUserId(Long userId,Integer status);
 }

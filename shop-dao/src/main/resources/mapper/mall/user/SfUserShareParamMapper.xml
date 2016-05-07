@@ -15,7 +15,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserShareParam">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserShareParam" keyProperty="id" useGeneratedKeys="true">
         insert into sf_user_share_param (id, create_time, f_user_id, 
             shop_id, sku_id, remark
             )

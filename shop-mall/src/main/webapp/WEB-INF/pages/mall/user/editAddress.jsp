@@ -82,8 +82,21 @@
 <script>
     comAreaJS.init("edit");
     addressJS.init();
+    var promise =  $.Deferred().promise();
     function updateAddress() {
-        addressJS.updateAddress()
+        var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
+        var addAddressJumpType = $("#addAddressJumpTypeId").val();
+        var paramJson = addressJS.getJsonParam();
+        if (addressJS.validateAddressInfo(paramJson)) {
+            if(promise.state()=="pending"){
+                promise = $.post("/userAddress/addOrUpdateAddress.do",
+                        paramJson, function (data) {
+                            if (data == "success") {
+                                window.location.href = addressJS.basePath + "/userAddress/toManageAddressPage.html?manageAddressJumpType=" + manageAddressJumpType + "&addAddressJumpType=" + addAddressJumpType;
+                            }
+                        });
+            }
+        }
     }
 </script>
 </body>

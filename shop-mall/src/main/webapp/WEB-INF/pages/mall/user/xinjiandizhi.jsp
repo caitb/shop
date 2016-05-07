@@ -18,31 +18,30 @@
     <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
 </head>
 <script>
-    /*    var promise =  $.Deferred().promise();
-     function saveAddress() {
-     var paramJson = addressJS.getJsonParam();
-     if (promise.state()=="pending"){
-     promise = $.ajax({
-     url: '/userAddress/addOrUpdateAddress.do',
-     type: 'post',
-     async: false,
-     data: paramJson,
-     success: function (data) {
-     if (data == "false") {
-     alert("新增地址失败");
-     } else {
-     window.location.href = data;
-     }
-     },
-     error: function () {
-     }
-     });
-     }
-     promise.then()
-     }*/
-
-
+    var promise =  $.Deferred().promise();
     function saveAddress() {
+        var paramJson = addressJS.getJsonParam();
+        if (promise.state()=="pending"){
+            promise = $.ajax({
+                url: '/userAddress/addOrUpdateAddress.do',
+                type: 'post',
+                async: false,
+                data: paramJson,
+                success: function (data) {
+                    if (data == "false") {
+                        alert("新增地址失败");
+                    } else {
+                        window.location.href = data;
+                    }
+                },
+                error: function () {}
+            });
+        }
+        promise.then()
+    }
+
+
+/*    function saveAddress() {
         var paramJson = addressJS.getJsonParam();
         if (addressJS.validateAddressInfo(paramJson)) {
             $.ajax({
@@ -61,7 +60,7 @@
                 }
             })
         }
-    }
+    }*/
 
 
 </script>

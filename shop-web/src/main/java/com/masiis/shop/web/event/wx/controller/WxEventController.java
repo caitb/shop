@@ -78,6 +78,8 @@ public class WxEventController extends BaseController {
                     String resStr = xStream.toXML(res);
                     System.out.println(resStr);
                     return resStr;
+                default:
+                    return "success";
             }
 
         } catch (Exception e) {

@@ -40,7 +40,7 @@
 
                         <p style="color: #ff5200;">${sku.comSku.priceMarket}</p>
 
-                        <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span> 库存: <span>${sku.stock}</span></p>
+                        <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>  库存: <span>${sku.stock}</span></p>
                     </div>
                 </div>
                 <div class="sec2">
@@ -100,8 +100,8 @@
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
                     trHtml+="<h1>"+sku.comSku.name+"</h1>";
-                    trHtml+="<p>"+sku.comSku.priceMarket+"</p>";
-                    trHtml+="<p>已售：<span>"+sku.saleNum+"</span> 库存 <span>"+sku.stock+"</span></p>";
+                    trHtml+="<p style=\"color: #ff5200;\">"+sku.comSku.priceMarket+"</p>";
+                    trHtml+="<p>已售：<span>"+sku.saleNum+"</span>   库存: <span>"+sku.stock+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="</div>";
                     trHtml+="<div class=\"sec2\">";
@@ -129,8 +129,8 @@
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
                     trHtml+="<h1>"+sku.comSku.name+"</h1>";
-                    trHtml+="<p>"+sku.comSku.priceMarket+"</p>";
-                    trHtml+="<p>已售：<span>"+sku.saleNum+"</span> 库存 <span>"+sku.stock+"</span></p>";
+                    trHtml+="<p style=\"color: #ff5200;\">"+sku.comSku.priceMarket+"</p>";
+                    trHtml+="<p>已售：<span>"+sku.saleNum+"</span>   库存: <span>"+sku.stock+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="</div>";
                     trHtml+="<div class=\"sec2\">";

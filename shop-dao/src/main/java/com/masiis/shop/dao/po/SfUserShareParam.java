@@ -27,7 +27,7 @@ public class SfUserShareParam {
     /**
      * skuID
      */
-    private Long skuId;
+    private Integer skuId;
     /**
      * 备注
      */
@@ -57,10 +57,10 @@ public class SfUserShareParam {
     public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
-    public Long getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
-    public void setSkuId(Long skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
     public String getRemark() {

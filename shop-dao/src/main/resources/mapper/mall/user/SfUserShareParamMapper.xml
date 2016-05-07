@@ -6,7 +6,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="f_user_id" property="fUserId" jdbcType="BIGINT"/>
         <result column="shop_id" property="shopId" jdbcType="BIGINT"/>
-        <result column="sku_id" property="skuId" jdbcType="BIGINT"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -20,7 +20,7 @@
             shop_id, sku_id, remark
             )
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{fUserId,jdbcType=BIGINT}, 
-            #{shopId,jdbcType=BIGINT}, #{skuId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}
+            #{shopId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
             )
     </insert>
 
@@ -29,7 +29,7 @@
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             f_user_id = #{fUserId,jdbcType=BIGINT},
             shop_id = #{shopId,jdbcType=BIGINT},
-            sku_id = #{skuId,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>

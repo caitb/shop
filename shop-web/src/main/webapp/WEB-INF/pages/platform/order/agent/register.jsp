@@ -63,7 +63,7 @@
                 <h2>选择合伙人套餐：</h2>
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
-                        <c:if test="${view.agent.agentLevelId > pUserLevelId}">
+                        <c:if test="${view.agent.agentLevelId > pUserLevelId && view.isShow==1}">
                             <p levelId="${view.agent.agentLevelId}"
                                agentFee="${view.agentFee}"
                                agentBailFee="${view.agent.bail}">

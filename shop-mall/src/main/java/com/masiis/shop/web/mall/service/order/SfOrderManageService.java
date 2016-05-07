@@ -155,7 +155,7 @@ public class SfOrderManageService {
         }
         params[2] =sdf.format(sfOrder.getCreateTime());//下单时间
         params[3] = sdf.format(sfOrder.getShipTime());//发货时间
-        params[4] = sdf.format(sfOrder.getReceiptTime());//收货时间
+        params[4] = sdf.format(new Date());//收货时间
         Boolean aBoolean = WxSFNoticeUtils.getInstance().orderConfirmNotice(user, params);
         if (aBoolean == false) {
             throw new BusinessException("订单完成微信提示失败");

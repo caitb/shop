@@ -56,7 +56,7 @@ public class ComUserService {
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, ComUser comUser){
 
-        PageHelper.startPage(pageNumber, pageSize);
+        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<ComUser> comUsers = comUserMapper.selectByCondition(comUser);
         PageInfo<ComUser> pageInfo = new PageInfo<>(comUsers);
 

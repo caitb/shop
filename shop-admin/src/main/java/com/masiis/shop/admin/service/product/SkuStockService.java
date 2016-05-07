@@ -38,7 +38,7 @@ public class SkuStockService {
      * @return
      */
     public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, PfSkuStock pfSkuStock){
-        PageHelper.startPage(pageNo, pageSize);
+        PageHelper.startPage(pageNo, pageSize, "create_time desc");
         List<PfSkuStock> pfSkuStocks = pfSkuStockMapper.selectByCondition(pfSkuStock);
         PageInfo<PfSkuStock> pageInfo = new PageInfo<>(pfSkuStocks);
 

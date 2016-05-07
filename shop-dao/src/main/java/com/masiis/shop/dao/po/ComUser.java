@@ -10,7 +10,7 @@ package com.masiis.shop.dao.po;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ComUser implements Serializable{
+public class ComUser implements Serializable {
 
     private static final long serialVersionUID = -2543606660018018096L;
 
@@ -103,28 +103,36 @@ public class ComUser implements Serializable{
      * appToken过期时间
      */
     private Date appTokenExpire;
+    private Integer isBuy;
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getMobile() {
         return mobile;
     }
+
     public void setMobile(String mobile) {
         this.mobile = mobile == null ? null : mobile.trim();
     }
+
     public String getUserMail() {
         return userMail;
     }
+
     public void setUserMail(String userMail) {
         this.userMail = userMail == null ? null : userMail.trim();
     }
@@ -140,90 +148,119 @@ public class ComUser implements Serializable{
     public String getWxNkName() {
         return wxNkName;
     }
+
     public void setWxNkName(String wxNkName) {
         this.wxNkName = wxNkName == null ? null : wxNkName.trim();
     }
+
     public Integer getSex() {
         return sex;
     }
+
     public void setSex(Integer sex) {
         this.sex = sex;
     }
+
     public String getRealName() {
         return realName;
     }
+
     public void setRealName(String realName) {
         this.realName = realName == null ? null : realName.trim();
     }
+
     public String getIdCard() {
         return idCard;
     }
+
     public void setIdCard(String idCard) {
         this.idCard = idCard == null ? null : idCard.trim();
     }
+
     public String getIdCardFrontUrl() {
         return idCardFrontUrl;
     }
+
     public void setIdCardFrontUrl(String idCardFrontUrl) {
         this.idCardFrontUrl = idCardFrontUrl == null ? null : idCardFrontUrl.trim();
     }
+
     public String getIdCardBackUrl() {
         return idCardBackUrl;
     }
+
     public void setIdCardBackUrl(String idCardBackUrl) {
         this.idCardBackUrl = idCardBackUrl == null ? null : idCardBackUrl.trim();
     }
+
     public String getWxId() {
         return wxId;
     }
+
     public void setWxId(String wxId) {
         this.wxId = wxId == null ? null : wxId.trim();
     }
+
     public Integer getIsAgent() {
         return isAgent;
     }
+
     public void setIsAgent(Integer isAgent) {
         this.isAgent = isAgent;
     }
+
     public Integer getSendType() {
         return sendType;
     }
+
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
     }
+
     public Integer getAuditStatus() {
         return auditStatus;
     }
+
     public void setAuditStatus(Integer auditStatus) {
         this.auditStatus = auditStatus;
     }
+
     public String getAuditReason() {
         return auditReason;
     }
+
     public void setAuditReason(String auditReason) {
         this.auditReason = auditReason == null ? null : auditReason.trim();
     }
+
     public String getWxUnionid() {
         return wxUnionid;
     }
+
     public void setWxUnionid(String wxUnionid) {
         this.wxUnionid = wxUnionid == null ? null : wxUnionid.trim();
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
     }
+
     public String getPwdSalt() {
         return pwdSalt;
     }
+
     public void setPwdSalt(String pwdSalt) {
         this.pwdSalt = pwdSalt == null ? null : pwdSalt.trim();
     }
+
     public Integer getRegisterSource() {
         return registerSource;
     }
+
     public void setRegisterSource(Integer registerSource) {
         this.registerSource = registerSource;
     }
@@ -250,5 +287,13 @@ public class ComUser implements Serializable{
 
     public void setAppTokenExpire(Date appTokenExpire) {
         this.appTokenExpire = appTokenExpire;
+    }
+
+    public Integer getIsBuy() {
+        return isBuy;
+    }
+
+    public void setIsBuy(Integer isBuy) {
+        this.isBuy = isBuy;
     }
 }

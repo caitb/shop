@@ -54,6 +54,9 @@ public class SfOrderManagerController extends BaseController {
         try {
             log.info("deliverSfOrder进来了");
             ComUser user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("user不能为空");
+            }
             sfOrderManageService.deliver(orderId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -165,8 +168,7 @@ public class SfOrderManagerController extends BaseController {
         try {
             ComUser user = getComUser(request);
             if (user == null) {
-                user = userService.getUserById(1l);
-                request.getSession().setAttribute("comUser", user);
+                throw new BusinessException("user不能为空");
             }
             Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
@@ -213,7 +215,7 @@ public class SfOrderManagerController extends BaseController {
     public ModelAndView borderManagement(HttpServletRequest request,Integer fm) throws Exception{
         ComUser user = getComUser(request);
         if (user == null) {
-            user = userService.getUserById(127l);
+            throw new BusinessException("user不能为空");
         }
         SfUserRelation sfUserRelation = sfOrderManageService.findSfUserRelationByUserId(user.getId());
         /*if(sfUserRelation==null){

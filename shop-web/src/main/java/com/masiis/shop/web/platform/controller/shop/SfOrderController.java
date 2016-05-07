@@ -62,6 +62,9 @@ public class SfOrderController extends BaseController {
         JSONObject json = new JSONObject();
         try {
             ComUser user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("user不能为空");
+            }
             sfOrderService.deliver(shipManName,orderId,freight,shipManId,user);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -83,7 +86,9 @@ public class SfOrderController extends BaseController {
     public ModelAndView sfOrderDetal(HttpServletRequest request, Long id) throws Exception {
         OrderMallDetail orderMallDetail = new OrderMallDetail();
         ComUser user = getComUser(request);
-
+        if (user == null) {
+            throw new BusinessException("user不能为空");
+        }
         SfOrder order = sfOrderService.findSforderByorderId(id);
         ComUser Buser = userService.getUserById(order.getUserId());
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -134,6 +139,9 @@ public class SfOrderController extends BaseController {
     @RequestMapping("/stockShipOrder")
     public ModelAndView stockShipOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
         ComUser comUser = getComUser(request);
+        if (comUser == null){
+            throw new BusinessException("user不能为空");
+        }
         List<SfOrder> sfOrders = sfOrderService.findOrdersByShopUserId(comUser.getId(), orderStatus, shopId);
         String index=null;
         if(orderStatus==null){
@@ -167,6 +175,9 @@ public class SfOrderController extends BaseController {
         List<SfOrder> sfOrders=null;
         try {
             ComUser user = getComUser(request);
+            if (user == null) {
+                throw new BusinessException("user不能为空");
+            }
             Long shopId =(Long) request.getSession().getAttribute("shopId");
             List<ComShipMan> comShipMans = comShipManService.list();
             request.getSession().setAttribute("comShipMans", comShipMans);

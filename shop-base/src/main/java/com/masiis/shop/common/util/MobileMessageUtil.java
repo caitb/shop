@@ -172,7 +172,7 @@ public class MobileMessageUtil {
      * @param status 订单状态
      * @return
      */
-    public  boolean haveNewLowerOrder(String phone, Integer status){
+    public boolean haveNewLowerOrder(String phone, Integer status){
         content = new String[2];
         if (status == BOrderStatus.MPS.getCode()){
             content[0] = "目前您的库存不足，请及时补货。";

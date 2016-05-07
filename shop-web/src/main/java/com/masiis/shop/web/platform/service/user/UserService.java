@@ -272,6 +272,7 @@ public class UserService {
         // 只有平台发货方式
         user.setSendType(1);
         user.setRegisterSource(0);
+        user.setIsBuy(0);
 
         return user;
     }

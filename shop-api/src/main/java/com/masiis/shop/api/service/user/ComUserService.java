@@ -299,6 +299,7 @@ public class ComUserService {
         // 默认平台发货
         user.setSendType(1);
         user.setRegisterSource(0);
+        user.setIsBuy(0);
 
         return user;
     }

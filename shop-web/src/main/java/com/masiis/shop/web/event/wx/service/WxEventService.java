@@ -1,11 +1,10 @@
 package com.masiis.shop.web.event.wx.service;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.web.event.wx.bean.Article;
-import com.masiis.shop.web.event.wx.bean.WxArticleRes;
-import com.masiis.shop.web.event.wx.bean.WxEventBody;
+import com.masiis.shop.web.event.wx.bean.event.Article;
+import com.masiis.shop.web.event.wx.bean.event.WxArticleRes;
+import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;

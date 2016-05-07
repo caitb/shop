@@ -157,7 +157,8 @@ public class ProductController extends BaseController {
             HttpSession session = request.getSession();
             ComUser comUser = (ComUser) session.getAttribute("comUser");
             PfUserSkuStock product = productService.getStockByUser(id);
-            if (product.getStock() - stock < 0) {
+            Integer currentStock = product.getStock()-product.getFrozenStock();
+            if (currentStock - stock < 0) {
                 throw new BusinessException("拿货数量超出库存!");
             }
             Long orderCode = bOrderAddService.addProductTake(comUser.getId(), product.getSkuId(), stock, message, userAddressId);

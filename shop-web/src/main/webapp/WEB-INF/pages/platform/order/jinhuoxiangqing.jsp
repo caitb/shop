@@ -89,7 +89,7 @@
                 </div>
             </section></c:forEach>
             <section class="sec3">
-                <p>留言： <input readonly="readonly" type="text"value="${borderDetail.pfBorder.userMessage}"></p>
+                <p>留言： <input readonly="readonly" type="text" value="${borderDetail.pfBorder.userMessage}"></p>
             </section>
             <section class="sec4">
                 <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}</span></p>

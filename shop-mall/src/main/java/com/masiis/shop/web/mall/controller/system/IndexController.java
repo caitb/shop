@@ -55,8 +55,7 @@ public class IndexController extends BaseController {
                               @PathVariable("userPid") Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
-            user = userService.getUserById(160l);
-            req.getSession().setAttribute("comUser", user);
+            throw new BusinessException("user不能为空");
         }
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
@@ -103,8 +102,8 @@ public class IndexController extends BaseController {
             SfShopDetails.add(sfShopDetail);
         }
         ModelAndView modelAndView = new ModelAndView();
-        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
-        modelAndView.addObject("forcusSF",forcusSF);
+//        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+//        modelAndView.addObject("forcusSF",forcusSF);
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);
@@ -120,8 +119,7 @@ public class IndexController extends BaseController {
                                 Long shopId, Long userPid) throws Exception {
         ComUser user = getComUser(req);
         if (user == null) {
-            user = userService.getUserById(218l);
-            req.getSession().setAttribute("comUser", user);
+            throw new BusinessException("user不能为空");
         }
         shopId =114L;
         userPid = 220L;
@@ -170,8 +168,8 @@ public class IndexController extends BaseController {
             SfShopDetails.add(sfShopDetail);
         }
         ModelAndView modelAndView = new ModelAndView();
-        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
-        modelAndView.addObject("forcusSF",forcusSF);
+//        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
+//        modelAndView.addObject("forcusSF",forcusSF);
         modelAndView.addObject("pUser", pUser);
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);

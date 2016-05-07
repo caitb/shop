@@ -53,8 +53,8 @@ public class SfShopCartController extends BaseController {
             ComUser user = getComUser(request);
             int useStock = skuService.checkSkuStock(skuId, quantity, shopId);
             SfShop sfShop = sfShopService.getSfShopById(shopId);
-            if(sfShop!=null && sfShop.getUserId().equals(user.getId())){
-                throw new BusinessException("您不可以购买自己店铺的商品！");
+            if(sfShop==null){
+                throw new BusinessException("不存在该店铺！");
             }
             if (useStock < 0) {
                 throw new BusinessException("可用库存不足！请重新选择商品数量");

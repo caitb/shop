@@ -39,7 +39,7 @@
         </div>
         <p>产品团队列表</p>
         <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1"></c:if>
+            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1" onclick="javascript:alert('您代理到这款产品是最后一级,无团队管理功能!');"></c:if>
             <c:if test="${agentSkuMap.isLastLevel == 'no'}"><div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');"></c:if>
             <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
             <div>

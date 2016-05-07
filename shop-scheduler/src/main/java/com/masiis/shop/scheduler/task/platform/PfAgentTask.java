@@ -24,7 +24,7 @@ public class PfAgentTask {
         log.info("每日统计下级代理人数定时任务开始,开始时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
         try{
             pfStatisticsAgentService.statisticsAgent();
-            log.error("每日统计下级代理人数定时任务成功");
+            log.info("每日统计下级代理人数定时任务成功");
         } catch (Exception e) {
             log.error("每日统计下级代理人数定时任务错误,{}" + e.getMessage());
         }

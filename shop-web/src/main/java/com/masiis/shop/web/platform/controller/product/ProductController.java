@@ -189,6 +189,7 @@ public class ProductController extends BaseController {
         }
         mav.addObject("pfUserSkuStockId", id);
         PfUserSkuStock product = productService.getStockByUser(id);
+        product.setStock(product.getStock()-product.getFrozenStock());
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
@@ -243,5 +244,29 @@ public class ProductController extends BaseController {
              object.put("message", ex.getMessage());
          }
         return object.toJSONString();
+    }
+    
+    /**
+      * @Author jjh
+      * @Date 2016/5/7 0007 下午 3:23
+      * 拿货成功预览
+      */
+    @RequestMapping(value = "replenishmentSelf.shtml")
+    public ModelAndView replenishmentOrder(@RequestParam(value = "bOrderId", required = true) Long bOrderId,
+                                                        HttpServletRequest request) throws Exception {
+        if (getComUser(request) == null) {
+            throw new BusinessException("请重新登录");
+        }
+        ModelAndView mv = new ModelAndView();
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        mv.addObject("pfBorder", pfBorder);
+        //sendtype  1:平台代发货  2:自己发货  0:未选择发货类型
+        //orderType 1:补货 2:拿货 0:代理
+        if (pfBorder.getSendType() == 2 || pfBorder.getOrderType() == 2) {
+            PfBorderConsignee pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
+            mv.addObject("pfBorderConsignee", pfBorderConsignee);
+        }
+        mv.setViewName("platform/user/previewnahuo");
+        return mv;
     }
 }

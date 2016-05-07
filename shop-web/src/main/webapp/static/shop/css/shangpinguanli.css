@@ -71,9 +71,9 @@
     width:18px;
     margin-right: 6px;
 }
-.wrap main section .sec2 p:nth-child(1) {
-    border-right: 1px solid #666;
-}
+/*.wrap main section .sec2 p:nth-child(1) {*/
+    /*border-right: 1px solid #666;*/
+/*}*/
 .back_que {
     position: fixed;
     left: 5%;

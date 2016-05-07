@@ -177,7 +177,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>borderManage/borderDetils.html?id=" + data.borderId;
+                    window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
                 }
                 else {
                     $(".back").css("display", "none");

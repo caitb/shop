@@ -66,8 +66,8 @@
 <script src="${path}/static/js/hideWXShare.js"></script>
 <script src="${path}/static/js/ajaxfileupload.js"></script>
 <script>
-    var isRuningF = false;
-    var isRuningB = false;
+    var isRuningF = true;
+    var isRuningB = true;
     var isReUpload = false;
     oNly()
     function oNly() {
@@ -82,7 +82,11 @@
     function uploadIdCardImg() {
         isReUpload = true;
         var selector = !checkImg ? 'idCardFront' : 'idCardBack';
-
+        if (selector == "idCardFront" ){
+            isRuningF = false;
+        }else{
+            isRuningB = false;
+        }
         $('#' + selector).attr('src', '${path}/static/images/loading2.gif');
         $.ajaxFileUpload({
             url: "${path}/userCertificate/idCardImgUpload.do",

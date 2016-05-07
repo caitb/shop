@@ -30,6 +30,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -657,17 +658,20 @@ public class BOrderPayService {
         //微信通知
         StringBuffer sb = new StringBuffer();
         log.info("用户id----"+comUser.getId()+"-------skuId----"+orderItem.getSkuId());
-        PfUserSku userSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(),orderItem.getSkuId());
         String agentLevelName = null;
-        if (userSku!=null){
-            log.info("合伙人等级id--------"+userSku.getAgentLevelId());
-            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(userSku.getAgentLevelId());
+        if (orderItem!=null){
+            log.info("合伙人等级id--------"+orderItem.getAgentLevelId());
+            ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(orderItem.getAgentLevelId());
             if (comAgentLevel!=null){
                 agentLevelName = comAgentLevel.getName();
                 log.info("合伙人等级名字--------"+agentLevelName);
             }
         }
-        sb.append(orderItem.getSkuName()).append(agentLevelName).append("订单");
+        sb.append(orderItem.getSkuName());
+        if (!StringUtils.isEmpty(agentLevelName)){
+            sb.append(agentLevelName);
+        }
+        sb.append("订单");
         String[] param = new String[]{border.getOrderCode(),sb.toString()};
         String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+border.getId();
         WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,border.getCreateTime(),offinePaymentUrl);

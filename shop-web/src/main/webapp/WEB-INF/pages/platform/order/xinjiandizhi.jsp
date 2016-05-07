@@ -77,31 +77,32 @@
     addressJS.init();
 </script>
 <script>
-    /*    var promise =  $.Deferred().promise();
+     var promise =  $.Deferred().promise();
      function saveAddress() {
-     var paramJson = addressJS.getJsonParam();
-     if (promise.state()=="pending"){
-     promise = $.ajax({
-     url: '/userAddress/addOrUpdateAddress.do',
-     type: 'post',
-     async: false,
-     data: paramJson,
-     success: function (data) {
-     if (data == "false") {
-     alert("新增地址失败");
-     } else {
-     window.location.href = data;
+         if (promise.state()=="pending"){
+             var paramJson = addressJS.getJsonParam();
+             if (addressJS.validateAddressInfo(paramJson)) {
+                 promise = $.ajax({
+                     url: '/userAddress/addOrUpdateAddress.do',
+                     type: 'post',
+                     async: false,
+                     data: paramJson,
+                     success: function (data) {
+                         if (data == "false") {
+                             alert("新增地址失败");
+                         } else {
+                             window.location.href = data;
+                         }
+                     },
+                     error: function () {}
+                 });
+             }
+        }
+        promise.then()
      }
-     },
-     error: function () {
-     }
-     });
-     }
-     promise.then()
-     }*/
 
 
-    function saveAddress() {
+ /*   function saveAddress() {
         var paramJson = addressJS.getJsonParam();
         if (addressJS.validateAddressInfo(paramJson)) {
             $.ajax({
@@ -120,7 +121,7 @@
                 }
             })
         }
-    }
+    }*/
 </script>
 </body>
 </html>

@@ -9,12 +9,13 @@
         <result column="discount" property="discount" jdbcType="DECIMAL"/>
         <result column="bail" property="bail" jdbcType="DECIMAL"/>
         <result column="quantity" property="quantity" jdbcType="INTEGER"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="back_img" property="backImg" jdbcType="VARCHAR"/>
+        <result column="is_show" property="isShow" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark,back_img
+        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
         FROM
                pf_sku_agent
         WHERE
@@ -27,28 +28,14 @@
     </delete>
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
-        insert into pf_sku_agent
-                   (
-                   id,
-                   sku_id,
-                   agent_level_id,
-                   icon,
-                   discount,
-                   bail,
-                   quantity,
-                   remark
-                   )
-        values
-                   (
-                   #{id,jdbcType=INTEGER},
-                   #{skuId,jdbcType=INTEGER},
-                   #{agentLevelId,jdbcType=INTEGER},
-                   #{icon,jdbcType=VARCHAR},
-                   #{discount,jdbcType=DECIMAL},
-                   #{bail,jdbcType=DECIMAL},
-                   #{quantity,jdbcType=INTEGER},
-                   #{remark,jdbcType=VARCHAR}
-                   )
+        insert into pf_sku_agent (id, sku_id, agent_level_id,
+            icon, discount, bail,
+            quantity, back_img, is_show,
+            remark)
+        values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
+            #{icon,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL},
+            #{quantity,jdbcType=INTEGER}, #{backImg,jdbcType=VARCHAR}, #{isShow,jdbcType=INTEGER},
+            #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
@@ -59,18 +46,20 @@
             discount = #{discount,jdbcType=DECIMAL},
             bail = #{bail,jdbcType=DECIMAL},
             quantity = #{quantity,jdbcType=INTEGER},
+            back_img = #{backImg,jdbcType=VARCHAR},
+            is_show = #{isShow,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
+        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity, remark,back_img
+        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
         from pf_sku_agent
     </select>
 
@@ -87,13 +76,13 @@
     </select>
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
+        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id,icon, discount, bail, quantity,remark,back_img
+        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -123,6 +112,9 @@
             </if>
             <if test="bail != null">
                 bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow,jdbcType=INTEGER},
             </if>
         </set>
         where

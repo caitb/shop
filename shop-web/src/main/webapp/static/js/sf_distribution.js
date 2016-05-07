@@ -20,6 +20,7 @@ function hideDetail(){
 function showMore() {
     var currentPage = parseInt($("#currentPage").val());
     var totalPage = parseInt($("#totalPage").val());
+    var totalCount = parseInt($("#totalCount").val());
     var count = $(".record").length;
     var year = $("#year").val();
     var month = $("#month").val();
@@ -35,6 +36,11 @@ function showMore() {
                 } else {
                     $("#divall").append(data.message);
                     $("#currentPage").val(currentPage + 1);
+                }
+                if($(".record").length >= totalCount){
+                    $("#show").html("");
+                }else {
+                    $("#show").html("<a href=\"#\" onclick=\"showMore()\">查看更多></a>");
                 }
             },
             error: function () {
@@ -62,8 +68,16 @@ function turnMonth(year,month){
             $("#divall").empty();
             if (data.isTrue == "false") {
                 alert(data.message);
+                $("#show").html("");
             } else {
+                $("#totalCount").val(data.totalCount);
+                $("#totalPage").val(data.totalPage);
                 $("#divall").html(data.message);
+                if($(".record").length >= data.totalCount){
+                    $("#show").html("");
+                }else {
+                    $("#show").html("<a href=\"#\" onclick=\"showMore()\">查看更多></a>");
+                }
             }
             $("#currentPage").val(1);
             $("#year").val(year);

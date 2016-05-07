@@ -305,6 +305,7 @@ public class SfShopController extends BaseController {
         mav.addObject("fromUser", fromUser);//分享链接人信息
         mav.addObject("fromUserId", fromUserId);
         mav.addObject("loginUser", user);
+        mav.addObject("sfShop", sfShop);
         mav.addObject("shareMap", shareMap);
         return mav;
     }

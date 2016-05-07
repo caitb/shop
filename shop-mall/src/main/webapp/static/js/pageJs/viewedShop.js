@@ -2,6 +2,7 @@
 function showMore() {
     var currentPage = parseInt($("#currentPage").val());
     var totalPage = parseInt($("#totalPage").val());
+    var totalCount = parseInt($("#count").val());
     var count = $(".shop").length;
     if (currentPage < totalPage) {
         $.ajax({
@@ -16,6 +17,11 @@ function showMore() {
                     $("#viewedShop").append(data.message);
                 }
                 $("#currentPage").val(currentPage + 1);
+                if ($(".shop").length >= totalCount){
+                    $("#show").html("");
+                }else{
+                    $("#show").html("<a href=\"#\" onclick=\"showMore()\">查看更多></a>");
+                }
             },
             error: function () {
                 //请求出错处理

@@ -21,6 +21,7 @@
 <body>
 <input type="hidden" id="totalPage" name="totalPage" value="${totalPage}"/>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="totalCount" name="totalCount" value="${totalCount}">
 <input type="hidden" id="year" name="year" value="${year}"/>
 <input type="hidden" id="month" name="month" value="${month}"/>
     <header>
@@ -36,22 +37,26 @@
             </ul>
        </div>
        <div class="sec1" id="sec1">
-                <p>分销记录：<label for="beginTime"><b>${year}</b>年<b>${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
-                <div id="divall">
-                    <c:forEach var="sfDistributionRecord" items="${sfDistributionRecords}">
-                        <c:set var="count" value="0"></c:set>
-                        <c:forEach items="${sfDistributionRecord.sfDistributionPersons }" var="item">
-                            <c:set var="count" value="${count+item.amount }"></c:set>
-                        </c:forEach>
-                        <div class="record">
-                            <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>${sfDistributionRecord.skuName}</span><span onclick="viewOrder(${sfDistributionRecord.orderId})">查看订单></span></p>
-                            <h1><span><fmt:formatDate value="${sfDistributionRecord.createTime}"  type="time" pattern="dd"/>日</span><span>购买人：${sfDistributionRecord.wxNkName}</span><span>￥${sfDistributionRecord.orderAmount}</span></h1>
-                            <h1><span><b>${ fn:length(sfDistributionRecord.sfDistributionPersons) }</b>人分佣</span><span>￥${count}</span><span onclick="showDetails(${sfDistributionRecord.sfDistributionPersons})">分佣明细></span></h1>
-                        </div>
+            <p>分销记录：<label for="beginTime"><b>${year}</b>年<b>${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+            <div id="divall">
+                <c:forEach var="sfDistributionRecord" items="${sfDistributionRecords}">
+                    <c:set var="count" value="0"></c:set>
+                    <c:forEach items="${sfDistributionRecord.sfDistributionPersons }" var="item">
+                        <c:set var="count" value="${count+item.amount }"></c:set>
                     </c:forEach>
-                </div>
-                <p style="text-align: center;"><a href="#" onclick="showMore()">查看更多></a></p>
+                    <div class="record">
+                        <p><span><b>${sfDistributionRecord.level}</b>人参加</span><span>${sfDistributionRecord.skuName}</span><span onclick="viewOrder(${sfDistributionRecord.orderId})">查看订单></span></p>
+                        <h1><span><fmt:formatDate value="${sfDistributionRecord.createTime}"  type="time" pattern="dd"/>日</span><span>购买人：${sfDistributionRecord.wxNkName}</span><span>￥${sfDistributionRecord.orderAmount}</span></h1>
+                        <h1><span><b>${ fn:length(sfDistributionRecord.sfDistributionPersons) }</b>人分佣</span><span>￥${count}</span><span onclick="showDetails(${sfDistributionRecord.sfDistributionPersons})">分佣明细></span></h1>
+                    </div>
+                </c:forEach>
             </div>
+        </div>
+        <p id="show" style="text-align: center;">
+            <c:if test="${sfDistributionRecords != null && fn:length(sfDistributionRecords) < totalCount}">
+                <a href="#" onclick="showMore()">查看更多></a>
+            </c:if>
+        </p>
     </div>
     <div id="datePlugin"></div>
     <div class="back"></div>

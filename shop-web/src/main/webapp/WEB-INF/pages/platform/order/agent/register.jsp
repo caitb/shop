@@ -64,7 +64,7 @@
                 <div class="dengji">
                     <c:forEach items="${agentSkuViews}" var="view">
                         <c:if test="${view.agent.agentLevelId > pUserLevelId}">
-                            <p levelId="${view.agent.agentLevelId}" j后
+                            <p levelId="${view.agent.agentLevelId}"
                                agentFee="${view.agentFee}"
                                agentBailFee="${view.agent.bail}">
                                 <span>${view.agentFee}元套餐</span>

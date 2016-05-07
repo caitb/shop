@@ -12,6 +12,7 @@ import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,9 @@ import java.util.List;
 @Service
 @Transactional
 public class SfOrderManageService {
+
+    private Logger log = Logger.getLogger(this.getClass());
+
     @Autowired
     private SfOrderManageMapper sfOrderManageMapper;
     @Autowired
@@ -156,7 +160,13 @@ public class SfOrderManageService {
         params[2] =sdf.format(sfOrder.getCreateTime());//下单时间
         params[3] = sdf.format(sfOrder.getShipTime());//发货时间
         params[4] = sdf.format(new Date());//收货时间
+
+        for (int i = 0;i<params.length;i++){
+            log.info("第"+i+"个参数-----"+params[i]);
+        }
+
         Boolean aBoolean = WxSFNoticeUtils.getInstance().orderConfirmNotice(user, params);
+        log.info("发送短信失败或成功----"+aBoolean);
         if (aBoolean == false) {
             throw new BusinessException("订单完成微信提示失败");
         }

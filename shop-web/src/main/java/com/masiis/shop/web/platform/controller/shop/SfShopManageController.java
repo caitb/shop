@@ -13,6 +13,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.product.SkuService;
+import com.masiis.shop.web.platform.service.qrcode.WeiXinQRCodeService;
 import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.qrcode.CreateParseCode;
@@ -31,6 +32,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +62,8 @@ public class SfShopManageController extends BaseController {
     private JSSDKService jssdkService;
     @Resource
     private SfUserShopViewMapper sfUserShopViewMapper;
+    @Resource
+    private WeiXinQRCodeService weiXinQRCodeService;
 
     /**
      * 店铺管理首页
@@ -186,6 +191,7 @@ public class SfShopManageController extends BaseController {
         try {
             ComUser comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+
             SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
             String realPath = request.getServletContext().getRealPath("/");
             String posterName = comUser.getId() + ".jpg";
@@ -196,9 +202,11 @@ public class SfShopManageController extends BaseController {
             //二维码
             String path = request.getContextPath();
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            String qrCodePath = posterDir.getAbsolutePath()+"/"+posterName;
+            String qrCodePath = posterDir.getAbsolutePath();
             String shopUrl = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + shopId+"/"+comUser.getId()+"/shop.shtml";
-            CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
+            //CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
+            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), posterName, qrCodePath);
+            qrCodePath += "/"+posterName;
 
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
@@ -215,7 +223,7 @@ public class SfShopManageController extends BaseController {
             positionMap.put("bgImg-left", 0);
             positionMap.put("bgImg-top", 0);
             positionMap.put("qrCodeImg-left", 212);
-            positionMap.put("qrCodeImg-top", 470);
+            positionMap.put("qrCodeImg-top", 460);
             positionMap.put("content-left", 186);
             positionMap.put("content-top", 330);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
@@ -258,13 +266,25 @@ public class SfShopManageController extends BaseController {
 
         g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), null);
         g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);
-        g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), null);
+        g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), 200, 200, null);
 
         g.setFont(font);
         g.setColor(color);
         for(int i=0; i<content.length; i++){
             g.drawString(content[i], positionMap.get("content-left"), positionMap.get("content-top")+(font.getSize()+15)*i);
         }
+
+        Date curDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String startTime = sdf.format(curDate);
+        curDate.setDate(curDate.getDate()+30);
+        String endDate = sdf.format(curDate);
+
+        g.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+        g.setColor(new Color(102, 102, 102));
+        g.drawString("该二维码有效期为", 230, 674);
+        g.drawString(startTime+"-"+endDate, 190, 700);
+
         g.dispose();
 
         try {

@@ -45,4 +45,36 @@
         from sf_user_share_param
     </select>
 
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.SfUserShareParam" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               f_user_id,
+               shop_id,
+               sku_id,
+               remark
+        from
+               sf_user_share_param
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="createTime">
+                AND create_time = #{createTime}
+            </if>
+            <if test="fUserId != null">
+                AND f_user_id = #{fUserId}
+            </if>
+            <if test="shopId != null">
+                AND shop_id = #{shopId}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark}
+            </if>
+        </where>
+    </select>
+
 </mapper>

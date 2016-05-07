@@ -2,9 +2,7 @@ package com.masiis.shop.web.event.wx.service;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.PfUserSku;
-import com.masiis.shop.web.event.wx.bean.event.Article;
-import com.masiis.shop.web.event.wx.bean.event.WxArticleRes;
-import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
+import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -30,20 +28,54 @@ public class WxEventService {
      *
      * @param body
      */
-    public WxArticleRes handleEvent(WxEventBody body) {
+    public WxBaseMessage handleEvent(WxEventBody body) {
         if(body == null){
             throw new BusinessException("request body is null");
         }
-        WxArticleRes res = null;
+        WxBaseMessage res = null;
         switch (body.getEvent()){
             case "SCAN":
             case "subscribe":
                 res = handleQRScanEvent(body);
                 break;
+            case "CLICK":
+                res = handleMenuClickEvent(body);
         }
         return res;
     }
 
+    /**
+     * 处理菜单点击事件
+     *
+     * @param body
+     * @return
+     */
+    private WxBaseMessage handleMenuClickEvent(WxEventBody body) {
+        if(!"menu_click_event_contact_us".equals(body.getEventKey())){
+            throw new BusinessException();
+        }
+        WxMenuEventRes res = new WxMenuEventRes();
+        res.setToUserName(body.getFromUserName());
+        res.setFromUserName(body.getToUserName());
+        res.setCreateTime(new Date().getTime());
+        res.setMsgType("text");
+        res.setContent("您可以通过两种方式联系我们：\n" +
+                "\n" +
+                "\n" +
+                "1.直接在公众账号内输入您想要说的话，发送给我们\n" +
+                "\n" +
+                "\n" +
+                "2.拨打我们的客服电话：010-4548878");
+
+        return res;
+    }
+
+    /**
+     * 发送注册继续链接
+     *
+     * @param body
+     * @return
+     */
     private WxArticleRes handleQRScanEvent(WxEventBody body) {
         Integer pfUserSkuId = null;
         if("SCAN".equals(body.getEvent())){

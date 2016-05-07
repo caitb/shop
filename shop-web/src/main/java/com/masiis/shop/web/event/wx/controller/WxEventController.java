@@ -3,10 +3,7 @@ package com.masiis.shop.web.event.wx.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.SHAUtils;
-import com.masiis.shop.web.event.wx.bean.event.WxArticleRes;
-import com.masiis.shop.web.event.wx.bean.event.WxBaseEvent;
-import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
-import com.masiis.shop.web.event.wx.bean.event.WxEventCheck;
+import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.event.wx.bean.menu.Button;
 import com.masiis.shop.web.event.wx.bean.menu.Menu;
 import com.masiis.shop.web.event.wx.service.WxEventService;
@@ -76,8 +73,8 @@ public class WxEventController extends BaseController {
             switch (body.getMsgType()) {
                 case "event":
                     // 事件推送
-                    WxArticleRes res = wxEventService.handleEvent(body);
-                    xStream.processAnnotations(WxArticleRes.class);
+                    WxBaseMessage res = wxEventService.handleEvent(body);
+                    xStream.processAnnotations(res.getClass());
                     String resStr = xStream.toXML(res);
                     System.out.println(resStr);
                     return resStr;
@@ -107,7 +104,7 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=b7ERYypw4B-olls1X0WdfjuLVjMXNeft-bHg_kpIZERD18RBUYFntgiIaaC8yTmLOZPMdfCeff81GfCrGtYZHZXC507Z8BXx-2o0VDEfVWsXJt54EervqQu6xwTQ4u_dXAKfAFATWG";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=WU1oT3BGSLbjIhHK1gFVhk59k26TJeDGnEOngIx3svmh_cCV_fpoqMFuAZ40-aSaafc_b1qBHEkD6KwhKItylO7rmBZ9S_zc_FYPD4jvZXo6ZS8p3aEXUFl0BiMkElviQIHhAFAFXW";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();

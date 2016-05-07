@@ -27,7 +27,7 @@ public class WeiXinQRCodeService {
      */
     public String createAgentQRCode(Integer pfUserSkuId){
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
-        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+123+"\", \"pfUserSkuId\": \""+pfUserSkuId+"\"}}}";
+        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+pfUserSkuId+"\"}}}";
 
         log.info("开始请求二维码ticket:[pfUserSkuId="+pfUserSkuId+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
         String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE+"?access_token="+access_token, jsonParam);

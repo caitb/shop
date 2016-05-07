@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -65,6 +66,7 @@ public class WeiXinQRCodeService {
 
         SfUserShareParam sfUserShareParam = sfUserShareParamMapper.selectByCondition(condition);
         if(sfUserShareParam == null){
+            condition.setCreateTime(new Date());
             sfUserShareParamMapper.insert(condition);
             scene_id = condition.getId();
         }else{

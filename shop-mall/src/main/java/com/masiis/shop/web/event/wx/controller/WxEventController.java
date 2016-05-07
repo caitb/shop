@@ -33,8 +33,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/wxevent")
 public class WxEventController extends BaseController {
-    private static final String token = "slkd2H45467GG7622HSLsKsdKJHKS97E";
-    private static final String encodingAESKey = "lSICsrmNzJMt3BExrOJrq9uBmrLoLNJ9aQEpq6g4Awc";
+    private static final String token = "79sdkJ06TAJAQ32Osdy1udugGSJHSsad";
+    private static final String encodingAESKey = "uPXiMJM3yjJA6naDZrVZ02F7Mo5EZnkL5D6dijmrsUN";
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource

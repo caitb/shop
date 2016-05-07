@@ -144,7 +144,7 @@
         var checked = document.getElementById("active").checked;
         var currentStock = $("#currentStock").text();
         var levelStock = $("#levelStock").val();
-        var afterLowerCount = (currentStock - i) / levelStock;
+        var afterLowerCount = parseInt((currentStock - i) / levelStock);
         //地址
         var addressId = $("#addressId").val();
         if (addressId === undefined || addressId == "") {

@@ -551,6 +551,14 @@ public class BOrderPayService {
             param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
             WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
             MobileMessageUtil.getInitialization("B").joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
+            if (pfBorder.getUserPid() != 0) {
+                String[] paramIn = new String[2];
+                paramIn[0] = pfBorder.getOrderCode();
+                paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
+                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
+                WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, false);
+                MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            }
         } else {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
@@ -565,7 +573,7 @@ public class BOrderPayService {
                 //给上级推送
                 if (pComUser != null) {
                     WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
-                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                 }
             } else if (pfBorder.getOrderType() == 1) {
                 //拿货方式(0未选择1平台代发2自己发货)
@@ -590,8 +598,8 @@ public class BOrderPayService {
                         paramIn[0] = pfBorder.getOrderCode();
                         paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
-                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, true);
+                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                     }
                 }
             }
@@ -604,7 +612,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Map<String, Object> offinePayment(ComUser comUser,Long bOrderId) {
+    public Map<String, Object> offinePayment(ComUser comUser, Long bOrderId) {
         Map<String, Object> map = null;
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
@@ -614,7 +622,7 @@ public class BOrderPayService {
             PfSupplierBank supplierBank = getDefaultBack();
             List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
             if (orderItems != null && orderItems.size() != 0) {
-                offinePaymentNotice(comUser,pfBorder,orderItems.get(0),supplierBank);
+                offinePaymentNotice(comUser, pfBorder, orderItems.get(0), supplierBank);
                 map = new LinkedHashMap<String, Object>();
                 map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
                 map.put("supplierBank", supplierBank);
@@ -648,39 +656,41 @@ public class BOrderPayService {
         }
         return pfBorder;
     }
+
     /**
      * 线下支付微信短信通知
+     *
      * @author hanzengzhi
      * @date 2016/5/5 10:56
      */
-    private void offinePaymentNotice(ComUser comUser,PfBorder border,PfBorderItem orderItem,PfSupplierBank supplierBank){
+    private void offinePaymentNotice(ComUser comUser, PfBorder border, PfBorderItem orderItem, PfSupplierBank supplierBank) {
         //微信通知
         StringBuffer sb = new StringBuffer();
-        log.info("用户id----"+comUser.getId()+"-------skuId----"+orderItem.getSkuId());
+        log.info("用户id----" + comUser.getId() + "-------skuId----" + orderItem.getSkuId());
         String agentLevelName = null;
-        if (orderItem!=null){
-            log.info("合伙人等级id--------"+orderItem.getAgentLevelId());
+        if (orderItem != null) {
+            log.info("合伙人等级id--------" + orderItem.getAgentLevelId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(orderItem.getAgentLevelId());
-            if (comAgentLevel!=null){
+            if (comAgentLevel != null) {
                 agentLevelName = comAgentLevel.getName();
-                log.info("合伙人等级名字--------"+agentLevelName);
+                log.info("合伙人等级名字--------" + agentLevelName);
             }
         }
         sb.append(orderItem.getSkuName());
-        if (!StringUtils.isEmpty(agentLevelName)){
+        if (!StringUtils.isEmpty(agentLevelName)) {
             sb.append(agentLevelName);
         }
         sb.append("订单");
-        String[] param = new String[]{border.getOrderCode(),sb.toString()};
-        String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+border.getId();
-        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser,param,border.getCreateTime(),offinePaymentUrl);
+        String[] param = new String[]{border.getOrderCode(), sb.toString()};
+        String offinePaymentUrl = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + border.getId();
+        WxPFNoticeUtils.getInstance().offLinePayNotice(comUser, param, border.getCreateTime(), offinePaymentUrl);
         //短信通知
         StringBuffer sb2 = new StringBuffer();
         sb2.append("开户行:").append(supplierBank.getBankName());
         sb2.append(" 开户名:").append(supplierBank.getAccountName());
         sb2.append(" 卡号:").append(supplierBank.getCardNumber());
         sb2.append(" 账号上");
-        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(),border.getOrderCode(),border.getReceivableAmount().toString(),sb2.toString());
+        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), sb2.toString());
     }
 
     /**

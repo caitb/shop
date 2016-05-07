@@ -94,8 +94,7 @@ public class BorderManageController extends BaseController {
         try {
             ComUser user = getComUser(request);
             if (user == null) {
-                user = userService.getUserById(1l);
-                request.getSession().setAttribute("comUser", user);
+                throw new BusinessException("user不能为空");
             }
             if(request.getSession().getAttribute("defaultBank")==null || request.getSession().getAttribute("defaultBank")==""){
                 PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
@@ -158,8 +157,7 @@ public class BorderManageController extends BaseController {
         try {
             ComUser user = getComUser(request);
             if (user == null) {
-                user = userService.getUserById(1l);
-                request.getSession().setAttribute("comUser", user);
+                throw new BusinessException("user不能为空");
             }
 
             if(index==0){
@@ -219,8 +217,7 @@ public class BorderManageController extends BaseController {
         try {
             ComUser user = getComUser(request);
             if (user == null) {
-                user = userService.getUserById(1l);
-                request.getSession().setAttribute("comUser", user);
+                throw new BusinessException("user不能为空");
             }
             bOrderService.deliver(shipManName,orderId,freight,shipManId,user);
         } catch (Exception ex) {
@@ -241,6 +238,9 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/borderManagement.html")
     public ModelAndView borderManagement(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception{
         ComUser comUser = getComUser(request);
+        if (comUser == null) {
+            throw new BusinessException("user不能为空");
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorderps = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = new ArrayList<>();
@@ -365,6 +365,9 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/stockDouckBorder")
     public ModelAndView stockDouckBorder(HttpServletRequest request, Integer orderStatus, Integer sendType) throws Exception {
         ComUser comUser = getComUser(request);
+        if (comUser == null) {
+            throw new BusinessException("user不能为空");
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, sendType);
         String index=null;
         if(orderStatus==null && sendType==null){
@@ -421,6 +424,9 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/deliveryDouckBorder")
     public ModelAndView deliveryDouckBorder(HttpServletRequest request, Integer orderStatus, Integer sendType) throws Exception {
         ComUser comUser = getComUser(request);
+        if (comUser == null) {
+            throw new BusinessException("user不能为空");
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, sendType);
 //        List<ComShipMan> comShipMans = comShipManService.list();
         String index=null;
@@ -486,6 +492,9 @@ public class BorderManageController extends BaseController {
     public ModelAndView borderDetils(HttpServletRequest request, Long id) throws Exception {
         BorderDetail borderDetail = new BorderDetail();
         ComUser user = getComUser(request);
+        if (user == null) {
+            throw new BusinessException("user不能为空");
+        }
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         PfBorder pfBorder = bOrderService.getPfBorderById(id);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemByOrderId(id);
@@ -580,6 +589,9 @@ public class BorderManageController extends BaseController {
     @RequestMapping("/deliveryBorder")
     public ModelAndView deliveryBorder(HttpServletRequest request, Integer orderStatus, Integer shipStatus) throws Exception {
         ComUser comUser = getComUser(request);
+        if (comUser == null) {
+            throw new BusinessException("user不能为空");
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, shipStatus);
         List<PfBorder> pfBorders0 = new ArrayList<>();
         List<PfBorder> pfBorders10 = new ArrayList<>();//代发货

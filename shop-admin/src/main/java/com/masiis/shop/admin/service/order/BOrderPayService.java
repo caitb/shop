@@ -106,7 +106,7 @@ public class BOrderPayService {
             payBOrderTypeI(pfBorderPayment, outOrderId, rootPath);
         } else if (pfBorder.getOrderType() == 1) {
             payBOrderTypeII(pfBorderPayment, outOrderId, rootPath);
-        }else{
+        } else {
             throw new BusinessException("订单类型有误");
         }
         //支付完成推送消息
@@ -569,6 +569,14 @@ public class BOrderPayService {
             param[4] = BOrderStatus.getByCode(pfBorder.getOrderStatus()).getDesc();
             WxPFNoticeUtils.getInstance().orderInQueue(comUser, param);
             MobileMessageUtil.getInitialization("B").joinQueueOrder(comUser.getMobile(), pfBorder.getOrderCode());
+            if (pfBorder.getUserPid() != 0) {
+                String[] paramIn = new String[2];
+                paramIn[0] = pfBorder.getOrderCode();
+                paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
+                String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
+                WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, false);
+                MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
+            }
         } else {
             //订单类型(0代理1补货2拿货)
             if (pfBorder.getOrderType() == 0) {
@@ -583,7 +591,7 @@ public class BOrderPayService {
                 //给上级推送
                 if (pComUser != null) {
                     WxPFNoticeUtils.getInstance().partnerJoinNotice(pComUser, comUser, timeFormart.format(pfBorder.getCreateTime()));
-                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                    MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                 }
             } else if (pfBorder.getOrderType() == 1) {
                 //拿货方式(0未选择1平台代发2自己发货)
@@ -608,8 +616,8 @@ public class BOrderPayService {
                         paramIn[0] = pfBorder.getOrderCode();
                         paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url);
-                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile());
+                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, true);
+                        MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                     }
                 }
             }

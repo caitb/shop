@@ -161,7 +161,7 @@
 <footer>
     <section class="sec3">
         <%--<p class="shi" id="share"><a>分享</a></p>--%>
-        <p style="background: rgba(247,60,140,0.9);color:#fff;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
+        <p style="background: rgba(247,60,140,0.9);color:#fff;"onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">立即购买</p>
     </section>
 </footer>
 <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
@@ -206,6 +206,15 @@
         $(".back").hide();
         $(".back_g").hide()
     })
+    //check
+    function clickbuy(a,b){
+        if(a==b){
+            alert("您不可以购买自己的商品！");
+            return;
+        }
+        validateCodeJS.applyTrial('buy');
+    }
+
     function buy(){
         var cartData = {};
         cartData.shopId = "${shopId}";
@@ -215,6 +224,7 @@
             url: "<%=basePath%>cart/addCart.do",
             type: "post",
             data: cartData,
+            async:false,
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
@@ -223,6 +233,7 @@
                 else {
                     alert(data.message);
                     window.location.reload(true);
+                    return;
                 }
             }
         });

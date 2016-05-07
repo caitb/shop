@@ -50,7 +50,7 @@
     <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="int" >
         SELECT sku.id,sku.name,sku.price_retail,sku.remark,sku.spu_id,
                 spu.name,spu.slogan,spu.content,spu.is_trial,
-                sku_stok.stock,spu.ship_amount,sku_stok.is_queue,
+                sku_stok.stock,sku_stok.frozen_stock,spu.ship_amount,sku_stok.is_queue,
                 sku_static.agent_num
         FROM com_sku sku
         LEFT JOIN com_spu spu ON sku.spu_id = spu.id

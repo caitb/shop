@@ -8,7 +8,6 @@ import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
@@ -61,13 +60,4 @@ public class ReplenishStockService {
             }
         }
     }
-
-//    public static void main(String[] args)throws Exception{
-//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-//        context.setValidating(false);
-//        context.load("classpath*:/spring/*.xml");
-//        context.refresh();
-//        ReplenishStockService replenishStockService = context.getBean(ReplenishStockService.class);
-//        replenishStockService.replenishStockRemind();
-//    }
 }

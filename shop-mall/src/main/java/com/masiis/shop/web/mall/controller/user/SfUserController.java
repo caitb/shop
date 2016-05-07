@@ -47,7 +47,7 @@ public class SfUserController extends BaseController {
         if (user == null){
             throw new BusinessException("校验用户是否已经绑定【用户未登录】");
         }
-        if (user.getId() != userId){
+        if (user.getId().longValue() != userId.longValue()){
             throw new BusinessException("校验用户是否已经绑定【用户信息错误】");
         }
         //通过userId查询comuser

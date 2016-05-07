@@ -5,7 +5,6 @@ import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -177,13 +176,4 @@ public class PfStatisticsAgentService {
             recursion(parentList);
         }
     }
-
-//    public static void main(String[] args)throws Exception{
-//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-//        context.setValidating(false);
-//        context.load("classpath*:/spring/*.xml");
-//        context.refresh();
-//        PfStatisticsAgentService pfStatisticsAgentService = context.getBean(PfStatisticsAgentService.class);
-//        pfStatisticsAgentService.statisticsAgent();
-//    }
 }

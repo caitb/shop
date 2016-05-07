@@ -44,7 +44,7 @@
                         <botton>我要推广</botton>
                     </div>
                 </c:if>
-                <c:if test="${agentMap.canDeveloping == 'yes'}">
+                <c:if test="${agentMap.canDeveloping == 'no'}">
                     <div class="sec1 toShare">
                         <img src="${agentMap.brandLogo}" alt="">
                         <div>

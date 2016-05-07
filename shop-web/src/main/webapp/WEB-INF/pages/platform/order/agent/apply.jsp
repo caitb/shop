@@ -234,6 +234,7 @@
             return;
         } else if (auditStatus == 0) {
             $("#realNameVerifyDiv").show();
+            $(".back").show();
             return;
         } else if (auditStatus == 3) {
             alert("您的实名认证未通过,请重新提交!");
@@ -250,6 +251,7 @@
 
     $("#quxiao").on("click", function () {
         $("#realNameVerifyDiv").hide();
+        $(".back").hide();
     });
 
     $(".down").toggle(function () {

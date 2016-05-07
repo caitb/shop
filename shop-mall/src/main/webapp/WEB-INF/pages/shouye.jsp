@@ -37,7 +37,7 @@
         <div>
             <p>${sfShop.name}</p>
             <p>${sfShop.explanation}</p>
-            <img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">
+            <%--<img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">--%>
         </div>
         <div>
             <p>
@@ -141,10 +141,10 @@
         $(".back").hide();
 //        location.reload(true);
     })
-    $("#fenxiang").on("click",function(){
-        $("#fen").show();
-        $(".back").show();
-    })
+//    $("#fenxiang").on("click",function(){
+//        $("#fen").show();
+//        $(".back").show();
+//    })
 
     var naNum =${sfShop.shoutNum+1};
     $(".shout").on("click",function(){

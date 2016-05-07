@@ -3,10 +3,7 @@ package com.masiis.shop.web.event.wx.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.SHAUtils;
-import com.masiis.shop.web.event.wx.bean.event.WxArticleRes;
-import com.masiis.shop.web.event.wx.bean.event.WxBaseEvent;
-import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
-import com.masiis.shop.web.event.wx.bean.event.WxEventCheck;
+import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.event.wx.bean.menu.Button;
 import com.masiis.shop.web.event.wx.bean.menu.Menu;
 import com.masiis.shop.web.event.wx.service.WxEventService;
@@ -73,15 +70,21 @@ public class WxEventController extends BaseController {
             WxEventBody body = (WxEventBody) xStream.fromXML(requestBody);
 
             // 分事件处理
+            WxBaseMessage res = null;
             switch (body.getMsgType()) {
                 case "event":
                     // 事件推送
-                    WxArticleRes res = wxEventService.handleEvent(body);
-                    xStream.processAnnotations(WxArticleRes.class);
-                    String resStr = xStream.toXML(res);
-                    System.out.println(resStr);
-                    return resStr;
+                    res = wxEventService.handleEvent(body);
+                    break;
+                default:
+                    break;
             }
+            if(res == null){
+                return "success";
+            }
+            String resStr = toXML(xStream, res);
+            System.out.println(resStr);
+            return resStr;
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -107,7 +110,7 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=b7ERYypw4B-olls1X0WdfjuLVjMXNeft-bHg_kpIZERD18RBUYFntgiIaaC8yTmLOZPMdfCeff81GfCrGtYZHZXC507Z8BXx-2o0VDEfVWsXJt54EervqQu6xwTQ4u_dXAKfAFATWG";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ULmwoKWXmgnXo-9SnZihlRWYqWKO6FTdKCDV-Zxmoa-ljZ3-IMuXgXx9HyM4qSydtmn_3xXbAD55_bYB593qNl-RIklOVC74AUuhTSSweNwRBUjEai_2g-BOvOr3TCvCGKKcABAPTT";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
@@ -118,7 +121,7 @@ public class WxEventController extends BaseController {
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
 
-        Button b2 = new Button("使用帮助", "view_limited", null);
+        Button b2 = new Button("使用帮助", "media_id", null);
         b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
         sub_button2.add(b2);
         sub_button2.add(new Button("最新活动", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));

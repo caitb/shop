@@ -160,7 +160,7 @@
 </div>
 <footer>
     <section class="sec3">
-        <p class="shi" id="share"><a>分享</a></p>
+        <%--<p class="shi" id="share"><a>分享</a></p>--%>
         <p style="background: rgba(247,60,140,0.9);color:#fff;"onclick="validateCodeJS.applyTrial('buy')">立即购买</p>
     </section>
 </footer>
@@ -228,80 +228,80 @@
         });
     }
 </script>
-<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>
-<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>
-<script src="<%=basePath%>static/js/plugins/base64.js"></script>
-<script type="text/javascript">
+<%--<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>--%>
+<%--<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>--%>
+<%--<script src="<%=basePath%>static/js/plugins/base64.js"></script>--%>
+<%--<script type="text/javascript">--%>
 
-    function canvasSupport() {
-        return Modernizr.canvas;
-    }
+    <%--function canvasSupport() {--%>
+        <%--return Modernizr.canvas;--%>
+    <%--}--%>
 
-    function canvasApp(userName,skuName,imgSrcs) {
+    <%--function canvasApp(userName,skuName,imgSrcs) {--%>
 
-        if(!canvasSupport()) {
-            return;
-        }
-        var theCanvas = document.getElementById("canvasOne");
-        theCanvas.width  = 904;
-        theCanvas.height = 1200;
-        var context = theCanvas.getContext("2d");
-        context.fillStyle = "#EEEEEE";
-        context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+        <%--if(!canvasSupport()) {--%>
+            <%--return;--%>
+        <%--}--%>
+        <%--var theCanvas = document.getElementById("canvasOne");--%>
+        <%--theCanvas.width  = 904;--%>
+        <%--theCanvas.height = 1200;--%>
+        <%--var context = theCanvas.getContext("2d");--%>
+        <%--context.fillStyle = "#EEEEEE";--%>
+        <%--context.fillRect(0, 0, theCanvas.width, theCanvas.height);--%>
 
 
-        var oImgs = [];
-        for(var i in imgSrcs){
-            oImgs[i] = new Image();
-            oImgs[i].src = imgSrcs[i];
-            oImgs[i].isLoaded = false;
+        <%--var oImgs = [];--%>
+        <%--for(var i in imgSrcs){--%>
+            <%--oImgs[i] = new Image();--%>
+            <%--oImgs[i].src = imgSrcs[i];--%>
+            <%--oImgs[i].isLoaded = false;--%>
 
-            oImgs[i].addEventListener('load', function(){
-                this.isLoaded = true;
-            }, false);
+            <%--oImgs[i].addEventListener('load', function(){--%>
+                <%--this.isLoaded = true;--%>
+            <%--}, false);--%>
 
-        }
+        <%--}--%>
 
-        var drawTimer = setInterval(function(){
-            var isAllLoaded = true;
-            for(var i in oImgs){
-                if(!oImgs[i].isLoaded) isAllLoaded = false;
-            }
+        <%--var drawTimer = setInterval(function(){--%>
+            <%--var isAllLoaded = true;--%>
+            <%--for(var i in oImgs){--%>
+                <%--if(!oImgs[i].isLoaded) isAllLoaded = false;--%>
+            <%--}--%>
 
-            if(isAllLoaded){
-                context.drawImage(oImgs[0], 46, 44, 90, 90);
-                context.drawImage(oImgs[1], 0, 0);
-                context.drawImage(oImgs[2], 304, 314);
+            <%--if(isAllLoaded){--%>
+                <%--context.drawImage(oImgs[0], 46, 44, 90, 90);--%>
+                <%--context.drawImage(oImgs[1], 0, 0);--%>
+                <%--context.drawImage(oImgs[2], 304, 314);--%>
 
-                context.font = 'normal 28px Microsoft YaHei';
-                context.textBaseline = 'top';
-                context.strokeStyle = '#333333';
-                context.strokeText('我是'+userName,170, 56);
-                context.strokeText('我为'+skuName+'代言!',170, 90);
+                <%--context.font = 'normal 28px Microsoft YaHei';--%>
+                <%--context.textBaseline = 'top';--%>
+                <%--context.strokeStyle = '#333333';--%>
+                <%--context.strokeText('我是'+userName,170, 56);--%>
+                <%--context.strokeText('我为'+skuName+'代言!',170, 90);--%>
 
-                clearInterval(drawTimer);
-            }
-        },100);
+                <%--clearInterval(drawTimer);--%>
+            <%--}--%>
+        <%--},100);--%>
 
-    }
+    <%--}--%>
 
-    $('#share').on('tap', function(){
-        $.ajax({
-            url: '<%=basePath%>shop/getSkuPoster',
-            data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},
-            success: function(data){
-                data = window.eval('(' + data + ')');
-                $('#skuPoster').attr('src', data['skuPoster']);
-                $('.back_f').show();
-                $('.back').show();
-            }
-        });
-    });
+    <%--$('#share').on('tap', function(){--%>
+        <%--$.ajax({--%>
+            <%--url: '<%=basePath%>shop/getSkuPoster',--%>
+            <%--data: {shopId: ${shopId}, skuId: ${skuInfo.comSku.id}},--%>
+            <%--success: function(data){--%>
+                <%--data = window.eval('(' + data + ')');--%>
+                <%--$('#skuPoster').attr('src', data['skuPoster']);--%>
+                <%--$('.back_f').show();--%>
+                <%--$('.back').show();--%>
+            <%--}--%>
+        <%--});--%>
+    <%--});--%>
 
-    document.getElementById('downloadPoster').onclick = function(){
-        Canvas2Image.saveAsPNG(document.getElementById("canvasOne"));
-    }
-</script>
+    <%--document.getElementById('downloadPoster').onclick = function(){--%>
+        <%--Canvas2Image.saveAsPNG(document.getElementById("canvasOne"));--%>
+    <%--}--%>
+<%--</script>--%>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>

@@ -17,6 +17,7 @@ public class AgentSkuView {
     private ComAgentLevel level;
     private BigDecimal agentFee;
     private BigDecimal sinFee;
+    private Integer isShow;
 
     public ComSku getSku() {
         return sku;
@@ -56,5 +57,13 @@ public class AgentSkuView {
 
     public void setSinFee(BigDecimal sinFee) {
         this.sinFee = sinFee;
+    }
+
+    public Integer getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(Integer isShow) {
+        this.isShow = isShow;
     }
 }

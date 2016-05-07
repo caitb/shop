@@ -32,7 +32,7 @@ public class WxEventService {
         switch (body.getEvent()){
             case "SCAN":
             case "subscribe":
-                //res = handleQRScanEvent(body);
+                res = handleQRScanEvent(body);
                 break;
             case "CLICK":
                 res = handleMenuClickEvent(body);

@@ -75,7 +75,7 @@ $(function () {
             return;
         }
         if ($("p.active").length == 0) {
-            alert("请选择合伙人等级");
+            alert("请选择合伙人套餐");
             return;
         }
         if ($("#q").prop("checked") == true) {
@@ -89,7 +89,7 @@ $(function () {
         }
         // 获取微信号
         $("#q_weixinId").html($("#weixin").val());
-        // 获取合伙人等级
+        // 获取合伙人套餐
         $("#q_levelName").html($("p.active").attr("agentFee") + "元套餐");
         // 获取所缴纳货款
         $("#q_amount").html("￥" + $("p.active").attr("agentFee"));

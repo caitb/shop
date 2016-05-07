@@ -144,7 +144,7 @@
         var checked = document.getElementById("active").checked;
         var currentStock = $("#currentStock").text();
         var levelStock = $("#levelStock").val();
-        var afterLowerCount = (currentStock - i) / levelStock;
+        var afterLowerCount = parseInt((currentStock - i) / levelStock);
         //地址
         var addressId = $("#addressId").val();
         if (addressId === undefined || addressId == "") {
@@ -177,7 +177,7 @@
             dataType: "json",
             success: function (data) {
                 if (data.isError == false) {
-                    window.location.href = "<%=basePath%>borderManage/borderDetils.html?id=" + data.borderId;
+                    window.location.href = "<%=basePath%>product/replenishmentSelf.shtml?bOrderId=" + data.borderId;
                 }
                 else {
                     $(".back").css("display", "none");

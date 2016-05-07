@@ -76,7 +76,7 @@
     <div class="back_s" id="detail" style="display: none">
         <h1>什么是结算中</h1>
         <p>
-            为了响应国家的号召，增强用户体验，平台支持7天退货，您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+            您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
         </p>
         <button onClick="hideDetail()">我知道了</button>
     </div>

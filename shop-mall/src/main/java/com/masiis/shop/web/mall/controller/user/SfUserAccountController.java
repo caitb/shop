@@ -108,7 +108,7 @@ public class SfUserAccountController extends BaseController {
             log.info("用户未登录");
             throw new BusinessException("用户未登录");
         }
-        if (user.getId() != userId){
+        if (user.getId().longValue() != userId.longValue()){
             log.info("用户信息错误");
             throw new BusinessException("用户信息错误");
         }

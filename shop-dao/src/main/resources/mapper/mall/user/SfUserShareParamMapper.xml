@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.user.SfUserShareParamMapper">
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfUserShareParam">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="f_user_id" property="fUserId" jdbcType="BIGINT"/>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from sf_user_share_param
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfUserShareParam" keyProperty="id" useGeneratedKeys="true">
+        insert into sf_user_share_param (id, create_time, f_user_id, 
+            shop_id, sku_id, remark
+            )
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{fUserId,jdbcType=BIGINT}, 
+            #{shopId,jdbcType=BIGINT}, #{skuId,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfUserShareParam">
+        update sf_user_share_param
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            f_user_id = #{fUserId,jdbcType=BIGINT},
+            shop_id = #{shopId,jdbcType=BIGINT},
+            sku_id = #{skuId,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, f_user_id, shop_id, sku_id, remark
+        from sf_user_share_param
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, create_time, f_user_id, shop_id, sku_id, remark
+        from sf_user_share_param
+    </select>
+
+    <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.SfUserShareParam" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               f_user_id,
+               shop_id,
+               sku_id,
+               remark
+        from
+               sf_user_share_param
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="createTime">
+                AND create_time = #{createTime}
+            </if>
+            <if test="fUserId != null">
+                AND f_user_id = #{fUserId}
+            </if>
+            <if test="shopId != null">
+                AND shop_id = #{shopId}
+            </if>
+            <if test="skuId != null">
+                AND sku_id = #{skuId}
+            </if>
+            <if test="remark != null">
+                AND remark = #{remark}
+            </if>
+        </where>
+    </select>
+
+</mapper>

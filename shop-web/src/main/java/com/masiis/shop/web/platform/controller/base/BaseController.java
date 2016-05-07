@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.AESUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.user.UserService;
+import com.thoughtworks.xstream.XStream;
 import org.apache.log4j.Logger;
 
 import javax.annotation.Resource;
@@ -172,5 +173,11 @@ public class BaseController {
     protected String getBasePath(HttpServletRequest request) {
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
         return basePath;
+    }
+
+    protected String toXML(XStream xStream, Object res){
+        xStream.processAnnotations(res.getClass());
+        String resStr = xStream.toXML(res);
+        return resStr;
     }
 }

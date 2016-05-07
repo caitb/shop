@@ -161,6 +161,7 @@ public class UserApplyController extends BaseController {
             amount = amount.add(pfSkuAgent.getBail()).setScale(2, RoundingMode.HALF_DOWN);
             view.setAgentFee(amount);
             view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
+            view.setIsShow(pfSkuAgent.getIsShow());
             agentSkuViews.add(view);
         }
         modelAndView.addObject("skuId", comSku.getId());

@@ -46,7 +46,7 @@ public class AgentUserService {
      * @return
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
-        PageHelper.startPage(pageNumber, pageSize);
+        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<PfUserSku> pfUserSkus = pfUserSkuMapper.selectByMap(conditionMap);
         PageInfo<PfUserSku> pageInfo = new PageInfo<>(pfUserSkus);
 

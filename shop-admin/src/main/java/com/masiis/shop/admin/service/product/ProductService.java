@@ -148,7 +148,7 @@ public class ProductService {
     public Map<String, Object> list(Integer pageNo, Integer pageSize, ComSku comSku){
         List<ProductInfo> productInfos = new ArrayList<>();
 
-        PageHelper.startPage(pageNo, pageSize);
+        PageHelper.startPage(pageNo, pageSize, "create_time desc");
         List<ComSku> comSkus = comSkuMapper.selectByCondition(comSku);
 
         for(ComSku cs : comSkus){

@@ -514,14 +514,14 @@
 
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>static/ace2/js/jquery.min.js'>" + "<" + "/script>");
+    window.jQuery || document.write("<script src='<%=basePath%>static/js/jquery-2.2.0.min.js'>" + "<" + "/script>");
 </script>
 
 <!-- <![endif]-->
 
 <!--[if IE]>
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=basePath%>static/ace2/js/jquery1x.min.js'>" + "<" + "/script>");
+    window.jQuery || document.write("<script src='<%=basePath%>static/js/jquery-2.2.0.min.js'>" + "<" + "/script>");
 </script>
 <![endif]-->
 <script type="text/javascript">
@@ -669,25 +669,27 @@
         $('#bails').append(bails);
     }
 
-    $('#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(function(){
-        var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
-        $('input[name="quantitys"]').each(function(i,o){
-            var discount = $($('input[name="discounts"]').get(i)).val();
-            discount = discount==null||discount=='undefined' ? 0.00 : discount*0.01;
-            var quantity = $(o).val() ? $(o).val() : 0;
-            var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
-            distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
-            $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
-            $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
-            $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
-        });
-    });
+
 
     $('#skuSave').on('click', function(){
         $('#skuForm').submit();
     });
 
     $(document).ready(function() {
+        $('body').on('keyup', '#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
+            var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
+            $('input[name="quantitys"]').each(function(i,o){
+                var discount = $($('input[name="discounts"]').get(i)).val();
+                discount = discount==null||discount=='undefined' ? 0.00 : discount*0.01;
+                var quantity = $(o).val() ? $(o).val() : 0;
+                var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
+                distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
+                $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
+                $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
+                $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
+            });
+        });
+
         $('#skuForm').bootstrapValidator({
                     message: '必须填写',
                     feedbackIcons: {

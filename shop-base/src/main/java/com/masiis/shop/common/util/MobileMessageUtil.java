@@ -1,6 +1,7 @@
 package com.masiis.shop.common.util;
 
 import com.masiis.shop.common.constant.SMSConstants;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 
 /**
  * MobileMessageUtil
@@ -63,6 +64,25 @@ public class MobileMessageUtil {
         }
         return true;
     }
+
+//    /**
+//     * 支付成功提示
+//     * @param phone
+//     * @param skuName   商品名称
+//     * @param levelName 合伙人等级名称
+//     * @return
+//     */
+//    public boolean topaySuccess(String phone, String skuName, String levelName){
+//        content = new String[3];
+//        content[0] = skuName;
+//        content[1] = levelName;
+//        content[2] = EVENING_MESSAGE;
+//        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.TOPAY_TEMPLETE_ID, content);
+//        if (!"000000".equals(smsRes[0])) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     /**
      * 合伙人申请成功提示
@@ -149,11 +169,17 @@ public class MobileMessageUtil {
     /**
      * 有新的下级订单
      * @param phone
+     * @param status 订单状态
      * @return
      */
-    public  boolean haveNewLowerOrder(String phone){
-        content = new String[1];
-        content[0] = EVENING_MESSAGE;
+    public boolean haveNewLowerOrder(String phone, Integer status){
+        content = new String[2];
+        if (status == BOrderStatus.MPS.getCode()){
+            content[0] = "目前您的库存不足，请及时补货。";
+        }else {
+            content[0] = "";
+        }
+        content[1] = EVENING_MESSAGE;
         String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_LOWER_ORDER, content);
         if (!"000000".equals(smsRes[0])) {
             return false;

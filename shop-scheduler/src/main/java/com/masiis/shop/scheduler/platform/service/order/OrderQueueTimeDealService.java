@@ -250,13 +250,4 @@ public class OrderQueueTimeDealService {
             }
         }
     }
-
-//    public static void main(String[] args)throws Exception{
-//        GenericXmlApplicationContext context = new GenericXmlApplicationContext();
-//        context.setValidating(false);
-//        context.load("classpath*:/spring/*.xml");
-//        context.refresh();
-//        OrderQueueTimeDealService orderQueueTimeDealService = context.getBean(OrderQueueTimeDealService.class);
-//        orderQueueTimeDealService.commonQueuingOrder();
-//    }
 }

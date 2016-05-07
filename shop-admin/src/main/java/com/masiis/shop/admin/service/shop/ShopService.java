@@ -34,7 +34,7 @@ public class ShopService {
      * @return
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
-        PageHelper.startPage(pageNumber, pageSize);
+        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
         List<SfShop> sfShops = sfShopMapper.selectByMap(conditionMap);
         PageInfo<SfShop> pageInfo = new PageInfo<>(sfShops);
 

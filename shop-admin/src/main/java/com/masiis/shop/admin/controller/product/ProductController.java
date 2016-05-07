@@ -147,6 +147,7 @@ public class ProductController {
                     pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setIsShow(1);
                     pfSkuAgent.setIcon(iconImgNames[i]);
 
                     pfSkuAgents.add(pfSkuAgent);

@@ -17,9 +17,9 @@ public class SMSConstants {
 	 */
 	public static final String WITHDRAW_DAYS = "2";
 //	/**
-//	 * 支付短信
+//	 * 支付成功提示
 //	 */
-//	public static final String TOPAY_TEMPLETE_ID="72316";
+//	public static final String TOPAY_TEMPLETE_ID="84388";
 	/**
 	 * 合伙人申请成功提示
 	 */
@@ -27,7 +27,7 @@ public class SMSConstants {
 	/**
 	 * 实名认证提交提醒
 	 */
-	public static final String VERIFIED_SUBMIT_REMIND = "82610";
+	public static final String VERIFIED_SUBMIT_REMIND = "84389";
 	/**
 	 * 实名认证审核结果
 	 */
@@ -39,7 +39,7 @@ public class SMSConstants {
 	/**
 	 * 有新的下级订单
 	 */
-	public static final String NEW_LOWER_ORDER = "82654";
+	public static final String NEW_LOWER_ORDER = "84688";
 	/**
 	 * 提现申请审核 B端
 	 */
@@ -55,23 +55,23 @@ public class SMSConstants {
 	/**
 	 * 补货成功提醒
 	 */
-	public static final String ADD_STOCK_SUCCESS = "82627";
+	public static final String ADD_STOCK_SUCCESS = "84391";
 	/**
 	 * 进入排单提醒
 	 */
-	public static final String JOIN_QUEUE_ORDER = "82622";
+	public static final String JOIN_QUEUE_ORDER = "84392";
 	/**
 	 * 处理排单提醒
 	 */
-	public static final String DEAL_QUEUE_ORDER_REMIND = "82629";
+	public static final String DEAL_QUEUE_ORDER_REMIND = "84393";
 	/**
 	 * 库存不足预警
 	 */
-	public static final String STOCK_NOT_ENOUGH_WARNINT = "82630";
+	public static final String STOCK_NOT_ENOUGH_WARNINT = "84395";
 	/**
 	 * 新店铺订单提醒
 	 */
-	public static final String NEW_MALL_ORDER_REMIND = "82632";
+	public static final String NEW_MALL_ORDER_REMIND = "84396";
 	/**
 	 * 消费者下单提醒
 	 */
@@ -99,6 +99,6 @@ public class SMSConstants {
 	/**
 	 * 线下支付提醒
 	 */
-	public static final String OFFLINE_PAYMENTS_REMIND = "83838";
+	public static final String OFFLINE_PAYMENTS_REMIND = "84398";
 
 }

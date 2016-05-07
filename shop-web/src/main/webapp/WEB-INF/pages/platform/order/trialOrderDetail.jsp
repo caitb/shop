@@ -42,15 +42,12 @@
                 <h2>${product.name}</h2>
                 <h3>规格：<span>试用装</span><b>x1</b></h3>
                 <p>零售价： 非卖品</p>
-                <h1><b style="color:#333333">合计：</b><span>￥0</span></h1>
             </div>
         </section>
         <section class="sec3">
             <p>试用理由： ${pfCorder.userMassage}</p>
         </section>
         <section class="sec4">
-            <p>商品合计：<span>￥0</span></p>
-            <p>运费：<span>￥${product.shipAmount}</span></p>
             <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
         </section>
         <div class="sec5">

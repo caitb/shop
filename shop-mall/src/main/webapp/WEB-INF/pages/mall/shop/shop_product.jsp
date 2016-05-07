@@ -27,7 +27,7 @@
         <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>商品详情</p>
     </header>
-    <c:if test="${not empty fromUser && fromUserId !=loginUser.id}">
+    <c:if test="${not empty fromUser && fromUserId !=loginUser.id && fromUserId !=sfShop.userId}">
         <div class="na">
             <p><img src="${fromUser.wxHeadImg}" alt=""></p>
             <h1>

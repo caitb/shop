@@ -201,19 +201,6 @@
             },
             validateAddressInfo: function (paramJson) {
                 return addressJS.checkName(paramJson.name) ? ( addressJS.checkPhone(paramJson.phone) ? (addressJS.checkPostCode(paramJson.postcode) ? (addressJS.checkAddress() ? addressJS.checkDetailAddress(paramJson.detailAddress) : false) : false) : false ) : false;
-            },
-            updateAddress: function () {
-                var manageAddressJumpType = $("#manageAddressJumpTypeId").val();
-                var addAddressJumpType = $("#addAddressJumpTypeId").val();
-                var paramJson = addressJS.getJsonParam();
-                if (addressJS.validateAddressInfo(paramJson)) {
-                    $.post("/userAddress/addOrUpdateAddress.do",
-                        paramJson, function (data) {
-                            if (data == "success") {
-                                window.location.href = addressJS.basePath + "/userAddress/toManageAddressPage.html?manageAddressJumpType=" + manageAddressJumpType + "&addAddressJumpType=" + addAddressJumpType;
-                            }
-                        });
-                }
             }
         }
 })();

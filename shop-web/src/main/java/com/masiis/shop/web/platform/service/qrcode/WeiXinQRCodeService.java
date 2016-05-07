@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -28,21 +29,20 @@ public class WeiXinQRCodeService {
 
     /**
      * 创建带代理商参数到公众号二维码
-     *
      * @param pfUserSkuId
      * @return
      */
-    public String createAgentQRCode(Integer pfUserSkuId) {
+    public String createAgentQRCode(Integer pfUserSkuId){
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
-        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \"" + pfUserSkuId + "\"}}}";
+        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+pfUserSkuId+"\"}}}";
 
-        log.info("开始请求二维码ticket:[pfUserSkuId=" + pfUserSkuId + "][access_token=" + access_token + "][jsonParam=" + jsonParam + "]");
-        String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE + "?access_token=" + access_token, jsonParam);
-        log.info("请求二维码ticket返回结果[result=" + result + "]");
+        log.info("开始请求二维码ticket:[pfUserSkuId="+pfUserSkuId+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
+        String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE+"?access_token="+access_token, jsonParam);
+        log.info("请求二维码ticket返回结果[result="+result+"]");
 
         Map<String, Object> resultMap = new JSONParser(result).parseMap();
-        if (resultMap.get("expire_seconds") != null) {
-            String ticket = (String) resultMap.get("ticket");
+        if(resultMap.get("expire_seconds") != null){
+            String ticket = (String)resultMap.get("ticket");
             return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
         }
 
@@ -51,13 +51,12 @@ public class WeiXinQRCodeService {
 
     /**
      * 创建带特定参数的公众号二维码(用于分享店铺或商品)
-     *
      * @param comUserId
      * @param shopId
      * @param skuId
      * @return
      */
-    public String createShopOrSkuQRCode(Long comUserId, Long shopId, Integer skuId) {
+    public String createShopOrSkuQRCode(Long comUserId, Long shopId, Integer skuId){
         Long scene_id = null;
 
         SfUserShareParam condition = new SfUserShareParam();
@@ -66,23 +65,24 @@ public class WeiXinQRCodeService {
         condition.setSkuId(skuId);
 
         SfUserShareParam sfUserShareParam = sfUserShareParamMapper.selectByCondition(condition);
-        if (sfUserShareParam == null) {
+        if(sfUserShareParam == null){
+            condition.setCreateTime(new Date());
             sfUserShareParamMapper.insert(condition);
             scene_id = condition.getId();
-        } else {
+        }else{
             scene_id = sfUserShareParam.getId();
         }
 
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
-        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \"" + scene_id + "\"}}}";
+        String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
 
-        log.info("开始请求二维码ticket:[scene_id=" + scene_id + "][access_token=" + access_token + "][jsonParam=" + jsonParam + "]");
-        String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE + "?access_token=" + access_token, jsonParam);
-        log.info("请求二维码ticket返回结果[result=" + result + "]");
+        log.info("开始请求二维码ticket:[scene_id="+scene_id+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
+        String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE+"?access_token="+access_token, jsonParam);
+        log.info("请求二维码ticket返回结果[result="+result+"]");
 
         Map<String, Object> resultMap = new JSONParser(result).parseMap();
-        if (resultMap.get("expire_seconds") != null) {
-            String ticket = (String) resultMap.get("ticket");
+        if(resultMap.get("expire_seconds") != null){
+            String ticket = (String)resultMap.get("ticket");
             return WxConsPF.URL_WEIXIN_PUBLIC_NUMBER_QRCODE + "?ticket=" + ticket;
         }
 

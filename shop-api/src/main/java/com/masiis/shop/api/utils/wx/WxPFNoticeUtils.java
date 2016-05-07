@@ -196,19 +196,23 @@ public class WxPFNoticeUtils {
      * @param user
      * @param params   (1,订单编号(不是id);2,时间)
      * @param orderUrl 查看新订单url
+     * @param hasInventory  库存是否充足
      * @return
      */
-    public Boolean newOrderNotice(ComUser user, String[] params, String orderUrl) {
+    public Boolean newOrderNotice(ComUser user, String[] params, String orderUrl, boolean hasInventory) {
         WxPFNewOrder newOrder = new WxPFNewOrder();
         WxNoticeReq<WxPFNewOrder> req = new WxNoticeReq<>(newOrder);
 
         newOrder.setFirst(new WxNoticeDataItem("您有新的合伙人订单,请到店铺查看", null));
         newOrder.setKeyword1(new WxNoticeDataItem(params[0], null));
         newOrder.setKeyword2(new WxNoticeDataItem(params[1], null));
-        newOrder.setRemark(new WxNoticeDataItem("请及时发货，点击查看详情", null));
+        newOrder.setRemark(new WxNoticeDataItem("目前您的库存不足，请及时补货", null));
 
         req.setTouser(getOpenIdByComUser(user));
-        req.setUrl(orderUrl);
+        if(hasInventory) {
+            newOrder.setRemark(new WxNoticeDataItem("点击查看详情", null));
+            req.setUrl(orderUrl);
+        }
         // 调用新订单提醒模板id
         req.setTemplate_id(WxConsPF.WX_PF_TM_ID_NEW_PF_ORDER);
         return wxNotice(WxCredentialUtils.getInstance()
@@ -487,22 +491,22 @@ public class WxPFNoticeUtils {
      * 线下支付提醒
      *
      * @param user  目标人
-     * @param params    (第一个,订单号; 第二个,订单创建时间; 第三个,商品明细(如:抗引力boss级合伙人订单))
+     * @param params    (第一个,订单号; 第二个,商品明细(如:抗引力boss级合伙人订单))
      * @param orderUrl  通知的订单详情页
      * @return
      */
-    public Boolean offLinePayNotice(ComUser user, String[] params, String orderUrl){
+    public Boolean offLinePayNotice(ComUser user, String[] params,Date creatTime, String orderUrl){
         WxPFOffLinePayNotice offLinePayNotice = new WxPFOffLinePayNotice();
         WxNoticeReq<WxPFOffLinePayNotice> req = new WxNoticeReq<>(offLinePayNotice);
 
         offLinePayNotice.setFirst(new WxNoticeDataItem("订单未付款提醒", null));
         offLinePayNotice.setKeyword1(new WxNoticeDataItem(params[0], null));
-        offLinePayNotice.setKeyword2(new WxNoticeDataItem(params[1], null));
-        offLinePayNotice.setKeyword3(new WxNoticeDataItem(params[2], null));
-        Date date = DateUtil.String2Date(params[1], "yyyy-MM-dd HH:mm:ss");
-        date = DateUtil.getDateNextdays(date, 7);
+        offLinePayNotice.setKeyword2(new WxNoticeDataItem(DateUtil.Date2String(creatTime,DateUtil.SQL_TIME_FMT), null));
+        offLinePayNotice.setKeyword3(new WxNoticeDataItem(params[1], null));
+/*        Date date = DateUtil.String2Date(params[1], "yyyy-MM-dd HH:mm:ss");
+        date = DateUtil.getDateNextdays(date, 7);*/
         offLinePayNotice.setRemark(new WxNoticeDataItem("您选择的是线下支付，请您在"
-                + DateUtil.Date2String(date, "yyyy-MM-dd HH:mm:ss") + "前付款以免过期。点击查看详情。", null));
+                + DateUtil.insertDay(creatTime) + "前付款以免过期。点击查看详情。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setUrl(orderUrl);

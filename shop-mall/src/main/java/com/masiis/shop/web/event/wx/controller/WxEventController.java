@@ -1,6 +1,8 @@
 package com.masiis.shop.web.event.wx.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.wx.WxConsPF;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.SHAUtils;
 import com.masiis.shop.web.event.wx.bean.event.WxBaseMessage;
@@ -22,6 +24,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -112,28 +115,27 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ULmwoKWXmgnXo-9SnZihlRWYqWKO6FTdKCDV-Zxmoa-ljZ3-IMuXgXx9HyM4qSydtmn_3xXbAD55_bYB593qNl-RIklOVC74AUuhTSSweNwRBUjEai_2g-BOvOr3TCvCGKKcABAPTT";
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        String urlEn = URLEncoder.encode(url1, "UTF-8");
+        /*System.out.println(urlEn);
+        System.out.println(HttpClientUtils.httpGet(urlEn));*/
+
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=bWE-dYBVIrHza7Y6oFqNuofJyZYlN2YsJ_jI0twKdsW7Dzb0fDrsxEpiyHgI9D0Ylk0qlde_8KTaVyVQxuejCShcBC1bv4sGIIHeGr7qXxpz7IWISdLsSTjFt_OXptCzRYNaAFANUJ";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
-        List<Button> sub_button2 = new ArrayList<>();
-        sub_button1.add(new Button("关于我们", "view", "http://mp.weixin.qq.com/s?__biz=MzAxMDg1NjY4Mw==&mid=100000035&idx=1&sn=8d77d86ffb986436b94cd3dfb6a08037&scene=23&srcid=0420B5a64GJHrlchm8mdF2O2#wechat_redirect"));
+        sub_button1.add(new Button("关于麦链", "view", "http://mp.weixin.qq.com/s?__biz=MzAxMDg1NjY4Mw==&mid=100000035&idx=1&sn=8d77d86ffb986436b94cd3dfb6a08037&scene=23&srcid=0420B5a64GJHrlchm8mdF2O2#wechat_redirect"));
         sub_button1.add(new Button("新闻报道", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
+        sub_button1.add(new Button("模式介绍", "view", "http://www.QQ.com"));
         Button b1 = new Button("联系我们", "click", null);
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
 
-        Button b2 = new Button("使用帮助", "media_id", null);
-        b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
-        sub_button2.add(b2);
-        sub_button2.add(new Button("最新活动", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
-
         buttons.add(new Button("关于麦链", sub_button1));
-        buttons.add(new Button("微商学院", sub_button2));
-        buttons.add(new Button("麦链合伙", "view", "http://m.qc.iimai.com"));
+        buttons.add(new Button("个人中心", "view", "http://mall.qc.iimai.com/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 
         String result = HttpClientUtils.httpPost(createMenu, JSONObject.toJSONString(menu));
-        System.out.println(result);//JSONObject.toJSONString(menu));
+        System.out.println(result);
     }
 }

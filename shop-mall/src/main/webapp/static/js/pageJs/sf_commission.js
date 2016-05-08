@@ -58,7 +58,7 @@ function viewMore(userId){
     }
     //当前页面记录数小于总记录数
     if (count < totalCount){
-        var currentPage = $("#currentPage").val();
+        var currentPage = parseInt($("#currentPage").val());
         $.ajax({
             type:"POST",
             async:true,
@@ -76,7 +76,7 @@ function viewMore(userId){
                     html += "<h1><span>"+arr[i].orderTime+"</span></h1></div>";
                 }
                 $("#itemDistributions").append(html);
-                $("#currentPage").attr(currentPage + 1);
+                $("#currentPage").val(currentPage + 1);
 
                 if (totalCount <= $(".sec2").length){
                     $("#showMore").html("");

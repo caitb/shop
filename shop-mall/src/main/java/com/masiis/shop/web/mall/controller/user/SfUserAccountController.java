@@ -69,13 +69,14 @@ public class SfUserAccountController extends BaseController {
         }
         SfOrderItemDistribution record = new SfOrderItemDistribution();
         record.setUserId(userId);
+        record.setIsCounting(1);
         //根据条件查询 小铺订单商品分润 数量
         int totalCount = sfOrderItemDistributionService.findCountByCondition(record);
         log.info("userId:"+userId+"   小铺订单商品分润数量:"+totalCount);
         List<SfOrderItemDistribution> list = null;
         if (totalCount > 0){
             //根据userId查询小铺订单商品分润信息
-            list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(userId,1,20);
+            list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(userId,1,1);
         }
         mv.addObject("currentPage",1);
         mv.addObject("pageSize",20);
@@ -114,10 +115,10 @@ public class SfUserAccountController extends BaseController {
         }
         JSONArray jsonArray = new JSONArray();
         try {
-            int pageSize = count/currentPage;
+            int pageSize = 1;
             currentPage = currentPage + 1;
             List<SfOrderItemDistribution> list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(userId,currentPage,pageSize);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             JSONObject jsonObject;
             for(SfOrderItemDistribution itemDistribution : list){
                 jsonObject = new JSONObject();

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,24 +41,23 @@
             <c:forEach var="distribution" items="${orderItemDistributions}">
                 <div class="sec2">
                     <p>
-                        <b>￥${distribution.distributionAmount}</b>
+                        <b>￥${distribution.distributionAmount}&nbsp;&nbsp;</b>
                         <b>
-                            <span>${distribution.nkName}</span>
-                            在您的分享
-                            <a href="#">${distribution.skuName}</a>
-                            中产生了购买
+                            <span>${distribution.nkName}</span>在您的分享<a href="#">${distribution.skuName}</a>中产生了购买
                         </b>
                     </p>
                     <h1>
-                        <span><fmt:formatDate value="${distribution.orderTime}"  type="time" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                        <span><fmt:formatDate value="${distribution.orderTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span>
                     </h1>
                 </div>
             </c:forEach>
         </div>
         <%--<p style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId},${fn:length(orderItemDistributions)})">查看更多></a></p>--%>
-        <c:if test="${orderItemDistributions != null && fn:length(orderItemDistributions) < totalCount}">
-            <p id="showMore" style="text-align: center;"><a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a></p>
-        </c:if>
+        <p id="showMore" style="text-align: center;">
+            <c:if test="${orderItemDistributions != null && fn:length(orderItemDistributions) < totalCount}">
+                <a href="#" onclick="viewMore(${userAccount.userId})">查看更多></a>
+            </c:if>
+        </p>
     </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>

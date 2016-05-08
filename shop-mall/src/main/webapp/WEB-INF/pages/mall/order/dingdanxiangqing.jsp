@@ -72,12 +72,12 @@
                 </div>
             </section></c:forEach>
             <section class="sec3">
-                <p>留言： <input type="text"value="${orderMallDetail.sfOrder.userMessage}"></p>
+                <p>留言： <input readonly="readonly" type="text" value="${orderMallDetail.sfOrder.userMessage}"></p>
             </section>
             <section class="sec4">
-                <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}元</span></p>
-                <p>运费：<span>￥${orderMallDetail.sfOrder.shipAmount}元</span></p>
-                <h1>共<b>${orderMallDetail.sfOrder.totalQuantity}</b>件商品　运费：<span>￥${orderMallDetail.sfOrder.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${orderMallDetail.sfOrder.orderAmount}</span></h1>
+                <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
+                <p>运费：<span>￥${orderMallDetail.sfOrder.shipAmount}</span></p>
+                <h1>共<b>${orderMallDetail.sfOrder.totalQuantity}</b>件商品　<b style="color:#333333">合计：</b><span>￥${orderMallDetail.sfOrder.orderAmount}</span></h1>
             </section>
             <div class="sec5">
                 <p>订单编号：<span>${orderMallDetail.sfOrder.orderCode}</span></p>

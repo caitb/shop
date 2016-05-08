@@ -300,6 +300,7 @@ public class SfOrderPayService {
             wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
             wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
+            wpspr.setErrorUrl(basePath+"orderPay/getOrderInfo.html?orderId="+orderId);//微信支付失败回掉
             wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         }else{
             log.info("调用微信支付失败:订单为null或者订单状态不是未支付状态");

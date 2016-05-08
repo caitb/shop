@@ -1,6 +1,8 @@
 package com.masiis.shop.web.event.wx.service;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
+import com.masiis.shop.dao.po.SfUserShareParam;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +20,9 @@ import java.util.List;
 @Service
 public class WxEventService {
     private Logger log = Logger.getLogger(this.getClass());
+
+    @Resource
+    private SfUserShareParamMapper paramMapper;
 
     /**
      * 处理微信事件推送
@@ -71,11 +76,11 @@ public class WxEventService {
      * @return
      */
     private WxArticleRes handleQRScanEvent(WxEventBody body) {
-        Integer pfUserSkuId = null;
+        Long paramId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
             if(StringUtils.isNotBlank(eventStr)) {
-                pfUserSkuId = Integer.valueOf(eventStr);
+                paramId = Long.valueOf(eventStr);
             } else {
                 return null;
             }
@@ -83,16 +88,25 @@ public class WxEventService {
         if("subscribe".equals(body.getEvent())){
             if(StringUtils.isNotBlank(eventStr)) {
                 eventStr = eventStr.replaceAll("qrscene_", "");
-                pfUserSkuId = Integer.valueOf(eventStr);
+                paramId = Long.valueOf(eventStr);
             } else {
                 return null;
             }
         }
-        if(pfUserSkuId == null){
+        if(paramId == null){
             throw new BusinessException();
         }
 
-        String url = "";
+        SfUserShareParam param = paramMapper.selectByPrimaryKey(paramId);
+        if(param == null){
+            throw new BusinessException();
+        }
+        String url = null;
+        if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
+            //url = "http://mall.qc.iimai.com/";
+        }
+        url = "http://mall.qc.iimai.com/" + param.getShopId() + "/"
+                    + param.getfUserId() + "/shop.shtml";
 
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());

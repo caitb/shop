@@ -63,7 +63,7 @@
         <p>总销量：<b>${skuInfo.saleNum}</b></p>
         <p>分销量：<b>${skuInfo.shareNum}</b></p>
     </div>
-    <div class="dlpople" onclick="validateCodeJS.applyTrial('buy')">
+    <div class="dlpople" onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">
         <p>选择： 数量</p>
         <p><img src="<%=path%>/static/images/next.png" alt=""></p>
     </div>
@@ -208,6 +208,7 @@
     })
     //check
     function clickbuy(a,b){
+        $(".number").val(1);
         if(a==b){
             alert("您不可以购买自己的商品！");
             return;
@@ -220,6 +221,14 @@
         cartData.shopId = "${shopId}";
         cartData.skuId = "${skuInfo.comSku.id}";
         cartData.quantity = i;
+        var currentStock = $("#stock").text();
+        if(currentStock-i<0){
+            alert("可用库存不足！");
+            $(".shoping").hide();
+            $(".back").hide();
+            $(".back_g").hide();
+            return;
+        }
         $.ajax({
             url: "<%=basePath%>cart/addCart.do",
             type: "post",

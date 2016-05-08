@@ -4,6 +4,7 @@ import com.alibaba.druid.support.json.JSONParser;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.constant.wx.WxConsPF;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
 import com.masiis.shop.dao.po.SfUserShareParam;
@@ -73,7 +74,7 @@ public class WeiXinQRCodeService {
             scene_id = sfUserShareParam.getId();
         }
 
-        String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
+        String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
         String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
 
         log.info("开始请求二维码ticket:[scene_id="+scene_id+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");

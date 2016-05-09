@@ -48,6 +48,8 @@
                     <span>销售额：<b>￥${agentSkuMap.countSales}</b></span>
                 </p>
             </div>
+            <h1 class="admin">管理团队</h1>
+            <h1 class="team">没有管理团队功能<img src="${path}/static/images/icon_70.png"/></h1>
         </div>
         </c:forEach>
     </main>

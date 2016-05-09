@@ -61,7 +61,7 @@
     </div>
     <div class="paidanqi">
         <div class="back_q">
-            <p style="padding: 20px">非常遗憾，麦链合伙人不支持最低一级合伙人发      展下级。您可以升级合伙等级后使用此功能
+            <p style="padding: 20px">非常遗憾，麦链合伙人不支持最低一级合伙人发展下级。
             </p>
             <button class="kNow" style="font-size: 12px;">我知道了</button>
         </div>

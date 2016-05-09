@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>订单详情</title>
+    <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/xianxiazhifu.css">
 </head>
@@ -17,8 +17,8 @@
     </header>
     <div class="xinxi">
         <p>注册信息</p>
-        <p style="color:#F74A11;">选择拿货方式</p>
-        <p style="color:#F74A11;">支付订单</p>
+        <p style="color:#F74A11;">确认订单</p>
+        <p style="color:#F74A11;">完成合伙</p>
     </div>
     <p class="cHange">您选择的支付方式： 线下支付<a id="changePayWayId">更改支付方式</a></p>
     <div class="sec1">

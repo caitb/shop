@@ -30,7 +30,6 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>拿货成功</p>
     </header>
     <div class="tai">
@@ -43,7 +42,7 @@
             <div>
                 <a href="#"><h2>收货人：<b>${pfBorderConsignee.consignee}</b></h2>
                 </a>
-                <a href="#"><p>收货地址： <span>${pfBorderConsignee.address}</span></p></a>
+                <a href="#"><p>收货地址： <span>${pfBorderConsignee.provinceName} ${pfBorderConsignee.cityName} ${pfBorderConsignee.regionName} ${pfBorderConsignee.address}</span></p></a>
             </div>
         </section>
     </div>

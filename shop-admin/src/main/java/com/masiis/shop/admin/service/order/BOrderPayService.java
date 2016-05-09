@@ -94,6 +94,8 @@ public class BOrderPayService {
      */
     @Transactional
     public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
+//        System.out.println(dateFormat.format(new Date()));
         if (pfBorderPayment == null) {
             throw new BusinessException("pfBorderPayment为空");
         }
@@ -109,8 +111,13 @@ public class BOrderPayService {
         } else {
             throw new BusinessException("订单类型有误");
         }
-        //支付完成推送消息
-        payEndPushMessage(pfBorderPayment);
+        //支付完成推送消息(发送失败不回滚事务)
+        try {
+            payEndPushMessage(pfBorderPayment);
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
+//        System.out.println(dateFormat.format(new Date()));
     }
 
     /**

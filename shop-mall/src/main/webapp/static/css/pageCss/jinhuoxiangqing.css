@@ -35,6 +35,10 @@ body {
 .wrap main .tai p {
   text-indent: 5rem;
   color: white;
+  font-size: 12px;
+}
+.wrap main .tai h1{
+  font-size: 14px;
 }
 .wrap main .kuaidi {
   background: white;
@@ -107,7 +111,7 @@ body {
 }
 .wrap main .sec1 div h2 span {
   float: right;
-  margin-right: 30px;
+  margin-right: 4em;
 }
 .wrap main .sec1 div p {
   width: 100%;

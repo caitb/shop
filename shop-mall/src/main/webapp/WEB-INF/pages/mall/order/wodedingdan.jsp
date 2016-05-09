@@ -88,7 +88,7 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                    <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -121,7 +121,7 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                    <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -154,7 +154,7 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                    <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
@@ -187,7 +187,7 @@
                                 </p>
                                 <div>
                                     <h2>${pbi.skuName}</h2>
-                                    <p class="defult"><span style="float:none;color:#FF6A2A;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
+                                    <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
                             <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>

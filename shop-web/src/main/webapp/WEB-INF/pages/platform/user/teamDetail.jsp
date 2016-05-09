@@ -42,8 +42,8 @@
         <div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/memberinfo?code=${userAgentMap.code}');">
             <p><img src="<%=basePath%>static/images/yes.png" alt=""></p>
             <p>
-                <b>${userAgentMap.userName}</b>
-                <b><img src="<%=basePath%>static/images/lv.png" alt="">合伙人等级<span>${userAgentMap.agentLevelName}</span></b>
+                <b style="font-size: 14px;">${userAgentMap.userName}</b>
+                <b><img src="<%=basePath%>static/images/lv.png" alt="">合伙人等级:<span>${userAgentMap.agentLevelName}</span></b>
             </p>
         </div>
         </c:forEach>

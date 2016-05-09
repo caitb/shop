@@ -60,6 +60,7 @@
 .wrap main .sec1 p:nth-child(2) b {
   display: block;
   color: #666666;
+  font-size:12px;
 }
 .wrap main .sec1 p:nth-child(2) b img {
   display: inline-block;
@@ -69,4 +70,5 @@
 .wrap main .sec1 p:nth-child(2) b span {
   margin-left: 5px;
   color: #666666;
+  font-size: 12px;
 }

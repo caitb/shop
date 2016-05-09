@@ -4,7 +4,6 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
-import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
@@ -292,15 +291,15 @@ public class SfShopController extends BaseController {
         //是否关注
 //        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
         //jssdk
-        String curUrl = request.getRequestURL().toString() + "?skuId=" + skuId + "&shopId=" + shopId;
-        curUrl += fromUser == null ? "" : "&fromUserId=" + fromUserId;
-        /** 获取调用jssdk所需数据 **/
-        Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
-        //要分享的数据
-        shareMap.put("shareTitle", "我是" + user.getWxNkName() + ",我为" + skuInfo.getComSku().getName() + "代言!");
-        shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
-        shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
-        shareMap.put("shareLink", curUrl);
+//        String curUrl = request.getRequestURL().toString() + "?skuId=" + skuId + "&shopId=" + shopId;
+//        curUrl += fromUser == null ? "" : "&fromUserId=" + fromUserId;
+//        /** 获取调用jssdk所需数据 **/
+//        Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
+//        //要分享的数据
+//        shareMap.put("shareTitle", "我是" + user.getWxNkName() + ",我为" + skuInfo.getComSku().getName() + "代言!");
+//        shareMap.put("shareDesc", spuService.loadSpu(skuInfo.getComSku().getSpuId()).getSlogan());
+//        shareMap.put("shareImg", PropertiesUtils.getStringValue("index_product_220_220_url") + skuImageService.loadBySkuId(skuId).get(0).getImgUrl());
+//        shareMap.put("shareLink", curUrl);
 
 
         ModelAndView mav = new ModelAndView("/mall/shop/shop_product");
@@ -312,7 +311,7 @@ public class SfShopController extends BaseController {
         mav.addObject("fromUserId", fromUserId);
         mav.addObject("loginUser", user);
         mav.addObject("sfShop", sfShop);
-        mav.addObject("shareMap", shareMap);
+//        mav.addObject("shareMap", shareMap);
         return mav;
     }
 

@@ -8,7 +8,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background: #F6410C;
+  background:url("/static/images/taib.png") no-repeat;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -18,10 +18,9 @@
 .wrap .tai img {
   position: absolute;
   display: block;
-  width: 50px;
-  height: 40px;
-  left: 15px;
-  top: 12px;
+  width: 40px;
+  height: 30px;
+  top: 18px;
 }
 .wrap .tai h1,
 .wrap .tai p {

@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.AccountHomeRes;
 import com.masiis.shop.api.bean.user.AccountUserBill;
@@ -85,6 +86,7 @@ public class UserAccountController {
         res.setUserBills(accountUserBills);*/
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
     }
 
@@ -121,6 +123,7 @@ public class UserAccountController {
         res.setUserBills(accountUserBills);
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
     }
 }

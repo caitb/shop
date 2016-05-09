@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.common.CommonReq;
 import com.masiis.shop.api.bean.user.PersonalCenterRes;
 import com.masiis.shop.api.bean.user.SkuAgentDetail;
@@ -72,6 +73,8 @@ public class PersonalCenterController extends BaseController {
         res.setAuditStatusName(AuditStatusEnum.getName(user.getAuditStatus()));
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
     }
 

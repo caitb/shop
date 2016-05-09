@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.scheduler.platform.bean.CredentialAccessTokenRes;
-import com.masiis.shop.scheduler.utils.SpringRedisUtil;
+import com.masiis.shop.scheduler.utils.SpringCommonRdUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -55,8 +55,8 @@ public class WxCredentialUtils {
                     String token = tokenRes.getAccess_token();
                     Long expire = Long.valueOf(tokenRes.getExpires_in());
                     Date expireDate = new Date(new Date().getTime() + expire);
-                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
-                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
+                    SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
+                    SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
                             expire - 10l);
                     return token;
                 }
@@ -68,8 +68,8 @@ public class WxCredentialUtils {
     }
 
     private String getTokenFromRedis(String appId, String secret){
-        String tokenOri = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, String.class);
-        Date exDate = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, Date.class);
+        String tokenOri = SpringCommonRdUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, String.class);
+        Date exDate = SpringCommonRdUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, Date.class);
         if(StringUtils.isNotBlank(tokenOri)
                 && exDate != null
                 && exDate.compareTo(new Date()) > 0){
@@ -99,8 +99,8 @@ public class WxCredentialUtils {
                 String token = tokenRes.getAccess_token();
                 Long expire = Long.valueOf(tokenRes.getExpires_in());
                 Date expireDate = new Date(new Date().getTime() + expire);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
+                SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
+                SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
                         expire - 10l);
 
                 return token;

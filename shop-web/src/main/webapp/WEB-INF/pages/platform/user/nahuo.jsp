@@ -72,9 +72,9 @@
 
                 <h3>规格：<span>默认</span></h3>
 
-                <p>零售价：<span>${comSku.priceRetail}</span><b
+                <p>零售价：<span>￥${comSku.priceRetail}</span><b
                         style="float:right; margin-right:10px;font-size:12px;">合伙价：<b
-                        style="font-size:12px; color:#FF5200">${priceDiscount}</b></b></p>
+                        style="font-size:12px; color:#FF5200">￥${priceDiscount}</b></b></p>
             </div>
         </section>
         <section class="sec3">

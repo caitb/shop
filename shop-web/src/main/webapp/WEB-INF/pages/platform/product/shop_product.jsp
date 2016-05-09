@@ -76,14 +76,12 @@
 </div>
 <script src="<%=path%>/static/shop/js/jquery-1.8.3.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="<%=path%>/static/plugins/zepto.min.js"></script>
-<script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
-
+<script src="<%=path%>/static/js/hideWXShare.js"> </script>
 <script>
     var shopData = {};
     shopData.shopId = "${shopId}";
-    $("#onsale").on("tap", function () {
+    $("#onsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
         $(".sec1").show().siblings().hide();
@@ -113,7 +111,7 @@
             }
         });
     })
-    $("#outsale").on("tap", function () {
+    $("#outsale").on("click", function () {
         $(".on").removeClass("active");
         $(this).addClass("active");
         $.ajax({//仓库中
@@ -149,7 +147,7 @@
         $("#shopSkuId").val(a);
     }
 
-    $(".que_qu").on("tap",function(){
+    $(".que_qu").on("click",function(){
         $(".back_que").hide();
         $(".back").hide();
     })
@@ -189,7 +187,7 @@
             }
         });
     }
-    $(".close").on("tap",function(){
+    $(".close").on("click",function(){
         $(this).parent().hide();
         $(".back").hide();
     })

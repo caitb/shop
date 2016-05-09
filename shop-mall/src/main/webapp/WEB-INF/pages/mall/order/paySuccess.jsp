@@ -26,8 +26,18 @@
                   <p>您的订单支付成功，请耐心等待收货</p>
             </div>
             <div class="content">
-                <p>收货人：<span>${orderConsignee.consignee}</span></p>
-                <p>收货地址：<span>${orderConsignee.provinceName}  ${orderConsignee.cityName}  ${orderConsignee.regionName}  ${orderConsignee.address}</span></p>
+                <section class="sec1">
+
+                    <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
+                    <div>
+                        <a href="#"><h2>收货人：<b>${orderConsignee.consignee}</b> <span>${orderConsignee.mobile}</span></h2></a>
+                        <a href="#"><p>收货地址： <span>
+                ${orderConsignee.provinceName}  ${orderConsignee.cityName}  ${orderConsignee.regionName}  ${orderConsignee.address}
+            </span></p></a>
+                    </div>
+
+                </section>
+
                 <h1>总价：<span>￥${order.orderAmount}</span></h1>
             </div>
             <h1>

@@ -56,7 +56,7 @@
     </section>
     <section class="sec4">
         <p><b>合计：</b><span>￥${order.productAmount}</span></p>
-        <p><b>运费：</b><b style="text-align:left;text-indent:2px;">${order.shipAmount}</b></p>
+        <p><b>运费：</b><b style="text-align:left;text-indent:1px;color: #FF5200;">￥${order.shipAmount}</b></p>
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
     <div class="back"></div>

@@ -155,7 +155,7 @@
                                             <div class="profile-info-name"> 物流状态 </div>
 
                                             <div class="profile-info-value">
-                                                <c:if test="${order.pfBorder.payStatus == 1 && order.pfBorder.shipStatus == 0 && order.pfBorder.sendType == 1}">
+                                                <c:if test="${order.pfBorder.payStatus == 1 && order.pfBorder.shipStatus == 0 && order.pfBorder.sendType == 1 && order.pfBorder.orderType != 1}">
                                                     <span>未发货</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <span class="btn btn-info btn-sm popover-info" id="fahuo" data-toggle="collapse">发货</span>
                                                     <button type="button" class="btn btn-info" id="fahuo-" data-toggle="collapse" style="display: none;">

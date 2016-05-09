@@ -211,7 +211,7 @@ public class SfShopManageController extends BaseController {
             //用户头像
             String headImgPath = posterDir.getAbsolutePath()+"/h-"+comUser.getId()+".jpg";
             DownloadImage.download(comUser.getWxHeadImg(), "h-"+comUser.getId()+".jpg", posterDir.getAbsolutePath());
-            ImageUtils.scale2(headImgPath, headImgPath, 90, 90, false);
+            //ImageUtils.scale2(headImgPath, headImgPath, 90, 90, false);
 
             //画专属海报
             String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
@@ -264,7 +264,7 @@ public class SfShopManageController extends BaseController {
         Graphics2D g = bufferedImage.createGraphics();
         g.setBackground(new Color(255,255,255));
 
-        g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), null);
+        g.drawImage(headImage, positionMap.get("headImg-left"), positionMap.get("headImg-top"), 90, 90, null);
         g.drawImage(bgImage, positionMap.get("bgImg-left"), positionMap.get("bgImg-top"), null);
         g.drawImage(qrCodeImage, positionMap.get("qrCodeImg-left"), positionMap.get("qrCodeImg-top"), 200, 200, null);
 

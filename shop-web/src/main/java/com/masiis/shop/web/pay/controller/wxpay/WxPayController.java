@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 
 /**
@@ -120,6 +122,7 @@ public class WxPayController extends BaseController{
         WxPaySysParamReq req = null;
         ComUser user = null;
         JSONObject sysRes = null;
+        System.out.println("param:" + param);
         try{
             // 参数校验
             req = checkRequestParma(req, param);
@@ -194,11 +197,12 @@ public class WxPayController extends BaseController{
      * @param req
      * @param param
      */
-    private WxPaySysParamReq checkRequestParma(WxPaySysParamReq req, String param) {
+    private WxPaySysParamReq checkRequestParma(WxPaySysParamReq req, String param) throws UnsupportedEncodingException {
         if(StringUtils.isBlank(param)){
             // 跳转错误页面,暂跳首页
             throw new BusinessException("参数错误,param为空!");
         }
+        param = URLDecoder.decode(param, "UTF-8");
         req = JSONObject.parseObject(param, WxPaySysParamReq.class);
 
         if(req == null

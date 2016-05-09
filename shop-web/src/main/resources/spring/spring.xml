@@ -30,7 +30,7 @@
 	<task:scheduler id="qbScheduler" pool-size="10"/>
 
 
-	<!-- JSSDK相关任务 -->
+	<!--JSSDK相关任务
 	<bean id="jsapiTicketTask" class="com.masiis.shop.web.platform.task.JsapiTicketTask" />
 	<bean id="jsapiAccessTokenTask" class="com.masiis.shop.web.platform.task.JsapiAccessTokenTask" />
 
@@ -39,5 +39,5 @@
 	</task:scheduled-tasks>
 	<task:scheduled-tasks>
 		<task:scheduled ref="jsapiAccessTokenTask" method="requestToken" cron="00 59 0/1 * * ?" />
-	</task:scheduled-tasks>
+	</task:scheduled-tasks>-->
 </beans>

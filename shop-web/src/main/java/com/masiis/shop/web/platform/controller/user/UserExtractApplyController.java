@@ -124,7 +124,7 @@ public class UserExtractApplyController extends BaseController {
                 throw new BusinessException("系统错误,用户资产未找到");
             }
             if (exMoney.compareTo(account.getExtractableFee().subtract(account.getAppliedFee())) == 1 || exMoney.compareTo(new BigDecimal(0)) <= 0){
-                throw new BusinessException("可提现余额错误");
+                throw new BusinessException("申请金额有误");
             }
 
             // 查询默认的支付方式
@@ -196,6 +196,7 @@ public class UserExtractApplyController extends BaseController {
     public String ajaxListMore(HttpServletRequest request,
                                   String time, Integer cur){
         JSONObject res = new JSONObject();
+        log.info("查询时间为："+time);
         ComUser user = null;
         try{
             user = getComUser(request);

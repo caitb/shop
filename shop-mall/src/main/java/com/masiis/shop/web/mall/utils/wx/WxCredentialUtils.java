@@ -22,7 +22,7 @@ public class WxCredentialUtils {
     private static class Holder {
         private static final WxCredentialUtils INSTANCE = new WxCredentialUtils();
     }
-    private WxCredentialUtils (){}
+    private WxCredentialUtils(){}
     // 单例懒加载
     public static final WxCredentialUtils getInstance() {
         return Holder.INSTANCE;
@@ -93,6 +93,7 @@ public class WxCredentialUtils {
                 + "&appid=" + appId
                 + "&secret=" + secret;
         try {
+            log.info("刷新" + appId + "的accessToken开始...");
             String res = HttpClientUtils.httpGet(tokenUrl);
             CredentialAccessTokenRes tokenRes = JSONObject.parseObject(res, CredentialAccessTokenRes.class);
             if (StringUtils.isNotBlank(tokenRes.getAccess_token())) {
@@ -103,8 +104,11 @@ public class WxCredentialUtils {
                 SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
                         expire - 10l);
 
+                log.info("刷新" + appId + "的accessToken成功,结束...");
                 return token;
             }
+            log.info("res:" + res);
+            log.error("刷新" + appId + "的accessToken失败...");
         } catch (Exception e) {
             log.error("刷新credential_access_token失败");
         }

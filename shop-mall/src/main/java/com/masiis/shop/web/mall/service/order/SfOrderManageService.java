@@ -168,7 +168,7 @@ public class SfOrderManageService {
         Boolean aBoolean = WxSFNoticeUtils.getInstance().orderConfirmNotice(user, params);
         log.info("发送短信失败或成功----"+aBoolean);
         if (aBoolean == false) {
-            throw new BusinessException("订单完成微信提示失败");
+            throw new Exception("订单完成微信提示失败");
         }
         MobileMessageUtil.getInitialization("C").consumerConsumeSuccessRemind(user.getMobile(),sfOrder.getOrderCode());
     }

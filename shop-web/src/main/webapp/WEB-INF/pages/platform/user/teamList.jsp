@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/xiajihehuo.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
-    <script src="../js/iscroll.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -39,7 +38,7 @@
         </div>
         <p>产品团队列表</p>
         <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1" onclick="javascript:alert('您代理到这款产品是最后一级,无团队管理功能!');"></c:if>
+            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1 once"></c:if>
             <c:if test="${agentSkuMap.isLastLevel == 'no'}"><div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');"></c:if>
             <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
             <div>
@@ -52,6 +51,23 @@
         </div>
         </c:forEach>
     </main>
+    <div class="paidanqi">
+        <div class="back_q">
+            <p style="padding: 20px">您代理到这款产品等级是最后一级,无团队管理功能!
+            </p>
+            <button class="kNow" style="font-size: 12px;">我知道了</button>
+        </div>
+        <div class="Modal"></div>
+    </div>
 </div>
+<script src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script>
+    $(".occe").on("click", function () {
+        $(".paidanqi").show();
+    });
+    $(".kNow").on("click", function () {
+        $(".paidanqi").hide();
+    });
+</script>
 </body>
 </html>

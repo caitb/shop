@@ -16,8 +16,10 @@
     <link rel="stylesheet" href="<%=path%>/static/css/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/shenqinghehu.css">
 </head>
+<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script>
     $(document).ready(function () {
+
         var addressId = $("#addressId").val();
         if (addressId == "") {
             $("#xz").show();
@@ -45,19 +47,21 @@
                 <p>选择收货地址</p>
             </div>
         </div>
-        <section class="sec1">
-            <img src="<%=path%>/static/images/zhifu_ad.png" alt="" class="j">
+        <div id="sec1">
+            <section class="sec1">
+                <img src="<%=path%>/static/images/zhifu_ad.png" alt="" class="j">
 
-            <div onclick="toChooseAddressPage()">
-                <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
-                <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
-                <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
-                <a href="#"><p>收货地址：
-                        <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
-                        </span></p></a>
-            </div>
-            <img src="<%=path%>/static/images/next.png" alt="" class="ju">
-        </section>
+                <div onclick="toChooseAddressPage()">
+                    <input style="display: none" type="text" id="pfUserSkuStockId" value="${pfUserSkuStockId}"/>
+                    <input style="display: none" type="text" id="addressId" value="${comUserAddress.id}"/>
+                    <a href="#"><h2>收货人：<b>${comUserAddress.name}</b> <span>${comUserAddress.mobile}</span></h2></a>
+                    <a href="#"><p>收货地址：
+                            <span>${comUserAddress.provinceName}  ${comUserAddress.cityName}  ${comUserAddress.regionName}  ${comUserAddress.address}
+                            </span></p></a>
+                </div>
+                <img src="<%=path%>/static/images/next.png" alt="" class="ju">
+            </section>
+        </div>
         <section class="sec2">
             <p class="photo">
                 <img src="${comSkuImage}" alt="">
@@ -115,7 +119,6 @@
 <div class="back">
 
 </div>
-<script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
 <script src="<%=path%>/static/plugins/zepto.min.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

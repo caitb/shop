@@ -58,12 +58,12 @@
 }
 .wrap .oPeration a {
   display: block;
-  background: url("../images/sccess2.png") no-repeat 0px;
+  background: url("/static/images/sccess2.png") no-repeat 0px;
   background-size: 15px;
   padding-left: 20px;
 }
 .wrap .oPeration a:nth-child(2) {
-  background: url("../images/success1.png") no-repeat 0px;
+  background: url("/static/images/success1.png") no-repeat 0px;
   background-size: 18px 17px;
   margin-left: 30px;
 }

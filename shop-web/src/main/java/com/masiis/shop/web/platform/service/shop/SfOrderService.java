@@ -121,7 +121,7 @@ public class SfOrderService {
             params[4]=freight;
             Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if(aBoolean==false){
-                throw new BusinessException("消费者订单发货微信提示失败");
+                throw new Exception("消费者订单发货微信提示失败");
             }
             MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
         } else if (sfOrder.getSendType() == 2) {//自己发货
@@ -153,7 +153,7 @@ public class SfOrderService {
             params[4]=freight;
             Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if(aBoolean==false){
-                throw new BusinessException("消费者订单发货微信提示失败");
+                throw new Exception("消费者订单发货微信提示失败");
             }
             MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
         }

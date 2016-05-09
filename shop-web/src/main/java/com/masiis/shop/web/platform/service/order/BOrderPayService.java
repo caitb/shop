@@ -690,7 +690,8 @@ public class BOrderPayService {
         sb2.append(" 开户名:").append(supplierBank.getAccountName());
         sb2.append(" 卡号:").append(supplierBank.getCardNumber());
         sb2.append(" 账号上");
-        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), sb2.toString());
+        //最迟日期
+        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()),sb2.toString());
     }
 
     /**

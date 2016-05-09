@@ -23,7 +23,7 @@
     <div class="wrap">
        <main>
             <header class="xq_header">
-                <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+                <a href="<%=path%>/sfOrderManagerController/toBorderManagement?fm=1"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
                     <p>订单详情</p>
                 <%--javascript:window.history.go(-1);--%>
             </header>

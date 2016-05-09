@@ -10,7 +10,6 @@ import com.masiis.shop.common.enums.BOrder.BOrderStatus;
  * @date 2016/3/9
  */
 public class MobileMessageUtil {
-
     /**
      * 短信結束語
      */
@@ -28,6 +27,7 @@ public class MobileMessageUtil {
      */
     private MobileMessageUtil(String fromIdentify){
         this.fromIdentify = fromIdentify;
+        System.out.println("发送短信请求来源：" + this.fromIdentify + "端");
         if ("B".equals(this.fromIdentify)){
             EVENING_MESSAGE = "关注麦链合伙人公众账号，查看最新状态";
         }
@@ -58,11 +58,11 @@ public class MobileMessageUtil {
         content[0] = code;
         content[1] = minute;
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFICATION_CODE, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
+        if ("B".equals(fromIdentify)){
+            return sendMethod(phone, SMSConstants.VERIFICATION_CODE_B, content);
+        }else {
+            return sendMethod(phone, SMSConstants.VERIFICATION_CODE_C, content);
         }
-        return true;
     }
 
 //    /**
@@ -97,11 +97,7 @@ public class MobileMessageUtil {
         content[0] = skuName;
         content[1] = agentLevelName;
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.PARTNER_APPLICATION_SUCCESS, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.PARTNER_APPLICATION_SUCCESS, content);
     }
 
     /**
@@ -115,11 +111,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = days;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.VERIFIED_SUBMIT_REMIND, content);
     }
 
     /**
@@ -138,11 +130,7 @@ public class MobileMessageUtil {
             content[1] = "重新提交实名认证";
         }
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.VERIFIED_COMPLETE, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.VERIFIED_COMPLETE, content);
     }
 
     /**
@@ -159,11 +147,7 @@ public class MobileMessageUtil {
         content[1] = shipName;
         content[2] = shipCode;
         content[3] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ORDER_SHIP_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.ORDER_SHIP_REMIND, content);
     }
 
     /**
@@ -180,11 +164,7 @@ public class MobileMessageUtil {
             content[0] = "";
         }
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_LOWER_ORDER, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.NEW_LOWER_ORDER, content);
     }
 
     /**
@@ -197,11 +177,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = days;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_AGENT, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_AGENT, content);
     }
 
     /**
@@ -216,11 +192,7 @@ public class MobileMessageUtil {
         content[0] = days;
         content[1] = theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":"";
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_AGENT, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_AGENT, content);
     }
 
     /**
@@ -233,11 +205,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = reason;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE_AGENT, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE_AGENT, content);
     }
 
     /**
@@ -258,11 +226,7 @@ public class MobileMessageUtil {
             content[1] = "我们将尽快发货;" + quantity;
         }
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.ADD_STOCK_SUCCESS, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.ADD_STOCK_SUCCESS, content);
     }
 
     /**
@@ -275,11 +239,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = orderCode;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.JOIN_QUEUE_ORDER, content);
     }
 
     /**
@@ -293,11 +253,7 @@ public class MobileMessageUtil {
         content[0] = orderCode;
         content[1] = sendType==1?"查看在线库存":sendType==2?"耐心等待发货":"";
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.DEAL_QUEUE_ORDER_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.DEAL_QUEUE_ORDER_REMIND, content);
     }
 
     /**
@@ -310,11 +266,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = skuName;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.STOCK_NOT_ENOUGH_WARNINT, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.STOCK_NOT_ENOUGH_WARNINT, content);
     }
 
     /**
@@ -325,11 +277,7 @@ public class MobileMessageUtil {
     public boolean newMallOrderRemind(String phone){
         content = new String[1];
         content[0] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.NEW_MALL_ORDER_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.NEW_MALL_ORDER_REMIND, content);
     }
 
     /**
@@ -342,11 +290,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = skuName;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_ORDER_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.CONSUMER_ORDER_REMIND, content);
     }
 
     /**
@@ -359,11 +303,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = orderCode;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_SHIP_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.CONSUMER_SHIP_REMIND, content);
     }
 
     /**
@@ -376,11 +316,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = orderCode;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.CONSUMER_CONSUME_SUCCESS_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.CONSUMER_CONSUME_SUCCESS_REMIND, content);
     }
 
     /**
@@ -393,11 +329,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = days;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_CUSTOMER, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_REQUEST_VERIFY_CUSTOMER, content);
     }
 
     /**
@@ -412,11 +344,7 @@ public class MobileMessageUtil {
         content[0] = days;
         content[1] = theWay==1?"微信":theWay==2?"支付宝":theWay==3?"银行卡":"";
         content[2] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_CUSTOMER, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_VERIFY_APPROVE_CUSTOMER, content);
     }
 
     /**
@@ -429,11 +357,7 @@ public class MobileMessageUtil {
         content = new String[2];
         content[0] = reason;
         content[1] = EVENING_MESSAGE;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE_CUSTOMER, content);
-        if (!"000000".equals(smsRes[0])) {
-            return false;
-        }
-        return true;
+        return sendMethod(phone, SMSConstants.WITHDRAW_VERIFY_REFUSE_CUSTOMER, content);
     }
 
     /**
@@ -449,16 +373,24 @@ public class MobileMessageUtil {
         content[0] = orderCode;
         content[1] = amount;
         content[2] = mes;
-        String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
-        if (!"000000".equals(smsRes[0])) {
+        return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
+    }
+
+    public boolean sendMethod(String phone, String code, String[] content){
+        try{
+            String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, code, content);
+            if (!"000000".equals(smsRes[0])) {
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
-        return true;
-
     }
 
 //    public static void main(String[] args){
-//        MobileMessageUtil.getInitialization("B").consumerConsumeSuccessRemind("18800175968","111111");
-//        MobileMessageUtil.getInitialization("B").certificationVerifyResult("18800175968",true);
+//        MobileMessageUtil.getInitialization("B").addStockSuccess("18800175968",1,"22");
+//        MobileMessageUtil.getInitialization("B").verificationCode("18800175968","1111","5");
 //    }
 }

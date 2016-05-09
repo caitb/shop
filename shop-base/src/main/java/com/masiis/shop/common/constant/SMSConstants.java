@@ -7,7 +7,11 @@ public class SMSConstants {
 	/**
 	 * 短信验证码
 	 */
-	public static final String VERIFICATION_CODE = "82604";
+	public static final String VERIFICATION_CODE_B = "82604";
+	/**
+	 * c端验证码
+	 */
+	public static final String VERIFICATION_CODE_C = "84779";
 	/**
 	 * 注册短信通知验证码有效时间(分钟)
 	 */
@@ -55,7 +59,7 @@ public class SMSConstants {
 	/**
 	 * 补货成功提醒
 	 */
-	public static final String ADD_STOCK_SUCCESS = "84391";
+	public static final String ADD_STOCK_SUCCESS = "84971";
 	/**
 	 * 进入排单提醒
 	 */

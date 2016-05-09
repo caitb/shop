@@ -2,11 +2,9 @@ package com.masiis.shop.web.platform.utils.wx;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.web.platform.beans.wxauth.CredentialAccessTokenRes;
-import com.masiis.shop.web.platform.utils.SpringRedisUtil;
-import com.masiis.shop.web.platform.utils.SpringRedisUtil;
+import com.masiis.shop.web.platform.utils.SpringCommonRdUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -24,7 +22,7 @@ public class WxCredentialUtils {
     private static class Holder {
         private static final WxCredentialUtils INSTANCE = new WxCredentialUtils();
     }
-    private WxCredentialUtils (){}
+    private WxCredentialUtils(){}
     // 单例懒加载
     public static final WxCredentialUtils getInstance() {
         return Holder.INSTANCE;
@@ -57,8 +55,8 @@ public class WxCredentialUtils {
                     String token = tokenRes.getAccess_token();
                     Long expire = Long.valueOf(tokenRes.getExpires_in());
                     Date expireDate = new Date(new Date().getTime() + expire);
-                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
-                    SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
+                    SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
+                    SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
                             expire - 10l);
                     return token;
                 }
@@ -70,8 +68,8 @@ public class WxCredentialUtils {
     }
 
     private String getTokenFromRedis(String appId, String secret){
-        String tokenOri = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, String.class);
-        Date exDate = SpringRedisUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, Date.class);
+        String tokenOri = SpringCommonRdUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, String.class);
+        Date exDate = SpringCommonRdUtil.get(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, Date.class);
         if(StringUtils.isNotBlank(tokenOri)
                 && exDate != null
                 && exDate.compareTo(new Date()) > 0){
@@ -95,18 +93,22 @@ public class WxCredentialUtils {
                 + "&appid=" + appId
                 + "&secret=" + secret;
         try {
+            log.info("刷新" + appId + "的accessToken开始...");
             String res = HttpClientUtils.httpGet(tokenUrl);
             CredentialAccessTokenRes tokenRes = JSONObject.parseObject(res, CredentialAccessTokenRes.class);
             if (StringUtils.isNotBlank(tokenRes.getAccess_token())) {
                 String token = tokenRes.getAccess_token();
                 Long expire = Long.valueOf(tokenRes.getExpires_in());
                 Date expireDate = new Date(new Date().getTime() + expire);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
-                SpringRedisUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
+                SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_NAME + appId, token, expire - 6l);
+                SpringCommonRdUtil.saveEx(REDIS_CREDENTIAL_ACCESS_TOKEN_EXPIRES_NAME + appId, expireDate,
                         expire - 10l);
 
+                log.info("刷新" + appId + "的accessToken成功,结束...");
                 return token;
             }
+            log.info("res:" + res);
+            log.error("刷新" + appId + "的accessToken失败...");
         } catch (Exception e) {
             log.error("刷新credential_access_token失败");
         }

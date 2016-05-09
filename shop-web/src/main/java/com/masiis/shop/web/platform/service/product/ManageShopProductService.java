@@ -64,7 +64,12 @@ public class ManageShopProductService {
                  skuInfo.setSaleNum(sfShopSku.getSaleNum());
                  if(pfUserSkuStock!=null){
                      if(comUser.getSendType()==1){//平台代发
-                         skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
+                         int useStock = pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock();
+                         if(useStock >=0){
+                             skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
+                         }else{
+                             skuInfo.setStock(0);
+                         }
                      }else if(comUser.getSendType()==2){//自己
                          skuInfo.setStock(pfUserSkuStock.getCustomStock());
                      }else{

@@ -62,7 +62,7 @@
 </div>
 <script src="${path}/static/js/jquery-1.8.3.min.js"></script>
 <script>
-    $(".occe").on("click", function () {
+    $(".once").on("click", function () {
         $(".paidanqi").show();
     });
     $(".kNow").on("click", function () {

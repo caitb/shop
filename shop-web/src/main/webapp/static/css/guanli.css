@@ -7,7 +7,9 @@ body main .wrap {
   width: 100%;
   height: 100%;
   display: -webkit-box;
+  overflow-x: hidden;
   -webkit-box-orient: vertical;
+  overflow-y: auto;
 }
 body main .wrap .box {
   width: 100%;

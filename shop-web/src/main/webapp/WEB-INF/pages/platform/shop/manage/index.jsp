@@ -67,6 +67,7 @@
         <p onclick="javascript:window.location.replace('<%=basePath%>distribution/distribution.shtml');"><span><img src="<%=basePath%>static/images/foot_icon%20(4).png" alt=""></span><span>分销记录</span></p>
         <%--<p onclick="javascript:window.location.replace('<%=basePath%>shop/manage/setupFreight');"><span><img src="<%=basePath%>static/images/foot_icon%20(1).png" alt=""></span><span>运费模板</span></p>--%>
         <p></p>
+        <p></p>
     </nav>
 </div>
 <c:if test="${sfShop==null}">

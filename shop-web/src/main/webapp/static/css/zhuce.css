@@ -290,8 +290,8 @@
   line-height: 14px;
 }
 .wrap #box main .sec3 label a {
-  text-decoration: underline;
   color: #F74A11;
+  border-bottom: 1px solid #f74a11;
 }
 .wrap #box main .sec3 input {
   display: none;

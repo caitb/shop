@@ -56,11 +56,12 @@
     </section>
     <section class="sec4">
         <p><b>合计：</b><span>￥${order.productAmount}</span></p>
-        <p><b>运费：</b><b style="text-align:left;text-indent:1px;color: #FF5200;">￥${order.shipAmount}</b></p>
+        <p><b>运费：</b><span>￥${order.shipAmount}</span></p>
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
     <div class="back"></div>
     <div class="sec6">
+        <p><a onclick="askForInvoice()">返回首页</a></p>
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>

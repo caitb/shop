@@ -194,7 +194,7 @@
 }
 .wrap .sec4 p span {
   display: block;
-  color: #FF5200;
+  color: #f73c8c;
   font-size: 12px;
   text-align: left;
 }
@@ -226,19 +226,23 @@
 }
 .wrap .sec6 {
   display: -webkit-box;
-  margin: 20px 30px 0 30px;
+  margin: 20px 0 0 0;
 }
 .wrap .sec6 p {
   -webkit-box-flex: 1;
   text-align: center;
   background: #ccc;
-  background: url("../../images/icon_38.png") no-repeat 15px;
-  background-size: 8%;
+  background: url("../../images/icon_91.png") no-repeat 15px;
+  padding-left: 24px;
+  background-size: 15px;
 }
 .wrap .sec6 p:nth-child(1) {
   background: url("../../images/icon_37.png") no-repeat 15px;
-  background-size: 12%;
-  text-indent: 5px;
+  background-size: 15px;
+}
+.wrap .sec6 p:nth-child(3) {
+  background: url("../../images/icon_90.png") no-repeat 15px;
+  background-size: 15px;
 }
 .back {
   width: 100%;

@@ -183,9 +183,9 @@ body button {
 .cHange a{
     font-size:12px;
     color: #F74A11;
-    text-decoration: underline;
     background: url("/static/images/rese.png") no-repeat 100%;
-    background-size: 15px;
+    background-size: 13px;
     padding-right: 18px;
     margin-left: 10px;
+    border-bottom: 1px solid #f74a11;
 }

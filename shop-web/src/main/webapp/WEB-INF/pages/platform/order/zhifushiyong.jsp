@@ -49,7 +49,7 @@
         <p><em>试用理由：</em><input type="text" id="trialReasonId" ></p>
     </section>
     <section class="sec4">
-        <p>运费：<b>￥${product.shipAmount}</b></p>
+        <p>试用运费：<b>￥${product.shipAmount}</b></p>
         <p>共支付：<span>￥${product.shipAmount}</span></p>
     </section>
     <c:if test="${payIdentity == 0}">

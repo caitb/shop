@@ -48,7 +48,7 @@
             <p>试用理由： ${pfCorder.userMassage}</p>
         </section>
         <section class="sec4">
-            <h1>共<b>1</b>件商品　运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
+            <h1>共<b>1</b>件商品　试用运费：<span>￥${product.shipAmount}</span>　<b style="color:#333333">合计：</b><span>￥${product.shipAmount}</span></h1>
         </section>
         <div class="sec5">
             <p>订单编号：<span>${pfCorder.orderCode}</span></p>

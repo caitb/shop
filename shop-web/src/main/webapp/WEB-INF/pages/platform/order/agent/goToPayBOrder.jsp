@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
+<%@ page import="com.masiis.shop.common.util.PropertiesUtils" %>
+<%@ page import="com.masiis.shop.web.platform.constants.SysConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
@@ -57,14 +59,30 @@
 </div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+<script src="${path}/static/js/pay/wxpay.js"></script>
 <script>
-    $("#submit").click(function (event) {
+    /*$("#submit").click(function (event) {
         if ($(this).html() == "正在提交...") {
             return;
         }
         $(this).html("正在提交...");
         window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
-    })
+    })*/
+
+    $(function(){
+        if("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1"){
+            $("#submit").initWxPay("${param}", "${basePath}");
+        } else {
+            $("#submit").click(function (event) {
+                if ($(this).html() == "正在提交...") {
+                    return;
+                }
+                $(this).html("正在提交...");
+                window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+            })
+        }
+    });
+
     $("#downPay").click(function (event) {
         $(".back_box").show();
     })

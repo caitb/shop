@@ -71,6 +71,7 @@
 
     $(function(){
         if("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1"){
+            alert("${param}");
             $("#submit").initWxPay("${param}", "${basePath}");
         } else {
             $("#submit").click(function (event) {

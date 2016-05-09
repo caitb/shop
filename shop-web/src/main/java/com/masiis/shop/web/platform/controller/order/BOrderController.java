@@ -28,6 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +96,7 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping("/goToPayBOrder.shtml")
     public ModelAndView toPayBOrder(HttpServletRequest request,
-                                    @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
+                                    @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws UnsupportedEncodingException {
         ModelAndView modelAndView = new ModelAndView("platform/order/agent/goToPayBOrder");
         if (bOrderId == null || bOrderId <= 0) {
             throw new BusinessException("订单号不正确");
@@ -122,12 +124,14 @@ public class BOrderController extends BaseController {
         req.setNonceStr(WXBeanUtils.createGenerateStr());
         req.setSuccessUrl(successURL);
         req.setSign(WXBeanUtils.toSignString(req));
+        String param = URLEncoder.encode(JSONObject.toJSONString(req), "UTF-8");
+        System.out.println("payParam:" + param);
 
         modelAndView.addObject("pfBorder", pfBorder);
         modelAndView.addObject("downPayLatestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
         modelAndView.addObject("pfBorderItems", pfBorderItems);
         modelAndView.addObject("comUser", getComUser(request));
-        modelAndView.addObject("param", JSONObject.toJSONString(req));
+        modelAndView.addObject("param", param);
         return modelAndView;
     }
 

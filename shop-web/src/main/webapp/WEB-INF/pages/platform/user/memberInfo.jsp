@@ -22,7 +22,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="<%=basePath%>myteam/teamdetail?userSkuId=${pid}"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+        <a href="<%=basePath%>myteam/teamdetail?userSkuId=${memberMap.pid}"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
         <p>队员信息</p>
     </header>
     <main>

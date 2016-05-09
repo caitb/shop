@@ -16,14 +16,13 @@
 </head>
 <body>
 <header>
-    <a></a>
-    <p>支付成功</p>
+    <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <p>订单详情</p>
 </header>
 <div class="wrap">
-
     <div class="tai">
         <img src="<%=path%>/static/images/icon_64.png" alt="">
-        <h1>订单详情</h1>
+        <h1>支付成功</h1>
         <p>您的订单支付成功，请耐心等待收货</p>
     </div>
     <section class="sec1">
@@ -60,6 +59,7 @@
         <p><b>运费：</b><b style="text-align:left;text-indent:2px;">${order.shipAmount}</b></p>
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
+    <div class="back"></div>
     <div class="sec6">
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>

@@ -131,7 +131,7 @@ public class BOrderController extends BaseController {
         modelAndView.addObject("downPayLatestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
         modelAndView.addObject("pfBorderItems", pfBorderItems);
         modelAndView.addObject("comUser", getComUser(request));
-        modelAndView.addObject("param", param);
+        modelAndView.addObject("paramReq", param);
         return modelAndView;
     }
 

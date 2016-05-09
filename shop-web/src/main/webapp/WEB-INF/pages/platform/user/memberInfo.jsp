@@ -42,10 +42,11 @@
         </div>
         <div class="sec1">
             <div>
-                <p>上级合伙人信息详情</p>
-                <h1><span>${memberMap.comUserName}</span>${memberMap.skuName}</h1>
-                <h2><img src="<%=basePath%>static/images/lv.png" alt="">合伙人等级<b>${memberMap.skuName}</b></h2>
+                <p>下级合伙人信息详情</p>
+                <%--<h1><span>${memberMap.comUserName}</span></h1>--%>
+                <%--<h2><img src="<%=basePath%>static/images/lv.png" alt="">合伙人等级<b>${memberMap.skuName}</b></h2>--%>
             </div>
+            <p><span>名字</span><span>${memberMap.comUserName}</span></p>
             <p><span>等级</span><span>${memberMap.agentLevelName}</span></p>
             <p><span>手机号</span><span>${memberMap.mobile}</span></p>
             <p><span>微信号</span><span>${memberMap.weixin}</span></p>

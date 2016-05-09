@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
@@ -150,6 +152,12 @@ public class OrderService {
         sfOrderOperationLog.setSfOrderId(sfOrder.getId());
         sfOrderOperationLog.setRemark(operationUser.toString());
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+
+        SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
+        ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
+        //短信和微信通知
+        MobileMessageUtil.getInitialization("B").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode());
+        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, "");
     }
 
     public void updateOrderStock(SfOrder sfOrder) throws Exception {

@@ -23,7 +23,7 @@
 <div class="wrap">
     <div id="box">
         <header class="xq_header">
-            <a href="javascript:<%=basePath%>developing/ui"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+            <a href="<%=basePath%>developing/ui"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
             <p>注册链接</p>
         </header>
         <img src="${shareMap.poster}" alt="">

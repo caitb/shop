@@ -84,28 +84,38 @@
                 <div>
                     <h2>${bdpi.skuName}<b>x${bdpi.quantity}</b></h2>
                     <h3>规格：<span>默认</span></h3>
+                    <c:if test="${borderDetail.pfBorder.orderType!=2}">
                     <p> 价格：<span>￥${bdpi.unitPrice}</span></p>
+                    </c:if>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>
             <section class="sec3">
                 <p>留言： <input readonly="readonly" type="text" value="${borderDetail.pfBorder.userMessage}"></p>
             </section>
-            <section class="sec4">
-                <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}</span></p>
-                <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
-                <p>运费：<span>到付</span></p>
-                </c:if>
-                <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　
-                    <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
-                        运费：<span>到付</span>
-                    </c:if>　
-                    <b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.orderAmount}</span></h1>
-            </section>
+           <section class="sec4">
+               <c:if test="${borderDetail.pfBorder.orderType==2}">
+                   <p>运费：<span>到付</span></p>
+                   <p>实付：<span>￥0.00</span></p>
+               </c:if>
+               <c:if test="${borderDetail.pfBorder.orderType!=2}">
+               <p>商品合计：<span>￥${borderDetail.pfBorder.productAmount}</span></p>
+               <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
+                   <p>运费：<span>到付</span></p>
+               </c:if>
+               <h1>共<b>${borderDetail.pfBorder.totalQuantity}</b>件商品　
+                   <c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType==2 || borderDetail.pfBorder.sendType==2}">
+                       运费：<span>到付</span>
+                   </c:if>　
+                   <b style="color:#333333">合计：</b><span>￥${borderDetail.pfBorder.orderAmount}</span></h1>
+               </c:if>
+           </section>
             <div class="sec5">
                 <p>订单编号：<span>${borderDetail.pfBorder.orderCode}</span></p>
                 <p>创建时间：<span><fmt:formatDate value="${borderDetail.pfBorder.createTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+                <c:if test="${borderDetail.pfBorder.orderType!=2}">
                 <p>付款时间：<span><fmt:formatDate value="${borderDetail.pfBorder.payTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
+                </c:if>
                 <p>发货时间：<span><fmt:formatDate value="${borderDetail.pfBorder.shipTime}" pattern="yyyy-MM-dd HH:mm"/></span></p>
             </div><c:if test="${borderDetail.pfBorder.orderStatus==1 && borderDetail.pfBorder.shipStatus==5}">
             <botton class="btn" onclick="querenshouhuo('${borderDetail.pfBorder.id}','${borderDetail.pfBorder.orderStatus}','${borderDetail.pfBorder.shipStatus}') ">

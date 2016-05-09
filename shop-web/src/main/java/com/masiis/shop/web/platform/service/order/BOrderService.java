@@ -278,7 +278,7 @@ public class BOrderService {
                 params[4] = freight;
                 Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
                 if (aBoolean == false) {
-                    throw new BusinessException("订单发货微信提示失败");
+                    throw new Exception("订单发货微信提示失败");
                 }
                 MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
             }
@@ -303,7 +303,7 @@ public class BOrderService {
             params[4] = freight;
             Boolean aBoolean = WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, params, url);
             if (aBoolean == false) {
-                throw new BusinessException("订单发货微信提示失败");
+                throw new Exception("订单发货微信提示失败");
             }
             MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(comUser.getMobile(), pfBorder.getOrderCode(), shipManName, freight);
         }

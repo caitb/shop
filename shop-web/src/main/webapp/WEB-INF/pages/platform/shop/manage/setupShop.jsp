@@ -21,7 +21,7 @@
     <p>店铺设置</p>
 </header>
 
-<div class="wrap">
+<div class="wrap" style="padding-bottom: 20px;">
     <form action="<%=basePath%>shop/manage/updateShop" method="post" id="shopForm">
     <p>
         <label for="">店铺名称</label>

@@ -4,28 +4,21 @@ import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
-import com.masiis.shop.common.util.OrderMakeUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.PfSkuAgentMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
-import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -382,5 +375,13 @@ public class BOrderService {
      */
     public Integer selectQueuingOrderCount(Integer skuId) {
         return pfBorderMapper.selectQueuingOrderCount(skuId);
+    }
+
+    /**
+     * 根据userId 和SkuId获取订单信息
+     *
+     */
+    public PfBorder getPfBorderBySkuAndUserId(Integer skuId,Long userId){
+        return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId,userId);
     }
 }

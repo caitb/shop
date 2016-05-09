@@ -188,15 +188,42 @@ public class SfOrderPayService {
             }
         }
     }
+    /**
+     * 支付成功回调
+     * @author hanzengzhi
+     * @date 2016/5/9 14:36
+     */
+    @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
+    public Map<String,Object> paySuccessCallBack(ComUser comUser,Long orderId){
+        Map<String,Object> map = new LinkedHashMap<String,Object>();
+        try{
+            //订单的收货地址
+            SfOrderConsignee ordCon = getOrdConByOrdId(orderId);
+            map.put("orderConsignee",ordCon);
+            //订单信息
+            SfOrder order = getOrderById(orderId);
+            map.put("order",order);
+            //获得用户的分销关系的父id
+            Long userPid = getUserPid(order.getUserId());
+            map.put("userPid",userPid);
+            //微信短信提醒
+            //开发临时去掉
+            /*List<SfOrderItem> orderItems = getOrderItem(orderId);
+            orderNotice(comUser,order,orderItems);*/
+        }catch (Exception e){
+            throw new BusinessException(e);
+        }
+        return map;
+    }
 
 
     /**
-     * 支付成功回调
+     * 查看订单详情
      * @author hanzengzhi
      * @date 2016/4/10 13:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> paySuccessCallBack(ComUser comUser,Long orderId){
+    public Map<String,Object> getOrderDetail(ComUser comUser,Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址
@@ -211,8 +238,6 @@ public class SfOrderPayService {
             //获得用户的分销关系的父id
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
-            //微信短信提醒
-            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }

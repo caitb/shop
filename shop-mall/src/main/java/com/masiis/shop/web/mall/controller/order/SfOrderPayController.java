@@ -73,10 +73,27 @@ public class SfOrderPayController extends BaseController {
         Map<String,Object> map = orderPayService.paySuccessCallBack(getComUser(request),orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
+        model.addAttribute("userPid",map.get("userPid"));
+        model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
+        return "mall/order/paySuccess";
+    }
+
+    /**
+     * 获得订单详情
+     * @author hanzengzhi
+     * @date 2016/4/10 13:56
+     */
+    @RequestMapping(value = "getOrderDetail.html")
+    public String getOrderDetail(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestParam(value = "orderId", required = true) Long orderId,
+                                     Model model)throws Exception{
+        Map<String,Object> map = orderPayService.getOrderDetail(getComUser(request),orderId);
+        model.addAttribute("orderConsignee",map.get("orderConsignee"));
+        model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));
         model.addAttribute("userPid",map.get("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
-        return "mall/order/zhifuchenggong";
+        return "mall/order/orderDetail";
     }
 
 }

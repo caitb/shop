@@ -21,12 +21,16 @@
 </head>
 <body ontouchstart="">
 <div class="wrap">
+    <header class="xq_header">
+        <a href="<%=basePath%>developing/ui"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+        <p>注册链接</p>
+    </header>
     <div id="box">
-        <header class="xq_header">
-            <a href="javascript:<%=basePath%>developing/ui"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
-            <p>注册链接</p>
-        </header>
+        <h1>
+            宣传海报，将海报发到您的朋友圈
+         </h1>
         <img src="${shareMap.poster}" alt="">
+        <p>长按图片保存到手机，发送给好友</p>
     </div>
 </div>
 </body>

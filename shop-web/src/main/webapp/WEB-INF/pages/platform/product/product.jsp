@@ -115,30 +115,34 @@
 <footer>
     <section class="sec3">
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
-        <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
+      <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
             <p>
-                <a id="applyTrial" onclick="validateCodeJS.applyTrial('trial')">申请试用</a>
-                <a id="trialed" style="display: none">已试用</a>
+                <a id="applyTrial" class="first_p" onclick="validateCodeJS.applyTrial('trial')"><img src="${path}/static/images/icon_88.png" alt="">申请试用</a>
+                <a id="trialed" class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">已试用</a>
             </p>
         </c:if>
         <c:if test="${productDetails.isTrial==0}">
-            <a  style="display: none">不能试用</a>
+            <a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">不能试用</a>
         </c:if>
-        <c:if test="${empty pfUserSku}"><!--未代理><-->
-        <p style="background: #DA3600;"><a onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
+        <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
+        <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
         </p>
         </c:if>
-        <c:if test="${not empty pfUserSku && pfUserSku.isPay==0}"><!--未支付><-->
-        <p style="background: #DA3600;"><a href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pfUserSku.pfBorderId}">申请合伙人</a>
+        <c:if test="${empty pfUserSku && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
+        <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
         </p>
         </c:if>
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
-            <p style="background: #DA3600;" onclick="gotoBuhuo()">您已合伙</p>
+            <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
         </c:if>
-        <%--<p class="first_p"><b><img src="${path}/static/images/icon_88.png" alt="">申请试用</b></p>
-        <p class="first_p2"><b><img src="${path}/static/images/icon_89.png" alt="">申请试用</b></p>
-        <p class="last_p">我要合伙</p>
-        <p class="last_p2">我要合伙</p>--%>
+        <%--<p>--%>
+            <%--<a class="first_p"><img src="${path}/static/images/icon_88.png" alt="">申请试用</a>--%>
+            <%--<a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">申请试用</a>--%>
+        <%--</p>--%>
+        <%--<p>--%>
+            <%--<a href="" class="last_p">我要合伙</a>--%>
+            <%--<a href="" class="last_p2">已合伙</a>--%>
+        <%--</p>--%>
     </section>
 </footer>
 <div class="back_box">

@@ -95,4 +95,9 @@ public interface PfBorderMapper {
      */
     Integer queryOrderNumsByUpidAndStatus(@Param("userPid") Long userPid,
                                           @Param("orderStatus") Integer orderStatus);
+
+    /**
+     * 根据商品Id和用户Id 查询订单信息
+     */
+    PfBorder selectPfBOrderBySkuIdAndUserId(@Param("skuId") Integer skuId,@Param("userId") Long userId);
 }

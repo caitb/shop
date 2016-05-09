@@ -3,10 +3,26 @@
   width: 100%;
   height: 100%;
   color: #333333;
+  background: #f6f6f6;
+  display: -webkit-box;
+  -webkit-box-orient:vertical;
+}
+#box{
+  background: #fff;
+  -webkit-box-flex:1;
+}
+h1{
+  padding: 15px 0 5px 0;
+  background: #f6f6f6;
 }
 img{
   width:90%;
   margin: 0 auto;
   display: block;
   margin-top: 6%;
+}
+img+p{
+  text-align: center;
+  color: #f74a11;
+  padding:15px;
 }

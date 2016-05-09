@@ -157,7 +157,7 @@ public class DevelopingController extends BaseController {
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
                 //if(pfUserCertificate.getPoster() == null){
-                    String headImgName = "headimg.png";
+                    String headImgName = "headimg-"+comUser.getId()+".png";
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
                     String qrcodeName = "qrcode"+pfUserCertificate.getPfUserSkuId()+".png";
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static";

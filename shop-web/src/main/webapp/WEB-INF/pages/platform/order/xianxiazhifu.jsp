@@ -15,11 +15,13 @@
         <%--        <a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
-    <div class="xinxi">
-        <p>注册信息</p>
-        <p style="color:#F74A11;">确认订单</p>
-        <p style="color:#F74A11;">完成合伙</p>
-    </div>
+    <c:if test="${border.orderType==0}">
+        <div class="xinxi">
+            <p>注册信息</p>
+            <p style="color:#F74A11;">确认订单</p>
+            <p>完成合伙</p>
+        </div>
+    </c:if>
     <p class="cHange">您选择的支付方式： 线下支付<a id="changePayWayId">更改支付方式</a></p>
     <div class="sec1">
         <div>

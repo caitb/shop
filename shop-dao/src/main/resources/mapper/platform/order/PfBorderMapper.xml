@@ -470,4 +470,17 @@
             AND order_status = #{orderStatus,jdbcType=INTEGER}
         </if>
     </select>
+
+    <select id="selectPfBOrderBySkuIdAndUserId" resultMap="BaseResultMap">
+        SELECT id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
+        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
+        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        FROM pf_border pb
+        WHERE pb.user_id= #{userId}
+        AND pb.order_status IN (0,9)
+        AND EXISTS(SELECT 0 FROM pf_border_item pbi WHERE pb.id=pbi.pf_border_id AND pbi.sku_id=#{skuId})
+    </select>
+
 </mapper>

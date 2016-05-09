@@ -8,7 +8,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background:url("/static/images/taib.png") no-repeat;
+  background: #F6410C;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -18,9 +18,10 @@
 .wrap .tai img {
   position: absolute;
   display: block;
-  width: 40px;
-  height: 30px;
-  top: 18px;
+  width: 50px;
+  height: 40px;
+  left: 15px;
+  top: 12px;
 }
 .wrap .tai h1,
 .wrap .tai p {
@@ -57,47 +58,12 @@
 }
 .wrap .oPeration a {
   display: block;
-  background: url("../images/sccess2.png") no-repeat 0px;
+  background: url("/static/images/sccess2.png") no-repeat 0px;
   background-size: 15px;
   padding-left: 20px;
 }
 .wrap .oPeration a:nth-child(2) {
-  background: url("../images/success1.png") no-repeat 0px;
+  background: url("/static/images/success1.png") no-repeat 0px;
   background-size: 18px 17px;
   margin-left: 30px;
-}
-.paidan{
-    width:100%;
-    background: white;
-    margin-top: 10px;
-}
-.paidan>p{
-    margin:0 10px;
-    color:#999;
-    font-size: 12px;
-    padding-bottom: 10px;
-    text-align: center;
-}
-.paidan>p span{
-    font-size: 12px;
-}
-.paidan>h1 img{
-    display: block;
-    width: 20%;
-}
-.paidan>h1{
-    margin: 0 10px;
-    letter-spacing: 1px;
-    text-align: center;
-    display: -webkit-box;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
-    padding: 10px 0 5px 0;
-}
-.paidan>h1 b{
-    font-size: 12px;
-}
-.paidan>h1 span{
-    font-size: 12px;
-    color: #f52000;
 }

@@ -270,8 +270,8 @@ public class BOrderPayService {
                 String name = comUser.getRealName();//申请人
                 String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
                 String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
-                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "，手机：" + pfUserCertificate.getMobile() + "，微信：" + pfUserCertificate.getWxId();
-                String value2 = "授权期限：" + beginTime + "至" + endTime;
+                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "   授权期限：" + beginTime + " 至 " + endTime;
+                String value2 = "手机：" + pfUserCertificate.getMobile() + "   微信：" + pfUserCertificate.getWxId();
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
                 pfUserCertificate.setImgUrl(picName + ".jpg");
@@ -556,7 +556,7 @@ public class BOrderPayService {
                 paramIn[0] = pfBorder.getOrderCode();
                 paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                 String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, false);
+                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
                 MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             }
         } else {
@@ -598,7 +598,7 @@ public class BOrderPayService {
                         paramIn[0] = pfBorder.getOrderCode();
                         paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, true);
+                        WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, true);
                         MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                     }
                 }

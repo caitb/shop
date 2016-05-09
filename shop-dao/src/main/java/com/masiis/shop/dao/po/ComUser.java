@@ -296,4 +296,34 @@ public class ComUser implements Serializable {
     public void setIsBuy(Integer isBuy) {
         this.isBuy = isBuy;
     }
+
+    @Override
+    public String toString() {
+        return "ComUser{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", mobile='" + mobile + '\'' +
+                ", userMail='" + userMail + '\'' +
+                ", wxHeadImg='" + wxHeadImg + '\'' +
+                ", wxNkName='" + wxNkName + '\'' +
+                ", sex=" + sex +
+                ", realName='" + realName + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", idCardFrontUrl='" + idCardFrontUrl + '\'' +
+                ", idCardBackUrl='" + idCardBackUrl + '\'' +
+                ", wxId='" + wxId + '\'' +
+                ", isBinding=" + isBinding +
+                ", isAgent=" + isAgent +
+                ", sendType=" + sendType +
+                ", auditStatus=" + auditStatus +
+                ", auditReason='" + auditReason + '\'' +
+                ", wxUnionid='" + wxUnionid + '\'' +
+                ", password='" + password + '\'' +
+                ", pwdSalt='" + pwdSalt + '\'' +
+                ", registerSource=" + registerSource +
+                ", appToken='" + appToken + '\'' +
+                ", appTokenExpire=" + appTokenExpire +
+                ", isBuy=" + isBuy +
+                '}';
+    }
 }

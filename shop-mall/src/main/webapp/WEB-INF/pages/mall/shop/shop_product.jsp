@@ -324,72 +324,71 @@
     <%--}--%>
 <%--</script>--%>
 </body>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script>
-    /*
-     * 注意：
-     * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
-     * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
-     * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-     *
-     * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
-     * 邮箱地址：weixin-open@qq.com
-     * 邮件主题：【微信JS-SDK反馈】具体问题
-     * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
-     */
-    wx.config({
-        debug: false,
-        appId: '${shareMap.appId}',
-        timestamp: ${shareMap.timestamp},
-        nonceStr: '${shareMap.nonceStr}',
-        signature: '${shareMap.signature}',
-        jsApiList: [
-            'checkJsApi',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'onMenuShareQZone',
-            'hideMenuItems',
-            'showMenuItems',
-            'hideAllNonBaseMenuItem',
-            'showAllNonBaseMenuItem',
-            'translateVoice',
-            'startRecord',
-            'stopRecord',
-            'onVoiceRecordEnd',
-            'playVoice',
-            'onVoicePlayEnd',
-            'pauseVoice',
-            'stopVoice',
-            'uploadVoice',
-            'downloadVoice',
-            'chooseImage',
-            'previewImage',
-            'uploadImage',
-            'downloadImage',
-            'getNetworkType',
-            'openLocation',
-            'getLocation',
-            'hideOptionMenu',
-            'showOptionMenu',
-            'closeWindow',
-            'scanQRCode',
-            'chooseWXPay',
-            'openProductSpecificView',
-            'addCard',
-            'chooseCard',
-            'openCard'
-        ]
-    });
+<%--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>--%>
+<%--<script>--%>
+    <%--/*--%>
+     <%--* 注意：--%>
+     <%--* 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。--%>
+     <%--* 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。--%>
+     <%--* 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html--%>
+     <%--*--%>
+     <%--* 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：--%>
+     <%--* 邮箱地址：weixin-open@qq.com--%>
+     <%--* 邮件主题：【微信JS-SDK反馈】具体问题--%>
+     <%--* 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。--%>
+     <%--*/--%>
+    <%--&lt;%&ndash;wx.config({&ndash;%&gt;--%>
+        <%--&lt;%&ndash;debug: false,&ndash;%&gt;--%>
+        <%--&lt;%&ndash;appId: '${shareMap.appId}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;timestamp: ${shareMap.timestamp},&ndash;%&gt;--%>
+        <%--&lt;%&ndash;nonceStr: '${shareMap.nonceStr}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;signature: '${shareMap.signature}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;jsApiList: [&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'checkJsApi',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onMenuShareTimeline',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onMenuShareAppMessage',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onMenuShareQQ',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onMenuShareWeibo',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onMenuShareQZone',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'hideMenuItems',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'showMenuItems',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'hideAllNonBaseMenuItem',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'showAllNonBaseMenuItem',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'translateVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'startRecord',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'stopRecord',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onVoiceRecordEnd',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'playVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'onVoicePlayEnd',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'pauseVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'stopVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'uploadVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'downloadVoice',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'chooseImage',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'previewImage',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'uploadImage',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'downloadImage',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'getNetworkType',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'openLocation',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'getLocation',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'hideOptionMenu',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'showOptionMenu',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'closeWindow',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'scanQRCode',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'chooseWXPay',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'openProductSpecificView',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'addCard',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'chooseCard',&ndash;%&gt;--%>
+            <%--&lt;%&ndash;'openCard'&ndash;%&gt;--%>
+        <%--&lt;%&ndash;]&ndash;%&gt;--%>
+    <%--&lt;%&ndash;});&ndash;%&gt;--%>
 
-    var shareData = {
-        title: '${shareMap.shareTitle}',
-        desc: '${shareMap.shareDesc}',
-        link: '${shareMap.shareLink}',
-        imgUrl: '${shareMap.shareImg}'
-    };
-</script>
-<script src="<%=basePath%>static/js/pageJs/zepto.min.js"></script>
-<script src="<%=basePath%>static/js/pageJs/share.js"> </script>
+    <%--&lt;%&ndash;var shareData = {&ndash;%&gt;--%>
+        <%--&lt;%&ndash;title: '${shareMap.shareTitle}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;desc: '${shareMap.shareDesc}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;link: '${shareMap.shareLink}',&ndash;%&gt;--%>
+        <%--&lt;%&ndash;imgUrl: '${shareMap.shareImg}'&ndash;%&gt;--%>
+    <%--&lt;%&ndash;};&ndash;%&gt;--%>
+<%--</script>--%>
+<%--<script src="<%=basePath%>/static/js/pageJs/share.js"> </script>--%>
 </html>

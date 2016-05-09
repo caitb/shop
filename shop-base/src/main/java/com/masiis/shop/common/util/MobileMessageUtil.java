@@ -368,11 +368,12 @@ public class MobileMessageUtil {
      * @param mes        收款信息
      * @return
      */
-    public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String mes){
-        content = new String[3];
+    public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
+        content = new String[4];
         content[0] = orderCode;
         content[1] = amount;
-        content[2] = mes;
+        content[2] = date;
+        content[3] = mes;
         return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
     }
 
@@ -390,7 +391,7 @@ public class MobileMessageUtil {
     }
 
 //    public static void main(String[] args){
-//        MobileMessageUtil.getInitialization("B").addStockSuccess("18800175968",1,"22");
-//        MobileMessageUtil.getInitialization("B").verificationCode("18800175968","1111","5");
+//        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind("18800175968","1111","1212","aaaaa");
+//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
 //    }
 }

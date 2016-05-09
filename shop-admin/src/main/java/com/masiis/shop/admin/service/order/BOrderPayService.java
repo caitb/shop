@@ -581,7 +581,7 @@ public class BOrderPayService {
                 paramIn[0] = pfBorder.getOrderCode();
                 paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                 String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, false);
+                WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, false);
                 MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
             }
         } else {
@@ -623,7 +623,7 @@ public class BOrderPayService {
                         paramIn[0] = pfBorder.getOrderCode();
                         paramIn[1] = timeFormart.format(pfBorder.getCreateTime());
                         String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId();
-                        WxPFNoticeUtils.getInstance().newOrderNotice(comUser, paramIn, url, true);
+                        WxPFNoticeUtils.getInstance().newOrderNotice(pComUser, paramIn, url, true);
                         MobileMessageUtil.getInitialization("B").haveNewLowerOrder(pComUser.getMobile(), pfBorder.getOrderStatus());
                     }
                 }

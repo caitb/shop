@@ -103,6 +103,6 @@ public class SMSConstants {
 	/**
 	 * 线下支付提醒
 	 */
-	public static final String OFFLINE_PAYMENTS_REMIND = "84398";
+	public static final String OFFLINE_PAYMENTS_REMIND = "85070";
 
 }

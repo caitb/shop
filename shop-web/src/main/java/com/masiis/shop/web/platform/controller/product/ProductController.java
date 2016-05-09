@@ -93,8 +93,11 @@ public class ProductController extends BaseController {
         }
         productDetails.setMaxDiscount(productService.getMaxDiscount(skuId));
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+        //订单信息
+        PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId,user.getId());
         mav.addObject("pfUserSku", pfUserSku);//是否代理过该商品
         mav.addObject("productDetails", productDetails);
+        mav.addObject("pfBorder", pfBorder);//订单信息
         return mav;
     }
 

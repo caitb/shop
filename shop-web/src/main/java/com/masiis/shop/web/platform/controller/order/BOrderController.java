@@ -101,10 +101,33 @@ public class BOrderController extends BaseController {
         }
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
+
+        String successURL = getBasePath(request);
+        //订单类型(0代理1补货2拿货)
+        if (pfBorder.getOrderType() == 0) {
+            //拿货方式(0未选择1平台代发2自己发货)
+            if (pfBorder.getSendType() == 0) {
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+            } else {
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+            }
+        } else if (pfBorder.getOrderType() == 1) {
+            successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+        } else {
+            throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
+        }
+        WxPaySysParamReq req = new WxPaySysParamReq();
+        req.setOrderId(pfBorder.getOrderCode());
+        req.setSignType("MD5");
+        req.setNonceStr(WXBeanUtils.createGenerateStr());
+        req.setSuccessUrl(successURL);
+        req.setSign(WXBeanUtils.toSignString(req));
+
         modelAndView.addObject("pfBorder", pfBorder);
         modelAndView.addObject("downPayLatestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
         modelAndView.addObject("pfBorderItems", pfBorderItems);
         modelAndView.addObject("comUser", getComUser(request));
+        modelAndView.addObject("param", JSONObject.toJSONString(req));
         return modelAndView;
     }
 

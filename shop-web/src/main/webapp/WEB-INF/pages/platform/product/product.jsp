@@ -124,12 +124,12 @@
         <c:if test="${productDetails.isTrial==0}">
             <a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">不能试用</a>
         </c:if>
-        <c:if test="${empty pfUserSku}"><!--未代理><-->
+        <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
         <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
         </p>
         </c:if>
-        <c:if test="${empty pfUserSku && pfUserSku.isPay==0}"><!--未支付><-->
-        <p><a class="last_p" href="<%=basePath%>border/payBOrder.shtml?bOrderId=${pfUserSku.pfBorderId}">申请合伙人</a>
+        <c:if test="${empty pfUserSku && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
+        <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
         </p>
         </c:if>
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">

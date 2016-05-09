@@ -157,7 +157,7 @@ public class DevelopingController extends BaseController {
             if(pfUserCertificates != null && pfUserCertificates.size() > 0){
                 PfUserCertificate pfUserCertificate = pfUserCertificates.get(0);
                 //if(pfUserCertificate.getPoster() == null){
-                    String headImgName = "headimg.png";
+                    String headImgName = "headimg-"+comUser.getId()+".png";
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
                     String qrcodeName = "qrcode"+pfUserCertificate.getPfUserSkuId()+".png";
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static";
@@ -177,7 +177,8 @@ public class DevelopingController extends BaseController {
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
                     contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
-                    contents[1] = "我在麦链合伙人做抗引力-瘦脸精华执行董事级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
+                    ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     //删除本地二维码图片
                     new File(qrcodePath).delete();

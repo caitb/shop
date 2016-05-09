@@ -20,6 +20,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -46,12 +48,12 @@ public class WxPayController extends BaseController{
         try{
             // 参数校验
             req = checkRequestParma(req, param);
-            log.info("参数校验通过");
+            log.info("wxpayPage:参数校验通过");
             // 获取当前登录用户
             user = getComUser(request);
             if(user == null){
                 // 未知原因错误
-                log.error("未知原因错误");
+                log.error("wxpayPage:未知原因错误");
             }
         } catch (Exception e) {
             log.error("" + e.getMessage());
@@ -110,6 +112,82 @@ public class WxPayController extends BaseController{
         return "pay/wxpay/wxpayPage";
     }
 
+
+    @RequestMapping(value = "/aspay", method = RequestMethod.POST)
+    @ResponseBody
+    public String wxpayJS(HttpServletRequest request, String param) {
+        String ip = request.getRemoteAddr();
+        WxPaySysParamReq req = null;
+        ComUser user = null;
+        JSONObject sysRes = null;
+        try{
+            // 参数校验
+            req = checkRequestParma(req, param);
+            log.info("wxpayJs:参数校验通过");
+            // 获取当前登录用户
+            user = getComUser(request);
+            if(user == null){
+                // 未知原因错误
+                log.error("wxpayJs:未知原因错误");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return "{\"resMsg\":\"请求错误\"}";
+        }
+
+        // 处理业务
+        // 组织微信预付订单参数对象,并生成签名
+        HttpsRequest h = new HttpsRequest();
+        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
+        XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        // 生成预付订单参数签名
+        String res = null;
+        UnifiedOrderRes resObj = null;
+        try {
+            uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
+            // 微信下预付订单,并获取预付订单号
+            res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
+            log.info("wxpayJs:下预付单响应成功,response:" + res);
+
+            xStream.processAnnotations(UnifiedOrderRes.class);
+            resObj = (UnifiedOrderRes) xStream.fromXML(res);
+            if(resObj == null || StringUtils.isBlank(resObj.getReturn_code())){
+                throw new BusinessException("网络错误");
+            }
+            if(!"SUCCESS".equals(resObj.getReturn_code())){
+                // 通信错误,如参数格式错误,签名错误
+                throw new BusinessException(resObj.getReturn_msg());
+            }
+            if(!"SUCCESS".equals(resObj.getResult_code())){
+                // 业务错误,可以做一些操作
+                throw new BusinessException(resObj.getErr_code_des());
+            }
+            // 预付单下单成功
+            log.info("wxpayJs:预付单下单成功");
+            // 创建支付记录
+            wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
+        } catch (Exception e) {
+            log.error("wxpayJs:下预付单失败," + e.getMessage(), e);
+            // 预付单下单失败处理
+            return "{\"resMsg\":\"请求错误\"}";
+        }
+
+        // 组织微信支付请求参数,并形成签名
+        BrandWCPayReq payReq = createBrandWCPayReq(resObj);
+
+        // 获取成功支付后的跳转页面url
+        sysRes = (JSONObject) JSONObject.toJSON(payReq);
+        sysRes.put("successUrl", req.getSuccessUrl());
+        sysRes.put("cancelUrl", req.getCancelUrl());
+        sysRes.put("errUrl", req.getErrorUrl());
+        /*////// 检查jsapi_ticket和access_token有效性,次access_token不是微信网页授权access_token
+        ////// 组织页面wx.config参数,并形成签名
+        发现可以不用这种方式实现*/
+        return sysRes.toJSONString();
+    }
+
+
+
     /**
      * 针对请求的参数合法性进行校验
      *
@@ -155,4 +233,5 @@ public class WxPayController extends BaseController{
         payReq.setPaySign(WXBeanUtils.toSignString(payReq));
         return payReq;
     }
+
 }

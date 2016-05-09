@@ -5,7 +5,7 @@
 }
 .wrap .tai {
   width: 100%;
-  background: #F6410C;
+  background: #f73c8c;
   height: 60px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -15,15 +15,19 @@
 .wrap .tai img {
   position: absolute;
   display: block;
-  width: 50px;
-  height: 40px;
+  width: 38px;
+  height: 36px;
   left: 15px;
-  top: 12px;
+  top: 14px;
 }
 .wrap .tai h1,
 .wrap .tai p {
-  text-indent: 5rem;
+  text-indent: 4.5rem;
   color: white;
+  font-size: 12px;
+}
+.wrap .tai h1{
+  font-size: 14px;
 }
 .wrap .sec1 {
   width: 100%;
@@ -33,16 +37,15 @@
   display: -webkit-box;
   -webkit-box-align: center;
   -webkit-box-pack: justify;
-  display: -moz-box;
-  -moz-box-align: center;
-  -moz-box-pack: justify;
 }
 .wrap .sec1 img {
   display: inline-block;
   width: 15px;
   height: 20px;
   margin-left: 10px;
-  margin-top: 10px;
+}
+.wrap .sec1 h2,.wrap .sec1 h2 b,.wrap .sec1 h2 span{
+  font-size:12px;
 }
 .wrap .sec1 div {
   width: 88%;
@@ -50,18 +53,17 @@
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
 }
 .wrap .sec1 div h2 span {
   float: right;
-  margin-right: 10px;
+  margin-right: 4em;
+  font-size: 12px;
 }
 .wrap .sec1 div p {
   width: 100%;
   overflow: hidden;
   position: relative;
+  font-size: 12px;
 }
 .wrap .sec1 div p span {
   font-size: 12px;

@@ -26,8 +26,8 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p>确定拿货方式</p>
-            <p>支付订单</p>
+            <p>确认订单</p>
+            <p>完成合伙</p>
         </div>
 
         <div class="main">
@@ -138,8 +138,6 @@
 </div>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script src="${path}/static/js/zepto.min.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="${path}/mshop/shop-web/src/main/webapp/static/js/hideWXShare.js"></script>
 <script>
     $(".add").on("tap", function () {
         $(".back_box").show()

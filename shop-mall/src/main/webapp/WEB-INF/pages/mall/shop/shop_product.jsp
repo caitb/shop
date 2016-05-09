@@ -209,6 +209,7 @@
     //check
     function clickbuy(a,b){
         $(".number").val(1);
+        i=1;
         if(a==b){
             alert("您不可以购买自己的商品！");
             return;

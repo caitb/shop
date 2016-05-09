@@ -12,14 +12,15 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <%--<a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
+    <c:if test="${pfBorder.orderType==0}">
     <div class="xinxi">
         <p>注册信息</p>
-        <p>确定拿货方式</p>
-        <p>支付订单</p>
+        <p>确认订单</p>
+        <p>完成合伙</p>
     </div>
+    </c:if>
     <div class="sec1">
         <h1>订单信息：</h1>
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">

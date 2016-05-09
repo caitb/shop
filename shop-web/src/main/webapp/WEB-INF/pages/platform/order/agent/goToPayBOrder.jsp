@@ -5,21 +5,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>订单详情</title>
+    <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
     <link rel="stylesheet" href="${path}/static/css/shouyintai.css">
 </head>
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <%--<a href="index.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>--%>
         <p>支付订单</p>
     </header>
+    <c:if test="${pfBorder.orderType==0}">
     <div class="xinxi">
         <p>注册信息</p>
         <p>确认订单</p>
         <p>完成合伙</p>
     </div>
+    </c:if>
     <div class="sec1">
         <h1>订单信息：</h1>
         <c:forEach items="${pfBorderItems}" var="pfBorderItem">

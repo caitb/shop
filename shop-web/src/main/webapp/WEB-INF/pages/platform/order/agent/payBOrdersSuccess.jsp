@@ -26,8 +26,8 @@
         </header>
         <div class="xinxi">
             <p>注册信息</p>
-            <p>确定拿货方式</p>
-            <p>支付订单</p>
+            <p>确认订单</p>
+            <p>完成合伙</p>
         </div>
 
         <div class="main">

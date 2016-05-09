@@ -1,5 +1,9 @@
 $(function(){
     $("#extractBtnId").on("click", function(){
+        if($(".sec2").length == 0){
+            alert("请添加银行卡");
+            return;
+        }
         var money = $("#extractMoneyId").val();
         if(money.trim().length <= 0){
             alert("请输入提现金额");

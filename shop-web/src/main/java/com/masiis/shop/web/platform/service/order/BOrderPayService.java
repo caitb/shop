@@ -661,12 +661,10 @@ public class BOrderPayService {
             if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
                 throw new BusinessException("您已支付无需再次支付");
             }
-            if (orderStatus.equals(BOrderStatus.NotPaid.getCode())||orderStatus.equals(BOrderStatus.offLineNoPay.getCode())){
-                pfBorder.setOrderStatus(status);
-                int i = pfBorderMapper.updateById(pfBorder);
-                if (i != 1) {
-                    throw new BusinessException("线下支付更新订单状态失败");
-                }
+            pfBorder.setOrderStatus(status);
+            int i = pfBorderMapper.updateById(pfBorder);
+            if (i != 1) {
+                throw new BusinessException("线下支付更新订单状态失败");
             }
         }else{
             throw new BusinessException("线下支付失败:查询订单信息失败");

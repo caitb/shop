@@ -82,3 +82,25 @@
   margin-top: 3rem;
   margin-bottom: 2rem;
 }
+.wrap .tai {
+  width: 100%;
+  background:url("/static/images/taib.png") no-repeat;
+  height: 60px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  position: relative;
+}
+.wrap .tai img {
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 40px;
+  top: 12px;
+  left:10px;
+}
+.wrap .tai h1,
+.wrap .tai p {
+  text-indent: 5rem;
+  color: white;
+}

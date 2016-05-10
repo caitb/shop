@@ -20,7 +20,7 @@
             <p>实名认证</p>
         </header>
         <div class="tai">
-            <img src="${path}/static/images/icon_43.png" alt="" style="width:40px;height: 40px;">
+            <img src="${path}/static/images/icon_43.png" alt="">
             <h1>您的资料审核失败了！</h1>
             <p>失败原因:<span>${comUser.auditReason}</span></p>
         </div>

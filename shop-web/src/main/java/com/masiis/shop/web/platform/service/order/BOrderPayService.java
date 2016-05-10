@@ -657,7 +657,6 @@ public class BOrderPayService {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder!=null){
             Integer payStatus = pfBorder.getPayStatus();
-            Integer orderStatus = pfBorder.getOrderStatus();
             if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
                 throw new BusinessException("您已支付无需再次支付");
             }

@@ -27,28 +27,19 @@
             <c:if test="">
                 <span>您的推荐人是<b>${userPid.realName}</b></span>
             </c:if>
+            <span>会员：<b>否</b> （需要购买至少一件商品）</span>
         </h1>
     </div>
-    <div class="Xin">
-        <p>我的订单</p>
-        <p><a href="<%=path%>/sfOrderManagerController/stockOrder">查看全部订单></a></p>
-    </div>
-    <div class="dynmic">
-        <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0">
-            <span><img src="<%=path%>/static/images/geren%20(2).png" alt=""><c:if test="${sfOrders0 !=0}"><b>${sfOrders0}</b></c:if></span>
-            <span>待付款</span></a>
-        </p>
-        <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=7">
-            <span><img src="<%=path%>/static/images/geren%20(3).png" alt=""><c:if test="${sfOrders7 !=0}"><b>${sfOrders7}</b></c:if></span>
-            <span>待发货</span></a>
-        </p>
-        <p><a href="<%=path%>/sfOrderManagerController/stockOrder?orderStatus=8">
-            <span><img src="<%=path%>/static/images/geren%20(1).png" alt="" ><c:if test="${sfOrders8 !=0}"><b>${sfOrders8}</b></c:if></span>
-            <span>待收货</span></a>
-        </p>
+    <div class="jiang">
+        <p>我的奖励</p>
+        <h1>￥<span>4545.00</span></h1>
     </div>
     <nav>
         <ul>
+            <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
+                <span><img src="<%=path%>/static/images/my.png" alt=""></span>
+                <span>我的订单</span>
+            </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/commissionHome.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
                 <span>我的佣金</span>
@@ -57,25 +48,24 @@
                 <span><img src="<%=path%>/static/images/geren2%20(2).png" alt=""></span>
                 <span>个人信息</span>
             </li>
+        </ul>
+        <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
                 <span>浏览过的店铺</span>
             </li>
-        </ul>
-        <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
                 <span><img src="<%=path%>/static/images/geren2%20(1).png" alt=""></span>
                 <span>地址管理</span>
             </li>
             <li> </li>
-            <li></li>
         </ul>
     </nav>
 </div><c:if test="${fm!=0}">
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt="" style="width: 25px;"></span>
             <span>首页</span>
         </p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">

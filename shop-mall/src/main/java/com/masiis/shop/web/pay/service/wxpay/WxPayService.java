@@ -1,6 +1,8 @@
 package com.masiis.shop.web.pay.service.wxpay;
 
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.exceptions.OrderPaidException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.UnifiedOrderReq;
@@ -60,6 +62,13 @@ public class WxPayService {
                 if (order == null) {
                     throw new BusinessException("订单号错误,不存在该订单号!");
                 }
+                if (order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_UNPAY.getCode().intValue()) {
+                    if(order.getPayStatus().intValue() == 1){
+                        throw new OrderPaidException("该订单已支付,无需再支付");
+                    } else {
+                        throw new BusinessException("该订单不是可支付状态");
+                    }
+                }
                 List<SfOrderItem> orderList = itemService.getSforderItemByOrderId(order.getId());
                 StringBuilder body = new StringBuilder();
                 for (SfOrderItem item : orderList) {
@@ -75,7 +84,11 @@ public class WxPayService {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new BusinessException(e);
+            if(e instanceof OrderPaidException){
+                throw new OrderPaidException(e);
+            } else {
+                throw new BusinessException(e);
+            }
         }
 
         return res;

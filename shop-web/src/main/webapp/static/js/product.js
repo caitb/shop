@@ -18,15 +18,15 @@
                             if (dataObj[0].payStatus==1){
                                 //已支付的订单不能申请试用。
                                 // 未支付的订单可以继续申请支付，支付时支付的之前的订单，不再重新下单
-                                $("#applyTrial").attr("style", "display:none");
-                                $("#trialed").attr("style", "display:block");
+                                $(".first_p").attr("style", "display:none");
+                                $(".first_p2").attr("style", "display:block");
                             }else{
-                                $("#applyTrial").attr("style", "display:block");
-                                $("#trialed").attr("style", "display:none");
+                                $(".first_p").attr("style", "display:block");
+                                $(".first_p2").attr("style", "display:none");
                             }
                         }else{
-                            $("#applyTrial").attr("style", "display:block");
-                            $("#trialed").attr("style", "display:none");
+                            $(".first_p").attr("style", "display:block");
+                            $(".first_p2").attr("style", "display:none");
                         }
                     }
                 });

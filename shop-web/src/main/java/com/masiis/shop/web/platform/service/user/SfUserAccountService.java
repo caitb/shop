@@ -40,6 +40,8 @@ public class SfUserAccountService {
         account.setCountingFee(new BigDecimal(0));
         account.setUserId(user.getId());
         account.setVersion(0L);
+        account.setCumulativeFee(new BigDecimal(0));
+        account.setAppliedFee(new BigDecimal(0));
 
         userAccountMapper.insert(account);
     }

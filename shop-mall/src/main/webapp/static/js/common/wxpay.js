@@ -42,7 +42,11 @@
 
                         pay();
                     } else {
-                        alert("网络错误");
+                        if(res.resCode == "1"){
+                            alert(res.resMsg);
+                        } else {
+                            alert("网络错误");
+                        }
                     }
                 },
                 error:function(){

@@ -85,6 +85,7 @@ public class SfUserBillService {
             log.info("修改账户的结算金额,之后结算金额是:" + account.getCountingFee());
             record.setNextFee(account.getCountingFee());
             sfRecordMapper.insert(record);
+
             // 修改可提现
             SfUserAccountRecord recordEx = createAccountRecord(account, bill, 3);
             log.info("修改账户的可提现金额,之前可提现金额是:" + account.getExtractableFee());
@@ -93,6 +94,16 @@ public class SfUserBillService {
             log.info("修改账户的可提现金额,之后可提现金额是:" + account.getExtractableFee());
             recordEx.setNextFee(account.getExtractableFee());
             sfRecordMapper.insert(recordEx);
+
+            // 修改累计可提现金额
+            SfUserAccountRecord recordCum = createAccountRecord(account, bill, 4);
+            log.info("修改账户的累计可提现金额,之前累计可提现金额是:" + account.getCumulativeFee());
+            recordCum.setPrevFee(account.getCumulativeFee());
+            account.setCumulativeFee(account.getCumulativeFee().add(bill.getCountAmount()));
+            log.info("修改账户的累计可提现金额,之后累计可提现金额是:" + account.getCumulativeFee());
+            recordCum.setNextFee(account.getCumulativeFee());
+            sfRecordMapper.insert(recordCum);
+
             log.info("添加资产账户操作记录成功!");
 
             int changeSize = accountMapper.updateByIdAndVersion(account);
@@ -115,7 +126,7 @@ public class SfUserBillService {
         record.setSfUserAccountId(account.getId());
         record.setHandleTime(new Date());
         record.setComUserId(account.getUserId());
-        record.setFeeType(0);
+        record.setFeeType(type);
         record.setHandleFee(bill.getCountAmount());
         record.setHandleSerialNum(SysBeanUtils.createSfAccountRecordSerialNum());
         record.setHandleType(0);

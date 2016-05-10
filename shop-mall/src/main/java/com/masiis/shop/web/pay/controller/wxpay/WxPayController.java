@@ -2,6 +2,8 @@ package com.masiis.shop.web.pay.controller.wxpay;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.exceptions.OrderPaidException;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.beans.pay.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.mall.beans.pay.wxpay.UnifiedOrderReq;
@@ -64,12 +66,12 @@ public class WxPayController extends BaseController {
         // 处理业务
         // 组织微信预付订单参数对象,并生成签名
         HttpsRequest h = new HttpsRequest();
-        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         // 生成预付订单参数签名
         String res = null;
         UnifiedOrderRes resObj = null;
         try {
+            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsSF.WX_PAY_URL_UNIORDER, uniOrder);
@@ -94,7 +96,11 @@ public class WxPayController extends BaseController {
             wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
         } catch (Exception e) {
             log.error("wxpayPage:下预付单失败," + e.getMessage(), e);
-            request.setAttribute("url", req.getErrorUrl());
+            if(e instanceof OrderPaidException) {
+                request.setAttribute("url", "http://mall.qc.iimai.com/sfOrderManagerController/toBorderManagement?fm=0");
+            } else {
+                request.setAttribute("url", req.getErrorUrl());
+            }
             // 预付单下单失败处理
             return "pay/wxpay/wx_redirect_page";
         }
@@ -140,12 +146,12 @@ public class WxPayController extends BaseController {
         // 处理业务
         // 组织微信预付订单参数对象,并生成签名
         HttpsRequest h = new HttpsRequest();
-        UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         // 生成预付订单参数签名
         String res = null;
         UnifiedOrderRes resObj = null;
         try {
+            UnifiedOrderReq uniOrder = wxPayService.createUniFiedOrder(req, user, ip);
             uniOrder.setSign(WXBeanUtils.toSignString(uniOrder));
             // 微信下预付订单,并获取预付订单号
             res = h.sendPost(WxConsSF.WX_PAY_URL_UNIORDER, uniOrder);
@@ -170,8 +176,12 @@ public class WxPayController extends BaseController {
             wxPayService.createPaymentRecord(uniOrder, resObj, req.getOrderId());
         } catch (Exception e) {
             log.error("wxpayJs:下预付单失败," + e.getMessage(), e);
-            // 预付单下单失败处理
-            return "{\"resMsg\":\"请求错误\"}";
+            if(e instanceof OrderPaidException) {
+                return "{\"resCode\":1, \"resMsg\":\"" + e.getMessage() + "\"}";
+            } else {
+                // 预付单下单失败处理
+                return "{\"resCode\":2, \"resMsg\":\"请求错误\"}";
+            }
         }
 
         // 组织微信支付请求参数,并形成签名

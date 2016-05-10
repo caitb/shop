@@ -2,6 +2,7 @@ package com.masiis.shop.web.pay.service.wxpay;
 
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.exceptions.OrderPaidException;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
@@ -38,7 +39,7 @@ public class WxPayService {
     @Resource
     private WxUserService wxUserService;
 
-    public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) {
+    public UnifiedOrderReq createUniFiedOrder(WxPaySysParamReq req, ComUser user, String ip) throws OrderPaidException {
         UnifiedOrderReq res = null;
         ComWxUser wxUser = wxUserService.getUserByUnionidAndAppid(user.getWxUnionid(), WxConsPF.APPID);
         try {
@@ -63,6 +64,9 @@ public class WxPayService {
                 }
                 if(order.getOrderStatus().intValue() != BOrderStatus.offLineNoPay.getCode().intValue()
                         && order.getOrderStatus().intValue() != BOrderStatus.NotPaid.getCode().intValue()){
+                    if(order.getPayStatus().intValue() == 1){
+                        throw new OrderPaidException("该订单已支付,无需再支付");
+                    }
                     throw new BusinessException("订单状态错误，不是可支付状态!");
                 }
                 List<PfBorderItem> orderList = bOrderService.getPfBorderItemByOrderId(order.getId());
@@ -98,7 +102,11 @@ public class WxPayService {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new BusinessException(e);
+            if(e instanceof OrderPaidException){
+                throw new OrderPaidException(e);
+            }else {
+                throw new BusinessException(e);
+            }
         }
 
         return res;

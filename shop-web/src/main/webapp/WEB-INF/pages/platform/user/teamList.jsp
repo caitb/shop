@@ -55,7 +55,7 @@
     </main>
     <div class="paidanqi">
         <div class="back_q">
-            <p style="padding: 20px">您代理到这款产品等级是最后一级,无团队管理功能!
+            <p style="padding: 20px">您代理的这款产品等级是最后一级,无团队管理功能!
             </p>
             <button class="kNow" style="font-size: 12px;">我知道了</button>
         </div>

@@ -76,7 +76,7 @@
                 </div>
             </section></c:forEach>
             <section class="sec3">
-                <p>留言： <input readonly="readonly" type="text" value="${orderMallDetail.sfOrder.userMessage}"></p>
+                <p>留言： <span>${orderMallDetail.sfOrder.userMessage}</span></p>
             </section>
             <section class="sec4">
                 <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}</span></p>

@@ -411,9 +411,10 @@
                }
                $(document).ready(function(){
                    var index=${index};
+                   $(".all").html("");
+                   $(".all").eq(index).show().siblings().hide();
                    $("li").children("a").removeClass("on")
                    $("li").eq(index).children("a").addClass("on");
-                   $(".all").eq(index).show().siblings().hide();
                });
                $(function(){
                    $("li").on("click",function(){

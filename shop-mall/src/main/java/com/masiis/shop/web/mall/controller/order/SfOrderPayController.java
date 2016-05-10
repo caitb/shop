@@ -45,7 +45,7 @@ public class SfOrderPayController extends BaseController {
                                Model model)throws Exception{
         Map<String,Object>  map =  orderPayService.getOrderInfo(orderId);
         SfOrder order = (SfOrder) map.get("order");
-        WxPaySysParamReq wpspr = orderPayService.callWechatPay(request, order.getOrderCode(), orderId);
+        WxPaySysParamReq wpspr = orderPayService.callWechatPay(request, order.getOrderCode(), orderId,false);
 
         model.addAttribute("order", order);
         model.addAttribute("orderItems", map.get("orderItems"));
@@ -63,7 +63,7 @@ public class SfOrderPayController extends BaseController {
                                 @RequestParam(value = "orderCode",required = true) String orderCode,
                                 @RequestParam(value = "orderId",required = true) Long orderId,
                                 RedirectAttributes attrs){
-        WxPaySysParamReq wpspr = orderPayService.callWechatPay(request, orderCode,orderId);
+        WxPaySysParamReq wpspr = orderPayService.callWechatPay(request, orderCode,orderId,true);
         attrs.addAttribute("param", JSONObject.toJSONString(wpspr));
         return "redirect:/wxpay/wtpay";
     }

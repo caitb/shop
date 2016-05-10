@@ -99,7 +99,7 @@
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
                     trHtml+="<h1>"+sku.comSku.name+"</h1>";
-                    trHtml+="<p style=\"color: #ff5200;\">￥"+sku.comSku.priceMarket+"</p>";
+                    trHtml+="<p style=\"color: #ff5200;\">￥"+returnfloat(sku.comSku.priceMarket)+"</p>";
                     trHtml+="<p>已售：<span>"+sku.saleNum+"</span>&nbsp;&nbsp;库存: <span>"+sku.stock+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="</div>";
@@ -128,7 +128,7 @@
                     trHtml+="<img src=\""+sku.comSkuImage.fullImgUrl+"\" alt=\"\">";
                     trHtml+="<div>";
                     trHtml+="<h1>"+sku.comSku.name+"</h1>";
-                    trHtml+="<p style=\"color: #ff5200;\">￥"+sku.comSku.priceMarket+"</p>";
+                    trHtml+="<p style=\"color: #ff5200;\">￥"+returnfloat(sku.comSku.priceMarket)+"</p>";
                     trHtml+="<p>已售：<span>"+sku.saleNum+"</span>&nbsp;&nbsp;库存: <span>"+sku.stock+"</span></p>";
                     trHtml+="</div>";
                     trHtml+="</div>";
@@ -192,7 +192,19 @@
         $(this).parent().hide();
         $(".back").hide();
     })
-
+   function returnfloat(value){
+      var sxd =value.toString().split(".");
+       if(sxd.length==1){
+           value=value.toString()+".00";
+           return value;
+       }
+       if(sxd.length>1){
+         if(sxd[1].length<2){
+             value=value.toString()+"0";
+         }
+           return value;
+       }
+   }
 </script>
 <%--<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>--%>
 <%--<script src="<%=path%>/static/shop/js/plugins/canvas2image.js"></script>--%>

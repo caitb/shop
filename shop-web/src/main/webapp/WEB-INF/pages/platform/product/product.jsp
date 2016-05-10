@@ -20,7 +20,7 @@
 <div class="wrap">
     <div class="box">
         <header class="xq_header">
-            <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png"
+            <a href="javascript:window.location.replace('<%=basePath%>marketGood/market')"><img src="<%=path%>/static/images/xq_rt.png"
                                                                                alt=""></a>
             <p>我要成为合伙人</p>
         </header>

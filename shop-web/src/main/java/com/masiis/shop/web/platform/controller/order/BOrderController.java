@@ -223,22 +223,44 @@ public class BOrderController extends BaseController {
      * @author hanzengzhi
      * @date 2016/4/25 14:44
      */
-    @RequestMapping(value = "offinePayment.html")
-    public ModelAndView offinePayment(HttpServletRequest request, HttpServletResponse response,
+    @RequestMapping(value = "offinePayment.do")
+    @ResponseBody
+    public String offinePayment(HttpServletRequest request, HttpServletResponse response,
+                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId)throws Exception{
+        Boolean bl = false;
+        try{
+            bl = payBOrderService.offinePayment(getComUser(request),bOrderId);
+        }catch (Exception e){
+            throw e;
+        }
+        return bl+"";
+    }
+
+    /**
+     * 获得线下支付详情信息
+     * @author hanzengzhi
+     * @date 2016/4/25 14:44
+     */
+    @RequestMapping(value = "getOffinePaymentDeatil.html")
+    public ModelAndView getOffinePaymentDeatil(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam(value = "bOrderId", required = true) Long bOrderId){
         ModelAndView mav = new ModelAndView("platform/order/xianxiazhifu");
-        Map<String,Object> map = payBOrderService.offinePayment(getComUser(request),bOrderId);
-        if (map != null){
-            mav.addObject("supplierBank",map.get("supplierBank"));
-            mav.addObject("latestTime", map.get("latestTime"));
-            mav.addObject("orderItem",map.get("orderItem"));
-            mav.addObject("border",map.get("border"));
-            mav.addObject("payAmount",map.get("payAmount"));
+        try{
+            Map<String,Object> map = payBOrderService.getOffinePaymentDeatil(bOrderId);
+            if (map != null){
+                mav.addObject("supplierBank",map.get("supplierBank"));
+                mav.addObject("latestTime", map.get("latestTime"));
+                mav.addObject("orderItem",map.get("orderItem"));
+                mav.addObject("border",map.get("border"));
+                mav.addObject("payAmount",map.get("payAmount"));
+            }
+        }catch (Exception e){
+            throw e;
         }
-//        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(getComUser(request));
-//        mav.addObject("isUserForcus", isUserForcus);
         return mav;
     }
+
+
 
     /**
      * 成功支付订单(代理订单)

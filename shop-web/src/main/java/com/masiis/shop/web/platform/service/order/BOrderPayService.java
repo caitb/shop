@@ -626,8 +626,8 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Map<String, Object> offinePayment(ComUser comUser, Long bOrderId) {
-        Map<String, Object> map = null;
+    public Boolean offinePayment(ComUser comUser, Long bOrderId)throws Exception {
+        //修改订单状态
         PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
         if (pfBorder != null) {
             //插入订单支付表
@@ -636,17 +636,15 @@ public class BOrderPayService {
             PfSupplierBank supplierBank = getDefaultBack();
             List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
             if (orderItems != null && orderItems.size() != 0) {
+                //发送微信短信提醒
                 offinePaymentNotice(comUser, pfBorder, orderItems.get(0), supplierBank);
-                map = new LinkedHashMap<String, Object>();
-                map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
-                map.put("supplierBank", supplierBank);
-                map.put("orderItem", orderItems.get(0));
-                map.put("border", pfBorder);
             } else {
                 throw new BusinessException("线下支付失败:查询子帐单为null");
             }
+            return true;
+        }else{
+            return false;
         }
-        return map;
     }
 
     /**
@@ -655,18 +653,23 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:49
      */
-    private PfBorder updateOrderStatus(Integer status, Long bOrderId) {
+    private PfBorder updateOrderStatus(Integer status, Long bOrderId)throws BusinessException {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-/*        if (pfBorder == null||!pfBorder.getOrderStatus().equals(BOrderStatus.NotPaid.getCode())){
-            throw new BusinessException("订单状态不是未支付状态，线下支付失败");
-        }*/
-        if (pfBorder == null) {
+        if (pfBorder!=null){
+            Integer payStatus = pfBorder.getPayStatus();
+            Integer orderStatus = pfBorder.getOrderStatus();
+            if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
+                throw new BusinessException("您已支付无需再次支付");
+            }
+            if (orderStatus.equals(BOrderStatus.NotPaid.getCode())||orderStatus.equals(BOrderStatus.offLineNoPay.getCode())){
+                pfBorder.setOrderStatus(status);
+                int i = pfBorderMapper.updateById(pfBorder);
+                if (i != 1) {
+                    throw new BusinessException("线下支付更新订单状态失败");
+                }
+            }
+        }else{
             throw new BusinessException("线下支付失败:查询订单信息失败");
-        }
-        pfBorder.setOrderStatus(status);
-        int i = pfBorderMapper.updateById(pfBorder);
-        if (i != 1) {
-            throw new BusinessException("线下支付更新订单状态失败");
         }
         return pfBorder;
     }
@@ -735,6 +738,32 @@ public class BOrderPayService {
             log.info("线下支付:订单支付表中没有输入，插入数据----end");
         }
     }
+
+    /**
+     * 线下支付
+     *
+     * @author hanzengzhi
+     * @date 2016/4/25 14:46
+     */
+    public Map<String, Object> getOffinePaymentDeatil(Long bOrderId)throws BusinessException {
+        Map<String, Object> map = null;
+        PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
+        if (pfBorder != null) {
+            PfSupplierBank supplierBank = getDefaultBack();
+            List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+            if (orderItems != null && orderItems.size() != 0) {
+                map = new LinkedHashMap<String, Object>();
+                map.put("latestTime", DateUtil.addDays(SysConstants.OFFINE_PAYMENT_LATEST_TIME));
+                map.put("supplierBank", supplierBank);
+                map.put("orderItem", orderItems.get(0));
+                map.put("border", pfBorder);
+            } else {
+                throw new BusinessException("获取订单信息失败");
+            }
+        }
+        return map;
+    }
+
 
     /**
      * 获得运营商的默认银行卡信息

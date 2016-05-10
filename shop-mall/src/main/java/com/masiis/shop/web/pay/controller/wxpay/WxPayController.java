@@ -111,7 +111,7 @@ public class WxPayController extends BaseController {
         return "pay/wxpay/wxpayPage";
     }
 
-    @RequestMapping(value = "/wspay", method = RequestMethod.POST)
+    @RequestMapping(value = "/aspay", method = RequestMethod.POST)
     @ResponseBody
     public String wxpayJS(HttpServletRequest request, String param) {
         log.info("进入微信支付接口...");

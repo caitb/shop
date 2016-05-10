@@ -65,7 +65,8 @@
                         // 支付取消
                     } else {
                         // 跳转失败或者取消页面
-                        if(wxResConfig.errUrl != "" && wxResConfig.errUrl != null) {
+                        if(wxResConfig.errUrl != "" && wxResConfig.errUrl != null
+                            && wxResConfig.errUrl != undefined) {
                             window.location.href = wxResConfig.errUrl;
                         } else {
 

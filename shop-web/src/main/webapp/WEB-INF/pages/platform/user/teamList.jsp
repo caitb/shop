@@ -38,7 +38,7 @@
         </div>
         <p>产品团队列表</p>
         <c:forEach items="${agentSkuMaps}" var="agentSkuMap">
-            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1 once"></c:if>
+            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><div class="sec1"></c:if>
             <c:if test="${agentSkuMap.isLastLevel == 'no'}"><div class="sec1" onclick="javascript:window.location.replace('<%=basePath%>myteam/teamdetail?userSkuId=${agentSkuMap.userSkuId}');"></c:if>
             <p><img src="${agentSkuMap.brandLogo}" alt=""></p>
             <div>
@@ -49,13 +49,13 @@
                 </p>
             </div>
             <h1 class="admin">管理团队</h1>
-            <h1 class="team">没有管理团队功能<img src="${path}/static/images/icon_70.png"/></h1>
+            <c:if test="${agentSkuMap.isLastLevel == 'yes'}"><h1 class="team">没有管理团队功能<img class="once" src="${path}/static/images/icon_70.png"/></h1></c:if>
         </div>
         </c:forEach>
     </main>
     <div class="paidanqi">
         <div class="back_q">
-            <p style="padding: 20px">您代理到这款产品等级是最后一级,无团队管理功能!
+            <p style="padding: 20px">您代理的这款产品等级是最后一级,无团队管理功能!
             </p>
             <button class="kNow" style="font-size: 12px;">我知道了</button>
         </div>

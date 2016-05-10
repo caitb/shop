@@ -36,6 +36,9 @@
 }
 .Type2 p span,.Type2 p b{
   font-size: 12px;
+  background: url("/static/images/i.png") no-repeat 100%;
+  background-size: 15px;
+  padding-right: 20px;
 }
 .Type2 p{
   text-align: left;

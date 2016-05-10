@@ -8,18 +8,18 @@
   background: url("/static/images/bdbanner.png") no-repeat;
   display: -webkit-box;
   margin-bottom: 5px;
-  padding: 20px 10px;
+  padding: 30px 10px;
 }
 .wrap .na p {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 25px;
   background: #ccc;
   overflow: hidden;
 }
 .wrap .na p img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: block;
 }
 .wrap .na h1 {
@@ -31,8 +31,16 @@
 .wrap .na h1 span {
   display: block;
   color: white;
+  font-size: 12px;
 }
-.wrap .Xin {
+.wrap .na h1 span b{
+  font-size:12px;
+
+}
+.wrap .na h1 span:first-child{
+  font-size: 14px;
+}
+/*.wrap .Xin {
   display: -webkit-box;
   -webkit-box-pack: justify;
   padding: 10px 10px;
@@ -92,7 +100,7 @@
   line-height: 13px;
   text-align: center;
   color: #f73c8c;
-}
+}*/
 .wrap nav {
   background: #fff;
   margin-top: 10px;
@@ -110,7 +118,7 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   border-right: 1px solid #f6f6f6;
-  padding: 10px 0;
+  padding: 20px 0;
 }
 .wrap nav ul li span {
   display: block;
@@ -121,4 +129,25 @@
   display: block;
   width: 30px;
   margin-bottom: 5px;
+}
+.jiang{
+  background:#fff;
+  padding:10px;
+}
+.jiang p{
+  font-size:12px;
+  border-left:2px solid #F73D39;
+  line-height:15px;
+  padding-left:5px;
+}
+.jiang h1{
+  text-align:center;
+  font-size:12px;
+  color:#F73D39;
+  background:url("/static/images/money.png") no-repeat center 30%;
+  padding-top: 45px;
+  background-size: 20px;
+}
+.jiang h1 span{
+  font-size:16px;
 }

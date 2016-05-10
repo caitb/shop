@@ -181,13 +181,23 @@ footer .btm:nth-child(3) span img{
   color:#F74A11 ;
   font-size: 12px;
 }
-.paidanqi{
+.paidanqi,.fangshi{
   width:100%;
   height:100%;
   position: fixed;
   top:0;
   left:0;
   display: none;
+}
+.fangshi img{
+  width:100%;
+  display: block;
+}
+.fangshi .back_q{
+  top:18%;
+}
+.fangshi .back_q p{
+  margin:10px;
 }
 .Modal {
   width: 100%;

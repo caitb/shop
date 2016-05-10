@@ -219,11 +219,11 @@ public class MobileMessageUtil {
         content = new String[3];
         if (1 == sendType){
             content[0] = "平台代发";
-            content[1] = "在线库存已更新;" + quantity;
+            content[1] = "在线库存已更新";
         }
         if (2 == sendType){
             content[0] = "自己发货";
-            content[1] = "我们将尽快发货;" + quantity;
+            content[1] = "我们将尽快发货";
         }
         content[2] = EVENING_MESSAGE;
         return sendMethod(phone, SMSConstants.ADD_STOCK_SUCCESS, content);
@@ -391,7 +391,7 @@ public class MobileMessageUtil {
     }
 
 //    public static void main(String[] args){
-//        MobileMessageUtil.getInitialization("B").offlinePaymentsRemind("18800175968","1111","1212","aaaaa");
+//        MobileMessageUtil.getInitialization("B").addStockSuccess("18911155707",1,"3");
 //        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
 //    }
 }

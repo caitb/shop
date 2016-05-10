@@ -84,11 +84,35 @@
         $(".back_box").hide();
     })
     $("#downPayConfirm").click(function (event) {
-        if ($(this).html() == "正在提交...") {
-            return;
+        var payStatus = ${pfBorder.payStatus};
+        if (payStatus == 1){
+            alert("您已支付无需再次支付");
+            return false;
         }
-        $(this).html("正在提交...");
-        window.location.href = "${basePath}border/offinePayment.html?bOrderId=${pfBorder.id}";
+        var orderStatus = ${pfBorder.orderStatus};
+        if (orderStatus == 0||orderStatus == 9 ){
+            if ($(this).html() == "正在提交...") {
+                return;
+            }
+            $(this).html("正在提交...");
+            $.ajax({
+                url: '/border/offinePayment.do',
+                type: 'post',
+                async: false,
+                data: {"bOrderId": ${pfBorder.id}},
+                dataType:"text",
+                success: function (data) {
+                    if(data=="true"){
+                        window.location.href = "${basePath}border/getOffinePaymentDeatil.html?bOrderId=${pfBorder.id}";
+                    }else{
+                        alert("线下支付失败");
+                    }
+                }
+            });
+        }else{
+            alert("网络异常");
+            return false;
+        }
     })
 </script>
 </html>

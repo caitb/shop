@@ -21,14 +21,14 @@
     <div class="box">
         <header class="xq_header">
             <a href="<%=path%>/shop/manage/index"><img src="<%=path%>/static/shop/images/xq_rt.png" alt=""></a>
-            <p>出货订单</p>
+            <p>店铺订单</p>
         </header>
         <nav>
             <ul>
                 <li><a href="javascript:;" class="on">全部</a></li>
                 <li><a href="javascript:;">待付款</a></li>
                 <li><a href="javascript:;">待发货</a></li>
-                <li><a href="javascript:;">已发货</a></li>
+                <li><a href="javascript:;">待收货</a></li>
                 <li><a href="javascript:;">已完成</a></li>
             </ul>
         </nav>
@@ -41,7 +41,7 @@
                             订单号：<span>${pb.orderCode}</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">待发货</b></c:if>
-                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">已发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -77,7 +77,7 @@
                             订单号：<span>${pb.orderCode}</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">待发货</b></c:if>
-                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">已发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -113,7 +113,7 @@
                             订单号：<span>${pb.orderCode}</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}">待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"><b class="fahuo_${pb.id}">待发货</b></c:if>
-                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">已发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -149,7 +149,7 @@
                             订单号：<span>${pb.orderCode}</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">待发货</b></c:if>
-                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">已发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -185,7 +185,7 @@
                             订单号：<span>${pb.orderCode}</span>
                             <c:if test="${pb.orderStatus ==0}"><b class="fahuo_${pb.id}" >待付款</b ></c:if>
                             <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">待发货</b></c:if>
-                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">已发货</b></c:if>
+                            <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
                             <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
                         </h2>
                         <c:forEach items="${pb.sfOrderItems}" var="pbi">
@@ -289,7 +289,7 @@
                         }else if(sfOrder.orderStatus ==7){
                             StatusName="待发货";
                         }else if(sfOrder.orderStatus ==8){
-                            StatusName="已发货";
+                            StatusName="待收货";
                         }else if(sfOrder.orderStatus ==3){
                             StatusName="交易成功";
                         }
@@ -357,7 +357,7 @@
                 dataType:"Json",
                 success:function(date){
                     $("button[name=" + aa + "]").attr("style", "display:none");
-                    $("b." + aa + "").html("已发货");
+                    $("b." + aa + "").html("待收货");
                     location.reload(true);
                 }
             })

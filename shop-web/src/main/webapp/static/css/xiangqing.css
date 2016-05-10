@@ -303,6 +303,17 @@ body footer .sec3 p .first_p{
     color: #F74A11;
     text-align: center;
     display: inline-block;
+
+}
+body footer .sec3 p .first_p span{
+    background: url("/static/images/icon_88.png") no-repeat 0px;
+    background-size: 15px;
+    padding-left: 20px;
+}
+body footer .sec3 p .first_p2 span{
+    background: url("/static/images/icon_89.png") no-repeat 0px;
+    background-size: 15px;
+    padding-left: 20px;
 }
 body footer .sec3 p .first_p2{
     color: #666666;

@@ -16,17 +16,6 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/zhifudingdan.css">
 </head>
-<script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
-<script>
-    function callWeChatPay(){
-        var orderCode = $("#orderCodeId").val();
-        var orderId = $("#orderId").val();
-        window.location.href = "<%=path%>/orderPay/callWechatPay.do?orderCode="+orderCode+"&orderId="+orderId;
-    }
-    function returnPage(){
-        window.location.href = "<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0";
-    }
-</script>
 <body>
     <header>
               <a onclick="returnPage()">
@@ -45,7 +34,22 @@
                        </c:forEach>
                        <p>需付款　：<span>￥${order.receivableAmount}</span></p>
                     </main>
-                   <button onclick="callWeChatPay()">微信支付</button>
+                   <button id="wxBtn">微信支付</button>
         </div>
 </body>
+<script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+<script src="<%=path%>/static/js/common/wxpay.js"></script>
+<script>
+    /*function callWeChatPay(){
+        var orderCode = $("#orderCodeId").val();
+        var orderId = $("#orderId").val();
+        window.location.href = "<%=path%>/orderPay/callWechatPay.do?orderCode="+orderCode+"&orderId="+orderId;
+    }*/
+    $(function(){
+        $("#wxBtn").initWxPay("${paramReq}", "<%=basePath%>");
+    });
+    function returnPage(){
+        window.location.href = "<%=path%>/sfOrderManagerController/stockOrder?orderStatus=0";
+    }
+</script>
 </html>

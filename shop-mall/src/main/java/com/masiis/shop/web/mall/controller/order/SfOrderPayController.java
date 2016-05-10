@@ -5,6 +5,7 @@ package com.masiis.shop.web.mall.controller.order;
  */
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.dao.po.SfOrder;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -42,8 +44,12 @@ public class SfOrderPayController extends BaseController {
                                @RequestParam(value = "orderId",required = true)Long orderId,
                                Model model)throws Exception{
         Map<String,Object>  map =  orderPayService.getOrderInfo(orderId);
-        model.addAttribute("order",map.get("order"));
-        model.addAttribute("orderItems",map.get("orderItems"));
+        SfOrder order = (SfOrder) map.get("order");
+        WxPaySysParamReq wpspr = orderPayService.callWechatPay(request, order.getOrderCode(), orderId);
+
+        model.addAttribute("order", order);
+        model.addAttribute("orderItems", map.get("orderItems"));
+        model.addAttribute("paramReq", URLEncoder.encode(JSONObject.toJSONString(wpspr), "UTF-8"));
         return "mall/order/zhifudingdan";
     }
 

@@ -284,4 +284,12 @@
         select * from sf_order where id = (select min(id) from sf_order where user_id = #{0} and order_status = #{1}) and <![CDATA[ SYSDATE()-receipt_time >= 7 ]]>;
     </select>
 
+    <select id="selectByShopUserIds" resultMap="BaseResultMap">
+        select * from sf_order
+        where shop_user_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

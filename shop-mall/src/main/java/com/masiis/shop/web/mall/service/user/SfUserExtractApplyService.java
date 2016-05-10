@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wangbingjian on 2016/4/10.
@@ -83,5 +84,14 @@ public class SfUserExtractApplyService {
         }
         PageHelper.startPage(currentPage,pageSize);
         return sfUserExtractApplyMapper.selectListByUserAndDate(comUser.getId(),beginDate,endDate);
+    }
+
+    /**
+     * 通过userId查询提现成功的金额
+     * @param userId
+     * @return
+     */
+    public Map<String,Object> selectextractFeeByUserId(Long userId){
+        return sfUserExtractApplyMapper.selectextractFeeByUserId(userId);
     }
 }

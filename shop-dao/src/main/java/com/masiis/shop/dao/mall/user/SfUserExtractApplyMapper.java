@@ -12,6 +12,7 @@ import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,4 +52,6 @@ public interface SfUserExtractApplyMapper {
                                                      @Param("end") Date end);
 
     List<SfUserExtractApply> selectByMap(Map<String, Object> conditionMap);
+
+    Map<String,Object> selectextractFeeByUserId(Long userId);
 }

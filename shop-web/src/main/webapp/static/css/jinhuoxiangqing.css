@@ -217,8 +217,9 @@ body {
   line-height: 40px;
   font-size: 12px;
 }
-.wrap main .sec3 p input {
-  border: none;
+.wrap main .sec3 p span {
+  display: inline-block;
+  width: 80%;
 }
 .wrap main .sec4 {
   width: 100%;

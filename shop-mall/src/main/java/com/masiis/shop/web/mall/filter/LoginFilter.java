@@ -1,6 +1,7 @@
 package com.masiis.shop.web.mall.filter;
 
 import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.util.JdbcPropertiesUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.beans.wxauth.RedirectParam;

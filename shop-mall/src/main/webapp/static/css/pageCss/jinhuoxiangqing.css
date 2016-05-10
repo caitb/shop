@@ -217,9 +217,9 @@ body {
   font-size: 12px;
   padding: 10px 0;
 }
-.wrap main .sec3 p input {
-  border: 1px solid #ddd;
-  width: 230px;
+.wrap main .sec3 p span {
+  display: inline-block;
+  width: 80%;
 }
 .wrap main .sec4 {
   width: 100%;

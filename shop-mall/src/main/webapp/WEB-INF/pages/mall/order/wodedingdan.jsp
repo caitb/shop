@@ -241,9 +241,10 @@
            $(function(){
                $("li").on("click",function(){
                    var index=$(this).index();
+                   $(".all").html("");
+                   $(".all").eq(index).show().siblings().hide();
                    $("li").children("a").removeClass("on")
                    $(this).children("a").addClass("on");
-                   $(".all").eq(index).show().siblings().hide();
                    $.ajax({
                        type:"POST",
                        url : "<%=path%>/sfOrderManagerController/clickSfOrderType.do",

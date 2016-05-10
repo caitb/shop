@@ -71,16 +71,9 @@
 
     $(function(){
         if("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1"){
-            alert("${param}");
-            $("#submit").initWxPay("${param}", "${basePath}");
+            $("#submit").initWxPay("${paramReq}", "${basePath}");
         } else {
-            $("#submit").click(function (event) {
-                if ($(this).html() == "正在提交...") {
-                    return;
-                }
-                $(this).html("正在提交...");
-                window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
-            })
+            window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
         }
     });
 

@@ -91,7 +91,7 @@
                 </div>
             </section></c:forEach>
             <section class="sec3">
-                <p>留言： <input readonly="readonly" type="text" value="${borderDetail.pfBorder.userMessage}"></p>
+                <p>留言： <span>${borderDetail.pfBorder.userMessage}</span></p>
             </section>
            <section class="sec4">
                <c:if test="${borderDetail.pfBorder.orderType==2}">

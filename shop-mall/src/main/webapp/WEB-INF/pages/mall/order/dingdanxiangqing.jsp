@@ -51,7 +51,7 @@
             </div>
             <div class="kuaidi">
                 <p>拿货方式：<span><c:if test="${orderMallDetail.sfOrder.sendType==0}">未选择</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1}">平台代发</c:if><c:if test="${orderMallDetail.sfOrder.sendType==2}">自己发货</c:if></span></p>
-                <p>类    型：<span><c:if test="${orderMallDetail.sfOrder.orderType==0}">合伙人订单</c:if><c:if test="${orderMallDetail.sfOrder.orderType==1}">补货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1 && orderMallDetail.sfOrder.orderType==2}">申请拿货</c:if></span></p>
+                <%--<p>类    型：<span><c:if test="${orderMallDetail.sfOrder.orderType==0}">合伙人订单</c:if><c:if test="${orderMallDetail.sfOrder.orderType==1}">补货</c:if><c:if test="${orderMallDetail.sfOrder.sendType==1 && orderMallDetail.sfOrder.orderType==2}">申请拿货</c:if></span></p>--%>
                 ${stringBuffer}
             </div>
             <section class="sec1">
@@ -71,7 +71,7 @@
                 <div>
                     <h2>${bdpi.skuName}</h2>
                     <h3>规格：<span>默认</span></h3>
-                    <p> 价格： <span>${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
+                    <p> 价格：<span>￥${bdpi.unitPrice}</span><b>x${bdpi.quantity}</b></p>
                     <%--<h1><b style="color:#333333">合计：</b><span>￥${bdpi.totalPrice}</span></h1>--%>
                 </div>
             </section></c:forEach>
@@ -80,7 +80,7 @@
             </section>
             <section class="sec4">
                 <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
-                <p>运费：<span>￥${orderMallDetail.sfOrder.shipAmount}</span></p>
+                <p>运费：<span>包邮</span></p>
                 <h1>共<b>${orderMallDetail.sfOrder.totalQuantity}</b>件商品　<b style="color:#333333">合计：</b><span>￥${orderMallDetail.sfOrder.orderAmount}</span></h1>
             </section>
             <div class="sec5">

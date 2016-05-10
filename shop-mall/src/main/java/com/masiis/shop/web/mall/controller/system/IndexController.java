@@ -67,14 +67,14 @@ public class IndexController extends BaseController {
         SfShop sfShop = null;
         List<SfShopSku> sfShopSkus = null;
 //        BigDecimal ShipAmount=new BigDecimal(0);
-        boolean ok = true;
+//        boolean ok = true;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().longValue() == 0.00) {
-                ok = false;
-            }
+//            if (sfShop.getShipAmount().longValue() == 0.00) {
+//                ok = false;
+//            }
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
@@ -108,7 +108,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
-        modelAndView.addObject("ok", ok);//保证金
+//        modelAndView.addObject("ok", ok);//保证金
         modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;

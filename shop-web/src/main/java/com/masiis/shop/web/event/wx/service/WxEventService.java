@@ -83,7 +83,7 @@ public class WxEventService {
         res.setMsgType("text");
         res.setContent("您可以通过两种方式联系我们：\n" +
                 "1.直接在公众账号内输入您想要说的话，发送给我们。\n" +
-                "2.拨打我们的客服电话：010-4548878。");
+                "2.拨打我们的客服电话：400-961-9616。");
 
         return res;
     }

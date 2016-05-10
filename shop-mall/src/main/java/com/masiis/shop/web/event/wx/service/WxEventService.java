@@ -1,7 +1,11 @@
 package com.masiis.shop.web.event.wx.service;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
+import com.masiis.shop.dao.platform.user.ComUserMapper;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfUserShareParam;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +27,10 @@ public class WxEventService {
 
     @Resource
     private SfUserShareParamMapper paramMapper;
+    @Resource
+    private ComUserMapper comUserMapper;
+    @Resource
+    private SfShopMapper shopMapper;
 
     /**
      * 处理微信事件推送
@@ -64,7 +72,7 @@ public class WxEventService {
         res.setMsgType("text");
         res.setContent("您可以通过两种方式联系我们：\n" +
                 "1.直接在公众账号内输入您想要说的话，发送给我们。\n" +
-                "2.拨打我们的客服电话：010-4548878。");
+                "2.拨打我们的客服电话：400-961-9616。");
 
         return res;
     }
@@ -105,6 +113,11 @@ public class WxEventService {
         if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
             //url = "http://mall.qc.iimai.com/";
         }
+
+        ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
+        SfShop shop = shopMapper.selectByPrimaryKey(param.getShopId());
+        ComUser shopUser = comUserMapper.selectByPrimaryKey(shop.getUserId());
+
         url = "http://mall.qc.iimai.com/" + param.getShopId() + "/"
                     + param.getfUserId() + "/shop.shtml";
 
@@ -115,7 +128,10 @@ public class WxEventService {
         res.setMsgType("news");
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
-        articles.add(new Article("点击继续注册", url));
+        Article article = new Article();
+        article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
+        article.setUrl(url);
+        articles.add(article);
         res.setArticles(articles);
 
         return res;

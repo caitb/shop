@@ -52,7 +52,7 @@
         </c:forEach>
     </section>
     <section class="sec3">
-        <p>买家留言：${order.userMessage}</p>
+        <p>留言：${order.userMessage}</p>
     </section>
     <section class="sec4">
         <p><b>合计：</b><span>￥${order.productAmount}</span></p>

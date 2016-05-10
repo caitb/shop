@@ -68,11 +68,15 @@
             }
         })
     }
+    function returnPage(){
+        var skuId = $("#skuId").val();
+        window.location.href = "<%=basePath%>shop/detail.shtml/?skuId="+skuId+"&shopId=${shopId}";
+    }
 </script>
 <body>
     <header>
-          <a href="#" onClick="javascript :history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-            <p>确认订单</p>            
+          <a href="#" onclick="returnPage()"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>确认订单</p>
     </header>
     <div class="wrap">
        <div id="xz">
@@ -95,6 +99,7 @@
             </section>
         </div>
         <c:forEach items="${shopCartSkuDetails}" var="skuDetail">
+            <input id="skuId" type="hidden" value="${skuDetail.comSku.id}"/>
             <section class="sec2">
                 <p class="photo">
                     <img src="<%=path%>/static/images/shenqing_1.png" alt="">

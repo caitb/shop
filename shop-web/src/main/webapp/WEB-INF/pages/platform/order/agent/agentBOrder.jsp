@@ -92,7 +92,14 @@
                 <p><img src="${path}/static/images/lirun.png" alt=""></p>
                 <h1>
                     <span>预计您的利润</span>
-                    <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
+                    <c:choose>
+                        <c:when test="${bOrderConfirm.lowProfit.equals(bOrderConfirm.highProfit)}">
+                            <span>￥${bOrderConfirm.lowProfit}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
+                        </c:otherwise>
+                    </c:choose>
                 </h1>
             </div>
             <section class="sec4">

@@ -16,6 +16,8 @@ public class WxEventBody extends WxBaseEvent{
     private String status;
     @XStreamAlias("Content")
     private String content;
+    @XStreamAlias("MsgID")
+    private String msgID;
     @XStreamAlias("MsgId")
     private String msgId;
     @XStreamAlias("MenuId")
@@ -58,5 +60,21 @@ public class WxEventBody extends WxBaseEvent{
 
     public void setMsgId(String msgID) {
         this.msgId = msgId;
+    }
+
+    public String getMsgID() {
+        return msgID;
+    }
+
+    public void setMsgID(String msgID) {
+        this.msgID = msgID;
+    }
+
+    public String getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(String menuId) {
+        this.menuId = menuId;
     }
 }

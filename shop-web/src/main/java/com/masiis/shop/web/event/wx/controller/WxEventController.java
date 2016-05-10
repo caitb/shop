@@ -83,6 +83,7 @@ public class WxEventController extends BaseController {
                 return "success";
             }
             String resStr = toXML(xStream, res);
+            resStr = resStr.replaceAll("&amp;", "&");
             System.out.println(resStr);
             return resStr;
 

@@ -45,7 +45,7 @@
             <c:if test="${bOrderConfirm.sendType==1}">
                 <div class="Type2">
                     <p>拿货方式：<span>平台代发</span></p>
-                    <%--<h1>支付成功后，您的在线库存将会增加</h1>--%>
+                        <%--<h1>支付成功后，您的在线库存将会增加</h1>--%>
                 </div>
             </c:if>
             <section class="sec2">
@@ -68,7 +68,14 @@
                 <p><img src="${path}/static/images/lirun.png" alt=""></p>
                 <h1>
                     <span>预计您的利润</span>
-                    <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
+                    <c:choose>
+                        <c:when test="${bOrderConfirm.lowProfit.equals(bOrderConfirm.highProfit)}">
+                            <span>￥${bOrderConfirm.lowProfit}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span>￥${bOrderConfirm.lowProfit}~￥${bOrderConfirm.highProfit}</span>
+                        </c:otherwise>
+                    </c:choose>
                 </h1>
             </div>
             <section class="sec4">

@@ -134,7 +134,7 @@ public class WxPayController extends BaseController{
                 log.error("wxpayJs:未知原因错误");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             return "{\"resMsg\":\"请求错误\"}";
         }
 

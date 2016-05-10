@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.user.ComUserAccountService;
+import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
@@ -264,12 +265,13 @@ public class BOrderPayService {
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 String name = comUser.getRealName();//申请人
+                String skuInfo = "有权于网络和实体渠道销售产品 " + pfBorderItem.getSkuName();
                 String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
                 String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
-                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "，手机：" + pfUserCertificate.getMobile() + "，微信：" + pfUserCertificate.getWxId();
-                String value2 = "授权期限：" + beginTime + "至" + endTime;
+                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "  手机：" + pfUserCertificate.getMobile();
+                String value2 = "授权期限：" + beginTime + " 至 " + endTime + "  微信：" + pfUserCertificate.getWxId();
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), new String[]{name, value1, value2});
+                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName()+"级代理", name, skuInfo, value1, value2);
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
@@ -505,34 +507,49 @@ public class BOrderPayService {
      * @author ZhaoLiang
      * @date 2016/3/31 11:26
      */
-    private String uploadFile(String filePath, String[] markContent) throws Exception {
-        String pname = getRandomFileName();
-        ImageIcon imgIcon = new ImageIcon(filePath);
-        Image theImg = imgIcon.getImage();
-        int width = theImg.getWidth(null) == -1 ? 200 : theImg.getWidth(null);
-        int height = theImg.getHeight(null) == -1 ? 200 : theImg.getHeight(null);
-        BufferedImage bimage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = bimage.createGraphics();
-        g.setColor(Color.black);
-        g.setBackground(Color.red);
-        g.drawImage(theImg, 0, 0, null);
-        int fs = 40;
-        g.setFont(new Font("华文细黑", Font.BOLD, fs)); //字体、字型、字号
-        //画文字
-        if (markContent[0].length() == 3) {
-            g.drawString(markContent[0], width / 2 - fs * 3 / 2, height / 2 + 40);//740 625
-        } else {
-            g.drawString(markContent[0], width / 2 - fs, height / 2 + 40);
-        }
-        g.setColor(Color.gray);
-        g.setFont(new Font("华文细黑", Font.BOLD, 18)); //字体、字型、字号
-        g.drawString(markContent[1], 150, 490);
-        g.drawString(markContent[2], 180, 520);
-        g.dispose();
+    private String uploadFile(String filePath, String agentLevelName, String userName, String skuInfo, String param1, String param2) {
+        DrawPicUtil drawPicUtil = new DrawPicUtil();
+        BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
+        List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
+        //证书代理等级
+        DrawPicUtil.DrawPicParam d_agentLevelName = drawPicUtil.getDrawPicParam();
+        d_agentLevelName.setContent(agentLevelName);
+        d_agentLevelName.setY(265);
+        d_agentLevelName.setFont(new Font("华文细黑", Font.BOLD, 30));
+        drawPicParams.add(d_agentLevelName);
+        //姓名
+        DrawPicUtil.DrawPicParam d_userName = drawPicUtil.getDrawPicParam();
+        d_userName.setContent(userName);
+        d_userName.setY(380);
+        d_userName.setFont(new Font("华文细黑", Font.BOLD, 35));
+        drawPicParams.add(d_userName);
+        //代理产品
+        DrawPicUtil.DrawPicParam d_skuInfo = drawPicUtil.getDrawPicParam();
+        d_skuInfo.setContent(skuInfo);
+        d_skuInfo.setColor(new Color(139, 69, 19));
+        d_skuInfo.setY(450);
+        d_skuInfo.setFont(new Font("华文细黑", Font.PLAIN, 20));
+        drawPicParams.add(d_skuInfo);
+        //其他信息
+        DrawPicUtil.DrawPicParam d_param1 = drawPicUtil.getDrawPicParam();
+        d_param1.setContent(param1);
+        d_param1.setColor(Color.GRAY);
+        d_param1.setY(490);
+        drawPicParams.add(d_param1);
+        DrawPicUtil.DrawPicParam d_param2 = drawPicUtil.getDrawPicParam();
+        d_param2.setContent(param2);
+        d_param2.setColor(Color.GRAY);
+        d_param2.setY(520);
+        drawPicParams.add(d_param2);
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
-        ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
-        ImageIO.write(bimage, "png", imOut);
+        try {
+            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(drawPicUtil.modifyImage(bufferedImage, drawPicParams), "png", imOut);
+        } catch (Exception ex) {
+            throw new BusinessException("生成证书异常");
+        }
         InputStream is = new ByteArrayInputStream(bs.toByteArray());
+        String pname = getRandomFileName();
         OSSObjectUtils.uploadFile("static/user/certificate/" + pname + ".jpg", is);
         return pname;
     }
@@ -557,7 +574,7 @@ public class BOrderPayService {
     private void payEndPushMessage(PfBorderPayment pfBorderPayment) {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderPayment.getPfBorderId());
         NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
-        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 H:m:s");
+        SimpleDateFormat timeFormart = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         ComUser pComUser = null;
         if (pfBorder.getUserPid() > 0) {

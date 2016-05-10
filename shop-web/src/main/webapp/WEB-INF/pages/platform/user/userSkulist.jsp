@@ -105,6 +105,7 @@
     })
     function buhuokucun(a, b, c, d,e) {
         $(".number").val(1);
+        i=1;
         $(".queue").hide();//init
         $("#addsku").html(a);
         $("#maxStock").html(b);

@@ -32,7 +32,7 @@
     </div>
     <div class="jiang">
         <p>我的奖励</p>
-        <h1>￥<span>4545.00</span></h1>
+        <h1>￥<span>${cumulativeFee}</span></h1>
     </div>
     <nav>
         <ul>

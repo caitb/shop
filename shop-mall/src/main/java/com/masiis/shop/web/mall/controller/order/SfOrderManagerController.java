@@ -10,6 +10,7 @@ import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
+import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -39,7 +40,7 @@ public class SfOrderManagerController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
-    private SfShopService sfShopService;
+    private SfUserAccountService sfUserAccountService;
 
 
     /**
@@ -236,10 +237,12 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders8.add(sfOrder);//待收货
             }
         }
+        SfUserAccount accountByUserId = sfUserAccountService.findAccountByUserId(user.getId());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("sfOrders0", sfOrders0.size());
         modelAndView.addObject("sfOrders7", sfOrders7.size());
         modelAndView.addObject("sfOrders8", sfOrders8.size());
+        modelAndView.addObject("cumulativeFee", accountByUserId.getCountingFee());
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
         modelAndView.setViewName("mall/order/gerenzhongxin");

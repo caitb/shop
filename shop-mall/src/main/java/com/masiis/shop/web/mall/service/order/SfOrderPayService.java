@@ -316,24 +316,24 @@ public class SfOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/11 10:40
      */
-    public WxPaySysParamReq callWechatPay(HttpServletRequest request, String orderCode, Long orderId) {
+    public WxPaySysParamReq callWechatPay(HttpServletRequest request, String orderCode, Long orderId,Boolean isPay) {
         WxPaySysParamReq wpspr = new WxPaySysParamReq();
         SfOrder order = ordService.getOrderById(orderId);
-        if (order!=null&&order.getOrderStatus().equals(0)){
-            wpspr.setOrderId(orderCode);
-            wpspr.setSignType("MD5");
-            wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
-            wpspr.setErrorUrl(basePath+"orderPay/getOrderInfo.html?orderId="+orderId);//微信支付失败回掉
-            wpspr.setSign(WXBeanUtils.toSignString(wpspr));
-        }else{
-            log.info("调用微信支付失败:订单为null或者订单状态不是未支付状态");
-            throw new BusinessException("调用微信支付失败:订单为null或者订单状态不是未支付状态");
+        if (isPay){
+            if (order==null||!order.getOrderStatus().equals(0)){
+                log.info("调用微信支付失败:订单为null或者订单状态不是未支付状态");
+                throw new BusinessException("调用微信支付失败:订单为null或者订单状态不是未支付状态");
+            }
         }
+        wpspr.setOrderId(orderCode);
+        wpspr.setSignType("MD5");
+        wpspr.setNonceStr(WXBeanUtils.createGenerateStr());
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        wpspr.setSuccessUrl(basePath + "orderPay/paySuccessCallBack.html?orderId="+orderId);
+        wpspr.setErrorUrl(basePath+"orderPay/getOrderInfo.html?orderId="+orderId);//微信支付失败回掉
+        wpspr.setSign(WXBeanUtils.toSignString(wpspr));
         return wpspr;
     }
-
     public SfOrderPayment findOrderPaymentBySerialNum(String paySerialNum) {
         return paymentMapper.selectBySerialNum(paySerialNum);
     }

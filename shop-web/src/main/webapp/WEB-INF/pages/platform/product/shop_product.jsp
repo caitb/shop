@@ -162,8 +162,12 @@
             dataType: 'json',
             success: function (data) {
                 if (data.isError == false) {
-                      alert("下架成功！");
-                      location.reload(true);
+                    alert("下架成功！");
+                    $("button[name='closeWindow']").bind("click",function(){
+                        $('.alert').remove();
+                        $('.layer').remove();
+                        window.location.reload(true);
+                    })
                 } else {
                     alert(data.message);
                 }
@@ -181,7 +185,11 @@
             success: function (data) {
                 if (data.isError == false) {
                     alert("上架成功！");
-                    location.reload(true);
+                    $("button[name='closeWindow']").bind("click",function(){
+                        $('.alert').remove();
+                        $('.layer').remove();
+                        window.location.reload(true);
+                    })
                 } else {
                     alert(data.message);
                 }

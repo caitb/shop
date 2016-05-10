@@ -310,11 +310,11 @@ body footer .sec3 p .first_p2{
     display: inline-block;
 }
 body footer .sec3 p img{
-    display: inline-block;
+    display: block;
     width: 16px;
     float: left;
     margin-top: 2px;
-    margin-right: 4px;
+    margin-right: -20px;
 }
 body footer .sec3 p .last_p{
     color: #fff;

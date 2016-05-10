@@ -112,7 +112,7 @@
             </section>
         </c:forEach>
         <section class="sec3">
-            <p><em>运费：</em><span>￥${skuTotalShipAmount}</span></p>
+            <p><em>运费：</em><span>包邮</span></p>
             <p><em>留言：</em><input id="userMessageId" type="text"></p>
             <h1>共支付：<span>￥ ${totalPrice}</span></h1>
         </section>

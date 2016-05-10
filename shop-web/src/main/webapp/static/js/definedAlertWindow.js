@@ -4,7 +4,7 @@
         loadCssFile();
         $(".alert").show();
         $(".layer").show();
-        hideWindow();
+        //hideWindow();
         initClick();
     }
     //生成Html

@@ -66,13 +66,13 @@
                 <p>提供完善的售后和团队管理工具</p>
             </div>
         </section>
-        <section class="sec1">
-            <img src="${path}/static/images/shenqing_7.png" alt="">
-            <div>
-                <h2>平台补助</h2>
-                <p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>
-            </div>
-        </section>
+        <%--<section class="sec1">--%>
+            <%--<img src="${path}/static/images/shenqing_7.png" alt="">--%>
+            <%--<div>--%>
+                <%--<h2>平台补助</h2>--%>
+                <%--<p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>--%>
+            <%--</div>--%>
+        <%--</section>--%>
         <section class="sec1">
             <img src="${path}/static/images/shouquan.png" alt="">
             <div>

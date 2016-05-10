@@ -34,6 +34,10 @@ public class SfUserAccount {
      */
     private BigDecimal countingFee;
     /**
+     * 累计佣金
+     */
+    private BigDecimal cumulativeFee;
+    /**
      * 乐观锁字段
      */
     private Long version;
@@ -41,42 +45,63 @@ public class SfUserAccount {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public Long getUserId() {
         return userId;
     }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     public BigDecimal getExtractableFee() {
         return extractableFee;
     }
+
     public void setExtractableFee(BigDecimal extractableFee) {
         this.extractableFee = extractableFee;
     }
+
     public BigDecimal getAppliedFee() {
         return appliedFee;
     }
+
     public void setAppliedFee(BigDecimal appliedFee) {
         this.appliedFee = appliedFee;
     }
+
     public BigDecimal getCountingFee() {
         return countingFee;
     }
+
     public void setCountingFee(BigDecimal countingFee) {
         this.countingFee = countingFee;
     }
+
+    public BigDecimal getCumulativeFee() {
+        return cumulativeFee;
+    }
+
+    public void setCumulativeFee(BigDecimal cumulativeFee) {
+        this.cumulativeFee = cumulativeFee;
+    }
+
     public Long getVersion() {
         return version;
     }
+
     public void setVersion(Long version) {
         this.version = version;
     }

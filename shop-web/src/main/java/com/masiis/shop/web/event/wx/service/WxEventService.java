@@ -1,9 +1,21 @@
 package com.masiis.shop.web.event.wx.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComWxUser;
+import com.masiis.shop.dao.po.PfUserRelation;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.web.event.wx.bean.event.*;
+import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
+import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
+import com.masiis.shop.web.platform.service.user.PfUserRelationService;
+import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
+import com.masiis.shop.web.platform.service.user.WxUserService;
+import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -11,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,6 +36,12 @@ public class WxEventService {
 
     @Resource
     private UserSkuService userSkuService;
+    @Resource
+    private WxUserService wxUserService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private PfUserRelationService pfUserRelationService;
 
     /**
      * 处理微信事件推送
@@ -75,7 +94,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxArticleRes handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
         Integer pfUserSkuId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -102,9 +121,43 @@ public class WxEventService {
             throw new BusinessException();
         }
 
+        // 用户注册或者查询用户
+        ComUser user = scanEventUserSignUp(body);
+        if(user == null){
+            return null;
+        }
+
+        Integer skuId = userSku.getSkuId();
+        Long pUserId = userSku.getUserId();
+        Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
+        if (temPUserId == 0) {
+            if (pUserId != null && pUserId > 0) {
+                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                try {
+                    userSkuService.checkParentData(user, pUserId, skuId);
+                    PfUserRelation pfUserRelation = new PfUserRelation();
+                    pfUserRelation.setUserId(user.getId());
+                    pfUserRelation.setSkuId(skuId);
+                    pfUserRelation.setCreateTime(new Date());
+                    pfUserRelation.setIsEnable(1);
+                    pfUserRelation.setUserPid(pUserId);
+                    pfUserRelationService.insert(pfUserRelation);
+                } catch (Exception e) {
+                    log.error("扫描二维码注册失败:" + e.getMessage(), e);
+                }
+            }
+        }
+
+
+
         String url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
+        WxArticleRes res = createReturnToWxUser(body, url);
 
+        return res;
+    }
+
+    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) {
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());
         res.setFromUserName(body.getToUserName());
@@ -114,7 +167,61 @@ public class WxEventService {
         List<Article> articles = new ArrayList<>();
         articles.add(new Article("点击继续注册", url));
         res.setArticles(articles);
-
         return res;
+    }
+
+    /**
+     * 扫描关注二维码事件,用户注册逻辑
+     *
+     * @param body
+     * @return
+     */
+    private ComUser scanEventUserSignUp(WxEventBody body){
+        ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(body.getFromUserName(), WxConsPF.APPID);
+        ComUser user = null;
+        if(wxUser == null){
+            String url = WxConsPF.URL_CGIBIN_USERINFO
+                    + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET)
+                    + "&openid=" + body.getFromUserName()
+                    + "&lang=zh_CN";
+            String result = HttpClientUtils.httpGet(url);
+            WxUserInfo res = JSONObject.parseObject(result, WxUserInfo.class);
+            if(res == null || !body.getFromUserName().equals(res.getOpenid())){
+                return null;
+            }
+
+            AccessTokenRes atRes = new AccessTokenRes();
+            atRes.setAccess_token("sss");
+            atRes.setExpires_in(1l);
+            atRes.setOpenid(res.getOpenid());
+            atRes.setRefresh_token("sss");
+            atRes.setUnionid(res.getUnionid());
+
+            user = userService.signWithCreateUserByWX(atRes, res);
+        } else {
+            user = userService.getUserByUnionid(wxUser.getUnionid());
+        }
+
+        return user;
+    }
+
+    public static void main(String... args) {
+        String aaa = "{\"subscribe\": 1," +
+                "\"openid\": \"o6_bmjrPTlm6_2sgVt7hMZOPfL2M\"," +
+                "\"nickname\": \"Band\", " +
+                "\"sex\": 1," +
+                "\"language\": \"zh_CN\", " +
+                "\"city\": \"广州\", " +
+                "\"province\": \"广东\", " +
+                "\"country\": \"中国\", " +
+                "\"headimgurl\": \"http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4" +
+                "eMsv84eavHiaiceqxibJxCfHe/0\"," +
+                "\"subscribe_time\": 1382694957," +
+                "\"unionid\": \"o6_bmasdasdsad6_2sgVt7hMZOPfL\"," +
+                "\"remark\": \"\"," +
+                "\"groupid\": 0," +
+                "\"tagid_list\":[128,2]}";
+        WxUserInfo res = JSONObject.parseObject(aaa, WxUserInfo.class);
+        System.out.println(res);
     }
 }

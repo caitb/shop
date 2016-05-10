@@ -117,12 +117,9 @@
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
       <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
             <p>
-                <a id="applyTrial" class="first_p" onclick="validateCodeJS.applyTrial('trial')"><img src="${path}/static/images/icon_88.png" alt="">申请试用</a>
-                <a id="trialed" class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">已试用</a>
+                <a  class="first_p"onclick="validateCodeJS.applyTrial('trial')"><img src="${path}/static/images/icon_88.png" alt="">申请试用</a>
+                <a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">已试用</a>
             </p>
-        </c:if>
-        <c:if test="${productDetails.isTrial==0}">
-            <a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">不能试用</a>
         </c:if>
         <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
         <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>

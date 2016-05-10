@@ -121,6 +121,15 @@
     </div>
     <div class="Modal"></div>
 </div>
+<div class="fangshi">
+    <div class="back_q">
+        <p>
+            <img src="${path}/static/images/fangshi.png" alt="">
+        </p>
+        <button class="kNow">我知道了</button>
+    </div>
+    <div class="Modal"></div>
+</div>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
 <script>
@@ -177,6 +186,12 @@
     });
     $(".kNow").on("click", function () {
         $(".paidanqi").hide();
+    });
+    $(".Type2").on("click", function () {
+        $(".fangshi").show();
+    });
+    $(".kNow").on("click", function () {
+        $(".fangshi").hide();
     });
 </script>
 </html>

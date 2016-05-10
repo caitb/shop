@@ -177,7 +177,7 @@ public class WxPayController extends BaseController {
         } catch (Exception e) {
             log.error("wxpayJs:下预付单失败," + e.getMessage(), e);
             if(e instanceof OrderPaidException) {
-                return "{\"resCode\":1, \"resMsg\":\"" + e.getMessage() + "\"}";
+                return "{\"resCode\":1, \"resMsg\":\"\"}";
             } else {
                 // 预付单下单失败处理
                 return "{\"resCode\":2, \"resMsg\":\"请求错误\"}";

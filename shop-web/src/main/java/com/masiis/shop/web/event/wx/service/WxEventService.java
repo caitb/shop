@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,7 +50,7 @@ public class WxEventService {
      *
      * @param body
      */
-    public WxBaseMessage handleEvent(WxEventBody body) {
+    public WxBaseMessage handleEvent(WxEventBody body) throws UnsupportedEncodingException {
         if(body == null){
             throw new BusinessException("request body is null");
         }
@@ -94,7 +96,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(WxEventBody body) throws UnsupportedEncodingException {
         Integer pfUserSkuId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -157,7 +159,7 @@ public class WxEventService {
         return res;
     }
 
-    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) {
+    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) throws UnsupportedEncodingException {
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());
         res.setFromUserName(body.getToUserName());
@@ -165,6 +167,7 @@ public class WxEventService {
         res.setMsgType("news");
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
+        url = URLEncoder.encode(url, "UTF-8");
         articles.add(new Article("点击继续注册", url));
         res.setArticles(articles);
         return res;

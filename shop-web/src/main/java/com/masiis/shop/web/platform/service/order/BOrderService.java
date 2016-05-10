@@ -250,6 +250,7 @@ public class BOrderService {
             if (pfBorder.getOrderType() == 2) {//拿货
                 pfBorder.setShipStatus(5);
                 pfBorder.setOrderStatus(8);
+                pfBorder.setIsShip(1);
                 PfBorderFreight pfBorderFreight = new PfBorderFreight();
                 pfBorderFreight.setCreateTime(new Date());
                 pfBorderFreight.setShipManId(Integer.parseInt(shipManId));
@@ -278,6 +279,7 @@ public class BOrderService {
         } else if (pfBorder.getSendType() == 2) {//自己发货
             pfBorder.setShipStatus(5);
             pfBorder.setOrderStatus(8);
+            pfBorder.setIsShip(1);
             PfBorderFreight pfBorderFreight = new PfBorderFreight();
             pfBorderFreight.setCreateTime(new Date());
             pfBorderFreight.setPfBorderId(orderId);

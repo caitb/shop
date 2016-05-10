@@ -23,7 +23,6 @@
         <result column="ship_man_name" property="shipManName" jdbcType="VARCHAR"/>
         <result column="ship_type" property="shipType" jdbcType="INTEGER"/>
         <result column="ship_time" property="shipTime" jdbcType="TIMESTAMP"/>
-        <result column="ship_remark" property="shipRemark" jdbcType="VARCHAR"/>
         <result column="send_type" property="sendType" jdbcType="INTEGER"/>
         <result column="order_type" property="orderType" jdbcType="INTEGER"/>
         <result column="order_status" property="orderStatus" jdbcType="INTEGER"/>
@@ -31,10 +30,8 @@
         <result column="pay_status" property="payStatus" jdbcType="INTEGER"/>
         <result column="is_counting" property="isCounting" jdbcType="INTEGER"/>
         <result column="is_ship" property="isShip" jdbcType="INTEGER"/>
-        <result column="is_replace" property="isReplace" jdbcType="INTEGER"/>
         <result column="is_receipt" property="isReceipt" jdbcType="INTEGER"/>
         <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP"/>
-        <result column="replace_order_id" property="replaceOrderId" jdbcType="BIGINT"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -51,10 +48,9 @@
             bail_amount, product_amount, ship_amount,
             pay_amount, pay_time, ship_man_id,
             ship_man_name, ship_type, ship_time,
-            ship_remark, send_type, order_type,
-            order_status, ship_status, pay_status,
-            is_counting, is_ship, is_replace,
-            is_receipt, receipt_time, replace_order_id,
+            send_type, order_type, order_status,
+            ship_status, pay_status, is_counting,
+            is_ship, is_receipt, receipt_time,
             remark)
         values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createMan,jdbcType=BIGINT},
             #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{userPid,jdbcType=BIGINT},
@@ -63,10 +59,9 @@
             #{bailAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, #{shipAmount,jdbcType=DECIMAL},
             #{payAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER},
             #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP},
-            #{shipRemark,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER},
-            #{orderStatus,jdbcType=INTEGER}, #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER},
-            #{isCounting,jdbcType=INTEGER}, #{isShip,jdbcType=INTEGER}, #{isReplace,jdbcType=INTEGER},
-            #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP}, #{replaceOrderId,jdbcType=BIGINT},
+            #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER},
+            #{shipStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{isCounting,jdbcType=INTEGER},
+            #{isShip,jdbcType=INTEGER}, #{isReceipt,jdbcType=INTEGER}, #{receiptTime,jdbcType=TIMESTAMP},
             #{remark,jdbcType=VARCHAR})
     </insert>
 
@@ -131,9 +126,6 @@
             <if test="shipTime != null">
                 ship_time = #{shipTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="shipRemark != null">
-                ship_remark = #{shipRemark,jdbcType=VARCHAR},
-            </if>
             <if test="orderType != null">
                 order_type = #{orderType,jdbcType=INTEGER},
             </if>
@@ -152,17 +144,11 @@
             <if test="isShip != null">
                 is_ship = #{isShip,jdbcType=INTEGER},
             </if>
-            <if test="isReplace != null">
-                is_replace = #{isReplace,jdbcType=INTEGER},
-            </if>
             <if test="isReceipt != null">
                 is_receipt = #{isReceipt,jdbcType=INTEGER},
             </if>
             <if test="receiptTime != null">
                 receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="replaceOrderId != null">
-                replace_order_id = #{replaceOrderId,jdbcType=BIGINT},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
@@ -182,8 +168,8 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         where id = #{id,jdbcType=BIGINT}
     </select>
@@ -192,8 +178,8 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         where
         <if test="userId != null">
@@ -210,8 +196,8 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         where
         <if test="userPId != null">
@@ -230,49 +216,19 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorder" resultMap="BaseResultMap">
-        select
-               id,
-               create_time,
-               create_man,
-               order_code,
-               user_id,
-               user_pid,
-               user_message,
-               supplier_id,
-               modify_time,
-               modify_man,
-               receivable_amount,
-               order_amount,
-               bail_amount,
-               product_amount,
-               ship_amount,
-               pay_amount,
-               pay_time,
-               ship_man_id,
-               ship_man_name,
-               ship_type,
-               ship_time,
-               ship_remark,
-               send_type,
-               order_type,
-               order_status,
-               ship_status,
-               pay_status,
-               is_counting,
-               is_ship,
-               is_replace,
-               is_receipt,
-               receipt_time,
-               replace_order_id,
-               remark
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
+        product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from
-               pf_border
+        pf_border
         <where>
             <if test="id != null">
                 AND id = #{id,jdbcType=BIGINT}
@@ -334,9 +290,6 @@
             <if test="shipTime != null">
                 AND ship_time = #{shipTime,jdbcType=TIMESTAMP}
             </if>
-            <if test="shipRemark != null">
-                AND ship_remark = #{shipRemark,jdbcType=VARCHAR}
-            </if>
             <if test="orderType != null">
                 AND order_type = #{orderType,jdbcType=INTEGER}
             </if>
@@ -355,17 +308,11 @@
             <if test="isShip != null">
                 AND is_ship = #{isShip,jdbcType=INTEGER}
             </if>
-            <if test="isReplace != null">
-                AND is_replace = #{isReplace,jdbcType=INTEGER}
-            </if>
             <if test="isReceipt != null">
                 AND is_receipt = #{isReceipt,jdbcType=INTEGER}
             </if>
             <if test="receiptTime != null">
                 AND receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
-            </if>
-            <if test="replaceOrderId != null">
-                AND replace_order_id = #{replaceOrderId,jdbcType=BIGINT}
             </if>
             <if test="remark != null">
                 AND remark = #{remark,jdbcType=VARCHAR}
@@ -383,8 +330,8 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         where order_code = #{orderId,jdbcType=BIGINT}
     </select>
@@ -393,8 +340,8 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         where receipt_time <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
               and receipt_time <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
@@ -407,18 +354,18 @@
         select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         from pf_border
         <where>
             <if test="expiraTime != null">
                 create_time <![CDATA[<=]]> #{expiraTime,jdbcType=TIMESTAMP}
             </if>
             <if test="orderStatus != null">
-            AND order_status = #{orderStatus,jdbcType=INTEGER}
+                AND order_status = #{orderStatus,jdbcType=INTEGER}
             </if>
             <if test="payStatus != null">
-            AND pay_status = #{payStatus,jdbcType=INTEGER}
+                AND pay_status = #{payStatus,jdbcType=INTEGER}
             </if>
         </where>
     </select>
@@ -472,11 +419,11 @@
     </select>
 
     <select id="selectPfBOrderBySkuIdAndUserId" resultMap="BaseResultMap">
-        SELECT id, create_time, create_man, order_code, user_id, user_pid, user_message,
+        select id, create_time, create_man, order_code, user_id, user_pid, user_message,
         supplier_id, modify_time, modify_man, receivable_amount, order_amount, bail_amount,
         product_amount, ship_amount, pay_amount, pay_time, ship_man_id, ship_man_name, ship_type,
-        ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
-        is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
+        ship_time, send_type, order_type, order_status, ship_status, pay_status, is_counting,
+        is_ship, is_receipt, receipt_time, remark
         FROM pf_border pb
         WHERE pb.user_id= #{userId}
         AND pb.order_status IN (0,9)

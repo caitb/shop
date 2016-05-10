@@ -117,8 +117,8 @@
         <input id="skuId" value="${productDetails.id}" style="display: none"/>
       <c:if test="${productDetails.isTrial==1 && (empty pfUserSku || pfUserSku.isPay==0)}">
             <p>
-                <a class="first_p"onclick="validateCodeJS.applyTrial('trial')"><span><img src="${path}/static/images/icon_88.png" alt="">申请试用</span></a>
-                <a class="first_p2"><span><img src="${path}/static/images/icon_89.png" alt="">已试用</span></a>
+                <a class="first_p"onclick="validateCodeJS.applyTrial('trial')"><span>申请试用</span></a>
+                <a class="first_p2"><span>已试用</span></a>
             </p>
         </c:if>
         <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->

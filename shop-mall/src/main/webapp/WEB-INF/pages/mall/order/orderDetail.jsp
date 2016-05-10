@@ -61,7 +61,7 @@
     </section>
     <div class="back"></div>
     <div class="sec6">
-        <p><a onclick="askForInvoice()">返回首页</a></p>
+        <p><a onclick="returnHomePage()">返回首页</a></p>
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>

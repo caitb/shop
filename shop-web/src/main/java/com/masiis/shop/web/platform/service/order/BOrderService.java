@@ -357,6 +357,7 @@ public class BOrderService {
         }
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
         pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
+        pfBorder.setIsReceipt(1);
         pfBorder.setReceiptTime(new Date());//收货时间
         pfBorderMapper.updateById(pfBorder);
         //添加订单日志

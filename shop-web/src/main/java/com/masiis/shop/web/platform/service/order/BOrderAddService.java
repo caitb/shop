@@ -127,7 +127,6 @@ public class BOrderAddService {
         pfBorder.setShipManId(0);
         pfBorder.setShipManName("");
         pfBorder.setShipType(0);
-        pfBorder.setShipRemark("");
         //确定订单的拿货方式
         pfBorder.setSendType(bOrderAdd.getSendType());
         pfBorder.setOrderType(bOrderAdd.getOrderType());
@@ -136,9 +135,7 @@ public class BOrderAddService {
         pfBorder.setPayStatus(0);
         pfBorder.setIsCounting(0);
         pfBorder.setIsShip(0);
-        pfBorder.setIsReplace(0);
         pfBorder.setIsReceipt(0);
-        pfBorder.setReplaceOrderId(0l);
         pfBorder.setRemark("");
         //添加订单
         pfBorderMapper.insert(pfBorder);
@@ -249,7 +246,6 @@ public class BOrderAddService {
         order.setShipStatus(0);
         order.setPayStatus(1);      //已支付
         order.setIsShip(0);
-        order.setIsReplace(0);
         order.setIsReceipt(0);
         order.setIsCounting(0);
         order.setRemark("拿货订单");

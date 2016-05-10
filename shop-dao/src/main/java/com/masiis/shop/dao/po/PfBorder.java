@@ -97,10 +97,6 @@ public class PfBorder {
      */
     private Date shipTime;
     /**
-     * 配送备注，只工作日送货、都可送货
-     */
-    private String shipRemark;
-    /**
      * 拿货方式(0未选择1平台代发2自己发货)
      */
     private Integer sendType;
@@ -129,10 +125,6 @@ public class PfBorder {
      */
     private Integer isShip;
     /**
-     * 换货标志位(0未换货1已换货)
-     */
-    private Integer isReplace;
-    /**
      * 收货标志位(0未收货1已收货)
      */
     private Integer isReceipt;
@@ -140,10 +132,6 @@ public class PfBorder {
      * 确认收货时间
      */
     private Date receiptTime;
-    /**
-     * 换货订单号
-     */
-    private Long replaceOrderId;
     /**
      * 备注
      */
@@ -173,16 +161,22 @@ public class PfBorder {
         return payTimes;
     }
 
-    public void setPidUserName(String pidUserName) {this.pidUserName = pidUserName;}
+    public void setPidUserName(String pidUserName) {
+        this.pidUserName = pidUserName;
+    }
 
-    public String getPidUserName() {return pidUserName;}
+    public String getPidUserName() {
+        return pidUserName;
+    }
 
     public BigDecimal getBailAmount() {
         return bailAmount;
     }
+
     public void setBailAmount(BigDecimal bailAmount) {
         this.bailAmount = bailAmount;
     }
+
     public void setSendType(Integer sendType) {
         this.sendType = sendType;
     }
@@ -391,14 +385,6 @@ public class PfBorder {
         this.shipTime = shipTime;
     }
 
-    public String getShipRemark() {
-        return shipRemark;
-    }
-
-    public void setShipRemark(String shipRemark) {
-        this.shipRemark = shipRemark == null ? null : shipRemark.trim();
-    }
-
     public Integer getOrderType() {
         return orderType;
     }
@@ -447,14 +433,6 @@ public class PfBorder {
         this.isShip = isShip;
     }
 
-    public Integer getIsReplace() {
-        return isReplace;
-    }
-
-    public void setIsReplace(Integer isReplace) {
-        this.isReplace = isReplace;
-    }
-
     public Integer getIsReceipt() {
         return isReceipt;
     }
@@ -469,14 +447,6 @@ public class PfBorder {
 
     public void setReceiptTime(Date receiptTime) {
         this.receiptTime = receiptTime;
-    }
-
-    public Long getReplaceOrderId() {
-        return replaceOrderId;
-    }
-
-    public void setReplaceOrderId(Long replaceOrderId) {
-        this.replaceOrderId = replaceOrderId;
     }
 
     public String getRemark() {
@@ -502,6 +472,7 @@ public class PfBorder {
                 ", modifyMan=" + modifyMan +
                 ", receivableAmount=" + receivableAmount +
                 ", orderAmount=" + orderAmount +
+                ", bailAmount=" + bailAmount +
                 ", productAmount=" + productAmount +
                 ", shipAmount=" + shipAmount +
                 ", payAmount=" + payAmount +
@@ -510,21 +481,21 @@ public class PfBorder {
                 ", shipManName='" + shipManName + '\'' +
                 ", shipType=" + shipType +
                 ", shipTime=" + shipTime +
-                ", shipRemark='" + shipRemark + '\'' +
+                ", sendType=" + sendType +
                 ", orderType=" + orderType +
                 ", orderStatus=" + orderStatus +
                 ", shipStatus=" + shipStatus +
                 ", payStatus=" + payStatus +
                 ", isCounting=" + isCounting +
                 ", isShip=" + isShip +
-                ", isReplace=" + isReplace +
                 ", isReceipt=" + isReceipt +
                 ", receiptTime=" + receiptTime +
-                ", replaceOrderId=" + replaceOrderId +
                 ", remark='" + remark + '\'' +
                 ", orderSkuStatus='" + orderSkuStatus + '\'' +
                 ", imgUrl='" + imgUrl + '\'' +
                 ", totalQuantity=" + totalQuantity +
+                ", pidUserName='" + pidUserName + '\'' +
+                ", payTimes='" + payTimes + '\'' +
                 ", pfBorderItems=" + pfBorderItems +
                 ", pfBorderConsignee=" + pfBorderConsignee +
                 '}';

@@ -45,4 +45,8 @@ public class SfOrderService {
     public SfOrder findByOrderCode(String orderCode) {
         return sfOrderMapper.selectByOrderCode(orderCode);
     }
+
+    public List<SfOrder> findByShopUserIds(List<Long> userIds){
+        return sfOrderMapper.selectByShopUserIds(userIds);
+    }
 }

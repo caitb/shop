@@ -57,4 +57,12 @@
         where user_pid = #{userPid,jdbcType=BIGINT}
     </select>
 
+    <select id="getThreeDistributionList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select * from (
+          select * from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}
+          union all select * from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT})
+	      union all select * from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid in (select user_id from sf_user_relation where user_pid = #{userPid,jdbcType=BIGINT}))
+        )t
+    </select>
+
 </mapper>

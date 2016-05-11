@@ -324,7 +324,13 @@ public class SfOrderPayService {
         //微信提醒
         log.info("订单通知提醒-----start");
         String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
+        /*消费者端微信提醒*/
         WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
+        /*小铺端归属人微信提醒*/
+        ComUser shopUser = userService.getUserById(order.getShopUserId());
+        if (shopUser!=null){
+            WxSFNoticeUtils.getInstance().orderCreateNotice(shopUser,param);
+        }
         //短信提醒
         /*消费者端提醒*/
         StringBuffer skuNames = new StringBuffer();
@@ -333,7 +339,6 @@ public class SfOrderPayService {
         }
         MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(),skuNames.toString());
         /*小铺归属人提醒*/
-        ComUser shopUser = userService.getUserById(order.getShopUserId());
         if (shopUser!=null){
             MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
         }

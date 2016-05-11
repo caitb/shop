@@ -1,13 +1,22 @@
 package com.masiis.shop.web.event.wx.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComWxUser;
 import com.masiis.shop.dao.po.SfShop;
 import com.masiis.shop.dao.po.SfUserShareParam;
 import com.masiis.shop.web.event.wx.bean.event.*;
+import com.masiis.shop.web.mall.beans.wxauth.AccessTokenRes;
+import com.masiis.shop.web.mall.beans.wxauth.WxUserInfo;
+import com.masiis.shop.web.mall.service.user.UserService;
+import com.masiis.shop.web.mall.service.user.WxUserService;
+import com.masiis.shop.web.mall.utils.wx.WxCredentialUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -31,6 +40,10 @@ public class WxEventService {
     private ComUserMapper comUserMapper;
     @Resource
     private SfShopMapper shopMapper;
+    @Resource
+    private UserService userService;
+    @Resource
+    private WxUserService wxUserService;
 
     /**
      * 处理微信事件推送
@@ -109,17 +122,22 @@ public class WxEventService {
         if(param == null){
             throw new BusinessException();
         }
+
+        // 扫码注册用户
+        ComUser user = scanEventUserSignUp(body);
+        // 绑定分销关系
+        userService.getShareUser(user.getId(), param.getfUserId());
+
         String url = null;
         if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
             //url = "http://mall.qc.iimai.com/";
+        } else {
+            url = "http://mall.qc.iimai.com/" + param.getShopId() + "/"
+                    + param.getfUserId() + "/shop.shtml";
         }
 
         ComUser pUser = comUserMapper.selectByPrimaryKey(param.getfUserId());
         SfShop shop = shopMapper.selectByPrimaryKey(param.getShopId());
-        ComUser shopUser = comUserMapper.selectByPrimaryKey(shop.getUserId());
-
-        url = "http://mall.qc.iimai.com/" + param.getShopId() + "/"
-                    + param.getfUserId() + "/shop.shtml";
 
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());
@@ -128,12 +146,47 @@ public class WxEventService {
         res.setMsgType("news");
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
-        Article article = new Article();
+        Article article = new Article("点击继续", null);
         article.setDescription("您的好友" + pUser.getWxNkName() + "分享了" + shop.getName() + "，点击前往");
         article.setUrl(url);
         articles.add(article);
         res.setArticles(articles);
 
         return res;
+    }
+
+    /**
+     * 扫描关注二维码事件,用户注册逻辑
+     *
+     * @param body
+     * @return
+     */
+    private ComUser scanEventUserSignUp(WxEventBody body){
+        ComWxUser wxUser = wxUserService.getWxUserByOpenIdAndAppID(body.getFromUserName(), WxConsSF.APPID);
+        ComUser user = null;
+        if(wxUser == null){
+            String url = WxConsSF.URL_CGIBIN_USERINFO
+                    + "?access_token=" + WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET)
+                    + "&openid=" + body.getFromUserName()
+                    + "&lang=zh_CN";
+            String result = HttpClientUtils.httpGet(url);
+            WxUserInfo res = JSONObject.parseObject(result, WxUserInfo.class);
+            if(res == null || !body.getFromUserName().equals(res.getOpenid())){
+                return null;
+            }
+
+            AccessTokenRes atRes = new AccessTokenRes();
+            atRes.setAccess_token("sss");
+            atRes.setExpires_in(1l);
+            atRes.setOpenid(res.getOpenid());
+            atRes.setRefresh_token("sss");
+            atRes.setUnionid(res.getUnionid());
+
+            user = userService.signWithCreateUserByWX(atRes, res);
+        } else {
+            user = userService.getUserByUnionid(wxUser.getUnionid());
+        }
+
+        return user;
     }
 }

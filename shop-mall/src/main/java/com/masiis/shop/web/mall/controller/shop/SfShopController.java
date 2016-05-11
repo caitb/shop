@@ -139,10 +139,10 @@ public class SfShopController extends BaseController {
             String content = "我是" + comUser.getWxNkName();
             Map<String, Integer> positionMap = new HashMap<>();
             positionMap.put("headImg-left", 195);
-            positionMap.put("headImg-top", 130);
+            positionMap.put("headImg-top", 100);
             positionMap.put("bgImg-left", 0);
             positionMap.put("bgImg-top", 0);
-            positionMap.put("qrCodeImg-left", 160);
+            positionMap.put("qrCodeImg-left", 170);
             positionMap.put("qrCodeImg-top", 338);
             positionMap.put("content-left", 520 / 2 - content.length() / 2 * 28 - (content.length() % 2 * 14));
             positionMap.put("content-top", 270);

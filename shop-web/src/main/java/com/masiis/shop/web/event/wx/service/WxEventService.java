@@ -222,6 +222,10 @@ public class WxEventService {
         XStream xStream = new XStream(new DomDriver("UTF-8"));
         xStream.processAnnotations(res.getClass());
         String result = xStream.toXML(res);
-        System.out.println(result.replaceAll("&amp;", "&"));
+        result = result.replaceAll("&amp;", "&");
+        System.out.println(result);
+
+        WxArticleRes r = (WxArticleRes) xStream.fromXML(result);
+        System.out.println(r);
     }
 }

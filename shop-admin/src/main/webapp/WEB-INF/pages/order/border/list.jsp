@@ -415,9 +415,6 @@
                             if(row.pfBorder && row.pfBorder.userPid == 0 && row.pfBorder.orderStatus == 6){
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
-                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
-                                arr.push('<a class="tuihuo" href="javascript:void(0);">退货</a>');
-                            }
 
                             return arr.join('');
                         },
@@ -443,9 +440,6 @@
                             'click .receipt': function(e, value, row, index){
                                 $('#bOrderId').val(row.pfBorder.id);
                                 $('#modal-receipt').modal('show');
-                            },
-                            'click .tuihuo': function(e, value, row, index){
-                                alert('退货啦!');
                             }
                         }
                     }

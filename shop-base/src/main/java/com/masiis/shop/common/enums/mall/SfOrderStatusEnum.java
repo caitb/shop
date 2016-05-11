@@ -58,7 +58,7 @@ public enum SfOrderStatusEnum {
         }
 
         public String getDesc() {
-            return "已退款";
+            return "已退货";
         }
     },
     ORDER_MPS{

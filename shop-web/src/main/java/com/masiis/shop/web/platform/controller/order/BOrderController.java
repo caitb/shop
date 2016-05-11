@@ -55,7 +55,7 @@ public class BOrderController extends BaseController {
     private PfUserSkuMapper pfUserSkuMapper;
 
     /**
-     * 选择拿货方式
+     * 选择拿货方式(暂不使用)
      *
      * @param request
      * @param skuId
@@ -90,6 +90,7 @@ public class BOrderController extends BaseController {
 
     /**
      * 收银台结算页
+     *
      * @param request
      * @param bOrderId
      * @return
@@ -103,21 +104,8 @@ public class BOrderController extends BaseController {
         }
         PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
         List<PfBorderItem> pfBorderItems = bOrderService.getPfBorderItemDetail(bOrderId);
-
         String successURL = getBasePath(request);
-        //订单类型(0代理1补货2拿货)
-        if (pfBorder.getOrderType() == 0) {
-            //拿货方式(0未选择1平台代发2自己发货)
-            if (pfBorder.getSendType() == 0) {
-                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
-            } else {
-                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
-            }
-        } else if (pfBorder.getOrderType() == 1) {
-            successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
-        } else {
-            throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
-        }
+        successURL += "border/payBOrdersSuccessBefore.shtml?bOrderId=" + pfBorder.getId();
         WxPaySysParamReq req = new WxPaySysParamReq();
         req.setOrderId(pfBorder.getOrderCode());
         req.setSignType("MD5");
@@ -136,7 +124,8 @@ public class BOrderController extends BaseController {
     }
 
     /**
-     * 去微信支付
+     * 去微信支付(开发测试使用)
+     *
      * @param request
      * @param attrs
      * @param bOrderId
@@ -167,7 +156,6 @@ public class BOrderController extends BaseController {
             payment.setPayTypeId(0);
             payment.setPayTypeName("微信支付");
             bOrderService.addBOrderPayment(payment);
-
             PfBorderPayment pfBorderPayment = bOrderService.findOrderPaymentBySerialNum(uuid);
             if (pfBorderPayment == null) {
                 throw new BusinessException("该支付流水号不存在,pay_serial_num:" + uuid);
@@ -176,20 +164,7 @@ public class BOrderController extends BaseController {
                 // 调用borderService的方法处理
                 payBOrderService.mainPayBOrder(pfBorderPayment, UUID.randomUUID().toString(), getWebRootPath(request));
             }
-            String successURL = "";
-            //订单类型(0代理1补货2拿货)
-            if (pfBorder.getOrderType() == 0) {
-                //拿货方式(0未选择1平台代发2自己发货)
-                if (pfBorder.getSendType() == 0) {
-                    successURL += "border/setUserSendType.shtml";
-                } else {
-                    successURL += "border/payBOrdersSuccess.shtml";
-                }
-            } else if (pfBorder.getOrderType() == 1) {
-                successURL += "payEnd/replenishment.shtml";
-            } else {
-                throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
-            }
+            String successURL = "border/payBOrdersSuccessBefore.shtml";
             attrs.addAttribute("bOrderId", bOrderId);
             return "redirect:/" + successURL;
         } else if (enviromentkey.equals("1")) {
@@ -220,46 +195,47 @@ public class BOrderController extends BaseController {
 
     /**
      * 线下支付
+     *
      * @author hanzengzhi
      * @date 2016/4/25 14:44
      */
     @RequestMapping(value = "offinePayment.do")
     @ResponseBody
     public String offinePayment(HttpServletRequest request, HttpServletResponse response,
-                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId)throws Exception{
+                                @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
         Boolean bl = false;
-        try{
-            bl = payBOrderService.offinePayment(getComUser(request),bOrderId);
-        }catch (Exception e){
+        try {
+            bl = payBOrderService.offinePayment(getComUser(request), bOrderId);
+        } catch (Exception e) {
             throw e;
         }
-        return bl+"";
+        return bl + "";
     }
 
     /**
      * 获得线下支付详情信息
+     *
      * @author hanzengzhi
      * @date 2016/4/25 14:44
      */
     @RequestMapping(value = "getOffinePaymentDeatil.html")
     public ModelAndView getOffinePaymentDeatil(HttpServletRequest request, HttpServletResponse response,
-                                      @RequestParam(value = "bOrderId", required = true) Long bOrderId){
+                                               @RequestParam(value = "bOrderId", required = true) Long bOrderId) {
         ModelAndView mav = new ModelAndView("platform/order/xianxiazhifu");
-        try{
-            Map<String,Object> map = payBOrderService.getOffinePaymentDeatil(bOrderId);
-            if (map != null){
-                mav.addObject("supplierBank",map.get("supplierBank"));
+        try {
+            Map<String, Object> map = payBOrderService.getOffinePaymentDeatil(bOrderId);
+            if (map != null) {
+                mav.addObject("supplierBank", map.get("supplierBank"));
                 mav.addObject("latestTime", map.get("latestTime"));
-                mav.addObject("orderItem",map.get("orderItem"));
-                mav.addObject("border",map.get("border"));
-                mav.addObject("payAmount",map.get("payAmount"));
+                mav.addObject("orderItem", map.get("orderItem"));
+                mav.addObject("border", map.get("border"));
+                mav.addObject("payAmount", map.get("payAmount"));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
         return mav;
     }
-
 
 
     /**
@@ -321,5 +297,37 @@ public class BOrderController extends BaseController {
 //        boolean isUserForcus = WxUserUtils.getInstance().isUserForcusPF(comUser);
 //        mav.addObject("isUserForcus", isUserForcus);
         return mav;
+    }
+
+    /**
+     * 成功支付订单前延缓动画
+     *
+     * @param request
+     * @param bOrderId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/payBOrdersSuccessBefore.shtml")
+    public ModelAndView payBOrdersSuccessBefore(HttpServletRequest request,
+                                                @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
+        ModelAndView modelAndView = new ModelAndView("platform/order/agent/payBOrdersSuccessBefore");
+        PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+        String successURL = getBasePath(request);
+        //订单类型(0代理1补货2拿货)
+        if (pfBorder.getOrderType() == 0) {
+            //拿货方式(0未选择1平台代发2自己发货)
+            if (pfBorder.getSendType() == 0) {
+                successURL += "border/setUserSendType.shtml?bOrderId=" + pfBorder.getId();
+            } else {
+                successURL += "border/payBOrdersSuccess.shtml?bOrderId=" + pfBorder.getId();
+            }
+        } else if (pfBorder.getOrderType() == 1) {
+            successURL += "payEnd/replenishment.shtml?bOrderId=" + pfBorder.getId();
+        } else {
+            throw new BusinessException("订单类型不存在,orderType:" + pfBorder.getOrderType());
+        }
+        modelAndView.addObject("bOrderId", bOrderId);
+        modelAndView.addObject("successURL", successURL);
+        return modelAndView;
     }
 }

@@ -15,7 +15,7 @@
     <img src="${path}/static/images/yes.png" alt=""
          style="width: 20%;margin: 0 auto;display: block;margin-bottom:2em;">
     <%--<h2>正在为您处理，请稍后</h2>--%>
-    <h1>正在为您处理，请稍后...</h1>
+    <h1>正在为您处理，请稍候...</h1>
 </div>
 <script src="${path}/static/js/zepto.min.js"></script>
 <script>

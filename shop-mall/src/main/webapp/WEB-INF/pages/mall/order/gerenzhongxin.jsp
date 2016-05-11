@@ -40,7 +40,7 @@
                 <span><img src="<%=path%>/static/images/my.png" alt=""></span>
                 <span>我的订单</span>
             </li>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/commissionHome.shtml');">
+            <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
                 <span>我的奖励</span>
             </li>

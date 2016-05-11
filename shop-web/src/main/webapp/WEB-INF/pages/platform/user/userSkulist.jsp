@@ -41,7 +41,7 @@
                             <div>
                                 <h2 id="sku1">${sku.name}</h2>
                                 <h3>零售价：<span>${sku.priceRetail}</span></h3>
-                                <p>已售：<span>0</span>　　在线库存：<span id="sku2">${sku.stock}</span></p>
+                                <p>在线库存：<span id="sku2">${sku.stock}</span></p>
                                 <input type="hidden" id="pfuId" value="${sku.pfuId}">
                                 <input type="text" id="skuId" value="${sku.id}" style="display: none">
                             </div>

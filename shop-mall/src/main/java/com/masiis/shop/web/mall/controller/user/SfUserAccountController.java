@@ -196,13 +196,11 @@ public class SfUserAccountController extends BaseController {
             if (userRelations_two.size() > 0){
                 log.info("处理第二级分销");
                 for (SfUserRelation twoRelation : userRelations_two){
-                    for (Long userPid : userPids_two){
-                        if (userPid.longValue() == twoRelation.getUserPid().longValue()){
-                            twoDistributions.add(twoRelation);
-                            userPids_three.add(twoRelation.getUserId());
-                        }else {
-                            userRelations_three.add(twoRelation);
-                        }
+                    if (userPids_two.contains(twoRelation.getUserPid())){
+                        twoDistributions.add(twoRelation);
+                        userPids_three.add(twoRelation.getUserId());
+                    }else {
+                        userRelations_three.add(twoRelation);
                     }
                 }
 
@@ -210,10 +208,8 @@ public class SfUserAccountController extends BaseController {
                 if (userRelations_three.size() > 0){
                     log.info("处理三级分销");
                     for (SfUserRelation threeRelation : userRelations_three){
-                        for (Long userPid : userPids_three){
-                            if (userPid.longValue() == threeRelation.getUserId().longValue()){
-                                threeDistributions.add(threeRelation);
-                            }
+                        if (userPids_three.contains(threeRelation.getUserPid())){
+                            threeDistributions.add(threeRelation);
                         }
                     }
                 }
@@ -232,7 +228,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -247,7 +243,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -262,7 +258,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);

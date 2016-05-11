@@ -195,8 +195,8 @@ public class SfUserAccountController extends BaseController {
             //处理第二级分销
             if (userRelations_two.size() > 0){
                 log.info("处理第二级分销");
-                for (Long userPid : userPids_two){
-                    for (SfUserRelation twoRelation : userRelations_two){
+                for (SfUserRelation twoRelation : userRelations_two){
+                    for (Long userPid : userPids_two){
                         if (userPid.longValue() == twoRelation.getUserPid().longValue()){
                             twoDistributions.add(twoRelation);
                             userPids_three.add(twoRelation.getUserId());
@@ -205,11 +205,12 @@ public class SfUserAccountController extends BaseController {
                         }
                     }
                 }
+
                 //处理第三级分销
                 if (userRelations_three.size() > 0){
                     log.info("处理三级分销");
-                    for (Long userPid : userPids_three){
-                        for (SfUserRelation threeRelation : userRelations_three){
+                    for (SfUserRelation threeRelation : userRelations_three){
+                        for (Long userPid : userPids_three){
                             if (userPid.longValue() == threeRelation.getUserId().longValue()){
                                 threeDistributions.add(threeRelation);
                             }

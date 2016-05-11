@@ -16,11 +16,15 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,7 +52,7 @@ public class WxEventService {
      *
      * @param body
      */
-    public WxBaseMessage handleEvent(WxEventBody body) {
+    public WxBaseMessage handleEvent(WxEventBody body) throws UnsupportedEncodingException {
         if(body == null){
             throw new BusinessException("request body is null");
         }
@@ -94,7 +98,7 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(WxEventBody body) throws UnsupportedEncodingException {
         Integer pfUserSkuId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
@@ -157,7 +161,7 @@ public class WxEventService {
         return res;
     }
 
-    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) {
+    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) throws UnsupportedEncodingException {
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());
         res.setFromUserName(body.getToUserName());
@@ -206,22 +210,22 @@ public class WxEventService {
     }
 
     public static void main(String... args) {
-        String aaa = "{\"subscribe\": 1," +
-                "\"openid\": \"o6_bmjrPTlm6_2sgVt7hMZOPfL2M\"," +
-                "\"nickname\": \"Band\", " +
-                "\"sex\": 1," +
-                "\"language\": \"zh_CN\", " +
-                "\"city\": \"广州\", " +
-                "\"province\": \"广东\", " +
-                "\"country\": \"中国\", " +
-                "\"headimgurl\": \"http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4" +
-                "eMsv84eavHiaiceqxibJxCfHe/0\"," +
-                "\"subscribe_time\": 1382694957," +
-                "\"unionid\": \"o6_bmasdasdsad6_2sgVt7hMZOPfL\"," +
-                "\"remark\": \"\"," +
-                "\"groupid\": 0," +
-                "\"tagid_list\":[128,2]}";
-        WxUserInfo res = JSONObject.parseObject(aaa, WxUserInfo.class);
-        System.out.println(res);
+        WxArticleRes res = new WxArticleRes();
+        res.setToUserName("aaaaa");
+        res.setFromUserName("bbbbb");
+        res.setCreateTime(new Date().getTime());
+        res.setMsgType("news");
+        res.setArticleCount(1);
+        List<Article> articles = new ArrayList<>();
+        articles.add(new Article("点击继续注册", "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=40&pUserId=11"));
+        res.setArticles(articles);
+        XStream xStream = new XStream(new DomDriver("UTF-8"));
+        xStream.processAnnotations(res.getClass());
+        String result = xStream.toXML(res);
+        result = result.replaceAll("&amp;", "&");
+        System.out.println(result);
+
+        WxArticleRes r = (WxArticleRes) xStream.fromXML(result);
+        System.out.println(r);
     }
 }

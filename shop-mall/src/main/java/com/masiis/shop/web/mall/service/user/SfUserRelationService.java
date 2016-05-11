@@ -5,6 +5,7 @@ import com.masiis.shop.dao.po.SfUserRelation;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by hzz on 2016/4/9.
@@ -31,5 +32,9 @@ public class SfUserRelationService {
      */
     public SfUserRelation getSfUserRelationByUserPid(Long userPid){
         return sfUserRelationMapper.getSfUserRelationByUserPid(userPid);
+    }
+
+    public List<SfUserRelation> threeDistributionList(Long userPid){
+        return sfUserRelationMapper.getThreeDistributionList(userPid);
     }
 }

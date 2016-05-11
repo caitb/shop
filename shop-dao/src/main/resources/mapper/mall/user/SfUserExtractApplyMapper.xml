@@ -154,4 +154,8 @@
             </if>
         </where>
     </select>
+
+    <select id="selectextractFeeByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
+        select sum(extract_fee) as extractFee from sf_user_extract_apply where com_user_id = #{0} and  audit_type = 3
+    </select>
 </mapper>

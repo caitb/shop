@@ -27,4 +27,6 @@ public interface SfUserRelationMapper {
     SfUserRelation getSfUserRelationByUserId(Long userId);
 
     SfUserRelation getSfUserRelationByUserPid(Long userPid);
+
+    List<SfUserRelation> getThreeDistributionList(Long userPid);
 }

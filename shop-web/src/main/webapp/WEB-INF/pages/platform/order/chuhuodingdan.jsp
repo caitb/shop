@@ -411,17 +411,17 @@
                }
                $(document).ready(function(){
                    var index=${index};
-                   $(".all").html("");
-                   $(".all").eq(index).show().siblings().hide();
                    $("li").children("a").removeClass("on")
                    $("li").eq(index).children("a").addClass("on");
+                   $(".all").eq(index).show().siblings().hide();
                });
                $(function(){
                    $("li").on("click",function(){
                        var index=$(this).index();
-                       $("li").children("a").removeClass("on")
-                       $(this).children("a").addClass("on");
+                       $(".all").html("");
                        $(".all").eq(index).show().siblings().hide();
+                       $("li").children("a").removeClass("on");
+                       $(this).children("a").addClass("on");
                        $.ajax({
                            type:"POST",
                            url : "<%=path%>/borderManage/clickdeliverType.do",

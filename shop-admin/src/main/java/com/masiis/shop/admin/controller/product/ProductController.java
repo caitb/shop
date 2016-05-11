@@ -122,6 +122,7 @@ public class ProductController {
         try{
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
             if(pbUser != null){
+                log.info("保存商品-开始准备comSpu数据");
                 comSpu.setCreateTime(new Date());
                 comSpu.setCreateMan(pbUser.getId());
                 comSpu.setStatus(0);
@@ -138,7 +139,9 @@ public class ProductController {
                 OSSObjectUtils.uploadFile(proIconFile, "static/product/product_icon/");
 
                 proIconFile.delete();
+                log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
 
+                log.info("保存商品-开始准备pfSkuAgents数据");
                 //代理分润
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
                 for(int i=0; i<discounts.length; i++){
@@ -159,7 +162,9 @@ public class ProductController {
 
                     iconFile.delete();
                 }
+                log.info("保存商品-comSpu数据[pfSkuAgents="+pfSkuAgents+"]");
 
+                log.info("保存商品-开始准备sfSkuDistributions数据");
                 //分销分润
                 List<SfSkuDistribution> sfSkuDistributions = new ArrayList<>();
                 for(int i=0; i<distributionDiscounts.length; i++){
@@ -169,7 +174,9 @@ public class ProductController {
 
                     sfSkuDistributions.add(sfSkuDistribution);
                 }
+                log.info("保存商品-comSpu数据[sfSkuDistributions="+sfSkuDistributions+"]");
 
+                log.info("保存商品-开始准备comSkuImages数据");
                 List<ComSkuImage> comSkuImages = new ArrayList<>();
                 String folderPath = realPath + "/current";
                 int[] imgPxs = {220, 308, 800};
@@ -203,7 +210,9 @@ public class ProductController {
 
                     comSkuImages.add(comSkuImage);
                 }
+                log.info("保存商品-comSpu数据[comSkuImages="+comSkuImages+"]");
 
+            log.info("保存商品-开始上传商品详情图片");
             /* 上传商品详情图 */
             File detailDir = new File(realPath + "/static/product/detail_img");
             if(detailDir.exists() && detailDir.listFiles().length > 0){
@@ -213,13 +222,14 @@ public class ProductController {
                     f.delete();
                 }
             }
+            log.info("保存商品-结束上传商品详情图片");
 
                 productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "保存成功!";
             }
         } catch(Exception e) {
-            e.printStackTrace();
             log.error("保存商品失败!");
+            e.printStackTrace();
         }
         return "保存失败!";
     }

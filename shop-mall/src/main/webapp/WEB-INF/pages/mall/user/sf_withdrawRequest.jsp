@@ -13,7 +13,7 @@
 <input type="hidden" id="extractableFee" name="extractableFee" value="${userAccount.extractableFee}"/>
 <input type="hidden" id="appliedFee" name="appliedFee" value="${userAccount.appliedFee}"/>
 <header>
-    <a href="javascript:history.back(-1)"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.location.href='<%=basePath%>sfaccount/rewardHome.shtml'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>申请提现</p>
 </header>
 <div class="wrap">

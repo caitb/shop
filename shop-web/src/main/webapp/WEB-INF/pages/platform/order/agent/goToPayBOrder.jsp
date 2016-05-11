@@ -2,7 +2,8 @@
 <%@ page import="com.masiis.shop.common.util.PropertiesUtils" %>
 <%@ page import="com.masiis.shop.web.platform.constants.SysConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -41,7 +42,7 @@
         <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
     </div>
     <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
-    <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    <button class="downPay" id="downPayConfirm"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
     <p><span style="color:red;">*大于5000元的订单建议选择线下支付</span></p>
 </div>
 <div class="back_box" style="display: none">
@@ -53,7 +54,7 @@
         <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
         <h3>
             <span class="que_qu" id="downPayCancel">取消</span>
-            <span class="que_que" id="downPayConfirm">确定</span>
+            <span class="que_que" id="downPayConfirm1">确定</span>
         </h3>
     </div>
 </div>
@@ -100,15 +101,14 @@
                 type: 'post',
                 async: false,
                 data: {"bOrderId": ${pfBorder.id}},
-                dataType:"text",
+                dataType:"Json",
                 success: function (data) {
-                    if(data=="true"){
+                    if(data){
                         window.location.href = "${basePath}border/getOffinePaymentDeatil.html?bOrderId=${pfBorder.id}";
-                    }else{
-                        alert("线下支付失败");
                     }
                 }
             });
+            $(this).html("线下支付");
         }else{
             alert("网络异常");
             return false;

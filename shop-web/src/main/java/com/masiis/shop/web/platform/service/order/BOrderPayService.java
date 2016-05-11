@@ -628,23 +628,28 @@ public class BOrderPayService {
      */
     public Boolean offinePayment(ComUser comUser, Long bOrderId)throws Exception {
         //修改订单状态
-        PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
-        if (pfBorder != null) {
-            //插入订单支付表
-            insertOrderPayment(pfBorder);
-            bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下已支付");
-            PfSupplierBank supplierBank = getDefaultBack();
-            List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-            if (orderItems != null && orderItems.size() != 0) {
-                //发送微信短信提醒
-                offinePaymentNotice(comUser, pfBorder, orderItems.get(0), supplierBank);
-            } else {
-                throw new BusinessException("线下支付失败:查询子帐单为null");
+        try{
+            PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
+            if (pfBorder != null) {
+                //插入订单支付表
+                insertOrderPayment(pfBorder);
+                bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单线下已支付");
+                PfSupplierBank supplierBank = getDefaultBack();
+                List<PfBorderItem> orderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
+                if (orderItems != null && orderItems.size() != 0) {
+                    //发送微信短信提醒
+                    offinePaymentNotice(comUser, pfBorder, orderItems.get(0), supplierBank);
+                } else {
+                    throw new BusinessException("线下支付失败:查询子帐单为null");
+                }
+                return true;
+            }else{
+                return false;
             }
-            return true;
-        }else{
-            return false;
+        }catch (Exception e){
+            throw new BusinessException(e.getMessage());
         }
+
     }
 
     /**
@@ -653,7 +658,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:49
      */
-    private PfBorder updateOrderStatus(Integer status, Long bOrderId)throws BusinessException {
+    private PfBorder updateOrderStatus(Integer status, Long bOrderId)throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder!=null){
             Integer payStatus = pfBorder.getPayStatus();

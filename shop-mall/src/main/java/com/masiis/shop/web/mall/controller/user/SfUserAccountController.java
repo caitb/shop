@@ -176,7 +176,7 @@ public class SfUserAccountController extends BaseController {
         //三級分銷
         List<SfUserRelation> threeDistributions = new ArrayList<>();
         log.info("分销用户数量：" + sfUserRelations.size());
-        log.info("处理三级分销begin");
+        log.info("处理分销begin");
         List<SfOrder> allOrders = new ArrayList<>();
         if (sfUserRelations != null && sfUserRelations.size() > 0){
             Long userPid;
@@ -184,19 +184,16 @@ public class SfUserAccountController extends BaseController {
             for (SfUserRelation oneRelation : sfUserRelations){
                 if (oneRelation.getUserPid().longValue() == userId.longValue()){
                     oneDistributions.add(oneRelation);
-                    sfUserRelations.remove(oneRelation);
                     userPid = oneRelation.getUserId();
                     for (SfUserRelation twoRelation : sfUserRelations){
                         log.info("处理二级分销");
                         if (userPid.longValue() == twoRelation.getUserPid().longValue()){
                             twoDistributions.add(twoRelation);
-                            sfUserRelations.remove(twoRelation);
                             userPid = twoRelation.getUserId();
                             for (SfUserRelation threeRelation : sfUserRelations){
                                 log.info("处理三级分销");
                                 if (userPid.longValue() == threeRelation.getUserId().longValue()){
                                     threeDistributions.add(threeRelation);
-                                    sfUserRelations.remove(threeRelation);
                                 }
                             }
                         }

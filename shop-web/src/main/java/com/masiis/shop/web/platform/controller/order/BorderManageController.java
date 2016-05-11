@@ -183,11 +183,11 @@ public class BorderManageController extends BaseController {
                 }
             }
             for (PfBorder pfBorders : pfBorder) {
-                if(pfBorders.getUserPid()==0){
-                    pfBorders.setPidUserName("平台代发");
+                if(pfBorders.getSendType()==1){
+                    pfBorders.setPidUserName("平台");
                 }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
                     pfBorders.setPidUserName("未选择");
-                } else{
+                } else if(pfBorders.getSendType()==2){
                     pfBorders.setPidUserName("自己发货");
                 }
             }

@@ -249,6 +249,8 @@
         });
     }
 </script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <%--<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>--%>
 <%--<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>--%>
 <%--<script src="<%=basePath%>static/js/plugins/base64.js"></script>--%>

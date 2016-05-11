@@ -24,14 +24,14 @@
         })
     }
 
-    var hideWindow = function(){
-        $('.alert').fadeIn("slow").delay(2000).fadeOut("slow", function(){
-         $('.alert').remove();
-         });
-        $(".layer").fadeIn("slow").delay(2000).fadeOut("slow", function(){
-         $('.layer').remove();
-         });
-    }
+    //var hideWindow = function(){
+    //    $('.alert').fadeIn("slow").delay(2000).fadeOut("slow", function(){
+    //     $('.alert').remove();
+    //     });
+    //    $(".layer").fadeIn("slow").delay(2000).fadeOut("slow", function(){
+    //     $('.layer').remove();
+    //     });
+    //}
     var loadCssFile = function(){
         $("<link>").attr({
             rel:"stylesheet",

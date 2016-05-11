@@ -4,13 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComWxUser;
-import com.masiis.shop.dao.po.PfUserRelation;
-import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.platform.beans.wxauth.AccessTokenRes;
 import com.masiis.shop.web.platform.beans.wxauth.WxUserInfo;
+import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.PfUserRelationService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
@@ -46,6 +48,10 @@ public class WxEventService {
     private UserService userService;
     @Resource
     private PfUserRelationService pfUserRelationService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private ComSkuImageMapper imageMapper;
 
     /**
      * 处理微信事件推送
@@ -152,16 +158,18 @@ public class WxEventService {
             }
         }
 
-
+        ComSku sku = skuService.getSkuById(skuId);
+        ComSkuImage skuImage = skuService.findComSkuImage(skuId);
+        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
 
         String url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
-        WxArticleRes res = createReturnToWxUser(body, url);
+        WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), imgUrl);
 
         return res;
     }
 
-    private WxArticleRes createReturnToWxUser(WxEventBody body, String url) throws UnsupportedEncodingException {
+    private WxArticleRes createReturnToWxUser(WxEventBody body, String url, String skuName, String imgUrl) throws UnsupportedEncodingException {
         WxArticleRes res = new WxArticleRes();
         res.setToUserName(body.getFromUserName());
         res.setFromUserName(body.getToUserName());
@@ -169,7 +177,10 @@ public class WxEventService {
         res.setMsgType("news");
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
-        articles.add(new Article("点击继续注册", url));
+        Article article = new Article("点击继续", url);
+        article.setPicUrl(imgUrl);
+        article.setDescription("您正在申请" + skuName + "合伙人，点击继续");
+        articles.add(article);
         res.setArticles(articles);
         return res;
     }

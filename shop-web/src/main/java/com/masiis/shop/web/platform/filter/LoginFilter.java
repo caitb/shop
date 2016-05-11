@@ -53,7 +53,7 @@ public class LoginFilter implements Filter{
             log.info("uri:" + uri);
             // 给开发组织一个默认的登录人
             UserService userService = (UserService) ApplicationContextUtil.getBean("userService");
-            ComUser user = userService.getUserById(248l);
+            ComUser user = userService.getUserById(246l);
             request.getSession().setAttribute(SysConstants.SESSION_LOGIN_USER_NAME, user);
 
             chain.doFilter(request, response);

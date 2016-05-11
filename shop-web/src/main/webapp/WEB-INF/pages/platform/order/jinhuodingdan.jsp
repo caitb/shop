@@ -49,7 +49,7 @@
                                 <%--<c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>--%>
                                 <%--<c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>--%>
                                 <%--<c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>--%>
-                                <%--<c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>--%>
+                                <%--<c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>--%>
                             <%--</h2>--%>
                             <%--<c:forEach items="${pb.pfBorderItems}" var="pbi">--%>
                             <%--<div class="shangpin">--%>
@@ -96,7 +96,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}">排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -111,7 +111,7 @@
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                         </div>
                                     </div></c:forEach>
-                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -151,7 +151,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -166,7 +166,7 @@
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                         </div>
                                     </div></c:forEach>
-                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -204,7 +204,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -219,7 +219,7 @@
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                         </div>
                                     </div></c:forEach>
-                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -258,7 +258,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -273,7 +273,7 @@
                                             <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                         </div>
                                     </div></c:forEach>
-                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1><b>发货方：</b>
                                     <span>${pb.pidUserName}</span>
                                     <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -314,7 +314,7 @@
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                         <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -329,7 +329,7 @@
                                                 <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                             </div>
                                         </div></c:forEach>
-                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1><b>发货方：</b>
                                         <span>${pb.pidUserName}</span>
                                         <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -368,7 +368,7 @@
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                         <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -383,7 +383,7 @@
                                                 <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                             </div>
                                         </div></c:forEach>
-                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1><b>发货方：</b>
                                         <span>${pb.pidUserName}</span>
                                         <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -423,7 +423,7 @@
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="querenshouhuo_${pb.id}" >排单中</b></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                                         <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -438,7 +438,7 @@
                                                 <h3><span>￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></h3>
                                             </div>
                                         </div></c:forEach>
-                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                    <h1> 共<span style="margin:0">${pb.totalQuantity}</span>件商品 <b style="color:#A5A5A5">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1><b>发货方：</b>
                                         <span>${pb.pidUserName}</span>
                                         <c:if test="${pb.orderType==2 && pb.sendType==1}">
@@ -560,7 +560,7 @@
                             }else if(pfBorder.orderStatus ==8){
                                 StatusName="待收货";
                             }else if(pfBorder.orderStatus ==3){
-                                StatusName="交易成功";
+                                StatusName="已完成";
                             }else if(pfBorder.orderStatus ==9){
                                 StatusName="线下支付中";
                             }
@@ -576,8 +576,10 @@
                             trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
                             if(pfBorder.orderType==0){
                                 trHtml+="(包含保证金 运费：到付)";
-                            }else{
+                            }else if(pfBorder.orderType==2){
                                 trHtml+="(运费：到付)";
+                            }else if(pfBorder.orderType==1){
+                                trHtml+="";
                             }
                             trHtml+="</h1><h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
                             if(pfBorder.orderType==2 && pfBorder.sendType==1){
@@ -645,7 +647,7 @@
                         success:function(date){
 //                            if(date.msgs){
                                 $("span[name="+aa+"]").attr("style","display:none");
-                                $("b."+aa+"").html("交易成功");
+                                $("b."+aa+"").html("已完成");
                                 location.reload(true);
 //                            }else{
 //                                alert(date.message);

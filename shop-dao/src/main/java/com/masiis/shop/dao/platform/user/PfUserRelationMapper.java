@@ -25,5 +25,12 @@ public interface PfUserRelationMapper {
 
     int updateByPrimaryKey(PfUserRelation record);
 
-        PfUserRelation selectEnableByUserId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+    PfUserRelation selectEnableByUserId(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+
+    /**
+     * 根据用户id查找最新的一条记录
+     * @param userId
+     * @return
+     */
+    PfUserRelation selectLastRecordByUserId(Long userId);
 }

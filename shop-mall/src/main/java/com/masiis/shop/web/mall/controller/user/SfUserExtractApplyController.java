@@ -140,7 +140,7 @@ public class SfUserExtractApplyController extends BaseController{
         }
         if (user.getIsBuy() != 1){
             jsonobject.put("isTrue","false");
-            jsonobject.put("message","成为会员后才可提现，至少成功购买一件商品便可成为会员");
+            jsonobject.put("isBuy","false");
             log.info(jsonobject.toJSONString());
             return jsonobject.toJSONString();
         }

@@ -32,8 +32,8 @@
        <div class="index_login">
             <p><b>${sumLevel}</b><span>参与人次</span></p>
             <ul>
-                <li><p>总销售额</p><h1>￥<span>${sfShop.saleAmount}</span></h1></li>
-                <li><p>发放佣金</p><h1>￥<span>${distributionAmount}</span></h1></li>
+                <li><p>总销售额</p><h1>￥<span><fmt:formatNumber value="${sfShop.saleAmount}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></span></h1></li>
+                <li><p>发放佣金</p><h1>￥<span><fmt:formatNumber value="${distributionAmount}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></span></h1></li>
             </ul>
        </div>
        <div class="sec1" id="sec1">

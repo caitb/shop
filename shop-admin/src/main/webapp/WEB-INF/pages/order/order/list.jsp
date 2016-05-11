@@ -480,11 +480,24 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="detail" href="javascript:void(0);">查看</a>';
+                            var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
+                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
+                                arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
+                            }
+                            return arr.join('');
                         },
                         events: {
                             'click .detail': function(e, value, row, index){
                                 parent.window.$('#myTabbable').add('order-detail-'+row.sfOrder.id, '店铺订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
+                            },
+                            'click .tuihuo': function(e, value, row, index){
+                                $("#bootbox-confirm").on(ace.click_event, function() {
+                                    bootbox.confirm("您确定要退货吗?", function(result) {
+                                        if(result) {
+                                            //
+                                        }
+                                    });
+                                });
                             }
                         }
                     }

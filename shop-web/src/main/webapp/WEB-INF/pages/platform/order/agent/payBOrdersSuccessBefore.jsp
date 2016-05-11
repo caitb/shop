@@ -9,7 +9,7 @@
 </head>
 <body>
 <%--<header class="xq_header" style="margin:0;">--%>
-    <%--<p>正在为您处理，请稍后。</p>--%>
+<%--<p>正在为您处理，请稍后。</p>--%>
 <%--</header>--%>
 <div class="drap">
     <img src="${path}/static/images/yes.png" alt=""
@@ -23,7 +23,7 @@
         function timedMsg() {
             var t = setTimeout(function () {
                 skipPage();
-            }, 3000)
+            }, 5000)
         }
 
         timedMsg();

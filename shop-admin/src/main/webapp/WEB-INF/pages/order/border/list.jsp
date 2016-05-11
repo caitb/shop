@@ -416,7 +416,7 @@
                                 arr.push('&nbsp;&nbsp;<a class="scheduling" href="javascript:void(0);">处理订单</a>');
                             }
                             if(row.pfBorder && row.pfBorder.orderStatus == 3){
-                                arr.push('<a class="tuihuo" href="javascript:void(0);">退货</a>');
+                                arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
                             }
 
                             return arr.join('');

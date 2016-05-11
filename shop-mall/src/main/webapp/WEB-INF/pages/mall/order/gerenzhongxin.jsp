@@ -27,7 +27,7 @@
             <c:if test="">
                 <span>您的推荐人是<b>${userPid.realName}</b></span>
             </c:if>
-            <span>会员：<b><c:if test="${user.isBuy==0 || empty user.isBuy}">否</c:if><c:if test="${user.isBuy==1}">是</c:if></b> <c:if test="${user.isBuy==0}">（需要购买至少一件商品）</c:if></span>
+            <%--<span>会员：<b><c:if test="${user.isBuy==0 || empty user.isBuy}">否</c:if><c:if test="${user.isBuy==1}">是</c:if></b> <c:if test="${user.isBuy==0}">（需要购买至少一件商品）</c:if></span>--%>
         </h1>
     </div>
     <div class="jiang">

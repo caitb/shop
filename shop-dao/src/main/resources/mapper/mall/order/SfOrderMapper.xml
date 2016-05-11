@@ -292,4 +292,12 @@
         </foreach>
     </select>
 
+    <select id="selectByUserIds" resultMap="BaseResultMap">
+        select * from sf_order
+        where user_id in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

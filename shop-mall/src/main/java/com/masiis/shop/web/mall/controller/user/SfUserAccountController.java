@@ -166,7 +166,6 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("oneBuy",0);
         mv.addObject("twoBuy",0);
         mv.addObject("threeBuy",0);
-        mv.setViewName("mall/user/sf_reward");
         log.info("查询出向下三级分销用户关系列表");
         List<SfUserRelation> sfUserRelations = sfUserRelationService.threeDistributionList(userId);
         //一級分銷
@@ -179,27 +178,43 @@ public class SfUserAccountController extends BaseController {
         log.info("处理分销begin");
         List<SfOrder> allOrders = new ArrayList<>();
         if (sfUserRelations != null && sfUserRelations.size() > 0){
-            Long userPid;
+            List<Long> userPids_two = new ArrayList<>();
+            List<Long> userPids_three = new ArrayList<>();
+            List<SfUserRelation> userRelations_two = new ArrayList<>();
+            List<SfUserRelation> userRelations_three = new ArrayList<>();
             //递归处理分销用户关系，将其分成一级/二级/三级
             for (SfUserRelation oneRelation : sfUserRelations){
+                log.info("处理第一级分销");
                 if (oneRelation.getUserPid().longValue() == userId.longValue()){
                     oneDistributions.add(oneRelation);
-                    userPid = oneRelation.getUserId();
-                    for (SfUserRelation twoRelation : sfUserRelations){
-                        log.info("处理二级分销");
-                        if (userPid.longValue() == twoRelation.getUserPid().longValue()){
-                            twoDistributions.add(twoRelation);
-                            userPid = twoRelation.getUserId();
-                            for (SfUserRelation threeRelation : sfUserRelations){
-                                log.info("处理三级分销");
-                                if (userPid.longValue() == threeRelation.getUserId().longValue()){
-                                    threeDistributions.add(threeRelation);
-                                }
-                            }
+                    userPids_two.add(oneRelation.getUserId());
+                }else {
+                    userRelations_two.add(oneRelation);
+                }
+            }
+            //处理第二级分销
+            if (userRelations_two.size() > 0){
+                log.info("处理第二级分销");
+                for (SfUserRelation twoRelation : userRelations_two){
+                    if (userPids_two.contains(twoRelation.getUserPid())){
+                        twoDistributions.add(twoRelation);
+                        userPids_three.add(twoRelation.getUserId());
+                    }else {
+                        userRelations_three.add(twoRelation);
+                    }
+                }
+
+                //处理第三级分销
+                if (userRelations_three.size() > 0){
+                    log.info("处理三级分销");
+                    for (SfUserRelation threeRelation : userRelations_three){
+                        if (userPids_three.contains(threeRelation.getUserPid())){
+                            threeDistributions.add(threeRelation);
                         }
                     }
                 }
             }
+
             log.info("一级分销人数：" + oneDistributions.size());
             log.info("二级分销人数：" + twoDistributions.size());
             log.info("三级分销人数：" + threeDistributions.size());
@@ -213,7 +228,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -228,7 +243,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -243,7 +258,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByShopUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -286,11 +301,17 @@ public class SfUserAccountController extends BaseController {
         log.info("处理已付款、未付款订单财富");
         BigDecimal isPayDistribution = new BigDecimal(0);
         BigDecimal isNotPayDistribution = new BigDecimal(0);
+        List<Long> isPayOrderIds;
+        List<Long> isNotPayOrderIds;
         if (allOrders.size() > 0){
+            isPayOrderIds = new ArrayList<>();
+            isNotPayOrderIds = new ArrayList<>();
             for (SfOrder sfOrder : allOrders){
+                log.info("小铺订单id：" + sfOrder.getId());
                 if (sfOrder.getPayStatus() == 1 ){
                     if (sfOrder.getOrderStatus() != BOrderStatus.Complete.getCode()){
-                        isPayDistribution.add(sfOrder.getDistributionAmount());
+                        isPayOrderIds.add(sfOrder.getId());
+                        log.info("isPayDistribution = " + isPayDistribution);
                     }else {
                         //处理订单完成七天后的订单
                         //当前时间处理
@@ -307,13 +328,24 @@ public class SfUserAccountController extends BaseController {
                         setCal.set(Calendar.SECOND, 0);
                         setCal.set(Calendar.MILLISECOND, 0);
                         long dayDiff =(setCal.getTimeInMillis()-cal.getTimeInMillis())/(1000*60*60*24);
-                        if (dayDiff > 7){
-                            isPayDistribution.add(sfOrder.getDistributionAmount());
+                        if (dayDiff <= 7){
+                            isPayOrderIds.add(sfOrder.getId());
                         }
                     }
                 }else {
-                    isNotPayDistribution.add(sfOrder.getDistributionAmount());
+                    isNotPayOrderIds.add(sfOrder.getId());
                 }
+            }
+            log.info("处理财富值");
+            if (isPayOrderIds.size() > 0){
+                log.info("查询已付款订单财富");
+                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isPayOrderIds);
+                isPayDistribution = isPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
+            }
+            if (isNotPayOrderIds.size() > 0){
+                log.info("查询未付款订单财富");
+                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isNotPayOrderIds);
+                isNotPayDistribution = isNotPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
             }
         }
         mv.addObject("isPayDistribution",isPayDistribution);
@@ -325,6 +357,7 @@ public class SfUserAccountController extends BaseController {
         }else {
             mv.addObject("withdraw",(BigDecimal)map.get("extractFee"));
         }
+        mv.setViewName("mall/user/sf_reward");
         return mv;
     }
 }

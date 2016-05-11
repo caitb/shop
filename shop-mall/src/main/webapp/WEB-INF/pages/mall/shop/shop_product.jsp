@@ -61,7 +61,7 @@
             <%--<span>${skuInfo.shipAmount}</span></p>--%>
         <%--</c:if>--%>
         <p>总销量：<b>${skuInfo.saleNum}</b></p>
-        <p>分销量：<b>${skuInfo.shareNum}</b></p>
+        <p>分享量：<b>${skuInfo.shareNum}</b></p>
     </div>
     <div class="dlpople" onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">
         <p>选择： 数量</p>
@@ -249,6 +249,8 @@
         });
     }
 </script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <%--<script src="//cdn.bootcss.com/modernizr/2010.07.06dev/modernizr.min.js"></script>--%>
 <%--<script src="<%=basePath%>static/js/plugins/canvas2image.js"></script>--%>
 <%--<script src="<%=basePath%>static/js/plugins/base64.js"></script>--%>

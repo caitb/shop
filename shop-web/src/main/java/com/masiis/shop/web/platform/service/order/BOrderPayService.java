@@ -451,7 +451,6 @@ public class BOrderPayService {
         pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());
         pfBorder.setShipTime(new Date());
         pfBorder.setIsShip(1);
-        pfBorder.setReceiptTime(new Date());
         bOrderService.completeBOrder(pfBorder);
     }
 

@@ -67,7 +67,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
                                     未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -115,7 +115,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -162,7 +162,7 @@
                                     <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1>
                                         <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                         <b>类型:</b>
@@ -209,7 +209,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -257,7 +257,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -304,7 +304,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -351,7 +351,7 @@
                                 <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>

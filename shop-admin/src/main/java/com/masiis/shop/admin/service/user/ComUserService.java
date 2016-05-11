@@ -7,10 +7,7 @@ import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
-import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +33,8 @@ public class ComUserService {
     private PfUserCertificateMapper pfUserCertificateMapper;
     @Resource
     private ComSkuMapper comSkuMapper;
+    @Resource
+    private PfUserRelationMapper pfUserRelationMapper;
 
     /**
      * 根据id查找合伙人
@@ -152,9 +151,14 @@ public class ComUserService {
             MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
 
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            String url = "http://m.qc.iimai.com/index";
+            PfUserRelation pfUserRelation = pfUserRelationMapper.selectLastRecordByUserId(comUser.getId());
+            if(pfUserRelation != null){
+                url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId="+pfUserRelation.getSkuId();
+            }
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
                                                                     comUser.getAuditStatus()==2?true:false,
-                                                                    comUser.getAuditStatus()==2?"http://m.qc.iimai.com/index":"http://m.qc.iimai.com/identityAuth/toInentityAuthPage.html?defaultValue=3");
+                                                                    comUser.getAuditStatus()==2?url:"http://m.qc.iimai.com/identityAuth/toInentityAuthPage.html?defaultValue=3");
         }
     }
 

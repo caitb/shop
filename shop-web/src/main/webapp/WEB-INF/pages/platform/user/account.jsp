@@ -82,6 +82,8 @@
 <script type="text/javascript" src="<%=path%>/static/js/dropload.min.js"></script>
 <script src="<%=path%>/static/js/commonAjax.js"></script>
 <script src="<%=path%>/static/js/definedAlertWindow.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=path%>/static/js/hideWXShare.js"></script>
 <script type="text/javascript">
     $(function(){
         $('#beginTime').date(undefined,undefined,undefined,function(year, month){

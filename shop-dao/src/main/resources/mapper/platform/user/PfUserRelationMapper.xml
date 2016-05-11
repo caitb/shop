@@ -54,4 +54,20 @@
         and sku_id=#{skuId}
         and is_enable=1
     </select>
+
+    <select id="selectLastRecordByUserId" parameterType="Long" resultMap="BaseResultMap">
+        select
+               id,
+               create_time,
+               sku_id,
+               user_id,
+               user_pid,
+               is_enable,
+               remark
+        from
+               pf_user_relation
+        WHERE
+               user_id = #{userId}
+        ORDER BY create_time DESC limit 0,1
+    </select>
 </mapper>

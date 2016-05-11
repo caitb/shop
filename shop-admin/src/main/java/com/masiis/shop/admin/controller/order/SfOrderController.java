@@ -116,4 +116,8 @@ public class SfOrderController extends BaseController {
 
         return null;
     }
+
+    public String sfOrderRefund(){
+        return "";
+    }
 }

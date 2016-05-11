@@ -122,6 +122,9 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems){
                 updateShopSku(order.getShopId(),orderItem.getSkuId(),orderItem.getQuantity());
             }
+            //微信短信提醒
+            ComUser comUser = userService.getUserById(order.getUserId());
+            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -240,9 +243,6 @@ public class SfOrderPayService {
             //获得用户的分销关系的父id
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
-            //微信短信提醒
-            List<SfOrderItem> orderItems = getOrderItem(orderId);
-            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }

@@ -225,15 +225,15 @@ public class BOrderController extends BaseController {
      */
     @RequestMapping(value = "offinePayment.do")
     @ResponseBody
-    public String offinePayment(HttpServletRequest request, HttpServletResponse response,
+    public Boolean offinePayment(HttpServletRequest request, HttpServletResponse response,
                                       @RequestParam(value = "bOrderId", required = true) Long bOrderId)throws Exception{
         Boolean bl = false;
         try{
             bl = payBOrderService.offinePayment(getComUser(request),bOrderId);
         }catch (Exception e){
-            throw e;
+            throw new BusinessException(e.getMessage());
         }
-        return bl+"";
+        return bl;
     }
 
     /**

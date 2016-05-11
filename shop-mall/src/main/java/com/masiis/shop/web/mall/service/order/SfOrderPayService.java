@@ -207,9 +207,8 @@ public class SfOrderPayService {
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
             //微信短信提醒
-            //开发临时去掉
-            /*List<SfOrderItem> orderItems = getOrderItem(orderId);
-            orderNotice(comUser,order,orderItems);*/
+            List<SfOrderItem> orderItems = getOrderItem(orderId);
+            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }

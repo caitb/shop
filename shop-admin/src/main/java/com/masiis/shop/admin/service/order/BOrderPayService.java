@@ -441,7 +441,6 @@ public class BOrderPayService {
         pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());
         pfBorder.setShipTime(new Date());
         pfBorder.setIsShip(1);
-        pfBorder.setReceiptTime(new Date());
         completeBOrder(pfBorder);
     }
 
@@ -473,6 +472,7 @@ public class BOrderPayService {
         }
         pfBorder.setOrderStatus(BOrderStatus.Complete.getCode());//订单完成
         pfBorder.setShipStatus(BOrderShipStatus.Receipt.getCode());//已收货
+        pfBorder.setIsReceipt(1);
         pfBorder.setReceiptTime(new Date());//收货时间
         pfBorderMapper.updateById(pfBorder);
         //添加订单日志

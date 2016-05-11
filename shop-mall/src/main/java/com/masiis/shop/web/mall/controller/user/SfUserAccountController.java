@@ -301,12 +301,16 @@ public class SfUserAccountController extends BaseController {
         log.info("处理已付款、未付款订单财富");
         BigDecimal isPayDistribution = new BigDecimal(0);
         BigDecimal isNotPayDistribution = new BigDecimal(0);
+        List<Long> isPayOrderIds;
+        List<Long> isNotPayOrderIds;
         if (allOrders.size() > 0){
+            isPayOrderIds = new ArrayList<>();
+            isNotPayOrderIds = new ArrayList<>();
             for (SfOrder sfOrder : allOrders){
                 log.info("小铺订单id：" + sfOrder.getId());
                 if (sfOrder.getPayStatus() == 1 ){
                     if (sfOrder.getOrderStatus() != BOrderStatus.Complete.getCode()){
-                        isPayDistribution = isPayDistribution.add(sfOrder.getDistributionAmount());
+                        isPayOrderIds.add(sfOrder.getId());
                         log.info("isPayDistribution = " + isPayDistribution);
                     }else {
                         //处理订单完成七天后的订单
@@ -325,12 +329,23 @@ public class SfUserAccountController extends BaseController {
                         setCal.set(Calendar.MILLISECOND, 0);
                         long dayDiff =(setCal.getTimeInMillis()-cal.getTimeInMillis())/(1000*60*60*24);
                         if (dayDiff <= 7){
-                            isPayDistribution = isPayDistribution.add(sfOrder.getDistributionAmount());
+                            isPayOrderIds.add(sfOrder.getId());
                         }
                     }
                 }else {
-                    isNotPayDistribution = isNotPayDistribution.add(sfOrder.getDistributionAmount());
+                    isNotPayOrderIds.add(sfOrder.getId());
                 }
+            }
+            log.info("处理财富值");
+            if (isPayOrderIds.size() > 0){
+                log.info("查询已付款订单财富");
+                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isPayOrderIds);
+                isPayDistribution = isPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
+            }
+            if (isNotPayOrderIds.size() > 0){
+                log.info("查询未付款订单财富");
+                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isNotPayOrderIds);
+                isNotPayDistribution = isNotPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
             }
         }
         mv.addObject("isPayDistribution",isPayDistribution);

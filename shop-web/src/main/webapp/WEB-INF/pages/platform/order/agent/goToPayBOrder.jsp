@@ -42,7 +42,7 @@
         <h2><span>需付款：</span><span>￥${pfBorder.receivableAmount}</span></h2>
     </div>
     <button id="submit" class="wePay"><span><img src="${path}/static/images/icon_36.png" alt="">微信支付</span></button>
-    <button class="downPay" id="downPayConfirm"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
+    <button class="downPay" id="downPay"><span><img src="${path}/static/images/xianxia.png" alt="">线下支付</span></button>
     <p><span style="color:red;">*大于5000元的订单建议选择线下支付</span></p>
 </div>
 <div class="back_box" style="display: none">
@@ -54,7 +54,7 @@
         <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
         <h3>
             <span class="que_qu" id="downPayCancel">取消</span>
-            <span class="que_que" id="downPayConfirm1">确定</span>
+            <span class="que_que" id="downPayConfirm">确定</span>
         </h3>
     </div>
 </div>

@@ -45,7 +45,7 @@
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
@@ -58,7 +58,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -78,7 +78,7 @@
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
@@ -91,7 +91,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -111,7 +111,7 @@
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
@@ -124,7 +124,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -144,7 +144,7 @@
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
@@ -157,7 +157,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -177,7 +177,7 @@
                                 <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
@@ -190,7 +190,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （含运费￥${pb.shipAmount}）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -264,7 +264,7 @@
                                }else if(sfOrder.orderStatus ==8){
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >待收货</b ></h2>";
                                }else if(sfOrder.orderStatus ==8){
-                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >交易成功</b ></h2>";
+                                   trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已完成</b ></h2>";
                                }
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
                                    trHtml+="<div class=\"shangpin\">";
@@ -273,7 +273,7 @@
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#f73c8c;\">￥"+sfOrderItem.unitPrice+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
                                })
-                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderAmount+" （含运费￥"+sfOrder.shipAmount+"）</h1>";
+                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderAmount+" （包邮）</h1>";
                                trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
                                if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
                                    trHtml+="<p>";
@@ -318,7 +318,7 @@
                        dataType:"Json",
                        success:function(date){
                            $(""+aa+"").css("display","none");
-                           $(""+bb+"").html("交易成功");
+                           $(""+bb+"").html("已完成");
                            location.reload(true);
                        }
                    });

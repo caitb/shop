@@ -231,7 +231,7 @@ public class SfOrderPayService {
      * @date 2016/5/9 14:36
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> paySuccessCallBack(ComUser comUser,Long orderId){
+    public Map<String,Object> paySuccessCallBack(Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址
@@ -256,7 +256,7 @@ public class SfOrderPayService {
      * @date 2016/4/10 13:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> getOrderDetail(ComUser comUser,Long orderId){
+    public Map<String,Object> getOrderDetail(Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址

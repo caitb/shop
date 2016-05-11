@@ -6,6 +6,7 @@ import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
@@ -47,6 +48,8 @@ public class SfOrderPayService {
     private SfUserRelationService sfUserRelationService;
     @Resource
     private UserService userService;
+    @Resource
+    private SfShopSkuService shopSkuService;
 
     /**
      * 获得需要支付的订单的信息
@@ -115,6 +118,10 @@ public class SfOrderPayService {
                 updateStock(order,orderItems);
             }
             log.info("支付成功更新库存---end");
+            //更新小铺商品的总销量
+            for (SfOrderItem orderItem : orderItems){
+                updateShopSku(order.getShopId(),orderItem.getSkuId(),orderItem.getQuantity());
+            }
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -188,6 +195,33 @@ public class SfOrderPayService {
             }
         }
     }
+    /**
+     * 更新商品小铺的总销量
+     * @author hanzengzhi
+     * @date 2016/5/11 14:30
+     */
+    private void updateShopSku(Long shopId,Integer skuId,Integer quantity){
+        log.info("更新小铺商品表的总销量----start");
+        log.info("shopId------"+shopId+"----skuId---"+skuId+"----quantity----"+quantity);
+        SfShopSku shopSku = shopSkuService.selectByShopIdAndSkuId(shopId,skuId);
+        if (shopSku!=null){
+            if (shopSku.getSaleNum()!=null){
+                shopSku.setSaleNum(shopSku.getSaleNum()+quantity);
+            }else{
+                shopSku.setSaleNum(Long.parseLong(quantity+""));
+            }
+            int i = shopSkuService.update(shopSku);
+            if (i!=1){
+                log.info("更新小铺商品的总销量失败");
+                throw new BusinessException("更新小铺商品的总销量失败");
+            }
+        }else{
+            log.info("更新小铺商品的总销量失败:shopSku为null");
+            throw new BusinessException("更新小铺商品的总销量失败:shopSku为null");
+        }
+        log.info("更新小铺商品表的总销量----end");
+    }
+
     /**
      * 支付成功回调
      * @author hanzengzhi

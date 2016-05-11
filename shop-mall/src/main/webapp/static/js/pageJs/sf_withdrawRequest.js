@@ -29,7 +29,11 @@ function withdraw(userId){
         dataType:"Json",
         success:function(data){
             if(data.isTrue == "false"){
-                alert(data.message);
+                if(data.isBuy == "false"){
+                    alert("您的会员订单需要确认收货并且超过7天未产生退货才可以提现。");
+                }else {
+                    alert(data.message);
+                }
             }else {
                 fullShow();
                 sendMessage(inputAccount);

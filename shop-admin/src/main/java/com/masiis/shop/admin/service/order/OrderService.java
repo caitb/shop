@@ -1,10 +1,13 @@
 package com.masiis.shop.admin.service.order;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -173,5 +176,35 @@ public class OrderService {
                 throw new Exception("库存异常!");
             }
         }
+    }
+
+    /**
+     * 小铺订单退货逻辑
+     *
+     * @param oid
+     * @param res
+     */
+    public void sfOrderRefund(Long oid, JSONObject res) {
+        try{
+            if(oid == null || oid.longValue() <= 0){
+                res.put("resCode", 2);
+                res.put("resMsg", "参数格式不正确");
+                throw new BusinessException("参数格式不正确");
+            }
+            SfOrder order = sfOrderMapper.selectByPrimaryKey(oid);
+            if(order == null){
+                res.put("resCode", 3);
+                res.put("resMsg", "该orderId订单不存在");
+                throw new BusinessException("该orderId订单不存在");
+            }
+            if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_COMPLETE.getCode().intValue()){
+
+            }
+
+
+        } catch (Exception e) {
+
+        }
+
     }
 }

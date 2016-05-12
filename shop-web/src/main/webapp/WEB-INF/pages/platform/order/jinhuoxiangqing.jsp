@@ -66,7 +66,7 @@
                <%--<p>当前平台在线库存量为<span>${stockNum}</span>件</p></c:if>--%>
                <%--<c:if test="${borderDetail.pfBorder.sendType==1 && borderDetail.pfBorder.orderType!=2 && borderDetail.pfBorder.orderStatus==6}">--%>
            <%--</div>--%>
-           <c:if test="${borderDetail.pfBorder.sendType==2 || borderDetail.pfBorder.orderType==2 && borderDetail.pfBorder.sendType==1}">
+           <c:if test="${borderDetail.pfBorder.sendType==2 && borderDetail.pfBorderConsignee!=null || borderDetail.pfBorder.orderType==2 && borderDetail.pfBorder.sendType==1 && borderDetail.pfBorderConsignee!=null}">
             <section class="sec1">
                        <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                        <div>

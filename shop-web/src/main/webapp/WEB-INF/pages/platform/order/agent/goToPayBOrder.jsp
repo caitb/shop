@@ -50,7 +50,7 @@
     <div class="back_que">
         <p>您确定使用线下支付?</p>
         <h4>您需要在${downPayLatestTime}前将￥${pfBorder.receivableAmount}转到麦链合伙人对公账户。</h4>
-        <h4>*请在汇款单的附言处注明“订单号”如：订单号：B201605041814259710974（非常重要!）</h4>
+        <h4>*请在汇款单的附言处注明“订单号”如：订单号：${pfBorder.orderCode}（非常重要!）</h4>
         <h4>*线下支付到账时间为T+1天到账，审核时间为1个工作日</h4>
         <h3>
             <span class="que_qu" id="downPayCancel">取消</span>

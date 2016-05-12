@@ -115,6 +115,7 @@ public class ControllerSignatureAspect {
                     }
                 } else {
                     String data = request.getParameter(DATA_NAME);
+                    log.info("data:" + data);
                     if(StringUtils.isBlank(data)){
                         // 类似表单提交,启用springmvc参数绑定
                         isSet = false;

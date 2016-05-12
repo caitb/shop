@@ -1,8 +1,11 @@
 package com.masiis.shop.admin.controller.order;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.OrderService;
+import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.SfOrderFreight;
 import org.apache.commons.lang.StringUtils;
@@ -117,7 +120,43 @@ public class SfOrderController extends BaseController {
         return null;
     }
 
-    public String sfOrderRefund(){
-        return "";
+    @RequestMapping("/sfOrderRefund.do")
+    @ResponseBody
+    public String sfOrderRefund(String orderId){
+        JSONObject res = new JSONObject();
+        try {
+            // 校验参数
+            Long oid = checkParam(orderId, res);
+            // 退货service执行
+            orderService.sfOrderRefund(oid, res);
+
+        } catch (Exception e) {
+            log.error("小铺订单退货失败:" + e.getMessage());
+            if(!(e instanceof BusinessException)){
+                res.put("resCode", -1);
+                res.put("resMsg", "网络错误");
+            }
+        }
+        return res.toJSONString();
+    }
+
+    private Long checkParam(String orderId, JSONObject res) {
+        if (StringUtils.isBlank(orderId)) {
+            res.put("resCode", 1);
+            res.put("resMsg", "参数为空");
+            throw new BusinessException("参数为空");
+        }
+        Long oid = null;
+        try {
+            oid = Long.valueOf(orderId);
+        } catch (Exception e) {
+            res.put("resCode", 2);
+            res.put("resMsg", "参数格式不正确");
+            throw new BusinessException("参数格式不正确");
+        }
+
+        log.info("参数校验通过,orderId:" + orderId);
+
+        return oid;
     }
 }

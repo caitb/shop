@@ -13,11 +13,11 @@
 <body>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
 <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
-    <header>
-        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-                <p>我的奖励</p>
-    </header>
     <div class="wrap">
+        <header>
+            <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <p>我的奖励</p>
+        </header>
         <p>我的分享</p>
         <nav>
             <ul>
@@ -86,7 +86,9 @@
             </c:if>
         </div>
     </div>
-
+    <div class="footer">
+        <a href="">申请提现</a>
+    </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>
         <p class="biao">绑定手机号</p>

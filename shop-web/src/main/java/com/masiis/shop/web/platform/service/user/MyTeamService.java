@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.*;
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -51,6 +52,8 @@ public class MyTeamService {
     private PfBorderMapper pfBorderMapper;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
 
 
     /**
@@ -81,7 +84,7 @@ public class MyTeamService {
 
             Map<String, String> curMap = countChild(pus.getId()); //下级userSkuId和userId数量
             Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
-            Double countSales = pfBorderMapper.countSales(curMap.get("userIds"));
+            Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
             agentSkuMap.put("countChild", countChild);      //团队人数(不包括自己)
             agentSkuMap.put("countSales", countSales==null?0:countSales);
 
@@ -142,7 +145,7 @@ public class MyTeamService {
         //下级人数
         Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
         //销售额
-        Double countSales = pfBorderMapper.countSales(curMap.get("userIds"));
+        Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
 
         Map<String, Object> teamMap = new HashMap<>();
         teamMap.put("skuName", comSku.getName());//商品名称

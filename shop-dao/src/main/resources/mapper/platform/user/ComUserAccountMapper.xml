@@ -102,4 +102,8 @@
         where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
     </update>
 
+    <select id="sumIncomeFeeByUserIds" parameterType="String" resultType="Double">
+        SELECT sum(total_income_fee) FROM com_user_account WHERE FIND_IN_SET(com_user_id,#{userIds})
+    </select>
+
 </mapper>

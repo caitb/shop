@@ -101,7 +101,6 @@ public class SfUserAccountController extends BaseController {
      * ajax 查询更多用户佣金记录
      * @param currentPage
      * @param count
-     * @param userId
      * @param request
      * @return
      * @author:wbj
@@ -110,7 +109,6 @@ public class SfUserAccountController extends BaseController {
     @ResponseBody
     public String queryMoreCommissionRecord(@RequestParam(value = "currentPage",required = true) int currentPage,
                                             @RequestParam(value = "count",required = true) int count,
-                                            @RequestParam(value = "userId",required = true) Long userId,
                                             HttpServletRequest request) throws Exception{
 
         ComUser user = getComUser(request);
@@ -119,15 +117,11 @@ public class SfUserAccountController extends BaseController {
             log.info("用户未登录");
             throw new BusinessException("用户未登录");
         }
-        if (user.getId().longValue() != userId.longValue()){
-            log.info("用户信息错误");
-            throw new BusinessException("用户信息错误");
-        }
         JSONArray jsonArray = new JSONArray();
         try {
-            int pageSize = 20;
+            int pageSize = 10;
             currentPage = currentPage + 1;
-            List<SfOrderItemDistribution> list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(userId,currentPage,pageSize);
+            List<SfOrderItemDistribution> list = sfOrderItemDistributionService.findCommissionRecordByUserIdLimitPage(user.getId(),currentPage,pageSize);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             JSONObject jsonObject;
             for(SfOrderItemDistribution itemDistribution : list){
@@ -352,11 +346,7 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("isNotPayDistribution",isNotPayDistribution);
         log.info("查询已经提现成功的金额");
         Map<String,Object> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);
-        if (map == null){
-            mv.addObject("withdraw",0);
-        }else {
-            mv.addObject("withdraw",(BigDecimal)map.get("extractFee"));
-        }
+        mv.addObject("withdraw",map == null?0:map.get("extractFee"));
         mv.setViewName("mall/user/sf_reward");
         return mv;
     }

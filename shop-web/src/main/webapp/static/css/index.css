@@ -134,15 +134,14 @@
 }
 .wrap .box nav ul li h1 span{
   position: absolute;
-  top: -10px;
-  left: 30px;
-  background: #fff;
-  padding: 0 4px;
-  font-size: 12px;
+  display: block;
+  bottom: 5px;
+  right: 13px;
+  background: red;
   border-radius: 10px;
-  border: 1px solid #ff5200;
-  color: #ff5200;
   line-height: 15px;
+  width: 10px;
+  height: 10px;
 }
 .box nav ul li h1 img {
   display: block;

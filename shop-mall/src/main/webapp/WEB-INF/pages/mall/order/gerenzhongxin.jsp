@@ -37,7 +37,7 @@
     <nav>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
-                <span><img src="<%=path%>/static/images/my.png" alt=""></span>
+                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"></span>
                 <span>我的订单</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
@@ -52,7 +52,7 @@
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/shopview/home.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(3).png" alt=""></span>
-                <span>浏览过的店铺</span>
+                <span>分享赚佣金</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/userAddress/toManageAddressPage.html?addAddressJumpType=1&manageAddressJumpType=1');" >
                 <span><img src="<%=path%>/static/images/geren2%20(1).png" alt=""></span>

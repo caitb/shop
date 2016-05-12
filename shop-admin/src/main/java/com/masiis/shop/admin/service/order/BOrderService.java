@@ -6,6 +6,7 @@ import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
@@ -160,7 +161,8 @@ public class BOrderService {
             levelNames += comAgentLevelMapper.selectByPrimaryKey(borderItem.getAgentLevelId()).getName();
         }
         MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight. getFreight());
-        WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, "http://m.qc.iimai.com/borderManage/borderDetils.html?id="+pfBorder.getId());
+        WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()},
+                PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id="+pfBorder.getId());
     }
 
     /**

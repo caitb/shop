@@ -49,6 +49,7 @@
                pf_border_payment
         where
                pf_border_id = #{borderId,jdbcType=BIGINT}
+               AND is_enabled=1
     </select>
 
     <select id="selectByCondition" parameterType="com.masiis.shop.dao.po.PfBorderPayment" resultMap="BaseResultMap" >

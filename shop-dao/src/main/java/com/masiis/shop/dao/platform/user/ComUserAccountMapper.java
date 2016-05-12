@@ -49,4 +49,11 @@ public interface ComUserAccountMapper {
     int updateByPrimaryKey(ComUserAccount account);
 
     int updateByIdWithVersion(ComUserAccount account);
+
+    /**
+     * 统计销售额
+     * @param userIds "id1,id2,..."
+     * @return
+     */
+    Double sumIncomeFeeByUserIds(String userIds);
 }

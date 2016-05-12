@@ -6,6 +6,7 @@ import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SHAUtils;
+import com.masiis.shop.common.util.WxPropertiesUtils;
 import com.masiis.shop.web.event.wx.bean.event.WxBaseMessage;
 import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
 import com.masiis.shop.web.event.wx.bean.event.WxEventCheck;
@@ -37,8 +38,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/wxevent")
 public class WxEventController extends BaseController {
-    private static final String token = "79sdkJ06TAJAQ32Osdy1udugGSJHSsad";
-    private static final String encodingAESKey = "uPXiMJM3yjJA6naDZrVZ02F7Mo5EZnkL5D6dijmrsUN";
+    private static final String token = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_EVENT_RECEIVE_TOKEN");
+    private static final String encodingAESKey = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_EVENT_RECEIVE_ENCODINGKEY");
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource

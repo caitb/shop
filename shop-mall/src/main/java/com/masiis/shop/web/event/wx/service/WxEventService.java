@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserShareParamMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -132,7 +133,7 @@ public class WxEventService {
         if(param.getSkuId() != null && param.getSkuId().intValue() != 0){
             //url = "http://mall.qc.iimai.com/";
         } else {
-            url = "http://mall.qc.iimai.com/" + param.getShopId() + "/"
+            url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/" + param.getShopId() + "/"
                     + param.getfUserId() + "/shop.shtml";
         }
 

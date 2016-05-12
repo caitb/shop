@@ -2,6 +2,7 @@ package com.masiis.shop.web.event.wx.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SHAUtils;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.event.wx.bean.menu.Button;
@@ -128,7 +129,7 @@ public class WxEventController extends BaseController {
 
         buttons.add(new Button("关于麦链", sub_button1));
         buttons.add(new Button("微商学院", sub_button2));
-        buttons.add(new Button("麦链合伙", "view", "http://m.qc.iimai.com"));
+        buttons.add(new Button("麦链合伙", "view", PropertiesUtils.getStringValue("web.domain.name.address")));
         menu.setButton(buttons);
 
         String result = HttpClientUtils.httpPost(createMenu, JSONObject.toJSONString(menu));

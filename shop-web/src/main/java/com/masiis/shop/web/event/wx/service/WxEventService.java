@@ -162,7 +162,8 @@ public class WxEventService {
         ComSkuImage skuImage = skuService.findComSkuImage(skuId);
         String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
 
-        String url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
+        String url = PropertiesUtils.getStringValue("web.domain.name.address")
+                + "/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
         WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), imgUrl);
 
@@ -228,7 +229,8 @@ public class WxEventService {
         res.setMsgType("news");
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
-        articles.add(new Article("点击继续注册", "http://m.qc.iimai.com/product/skuDetails.shtml?skuId=40&pUserId=11"));
+        articles.add(new Article("点击继续注册",
+                PropertiesUtils.getStringValue("web.domain.name.address") + "/product/skuDetails.shtml?skuId=40&pUserId=11"));
         res.setArticles(articles);
         XStream xStream = new XStream(new DomDriver("UTF-8"));
         xStream.processAnnotations(res.getClass());

@@ -50,7 +50,7 @@ public class BOrderPayService {
      * <2>增加收货方库存
      * <3>订单完成处理
      */
-    private void saveBOrderSendType(PfBorder pfBorder) throws Exception {
+    public void saveBOrderSendType(PfBorder pfBorder) throws Exception {
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
             log.info("<1>减少发货方库存和冻结库存 如果用户id是0操作平台库存");
             if (pfBorder.getUserPid() == 0) {
@@ -103,7 +103,7 @@ public class BOrderPayService {
         }
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())) {
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode()) && !pfBorder.getOrderStatus().equals(BOrderStatus.MPS.getCode())) {
                 throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
             }
         } else if (pfBorder.getSendType() == 2) {

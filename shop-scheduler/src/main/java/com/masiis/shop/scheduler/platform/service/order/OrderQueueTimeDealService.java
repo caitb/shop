@@ -96,12 +96,12 @@ public class OrderQueueTimeDealService {
             quantity = orderItem.getQuantity();
             //根据sku_id查询商品sku库存数据
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
-            if (quantity > pfSkuStock.getStock() - pfSkuStock.getFrozenStock()){
+            if (quantity >= pfSkuStock.getStock() - pfSkuStock.getFrozenStock()){
                 dealOrder = false;
             }
         }
         if (dealOrder){
-            bOrderPayService.completeBOrder(pfBorder);
+            bOrderPayService.saveBOrderSendType(pfBorder);
         }
         this.sendMessage(pfBorder,orderItems);
     }
@@ -180,7 +180,7 @@ public class OrderQueueTimeDealService {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUserId, skuId);
             a = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
-        return a - quantity;
+        return a;
     }
 
     /**

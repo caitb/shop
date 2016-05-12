@@ -46,18 +46,16 @@
         <nav>
             <ul>
                 <li>
-                    <p class="ul_left">已提现的财富</p>
-                    <p>￥<b><fmt:formatNumber value="${withdraw}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
-                    <span></span>
+                    <p class="ul_left">未付款订单财富</p>
+                    <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                 </li>
                 <li>
                     <p class="ul_left">已付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
-                    <span></span>
                 </li>
                 <li>
-                    <p class="ul_left">未付款订单财富</p>
-                    <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <p class="ul_left">已提现的财富</p>
+                    <p>￥<b><fmt:formatNumber value="${withdraw}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                 </li>
             </ul>
         </nav>

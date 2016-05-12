@@ -12,6 +12,7 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by muchaofeng on 2016/3/2.
@@ -58,17 +60,20 @@ public class ShopIndexController extends BaseController {
         }
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
-//        myTeamService.countChild();
         if (comUserAccount == null) {
             throw new BusinessException("comUserAccount 统计为空");
         }
-        Long num = 0l;
+        int num = 0;
         List<PfUserSku> agentNum = userSkuService.getAgentNumByUserId(user.getId());
         if (agentNum != null) {
             for (PfUserSku pfUserSku : agentNum) {
-                if (pfUserSku != null && pfUserSku.getAgentNum() != null) {
-                    num = num + pfUserSku.getAgentNum();
-                }
+//                if (pfUserSku != null && pfUserSku.getAgentNum() != null) {
+//                    num = num + pfUserSku.getAgentNum();
+//                }
+                Map<String, String> stringStringMap = myTeamService.countChild(pfUserSku.getId());
+                int a=StringUtils.isEmpty(stringStringMap.get("childIds").toString())?0:stringStringMap.get("childIds").split(",").length;
+//                int a= Integer.parseInt(stringStringMap.get("childIds"));
+                num += a;
             }
         }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(user.getId(), null, null);
@@ -86,7 +91,7 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("borderNum", borderNum);//订单数量
 //        modelAndView.addObject("forcusPF",forcusPF);
         modelAndView.addObject("num", num);//订单数量
-        modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
+//        modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
         modelAndView.addObject("urls", urls);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);

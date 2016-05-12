@@ -144,7 +144,7 @@
     </select>
 
     <select id="selectAgentNum" resultMap="BaseResultMap">
-        select agent_num from pf_user_sku WHERE user_id = #{userId}
+        select id, agent_num from pf_user_sku WHERE user_id = #{userId}
     </select>
     <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
         select

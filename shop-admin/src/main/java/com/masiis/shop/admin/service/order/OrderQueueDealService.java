@@ -9,7 +9,6 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +106,8 @@ public class OrderQueueDealService {
             }
         }
         if (quealOrder){
-            bOrderPayService.completeBOrder(pfBorder);
+            log.info("******************处理排单***********************");
+            bOrderPayService.saveBOrderSendType(pfBorder);
         }
         this.sendMessage(pfBorder);
         return "success";

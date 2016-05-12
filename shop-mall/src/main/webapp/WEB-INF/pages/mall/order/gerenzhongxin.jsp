@@ -42,7 +42,7 @@
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
                 <span><img src="<%=path%>/static/images/geren2%20(4).png" alt=""></span>
-                <span>我的奖励</span>
+                <span>佣金管理</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/user/getPersonalInfo.do');">
                 <span><img src="<%=path%>/static/images/geren2%20(2).png" alt=""></span>

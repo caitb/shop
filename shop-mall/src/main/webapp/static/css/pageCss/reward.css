@@ -34,6 +34,10 @@
 .wrap nav ul li p {
   text-align: center;
   font-size: 10px;
+  color: #666;
+}
+.wrap nav ul li p b{
+  color: #333;
 }
 .wrap nav ul li:last-child {
   border: none;
@@ -92,13 +96,15 @@
   font-size: 12px;
 }
 .wrap .sec2 p b a {
-  width: 119px;
+  width: 100px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 12px;
   border-bottom: 1px solid #666;
+  margin: 0 6px;
+  padding-bottom: 2px;
+  line-height: 10px;
 }
 .wrap .sec2 p b span {
   font-size: 12px;
@@ -112,4 +118,14 @@
 }
 .wrap .sec2 h1 span {
   font-size: 12px;
+}
+
+.footer{
+  width:100%;padding: 10px 0;
+  background: #f73c8c;
+}
+.footer a{
+  display: block;
+  text-align: center;
+  color: #fff;
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SHAUtils;
+import com.masiis.shop.common.util.WxPropertiesUtils;
 import com.masiis.shop.web.event.wx.bean.event.*;
 import com.masiis.shop.web.event.wx.bean.menu.Button;
 import com.masiis.shop.web.event.wx.bean.menu.Menu;
@@ -32,8 +33,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/wxevent")
 public class WxEventController extends BaseController {
-    private static final String token = "slkd2H45467GG7622HSLsKsdKJHKS97E";
-    private static final String encodingAESKey = "lSICsrmNzJMt3BExrOJrq9uBmrLoLNJ9aQEpq6g4Awc";
+    private static final String token = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_EVENT_RECEIVE_TOKEN");
+    private static final String encodingAESKey = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_EVENT_RECEIVE_ENCODINGKEY");
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource

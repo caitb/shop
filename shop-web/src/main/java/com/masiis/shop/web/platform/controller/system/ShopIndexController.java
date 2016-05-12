@@ -7,6 +7,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
+import com.masiis.shop.web.platform.service.user.MyTeamService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
@@ -32,7 +33,7 @@ public class ShopIndexController extends BaseController {
     @Resource
     private ComUserAccountService comUserAccountService;
     @Resource
-    private UserService userService;
+    private MyTeamService myTeamService;
     @Resource
     private UserSkuService userSkuService;
     @Resource
@@ -57,6 +58,7 @@ public class ShopIndexController extends BaseController {
         }
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
+//        myTeamService.countChild();
         if (comUserAccount == null) {
             throw new BusinessException("comUserAccount 统计为空");
         }

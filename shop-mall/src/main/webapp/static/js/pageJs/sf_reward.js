@@ -57,3 +57,11 @@ function viewMore(){
         });
     }
 }
+function withdrawRequest(isBuy){
+    if (parseInt(isBuy) != 1){
+        alert("您的会员订单需要确认收货并且超过7天未产生退货才可以提现。");
+        return;
+    }
+    validateCodeJS.applyTrial('withdrawRequest');
+}
+

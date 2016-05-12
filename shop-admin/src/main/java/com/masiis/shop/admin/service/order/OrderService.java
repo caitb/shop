@@ -15,6 +15,10 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
+import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
+import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
+import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
+import com.masiis.shop.dao.mall.user.SfUserBillMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.SfSkuDistributionMapper;
@@ -65,6 +69,12 @@ public class OrderService {
     private SfOrderItemDistributionMapper distributionMapper;
     @Resource
     private ComUserAccountRecordMapper comUserAccountRecordMapper;
+    @Resource
+    private SfUserBillItemMapper sfBillItemMapper;
+    @Resource
+    private SfUserAccountMapper sfUserAccountMapper;
+    @Resource
+    private SfUserAccountRecordMapper sfRecordMapper;
 
     /**
      * 店铺订单列表
@@ -272,45 +282,128 @@ public class OrderService {
 
             // 店主此次退货总销售额减少(利润和运费也算销售额)
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
-                    UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
+                    UserAccountRecordFeeType.SF_Refund_SubTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().subtract(saleAmount));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
             log.info("小铺店主的结算中和总销售额减少金额:" + countFee);
 
-            // 小铺店主利润回退
-            BigDecimal profit = new BigDecimal(0);
-            // 每个分润用户的分润金额map,key:userId;value:fee
-            Set<Long> fenRunUserFeeSet = new HashSet<Long>();
+            Set<Long> fenRunUserSet = new HashSet<Long>();
             List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
             for(SfOrderItem item:sfOrderItems) {
                 // 计算单个item的分销分润
                 List<SfOrderItemDistribution> distributions = distributionMapper.selectBySfOrderItemId(item.getId());
                 for(SfOrderItemDistribution dis:distributions){
                     Long userId = dis.getUserId();
-                    if(!fenRunUserFeeSet.contains(userId)){
-                        fenRunUserFeeSet.add(userId);
+                    if(!fenRunUserSet.contains(userId)){
+                        fenRunUserSet.add(userId);
                     }
                 }
             }
             // 计算店主此次总利润回退
-            ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,
-                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), comUserAccount);
-            /*comUserAccountRecordMapper.selectByUserAnd*/
+            ComUserAccountRecord profitBefore = comUserAccountRecordMapper.selectByUserAndTypeAndBillId(shopKeeper.getId(),
+                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), order.getId());
+            if(profitBefore == null){throw new BusinessException("");}
+            ComUserAccountRecord pfprofitRecord = cloneComUserAccountRecordByTypeAndHandleType(
+                    UserAccountRecordFeeType.SF_Refund_SubProfitFee.getCode(), 0, profitBefore);
             // 设置店主总利润回退
             pfprofitRecord.setPrevFee(comUserAccount.getProfitFee());
-            comUserAccount.setProfitFee(comUserAccount.getProfitFee().add(profit));
+            comUserAccount.setProfitFee(comUserAccount.getProfitFee().subtract(profitBefore.getHandleFee()));
             pfprofitRecord.setNextFee(comUserAccount.getProfitFee());
+            log.info("小铺店主总利润回退:" + profitBefore.getHandleFee());
 
-            log.info("小铺店主总利润增加:" + profit);
+            int result = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
+            if(result != 1){
+                throw new BusinessException("小铺店主account修改失败!");
+            }
+            // 插入变动记录
+            comUserAccountRecordMapper.insert(countRecord);
+            comUserAccountRecordMapper.insert(pfIncomeRecord);
+            comUserAccountRecordMapper.insert(pfprofitRecord);
 
+            log.info("计算小铺订单分润");
 
+            // 计算分销订单的分润
+            for(Long sfUserId:fenRunUserSet){
+                SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserId);
+                // 查询之前的分润记录
+                SfUserAccountRecord before = sfBillItemMapper.selectByUserIdAndSourceIdAndFeeType(sfUserId, order.getId(), 0);
+                if(before == null){
+                    throw new BusinessException();
+                }
+                // 创建退货对应的分润退回记录
+                SfUserAccountRecord sfRecord = cloneSfUserAccountRecordByBefore(before, 5);
+                BigDecimal fee = before.getHandleFee();
+                // 创建退货分润退回账单子项
+                SfUserBillItem sfBillItem = createSfUserBillItemByType(order, sfUserAccount, fee, before.getHandleTime());
+                sfBillItemMapper.insert(sfBillItem);
+                // 计算分润用户结算中变动
+                sfRecord.setPrevFee(sfUserAccount.getCountingFee());
+                sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().subtract(fee));
+                sfRecord.setNextFee(sfUserAccount.getCountingFee());
+                sfRecordMapper.insert(sfRecord);
+                int resNum = sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
+                if(resNum != 1){
+                    throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
+                }
+
+                log.info("分润金额回退成功,用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
+            }
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);
         }
 
+    }
+
+    private SfUserBillItem createSfUserBillItemByType(SfOrder order, SfUserAccount sfUserAccount, BigDecimal fee, Date opTime) {
+        SfUserBillItem sfItem = new SfUserBillItem();
+
+        sfItem.setAmount(fee);
+        sfItem.setComUserId(sfUserAccount.getUserId());
+        sfItem.setCreateMan(order.getShopUserId());
+        sfItem.setCreateTime(opTime);
+        sfItem.setSourceId(order.getId());
+        sfItem.setSourceCreateTime(order.getCreateTime());
+        sfItem.setRemark("小铺订单退货,分润退回");
+        sfItem.setItemType(1);
+        sfItem.setItemSubType(3);
+        sfItem.setIsCount(0);
+
+        return sfItem;
+    }
+
+    private SfUserAccountRecord cloneSfUserAccountRecordByBefore(SfUserAccountRecord before, int feeType) {
+        SfUserAccountRecord record = new SfUserAccountRecord();
+
+        record.setHandler(before.getHandler());
+        record.setSourceId(before.getSourceId());
+        record.setSfUserAccountId(before.getSfUserAccountId());
+        record.setHandleTime(new Date());
+        record.setComUserId(before.getComUserId());
+        record.setFeeType(feeType);
+        record.setHandleFee(before.getHandleFee());
+        record.setHandleSerialNum(SysBeanUtils.createSfAccountRecordSerialNum());
+        record.setHandleType(0);
+
+        return record;
+    }
+
+    private ComUserAccountRecord cloneComUserAccountRecordByTypeAndHandleType(Integer feeType, int handleType, ComUserAccountRecord before) {
+        ComUserAccountRecord record = new ComUserAccountRecord();
+
+        record.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
+        record.setBillId(before.getBillId());
+        record.setHandleFee(before.getHandleFee());
+        record.setHandleType(handleType);
+        record.setFeeType(feeType);
+        record.setComUserId(before.getComUserId());
+        record.setHandler(before.getHandler());
+        record.setUserAccountId(before.getUserAccountId());
+        record.setHandleTime(new Date());
+
+        return record;
     }
 
     private ComUserAccountRecord createComUserAccountRecordBySfOrder(SfOrder order, BigDecimal countFee, Integer fee_type, ComUserAccount comAccount) {

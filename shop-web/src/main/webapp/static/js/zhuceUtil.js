@@ -169,6 +169,10 @@ $(function () {
         $(".paidanqi").show();
     });
     $(".kNow").on("click", function(){
-        $(".paidanqi").hide();
+        $(this).parent().parent().hide();
     });
+
+    $(".daili").on("click",function(){
+        $(".xieyi").show();
+    })
 });

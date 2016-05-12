@@ -105,15 +105,17 @@ public class BorderManageController extends BaseController {
                 pfBorder = bOrderService.findPfBorder(user.getId(), null, null);
             }else if(index==1){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 0, null);
+                List<PfBorder> pfBorder1 = bOrderService.findPfBorder(user.getId(), 9, null);
+                for (PfBorder pfBorder11: pfBorder1) {
+                    pfBorder.add(pfBorder11);
+                }
             }else if(index==2){
-                pfBorder = bOrderService.findPfBorder(user.getId(), 9, null);
-            }else if(index==3){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 7, null);
-            }else if(index==4){
+            }else if(index==3){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 8, null);
-            }else if(index==5){
+            }else if(index==4){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 3, null);
-            }else if(index==6){
+            }else if(index==5){
                 pfBorder = bOrderService.findPfBorder(user.getId(), 6, null);
                 Iterator<PfBorder> chk_itw = pfBorder.iterator();
                 while (chk_itw.hasNext()) {
@@ -164,15 +166,17 @@ public class BorderManageController extends BaseController {
                 pfBorder = bOrderService.findPfpBorder(user.getId(), null, null);
             }else if(index==1){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 0, null);
+                List<PfBorder> pfBorder1 = bOrderService.findPfpBorder(user.getId(), 9, null);
+                for (PfBorder pfBorder11: pfBorder1) {
+                    pfBorder.add(pfBorder11);
+                }
             }else if(index==2){
-                pfBorder = bOrderService.findPfpBorder(user.getId(), 9, null);
-            }else if(index==3){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 7, null);
-            }else if(index==4){
+            }else if(index==3){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 8, null);
-            }else if(index==5){
+            }else if(index==4){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 3, null);
-            }else if(index==6){
+            }else if(index==5){
                 pfBorder = bOrderService.findPfpBorder(user.getId(), 6, null);
                 Iterator<PfBorder> chk_itw = pfBorder.iterator();
                 while (chk_itw.hasNext()) {
@@ -369,19 +373,23 @@ public class BorderManageController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, sendType);
+        if(orderStatus==0){
+            List<PfBorder> byUserId = bOrderService.findByUserId(comUser.getId(), 9, sendType);
+            for(PfBorder pfBorder :byUserId){
+                pfBorders.add(pfBorder);
+            }
+        }
         String index=null;
         if(orderStatus==null && sendType==null){
             index="0";//全部
-        }else if (orderStatus == 0) {
-            index="1";//待付款
+        }else if (orderStatus == 0 || orderStatus == 9 ) {
+            index="1";//待付款//线下支付待付款
         }else if (orderStatus == 8 ){
-            index="4";//待收货
-        }else if (orderStatus == 9 ){
-            index="2";//线下支付待付款
+            index="3";//待收货
         }else if (orderStatus == 7) {
-            index="3";//代发货
+            index="2";//代发货
         }else if (orderStatus == 6){
-            index="6";//排单中
+            index="5";//排单中
             Iterator<PfBorder> chk_itw = pfBorders.iterator();
             while (chk_itw.hasNext()) {
                 PfBorder pfBorder = chk_itw.next();
@@ -390,7 +398,7 @@ public class BorderManageController extends BaseController {
                 }
             }
         } else if (orderStatus == 3) {
-            index="5";//已完成
+            index="4";//已完成
         }
         String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (pfBorders != null && pfBorders.size() != 0) {
@@ -428,24 +436,28 @@ public class BorderManageController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, sendType);
+        if(orderStatus==0){
+            List<PfBorder> byUserId = bOrderService.findByUserPid(comUser.getId(), 9, sendType);
+            for(PfBorder pfBorder :byUserId){
+                pfBorders.add(pfBorder);
+            }
+        }
 //        List<ComShipMan> comShipMans = comShipManService.list();
         String index=null;
         Integer borderNum =0;
         if(orderStatus==null && sendType==null){
             index="0";//全部
-        }else if (orderStatus == 0) {
-            index="1";//待付款
+        }else if (orderStatus == 0 || orderStatus == 9) {
+            index="1";//待付款//线下支付待付款
         }else if (orderStatus == 7) {
-            index="3";//代发货
+            index="2";//代发货
             borderNum = pfBorders.size();
         } else if (orderStatus == 8 ){
-            index="4";//待收货
+            index="3";//待收货
         }else if (orderStatus == 3) {
-            index="5";//已完成
-        }else if (orderStatus == 9 ){
-            index="2";//线下支付待付款
+            index="4";//已完成
         }else if(orderStatus == 6){
-            index="6";//排单中
+            index="5";//排单中
             Iterator<PfBorder> chk_itw = pfBorders.iterator();
             while (chk_itw.hasNext()) {
                 PfBorder pfBorder = chk_itw.next();

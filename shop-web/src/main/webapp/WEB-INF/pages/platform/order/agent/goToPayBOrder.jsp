@@ -18,11 +18,11 @@
         <p>支付订单</p>
     </header>
     <c:if test="${pfBorder.orderType==0}">
-    <div class="xinxi">
-        <p>注册信息</p>
-        <p>确认订单</p>
-        <p>完成合伙</p>
-    </div>
+        <div class="xinxi">
+            <p>注册信息</p>
+            <p>确认订单</p>
+            <p>完成合伙</p>
+        </div>
     </c:if>
     <div class="sec1">
         <h1>订单信息：</h1>
@@ -64,19 +64,17 @@
 <script src="${path}/static/js/hideWXShare.js"></script>
 <script src="${path}/static/js/pay/wxpay.js"></script>
 <script>
-    /*$("#submit").click(function (event) {
-        if ($(this).html() == "正在提交...") {
-            return;
-        }
-        $(this).html("正在提交...");
-        window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
-    })*/
-
-    $(function(){
-        if("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1"){
+    $(function () {
+        if ("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1") {
             $("#submit").initWxPay("${paramReq}", "${basePath}");
         } else {
-            window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+            $("#submit").click(function () {
+                if ($(this).html() == "正在提交...") {
+                    return;
+                }
+                $(this).html("正在提交...");
+                window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+            })
         }
     });
 
@@ -86,14 +84,14 @@
             type: 'post',
             async: false,
             data: {"bOrderId": ${pfBorder.id}},
-            dataType:"Json",
+            dataType: "Json",
             success: function (data) {
-                if(data!=null){
+                if (data != null) {
                     var object = eval(data);
-                    if (object.payStatus ==1){
+                    if (object.payStatus == 1) {
                         alert("该订单已支付,无需再支付")
-                        return ;
-                    }else{
+                        return;
+                    } else {
                         $(".back_box").show();
                     }
                 }
@@ -105,12 +103,12 @@
     })
     $("#downPayConfirm").click(function (event) {
         var payStatus = ${pfBorder.payStatus};
-        if (payStatus == 1){
+        if (payStatus == 1) {
             alert("该订单已支付,无需再支付");
             return false;
         }
         var orderStatus = ${pfBorder.orderStatus};
-        if (orderStatus == 0||orderStatus == 9 ){
+        if (orderStatus == 0 || orderStatus == 9) {
             if ($(this).html() == "正在提交...") {
                 return;
             }
@@ -120,15 +118,15 @@
                 type: 'post',
                 async: false,
                 data: {"bOrderId": ${pfBorder.id}},
-                dataType:"Json",
+                dataType: "Json",
                 success: function (data) {
-                    if(data){
+                    if (data) {
                         window.location.href = "${basePath}border/getOffinePaymentDeatil.html?bOrderId=${pfBorder.id}";
                     }
                 }
             });
             $(this).html("线下支付");
-        }else{
+        } else {
             alert("网络异常");
             return false;
         }

@@ -101,6 +101,7 @@ public class MyTeamService {
      */
     public Map<String, String> countChild(Integer userSkuId){
         String curPIds = userSkuId.toString();
+//        String curPIds = ""+userSkuId+"";
         String curUserIds = "";
         StringBuilder childIds = new StringBuilder(4000);
         StringBuilder userIds = new StringBuilder(4000);

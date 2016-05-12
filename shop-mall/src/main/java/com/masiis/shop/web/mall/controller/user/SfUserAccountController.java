@@ -347,6 +347,7 @@ public class SfUserAccountController extends BaseController {
         log.info("查询已经提现成功的金额");
         Map<String,Object> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);
         mv.addObject("withdraw",map == null?0:map.get("extractFee"));
+        mv.addObject("isBuy",comUser.getIsBuy());
         mv.setViewName("mall/user/sf_reward");
         return mv;
     }

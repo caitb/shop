@@ -38,25 +38,22 @@
         <p>我的财富</p>
         <h1>
             <span>￥<b><fmt:formatNumber value="${userAccount.extractableFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></span>
-            <span>可提现的财富</span><span onclick="validateCodeJS.applyTrial('withdrawRequest')" >申请提现</span>
-            <c:if test="${userAccount.appliedFee != null && userAccount.appliedFee > 0}">
-                <span>（已申请提现财富：￥${userAccount.appliedFee}）</span>
-            </c:if>
+            <span>可提现佣金（已申请提现财富：￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber>）</span>
         </h1>
         <nav>
             <ul>
                 <li>
-                    <p class="ul_left">未付款订单财富</p>
+                    <p class="ul_left">未付款订单佣金</p>
                     <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                     <span></span>
                 </li>
                 <li>
-                    <p class="ul_left">已付款订单财富</p>
+                    <p class="ul_left">已付款订单佣金</p>
                     <p>￥<b><fmt:formatNumber value="${isPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                     <span></span>
                 </li>
                 <li>
-                    <p class="ul_left">已提现的财富</p>
+                    <p class="ul_left">已提现佣金</p>
                     <p>￥<b><fmt:formatNumber value="${withdraw}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                 </li>
             </ul>
@@ -87,7 +84,7 @@
         </div>
     </div>
     <div class="footer">
-        <a href="">申请提现</a>
+        <a href="#" onclick="withdrawRequest(${isBuy})">申请提现</a>
     </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>

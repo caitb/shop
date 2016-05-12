@@ -273,7 +273,7 @@ public class ComUserAccountService {
         item.setOrderType(0);
         item.setPfBorderId(order.getId());
         item.setUserId(order.getUserPid());
-
+        item.setIsCount(0);
         return item;
     }
 }

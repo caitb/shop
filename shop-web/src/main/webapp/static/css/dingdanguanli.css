@@ -34,6 +34,7 @@
 }
 .wrap main .sec1 ul li h1:nth-child(1) {
   height: 35px;
+  width: 62px;
 }
 .wrap main .sec1 ul li h1 {
   display: -webkit-box;
@@ -49,15 +50,13 @@
 }
 .wrap main .sec1 ul li h1 span {
   display: block;
-  padding: 0 5px;
   border-radius: 10px;
-  border: 1px solid #ff5200;
-  color: #ff5200;
-  background: #fff;
+  background: red;
   position: absolute;
-  top: -4px;
-  font-size: 12px;
-  left: 25px;
+  bottom: 0;
+  right: 10px;
+  height: 10px;
+  width: 10px;
 }
 .wrap main .sec1:nth-child(2) {
   margin-top: 10px;

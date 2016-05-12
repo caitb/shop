@@ -202,8 +202,11 @@
         },
         skipPage: function () {
             var path;
+            alert(validateCodeJS.skipPageId);
             switch (validateCodeJS.skipPageId) {
                 case "buy":
+                    $(".back_j").hide();
+                    $(".back").hide();
                     alert("绑定成功，请在当前页面继续购买");
                     break;
                 case "share":
@@ -217,14 +220,12 @@
                     path = "/withdraw/withdrawRequest.shtml";
                     validateCodeJS.bindPhoneSkipParam = "?skipPage=withdrawRequest&status=success&path=" + path;
                     break;
-                default:
+                case "mallPersonalInfo":
+                    window.location.reload();
                     break;
-            }
-            if(validateCodeJS.skipPageId=="buy" || validateCodeJS.skipPageId=="share" ){
-                $(".back_j").hide();
-                $(".back").hide();
-            }else{
-                window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
+                default:
+                    window.location.href = validateCodeJS.bindPhoneSkipBasePath + validateCodeJS.bindPhoneSkipParam;
+                    break;
             }
         }
     }

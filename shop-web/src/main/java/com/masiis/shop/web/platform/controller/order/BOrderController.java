@@ -194,6 +194,19 @@ public class BOrderController extends BaseController {
     }
 
     /**
+     * 实时的获取订单的详情
+     * @author hanzengzhi
+     * @date 2016/5/11 20:30
+     */
+    @RequestMapping(value = "getOrderDetail.do")
+    @ResponseBody
+    public PfBorder getOrderDetail(HttpServletRequest request, HttpServletResponse response,
+                                @RequestParam(value = "bOrderId", required = true) Long bOrderId) throws Exception {
+
+        return payBOrderService.getOrderDetail(bOrderId);
+    }
+
+    /**
      * 线下支付
      *
      * @author hanzengzhi

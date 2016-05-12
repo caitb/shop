@@ -347,12 +347,14 @@ public class BOrderService {
         }
         //拿货方式(0未选择1平台代发2自己发货)
         if (pfBorder.getSendType() == 1) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())) {
-                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.accountPaid.getCode());
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.accountPaid.getCode())
+                    && !pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常");
             }
         } else if (pfBorder.getSendType() == 2) {
-            if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
-                throw new BusinessException("订单状态异常:" + pfBorder.getOrderStatus() + ",应是" + BOrderStatus.Ship.getCode());
+            if (!pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())
+                    && !pfBorder.getOrderStatus().equals(BOrderStatus.Ship.getCode())) {
+                throw new BusinessException("订单状态异常");
             }
         } else {
             throw new BusinessException("订单拿货方式异常");
@@ -382,9 +384,8 @@ public class BOrderService {
 
     /**
      * 根据userId 和SkuId获取订单信息
-     *
      */
-    public PfBorder getPfBorderBySkuAndUserId(Integer skuId,Long userId){
-        return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId,userId);
+    public PfBorder getPfBorderBySkuAndUserId(Integer skuId, Long userId) {
+        return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId, userId);
     }
 }

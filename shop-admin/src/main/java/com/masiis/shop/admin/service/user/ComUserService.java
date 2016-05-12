@@ -151,14 +151,14 @@ public class ComUserService {
             MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
 
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
-            String url = "http://m.qc.iimai.com/index";
+            String url = PropertiesUtils.getStringValue("web.domain.name.address")+"/index";
             PfUserRelation pfUserRelation = pfUserRelationMapper.selectLastRecordByUserId(comUser.getId());
             if(pfUserRelation != null){
-                url = "http://m.qc.iimai.com/product/skuDetails.shtml?skuId="+pfUserRelation.getSkuId();
+                url = PropertiesUtils.getStringValue("web.domain.name.address")+"/product/skuDetails.shtml?skuId="+pfUserRelation.getSkuId();
             }
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
                                                                     comUser.getAuditStatus()==2?true:false,
-                                                                    comUser.getAuditStatus()==2?url:"http://m.qc.iimai.com/identityAuth/toInentityAuthPage.html?defaultValue=3");
+                                                                    comUser.getAuditStatus()==2?url:PropertiesUtils.getStringValue("web.domain.name.address")+"/identityAuth/toInentityAuthPage.html?defaultValue=3");
         }
     }
 

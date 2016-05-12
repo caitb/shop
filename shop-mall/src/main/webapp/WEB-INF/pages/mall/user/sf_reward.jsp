@@ -13,11 +13,11 @@
 <body>
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
 <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
-    <header>
-        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-                <p>我的奖励</p>
-    </header>
     <div class="wrap">
+        <header style="margin-bottom: 0;">
+            <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+            <p>我的奖励</p>
+        </header>
         <p>我的分享</p>
         <nav>
             <ul>
@@ -48,10 +48,12 @@
                 <li>
                     <p class="ul_left">未付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <span></span>
                 </li>
                 <li>
                     <p class="ul_left">已付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <span></span>
                 </li>
                 <li>
                     <p class="ul_left">已提现的财富</p>
@@ -78,13 +80,15 @@
                 </div>
             </c:forEach>
         </div>
-        <p id="showMore" style="text-align: center;">
+        <div id="showMore" style="text-align: center;">
             <c:if test="${orderItemDistributions != null && fn:length(orderItemDistributions) < totalCount}">
                 <a href="#" onclick="viewMore()">查看更多></a>
             </c:if>
-        </p>
+        </div>
     </div>
-
+    <div class="footer">
+        <a href="">申请提现</a>
+    </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>
         <p class="biao">绑定手机号</p>

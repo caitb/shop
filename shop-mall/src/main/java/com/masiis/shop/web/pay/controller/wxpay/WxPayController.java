@@ -97,7 +97,7 @@ public class WxPayController extends BaseController {
         } catch (Exception e) {
             log.error("wxpayPage:下预付单失败," + e.getMessage(), e);
             if(e instanceof OrderPaidException) {
-                request.setAttribute("url", "http://mall.qc.iimai.com/sfOrderManagerController/toBorderManagement?fm=0");
+                request.setAttribute("url", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0");
             } else {
                 request.setAttribute("url", req.getErrorUrl());
             }

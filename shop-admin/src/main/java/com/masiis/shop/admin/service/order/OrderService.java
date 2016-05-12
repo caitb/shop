@@ -11,6 +11,7 @@ import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.*;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
@@ -177,7 +178,7 @@ public class OrderService {
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
         //短信和微信通知
         MobileMessageUtil.getInitialization("C").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode());
-        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, "http://mall.qc.iimai.com/sfOrderManagerController/borderDetils.html?id="+sfOrder.getId());
+        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderManagerController/borderDetils.html?id="+sfOrder.getId());
     }
 
     public void updateOrderStock(SfOrder sfOrder) throws Exception {

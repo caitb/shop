@@ -132,14 +132,6 @@
         <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
             <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
         </c:if>
-        <%--<p>--%>
-            <%--<a class="first_p"><img src="${path}/static/images/icon_88.png" alt="">申请试用</a>--%>
-            <%--<a class="first_p2"><img src="${path}/static/images/icon_89.png" alt="">申请试用</a>--%>
-        <%--</p>--%>
-        <%--<p>--%>
-            <%--<a href="" class="last_p">我要合伙</a>--%>
-            <%--<a href="" class="last_p2">已合伙</a>--%>
-        <%--</p>--%>
     </section>
 </footer>
 <div class="back_box">

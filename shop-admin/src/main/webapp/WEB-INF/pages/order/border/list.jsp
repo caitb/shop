@@ -417,6 +417,7 @@
                             if(row.pfBorder && row.pfBorder.shipStatus == 9){
                                 return '已收货';
                             }
+                            
                         }
                     },
                     {

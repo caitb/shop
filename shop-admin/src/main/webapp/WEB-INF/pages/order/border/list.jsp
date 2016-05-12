@@ -310,6 +310,18 @@
                         }
                     },
                     {
+                        field: 'bail_amount',
+                        title: '保证金',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder){
+                                return row.pfBorder.bailAmount;
+                            }
+                        }
+                    },
+                    {
                         field: 'receivable_amount',
                         title: '应付金额',
                         sortable: true,
@@ -417,7 +429,7 @@
                             if(row.pfBorder && row.pfBorder.shipStatus == 9){
                                 return '已收货';
                             }
-                            
+
                         }
                     },
                     {

@@ -48,10 +48,12 @@
                 <li>
                     <p class="ul_left">未付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <span></span>
                 </li>
                 <li>
                     <p class="ul_left">已付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <span></span>
                 </li>
                 <li>
                     <p class="ul_left">已提现的财富</p>
@@ -78,11 +80,11 @@
                 </div>
             </c:forEach>
         </div>
-        <p id="showMore" style="text-align: center;">
+        <div id="showMore" style="text-align: center;">
             <c:if test="${orderItemDistributions != null && fn:length(orderItemDistributions) < totalCount}">
                 <a href="#" onclick="viewMore()">查看更多></a>
             </c:if>
-        </p>
+        </div>
     </div>
 
     <div class="back_j" style="display: none">

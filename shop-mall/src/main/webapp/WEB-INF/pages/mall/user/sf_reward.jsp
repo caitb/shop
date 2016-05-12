@@ -14,7 +14,7 @@
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
 <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
     <div class="wrap">
-        <header>
+        <header style="margin-bottom: 0;">
             <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
             <p>我的奖励</p>
         </header>

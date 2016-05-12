@@ -15,6 +15,7 @@
 <header>
     <a href="javascript:window.location.href='<%=basePath%>sfaccount/rewardHome.shtml'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>申请提现</p>
+    <a href="">提现记录</a>
 </header>
 <div class="wrap">
     <div class="na">

@@ -36,13 +36,13 @@ html header a:first-child img {
 body header a:last-child,
 html header a:last-child {
   display: block;
-  width: 50px;
   height: 100%;
   position: absolute;
   right: 10px;
   display: -webkit-box;
   -webkit-box-pack: end;
   -webkit-box-align: center;
+  font-size: 12px;
 }
 body header a:last-child h2,
 html header a:last-child h2 {

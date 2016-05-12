@@ -406,7 +406,9 @@
 --         select * from pf_border
 --         where order_status=6
 --         order by case user_pid when 0 then 0 else 1 end,create_time
-        SELECT * FROM pf_border WHERE order_status = 6 and user_pid > 0 ORDER BY create_time
+        SELECT * FROM pf_border WHERE order_status = #{status}
+        <![CDATA[ and user_pid > 0 ]]>
+        ORDER BY create_time
     </select>
 
     <select id="queryOrderNumsByUpidAndStatus" resultType="java.lang.Integer">

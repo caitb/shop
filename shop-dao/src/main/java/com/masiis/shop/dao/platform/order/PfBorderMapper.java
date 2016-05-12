@@ -84,7 +84,7 @@ public interface PfBorderMapper {
      * 查询排单订单
      * @return
      */
-    List<PfBorder> selectAllQueuingOrder();
+    List<PfBorder> selectAllQueuingOrder(@Param("status") Integer status);
 
     /**
      * 根据上级userid和订单状态查询订单数量

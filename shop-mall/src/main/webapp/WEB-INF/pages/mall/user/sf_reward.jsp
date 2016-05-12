@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/reward.css">
 </head>
 <body>
+<input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
     <header>
         <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>我的奖励</p>
@@ -44,18 +46,16 @@
         <nav>
             <ul>
                 <li>
-                    <p class="ul_left">已提现的财富</p>
-                    <p>￥<b><fmt:formatNumber value="${withdraw}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
-                    <span></span>
+                    <p class="ul_left">未付款订单财富</p>
+                    <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                 </li>
                 <li>
                     <p class="ul_left">已付款订单财富</p>
                     <p>￥<b><fmt:formatNumber value="${isPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
-                    <span></span>
                 </li>
                 <li>
-                    <p class="ul_left">未付款订单财富</p>
-                    <p>￥<b><fmt:formatNumber value="${isNotPayDistribution}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
+                    <p class="ul_left">已提现的财富</p>
+                    <p>￥<b><fmt:formatNumber value="${withdraw}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></p>
                 </li>
             </ul>
         </nav>
@@ -101,10 +101,6 @@
     </div>
     <div class="back">
     </div>
-
-    <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
-    <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
-
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>

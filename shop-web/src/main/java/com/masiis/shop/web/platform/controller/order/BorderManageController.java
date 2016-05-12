@@ -373,10 +373,12 @@ public class BorderManageController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, sendType);
-        if(orderStatus==0){
-            List<PfBorder> byUserId = bOrderService.findByUserId(comUser.getId(), 9, sendType);
-            for(PfBorder pfBorder :byUserId){
-                pfBorders.add(pfBorder);
+        if(orderStatus!=null){
+            if(orderStatus==0){
+                List<PfBorder> byUserId = bOrderService.findByUserId(comUser.getId(), 9, sendType);
+                for(PfBorder pfBorder :byUserId){
+                    pfBorders.add(pfBorder);
+                }
             }
         }
         String index=null;
@@ -436,10 +438,12 @@ public class BorderManageController extends BaseController {
             throw new BusinessException("user不能为空");
         }
         List<PfBorder> pfBorders = bOrderService.findByUserPid(comUser.getId(), orderStatus, sendType);
-        if(orderStatus==0){
-            List<PfBorder> byUserId = bOrderService.findByUserPid(comUser.getId(), 9, sendType);
-            for(PfBorder pfBorder :byUserId){
-                pfBorders.add(pfBorder);
+        if(orderStatus!=null){
+            if(orderStatus==0){
+                List<PfBorder> byUserId = bOrderService.findByUserPid(comUser.getId(), 9, sendType);
+                for(PfBorder pfBorder :byUserId){
+                    pfBorders.add(pfBorder);
+                }
             }
         }
 //        List<ComShipMan> comShipMans = comShipManService.list();

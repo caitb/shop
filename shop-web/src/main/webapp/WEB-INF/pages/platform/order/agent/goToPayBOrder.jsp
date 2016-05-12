@@ -81,7 +81,24 @@
     });
 
     $("#downPay").click(function (event) {
-        $(".back_box").show();
+        $.ajax({
+            url: '/border/getOrderDetail.do',
+            type: 'post',
+            async: false,
+            data: {"bOrderId": ${pfBorder.id}},
+            dataType:"Json",
+            success: function (data) {
+                if(data!=null){
+                    var object = eval(data);
+                    if (object.payStatus ==1){
+                        alert("您的订单已支付无需再次支付")
+                        return ;
+                    }else{
+                        $(".back_box").show();
+                    }
+                }
+            }
+        });
     })
     $("#downPayCancel").click(function (event) {
         $(".back_box").hide();
@@ -89,7 +106,7 @@
     $("#downPayConfirm").click(function (event) {
         var payStatus = ${pfBorder.payStatus};
         if (payStatus == 1){
-            alert("您已支付无需再次支付");
+            alert("您订单已支付无需再次支付");
             return false;
         }
         var orderStatus = ${pfBorder.orderStatus};

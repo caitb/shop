@@ -620,6 +620,15 @@ public class BOrderPayService {
     }
 
     /**
+     * 获取订单详情
+     * @author hanzengzhi
+     * @date 2016/5/11 20:33
+     */
+    public PfBorder getOrderDetail(Long orderId){
+        return pfBorderMapper.selectByPrimaryKey(orderId);
+    }
+
+    /**
      * 线下支付
      *
      * @author hanzengzhi
@@ -662,7 +671,7 @@ public class BOrderPayService {
         if (pfBorder!=null){
             Integer payStatus = pfBorder.getPayStatus();
             if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
-                throw new BusinessException("您已支付无需再次支付");
+                throw new BusinessException("您的订单已支付无需再次支付");
             }
             pfBorder.setOrderStatus(status);
             int i = pfBorderMapper.updateById(pfBorder);

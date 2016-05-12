@@ -25,7 +25,7 @@
         <div class="nav">
             <p>
                 <span>${agentSkuMaps.size()}</span>
-                <span>团队产品</span>
+                <span>合伙产品数</span>
             </p>
             <p>
                 <span>${totalChild}</span>

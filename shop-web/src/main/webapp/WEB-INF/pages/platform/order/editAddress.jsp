@@ -14,7 +14,7 @@
     <div class="wrap">
         <div class="box">
             <header class="xq_header">
-                <a href="${path}/userAddress/toManageAddressPage.html"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+                <a href="${path}/userAddress/toManageAddressPage.html?addAddressJumpType=${addAddressJumpType}&manageAddressJumpType=${manageAddressJumpType}"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>编辑收货地址</p>
             </header>
             <div id="d_box">

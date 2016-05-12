@@ -128,15 +128,15 @@ public class UserIdentityAuthService {
                 //更新缓存
                 request.getSession().removeAttribute("comUser");
                 request.getSession().setAttribute("comUser", comUser);
-                //删除最新上传的本地服务器照片
-                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
-                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
                 if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
                 //发送微信提示
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
+                //删除最新上传的本地服务器照片
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             }
             return i;
         }catch (Exception ex){

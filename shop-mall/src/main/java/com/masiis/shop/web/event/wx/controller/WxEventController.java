@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.util.HttpClientUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SHAUtils;
 import com.masiis.shop.web.event.wx.bean.event.WxBaseMessage;
 import com.masiis.shop.web.event.wx.bean.event.WxEventBody;
@@ -132,7 +133,7 @@ public class WxEventController extends BaseController {
         sub_button1.add(b1);
 
         buttons.add(new Button("关于麦链", sub_button1));
-        buttons.add(new Button("个人中心", "view", "http://mall.qc.iimai.com/sfOrderManagerController/toBorderManagement?fm=0"));
+        buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 
         String result = HttpClientUtils.httpPost(createMenu, JSONObject.toJSONString(menu));

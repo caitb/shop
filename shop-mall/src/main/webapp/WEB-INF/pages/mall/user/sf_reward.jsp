@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="footer">
-        <a href="#" onclick="validateCodeJS.applyTrial('withdrawRequest')">申请提现</a>
+        <a href="#" onclick="withdrawRequest(${isBuy})">申请提现</a>
     </div>
     <div class="back_j" style="display: none">
         <span class="close">×</span>

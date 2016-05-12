@@ -671,7 +671,7 @@ public class BOrderPayService {
         if (pfBorder!=null){
             Integer payStatus = pfBorder.getPayStatus();
             if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
-                throw new BusinessException("您的订单已支付无需再次支付");
+                throw new BusinessException("该订单已支付,无需再支付");
             }
             pfBorder.setOrderStatus(status);
             int i = pfBorderMapper.updateById(pfBorder);

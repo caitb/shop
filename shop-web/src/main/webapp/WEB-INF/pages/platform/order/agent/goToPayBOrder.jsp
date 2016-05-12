@@ -91,7 +91,7 @@
                 if(data!=null){
                     var object = eval(data);
                     if (object.payStatus ==1){
-                        alert("您的订单已支付无需再次支付")
+                        alert("该订单已支付,无需再支付")
                         return ;
                     }else{
                         $(".back_box").show();
@@ -106,7 +106,7 @@
     $("#downPayConfirm").click(function (event) {
         var payStatus = ${pfBorder.payStatus};
         if (payStatus == 1){
-            alert("您订单已支付无需再次支付");
+            alert("该订单已支付,无需再支付");
             return false;
         }
         var orderStatus = ${pfBorder.orderStatus};

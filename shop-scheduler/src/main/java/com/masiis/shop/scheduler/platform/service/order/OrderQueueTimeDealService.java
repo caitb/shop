@@ -192,7 +192,7 @@ public class OrderQueueTimeDealService {
         ComUser comUser = comUserService.getUserById(pfBorder.getUserId());
         try{
             //平台代发货
-            if ("1".equals(pfBorder.getSendType())){
+            if (pfBorder.getSendType().equals(1)){
                 MobileMessageUtil.getInitialization("").dealQueueOrderRemind(comUser.getMobile(), pfBorder.getOrderCode() ,pfBorder.getSendType());
                 String[] params;
                 for (PfBorderItem pfBorderItem : pfBorderItems){

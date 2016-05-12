@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="${path}/static/css/pageCss/reward.css">
 </head>
 <body>
+<input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
+<input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
     <header>
         <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
                 <p>我的奖励</p>
@@ -101,10 +103,6 @@
     </div>
     <div class="back">
     </div>
-
-    <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
-    <input type="hidden" id="totalCount" name="totalCount" value="${totalCount}"/>
-
     <script type="application/javascript" src="${path}/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/commonAjax.js"></script>
     <script type="application/javascript" src="${path}/static/js/common/definedAlertWindow.js"></script>

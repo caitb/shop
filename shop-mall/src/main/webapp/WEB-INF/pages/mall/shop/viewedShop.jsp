@@ -25,7 +25,7 @@
             <c:forEach var="userShopView" items="${sfUserShopViews}">
                 <section class="sec1">
                     <p class="photo">
-                        <img src="${path}${userShopView.logo}" alt="">
+                        <img src="${path}${userShopView.logo}" alt="" onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">
                     </p>
                     <div class="shop">
                         <h2>${userShopView.shopName}</h2>

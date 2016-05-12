@@ -44,6 +44,7 @@
                 您还可以
             </h1>
        <div class="oPeration">
+           <a href="${path}/orderPay/getOrderDetail.html?orderId=${order.id}" >分享赚佣金</a>
            <a href="${path}/orderPay/getOrderDetail.html?orderId=${order.id}" >查看订单</a>
            <a onclick="returnHomePage()">返回首页</a>
        </div>

@@ -7,6 +7,7 @@
  */
 package com.masiis.shop.dao.mall.user;
 
+import com.masiis.shop.dao.po.SfUserAccountRecord;
 import com.masiis.shop.dao.po.SfUserBillItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,4 +29,8 @@ public interface SfUserBillItemMapper {
     List<SfUserBillItem> selectByUserAndDate(@Param("userId") Long userId,
                                              @Param("start") Date start,
                                              @Param("end") Date end);
+
+    SfUserAccountRecord selectByUserIdAndSourceIdAndFeeType(@Param("userId") Long userId,
+                                                            @Param("sourceId") Long sourceId,
+                                                            @Param("feeType") Integer feeType);
 }

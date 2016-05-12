@@ -76,7 +76,7 @@ public class SfOrderPayController extends BaseController {
     public String paySuccessCallBack(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
-        Map<String,Object> map = orderPayService.paySuccessCallBack(getComUser(request),orderId);
+        Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("userPid",map.get("userPid"));
@@ -93,7 +93,7 @@ public class SfOrderPayController extends BaseController {
     public String getOrderDetail(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
-        Map<String,Object> map = orderPayService.getOrderDetail(getComUser(request),orderId);
+        Map<String,Object> map = orderPayService.getOrderDetail(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
         model.addAttribute("orderItems",map.get("orderItems"));

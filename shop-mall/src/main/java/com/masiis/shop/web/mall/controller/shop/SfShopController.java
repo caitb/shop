@@ -143,7 +143,7 @@ public class SfShopController extends BaseController {
             positionMap.put("bgImg-left", 0);
             positionMap.put("bgImg-top", 0);
             positionMap.put("qrCodeImg-left", 170);
-            positionMap.put("qrCodeImg-top", 338);
+            positionMap.put("qrCodeImg-top", 330);
             positionMap.put("content-left", 520 / 2 - content.length() / 2 * 28 - (content.length() % 2 * 14));
             positionMap.put("content-top", 270);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247, 60, 140));
@@ -202,7 +202,7 @@ public class SfShopController extends BaseController {
         g.setFont(new Font("华文细黑", Font.PLAIN, 20));
         g.setColor(new Color(51, 51, 51));
         g.drawString("该二维码有效期为", 180, 550);
-        g.drawString(startTime+"-"+endDate, 140, 580);
+        g.drawString(startTime+"-"+endDate, 150, 580);
 
         g.dispose();
 

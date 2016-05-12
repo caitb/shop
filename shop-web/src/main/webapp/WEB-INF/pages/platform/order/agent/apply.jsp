@@ -67,11 +67,11 @@
             </div>
         </section>
         <%--<section class="sec1">--%>
-            <%--<img src="${path}/static/images/shenqing_7.png" alt="">--%>
-            <%--<div>--%>
-                <%--<h2>平台补助</h2>--%>
-                <%--<p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>--%>
-            <%--</div>--%>
+        <%--<img src="${path}/static/images/shenqing_7.png" alt="">--%>
+        <%--<div>--%>
+        <%--<h2>平台补助</h2>--%>
+        <%--<p style="margin-right:10px;">消费者分享商品可获得佣金，佣金来自平台补助</p>--%>
+        <%--</div>--%>
         <%--</section>--%>
         <section class="sec1">
             <img src="${path}/static/images/shouquan.png" alt="">
@@ -131,19 +131,19 @@
                 </c:choose>
             </tr>
             <%--<tr>--%>
-                <%--<td>关注公众号</td>--%>
-                <%--<c:choose>--%>
-                    <%--<c:when test="${isUserForcus==true}">--%>
-                        <%--<td><img src="${path}/static/images/dui.png" alt=""></td>--%>
-                        <%--<td>已完成</td>--%>
-                    <%--</c:when>--%>
-                    <%--<c:otherwise>--%>
-                        <%--<td><img src="${path}/static/images/cuo.png" alt=""></td>--%>
-                        <%--<td><a href="javascript:void(0);" onclick="goGuanZhu();"--%>
-                               <%--style="color: #FF5200;text-decoration: underline">去完成</a>--%>
-                        <%--</td>--%>
-                    <%--</c:otherwise>--%>
-                <%--</c:choose>--%>
+            <%--<td>关注公众号</td>--%>
+            <%--<c:choose>--%>
+            <%--<c:when test="${isUserForcus==true}">--%>
+            <%--<td><img src="${path}/static/images/dui.png" alt=""></td>--%>
+            <%--<td>已完成</td>--%>
+            <%--</c:when>--%>
+            <%--<c:otherwise>--%>
+            <%--<td><img src="${path}/static/images/cuo.png" alt=""></td>--%>
+            <%--<td><a href="javascript:void(0);" onclick="goGuanZhu();"--%>
+            <%--style="color: #FF5200;text-decoration: underline">去完成</a>--%>
+            <%--</td>--%>
+            <%--</c:otherwise>--%>
+            <%--</c:choose>--%>
             <%--</tr>--%>
         </table>
     </div>
@@ -190,6 +190,8 @@
 <%--<script src="${path}/static/js/commonAjax.js"></script>--%>
 <script src="${path}/static/js/iscroll.js"></script>
 <script src="${path}/static/js/validateCode.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="${path}/static/js/hideWXShare.js"></script>
 <script>
     $(document).ready(function () {
         validateCodeJS.initPage();
@@ -241,8 +243,8 @@
             return;
         }
         <%--if (${isUserForcus==false}) {--%>
-            <%--alert("请去完成关注公众号!");--%>
-            <%--return;--%>
+        <%--alert("请去完成关注公众号!");--%>
+        <%--return;--%>
         <%--}--%>
         $(this).html("请稍后...");
         window.location.href = "${path}/userApply/register.shtml?skuId=${skuId}";

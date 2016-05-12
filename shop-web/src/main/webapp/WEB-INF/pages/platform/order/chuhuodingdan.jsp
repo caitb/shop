@@ -48,7 +48,7 @@
                                 <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                 <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                             </h2>
                             <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -64,10 +64,10 @@
                                     <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                 </div>
                             </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
                                     未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -96,7 +96,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -112,10 +112,10 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -143,7 +143,7 @@
                                         <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                         <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                         <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                        <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                        <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                         <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                     </h2>
                                     <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -159,10 +159,10 @@
                                                     <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                             </div>
                                         </div> </c:forEach>
-                                    <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                    <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                     <h1>
                                         <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                         <b>类型:</b>
@@ -190,7 +190,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -206,10 +206,10 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -238,7 +238,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -254,10 +254,10 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -285,7 +285,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -301,10 +301,10 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -332,7 +332,7 @@
                                     <c:if test="${pb.orderStatus ==6 && pb.sendType==1}"><b class="fahuo_${pb.id}" >排单中</b ></c:if>
                                     <c:if test="${pb.orderStatus ==7}"> <b class="fahuo_${pb.id}">等待发货</b></c:if>
                                     <c:if test="${pb.orderStatus ==8}"><b class="fahuo_${pb.id}">待收货</b></c:if>
-                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">交易成功</b></c:if>
+                                    <c:if test="${pb.orderStatus ==3}"><b class="fahuo_${pb.id}">已完成</b></c:if>
                                     <c:if test="${pb.orderStatus ==9}"><b class="querenshouhuo_${pb.id}">线下支付中</b></c:if>
                                 </h2>
                                 <c:forEach items="${pb.pfBorderItems}" var="pbi">
@@ -348,10 +348,10 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b>(<c:if test="${pb.orderType==0}">包含保证金</c:if> 运费：到付)</h1>
+                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
-                                    <span><c:if test="${pb.sendType==1}">平台发货</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
+                                    <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
                                         未选择</c:if><c:if test="${pb.sendType==2}">自己发货</c:if>
                                     </span>
                                     <b>类型:</b>
@@ -364,8 +364,8 @@
                                 <div class="ding">
                                     <p><a href="<%=path%>/borderManage/deliveryBorderDetils.html?id=${pb.id}">查看订单详情</a></p><c:if test="${pb.orderType==2 || pb.sendType==2}">
                                     <p class="sh" onclick="shouhuorenxinxi('${pb.pfBorderConsignee.consignee}','${pb.pfBorderConsignee.provinceName} ${pb.pfBorderConsignee.cityName} ${pb.pfBorderConsignee.regionName} ${pb.pfBorderConsignee.address}','${pb.pfBorderConsignee.mobile}','${pb.pfBorderConsignee.zip}')">收货人信息</p></c:if>
-                                    <c:choose><c:when test="${pb.orderStatus ==6}"><p>处理排单</p></c:when>
-                                        <c:when test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:when></c:choose>
+                                    <c:if test="${pb.orderStatus ==6}"><p>处理排单</p></c:if>
+                                    <c:if test="${pb.orderStatus ==7 && pb.sendType==2}"><span class="fa" name="fahuo_${pb.id}" onclick="fahuo('${pb.id}')">发货</span></c:if>
                                 </div>
                             </section></c:forEach>
                     </div>
@@ -444,7 +444,7 @@
                                    }else if(pfBorder.orderStatus ==8){
                                        StatusName="待收货";
                                    }else if(pfBorder.orderStatus ==3){
-                                       StatusName="交易成功";
+                                       StatusName="已完成";
                                    }else if(pfBorder.orderStatus ==9){
                                        StatusName="线下支付中";
                                    }
@@ -459,9 +459,11 @@
                                    });
                                    trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#FF6A2A\">合计：￥"+pfBorder.orderAmount+"</b>";
                                    if(pfBorder.orderType==0){
-                                       trHtml+="(包含保证金 运费：到付)";
-                                   }else{
+                                       trHtml+="(包含保证金)";
+                                   }else if(pfBorder.orderType==2){
                                        trHtml+="(运费：到付)";
+                                   }else if(pfBorder.orderType==1){
+                                       trHtml+="";
                                    }
                                    trHtml+="</h1><h1><b>发货方：</b><span>"+pfBorder.pidUserName+"</span>";
                                    if(pfBorder.orderType==2 && pfBorder.sendType==1){

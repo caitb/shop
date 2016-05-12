@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 小铺订单商品分润Service
@@ -58,5 +60,9 @@ public class SfOrderItemDistributionService {
         }
         PageHelper.startPage(currentPage,pageSize);
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
+    }
+
+    public Map<String,BigDecimal> selectSumAmount(Long userId, List<Long> orderIds){
+        return sfOrderItemDistributionExtendMapper.selectSumAmount(userId, orderIds);
     }
 }

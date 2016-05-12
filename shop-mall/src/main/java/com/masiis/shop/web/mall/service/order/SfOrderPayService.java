@@ -122,6 +122,9 @@ public class SfOrderPayService {
             for (SfOrderItem orderItem : orderItems){
                 updateShopSku(order.getShopId(),orderItem.getSkuId(),orderItem.getQuantity());
             }
+            //微信短信提醒
+            ComUser comUser = userService.getUserById(order.getUserId());
+            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -228,7 +231,7 @@ public class SfOrderPayService {
      * @date 2016/5/9 14:36
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> paySuccessCallBack(ComUser comUser,Long orderId){
+    public Map<String,Object> paySuccessCallBack(Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址
@@ -240,9 +243,6 @@ public class SfOrderPayService {
             //获得用户的分销关系的父id
             Long userPid = getUserPid(order.getUserId());
             map.put("userPid",userPid);
-            //微信短信提醒
-            List<SfOrderItem> orderItems = getOrderItem(orderId);
-            orderNotice(comUser,order,orderItems);
         }catch (Exception e){
             throw new BusinessException(e);
         }
@@ -256,7 +256,7 @@ public class SfOrderPayService {
      * @date 2016/4/10 13:59
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
-    public Map<String,Object> getOrderDetail(ComUser comUser,Long orderId){
+    public Map<String,Object> getOrderDetail(Long orderId){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         try{
             //订单的收货地址
@@ -324,7 +324,13 @@ public class SfOrderPayService {
         //微信提醒
         log.info("订单通知提醒-----start");
         String[] param = new String[]{order.getOrderCode(),order.getPayAmount()+"","微信支付"};
+        /*消费者端微信提醒*/
         WxSFNoticeUtils.getInstance().orderCreateNotice(comUser,param);
+        /*小铺端归属人微信提醒*/
+        ComUser shopUser = userService.getUserById(order.getShopUserId());
+        if (shopUser!=null){
+            WxSFNoticeUtils.getInstance().orderCreateNotice(shopUser,param);
+        }
         //短信提醒
         /*消费者端提醒*/
         StringBuffer skuNames = new StringBuffer();
@@ -333,7 +339,6 @@ public class SfOrderPayService {
         }
         MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(),skuNames.toString());
         /*小铺归属人提醒*/
-        ComUser shopUser = userService.getUserById(order.getShopUserId());
         if (shopUser!=null){
             MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
         }

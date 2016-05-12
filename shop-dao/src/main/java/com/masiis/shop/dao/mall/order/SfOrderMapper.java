@@ -73,4 +73,6 @@ public interface SfOrderMapper {
     SfOrder selectNotIsBuyByUserId(Long userId,Integer status);
 
     List<SfOrder> selectByShopUserIds(List<Long> userIds);
+
+    List<SfOrder> selectByUserIds(List<Long> userIds);
 }

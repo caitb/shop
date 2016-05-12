@@ -81,7 +81,7 @@
                     </c:if>
                 </c:forEach>
             </div>
-            <div class="sec3">
+            <div class="sec3"><c:if test="${borderDetail.pfBorderConsignee!=null}">
                 <section class="dizhi">
                     <img src="<%=path%>/static/images/zhifu_ad.png" alt="">
                     <div>
@@ -92,7 +92,7 @@
                             <span>${borderDetail.pfBorderConsignee.provinceName} ${borderDetail.pfBorderConsignee.cityName} ${borderDetail.pfBorderConsignee.regionName} ${borderDetail.pfBorderConsignee.address}</span></p>
                         </a>
                     </div>
-                </section>
+                </section></c:if>
                 <p>购物人：<span>${borderDetail.buyerName}</span></p>
                 <p>备注：<span>${borderDetail.pfBorder.userMessage}</span></p>
             </div>

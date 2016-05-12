@@ -19,6 +19,7 @@
 }
 .wrap .na p img {
   width: 100%;
+  height: 100%;
 }
 .wrap .na h1 {
   display: -webkit-box;
@@ -28,28 +29,41 @@
 }
 .wrap .na h1 span {
   display: block;
+  font-size: 12px;
 }
 .wrap main {
   background: #fff;
   -webkit-box-flex: 1;
 }
 .wrap main > p {
-  padding: 5px 10px;
+  padding: 10px 0 5px 10px;
   background: #f6f6f6;
+  font-size: 12px;
+}
+.wrap main > p span{
+  font-size:12px;
 }
 .wrap main .sec1 {
   padding:10px;
   border-bottom: 1px solid #f6f6f6;
+  font-size: 12px;
 }
 .sec1 input{
   border:none;
+  font-size: 12px;
+  display: inline-block;
+  line-height: 19px;
+  margin-left: 5px;
+  width: 211px;
 }
 .wrap main > h1 {
   color: red;
-  padding: 5px 10px;
+  padding: 10px;
+  font-size: 12px;
 }
 .wrap main > h2 {
-  padding: 5px 10px;
+  padding: 10px;
+  font-size: 12px;
 }
 .wrap main button {
   display: block;

@@ -76,10 +76,10 @@ public class SfOrderPayController extends BaseController {
     public String paySuccessCallBack(HttpServletRequest request, HttpServletResponse response,
                                      @RequestParam(value = "orderId", required = true) Long orderId,
                                      Model model)throws Exception{
-/*        Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
+        Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
-        model.addAttribute("userPid",map.get("userPid"));*/
+        model.addAttribute("userPid",map.get("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
         return "mall/order/paySuccess";
     }

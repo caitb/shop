@@ -310,6 +310,18 @@
                         }
                     },
                     {
+                        field: 'receivable_amount',
+                        title: '应付金额',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder){
+                                return row.pfBorder.receivableAmount;
+                            }
+                        }
+                    },
+                    {
                         field: 'pay_amount',
                         title: '实付金额',
                         sortable: true,

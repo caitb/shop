@@ -38,5 +38,11 @@ function showMore() {
  * @param shopId
  */
 function showShop(shopId,userId){
+    fullShow();
     window.location.href=basepath+shopId+"/"+userId+"/shop.shtml";
+}
+
+function share(shopId){
+    fullShow();
+    window.location.href = basepath + "shop/getPoster?shopId=" + shopId;
 }

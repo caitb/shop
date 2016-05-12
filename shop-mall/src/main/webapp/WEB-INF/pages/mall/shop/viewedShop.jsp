@@ -37,10 +37,10 @@
                         </h1>
                         <h3>${userShopView.explanation}</h3>
                         <c:if test="${userShopView.days == 0}">
-                            <h2><span>获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
+                            <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
                         </c:if>
                         <c:if test="${userShopView.days > 0}">
-                            <h2><span>获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
+                            <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
                         </c:if>
                     </div>
                 </section>

@@ -73,37 +73,7 @@ public class SfUserExtractApplyController extends BaseController{
         if (userAccount.getAppliedFee() == null){
             userAccount.setAppliedFee(new BigDecimal(0.00));
         }
-
-
-        Date start = DateUtil.getFirstTimeInMonth(new Date());
-        Date end = DateUtil.getLastTimeInMonth(new Date());
-        // 根据用户id查询提现记录,查询当前月的提现记录
-        Integer count = sfUserExtractApplyService.findCountByUserAndDate(comUser, start, end);
-        log.info("分销用户提现记录数量="+count);
-        List<SfUserExtractApply> list = null;
-        if (count > 0){
-            list = sfUserExtractApplyService.findListByUserAndDate(comUser,start,end,1,10);
-        }
-        //默认设置每页显示20条
-        Integer pageNums = count%10 == 0 ? count/10 : count/10 + 1;
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        String monthString = "";
-        if (month<10){
-            monthString = "0"+month;
-        }else {
-            monthString += month;
-        }
-        mv.addObject("totalCount",count);
-        mv.addObject("totalPage",pageNums);
-        mv.addObject("currentPage",1);
-        mv.addObject("pageSize",10);
-        mv.addObject("year",year);
-        mv.addObject("month",monthString);
-        mv.addObject("list",list);
         mv.addObject("userAccount",userAccount);
-        mv.addObject("comUser",comUser);
         mv.setViewName("mall/user/sf_withdrawRequest");
         return mv;
     }

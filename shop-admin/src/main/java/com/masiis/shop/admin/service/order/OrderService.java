@@ -6,18 +6,24 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.*;
+import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
-import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
+import com.masiis.shop.dao.platform.product.SfSkuDistributionMapper;
+import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -26,6 +32,7 @@ import java.util.*;
  */
 @Service
 public class OrderService {
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private ComUserMapper comUserMapper;
@@ -47,6 +54,16 @@ public class OrderService {
     private SfOrderOperationLogMapper sfOrderOperationLogMapper;
     @Resource
     private PfUserSkuStockMapper pfUserSkuStockMapper;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
+    @Resource
+    private PfUserBillItemMapper pfUserBillItemMapper;
+    @Resource
+    private SfShopMapper shopMapper;
+    @Resource
+    private SfOrderItemDistributionMapper distributionMapper;
+    @Resource
+    private ComUserAccountRecordMapper comUserAccountRecordMapper;
 
     /**
      * 店铺订单列表
@@ -198,13 +215,141 @@ public class OrderService {
                 throw new BusinessException("该orderId订单不存在");
             }
             if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_COMPLETE.getCode().intValue()){
-
+                res.put("resCode", 4);
+                res.put("resMsg", "该订单订单状态不正确,不是" + SfOrderStatusEnum.ORDER_COMPLETE.getDesc());
+                throw new BusinessException("该订单订单状态不正确,不是" + SfOrderStatusEnum.ORDER_COMPLETE.getDesc());
             }
+            Date receiveTime = order.getReceiptTime();
+            if(DateUtil.getDateNextdays(receiveTime, 7).compareTo(new Date()) <= 0){
+                res.put("resCode", 5);
+                res.put("resMsg", "该订单收货已超过7天,不予退货");
+                throw new BusinessException("该订单收货已超过7天,不予退货");
+            }
+
+            // 开始退货逻辑
+            log.info("开始退货逻辑......");
+
+            List<SfOrderItem> orderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
+            //  获取店主用户
+            ComUser shopKeeper = comUserMapper.selectByPrimaryKey(order.getShopUserId());
+            // 计算店主待结算中金额(减去分润,减去运费)
+            BigDecimal countFee = null;
+            if(order.getSendType() == 1){
+                countFee = order.getPayAmount().subtract(order.getDistributionAmount())
+                        .subtract(order.getShipAmount());
+            } else if(order.getSendType() == 2){
+                countFee = order.getPayAmount().subtract(order.getDistributionAmount());
+            } else {
+                throw new BusinessException("不合法的拿货方式");
+            }
+
+            // 计算回退销售额
+            BigDecimal saleAmount = order.getPayAmount().subtract(order.getShipAmount());
+            SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
+            sfShop.setSaleAmount(sfShop.getSaleAmount().subtract(saleAmount));
+            sfShop.setShipAmount(sfShop.getShipAmount().subtract(order.getShipAmount()));
+            int shopRes = shopMapper.updateWithVersion(sfShop);
+            if(shopRes != 1){
+                throw new BusinessException("退货修改店铺总销售额失败");
+            }
+            log.info("店铺修改店铺的总销售额");
+
+            // 店主account
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
+
+            // 插入退货店主pf_user_bill_item
+            PfUserBillItem billItem = createPfUserBillItemBySfOrderRefund(order, shopKeeper, countFee, receiveTime);
+            pfUserBillItemMapper.insert(billItem);
+            log.info("店主结算中减少");
+
+            // 退货订单扣除结算中金额计
+            ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
+                    UserAccountRecordFeeType.SF_Refund_SubCountingFee.getCode(), comUserAccount);
+            countRecord.setPrevFee(comUserAccount.getCountingFee());
+            comUserAccount.setCountingFee(comUserAccount.getCountingFee().subtract(countFee));
+            countRecord.setNextFee(comUserAccount.getCountingFee());
+
+            // 店主此次退货总销售额减少(利润和运费也算销售额)
+            ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
+                    UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
+            pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
+            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().subtract(saleAmount));
+            pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
+            log.info("小铺店主的结算中和总销售额减少金额:" + countFee);
+
+            // 小铺店主利润回退
+            BigDecimal profit = new BigDecimal(0);
+            // 每个分润用户的分润金额map,key:userId;value:fee
+            Set<Long> fenRunUserFeeSet = new HashSet<Long>();
+            List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
+            for(SfOrderItem item:sfOrderItems) {
+                // 计算单个item的分销分润
+                List<SfOrderItemDistribution> distributions = distributionMapper.selectBySfOrderItemId(item.getId());
+                for(SfOrderItemDistribution dis:distributions){
+                    Long userId = dis.getUserId();
+                    if(!fenRunUserFeeSet.contains(userId)){
+                        fenRunUserFeeSet.add(userId);
+                    }
+                }
+            }
+            // 计算店主此次总利润回退
+            ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,
+                    UserAccountRecordFeeType.SF_AddProfitFee.getCode(), comUserAccount);
+            /*comUserAccountRecordMapper.selectByUserAnd*/
+            // 设置店主总利润回退
+            pfprofitRecord.setPrevFee(comUserAccount.getProfitFee());
+            comUserAccount.setProfitFee(comUserAccount.getProfitFee().add(profit));
+            pfprofitRecord.setNextFee(comUserAccount.getProfitFee());
+
+            log.info("小铺店主总利润增加:" + profit);
+
 
 
         } catch (Exception e) {
-
+            log.error(e.getMessage(), e);
+            throw new BusinessException(e);
         }
 
+    }
+
+    private ComUserAccountRecord createComUserAccountRecordBySfOrder(SfOrder order, BigDecimal countFee, Integer fee_type, ComUserAccount comAccount) {
+        ComUserAccountRecord comRecord = new ComUserAccountRecord();
+
+        comRecord.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
+        comRecord.setBillId(order.getId());
+        comRecord.setHandleFee(countFee);
+        comRecord.setHandleType(0);
+        comRecord.setFeeType(fee_type);
+        comRecord.setComUserId(order.getShopUserId());
+        comRecord.setHandler(String.valueOf(order.getShopUserId()));
+        comRecord.setUserAccountId(comAccount.getId());
+        comRecord.setHandleTime(new Date());
+
+        return comRecord;
+    }
+
+
+    /**
+     * 根据小铺订单插入代理账单子项
+     *
+     * @param order
+     * @param shopKeeper
+     * @param opTime 收货时间
+     * @return
+     */
+    private PfUserBillItem createPfUserBillItemBySfOrderRefund(SfOrder order, ComUser shopKeeper,
+                                                         BigDecimal countFee, Date opTime) {
+        PfUserBillItem item = new PfUserBillItem();
+
+        item.setPfBorderId(order.getId());
+        item.setUserId(shopKeeper.getId());
+        item.setCreateDate(opTime);
+        item.setOrderCreateDate(order.getCreateTime());
+        item.setOrderPayAmount(countFee);
+        item.setOrderType(1);
+        item.setOrderSubType(1);
+        item.setIsCount(0);
+
+        return item;
     }
 }

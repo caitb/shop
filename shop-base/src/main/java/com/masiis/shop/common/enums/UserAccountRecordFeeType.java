@@ -96,7 +96,7 @@ public enum UserAccountRecordFeeType {
         }
 
         public String getDesc() {
-            return "小铺订单入账";
+            return "小铺订单入账结算中";
         }
     },
     SF_AddTotalIncomeFee {
@@ -115,6 +115,33 @@ public enum UserAccountRecordFeeType {
 
         public String getDesc() {
             return "小铺订单计入总利润";
+        }
+    },
+    SF_Refund_SubCountingFee {
+        public Integer getCode() {
+            return 12;
+        }
+
+        public String getDesc() {
+            return "小铺订单退货减少结算中";
+        }
+    },
+    SF_Refund_SubTotalIncomeFee {
+        public Integer getCode() {
+            return 13;
+        }
+
+        public String getDesc() {
+            return "小铺订单退货减少总销售额";
+        }
+    },
+    SF_Refund_SubProfitFee {
+        public Integer getCode() {
+            return 14;
+        }
+
+        public String getDesc() {
+            return "小铺订单退货减少总利润";
         }
     };
 

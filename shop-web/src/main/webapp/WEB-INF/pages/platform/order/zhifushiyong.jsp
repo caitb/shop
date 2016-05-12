@@ -12,7 +12,7 @@
 </head>
 <body>
 <header class="xq_header">
-    <a href="javascript:;" onClick="javascript:history.back(-1);"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+    <a href="${path}/product/skuDetails.shtml?skuId=${product.id}"><img src="${path}/static/images/xq_rt.png" alt=""></a>
     <p>确认订单</p>
 </header>
 <main>

@@ -9,6 +9,7 @@
   display: -webkit-box;
   margin-bottom: 5px;
   padding: 10px;
+  margin-top: 10px;
 }
 .wrap .na p {
   width: 40px;
@@ -22,56 +23,76 @@
   height: 100%;
 }
 .wrap .na h1 {
+  -webkit-box-flex: 1;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
+  -webkit-box-pack: justify;
   margin-left: 10px;
+  margin-right: 20px;
+  -webkit-box-align: center;
 }
 .wrap .na h1 span {
   display: block;
+  font-size: 14px;
+  color: #333;
+}
+.wrap .na h1 span:last-child{
+  background: url("/static/images/yi.png") no-repeat 100%;
+  background-size: 14px;
+  padding-right: 18px;
   font-size: 12px;
+  color: #666;
 }
 .wrap main {
-  background: #fff;
   -webkit-box-flex: 1;
+  margin-top: 10px;
 }
 .wrap main > p {
   padding: 10px 0 5px 10px;
-  background: #f6f6f6;
+  background: #fff;
   font-size: 12px;
+  color: #666;
 }
 .wrap main > p span{
   font-size:12px;
 }
 .wrap main .sec1 {
-  padding:10px;
-  border-bottom: 1px solid #f6f6f6;
-  font-size: 12px;
+  padding: 20px 0;
+  font-size: 14px;
+  padding-left: 46px;
+  background: #fff;
+}
+.wrap main .sec1 b{
+  font-size:12px;
+  color:#666;
 }
 .sec1 input{
-  border:none;
   font-size: 12px;
   display: inline-block;
   line-height: 19px;
   margin-left: 5px;
-  width: 211px;
 }
 .wrap main > h1 {
-  color: red;
+  color: #666;
   padding: 10px;
   font-size: 12px;
+  border-bottom: 1px solid #f6f6f6;
+  background: #fff;
+}
+.wrap main >h1 b{
+  color:red;
 }
 .wrap main > h2 {
   padding: 10px;
   font-size: 12px;
+  color: #666;
 }
 .wrap main button {
   display: block;
   width: 60%;
   line-height: 30px;
   border: 1px solid #F73C8C;
-  background: #fff;
+  background: #F73C8C;
   margin: 0 auto;
   margin-top: 2em;
-  color: #F73C8C;
+  color: #fff;
 }

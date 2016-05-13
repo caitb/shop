@@ -1,8 +1,10 @@
 package com.masiis.shop.web.platform.controller.user;
 
+import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserCertificate;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
@@ -32,6 +34,8 @@ public class MyTeamController extends BaseController {
     private MyTeamService myTeamService;
     @Resource
     private ComUserMapper comUserMapper;
+    @Resource
+    private ComUserAccountMapper comUserAccountMapper;
 
     @RequestMapping("/teamlist")
     public ModelAndView teamlist(HttpServletRequest request, HttpServletResponse response){
@@ -41,11 +45,12 @@ public class MyTeamController extends BaseController {
             ComUser comUser = getComUser(request);
 
             List<Map<String, Object>> agentSkuMaps = myTeamService.listAgentSku(comUser.getId());
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUser.getId());
             Integer totalChild = 0;
             Double totalSales = 0.0;
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
-                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString());
+                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString()) + comUserAccount.getTotalIncomeFee().intValue();
             }
             mav.addObject("totalChild", totalChild);
             mav.addObject("totalSales", totalSales);

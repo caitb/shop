@@ -5,10 +5,11 @@
 }
 .wrap .na {
   width: 100%;
-  background: url("/static/images/bdbanner.png") no-repeat;
+  background: url("/static/images/qwe%20(2).png") no-repeat;
   display: -webkit-box;
   margin-bottom: 5px;
   padding: 30px 10px;
+  background-size: 100% 100%;
 }
 .wrap .na p {
   width: 50px;
@@ -129,8 +130,8 @@
 .wrap nav ul li span b{
   position: absolute;
   display: block;
-  top: -3px;
-  right: -4px;
+  top: -6px;
+  right: -7px;
   background: red;
   border-radius: 10px;
   line-height: 15px;

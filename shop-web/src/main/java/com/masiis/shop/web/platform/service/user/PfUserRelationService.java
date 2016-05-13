@@ -36,4 +36,12 @@ public class PfUserRelationService {
         }
     }
 
+    /**
+     * 获取当前用户的代理关系
+     * @param userId
+     * @param skuId
+     */
+    public PfUserRelation getRelation(Long userId, Integer skuId) {
+        return pfUserRelationMapper.selectEnableByUserId(userId, skuId);
+    }
 }

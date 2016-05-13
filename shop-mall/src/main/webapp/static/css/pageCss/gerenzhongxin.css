@@ -129,8 +129,8 @@
 .wrap nav ul li span b{
   position: absolute;
   display: block;
-  bottom: 5px;
-  right: 13px;
+  top: -3px;
+  right: -4px;
   background: red;
   border-radius: 10px;
   line-height: 15px;

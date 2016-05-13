@@ -23,10 +23,10 @@
         <a href="javascript:window.location.replace('<%=basePath%>index')"><img src="<%=path%>/static/images/xq_rt.png"
                                                                                 alt=""></a>
 
-        <p>我的证书</p>
+        <p>我的授权书</p>
     </header>
     <c:forEach items="${pfUserCertificates}" var="cet">
-        <div class="sec1">
+        <div class="sec1" onclick="javascript:window.location.replace('<%=path%>/userCertificate/detail/?pfuId=${cet.id}');">
             <img src="${cet.skuIcon}" alt="">
 
             <div>
@@ -36,9 +36,17 @@
 
                 <h2>等级：<span>${cet.levelName}</span>保证金：<span>${cet.bail}</span>元</h2>
 
-                <h3>上级合伙人：<span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span><b><img
+                <h3>上级合伙人：
+                    <c:if test="${cet.pid==0}">
+                        ${cet.upperName}
+                    </c:if>
+                    <c:if test="${cet.pid !=0}">
+                        <span><a href="<%=path%>/userCertificate/userInfo.list/?uskId=${cet.pid}">${cet.upperName}</a></span>
+                    </c:if>
+                    <b>
+                        <img
                         src="<%=path%>/static/images/see.png" alt=""><a
-                        href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看证书</a></b></h3>
+                        href="<%=path%>/userCertificate/detail/?pfuId=${cet.id}">查看授权书</a></b></h3>
                 <img src="<%=path%>${cet.backimg}" alt="">
             </div>
         </div>

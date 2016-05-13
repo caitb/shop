@@ -18,7 +18,7 @@
 <input type="hidden" id="count" name="count" value="${count}">
     <header>
         <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-        <p>浏览过的店铺</p>
+        <p>分享赚佣金</p>
     </header>
     <div class="wrap" >
         <div id="viewedShop">

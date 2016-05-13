@@ -57,6 +57,8 @@ public class Product extends ComSku {
 
     private Integer version;
 
+    private Integer isUserByLink;//用户进入方式:0 链接进入, 1 公众号进入(小白)
+
     public String getSpuName() {
         return spuName;
     }
@@ -239,5 +241,13 @@ public class Product extends ComSku {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Integer getIsUserByLink() {
+        return isUserByLink;
+    }
+
+    public void setIsUserByLink(Integer isUserByLink) {
+        this.isUserByLink = isUserByLink;
     }
 }

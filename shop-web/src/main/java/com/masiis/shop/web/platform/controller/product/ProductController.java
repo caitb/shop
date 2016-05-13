@@ -23,7 +23,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,26 +70,15 @@ public class ProductController extends BaseController {
         if (sku == null) {
             throw new BusinessException("sku不合法,系统不存在该sku");
         }
-        Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
-        if (temPUserId == 0) {
-            if (pUserId != null && pUserId > 0) {
-                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                userSkuService.checkParentData(user, pUserId, skuId);
-                PfUserRelation pfUserRelation = new PfUserRelation();
-                pfUserRelation.setUserId(user.getId());
-                pfUserRelation.setSkuId(skuId);
-                pfUserRelation.setCreateTime(new Date());
-                pfUserRelation.setIsEnable(1);
-                pfUserRelation.setUserPid(pUserId);
-                pfUserRelationService.insert(pfUserRelation);
-            } else {
-                pUserId = 0l;
-            }
-        }
         Product productDetails = productService.getSkuDetails(skuId);
         if (user != null && user.getIsAgent() == 1) {
             productDetails.setIsPartner(true);
         }
+        PfUserRelation pfUserRelation = pfUserRelationService.getRelation(user.getId(), skuId);//代理关系
+        if(pfUserRelation==null){ //过滤非连接进入的用户
+            productDetails.setIsUserByLink(1);
+        }
+        productDetails.setIsUserByLink(0);
         productDetails.setMaxDiscount(productService.getMaxDiscount(skuId));
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
         //订单信息

@@ -36,9 +36,9 @@ public class ProductService {
     @Resource
     private ProductSimpleMapper productSimpleMapper;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
@@ -148,7 +148,7 @@ public class ProductService {
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
-                PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(product.getId());
+                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(product.getId());
                 product.setIsQueue(pfSkuStock.getIsQueue());
                 PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId,product.getId());
                 product.setUserPid(pfUserSku.getUserPid());
@@ -179,7 +179,7 @@ public class ProductService {
       * 查看当前库存
       */
     public PfUserSkuStock getStockByUser(Long id) throws Exception {
-        return pfUserSkuStockMapper.selectByPrimaryKey(id);
+        return pfUserSkuStockService.selectByPrimaryKey(id);
     }
 
     /**
@@ -189,10 +189,10 @@ public class ProductService {
         Integer upperStock = 0;
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(UserId, skuId);//当前代理关系
         if (pfUserSku!=null && pfUserSku.getPid() == 0) {
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             upperStock = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
             upperStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
         if(upperStock<0){

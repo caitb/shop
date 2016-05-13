@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.product.PfUserSkuStockLogMapper">
-    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSkuStockLog">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="pf_user_sku_stock_id" property="pfUserSkuStockId" jdbcType="INTEGER"/>
-        <result column="user_id" property="userId" jdbcType="INTEGER"/>
-        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
-        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
-        <result column="prev_stock" property="prevStock" jdbcType="INTEGER"/>
-        <result column="next_stock" property="nextStock" jdbcType="INTEGER"/>
-        <result column="type" property="type" jdbcType="INTEGER"/>
-        <result column="bill_id" property="billId" jdbcType="BIGINT"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+<mapper namespace="com.masiis.shop.dao.platform.product.PfUserSkuStockLogMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfUserSkuStockLog" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pf_user_sku_stock_id" property="pfUserSkuStockId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="prev_stock" property="prevStock" jdbcType="INTEGER" />
+        <result column="next_stock" property="nextStock" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="bill_id" property="billId" jdbcType="BIGINT" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
         delete from pf_user_sku_stock_log
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStockLog">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfUserSkuStockLog" >
         insert into pf_user_sku_stock_log (id, create_time, pf_user_sku_stock_id, 
             user_id, spu_id, sku_id, 
             prev_stock, next_stock, type, 
             bill_id, remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfUserSkuStockId,jdbcType=INTEGER}, 
-            #{userId,jdbcType=INTEGER}, #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfUserSkuStockId,jdbcType=BIGINT}, 
+            #{userId,jdbcType=BIGINT}, #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, 
             #{prevStock,jdbcType=INTEGER}, #{nextStock,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
             #{billId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSkuStockLog">
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfUserSkuStockLog" >
         update pf_user_sku_stock_log
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            pf_user_sku_stock_id = #{pfUserSkuStockId,jdbcType=INTEGER},
-            user_id = #{userId,jdbcType=INTEGER},
+            pf_user_sku_stock_id = #{pfUserSkuStockId,jdbcType=BIGINT},
+            user_id = #{userId,jdbcType=BIGINT},
             spu_id = #{spuId,jdbcType=INTEGER},
             sku_id = #{skuId,jdbcType=INTEGER},
             prev_stock = #{prevStock,jdbcType=INTEGER},
@@ -46,14 +46,14 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, pf_user_sku_stock_id, user_id, spu_id, sku_id, prev_stock, 
         next_stock, type, bill_id, remark
         from pf_user_sku_stock_log
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, pf_user_sku_stock_id, user_id, spu_id, sku_id, prev_stock, 
         next_stock, type, bill_id, remark
         from pf_user_sku_stock_log

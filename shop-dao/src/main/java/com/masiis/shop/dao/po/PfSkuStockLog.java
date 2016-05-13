@@ -19,7 +19,7 @@ public class PfSkuStockLog {
     /**
      * 平台库存表id
      */
-    private Integer pfSkuStockId;
+    private Long pfSkuStockId;
     /**
      * 商品spuid
      */
@@ -37,7 +37,7 @@ public class PfSkuStockLog {
      */
     private Integer nextStock;
     /**
-     * 1下级合伙
+     * 0新加入合伙1补货
      */
     private Integer type;
     /**
@@ -61,10 +61,10 @@ public class PfSkuStockLog {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public Integer getPfSkuStockId() {
+    public Long getPfSkuStockId() {
         return pfSkuStockId;
     }
-    public void setPfSkuStockId(Integer pfSkuStockId) {
+    public void setPfSkuStockId(Long pfSkuStockId) {
         this.pfSkuStockId = pfSkuStockId;
     }
     public Integer getSpuId() {

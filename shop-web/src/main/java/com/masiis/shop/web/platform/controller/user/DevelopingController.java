@@ -214,15 +214,7 @@ public class DevelopingController extends BaseController {
     }
 
     public static void main(String[] args){
-        String str = "我在麦链合伙人做抗引力BoSs级合伙人";
-        String pattern = "([a-zA-Z])";
-
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(str);
-        while (m.find()){
-            System.out.println("start: " + m.start());
-            System.out.println("end: " + m.end());
-        }
+        System.out.println(10%10);
     }
 
     /**
@@ -251,14 +243,19 @@ public class DevelopingController extends BaseController {
         g.setFont(new Font("华文细黑", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
         g.drawString(contents[0], 92, 785);
-        for(int i=1; i<contents.length; i++){
-            int length = contents[i].length()/10;
-            int more = contents[i].length() - length*10;
-            for(int j=0; j<length; j++){
-                if((j+1)<=length) g.drawString(contents[i].substring(j*10, (j+1)*10), 92, 780+(i*50)+j*50);
-                if((j+1)>length) g.drawString(contents[i].substring(j*10), 92, 780+(i*50)+j*50);
-            }
-            if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
+//        for(int i=1; i<contents.length; i++){
+//            int length = contents[i].length()/10;
+//            int more = contents[i].length() - length*10;
+//            for(int j=0; j<length; j++){
+//                if((j+1)<=length) g.drawString(contents[i].substring(j*10, (j+1)*10), 92, 780+(i*50)+j*50);
+//                if((j+1)>length) g.drawString(contents[i].substring(j*10), 92, 780+(i*50)+j*50);
+//            }
+//            if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
+//        }
+        for(int i=0; i<contents[1].length(); i++){
+            int l = i%11;
+            int t = i/11;
+            g.drawString(contents[1].substring(i, i+1), 92+32*l, 785+50*(t+1));
         }
 
         Date curDate = new Date();
@@ -269,8 +266,8 @@ public class DevelopingController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 20));
         g.setColor(new Color(51, 51, 51));
-        g.drawString("该二维码有效期为", 600, 1016);
-        g.drawString(startTime+"-"+endDate, 570, 1046);
+        g.drawString("该二维码有效期为", 598, 1016);
+        g.drawString(startTime+"-"+endDate, 575, 1046);
         g.dispose();
 
         try {

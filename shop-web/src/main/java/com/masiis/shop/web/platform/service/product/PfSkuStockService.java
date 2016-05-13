@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Date 2016/5/13
@@ -26,7 +27,7 @@ public class PfSkuStockService {
     private PfSkuStockLogMapper skuStockLogMapper;
 
     public void updateSkuStockWithLog(Integer change, PfSkuStock stock,
-                                      Long billId, SkuStockLogType handleType){
+                                      Long billId, SkuStockLogType handleType) {
         log.info("修改平台库存开始,变动库存为:" + change + ",操作类型为:" + handleType.getCode());
 
         Integer beforeStock = stock.getStock();
@@ -40,7 +41,7 @@ public class PfSkuStockService {
 
         log.info("变动之前库存为:" + afterStock);
 
-        if(skuStockMapper.updateByIdAndVersion(stock) != 1){
+        if (skuStockMapper.updateByIdAndVersion(stock) != 1) {
             throw new BusinessException("修改平台库存失败");
         }
 
@@ -84,11 +85,43 @@ public class PfSkuStockService {
         stock.setStock(afterStock);
         stock.setFrozenStock(afterFrozeStock);
 
-        if(stock.getStock().intValue() < 0){
+        if (stock.getStock().intValue() < 0) {
             throw new BusinessException("库存变动后小于0,错误");
         }
-        if(stock.getFrozenStock().intValue() < 0){
+        if (stock.getFrozenStock().intValue() < 0) {
             throw new BusinessException("冻结库存变动后小于0,错误");
         }
+    }
+
+    public PfSkuStock selectById(Integer id) {
+        return skuStockMapper.selectById(id);
+    }
+
+    public List<PfSkuStock> selectByCondition(PfSkuStock pfSkuStock) {
+        return skuStockMapper.selectByCondition(pfSkuStock);
+    }
+
+    public List<PfSkuStock> selectAll() {
+        return skuStockMapper.selectAll();
+    }
+
+    public void insert(PfSkuStock pfSkuStock) {
+        skuStockMapper.insert(pfSkuStock);
+    }
+
+    public void deleteById(Integer id) {
+        skuStockMapper.deleteById(id);
+    }
+
+    public PfSkuStock selectBySkuId(Integer skuId) {
+        return skuStockMapper.selectBySkuId(skuId);
+    }
+
+    public int updateByIdAndVersion(PfSkuStock pfSkuStock) {
+        return skuStockMapper.updateByIdAndVersion(pfSkuStock);
+    }
+
+    public void updateById(PfSkuStock pfSkuStock) {
+        skuStockMapper.updateById(pfSkuStock);
     }
 }

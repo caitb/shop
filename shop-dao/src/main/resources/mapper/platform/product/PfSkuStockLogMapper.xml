@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSkuStockLog" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="pf_sku_stock_id" property="pfSkuStockId" jdbcType="INTEGER" />
+        <result column="pf_sku_stock_id" property="pfSkuStockId" jdbcType="BIGINT" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
         <result column="sku_id" property="skuId" jdbcType="INTEGER" />
         <result column="prev_stock" property="prevStock" jdbcType="INTEGER" />
@@ -24,7 +24,7 @@
             spu_id, sku_id, prev_stock, 
             next_stock, type, bill_id, 
             remark)
-        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfSkuStockId,jdbcType=INTEGER}, 
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{pfSkuStockId,jdbcType=BIGINT}, 
             #{spuId,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{prevStock,jdbcType=INTEGER}, 
             #{nextStock,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{billId,jdbcType=BIGINT}, 
             #{remark,jdbcType=VARCHAR})
@@ -33,7 +33,7 @@
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuStockLog" >
         update pf_sku_stock_log
         set create_time = #{createTime,jdbcType=TIMESTAMP},
-            pf_sku_stock_id = #{pfSkuStockId,jdbcType=INTEGER},
+            pf_sku_stock_id = #{pfSkuStockId,jdbcType=BIGINT},
             spu_id = #{spuId,jdbcType=INTEGER},
             sku_id = #{skuId,jdbcType=INTEGER},
             prev_stock = #{prevStock,jdbcType=INTEGER},

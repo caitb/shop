@@ -19,11 +19,11 @@ public class PfUserSkuStockLog {
     /**
      * 代理商商品库存id
      */
-    private Integer pfUserSkuStockId;
+    private Long pfUserSkuStockId;
     /**
      * 代理用户id
      */
-    private Integer userId;
+    private Long userId;
     /**
      * 商品spuid
      */
@@ -62,16 +62,16 @@ public class PfUserSkuStockLog {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-    public Integer getPfUserSkuStockId() {
+    public Long getPfUserSkuStockId() {
         return pfUserSkuStockId;
     }
-    public void setPfUserSkuStockId(Integer pfUserSkuStockId) {
+    public void setPfUserSkuStockId(Long pfUserSkuStockId) {
         this.pfUserSkuStockId = pfUserSkuStockId;
     }
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
     public Integer getSpuId() {

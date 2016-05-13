@@ -36,8 +36,8 @@ main .wrap .box #d_box .sf input {
   display: inline-block;
   line-height: 30px;
   margin-top: -4px;
-  font-weight: 600;
   margin-left: 10px;
+  width: 200px;
 }
 main .wrap .box #d_box .sf .onc {
   float: right;

@@ -132,6 +132,7 @@ main .sec3 p em + input {
   border: 1px solid #ddd;
   -webkit-box-flex:1;
   padding: 3px 0;
+  margin-right: 10px;
 }
 main .sec3 p span,
 main .sec3 p b {

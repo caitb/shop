@@ -78,6 +78,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             width: 15px;
             float: left;
         }
+/*
         .wrap .box .main .sec1 {
             width: 100%;
             background: white;
@@ -161,6 +162,96 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             margin-top: -1px;
         }
 
+*/
+        .wrap .box .main .sec1 {
+            width: 100%;
+            background: white;
+            display: -webkit-box;
+            -webkit-box-align: center;
+            display: -moz-box;
+            -moz-box-align: center;
+            padding: 5px 0;
+            margin-bottom: 5px;
+        }
+        .sec1 .photo {
+            width: 120px;
+            margin-left: 5px;
+        }
+        .sec1 .photo img {
+            display: block;
+            width: 120px;
+            height: 120px;
+            border: 1px solid #f6f6f6;
+        }
+         .sec1 div {
+            -webkit-box-flex: 1;
+            -moz-box-flex: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-orient: vertical;
+            display: -moz-box;
+            -moz-box-pack: center;
+            -moz-box-orient: vertical;
+            margin-left: 10px;
+        }
+        .sec1 div h3 {
+            font-size: 12px;
+            color: #999;
+        }
+        .sec1 div h3 span{
+            font-size: 12px;
+            color: #999;
+        }
+        .sec1 div h3.three {
+            border-bottom: 1px solid #f6f6f6;
+            padding-bottom: 4px;
+            margin-top: 9px;
+        }
+        .hid{
+            height: 18px;
+        }
+        .sec1 div h3:nth-child(4) b {
+            float: right;
+            color: #999;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .sec1 div h3:nth-child(3) {
+            /* padding-top: 4px; */
+            height: 18px;
+            margin-top: -3px;
+        }
+        .sec1 div> h2:last-child{
+            background: #fff;
+            border-top: 1px solid #f6f6f6;
+            font-size: 12px;
+            /* margin-bottom: 5px; */
+            color: #999;
+            padding: 10px 10px 0 0;
+        }
+        .sec1 div> h2:last-child span {
+            font-size: 12px;
+        }
+        .sec1 div> h2:last-child button {
+            float: right;
+            padding: 2px 15px;
+            border-radius: 3px;
+            color: #fff;
+            background: #ff5200;
+            margin-top: -1px;
+        }
+        .sec1 div> h2:last-child button.btn{
+            float: right;
+            padding: 2px 0px;
+            border-radius: 3px;
+            color: #f74a11;
+            background: transparent;
+            margin-top: -1px;
+            background: url("/static/images/next.png") no-repeat 100%;
+            background-size: 7px 13px;
+            padding-right: 16px;
+        }
 
     </style>
 </head>
@@ -173,7 +264,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </header>
                 <main><div class="main"><c:forEach items="${indexComSkus}"  var="Sku">
                     <a href="<%=path%>/product/skuDetails.shtml?skuId=${Sku.skuId}">
-                        <section class="sec1">
+                        <%--<section class="sec1">
                             <p class="photo">
                                 <img src="${Sku.imgUrl}" alt="">
                             </p>
@@ -190,7 +281,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <c:if test="${Sku.agentNum>=9999}">超过</c:if><span>${Sku.agentNum}</span>人合伙
                             <c:if test="${empty Sku.uid}"><button>我要合伙</button></c:if>
                             <c:if test="${not empty Sku.uid}"><button class="btn">您已合伙</button></c:if>
-                        </h2></a>
+                        </h2>--%>
+                            <section class="sec1">
+                                <p class="photo">
+                                    <img src="${Sku.imgUrl}" alt="">
+                                </p>
+                                <div>
+                                    <h2>${Sku.comSku.name}</h2>
+                                    <h3 class="hid"> <c:if test="${Sku.isTrial==1}">试用费：<span>${Sku.shipAmount}</span>元</c:if></h3>
+                                    <h3>保证金：<span>${Sku.bailLevel}</span>元</h3>
+                                    <h3 class="three"><span style="margin-right:10px;font-size:14px;color:red">￥${Sku.comSku.priceRetail}</span>
+                                        <b>${Sku.discountLevel}</b>
+                                    </h3>
+
+                                    <h2>
+                                        <c:if test="${Sku.agentNum>=9999}">超过</c:if><span>${Sku.agentNum}</span>人合伙
+                                        <c:if test="${empty Sku.uid}">
+                                            <button>我要合伙</button>
+                                        </c:if>
+                                        <c:if test="${not empty Sku.uid}">
+                                            <button class="btn">您已合伙</button>
+                                        </c:if>
+                                    </h2>
+                                </div>
+                            </section>
+                    </a>
                 </c:forEach></div>
                        <!--<section class="sec1">-->
                         <!--<div>-->

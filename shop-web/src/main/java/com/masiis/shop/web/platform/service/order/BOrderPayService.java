@@ -713,10 +713,13 @@ public class BOrderPayService {
         WxPFNoticeUtils.getInstance().offLinePayNotice(comUser, param, border.getCreateTime(), offinePaymentUrl);
         //短信通知
         StringBuffer sb2 = new StringBuffer();
-        sb2.append("开户行:").append(supplierBank.getBankName());
-        sb2.append(" 开户名:").append(supplierBank.getAccountName());
-        sb2.append(" 卡号:").append(supplierBank.getCardNumber());
-        sb2.append(" 账号上");
+        if (supplierBank!=null){
+            sb2.append("开户行:").append(supplierBank.getBankName());
+            sb2.append(" 开户名:").append(supplierBank.getAccountName());
+            sb2.append(" 卡号:").append(supplierBank.getCardNumber());
+            sb2.append(" 账号上");
+        }
+        log.info("银行卡信息-------"+sb2.toString());
         //最迟日期
         MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
     }

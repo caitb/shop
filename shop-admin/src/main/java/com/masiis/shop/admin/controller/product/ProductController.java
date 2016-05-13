@@ -205,6 +205,8 @@ public class ProductController {
                         comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
                     }
 
+                    //上传原图
+                    OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "/static/product/prototype/");
                     //删除原图
                     new File(imgAbsoluteUrl).delete();
 
@@ -350,6 +352,8 @@ public class ProductController {
                             comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
                         }
 
+                        //上传原图
+                        OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "/static/product/prototype/");
                         //删除原图
                         new File(imgAbsoluteUrl).delete();
 

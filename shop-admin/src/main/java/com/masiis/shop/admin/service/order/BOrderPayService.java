@@ -271,7 +271,7 @@ public class BOrderPayService {
                 String value1 = "授权书编号：" + pfUserCertificate.getCode() + "  手机：" + pfUserCertificate.getMobile();
                 String value2 = "授权期限：" + beginTime + " 至 " + endTime + "  微信：" + pfUserCertificate.getWxId();
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName()+"级代理", name, skuInfo, value1, value2);
+                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName(), name, skuInfo, value1, value2);
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }

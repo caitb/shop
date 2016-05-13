@@ -121,16 +121,18 @@
                 <a class="first_p2"><span>已试用</span></a>
             </p>
         </c:if>
-        <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
-        <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
-        </p>
-        </c:if>
-        <c:if test="${empty pfUserSku && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
-        <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
-        </p>
-        </c:if>
-        <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
-            <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
+        <c:if test="${productDetails.isUserByLink==0}"><!--链接进入><-->
+            <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
+            <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
+            </p>
+            </c:if>
+            <c:if test="${empty pfUserSku && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
+            <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
+            </p>
+            </c:if>
+            <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
+                <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
+            </c:if>
         </c:if>
     </section>
 </footer>

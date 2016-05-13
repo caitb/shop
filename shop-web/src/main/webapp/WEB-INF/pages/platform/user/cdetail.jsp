@@ -22,7 +22,7 @@
     <header class="xq_header">
         <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
 
-        <p>证书详情</p>
+        <p>授权书详情</p>
     </header>
     <main>
         <div id="box">

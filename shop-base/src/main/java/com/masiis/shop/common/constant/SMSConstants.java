@@ -5,6 +5,10 @@ package com.masiis.shop.common.constant;
  */
 public class SMSConstants {
 	/**
+	 * 客服电话
+	 */
+	public static final String consumerHotline = "400-961-9616";
+	/**
 	 * 短信验证码
 	 */
 	public static final String VERIFICATION_CODE_B = "82604";
@@ -103,6 +107,6 @@ public class SMSConstants {
 	/**
 	 * 线下支付提醒
 	 */
-	public static final String OFFLINE_PAYMENTS_REMIND = "85070";
+	public static final String OFFLINE_PAYMENTS_REMIND = "86403";
 
 }

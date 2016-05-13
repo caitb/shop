@@ -180,7 +180,7 @@ public class DevelopingController extends BaseController {
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
                     contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
+                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可";
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
@@ -269,8 +269,8 @@ public class DevelopingController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 20));
         g.setColor(new Color(51, 51, 51));
-        g.drawString("该二维码有效期为", 590, 1016);
-        g.drawString(startTime+"-"+endDate, 550, 1046);
+        g.drawString("该二维码有效期为", 600, 1016);
+        g.drawString(startTime+"-"+endDate, 570, 1046);
         g.dispose();
 
         try {

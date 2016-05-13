@@ -22,7 +22,7 @@
     <div class="wrap">
         <header class="xq_header">
                    <a href="<%=path%>/index"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-                        <p>我的订单</p>  
+                        <p>合伙人订单</p>
         </header>
         <main>
             <div class="sec1">
@@ -38,7 +38,7 @@
                     </li>
                     <li><a href="<%=path%>/borderManage/stockDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorders0 !=0}"><span></span></c:if></h1>
-                        <h1>未付款</h1></a>
+                        <h1>待付款</h1></a>
                     </li>
                 </ul>
                 <ul>
@@ -65,7 +65,7 @@
                     </li>
                     <li><a href="<%=path%>/borderManage/deliveryDouckBorder?orderStatus=0">
                         <h1><img src="<%=path%>/static/images/fukuan.png" alt=""><c:if test="${pfBorderps0 !=0}"><span></span></c:if></h1>
-                        <h1>下级未付款</h1></a>
+                        <h1>下级待付款</h1></a>
                     </li>
                 </ul>
                 <ul>

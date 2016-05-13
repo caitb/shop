@@ -31,13 +31,13 @@
         </h1>
     </div>
     <div class="jiang">
-        <p>我的奖励</p>
+        <p>我的佣金</p>
         <h1>￥<span>${cumulativeFee}</span></h1>
     </div>
     <nav>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
-                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"><b></b></span>
+                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"><c:if test="${sfOrders0!=0}"><b></b></c:if></span>
                 <span>我的订单</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">

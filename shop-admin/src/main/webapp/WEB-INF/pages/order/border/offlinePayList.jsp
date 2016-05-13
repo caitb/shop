@@ -133,7 +133,7 @@
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 实付金额 </div>
+                                                            <div class="profile-info-name"> 应付金额 </div>
 
                                                             <div class="profile-info-value">
                                                                 <span class="" id="payAmount"> </span>
@@ -347,6 +347,23 @@
                         }
                     },
                     {
+                        field: 'agent_product',
+                        title: '代理产品',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorderItems){
+                                console.log('row: '+index);
+                                var skuNames = '';
+                                for(var i in row.pfBorderItems){
+                                    skuNames += row.pfBorderItems[i].skuName + '&nbsp;';
+                                }
+                                return skuNames;
+                            }
+                        }
+                    },
+                    {
                         field: 'order_status',
                         title: '订单状态',
                         sortable: true,
@@ -467,7 +484,7 @@
                             },
                             'click .receipt': function(e, value, row, index){
                                 $('#orderCode2').html(row.pfBorder.orderCode);
-                                $('#payAmount').html(row.pfBorder.payAmount);
+                                $('#payAmount').html(row.pfBorder.receivableAmount);
                                 $('#bOrderId').val(row.pfBorder.id);
                                 $('#outOrderId').val('');
                                 $('#modal-receipt').modal('show');

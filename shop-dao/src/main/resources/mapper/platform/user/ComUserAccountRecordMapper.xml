@@ -82,4 +82,13 @@
                com_user_id = #{userId}
     </select>
 
+    <select id="selectByUserAndTypeAndBillId" resultMap="BaseResultMap" >
+        select id, com_user_id, user_account_id, handle_serial_num, handle_fee, prev_fee,
+        next_fee, fee_type, bill_id, handle_type, handle_time, handler
+        from com_user_account_record
+        WHERE com_user_id = #{userId,jdbcType=BIGINT}
+        AND fee_type = #{feeType,jdbcType=INTEGER}
+        AND bill_id = #{billId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

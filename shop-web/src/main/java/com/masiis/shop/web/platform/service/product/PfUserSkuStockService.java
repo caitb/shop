@@ -43,7 +43,7 @@ public class PfUserSkuStockService {
         // 获取改变后的库存
         Integer afterStock = stock.getStock();
 
-        if (updateByIdAndVersion(stock) != 1) {
+        if (updateByIdAndVersions(stock) != 1) {
             throw new BusinessException("修改用户库存失败");
         }
 
@@ -133,7 +133,7 @@ public class PfUserSkuStockService {
      * @param pfUserSkuStock
      * @return
      */
-    public int updateByIdAndVersion(PfUserSkuStock pfUserSkuStock) {
+    public int updateByIdAndVersions(PfUserSkuStock pfUserSkuStock) {
         return pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
     }
 

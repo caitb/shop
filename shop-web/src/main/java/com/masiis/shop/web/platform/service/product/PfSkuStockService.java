@@ -41,7 +41,7 @@ public class PfSkuStockService {
 
         log.info("变动之前库存为:" + afterStock);
 
-        if (skuStockMapper.updateByIdAndVersion(stock) != 1) {
+        if (updateByIdAndVersions(stock) != 1) {
             throw new BusinessException("修改平台库存失败");
         }
 
@@ -117,7 +117,7 @@ public class PfSkuStockService {
         return skuStockMapper.selectBySkuId(skuId);
     }
 
-    public int updateByIdAndVersion(PfSkuStock pfSkuStock) {
+    public int updateByIdAndVersions(PfSkuStock pfSkuStock) {
         return skuStockMapper.updateByIdAndVersion(pfSkuStock);
     }
 

@@ -90,7 +90,7 @@ public class PfUserSkuStockService {
             case Supplement:
                 afterStock += change;
                 break;
-            case Take:
+            case downTake:
                 afterStock -= change;
                 fronzeStock -= change;
                 break;

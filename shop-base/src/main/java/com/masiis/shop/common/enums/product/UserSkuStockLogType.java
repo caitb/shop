@@ -31,7 +31,7 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "补货";
         }
-    },Take{
+    },downTake{
         public Integer getCode() {
             return 3;
         }

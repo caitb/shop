@@ -17,11 +17,19 @@ public enum SkuStockLogType {
         }
     }, downSupplement {
         public Integer getCode() {
-            return 0;
+            return 1;
         }
 
         public String getDesc() {
             return "补货";
+        }
+    },downTake{
+        public Integer getCode() {
+            return 2;
+        }
+
+        public String getDesc() {
+            return "拿货";
         }
     };
 

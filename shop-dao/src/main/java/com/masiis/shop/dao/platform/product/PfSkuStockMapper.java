@@ -20,8 +20,6 @@ public interface PfSkuStockMapper {
 
     void insert(PfSkuStock pfSkuStock);
 
-    //void updateById(PfSkuStock pfSkuStock);//没有设置乐观锁不建议使用
-
     void deleteById(Integer id);
 
     PfSkuStock selectBySkuId(Integer skuId);

@@ -34,7 +34,7 @@ public class ManageShopProductService {
     private ComSkuImageMapper comSkuImageMapper;
 
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
 
     @Resource
     private ComUserMapper ComUserMapper;
@@ -56,7 +56,7 @@ public class ManageShopProductService {
                  SkuInfo skuInfo = new SkuInfo();
                  ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
                  ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
-                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
+                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
                  comSkuImage.setFullImgUrl(Value+comSkuImage.getImgUrl());
                  skuInfo.setComSku(comsku);
                  skuInfo.setComSkuImage(comSkuImage);

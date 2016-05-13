@@ -16,7 +16,7 @@
 </head>
 <body>
 <header>
-    <a href="<%=path%>/orderPay/paySuccessCallBack.html?orderId=${order.id}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="${path}/orderPay/paySuccessCallBack.html?orderId=${order.id}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>订单详情</p>
 </header>
 <div class="wrap">

@@ -194,15 +194,19 @@
 }
 .wrap .sec4 p span {
   display: block;
-  color: #f73c8c;
+  color: #333;
   font-size: 12px;
   text-align: left;
+}
+.wrap .sec4 p:nth-child(3) span{
+  color: #F73c8c;
 }
 .wrap .sec4 p b {
   font-size: 12px;
   text-align: right;
   display: block;
   width: 50px;
+  color: #333;
 }
 .wrap .sec5 {
   font-size: 14px;

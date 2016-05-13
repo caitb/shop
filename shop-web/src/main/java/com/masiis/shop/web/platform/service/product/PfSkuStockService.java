@@ -1,7 +1,9 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.masiis.shop.common.enums.product.SkuStockLogType;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.po.PfSkuStock;
+import com.masiis.shop.dao.po.PfSkuStockLog;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +21,8 @@ public class PfSkuStockService {
     private PfSkuStockMapper skuStockMapper;
 
     public void updateSkuStockWithLog(Integer change, PfSkuStock before,
-                                      Long billId, Integer handleType){
-
+                                      Long billId, SkuStockLogType handleType){
+        PfSkuStockLog skuStockLog = new PfSkuStockLog();
 
 
 

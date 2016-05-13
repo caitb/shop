@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.service.product;
 
+import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.PfUserSkuStock;
@@ -19,7 +20,7 @@ public class PfUserSkuStockService {
 
     private PfUserSkuStockMapper userSkuStockMapper;
 
-    public void updateUserSkuStockWithLog(Integer change, PfUserSkuStock before, Long billId, Integer handleType){
+    public void updateUserSkuStockWithLog(Integer change, PfUserSkuStock before, Long billId, UserSkuStockLogType handleType){
 
     }
 }

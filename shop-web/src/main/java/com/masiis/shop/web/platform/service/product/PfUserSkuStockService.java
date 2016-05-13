@@ -93,7 +93,7 @@ public class PfUserSkuStockService {
                 afterStock += change;
                 break;
             default:
-                throw new BusinessException();
+                throw new BusinessException("该操作类型不支持");
         }
 
         before.setStock(afterStock);

@@ -147,12 +147,13 @@ public class MyTeamService {
         Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
         //销售额
         Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
+        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(pfUserSku.getUserId());
 
         Map<String, Object> teamMap = new HashMap<>();
         teamMap.put("skuName", comSku.getName());//商品名称
         teamMap.put("totalChildren", userIds.size());//直接下级人数
         teamMap.put("countChild", countChild - userIds.size());//间接下级人数
-        teamMap.put("countSales", countSales==null?0:countSales);//总销售额
+        teamMap.put("countSales", (countSales==null?0:countSales)+comUserAccount.getTotalIncomeFee().intValue());//总销售额
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
         for(ComUser comUser : comUsers){

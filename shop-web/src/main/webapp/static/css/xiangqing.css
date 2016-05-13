@@ -245,6 +245,7 @@ body .back_j .d p button {
     color: white;
     float: right;
     margin-top: 8px;
+    font-size: 12px;
 }
 body .back_j .tishi {
     position: absolute;

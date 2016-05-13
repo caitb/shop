@@ -124,6 +124,18 @@
   display: block;
   font-size:12px;
   color: #666;
+  position: relative;
+}
+.wrap nav ul li span b{
+  position: absolute;
+  display: block;
+  bottom: 5px;
+  right: 13px;
+  background: red;
+  border-radius: 10px;
+  line-height: 15px;
+  width: 10px;
+  height: 10px;
 }
 .wrap nav ul li span img {
   display: block;

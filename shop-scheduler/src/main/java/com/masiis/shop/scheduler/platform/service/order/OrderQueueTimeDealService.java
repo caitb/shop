@@ -8,6 +8,7 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
@@ -34,7 +35,7 @@ public class OrderQueueTimeDealService {
     @Autowired
     private PfSkuStockMapper pfSkuStockMapper;
     @Autowired
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Autowired
     private ComUserService comUserService;
     @Autowired
@@ -178,7 +179,7 @@ public class OrderQueueTimeDealService {
             PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
             a = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUserId, skuId);
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pUserId, skuId);
             a = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
         return a;

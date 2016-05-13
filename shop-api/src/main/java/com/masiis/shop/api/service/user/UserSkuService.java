@@ -1,5 +1,6 @@
 package com.masiis.shop.api.service.user;
 
+import com.masiis.shop.api.service.product.PfUserSkuStockService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
@@ -32,7 +33,7 @@ public class UserSkuService {
     @Resource
     private UserSkuService userSkuService;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
@@ -50,13 +51,14 @@ public class UserSkuService {
 
     /**
      * 获取下级合伙人
+     *
      * @author muchaofeng
      * @date 2016/4/19 11:43
      */
 
     public List<PfUserSku> getAgentNumByUserId(Long userId) throws Exception {
         List<PfUserSku> res = pfUserSkuMapper.selectAgentNum(userId);
-        if(res == null || res.size() == 0){
+        if (res == null || res.size() == 0) {
             return null;
         }
         return res;
@@ -147,7 +149,7 @@ public class UserSkuService {
         }
         //拿货方式: 0,未选择; 1,平台代发; 2,自己发货
         if (pUser.getSendType() == 2) {
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUser.getId(), skuId);
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pUser.getId(), skuId);
             if (pfUserSkuStock == null) {
                 throw new BusinessException("您的推荐人商品库存不足!");
             }

@@ -36,7 +36,7 @@ public class SkuService {
     @Resource
     private SfShopSkuExtendMapper sfShopSkuExtendMapper;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
 
     @Resource
     private ComSpuMapper comSpuMapper;
@@ -68,7 +68,7 @@ public class SkuService {
         int n;
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
-        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
         if(shopUser!=null && shopUser.getSendType()==1){//平台
             n = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }else{
@@ -185,7 +185,7 @@ public class SkuService {
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());
-        PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
+        PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
         if (pfUserSkuStock != null && sfShop != null) {
             if (shopUser.getSendType() == 1) {//平台代发
                 int currentStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();

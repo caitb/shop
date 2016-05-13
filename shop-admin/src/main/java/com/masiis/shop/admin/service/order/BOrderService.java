@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
@@ -45,7 +47,7 @@ public class BOrderService {
     @Resource
     private PfSkuStockMapper pfSkuStockMapper;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
@@ -53,20 +55,21 @@ public class BOrderService {
 
     /**
      * 根据条件查询记录
+     *
      * @param pageNo
      * @param pageSize
      * @param pfBorder
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, PfBorder pfBorder){
+    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, PfBorder pfBorder) {
         String sort = "create_time desc";
-        if(sortName != null) sort = sortName + " " + sortOrder;
+        if (sortName != null) sort = sortName + " " + sortOrder;
         PageHelper.startPage(pageNo, pageSize, sort);
         List<PfBorder> pfBorders = pfBorderMapper.selectByCondition(pfBorder);
         PageInfo<PfBorder> pageInfo = new PageInfo<>(pfBorders);
 
         List<Order> orders = new ArrayList<>();
-        for(PfBorder pbo : pfBorders){
+        for (PfBorder pbo : pfBorders) {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
             List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(pbo.getId());
@@ -91,10 +94,11 @@ public class BOrderService {
 
     /**
      * 获取订单明细
+     *
      * @param id
      * @return
      */
-    public Order find(Long id){
+    public Order find(Long id) {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(id);
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfBorder.getUserId());
         PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(id);
@@ -102,7 +106,7 @@ public class BOrderService {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(id);
 
         List<ProductInfo> productInfos = new ArrayList<>();
-        for(PfBorderItem pfBorderItem : pfBorderItems){
+        for (PfBorderItem pfBorderItem : pfBorderItems) {
             ComSku comSku = comSkuMapper.selectById(pfBorderItem.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(pfBorderItem.getSpuId());
 
@@ -121,7 +125,7 @@ public class BOrderService {
         order.setPfBorderItems(pfBorderItems);
         order.setProductInfos(productInfos);
 
-        if(pfBorder.getPayStatus().intValue() == 1){
+        if (pfBorder.getPayStatus().intValue() == 1) {
             PfBorderPayment borderPaymentC = new PfBorderPayment();
             borderPaymentC.setPfBorderId(pfBorder.getId());
             borderPaymentC.setIsEnabled(1);
@@ -134,6 +138,7 @@ public class BOrderService {
 
     /**
      * 发货
+     *
      * @param pfBorderFreight
      */
     public void delivery(PfBorderFreight pfBorderFreight) throws Exception {
@@ -150,7 +155,7 @@ public class BOrderService {
         updateOrderStock(pfBorder);
 
         //添加订单日志
-        bOrderOperationLogService.insertBOrderOperationLog(pfBorder,"订单完成");
+        bOrderOperationLogService.insertBOrderOperationLog(pfBorder, "订单完成");
 
         //通知客户 * @param params   (1,商品名称;2,代理等级;3,订单编号(不是id);4,快递公司;5,快递单号)
         PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pfBorder.getId());
@@ -158,42 +163,40 @@ public class BOrderService {
         List<PfBorderItem> borderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         String skuNames = "";
         String levelNames = "";
-        for(PfBorderItem borderItem : borderItems){
+        for (PfBorderItem borderItem : borderItems) {
             skuNames += borderItem.getSkuName();
             levelNames += comAgentLevelMapper.selectByPrimaryKey(borderItem.getAgentLevelId()).getName();
         }
-        MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight. getFreight());
-        WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, PropertiesUtils.getStringValue("web.domain.name.address")+"/borderManage/borderDetils.html?id="+pfBorder.getId());
+        MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight());
+        WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId());
     }
 
     /**
      * 更新库存
+     *
      * @param pfBorder
      */
-    public  void  updateOrderStock(PfBorder pfBorder) throws Exception {
+    public void updateOrderStock(PfBorder pfBorder) throws Exception {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        if(pfBorder.getUserPid().intValue() == 0 && pfBorder.getOrderType().intValue() != 2){
-            for(PfBorderItem pfBorderItem : pfBorderItems){
+        if (pfBorder.getUserPid().intValue() == 0 && pfBorder.getOrderType().intValue() != 2) {
+            for (PfBorderItem pfBorderItem : pfBorderItems) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
-                if(pfSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
-                    pfSkuStock.setStock(pfSkuStock.getStock()-pfBorderItem.getQuantity());
-                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock()-pfBorderItem.getQuantity());
+                if (pfSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
+                    pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
+                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
                     int c = pfSkuStockMapper.updateByIdAndVersion(pfSkuStock);
-                    if(c == 0) throw new Exception("更改库存失败!");
-                }else{
+                    if (c == 0) throw new Exception("更改库存失败!");
+                } else {
                     throw new Exception("库存异常!");
                 }
             }
-        }else{
-            for(PfBorderItem pfBorderItem : pfBorderItems){
-                Long userPid = pfBorder.getOrderType().intValue()==2 ? pfBorder.getUserId() : pfBorder.getUserPid();
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userPid, pfBorderItem.getSkuId());
-                if(pfUserSkuStock.getStock()-pfBorderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity()>=0){
-                    pfUserSkuStock.setStock(pfUserSkuStock.getStock()-pfBorderItem.getQuantity());
-                    pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock()-pfBorderItem.getQuantity());
-                    int c = pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
-                    if(c == 0) throw new Exception("更改库存失败!");
-                }else{
+        } else {
+            for (PfBorderItem pfBorderItem : pfBorderItems) {
+                Long userPid = pfBorder.getOrderType().intValue() == 2 ? pfBorder.getUserId() : pfBorder.getUserPid();
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userPid, pfBorderItem.getSkuId());
+                if (pfUserSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
+                    pfUserSkuStockService.updateUserSkuStockWithLog(pfBorderItem.getQuantity(), pfUserSkuStock, pfBorder.getId(), UserSkuStockLogType.downAgent);
+                } else {
                     throw new Exception("库存异常!");
                 }
             }

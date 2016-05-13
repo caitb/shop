@@ -39,6 +39,7 @@
   background: url("/static/images/i.png") no-repeat 100%;
   background-size: 15px;
   padding-right: 20px;
+  display: inline-block;
 }
 .Type2 p{
   text-align: left;
@@ -317,6 +318,7 @@
   -moz-box-align: center;
   background: white;
   padding: 10px 0;
+  margin-top: 10px;
 }
 .wrap .box main .sec4 p {
   margin: 0 auto;

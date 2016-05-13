@@ -78,7 +78,7 @@
             <section class="sec3">
                 <p>
                     <!--<input type="checkbox" id="fu" checked disabled>-->
-                    <label>我已同意<a href="#">《代理商注册协议》</a></label>
+                    <label>我已同意<a href="#" class="daili">《代理商注册协议》</a></label>
                 </p>
             </section>
             <section class="sec4">
@@ -112,6 +112,13 @@
             <p>
                 由于商品过于火爆，导致库存量不足。申请合伙人或补货我们将记录付款的先后顺序，待产能提升，麦链商城将按照付款顺序发货
             </p>
+            <button class="kNow">我知道了</button>
+        </div>
+        <div class="Modal"></div>
+    </div>
+    <div class="xieyi">
+        <div class="back_q">
+            <p><img src="${path}/static/images/xieyi.png" alt=""></p>
             <button class="kNow">我知道了</button>
         </div>
         <div class="Modal"></div>

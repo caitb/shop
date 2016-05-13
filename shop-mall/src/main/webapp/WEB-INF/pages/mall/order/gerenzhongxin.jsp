@@ -37,7 +37,7 @@
     <nav>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
-                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"></span>
+                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"><b></b></span>
                 <span>我的订单</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">

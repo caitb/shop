@@ -107,9 +107,14 @@ public class OrderQueueDealService {
         }
         if (quealOrder){
             log.info("******************处理排单***********************");
-            bOrderPayService.saveBOrderSendType(pfBorder);
+            try{
+                bOrderPayService.saveBOrderSendType(pfBorder);
+                this.sendMessage(pfBorder);
+            }catch (Exception e){
+                e.printStackTrace();
+                return "false";
+            }
         }
-        this.sendMessage(pfBorder);
         return "success";
     }
 

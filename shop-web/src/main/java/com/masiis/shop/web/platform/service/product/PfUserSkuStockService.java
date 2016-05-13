@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Date 2016/5/13
@@ -21,20 +23,27 @@ import java.util.Date;
 @Service
 public class PfUserSkuStockService {
     private Logger log = Logger.getLogger(this.getClass());
-
     @Resource
-    private PfUserSkuStockMapper userSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private PfUserSkuStockLogMapper userSkuStockLogMapper;
 
-    public void updateUserSkuStockWithLog(Integer change, PfUserSkuStock stock, Long billId, UserSkuStockLogType handleType){
+    /**
+     * 更新代理平台库存
+     *
+     * @param change     变化值 例如 1，2，3 无负数，根据业务减库存
+     * @param stock      代理库存对象
+     * @param billId     变化根据单据号
+     * @param handleType 变更类型
+     */
+    public void updateUserSkuStockWithLog(Integer change, PfUserSkuStock stock, Long billId, UserSkuStockLogType handleType) {
         Integer beforeStock = stock.getStock();
         // 改变stock库存
         getAfterStockByType(change, stock, handleType);
         // 获取改变后的库存
         Integer afterStock = stock.getStock();
 
-        if(userSkuStockMapper.updateByIdAndVersion(stock) != 1) {
+        if (updateByIdAndVersion(stock) != 1) {
             throw new BusinessException("修改用户库存失败");
         }
 
@@ -99,11 +108,56 @@ public class PfUserSkuStockService {
         before.setStock(afterStock);
         before.setFrozenStock(fronzeStock);
 
-        if(before.getStock().intValue() < 0){
+        if (before.getStock().intValue() < 0) {
             throw new BusinessException("库存变动后小于0,错误");
         }
-        if(before.getFrozenStock().intValue() < 0){
+        if (before.getFrozenStock().intValue() < 0) {
             throw new BusinessException("冻结库存变动后小于0,错误");
         }
+    }
+
+    /**
+     * 根据用户id和skuid获取代理库存对象
+     *
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    public PfUserSkuStock selectByUserIdAndSkuId(Long userId, Integer skuId) {
+        return pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
+    }
+
+    /**
+     * 更新库存 带乐观锁
+     *
+     * @param pfUserSkuStock
+     * @return
+     */
+    public int updateByIdAndVersion(PfUserSkuStock pfUserSkuStock) {
+        return pfUserSkuStockService.updateByIdAndVersion(pfUserSkuStock);
+    }
+
+    public int insert(PfUserSkuStock pfUserSkuStock) {
+        return pfUserSkuStockService.insert(pfUserSkuStock);
+    }
+
+    public int deleteByPrimaryKey(Long id) {
+        return pfUserSkuStockService.deleteByPrimaryKey(id);
+    }
+
+    public PfUserSkuStock selectByPrimaryKey(Long id) {
+        return pfUserSkuStockService.selectByPrimaryKey(id);
+    }
+
+    public List<PfUserSkuStock> selectAll() {
+        return pfUserSkuStockService.selectAll();
+    }
+
+    public List<PfUserSkuStock> selectByUserId(Long userId) {
+        return pfUserSkuStockService.selectByUserId(userId);
+    }
+
+    public List<Map<String, Object>> selectReplenishStock() {
+        return pfUserSkuStockService.selectReplenishStock();
     }
 }

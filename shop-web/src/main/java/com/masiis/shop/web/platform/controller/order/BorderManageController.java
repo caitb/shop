@@ -126,14 +126,15 @@ public class BorderManageController extends BaseController {
                 }
             }
             for (PfBorder pfBorders : pfBorder) {
-                if(pfBorders.getUserPid()==0){
-                    pfBorders.setPidUserName("平台");
-                }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
-                    pfBorders.setPidUserName("未选择");
-                } else{
-                    ComUser users = userService.getUserById(pfBorders.getUserPid());
-                    pfBorders.setPidUserName(users.getRealName());
-                }
+//                if(pfBorders.getUserPid()==0){
+//                    pfBorders.setPidUserName("平台");
+//                }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
+//                    pfBorders.setPidUserName("未选择");
+//                } else{
+//                    ComUser users = userService.getUserById(pfBorders.getUserPid());
+//                    pfBorders.setPidUserName(users.getRealName());
+//                }
+                pfBorders.setPidUserName("平台");
                 String insertDay = DateUtil.insertDay(pfBorders.getCreateTime());
                 pfBorders.setPayTimes(insertDay);
             }
@@ -252,7 +253,7 @@ public class BorderManageController extends BaseController {
         List<PfBorder> pfBorders8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorders6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorders) {
-            if (pfBord.getOrderStatus() == 0) {
+            if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorders0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 7 ) {
                 pfBorders7.add(pfBord);//代发货
@@ -267,7 +268,7 @@ public class BorderManageController extends BaseController {
         List<PfBorder> pfBorderp8 = new ArrayList<>();//待收货
         List<PfBorder> pfBorderp6 = new ArrayList<>();//排单中
         for (PfBorder pfBord : pfBorderps) {
-            if (pfBord.getOrderStatus() == 0) {
+            if (pfBord.getOrderStatus() == 0 || pfBord.getOrderStatus() == 9) {
                 pfBorderp0.add(pfBord);//待付款
             } else if (pfBord.getOrderStatus() == 8 ) {
                 pfBorderp8.add(pfBord);//待收货
@@ -372,6 +373,10 @@ public class BorderManageController extends BaseController {
         if (comUser == null) {
             throw new BusinessException("user不能为空");
         }
+        if(request.getSession().getAttribute("defaultBank")==null || request.getSession().getAttribute("defaultBank")==""){
+            PfSupplierBank defaultBank = pfSupplierBankService.getDefaultBank();
+            request.getSession().setAttribute("defaultBank", defaultBank);
+        }
         List<PfBorder> pfBorders = bOrderService.findByUserId(comUser.getId(), orderStatus, sendType);
         if(orderStatus!=null){
             if(orderStatus==0){
@@ -384,7 +389,7 @@ public class BorderManageController extends BaseController {
         String index=null;
         if(orderStatus==null && sendType==null){
             index="0";//全部
-        }else if (orderStatus == 0 || orderStatus == 9 ) {
+        }else if (orderStatus == 0 || orderStatus == 9 ){
             index="1";//待付款//线下支付待付款
         }else if (orderStatus == 8 ){
             index="3";//待收货
@@ -410,12 +415,13 @@ public class BorderManageController extends BaseController {
                     pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                 }
-                if(pfBorder.getUserPid()==0){
-                    pfBorder.setPidUserName("平台");
-                }else{
-                    ComUser user = userService.getUserById(pfBorder.getUserPid());
-                    pfBorder.setPidUserName(user.getRealName());
-                }
+//                if(pfBorder.getUserPid()==0){
+//                    pfBorder.setPidUserName("平台");
+//                }else{
+//                    ComUser user = userService.getUserById(pfBorder.getUserPid());
+//                    pfBorder.setPidUserName(user.getRealName());
+//                }
+                pfBorder.setPidUserName("平台");
                 pfBorder.setPfBorderItems(pfBorderItems);
             }
         }

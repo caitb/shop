@@ -135,8 +135,8 @@
 .wrap .box nav ul li h1 span{
   position: absolute;
   display: block;
-  bottom: 5px;
-  right: 13px;
+  top: -8px;
+  right: 8px;
   background: red;
   border-radius: 10px;
   line-height: 15px;

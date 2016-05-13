@@ -160,6 +160,7 @@ public class SfOrderController extends BaseController {
         modelAndView.addObject("comShipMans", comShipMans);
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
+        modelAndView.addObject("sfOrderSize", sfOrders.size());
         modelAndView.setViewName("platform/shop/dingdanguanli");
         return modelAndView;
     }

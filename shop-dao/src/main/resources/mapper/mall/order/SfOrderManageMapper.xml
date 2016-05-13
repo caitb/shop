@@ -55,6 +55,7 @@
         <if test="shopId != null">
             AND shop_id = #{shopId,jdbcType=BIGINT}
         </if>
+        ORDER BY id DESC
     </select>
 
     <select id="selectByShopUserId" resultMap="BaseResultMap">
@@ -74,5 +75,6 @@
         <if test="shopId != null">
             AND shop_id = #{shopId,jdbcType=BIGINT}
         </if>
+        ORDER BY id DESC
     </select>
 </mapper>

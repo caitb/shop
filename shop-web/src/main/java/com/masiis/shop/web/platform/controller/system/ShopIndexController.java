@@ -86,9 +86,9 @@ public class ShopIndexController extends BaseController {
                 pfBorders6.add(pfBord);//排单中
             }
         }
-        Integer borderNum = pfBorders10.size() + pfBorders6.size();
+//        Integer borderNum = pfBorders10.size() + pfBorders6.size();
 //        Boolean forcusPF = WxUserUtils.getInstance().isUserForcusPF(user);
-        modelAndView.addObject("borderNum", borderNum);//订单数量
+        modelAndView.addObject("borderNum", pfBorders10.size() + pfBorders6.size());//订单数量
 //        modelAndView.addObject("forcusPF",forcusPF);
         modelAndView.addObject("num", num);//订单数量
         modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息

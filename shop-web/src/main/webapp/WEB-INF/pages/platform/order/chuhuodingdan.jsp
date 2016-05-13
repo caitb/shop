@@ -64,7 +64,7 @@
                                     <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                 </div>
                             </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0 ||pb.sendType==null}">
@@ -111,7 +111,7 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
@@ -158,7 +158,7 @@
                                                     <%--&lt;%&ndash;<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>&ndash;%&gt;--%>
                                             <%--</div>--%>
                                         <%--</div> </c:forEach>--%>
-                                    <%--<h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>--%>
+                                    <%--<h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>--%>
                                     <%--<h1>--%>
                                         <%--<b>发货方:</b>--%>
                                     <%--<span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">--%>
@@ -205,7 +205,7 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
@@ -252,7 +252,7 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1> <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
@@ -299,7 +299,7 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
@@ -346,7 +346,7 @@
                                             <%--<p class="defult">合计： <span style="float:none;color:#FF6A2A;">￥${pb.orderAmount}</span><c:if test="${pb.orderType==0}">(包含保证金 运费：到付)</c:if></p>--%>
                                         </div>
                                     </div> </c:forEach>
-                                <h1> 共<span>${pb.totalQuantity}</span>件商品 <b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(包含保证金)</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
+                                <h1><b style="color:#FF6A2A">合计：￥${pb.orderAmount}</b><c:if test="${pb.orderType==0}">(保证金：￥${pb.bailAmount})</c:if><c:if test="${pb.orderType==2}">(运费：到付)</c:if></h1>
                                 <h1>
                                     <b>发货方:</b>
                                     <span><c:if test="${pb.sendType==1}">平台</c:if><c:if test="${pb.sendType==0||pb.sendType==null}">
@@ -455,9 +455,9 @@
                                        trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                        trHtml+="</div></div>";
                                    });
-                                   trHtml+="<h1> 共<span>"+pfBorder.totalQuantity+"</span>件商品 <b style=\"color:#FF6A2A\">合计：￥"+pfBorder.orderAmount+"</b>";
+                                   trHtml+="<h1><b style=\"color:#FF6A2A\">合计：￥"+pfBorder.orderAmount+"</b>";
                                    if(pfBorder.orderType==0){
-                                       trHtml+="(包含保证金)";
+                                       trHtml+="(保证金：￥"+pfBorder.bailAmount+")";
                                    }else if(pfBorder.orderType==2){
                                        trHtml+="(运费：到付)";
                                    }else if(pfBorder.orderType==1){

@@ -136,6 +136,16 @@
   -webkit-box-flex: 1;
   border-right:1px solid #f6f6f6;
   padding: 14px 0;
+  position: relative;
+}
+.wrap > nav p b{
+  width: 10px;
+  height: 10px;
+  border-radius: 20px;
+  position: absolute;
+  right: 32px;
+  top: 12px;
+  background: red;
 }
 .wrap > nav p span {
   display: block;

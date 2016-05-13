@@ -1,9 +1,13 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-    <%
+<%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String url = request.getHeader("REFERER");
+    if(url ==null || url==""){
+        url=path+"/borderManage/deliveryDouckBorder";
+    }
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -21,7 +25,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%= url %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
         <p>订单详情</p>
     </header>
     <main>

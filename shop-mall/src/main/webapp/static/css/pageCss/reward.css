@@ -71,12 +71,15 @@
 .wrap .sec1 {
   display: -webkit-box;
   -webkit-box-pack: justify;
-  padding: 15px 10px 5px 10px;
+  padding: 15px 10px 1px 10px;
   border-bottom: 1px solid #f6f6f6;
   background: #f6f6f6;
 }
 .wrap .sec1 p {
   font-size: 12px;
+}
+.wrap .sec1 p:last-child{
+  color:#666;
 }
 .wrap .sec1 p a,
 .wrap .sec1 p span {
@@ -85,42 +88,49 @@
 .wrap .sec2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  padding: 10px 10px;
+  padding: 10px 0 5px 0;
   background: #fff;
   border-bottom: 1px dashed #999999;
+  margin: 0 10px;
 }
 .wrap .sec2 p {
   display: -webkit-box;
   -webkit-box-pack: end;
+  margin-top: 7px;
 }
 .wrap .sec2 p b {
   display: block;
   font-size: 12px;
+  color: #666;
 }
 .wrap .sec2 p b a {
-  width: 100px;
+  width: 119px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 12px;
   border-bottom: 1px solid #666;
-  margin: 0 6px;
-  padding-bottom: 2px;
-  line-height: 10px;
 }
 .wrap .sec2 p b span {
   font-size: 12px;
+  color: #333;
 }
 .wrap .sec2 h1 {
   text-align: right;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 .wrap .sec2 h1 b {
   float: left;
+  font-weight: 600;
+  color: #333;
 }
 .wrap .sec2 h1 span {
   font-size: 12px;
+  color: #666;
 }
+
 
 .footer{
   width:100%;padding: 10px 0;

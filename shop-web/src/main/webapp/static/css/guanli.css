@@ -138,3 +138,118 @@ body main .wrap .box .on b {
 .xinz{
   margin-top: 5px;
 }
+
+
+
+
+.shouhuo {
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  background: white;
+  border-radius: 5px;
+  z-index: 10;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  display: none;
+}
+.shouhuo p {
+  margin: 0 10px;
+  color: #F74A11;
+  border-bottom: 1px solid #F74A11;
+  line-height: 50px;
+  margin-bottom: 10px;
+  text-indent: 10px;
+}
+.shouhuo h4 {
+  margin: 0 10px;
+  text-indent: 10px;
+  letter-spacing: 1px;
+  padding-bottom: 5px;
+}
+.shouhuo h4 span {
+  display: block;
+  float: left;
+  font-weight: 600;
+  color: #555;
+}
+.shouhuo h4 span:nth-child(2) {
+  width: 160px;
+  margin-left: 5px;
+  text-indent: 0;
+  font-weight: normal;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.shouhuo h3 {
+  margin: 20px 32%;
+  background: #E3E3E3;
+  padding: 5px 0px;
+  text-align: center;
+  border-radius: 5px;
+}
+.back {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.back_shouhuo {
+  width: 90%;
+  position: fixed;
+  left: 5%;
+  top: 30%;
+  background: white;
+  border-radius: 5px;
+  z-index: 10;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.back_shouhuo p {
+  margin: 0 10px;
+  color: #f74a11;
+  border-bottom: 1px solid #f74a11;
+  line-height: 50px;
+  margin-bottom: 10px;
+  text-indent: 10px;
+}
+.back_shouhuo h4 {
+  margin: 0 20px;
+  letter-spacing: 1px;
+}
+.back_shouhuo h3 {
+  display: -webkit-box;
+  -webkit-box-align: center;
+  margin: 15px 10px;
+  border-top: 1px solid #999;
+}
+.back_shouhuo h3 span {
+  display: block;
+  -webkit-box-flex: 1;
+  text-align: center;
+  line-height: 33px;
+  background: #d6d6d6;
+  margin-left: 10%;
+  width: 1px;
+  border-radius: 5px;
+  color: #333;
+  margin-top: 15px;
+}
+.back_shouhuo h3 span:nth-child(2) {
+  margin-right: 10%;
+  background: #f74a11;
+  color: white;
+}
+/*
+.back{
+  width:100%;
+  height:100%;
+  position: fixed;
+  top:0;
+  left:0;
+  display: ;
+}*/

@@ -7,7 +7,7 @@ package com.masiis.shop.common.enums.product;
  * @date 2016/5/13
  */
 public enum SkuStockLogType {
-    agent {
+    downAgent {
         public Integer getCode() {
             return 0;
         }
@@ -15,7 +15,7 @@ public enum SkuStockLogType {
         public String getDesc() {
             return "新加入合伙";
         }
-    }, Supplement {
+    }, downSupplement {
         public Integer getCode() {
             return 0;
         }

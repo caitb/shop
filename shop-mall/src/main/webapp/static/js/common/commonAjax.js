@@ -76,7 +76,7 @@ CommonPerson.Base.LoadingPic = {
     //显示全屏Loading图
     FullScreenShow: function (msg) {
         if (msg === undefined) {
-            msg = "数据加载中, 请稍等...";
+            msg = "加载中...";
         }
 
         if ($("#div_loadingImg").length == 0) {

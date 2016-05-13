@@ -38,7 +38,7 @@
         <p>我的财富</p>
         <h1>
             <span>￥<b><fmt:formatNumber value="${userAccount.extractableFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></span>
-            <span>可提现佣金（已申请提现财富：￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber>）</span>
+            <span>可提现佣金（申请中：￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber>）</span>
         </h1>
         <nav>
             <ul>

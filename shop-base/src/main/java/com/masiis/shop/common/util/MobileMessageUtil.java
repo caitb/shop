@@ -18,8 +18,8 @@ public class MobileMessageUtil {
      */
     private static String EVENING_MESSAGE = "";
     /**
-     * 系统标识
-     */
+    * 系统标识
+    */
     private static String fromIdentify = "";
 
     private String[] content;
@@ -395,8 +395,8 @@ public class MobileMessageUtil {
         }
     }
 
-    public static void main(String[] args){
+//    public static void main(String[] args){
 //        MobileMessageUtil.getInitialization("B").addStockSuccess("18911155707",1,"3");
-        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
-    }
+//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
+//    }
 }

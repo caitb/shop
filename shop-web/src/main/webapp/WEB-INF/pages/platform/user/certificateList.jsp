@@ -26,7 +26,7 @@
         <p>我的授权书</p>
     </header>
     <c:forEach items="${pfUserCertificates}" var="cet">
-        <div class="sec1" onclick="javascript:window.location.replace('<%=path%>/userCertificate/detail/?pfuId=${cet.id}');">
+        <div class="sec1">
             <img src="${cet.skuIcon}" alt="">
 
             <div>

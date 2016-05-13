@@ -46,6 +46,7 @@ public class OrderQueueTimeDealService {
     public void commonQueuingOrder(){
         logger.info("1:查询出所有的排单状态的订单，按照userpid 与 createtime排序查询");
         List<PfBorder> pfBorders = pfBorderMapper.selectAllQueuingOrder(BOrderStatus.MPS.getCode());
+        logger.info("查询排单订单数量：" + pfBorders.size());
         for (PfBorder pfBorder : pfBorders){
             try{
                 logger.info(pfBorder.getSendType() == 1?"平台代发货":"自己发货");
@@ -53,7 +54,7 @@ public class OrderQueueTimeDealService {
                     pfQueuingOrder(pfBorder.getId());
                 }else if (pfBorder.getSendType() == 2){//自己发货
                     userQueuingOrder(pfBorder.getId());
-                }else {}
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

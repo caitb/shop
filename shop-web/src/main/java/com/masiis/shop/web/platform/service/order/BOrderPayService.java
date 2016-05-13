@@ -276,7 +276,7 @@ public class BOrderPayService {
                 String value1 = "授权书编号：" + pfUserCertificate.getCode() + "  手机：" + pfUserCertificate.getMobile();
                 String value2 = "授权期限：" + beginTime + " 至 " + endTime + "  微信：" + pfUserCertificate.getWxId();
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName()+"级代理", name, skuInfo, value1, value2);
+                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName(), name, skuInfo, value1, value2);
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
@@ -621,10 +621,11 @@ public class BOrderPayService {
 
     /**
      * 获取订单详情
+     *
      * @author hanzengzhi
      * @date 2016/5/11 20:33
      */
-    public PfBorder getOrderDetail(Long orderId){
+    public PfBorder getOrderDetail(Long orderId) {
         return pfBorderMapper.selectByPrimaryKey(orderId);
     }
 
@@ -634,9 +635,9 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Boolean offinePayment(ComUser comUser, Long bOrderId)throws Exception {
+    public Boolean offinePayment(ComUser comUser, Long bOrderId) throws Exception {
         //修改订单状态
-        try{
+        try {
             PfBorder pfBorder = updateOrderStatus(BOrderStatus.offLineNoPay.getCode(), bOrderId);
             if (pfBorder != null) {
                 //插入订单支付表
@@ -651,10 +652,10 @@ public class BOrderPayService {
                     throw new BusinessException("线下支付失败:查询子帐单为null");
                 }
                 return true;
-            }else{
+            } else {
                 return false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
 
@@ -666,11 +667,11 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:49
      */
-    private PfBorder updateOrderStatus(Integer status, Long bOrderId)throws Exception {
+    private PfBorder updateOrderStatus(Integer status, Long bOrderId) throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
-        if (pfBorder!=null){
+        if (pfBorder != null) {
             Integer payStatus = pfBorder.getPayStatus();
-            if (payStatus.equals(BOrderStatus.accountPaid.getCode())){
+            if (payStatus.equals(BOrderStatus.accountPaid.getCode())) {
                 throw new BusinessException("该订单已支付,无需再支付");
             }
             pfBorder.setOrderStatus(status);
@@ -678,7 +679,7 @@ public class BOrderPayService {
             if (i != 1) {
                 throw new BusinessException("线下支付更新订单状态失败");
             }
-        }else{
+        } else {
             throw new BusinessException("线下支付失败:查询订单信息失败");
         }
         return pfBorder;
@@ -713,13 +714,13 @@ public class BOrderPayService {
         WxPFNoticeUtils.getInstance().offLinePayNotice(comUser, param, border.getCreateTime(), offinePaymentUrl);
         //短信通知
         StringBuffer sb2 = new StringBuffer();
-        if (supplierBank!=null){
+        if (supplierBank != null) {
             sb2.append("开户行:").append(supplierBank.getBankName());
             sb2.append(" 开户名:").append(supplierBank.getAccountName());
             sb2.append(" 卡号:").append(supplierBank.getCardNumber());
             sb2.append(" 账号上");
         }
-        log.info("银行卡信息-------"+sb2.toString());
+        log.info("银行卡信息-------" + sb2.toString());
         //最迟日期
         MobileMessageUtil.getInitialization("B").offlinePaymentsRemind(comUser.getMobile(), border.getOrderCode(), border.getReceivableAmount().toString(), DateUtil.insertDay(border.getCreateTime()), sb2.toString());
     }
@@ -758,7 +759,7 @@ public class BOrderPayService {
      * @author hanzengzhi
      * @date 2016/4/25 14:46
      */
-    public Map<String, Object> getOffinePaymentDeatil(Long bOrderId)throws BusinessException {
+    public Map<String, Object> getOffinePaymentDeatil(Long bOrderId) throws BusinessException {
         Map<String, Object> map = null;
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(bOrderId);
         if (pfBorder != null) {

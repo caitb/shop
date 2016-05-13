@@ -68,7 +68,7 @@
             <c:forEach var="distribution" items="${orderItemDistributions}">
                 <div class="sec2">
                     <h1>
-                        <b>￥${distribution.distributionAmount}</b>
+                        <b><b>￥</b>${distribution.distributionAmount}</b>
                         <span><fmt:formatDate value="${distribution.orderTime}" pattern="yyyy-MM-dd HH:mm" /></span>
                     </h1>
                     <p>

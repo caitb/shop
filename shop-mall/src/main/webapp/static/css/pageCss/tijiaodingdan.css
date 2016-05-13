@@ -23,6 +23,7 @@
   -webkit-box-align: center;
   -webkit-box-pack: justify;
   position: relative;
+  margin-top: 5px;
 }
 .wrap .sec1 img {
   display: inline-block;
@@ -61,7 +62,7 @@
 .wrap .sec2 {
   width: 100%;
   height: 78px;
-  margin-top: 5px;
+  margin-top: 10px;
   background: white;
   display: -webkit-box;
   -webkit-box-align: center;
@@ -75,7 +76,7 @@
 .wrap .sec2 .photo img {
   display: block;
   width: 62px;
-  height: 55px;
+  height: 62px;
 }
 .wrap .sec2 div {
   -webkit-box-flex: 1;
@@ -135,7 +136,7 @@
 }
 .wrap .sec3 p span,
 .wrap .sec3 p b {
-  color: #f73c8c;
+  color: #666;
   display: block;
   margin-right: 10px;
   font-size: 12px;
@@ -147,7 +148,7 @@
   width: 100%;
   color: #666666;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 10px;
   background: #fff;
   padding: 10px 0 0px 0;
 }

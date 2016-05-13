@@ -31,15 +31,17 @@
             <span>${comUser.wxNkName}</span>
         </h1>
     </div>
-    <div>
+    <div class="phone">
         <p>手机号</p>
         <c:if test="${comUser.isBinding!=1}">
             <p onclick=validateCodeJS.applyTrial("mallPersonalInfo")>绑定手机号</p>
         </c:if>
         <c:if test="${comUser.isBinding==1}">
-            <p>${comUser.mobile}(已绑定)</p>
+            <p>${comUser.mobile}<b>(已绑定)</b></p>
         </c:if>
     </div>
+    <p>Copyright2015-2016  麦链合伙人  iimai.com<br/>
+        北京麦士网络科技有限公司</p>
 </div>
 <div class="back_j" style="display: none">
     <span class="close">×</span>

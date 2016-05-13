@@ -39,8 +39,7 @@
   -webkit-box-orient: vertical;
 }
 .wrap .sec1 div h2 span {
-  float: right;
-  margin-right: 40%;
+  margin-left: 10px;
   font-size: 12px;
 }
 .wrap .sec1 div p {
@@ -148,31 +147,26 @@
   width: 100%;
   color: #666666;
   text-align: center;
-  margin-top: 10px;
   background: #fff;
-  padding: 10px 0 0px 0;
+  padding: 10px;
+  margin-top: 10px;
 }
 .wrap .sec3 h1 span {
   color: #f73c8c;
   padding-right: 10px;
 }
-.wrap .sec4 {
-  width: 100%;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  background: white;
-  padding: 0px 0 10px 0;
-}
-.wrap .sec4 p {
+.wrap .sec3 h2 {
   font-size: 12px;
   color: #999;
+  text-align: right;
+  padding: 8px;
+  background: #fff;
+  border-bottom: 1px solid #f6f6f6;
 }
-.wrap .sec4 span {
+.wrap .sec3 h2 span {
   font-size: 12px;
 }
-.wrap .sec4 b {
+.wrap .sec3 h2 b {
   font-size: 12px;
 }
 .wrap .weixin {

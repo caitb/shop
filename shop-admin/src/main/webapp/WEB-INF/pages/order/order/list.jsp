@@ -493,7 +493,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.pfBorder && row.pfBorder.orderStatus == 3){
+                            if(row.sfOrder && row.sfOrder.orderStatus == 3){
                                 arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
                             }
                             return arr.join('');
@@ -503,12 +503,45 @@
                                 parent.window.$('#myTabbable').add('order-detail-'+row.sfOrder.id, '店铺订单明细', '<%=basePath%>order/order/detail.shtml?orderId='+ row.sfOrder.id);
                             },
                             'click .tuihuo': function(e, value, row, index){
-                                $("#bootbox-confirm").on(ace.click_event, function() {
-                                    bootbox.confirm("您确定要退货吗?", function(result) {
-                                        if(result) {
-                                            //
-                                        }
-                                    });
+                                bootbox.confirm("您确定要退货吗?", function(result) {
+                                    if(result) {
+                                        // 退货
+                                        var options = {
+                                            url: '<%=basePath%>order/order/sfOrderRefund.do',
+                                            type: 'POST',
+                                            data: {orderId : row.sfOrder.id},
+                                            dataType: "json",
+                                            success: function(msg){
+                                                if(msg.resCode == "0"){
+                                                    $.gritter.add({
+                                                        title: '操作提示',
+                                                        text: "订单退货成功",
+                                                        class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                    });
+                                                } else {
+                                                    var resText = "";
+                                                    if(msg.resMsg == "" || msg.resMsg == undefined){
+                                                        resText = "网络错误";
+                                                    } else {
+                                                        resText = msg.resMsg;
+                                                    }
+                                                    $.gritter.add({
+                                                        title: '操作提示',
+                                                        text: resText,
+                                                        class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                    });
+                                                }
+                                            },
+                                            error:function(){
+                                                $.gritter.add({
+                                                    title: '操作提示',
+                                                    text: "网络错误",
+                                                    class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                                                });
+                                            }
+                                        };
+                                        $.ajax(options);
+                                    }
                                 });
                             }
                         }

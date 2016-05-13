@@ -130,13 +130,16 @@ public class SfOrderController extends BaseController {
 
             // 退货service执行
             orderService.sfOrderRefund(oid, res);
-
         } catch (Exception e) {
             log.error("小铺订单退货失败:" + e.getMessage());
             if(!(e instanceof BusinessException)){
                 res.put("resCode", -1);
                 res.put("resMsg", "网络错误");
             }
+        }
+        if(StringUtils.isBlank(res.getString("resCode"))){
+            res.put("resCode", -1);
+            res.put("resMsg", "网络错误");
         }
         return res.toJSONString();
     }

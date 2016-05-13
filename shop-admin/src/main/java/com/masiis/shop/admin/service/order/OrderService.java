@@ -263,6 +263,8 @@ public class OrderService {
             sfShop.setShipAmount(sfShop.getShipAmount().subtract(order.getShipAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
             if(shopRes != 1){
+                res.put("resCode", 6);
+                res.put("resMsg", "该订单退货失败,请重试");
                 throw new BusinessException("退货修改店铺总销售额失败");
             }
             log.info("店铺修改店铺的总销售额");
@@ -307,6 +309,8 @@ public class OrderService {
                 //如果还没有库存信息直接初始化库存
                 pfUserSkuStock.setStock(pfUserSkuStock.getStock() + item.getQuantity());
                 if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
+                    res.put("resCode", 6);
+                    res.put("resMsg", "该订单退货失败,请重试");
                     throw new BusinessException("退货增加用户平台库存失败");
                 }
             }
@@ -324,6 +328,8 @@ public class OrderService {
 
             int result = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
             if(result != 1){
+                res.put("resCode", 6);
+                res.put("resMsg", "该订单退货失败,请重试");
                 throw new BusinessException("小铺店主account修改失败!");
             }
             // 插入变动记录
@@ -354,6 +360,8 @@ public class OrderService {
                 sfRecordMapper.insert(sfRecord);
                 int resNum = sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
                 if(resNum != 1){
+                    res.put("resCode", 6);
+                    res.put("resMsg", "该订单退货失败,请重试");
                     throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
                 }
 
@@ -371,6 +379,9 @@ public class OrderService {
             sfOrderOperationLog.setSfOrderId(order.getId());
             sfOrderOperationLog.setRemark("小铺订单退货");
             sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+
+            res.put("resCode", 0);
+            res.put("resMsg", "该订单退货完成");
             log.info("小铺订单退货完成");
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -19,7 +19,7 @@
         where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="po.PfSkuStockLog" >
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuStockLog" >
         insert into pf_sku_stock_log (id, create_time, pf_sku_stock_id, 
             spu_id, sku_id, prev_stock, 
             next_stock, type, bill_id, 
@@ -30,7 +30,7 @@
             #{remark,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="po.PfSkuStockLog" >
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuStockLog" >
         update pf_sku_stock_log
         set create_time = #{createTime,jdbcType=TIMESTAMP},
             pf_sku_stock_id = #{pfSkuStockId,jdbcType=INTEGER},

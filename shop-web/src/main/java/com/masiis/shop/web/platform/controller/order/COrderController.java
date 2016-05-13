@@ -134,16 +134,16 @@ public class COrderController extends BaseController {
      */
     @RequestMapping(value = "/weChatCallBackSuccess.shtml")
     public String weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
-                                        @RequestParam(value = "skuId", required = true) Integer skuId,
-                                        @RequestParam(value = "addressId", required = true) Long addressId,
+                                        @RequestParam(value = "pfCorderId", required = false) Long pfCorderId,
+                                        @RequestParam(value = "skuId", required = false) Integer skuId,
+                                        @RequestParam(value = "addressId", required = false) Long addressId,
                                         Model model)throws Exception {
         try {
-            model = getOrderInfo(request, model, skuId, addressId);
+/*            model = getOrderInfo(request, model, skuId, addressId);
             model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
             model.addAttribute("pfCorderId",pfCorderId);
             model.addAttribute("skuId",skuId);
-            model.addAttribute("addressId",addressId);
+            model.addAttribute("addressId",addressId);*/
         } catch (Exception e) {
             e.getStackTrace();
         }

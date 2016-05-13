@@ -37,7 +37,7 @@
     <nav>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
-                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"><b></b></span>
+                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:23px;"><b></b></span>
                 <span>我的订单</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
@@ -65,7 +65,7 @@
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt="" style="width: 25px;"></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">

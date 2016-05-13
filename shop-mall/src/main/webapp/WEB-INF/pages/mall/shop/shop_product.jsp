@@ -46,7 +46,7 @@
             <%--<span>${skuInfo.shipAmount}</span></p>--%>
         <%--</c:if>--%>
         <p>总销量：<b>${skuInfo.saleNum}</b></p>
-        <p>分享量：<b>${skuInfo.shareNum}</b></p>
+        <%--<p>分享量：<b>${skuInfo.shareNum}</b></p>--%>
     </div>
     <div class="dlpople" onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">
         <p>选择： 数量</p>

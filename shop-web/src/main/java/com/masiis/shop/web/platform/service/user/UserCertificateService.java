@@ -59,6 +59,8 @@ public class UserCertificateService {
             for (CertificateInfo certificateInfo : certificateInfoList) {
                 if (certificateInfo.getPid() != 0) {
                     certificateInfo.setUpperName(comUserMapper.selectByPrimaryKey(certificateInfo.getUserPid()).getRealName());
+                }else{
+                    certificateInfo.setUpperName("平台");
                 }
                 PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserSkuId(certificateInfo.getId());
                 if (pfUserCertificate == null) {
@@ -88,6 +90,7 @@ public class UserCertificateService {
             ComUser comUser = comUserMapper.selectByPrimaryKey(certificateMapper.get(certificateInfo.getPid()).getUserId());
             pfc.setSjName(comUser.getRealName());
         }
+        pfc.setSjName("平台");
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
         pfc.setImgUrl(ctValue + pfc.getImgUrl());
         String beginTime = DateUtil.Date2String(pfc.getBeginTime(), "yyyy-MM-dd hh:mm:ss", null);

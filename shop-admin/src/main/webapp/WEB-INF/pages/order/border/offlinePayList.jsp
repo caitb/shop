@@ -133,7 +133,7 @@
                                                         </div>
 
                                                         <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 实付金额 </div>
+                                                            <div class="profile-info-name"> 应付金额 </div>
 
                                                             <div class="profile-info-value">
                                                                 <span class="" id="payAmount"> </span>
@@ -484,7 +484,7 @@
                             },
                             'click .receipt': function(e, value, row, index){
                                 $('#orderCode2').html(row.pfBorder.orderCode);
-                                $('#payAmount').html(row.pfBorder.payAmount);
+                                $('#payAmount').html(row.pfBorder.receivableAmount);
                                 $('#bOrderId').val(row.pfBorder.id);
                                 $('#outOrderId').val('');
                                 $('#modal-receipt').modal('show');

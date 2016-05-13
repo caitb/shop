@@ -102,8 +102,8 @@ public class OrderQueueTimeDealService {
         }
         if (dealOrder){
             bOrderPayService.saveBOrderSendType(pfBorder);
+            this.sendMessage(pfBorder,orderItems);
         }
-        this.sendMessage(pfBorder,orderItems);
     }
 
     /**

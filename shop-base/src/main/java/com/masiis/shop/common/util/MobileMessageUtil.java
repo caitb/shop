@@ -372,13 +372,14 @@ public class MobileMessageUtil {
      * @return
      */
     public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
-        content = new String[4];
+        content = new String[5];
         content[0] = orderCode;
         DecimalFormat format = new DecimalFormat("0.00");
         String a = format.format(new BigDecimal(amount));
         content[1] = "￥" + a;
         content[2] = date;
         content[3] = mes;
+        content[4] = SMSConstants.consumerHotline;
         return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
     }
 
@@ -397,6 +398,6 @@ public class MobileMessageUtil {
 
 //    public static void main(String[] args){
 //        MobileMessageUtil.getInitialization("B").addStockSuccess("18911155707",1,"3");
-//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
+//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18911155707","B16051218360168","100","2016-05-13","可口可乐");
 //    }
 }

@@ -1,4 +1,4 @@
-package com.masiis.shop.admin.service.product;
+package com.masiis.shop.scheduler.platform.service.product;
 
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;

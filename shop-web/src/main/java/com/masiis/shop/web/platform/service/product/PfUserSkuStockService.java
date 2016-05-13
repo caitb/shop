@@ -87,13 +87,6 @@ public class PfUserSkuStockService {
                 afterStock -= change;
                 fronzeStock -= change;
                 break;
-            case Supplement:
-                afterStock += change;
-                break;
-            case downTake:
-                afterStock -= change;
-                fronzeStock -= change;
-                break;
             case shopOrder:
                 afterStock -= change;
                 fronzeStock -= change;

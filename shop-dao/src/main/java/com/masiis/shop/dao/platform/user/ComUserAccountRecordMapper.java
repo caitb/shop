@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.ComUserAccountRecord;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,5 +27,7 @@ public interface ComUserAccountRecordMapper {
 
     List<ComUserAccountRecord> selectByUserId(Long userId);
 
-    ComUserAccountRecord selectByUserAndTypeAndBillId(Long id, Integer code, Long id1);
+    ComUserAccountRecord selectByUserAndTypeAndBillId(@Param("userId") Long userId,
+                                                      @Param("feeType") Integer feeType,
+                                                      @Param("billId") Long billId);
 }

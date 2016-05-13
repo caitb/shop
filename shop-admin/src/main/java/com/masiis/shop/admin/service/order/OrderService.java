@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -26,6 +27,7 @@ import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -212,6 +214,7 @@ public class OrderService {
      * @param oid
      * @param res
      */
+    @Transactional
     public void sfOrderRefund(Long oid, JSONObject res) {
         try{
             if(oid == null || oid.longValue() <= 0){
@@ -240,7 +243,6 @@ public class OrderService {
             // 开始退货逻辑
             log.info("开始退货逻辑......");
 
-            List<SfOrderItem> orderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
             //  获取店主用户
             ComUser shopKeeper = comUserMapper.selectByPrimaryKey(order.getShopUserId());
             // 计算店主待结算中金额(减去分润,减去运费)
@@ -299,6 +301,14 @@ public class OrderService {
                         fenRunUserSet.add(userId);
                     }
                 }
+
+                // 按照订单子项回退库存
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(shopKeeper.getId(), item.getSkuId());
+                //如果还没有库存信息直接初始化库存
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + item.getQuantity());
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
+                    throw new BusinessException("退货增加用户平台库存失败");
+                }
             }
             // 计算店主此次总利润回退
             ComUserAccountRecord profitBefore = comUserAccountRecordMapper.selectByUserAndTypeAndBillId(shopKeeper.getId(),
@@ -327,7 +337,7 @@ public class OrderService {
             for(Long sfUserId:fenRunUserSet){
                 SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserId);
                 // 查询之前的分润记录
-                SfUserAccountRecord before = sfBillItemMapper.selectByUserIdAndSourceIdAndFeeType(sfUserId, order.getId(), 0);
+                SfUserAccountRecord before = sfBillItemMapper.selectByUserIdAndSourceIdAndSubType(sfUserId, order.getId(), 0);
                 if(before == null){
                     throw new BusinessException();
                 }
@@ -350,22 +360,22 @@ public class OrderService {
                 log.info("分润金额回退成功,用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
             }
 
-            /*// 订单退货,库存回退
-            for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
-
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
-                //如果还没有库存信息直接初始化库存
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
-                    throw new BusinessException("增加用户平台库存失败");
-                }
-            }*/
-
+            // 修改订单状态
+            order.setOrderStatus(SfOrderStatusEnum.ORDER_REFUNDED.getCode());
+            sfOrderMapper.updateByPrimaryKey(order);
+            // 添加订单操作日志
+            SfOrderOperationLog sfOrderOperationLog = new SfOrderOperationLog();
+            sfOrderOperationLog.setCreateMan(0l);
+            sfOrderOperationLog.setCreateTime(new Date());
+            sfOrderOperationLog.setSfOrderStatus(SfOrderStatusEnum.ORDER_REFUNDED.getCode());
+            sfOrderOperationLog.setSfOrderId(order.getId());
+            sfOrderOperationLog.setRemark("小铺订单退货");
+            sfOrderOperationLogMapper.insert(sfOrderOperationLog);
+            log.info("小铺订单退货完成");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);
         }
-
     }
 
     private SfUserBillItem createSfUserBillItemByType(SfOrder order, SfUserAccount sfUserAccount, BigDecimal fee, Date opTime) {

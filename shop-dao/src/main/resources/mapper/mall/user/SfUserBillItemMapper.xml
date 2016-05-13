@@ -70,4 +70,13 @@
         AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectByUserIdAndSourceIdAndFeeType" resultMap="BaseResultMap" >
+        select id, com_user_id, create_time, create_man, sf_user_bill_id, source_id, item_type,
+        item_sub_type, source_create_time, amount, is_count, remark
+        from sf_user_bill_item
+        WHERE com_user_id = #{userId,jdbcType=BIGINT}
+        AND source_id = #{sourceId,jdbcType=BIGINT}
+        AND item_sub_type = #{subType,jdbcType=INTEGER}
+    </select>
+
 </mapper>

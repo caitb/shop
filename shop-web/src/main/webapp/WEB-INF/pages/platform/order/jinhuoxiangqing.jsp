@@ -50,7 +50,7 @@
                     <p>亲，您的订单排单中~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==9}">
-                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>排单中</h1>
+                    <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>线下支付中</h1>
                     <p>亲，您选择的是线下支付，请及时付款~~</p>
                 </c:if>
             </div>

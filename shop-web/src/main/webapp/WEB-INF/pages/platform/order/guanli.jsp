@@ -30,6 +30,16 @@
                 </section>
             </div>
         </div>
+       <div class="back"></div>
+       <div class="back_shouhuo" style="display: none">
+           <input id="confirmDeleteAddressId" value="" type="hidden"/>
+           <p>删除地址</p>
+           <h4>亲，您确定要删除地址?</h4>
+           <h3>
+               <span class="que_qu" onclick="hideConfirm()">取消</span>
+               <span class="que_que" onclick="confirmDelete()">确认</span>
+           </h3>
+       </div>
     </main>
 </body>
 <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
@@ -51,29 +61,39 @@
         })
     }
     function deleteAddress(id){
+        $(".back_shouhuo").show();
+        $(".back").show();
+        $("#confirmDeleteAddressId").val(id);
+    }
+    function confirmDelete(){
+        var id = $("#confirmDeleteAddressId").val();
         var defaultAddressId = $("#defaultAddressId").val();
-        if(confirm("确定要删除地址?")){
-            $.post("/userAddress/deleteUserAddressById.do",{
-                "id":id,
-                "defaultAddressId":defaultAddressId
-            },function(data){
-                if(data==-1){
-                    //删除的不是默认地址
-                    $("#selection_"+id+"").remove();
-                }else  if (data!=0&&data!=-1){
-                    //删除的是默认地址，将最新的地址设置为默认地址
-                    $("#selection_"+id+"").remove();
-                    $("#p_"+data+"").addClass("pon");
-                }else{
-                    //删除地址失败
-                    alert("删除失败");
-                }
-                if ($(".sec1").length==0){
-                    //显示没有收获地址的提示信息
-                    $(".pp").css("display","-webkit-box");
-                }
-            })
-        }
+        $.post("/userAddress/deleteUserAddressById.do",{
+            "id":id,
+            "defaultAddressId":defaultAddressId
+        },function(data){
+            if(data==-1){
+                //删除的不是默认地址
+                $("#selection_"+id+"").remove();
+            }else  if (data!=0&&data!=-1){
+                //删除的是默认地址，将最新的地址设置为默认地址
+                $("#selection_"+id+"").remove();
+                $("#p_"+data+"").addClass("pon");
+            }else{
+                //删除地址失败
+                alert("删除失败");
+            }
+            if ($(".sec1").length==0){
+                //显示没有收获地址的提示信息
+                $(".pp").css("display","-webkit-box");
+            }
+            hideConfirm();
+        })
+
+    }
+    function hideConfirm(){
+        $(".back_shouhuo").hide();
+        $(".back").hide();
     }
     function editAddress(id){
         var addAddressJumpType = $("#addAddressJumpTypeId").val();

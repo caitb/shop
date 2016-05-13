@@ -91,7 +91,7 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("borderNum", borderNum);//订单数量
 //        modelAndView.addObject("forcusPF",forcusPF);
         modelAndView.addObject("num", num);//订单数量
-//        modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
+        modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
         modelAndView.addObject("urls", urls);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);

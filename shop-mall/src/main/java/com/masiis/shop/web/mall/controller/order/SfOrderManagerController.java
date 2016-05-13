@@ -239,9 +239,9 @@ public class SfOrderManagerController extends BaseController {
         }
         SfUserAccount accountByUserId = sfUserAccountService.findAccountByUserId(user.getId());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("sfOrders0", sfOrders0.size());
-        modelAndView.addObject("sfOrders7", sfOrders7.size());
-        modelAndView.addObject("sfOrders8", sfOrders8.size());
+        modelAndView.addObject("sfOrders0", sfOrders0.size()+sfOrders8.size());
+//        modelAndView.addObject("sfOrders7", sfOrders7.size());
+//        modelAndView.addObject("sfOrders8", sfOrders8.size());
         modelAndView.addObject("cumulativeFee", accountByUserId.getCountingFee());
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());

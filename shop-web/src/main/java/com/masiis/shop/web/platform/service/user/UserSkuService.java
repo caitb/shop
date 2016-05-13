@@ -11,6 +11,7 @@ import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.web.platform.constants.SysConstants;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class UserSkuService {
     @Resource
     private UserSkuService userSkuService;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
@@ -148,7 +149,7 @@ public class UserSkuService {
         }
         //拿货方式: 0,未选择; 1,平台代发; 2,自己发货
         if (pUser.getSendType() == 2) {
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUser.getId(), skuId);
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pUser.getId(), skuId);
             if (pfUserSkuStock == null) {
                 throw new BusinessException("您的推荐人商品库存不足!");
             }

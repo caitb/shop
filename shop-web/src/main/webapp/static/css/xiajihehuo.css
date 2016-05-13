@@ -38,13 +38,13 @@
   background: white;
   background-size: 3%;
   margin-bottom: 10px;
-  padding: 5px 0;
+  padding: 10px 0;
   position: relative;
 }
 .wrap main .sec1 > p {
   overflow: hidden;
   padding: 4px;
-  border-radius: 5px;
+  border-radius: 1px;
   box-shadow: 1px 1px 1px 1px #e2e2e2;
   margin: 0 10px;
 }
@@ -59,7 +59,7 @@
 }
 .wrap main .sec1 div p:nth-child(1) {
   margin-bottom: 8px;
-  margin-top: -20px;
+  margin-top: -4px;
 }
 .wrap main .sec1 div p {
   display: block;
@@ -79,16 +79,17 @@
   color: #666;
   font-size: 12px;
 }
-.wrap main .sec1>h1.admin{
+.wrap main .sec1>h1.set{
   border: 1px solid #f74a11;
   color: #f74a11;
   font-size: 12px;
-  padding: 2px 5px;
   border-radius: 2px;
   position: absolute;
   bottom: 5px;
   right: 10px;
-  display: none;
+  display:block;
+  width:60px;
+  text-align: center;
 }
 .wrap main .sec1>h1.team{
   position: absolute;
@@ -98,5 +99,7 @@
 }
 .wrap main .sec1>h1.team img{
   display: inline-block;
-
+  width: 15px;
+  float: right;
+  margin: 0px 0 0 5px;
 }

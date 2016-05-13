@@ -350,6 +350,17 @@ public class OrderService {
                 log.info("分润金额回退成功,用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
             }
 
+            /*// 订单退货,库存回退
+            for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(pfBorder.getId())) {
+
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pfBorder.getUserId(), pfBorderItem.getSkuId());
+                //如果还没有库存信息直接初始化库存
+                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
+                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
+                    throw new BusinessException("增加用户平台库存失败");
+                }
+            }*/
+
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);

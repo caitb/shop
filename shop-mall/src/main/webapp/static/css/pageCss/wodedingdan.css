@@ -112,9 +112,6 @@
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-orient: vertical;
   margin-left: 12px;
 }
 .wrap .box main .all .sec1 .shangpin div h2 {
@@ -232,7 +229,7 @@
 }
 .back_que p {
   margin: 0 10px;
-  color: #F74A11;
+  color: #f73c8c;
   border-bottom: 1px solid #F74A11;
   line-height: 50px;
   margin-bottom: 10px;
@@ -300,8 +297,8 @@
 }
 .shouhuo p {
   margin: 0 10px;
-  color: #F74A11;
-  border-bottom: 1px solid #F74A11;
+  color: #f73c8c;
+  border-bottom: 1px solid #f73c8c;
   line-height: 50px;
   margin-bottom: 10px;
   text-indent: 10px;
@@ -355,8 +352,8 @@
 }
 .back_shouhuo p {
   margin: 0 10px;
-  color: #F74A11;
-  border-bottom: 1px solid #F74A11;
+  color: #F73c8c;
+  border-bottom: 1px solid #F73c8c;
   line-height: 50px;
   margin-bottom: 10px;
   text-indent: 10px;
@@ -385,6 +382,6 @@
 }
 .back_shouhuo h3 span:nth-child(2) {
   margin-right: 10%;
-  background: #F74A11;
+  background: #F73c8c;
   color: white;
 }

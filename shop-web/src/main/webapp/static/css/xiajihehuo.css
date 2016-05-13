@@ -79,16 +79,17 @@
   color: #666;
   font-size: 12px;
 }
-.wrap main .sec1>h1.admin{
+.wrap main .sec1>h1.set{
   border: 1px solid #f74a11;
   color: #f74a11;
   font-size: 12px;
-  padding: 2px 5px;
   border-radius: 2px;
   position: absolute;
   bottom: 5px;
   right: 10px;
-  display: none;
+  display:block;
+  width:60px;
+  text-align: center;
 }
 .wrap main .sec1>h1.team{
   position: absolute;

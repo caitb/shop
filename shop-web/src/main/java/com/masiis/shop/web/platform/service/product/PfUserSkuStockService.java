@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.product;
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
+import com.masiis.shop.dao.platform.product.PfUserSkuStockLogMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.dao.po.PfUserSkuStockLog;
@@ -21,7 +22,10 @@ import java.util.Date;
 public class PfUserSkuStockService {
     private Logger log = Logger.getLogger(this.getClass());
 
+    @Resource
     private PfUserSkuStockMapper userSkuStockMapper;
+    @Resource
+    private PfUserSkuStockLogMapper userSkuStockLogMapper;
 
     public void updateUserSkuStockWithLog(Integer change, PfUserSkuStock stock, Long billId, UserSkuStockLogType handleType){
         Integer beforeStock = stock.getStock();
@@ -35,11 +39,12 @@ public class PfUserSkuStockService {
         }
 
         PfUserSkuStockLog stockLog = createPfUserSkuStockLog(stock, beforeStock, afterStock, handleType, billId);
-
+        userSkuStockLogMapper.insert(stockLog);
     }
 
     private PfUserSkuStockLog createPfUserSkuStockLog(PfUserSkuStock stock, Integer beforeStock, Integer afterStock, UserSkuStockLogType handleType, Long billId) {
         PfUserSkuStockLog res = new PfUserSkuStockLog();
+
         res.setBillId(billId);
         res.setCreateTime(new Date());
         res.setPfUserSkuStockId(stock.getId());
@@ -48,7 +53,8 @@ public class PfUserSkuStockService {
         res.setSkuId(stock.getSkuId());
         res.setSpuId(stock.getSpuId());
         res.setUserId(stock.getUserId());
-
+        res.setType(handleType.getCode());
+        res.setRemark(handleType.getDesc());
 
         return res;
     }

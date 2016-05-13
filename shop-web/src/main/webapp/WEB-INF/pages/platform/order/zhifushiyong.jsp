@@ -50,7 +50,7 @@
     </section>
     <section class="sec4">
         <p>试用运费：<b>￥${product.shipAmount}</b></p>
-        <p>共支付：<span>￥${product.shipAmount}</span></p>
+        <p>共需支付：<span>￥${product.shipAmount}</span></p>
     </section>
     <c:if test="${payIdentity == 0}">
         <a href="javascript:weChatPay();" class="weixin">微信支付</a>

@@ -180,7 +180,7 @@ public class DevelopingController extends BaseController {
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
                     contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"级合伙人，赚了不少钱，邀请你也来，长按二维码识别即可";
+                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可";
                     drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     //删除本地二维码图片
                     new File(qrcodePath).delete();

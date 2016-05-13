@@ -121,7 +121,7 @@
                         </c:if>
                         <c:if test="${user.auditStatus == 3}">
                             <td><a href="javascript:void(0);" onclick="reSubmitIdentityAuth();"
-                                   style="color: #FF5200;text-decoration: underline">已拒绝重新提交</a></td>
+                                   style="color: #FF5200;text-decoration: underline">重新提交</a></td>
                         </c:if>
                         <c:if test="${user.auditStatus == 0}">
                             <td><a href="javascript:void(0);" onclick="goVerified();"

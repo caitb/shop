@@ -30,7 +30,7 @@ public interface SfUserBillItemMapper {
                                              @Param("start") Date start,
                                              @Param("end") Date end);
 
-    SfUserAccountRecord selectByUserIdAndSourceIdAndFeeType(@Param("userId") Long userId,
+    SfUserAccountRecord selectByUserIdAndSourceIdAndSubType(@Param("userId") Long userId,
                                                             @Param("sourceId") Long sourceId,
-                                                            @Param("feeType") Integer feeType);
+                                                            @Param("subType") Integer subType);
 }

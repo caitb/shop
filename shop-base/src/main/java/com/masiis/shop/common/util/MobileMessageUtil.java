@@ -3,6 +3,9 @@ package com.masiis.shop.common.util;
 import com.masiis.shop.common.constant.SMSConstants;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 /**
  * MobileMessageUtil
  *
@@ -28,12 +31,12 @@ public class MobileMessageUtil {
     private MobileMessageUtil(String fromIdentify){
         this.fromIdentify = fromIdentify;
         System.out.println("发送短信请求来源：" + this.fromIdentify + "端");
-        if ("B".equals(this.fromIdentify)){
-            EVENING_MESSAGE = "关注麦链合伙人公众账号，查看最新状态";
-        }
-        if ("C".equals(this.fromIdentify)){
-            EVENING_MESSAGE = "关注麦链商城众账号，查看最新状态";
-        }
+//        if ("B".equals(this.fromIdentify)){
+//            EVENING_MESSAGE = "关注麦链合伙人公众账号，查看最新状态";
+//        }
+//        if ("C".equals(this.fromIdentify)){
+//            EVENING_MESSAGE = "关注麦链商城众账号，查看最新状态";
+//        }
     }
 
     /**
@@ -371,7 +374,9 @@ public class MobileMessageUtil {
     public boolean offlinePaymentsRemind(String phone, String orderCode, String amount, String date, String mes){
         content = new String[4];
         content[0] = orderCode;
-        content[1] = amount;
+        DecimalFormat format = new DecimalFormat("0.00");
+        String a = format.format(new BigDecimal(amount));
+        content[1] = "￥" + a;
         content[2] = date;
         content[3] = mes;
         return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
@@ -390,8 +395,8 @@ public class MobileMessageUtil {
         }
     }
 
-//    public static void main(String[] args){
+    public static void main(String[] args){
 //        MobileMessageUtil.getInitialization("B").addStockSuccess("18911155707",1,"3");
-//        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
-//    }
+        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18800175968","1111","222","sdfsdf","sdfsdf");
+    }
 }

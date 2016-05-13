@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -47,9 +48,10 @@ public class SkuAgentService {
      */
 
     public String getSkuAgentLevel(Integer skuId) {
-        Double maxBail = pfSkuAgentMapper.selectMaxBail(skuId);
-        Double minBail = pfSkuAgentMapper.selectMinBail(skuId);
-        String bail = String.valueOf(minBail)+"-"+String.valueOf(maxBail);
+        BigDecimal maxBail = pfSkuAgentMapper.selectMaxBail(skuId);
+        BigDecimal minBail = pfSkuAgentMapper.selectMinBail(skuId);
+
+        String bail = minBail.toString() +"-"+ maxBail.toString();
         return bail;
     }
 

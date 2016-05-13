@@ -23,22 +23,6 @@ public enum UserSkuStockLogType {
         public String getDesc() {
             return "下级合伙";
         }
-    }, Supplement {
-        public Integer getCode() {
-            return 2;
-        }
-
-        public String getDesc() {
-            return "补货";
-        }
-    },Take{
-        public Integer getCode() {
-            return 3;
-        }
-
-        public String getDesc() {
-            return "拿货";
-        }
     },shopOrder{
         public Integer getCode() {
             return 4;

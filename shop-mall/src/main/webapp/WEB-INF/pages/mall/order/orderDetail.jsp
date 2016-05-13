@@ -16,7 +16,7 @@
 </head>
 <body>
 <header>
-    <a href="<%=path%>/orderPay/paySuccessCallBack.html?orderId=${order.id}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+    <a href="${path}/orderPay/paySuccessCallBack.html?orderId=${order.id}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
     <p>订单详情</p>
 </header>
 <div class="wrap">
@@ -61,7 +61,6 @@
     </section>
     <div class="back"></div>
     <div class="sec6">
-        <p><a onclick="returnHomePage()">返回首页</a></p>
         <p><a onclick="contactSeller()">联系卖家</a></p>
         <p><a onclick="askForInvoice()">索要发票</a></p>
     </div>
@@ -101,9 +100,6 @@
     function closeShare(){
         $("#shareDivId").hide();
         $(".back").hide();
-    }
-    function returnHomePage(){
-        window.location.href="${mallDomainNameAddress}/${order.shopId}/${userPid}/shop.shtml";
     }
 </script>
 </body>

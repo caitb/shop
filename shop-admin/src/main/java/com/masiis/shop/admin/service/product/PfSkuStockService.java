@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.service.product;
+package com.masiis.shop.admin.service.product;
 
 import com.masiis.shop.common.enums.product.SkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;

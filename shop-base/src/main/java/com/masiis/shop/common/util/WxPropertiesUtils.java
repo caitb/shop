@@ -1,7 +1,6 @@
 package com.masiis.shop.common.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -20,7 +19,7 @@ public class WxPropertiesUtils {
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
-    private static Logger logger = LoggerFactory.getLogger(WxPropertiesUtils.class);
+    private static final Logger logger = Logger.getLogger(WxPropertiesUtils.class);
 
     private static PropertiesPersister propertiesPersister = new DefaultPropertiesPersister();
     private static ResourceLoader resourceLoader = new DefaultResourceLoader();

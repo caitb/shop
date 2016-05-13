@@ -201,8 +201,8 @@ public class SfShopController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 20));
         g.setColor(new Color(51, 51, 51));
-        g.drawString("该二维码有效期为", 180, 550);
-        g.drawString(startTime+"-"+endDate, 150, 580);
+        g.drawString("该二维码有效期为", 190, 550);
+        g.drawString(startTime+"-"+endDate, 165, 580);
 
         g.dispose();
 

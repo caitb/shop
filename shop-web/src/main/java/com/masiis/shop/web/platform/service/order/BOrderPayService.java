@@ -14,9 +14,7 @@ import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
-import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
+import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -91,6 +89,10 @@ public class BOrderPayService {
     private PfSupplierBankService supplierBankService;
     @Resource
     private BOrderOperationLogService bOrderOperationLogService;
+    @Resource
+    private PfSkuStockLogMapper pfSkuStockLogMapper;
+    @Resource
+    private PfUserSkuStockLogMapper pfUserSkuStockLogMapper;
 
     /**
      * 订单支付回调入口
@@ -417,6 +419,8 @@ public class BOrderPayService {
             if (pfBorder.getUserPid() == 0) {
                 PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
                 //减少平台库存
+                PfSkuStockLog pfSkuStockLog = new PfSkuStockLog();
+                pfSkuStockLog.setCreateTime(new Date());
                 pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
                 if (pfSkuStock.getStock() < 0) {
                     throw new BusinessException("库存不足，操作失败");

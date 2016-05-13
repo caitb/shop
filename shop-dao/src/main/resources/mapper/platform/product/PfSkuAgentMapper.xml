@@ -63,13 +63,13 @@
         from pf_sku_agent
     </select>
 
-    <select id="selectMaxBail" resultType="double" parameterType="java.lang.Integer">
+    <select id="selectMaxBail" resultType="DECIMAL" parameterType="java.lang.Integer">
         select MAX(bail)
         from pf_sku_agent
         where sku_id= #{skuId,jdbcType=INTEGER};
     </select>
 
-    <select id="selectMinBail" resultType="double" parameterType="java.lang.Integer">
+    <select id="selectMinBail" resultType="DECIMAL" parameterType="java.lang.Integer">
         select  MIN(bail)
         from pf_sku_agent
         where sku_id= #{skuId,jdbcType=INTEGER};

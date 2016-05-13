@@ -269,7 +269,6 @@ body {
 }
 .wrap main .sec5 p {
   margin: 0 10px;
-  font-size: 13px;
   font-size: 12px;
   /* padding: 5px 0; */
 }
@@ -283,8 +282,7 @@ body {
   width: 90px;
   height: 30px;
   border-radius: 5px;
-  margin-bottom: 20px;
-  background: #F74A11;
+  background: #f73c8c;
   text-align: center;
   line-height: 30px;
   color: white;
@@ -316,8 +314,8 @@ body {
 }
 .wrap .back .back_que p {
   margin: 0 10px;
-  color: #F74A11;
-  border-bottom: 1px solid #F74A11;
+  color: #f73c8c;
+  border-bottom: 1px solid #f73c8c;
   line-height: 30px;
   margin-bottom: 10px;
 }

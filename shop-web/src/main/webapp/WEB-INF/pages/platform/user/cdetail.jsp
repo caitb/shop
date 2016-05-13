@@ -20,7 +20,7 @@
 <body>
 <div class="wrap">
     <header class="xq_header">
-        <a href="javascript:window.history.go(-1);"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+        <a href="<%=basePath%>userCertificate/userList/${comUser.id}"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
 
         <p>授权书详情</p>
     </header>

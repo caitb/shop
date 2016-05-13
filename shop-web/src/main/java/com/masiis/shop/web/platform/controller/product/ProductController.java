@@ -77,8 +77,9 @@ public class ProductController extends BaseController {
         PfUserRelation pfUserRelation = pfUserRelationService.getRelation(user.getId(), skuId);//代理关系
         if(pfUserRelation==null){ //过滤非连接进入的用户
             productDetails.setIsUserByLink(1);
+        }else{
+            productDetails.setIsUserByLink(0);
         }
-        productDetails.setIsUserByLink(0);
         productDetails.setMaxDiscount(productService.getMaxDiscount(skuId));
         PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
         //订单信息

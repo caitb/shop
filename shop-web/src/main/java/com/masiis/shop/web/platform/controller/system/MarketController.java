@@ -77,7 +77,7 @@ public class MarketController extends BaseController {
                 //确定代理权限，显示优惠区间
                 indexCom.setMaxDiscount(productService.getMaxDiscount(indexCom.getSkuId()));
                 indexCom.setDiscountLevel("最高利润"+productService.getMaxDiscount(indexCom.getSkuId())+"%");
-                indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));
+                indexCom.setBailLevel(skuAgentService.getSkuAgentLevel(indexCom.getSkuId()));//保证金
 //            }else{
 //                indexCom.setDiscountLevel("成为合伙人可查看利润");
 //            }

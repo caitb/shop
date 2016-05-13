@@ -9,9 +9,11 @@
 .wrap > div:nth-child(1) p {
   width: 40px;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 24px;
   background: #fff;
   overflow: hidden;
+  border: 2px solid #fff;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.2);
 }
 .wrap > div:nth-child(1) p img {
   width: 100%;
@@ -33,6 +35,13 @@
   margin-top: 5px;
   padding: 10px 10px;
   background: white;
+}
+.wrap > div p{
+  font-size:12px;
+}
+.wrap > div p b{
+  font-size:12px;
+  color:#f73c8c;
 }
 body .back_j {
   width: 90%;
@@ -122,9 +131,21 @@ body .back {
   position: fixed;
   left: 0;
   top:0;
-   width: 100%;
-   height: 100%;
-   background-color: rgba(0, 0, 0, 0.4);
-   z-index: 5;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
   display: none;
+}
+.wrap > div.phone{
+  background: #fff url("/static/images/phone.png") no-repeat 14px;
+  background-size: 15px;
+  padding-left: 37px;
+  margin-top: 10px;
+}
+.wrap > p{
+  text-align:center;
+  font-size:12px;
+  color:#999;
+  margin-top:10em;
 }

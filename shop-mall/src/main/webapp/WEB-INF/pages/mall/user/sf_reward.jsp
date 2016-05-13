@@ -24,10 +24,12 @@
                 <li>
                     <p>${oneShare}人(${oneBuy}人购买)</p>
                     <p>一级分享</p>
+                    <span></span>
                 </li>
                 <li>
                     <p>${twoShare}人(${twoBuy}人购买)</p>
                     <p>二级分享</p>
+                    <span></span>
                 </li>
                 <li>
                     <p>${threeShare}人(${threeBuy}人购买)</p>

@@ -31,13 +31,13 @@
         </h1>
     </div>
     <div class="jiang">
-        <p>我的佣金</p>
+        <p>我的奖励</p>
         <h1>￥<span>${cumulativeFee}</span></h1>
     </div>
     <nav>
         <ul>
             <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
-                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:25px;"><c:if test="${sfOrders0!=0}"><b></b></c:if></span>
+                <span><img src="<%=path%>/static/images/my.png" alt="" style="width:23px;"><b></b></span>
                 <span>我的订单</span>
             </li>
             <li onclick="javascript:window.location.replace('<%=path%>/sfaccount/rewardHome.shtml');">
@@ -65,7 +65,7 @@
 <footer>
     <div>
         <p onclick="javascript:window.location.replace('<%=basePath%>${shopId}/${userPid}/shop.shtml');">
-            <span><img src="<%=path%>/static/images/footer%20(3).png" alt="" style="width: 25px;"></span>
+            <span><img src="<%=path%>/static/images/footer%20(3).png" alt=""></span>
             <span>首页</span>
         </p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">

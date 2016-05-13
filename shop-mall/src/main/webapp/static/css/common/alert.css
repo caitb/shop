@@ -13,28 +13,19 @@
     border-radius: 5px;
     text-align: center;
     overflow: hidden;;
-    z-index:999;
 }
 .alert h1{
-    padding:10px 10px;
-    font-size:12px;
-    font-weight: normal;
+    padding:20px 10px;
 }
-.alert img{
-    display: block;
-    width: 25px;
-    height: 25px;
-    float: left;
-    margin: 6px 0 0 20px;
-}
-
 .alert button{
     display: block;
-    width: 100%;
+    width: 80%;
     background: #fff;
-    padding: 5px 0;
-    border-top: 1px solid #ccc;
+    padding: 7px 0;
+    border:none;
+    border-top: 1px solid #f6f6f6;
     color: #007AFF;
+    margin: 0 auto;
 }
 .alert h2{
     text-align: center;

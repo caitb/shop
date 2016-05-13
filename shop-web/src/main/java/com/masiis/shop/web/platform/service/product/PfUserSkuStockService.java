@@ -24,7 +24,7 @@ import java.util.Map;
 public class PfUserSkuStockService {
     private Logger log = Logger.getLogger(this.getClass());
     @Resource
-    private PfUserSkuStockService pfUserSkuStockService;
+    private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private PfUserSkuStockLogMapper userSkuStockLogMapper;
 
@@ -102,7 +102,7 @@ public class PfUserSkuStockService {
                 afterStock += change;
                 break;
             default:
-                throw new BusinessException("该操作类型不支持");
+                throw new BusinessException();
         }
 
         before.setStock(afterStock);
@@ -124,7 +124,7 @@ public class PfUserSkuStockService {
      * @return
      */
     public PfUserSkuStock selectByUserIdAndSkuId(Long userId, Integer skuId) {
-        return pfUserSkuStockService.selectByUserIdAndSkuId(userId, skuId);
+        return pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, skuId);
     }
 
     /**
@@ -134,30 +134,30 @@ public class PfUserSkuStockService {
      * @return
      */
     public int updateByIdAndVersion(PfUserSkuStock pfUserSkuStock) {
-        return pfUserSkuStockService.updateByIdAndVersion(pfUserSkuStock);
+        return pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
     }
 
     public int insert(PfUserSkuStock pfUserSkuStock) {
-        return pfUserSkuStockService.insert(pfUserSkuStock);
+        return pfUserSkuStockMapper.insert(pfUserSkuStock);
     }
 
     public int deleteByPrimaryKey(Long id) {
-        return pfUserSkuStockService.deleteByPrimaryKey(id);
+        return pfUserSkuStockMapper.deleteByPrimaryKey(id);
     }
 
     public PfUserSkuStock selectByPrimaryKey(Long id) {
-        return pfUserSkuStockService.selectByPrimaryKey(id);
+        return pfUserSkuStockMapper.selectByPrimaryKey(id);
     }
 
     public List<PfUserSkuStock> selectAll() {
-        return pfUserSkuStockService.selectAll();
+        return pfUserSkuStockMapper.selectAll();
     }
 
     public List<PfUserSkuStock> selectByUserId(Long userId) {
-        return pfUserSkuStockService.selectByUserId(userId);
+        return pfUserSkuStockMapper.selectByUserId(userId);
     }
 
     public List<Map<String, Object>> selectReplenishStock() {
-        return pfUserSkuStockService.selectReplenishStock();
+        return pfUserSkuStockMapper.selectReplenishStock();
     }
 }

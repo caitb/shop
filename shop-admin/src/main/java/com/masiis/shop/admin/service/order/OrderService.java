@@ -5,10 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
+import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -77,6 +79,8 @@ public class OrderService {
     private SfUserAccountMapper sfUserAccountMapper;
     @Resource
     private SfUserAccountRecordMapper sfRecordMapper;
+    @Resource
+    private PfUserSkuStockService pfUserSkuStockService;
 
     /**
      * 店铺订单列表
@@ -306,9 +310,10 @@ public class OrderService {
 
                 // 按照订单子项回退库存
                 PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(shopKeeper.getId(), item.getSkuId());
-                //如果还没有库存信息直接初始化库存
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + item.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) != 1) {
+                try {
+                    pfUserSkuStockService.updateUserSkuStockWithLog(item.getQuantity(),
+                            pfUserSkuStock, order.getId(), UserSkuStockLogType.shopReturn);
+                } catch (Exception e) {
                     res.put("resCode", 6);
                     res.put("resMsg", "该订单退货失败,请重试");
                     throw new BusinessException("退货增加用户平台库存失败");

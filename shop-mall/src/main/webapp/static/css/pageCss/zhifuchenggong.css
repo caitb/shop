@@ -235,18 +235,16 @@
 .wrap .sec6 p {
   -webkit-box-flex: 1;
   text-align: center;
-  background: #ccc;
-  background: url("../../images/icon_91.png") no-repeat 15px;
+}
+.wrap .sec6 p:nth-child(1) a{
+  background: url("../../images/icon_91.png") no-repeat 0;
   padding-left: 24px;
   background-size: 15px;
 }
-.wrap .sec6 p:nth-child(1) {
-  background: url("../../images/icon_37.png") no-repeat 15px;
-  background-size: 15px;
-}
-.wrap .sec6 p:nth-child(3) {
-  background: url("../../images/icon_90.png") no-repeat 15px;
-  background-size: 15px;
+.wrap .sec6 p:nth-child(2) a{
+  background: url("../../images/icon_37.png") no-repeat 0;
+  background-size: 16px;
+  padding-left: 24px;
 }
 .back {
   width: 100%;

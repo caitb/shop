@@ -311,7 +311,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockService.updateByIdAndVersion(pfSkuStock) != 1) {
+                if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
                     throw new BusinessException("(平台发货)排队订单增加冻结量失败");
                 }
             } else {
@@ -323,7 +323,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockService.updateByIdAndVersion(parentSkuStock) != 1) {
+                if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
                     throw new BusinessException("(代理发货)排队订单增加冻结量失败");
                 }
             }
@@ -379,7 +379,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfSkuStockService.updateByIdAndVersion(pfSkuStock) != 1) {
+                if (pfSkuStockService.updateByIdAndVersions(pfSkuStock) != 1) {
                     throw new BusinessException("(平台发货)排队订单增加冻结量失败");
                 }
             } else {
@@ -391,7 +391,7 @@ public class BOrderPayService {
                 }
                 //增加平台冻结库存
                 parentSkuStock.setFrozenStock(parentSkuStock.getFrozenStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockService.updateByIdAndVersion(parentSkuStock) != 1) {
+                if (pfUserSkuStockService.updateByIdAndVersions(parentSkuStock) != 1) {
                     throw new BusinessException("(代理发货)排队订单增加冻结量失败");
                 }
             }

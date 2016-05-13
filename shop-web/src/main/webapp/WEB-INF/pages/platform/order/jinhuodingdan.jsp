@@ -491,7 +491,7 @@
            </div>
            <div class="back_pay">
                <div>
-                   <h1>￥<span id="1">1,000,000</span>元</h1>
+                   <h1>￥<span id="1">1,000,000</span></h1>
                    <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
                </div>
                <%--<div>--%>

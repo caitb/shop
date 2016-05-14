@@ -111,7 +111,7 @@ public class WxEventService {
             if(StringUtils.isNotBlank(eventStr)) {
                 pfUserSkuId = Integer.valueOf(eventStr);
             } else {
-                return null;
+                return createDefaultSubscribeEventReturn(body, "欢迎关注麦链合伙人~");
             }
         }
         if("subscribe".equals(body.getEvent())){
@@ -119,7 +119,7 @@ public class WxEventService {
                 eventStr = eventStr.replaceAll("qrscene_", "");
                 pfUserSkuId = Integer.valueOf(eventStr);
             } else {
-                return null;
+                return createDefaultSubscribeEventReturn(body, "欢迎关注麦链合伙人~");
             }
         }
         if(pfUserSkuId == null){
@@ -166,6 +166,18 @@ public class WxEventService {
                 + "/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
         WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), imgUrl);
+
+        return res;
+    }
+
+    private WxBaseMessage createDefaultSubscribeEventReturn(WxEventBody body, String content) {
+        WxContentRes res = new WxContentRes();
+
+        res.setToUserName(body.getFromUserName());
+        res.setFromUserName(body.getToUserName());
+        res.setCreateTime(new Date().getTime());
+        res.setMsgType("text");
+        res.setContent(content);
 
         return res;
     }

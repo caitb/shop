@@ -36,7 +36,7 @@ public class SfUserExtractApplyService {
     private WxPayUserService wxPayUserService;
 
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> conditionMap){
-        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+        PageHelper.startPage(pageNumber, pageSize, "apply_time desc");
         List<SfUserExtractApply> sfUserExtractApplies = sfUserExtractApplyMapper.selectByMap(conditionMap);
         PageInfo<SfUserExtractApply> pageInfo = new PageInfo<>(sfUserExtractApplies);
 

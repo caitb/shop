@@ -53,5 +53,5 @@ public interface SfUserExtractApplyMapper {
 
     List<SfUserExtractApply> selectByMap(Map<String, Object> conditionMap);
 
-    Map<String,Object> selectextractFeeByUserId(Long userId);
+    Map<String,BigDecimal> selectextractFeeByUserId(Long userId);
 }

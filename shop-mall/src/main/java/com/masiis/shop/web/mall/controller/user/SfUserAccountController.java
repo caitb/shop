@@ -342,11 +342,18 @@ public class SfUserAccountController extends BaseController {
                 isNotPayDistribution = isNotPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
             }
         }
-        mv.addObject("isPayDistribution",isPayDistribution.subtract(userAccount.getExtractableFee()));
-        mv.addObject("isNotPayDistribution",isNotPayDistribution);
         log.info("查询已经提现成功的金额");
-        Map<String,Object> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);
-        mv.addObject("withdraw",map == null?0:map.get("extractFee"));
+        Map<String,BigDecimal> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);
+
+        BigDecimal withdraw;
+        if (map == null){
+            withdraw = new BigDecimal(0);
+        }else {
+            withdraw = new BigDecimal(map.get("extractFee").toString());
+        }
+        mv.addObject("withdraw",withdraw);
+        mv.addObject("isPayDistribution",isPayDistribution.subtract(userAccount.getExtractableFee().add(withdraw)));
+        mv.addObject("isNotPayDistribution",isNotPayDistribution);
         mv.addObject("isBuy",comUser.getIsBuy());
         mv.setViewName("mall/user/sf_reward");
         return mv;

@@ -135,7 +135,7 @@ public class SfUserExtractApplyController extends BaseController{
         }
         //根据userId查询用户账户信息
         SfUserAccount userAccount = userAccountService.findAccountByUserId(userId);
-        if (userAccount == null || b_inputAccount.compareTo(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee())) == 1 || b_inputAccount.compareTo(new BigDecimal(0)) <= 0){
+        if (userAccount == null || b_inputAccount.compareTo(userAccount.getExtractableFee().subtract(userAccount.getAppliedFee() == null?new BigDecimal(0):userAccount.getAppliedFee())) == 1 || b_inputAccount.compareTo(new BigDecimal(0)) <= 0){
             jsonobject.put("isTrue","false");
             jsonobject.put("message","可提现余额错误");
             log.info(jsonobject.toJSONString());

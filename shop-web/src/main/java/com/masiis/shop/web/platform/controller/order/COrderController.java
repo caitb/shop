@@ -139,11 +139,11 @@ public class COrderController extends BaseController {
                                         @RequestParam(value = "addressId", required = false) Long addressId,
                                         Model model)throws Exception {
         try {
-/*            model = getOrderInfo(request, model, skuId, addressId);
+            model = getOrderInfo(request, model, skuId, addressId);
             model.addAttribute("pfCorder",cOrderService.queryPfCorderById(pfCorderId));
             model.addAttribute("pfCorderId",pfCorderId);
             model.addAttribute("skuId",skuId);
-            model.addAttribute("addressId",addressId);*/
+            model.addAttribute("addressId",addressId);
         } catch (Exception e) {
             e.getStackTrace();
         }

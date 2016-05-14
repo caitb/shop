@@ -1,5 +1,6 @@
 package com.masiis.shop.admin.service.order;
 
+import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
@@ -33,7 +34,7 @@ public class OrderQueueDealService {
     @Autowired
     private PfBorderItemMapper pfBorderItemMapper;
     @Autowired
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Autowired
     private ComUserService comUserService;
     @Autowired
@@ -100,7 +101,7 @@ public class OrderQueueDealService {
             skuId = orderItem.getSkuId();
             quantity = orderItem.getQuantity();
             //根据sku_id查询商品sku库存数据
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             if (quantity > pfSkuStock.getStock() - pfSkuStock.getFrozenStock()){
                 quealOrder = false;
             }

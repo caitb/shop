@@ -29,16 +29,17 @@ public class ProductService {
     @Resource
     private PfSkuStatisticMapper pfSkuStatisticMapper;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
 
     /**
      * 添加商品
+     *
      * @param comSpu
      * @param comSku
      * @param pfSkuAgents
      * @param sfSkuDistributions
      */
-    public void save(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions){
+    public void save(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
 
         //保存spu
         comSpuMapper.insert(comSpu);
@@ -62,11 +63,11 @@ public class ProductService {
         pfSkuStock.setStock(10);
         pfSkuStock.setFrozenStock(0);
         pfSkuStock.setVersion(0);
-        pfSkuStockMapper.insert(pfSkuStock);
+        pfSkuStockService.insert(pfSkuStock);
 
         //保存sku图片
         int i = 0;
-        for(ComSkuImage comSkuImage : comSkuImages){
+        for (ComSkuImage comSkuImage : comSkuImages) {
             comSkuImage.setSpuId(comSpu.getId());
             comSkuImage.setSkuId(comSku.getId());
             comSkuImage.setSort(i++);
@@ -75,13 +76,13 @@ public class ProductService {
         }
 
         //保存代理分润
-        for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
             pfSkuAgent.setSkuId(comSku.getId());
             pfSkuAgentMapper.insert(pfSkuAgent);
         }
 
         //保存分销分润
-        for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
+        for (SfSkuDistribution sfSkuDistribution : sfSkuDistributions) {
             sfSkuDistribution.setSkuId(comSku.getId());
             sfSkuDistributionMapper.insert(sfSkuDistribution);
         }
@@ -89,14 +90,15 @@ public class ProductService {
 
     /**
      * 修改商品
+     *
      * @param comSpu
      * @param comSku
      * @param pfSkuAgents
      * @param sfSkuDistributions
      */
-    public void update(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions){
+    public void update(ComSpu comSpu, ComSku comSku, List<ComSkuImage> comSkuImages, List<PfSkuAgent> pfSkuAgents, List<SfSkuDistribution> sfSkuDistributions) {
 
-        if(comSpu.getId() != null && comSku.getId() != null ){
+        if (comSpu.getId() != null && comSku.getId() != null) {
             //保存spu
             comSpuMapper.updateById(comSpu);
 
@@ -104,22 +106,22 @@ public class ProductService {
             comSkuMapper.updateById(comSku);
 
             //保存sku图片
-            if(comSkuImages != null){
-                for(ComSkuImage comSkuImage : comSkuImages){
+            if (comSkuImages != null) {
+                for (ComSkuImage comSkuImage : comSkuImages) {
                     comSkuImageMapper.updateByPrimaryKey(comSkuImage);
                 }
             }
 
             //保存代理分润
-            if(pfSkuAgents != null){
-                for(PfSkuAgent pfSkuAgent : pfSkuAgents){
+            if (pfSkuAgents != null) {
+                for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
                     pfSkuAgentMapper.updateById(pfSkuAgent);
                 }
             }
 
             //保存分销分润
-            if(sfSkuDistributions != null){
-                for(SfSkuDistribution sfSkuDistribution : sfSkuDistributions){
+            if (sfSkuDistributions != null) {
+                for (SfSkuDistribution sfSkuDistribution : sfSkuDistributions) {
                     sfSkuDistributionMapper.updateById(sfSkuDistribution);
                 }
             }
@@ -129,12 +131,13 @@ public class ProductService {
 
     /**
      * 商品上下架
+     *
      * @param comSpu
      */
-    public void putaway(ComSpu comSpu){
-        if(comSpu.getIsSale() == 1){
+    public void putaway(ComSpu comSpu) {
+        if (comSpu.getIsSale() == 1) {
             comSpu.setUpTime(new Date());
-        }else if(comSpu.getIsSale() == 0){
+        } else if (comSpu.getIsSale() == 0) {
             comSpu.setDownTime(new Date());
         }
         comSpuMapper.updateById(comSpu);
@@ -142,20 +145,21 @@ public class ProductService {
 
     /**
      * 商品列表
+     *
      * @param comSku
      * @return
      */
-    public Map<String, Object> list(Integer pageNo, Integer pageSize, ComSku comSku){
+    public Map<String, Object> list(Integer pageNo, Integer pageSize, ComSku comSku) {
         List<ProductInfo> productInfos = new ArrayList<>();
 
         PageHelper.startPage(pageNo, pageSize, "create_time desc");
         List<ComSku> comSkus = comSkuMapper.selectByCondition(comSku);
 
-        for(ComSku cs : comSkus){
+        for (ComSku cs : comSkus) {
             ProductInfo productInfo = new ProductInfo();
             productInfo.setComSku(cs);
             productInfo.setComSpu(comSpuMapper.selectById(cs.getSpuId()));
-            productInfo.setPfSkuStock(pfSkuStockMapper.selectBySkuId(cs.getId()));
+            productInfo.setPfSkuStock(pfSkuStockService.selectBySkuId(cs.getId()));
 
 
             productInfos.add(productInfo);
@@ -172,10 +176,11 @@ public class ProductService {
 
     /**
      * 获取sku
+     *
      * @param skuId
      * @return
      */
-    public ProductInfo findSku(Integer skuId){
+    public ProductInfo findSku(Integer skuId) {
         ProductInfo productInfo = new ProductInfo();
 
         ComSku comSku = comSkuMapper.selectById(skuId);

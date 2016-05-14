@@ -24,7 +24,7 @@ import java.util.Map;
 public class SkuStockService {
 
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Resource
     private ComSkuMapper comSkuMapper;
     @Resource
@@ -32,18 +32,19 @@ public class SkuStockService {
 
     /**
      * 根据条件查询记录
+     *
      * @param pageNo
      * @param pageSize
      * @param pfSkuStock
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, PfSkuStock pfSkuStock){
+    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, PfSkuStock pfSkuStock) {
         PageHelper.startPage(pageNo, pageSize, "create_time desc");
-        List<PfSkuStock> pfSkuStocks = pfSkuStockMapper.selectByCondition(pfSkuStock);
+        List<PfSkuStock> pfSkuStocks = pfSkuStockService.selectByCondition(pfSkuStock);
         PageInfo<PfSkuStock> pageInfo = new PageInfo<>(pfSkuStocks);
 
         List<ProductInfo> productInfos = new ArrayList<>();
-        for(PfSkuStock pss : pfSkuStocks){
+        for (PfSkuStock pss : pfSkuStocks) {
             ComSku comSku = comSkuMapper.selectById(pss.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(pss.getSpuId());
 
@@ -64,12 +65,13 @@ public class SkuStockService {
 
     /**
      * 更新库存
+     *
      * @param pfSkuStock
      */
-    public void update(PfSkuStock pfSkuStock){
-        if(pfSkuStock.getStock()!=null && pfSkuStock.getStock().intValue()<0){
+    public void update(PfSkuStock pfSkuStock) {
+        if (pfSkuStock.getStock() != null && pfSkuStock.getStock().intValue() < 0) {
             pfSkuStock.setStock(0);
         }
-        pfSkuStockMapper.updateById(pfSkuStock);
+        pfSkuStockService.updateByIdAndVersions(pfSkuStock);
     }
 }

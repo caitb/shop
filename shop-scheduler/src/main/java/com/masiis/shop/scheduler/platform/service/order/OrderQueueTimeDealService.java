@@ -8,6 +8,7 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.scheduler.platform.service.product.PfSkuStockService;
 import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
@@ -33,7 +34,7 @@ public class OrderQueueTimeDealService {
     @Autowired
     private PfBorderItemMapper pfBorderItemMapper;
     @Autowired
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Autowired
     private PfUserSkuStockService pfUserSkuStockService;
     @Autowired
@@ -97,7 +98,7 @@ public class OrderQueueTimeDealService {
             skuId = orderItem.getSkuId();
             quantity = orderItem.getQuantity();
             //根据sku_id查询商品sku库存数据
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             if (quantity >= pfSkuStock.getStock() - pfSkuStock.getFrozenStock()){
                 dealOrder = false;
             }
@@ -176,7 +177,7 @@ public class OrderQueueTimeDealService {
     private int checkSkuStock(Integer skuId, int quantity, Long pUserId) {
         int a;
         if (pUserId == 0) {
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             a = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pUserId, skuId);

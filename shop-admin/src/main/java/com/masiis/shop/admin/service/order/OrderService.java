@@ -62,8 +62,6 @@ public class OrderService {
     @Resource
     private SfOrderOperationLogMapper sfOrderOperationLogMapper;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
-    @Resource
     private ComUserAccountMapper comUserAccountMapper;
     @Resource
     private PfUserBillItemMapper pfUserBillItemMapper;
@@ -84,21 +82,22 @@ public class OrderService {
 
     /**
      * 店铺订单列表
+     *
      * @param pageNumber
      * @param pageSize
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap){
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
         String sort = "create_time desc";
-        if(sortName != null) sort = sortName + " " + sortOrder;
+        if (sortName != null) sort = sortName + " " + sortOrder;
 
         PageHelper.startPage(pageNumber, pageSize, sort);
         List<SfOrder> sfOrders = sfOrderMapper.selectByMap(conditionMap);
         PageInfo<SfOrder> pageInfo = new PageInfo<>(sfOrders);
 
         List<Order> orders = new ArrayList<>();
-        for(SfOrder sfOrder : sfOrders){
+        for (SfOrder sfOrder : sfOrders) {
             ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
             SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
             List<SfOrderFreight> sfOrderFreights = sfOrderFreightMapper.selectByOrderId(sfOrder.getId());
@@ -123,10 +122,11 @@ public class OrderService {
 
     /**
      * 获取订单明细
+     *
      * @param id
      * @return
      */
-    public Order find(Long id){
+    public Order find(Long id) {
         SfOrder sfOrder = sfOrderMapper.selectByPrimaryKey(id);
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
         SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
@@ -134,7 +134,7 @@ public class OrderService {
         List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(sfOrder.getId());
 
         List<ProductInfo> productInfos = new ArrayList<>();
-        for(SfOrderItem sfOrderItem : sfOrderItems){
+        for (SfOrderItem sfOrderItem : sfOrderItems) {
             ComSku comSku = comSkuMapper.selectById(sfOrderItem.getSkuId());
             ComSpu comSpu = comSpuMapper.selectById(sfOrderItem.getSpuId());
 
@@ -153,7 +153,7 @@ public class OrderService {
         order.setSfOrderItems(sfOrderItems);
         order.setProductInfos(productInfos);
 
-        if(sfOrder.getPayStatus().intValue() == 1){
+        if (sfOrder.getPayStatus().intValue() == 1) {
             SfOrderPayment sfOrderPayment = new SfOrderPayment();
             sfOrderPayment.setSfOrderId(sfOrder.getId());
             sfOrderPayment.setIsEnabled(1);
@@ -166,6 +166,7 @@ public class OrderService {
 
     /**
      * 发货
+     *
      * @param sfOrderFreight
      */
     public void delivery(SfOrderFreight sfOrderFreight, PbUser operationUser) throws Exception {
@@ -194,19 +195,16 @@ public class OrderService {
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
         //短信和微信通知
         MobileMessageUtil.getInitialization("C").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode());
-        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, PropertiesUtils.getStringValue("mall.domain.name.address")+"/sfOrderManagerController/borderDetils.html?id="+sfOrder.getId());
+        WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/borderDetils.html?id=" + sfOrder.getId());
     }
 
     public void updateOrderStock(SfOrder sfOrder) throws Exception {
         List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(sfOrder.getId());
-        for(SfOrderItem sfOrderItem : sfOrderItems){
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(sfOrder.getShopUserId(), sfOrderItem.getSkuId());
-            if(pfUserSkuStock.getStock()-sfOrderItem.getQuantity()>=0 && pfUserSkuStock.getFrozenStock()-sfOrderItem.getQuantity()>=0){
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock()-sfOrderItem.getQuantity());
-                pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock()-sfOrderItem.getQuantity());
-                int c = pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock);
-                if(c == 0) throw new Exception("更改库存失败!");
-            }else{
+        for (SfOrderItem sfOrderItem : sfOrderItems) {
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfOrder.getShopUserId(), sfOrderItem.getSkuId());
+            if (pfUserSkuStock.getStock() - sfOrderItem.getQuantity() >= 0 && pfUserSkuStock.getFrozenStock() - sfOrderItem.getQuantity() >= 0) {
+                pfUserSkuStockService.updateUserSkuStockWithLog(sfOrderItem.getQuantity(), pfUserSkuStock, sfOrder.getId(), UserSkuStockLogType.shopOrder);
+            } else {
                 throw new Exception("库存异常!");
             }
         }
@@ -220,25 +218,25 @@ public class OrderService {
      */
     @Transactional
     public void sfOrderRefund(Long oid, JSONObject res) {
-        try{
-            if(oid == null || oid.longValue() <= 0){
+        try {
+            if (oid == null || oid.longValue() <= 0) {
                 res.put("resCode", 2);
                 res.put("resMsg", "参数格式不正确");
                 throw new BusinessException("参数格式不正确");
             }
             SfOrder order = sfOrderMapper.selectByPrimaryKey(oid);
-            if(order == null){
+            if (order == null) {
                 res.put("resCode", 3);
                 res.put("resMsg", "该orderId订单不存在");
                 throw new BusinessException("该orderId订单不存在");
             }
-            if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_COMPLETE.getCode().intValue()){
+            if (order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_COMPLETE.getCode().intValue()) {
                 res.put("resCode", 4);
                 res.put("resMsg", "该订单订单状态不正确,不是" + SfOrderStatusEnum.ORDER_COMPLETE.getDesc());
                 throw new BusinessException("该订单订单状态不正确,不是" + SfOrderStatusEnum.ORDER_COMPLETE.getDesc());
             }
             Date receiveTime = order.getReceiptTime();
-            if(DateUtil.getDateNextdays(receiveTime, 7).compareTo(new Date()) <= 0){
+            if (DateUtil.getDateNextdays(receiveTime, 7).compareTo(new Date()) <= 0) {
                 res.put("resCode", 5);
                 res.put("resMsg", "该订单收货已超过7天,不予退货");
                 throw new BusinessException("该订单收货已超过7天,不予退货");
@@ -251,10 +249,10 @@ public class OrderService {
             ComUser shopKeeper = comUserMapper.selectByPrimaryKey(order.getShopUserId());
             // 计算店主待结算中金额(减去分润,减去运费)
             BigDecimal countFee = null;
-            if(order.getSendType() == 1){
+            if (order.getSendType() == 1) {
                 countFee = order.getPayAmount().subtract(order.getDistributionAmount())
                         .subtract(order.getShipAmount());
-            } else if(order.getSendType() == 2){
+            } else if (order.getSendType() == 2) {
                 countFee = order.getPayAmount().subtract(order.getDistributionAmount());
             } else {
                 throw new BusinessException("不合法的拿货方式");
@@ -266,7 +264,7 @@ public class OrderService {
             sfShop.setSaleAmount(sfShop.getSaleAmount().subtract(saleAmount));
             sfShop.setShipAmount(sfShop.getShipAmount().subtract(order.getShipAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
-            if(shopRes != 1){
+            if (shopRes != 1) {
                 res.put("resCode", 6);
                 res.put("resMsg", "该订单退货失败,请重试");
                 throw new BusinessException("退货修改店铺总销售额失败");
@@ -298,18 +296,18 @@ public class OrderService {
 
             Set<Long> fenRunUserSet = new HashSet<Long>();
             List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
-            for(SfOrderItem item:sfOrderItems) {
+            for (SfOrderItem item : sfOrderItems) {
                 // 计算单个item的分销分润
                 List<SfOrderItemDistribution> distributions = distributionMapper.selectBySfOrderItemId(item.getId());
-                for(SfOrderItemDistribution dis:distributions){
+                for (SfOrderItemDistribution dis : distributions) {
                     Long userId = dis.getUserId();
-                    if(!fenRunUserSet.contains(userId)){
+                    if (!fenRunUserSet.contains(userId)) {
                         fenRunUserSet.add(userId);
                     }
                 }
 
                 // 按照订单子项回退库存
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(shopKeeper.getId(), item.getSkuId());
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(shopKeeper.getId(), item.getSkuId());
                 try {
                     pfUserSkuStockService.updateUserSkuStockWithLog(item.getQuantity(),
                             pfUserSkuStock, order.getId(), UserSkuStockLogType.shopReturn);
@@ -322,7 +320,9 @@ public class OrderService {
             // 计算店主此次总利润回退
             ComUserAccountRecord profitBefore = comUserAccountRecordMapper.selectByUserAndTypeAndBillId(shopKeeper.getId(),
                     UserAccountRecordFeeType.SF_AddProfitFee.getCode(), order.getId());
-            if(profitBefore == null){throw new BusinessException("");}
+            if (profitBefore == null) {
+                throw new BusinessException("");
+            }
             ComUserAccountRecord pfprofitRecord = cloneComUserAccountRecordByTypeAndHandleType(
                     UserAccountRecordFeeType.SF_Refund_SubProfitFee.getCode(), 0, profitBefore);
             // 设置店主总利润回退
@@ -332,7 +332,7 @@ public class OrderService {
             log.info("小铺店主总利润回退:" + profitBefore.getHandleFee());
 
             int result = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
-            if(result != 1){
+            if (result != 1) {
                 res.put("resCode", 6);
                 res.put("resMsg", "该订单退货失败,请重试");
                 throw new BusinessException("小铺店主account修改失败!");
@@ -345,11 +345,11 @@ public class OrderService {
             log.info("计算小铺订单分润");
 
             // 计算分销订单的分润
-            for(Long sfUserId:fenRunUserSet){
+            for (Long sfUserId : fenRunUserSet) {
                 SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserId);
                 // 查询之前的分润记录
                 SfUserAccountRecord before = sfBillItemMapper.selectByUserIdAndSourceIdAndSubType(sfUserId, order.getId(), 0);
-                if(before == null){
+                if (before == null) {
                     throw new BusinessException();
                 }
                 // 创建退货对应的分润退回记录
@@ -364,7 +364,7 @@ public class OrderService {
                 sfRecord.setNextFee(sfUserAccount.getCountingFee());
                 sfRecordMapper.insert(sfRecord);
                 int resNum = sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
-                if(resNum != 1){
+                if (resNum != 1) {
                     res.put("resCode", 6);
                     res.put("resMsg", "该订单退货失败,请重试");
                     throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
@@ -465,11 +465,11 @@ public class OrderService {
      *
      * @param order
      * @param shopKeeper
-     * @param opTime 收货时间
+     * @param opTime     收货时间
      * @return
      */
     private PfUserBillItem createPfUserBillItemBySfOrderRefund(SfOrder order, ComUser shopKeeper,
-                                                         BigDecimal countFee, Date opTime) {
+                                                               BigDecimal countFee, Date opTime) {
         PfUserBillItem item = new PfUserBillItem();
 
         item.setPfBorderId(order.getId());

@@ -17,6 +17,7 @@ import com.masiis.shop.dao.po.SfUserExtractApply;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -73,6 +74,16 @@ public class SfUserExtractApplyService {
 
     public void audit(Long id, Integer auditType, String auditCause, String rootPath){
         SfUserExtractApply sfUserExtractApply = sfUserExtractApplyMapper.selectByPrimaryKey(id);
+        SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserExtractApply.getComUserId());
+
+        if(auditType.intValue() == 1){
+            double applied_fee = sfUserAccount.getAppliedFee().doubleValue() - sfUserExtractApply.getExtractFee().doubleValue();
+            if(applied_fee >= 0){
+                sfUserAccount.setAppliedFee(new BigDecimal(applied_fee));
+                sfUserAccountMapper.updateByPrimaryKey(sfUserAccount);
+            }
+        }
+
         if(auditType.intValue() == 3){
             wxPayUserService.payUserByExtractApply(sfUserExtractApply, null, rootPath);
             return;

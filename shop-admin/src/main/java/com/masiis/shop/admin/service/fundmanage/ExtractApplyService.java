@@ -92,6 +92,15 @@ public class ExtractApplyService {
         comUserExtractApply.setAuditType(auditType);
         comUserExtractApply.setAuditCause(auditCause);
 
+        if(comUserExtractApply.getAuditType().intValue()==1){
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUserExtractApply.getComUserId());
+            double applied_fee = comUserAccount.getAppliedFee().doubleValue() - comUserExtractApply.getExtractFee().doubleValue();
+            if(applied_fee >= 0){
+                comUserAccount.setAppliedFee(new BigDecimal(applied_fee));
+                comUserAccountMapper.updateByPrimaryKey(comUserAccount);
+            }
+        }
+
         if(comUserExtractApply.getAuditType().intValue()==3){//打款业务
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUserExtractApply.getComUserId());
 
@@ -121,15 +130,14 @@ public class ExtractApplyService {
         ComUserExtractwayInfo comUserExtractwayInfo = comUserExtractwayInfoMapper.selectByPrimaryKey(comUserExtractApply.getExtractwayInfoId());
         if(auditType == 1){
             MobileMessageUtil.getInitialization("B").withdrawVerifyRefuseAgent(comUser.getMobile(), auditCause);
+            WxPFNoticeUtils.getInstance().pfExtractApply(comUser, new String[]{"￥"+comUserExtractApply.getExtractFee().toString(), new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date()), "审核拒绝"}, false);
         }
         if(auditType == 2){
             MobileMessageUtil.getInitialization("B").withdrawVerifyApproveAgent(comUser.getMobile(), "1", 3);
-        }
-        if(auditType == 1 || auditType == 2){
             WxPFNoticeUtils.getInstance().pfExtractApplySuccess(comUser,
                     new String[]{
                             comUser.getWxNkName(),
-                            comUserExtractApply.getExtractFee().toString(),
+                            "￥"+comUserExtractApply.getExtractFee().toString(),
                             comUserExtractwayInfo.getBankName()+":"+comUserExtractwayInfo.getBankCard(),
                             new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date())
                     }

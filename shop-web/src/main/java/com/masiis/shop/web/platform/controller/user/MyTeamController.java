@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -50,11 +51,12 @@ public class MyTeamController extends BaseController {
             Double totalSales = 0.0;
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
-                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString());
-                totalSales += comUserAccount.getTotalIncomeFee().doubleValue();
+                double totalIncomeFee =  + comUserAccount.getTotalIncomeFee().doubleValue();
+                double countSales = Double.parseDouble(agentSkuMap.get("countSales").toString());
+                totalSales += totalIncomeFee + countSales;
             }
             mav.addObject("totalChild", totalChild);
-            mav.addObject("totalSales", totalSales);
+            mav.addObject("totalSales", new BigDecimal(totalSales).setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue());
             mav.addObject("agentSkuMaps", agentSkuMaps);
 
             return mav;

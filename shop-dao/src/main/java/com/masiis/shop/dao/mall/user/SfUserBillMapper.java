@@ -27,4 +27,8 @@ public interface SfUserBillMapper {
 
     Long selectBillNumsByDate(@Param("start") Date countStartDay,
                               @Param("end") Date countEndDay);
+
+    Long selectBillNumsByDateAndUser(@Param("start") Date start,
+                                     @Param("end") Date end,
+                                     @Param("userId") Long userId);
 }

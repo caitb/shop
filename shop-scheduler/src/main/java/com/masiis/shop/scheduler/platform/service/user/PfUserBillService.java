@@ -68,7 +68,7 @@ public class PfUserBillService {
                     // 代理订单
                     PfBorder order = borderMapper.selectByPrimaryKey(item.getPfBorderId());
                     order.setIsCounting(1);
-                    borderMapper.updateByPrimaryKey(order);
+                    borderMapper.updateById(order);
                 } else if(item.getOrderType().intValue() == 1){
                     // 分销订单
                     SfOrder order = sfOrderMapper.selectByPrimaryKey(item.getPfBorderId());
@@ -179,5 +179,9 @@ public class PfUserBillService {
      */
     public Long queryBillNumsByDate(Date countStartDay, Date countEndDay) {
         return billMapper.selectBillNumsByDate(countStartDay, countEndDay);
+    }
+
+    public Long queryBillNumsByDateAndUser(Date countStartDay, Date countEndDay, Long userId) {
+        return billMapper.selectBillNumsByDateAndUser(countStartDay, countEndDay, userId);
     }
 }

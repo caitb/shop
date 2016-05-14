@@ -70,4 +70,12 @@
         AND   create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectBillNumsByDateAndUser" resultType="java.lang.Long">
+        select count(id)
+        from sf_user_bill
+        WHERE create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+        AND   create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+        AND com_user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

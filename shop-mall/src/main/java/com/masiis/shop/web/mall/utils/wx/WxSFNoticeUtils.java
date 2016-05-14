@@ -125,7 +125,7 @@ public class WxSFNoticeUtils {
      * 小铺佣金提醒
      *
      * @param user
-     * @param params
+     * @param params    (1,佣金金额; 2,时间)
      * @return
      */
     public Boolean profitInNotice(ComUser user, String[] params){

@@ -85,4 +85,12 @@
         where create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
         and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
     </select>
+
+    <select id="selectBillNumsByDateAndUser" resultType="java.lang.Long">
+        select count(id)
+        from pf_user_bill
+        where create_date <![CDATA[>=]]> #{start,jdbcType=TIMESTAMP}
+        and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
+        AND user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

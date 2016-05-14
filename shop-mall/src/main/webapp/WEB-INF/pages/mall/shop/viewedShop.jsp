@@ -28,7 +28,14 @@
                         <img src="${path}${userShopView.logo}" alt="" onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">
                     </p>
                     <div class="shop">
-                        <h2>${userShopView.shopName}<span>${userShopView.days}天前浏览过</span></h2>
+                        <h2>${userShopView.shopName}
+                            <c:if test="${userShopView.days == 0}">
+                                <span>今天浏览过</span>
+                            </c:if>
+                            <c:if test="${userShopView.days > 0}">
+                                <span>${userShopView.days}天前浏览过</span>
+                            </c:if>
+                        </h2>
                         <h1>
                             <c:forEach items="${userShopView.shopSkus}" var="shopSku">
                                 <img src="${shopSku.icon}" alt="">
@@ -36,12 +43,7 @@
                                 ${userShopView.bailFee}保证金
                         </h1>
                         <h3>${userShopView.explanation}</h3>
-                        <c:if test="${userShopView.days == 0}">
-                            <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
-                        </c:if>
-                        <c:if test="${userShopView.days > 0}">
-                            <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
-                        </c:if>
+                        <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>
                     </div>
                 </section>
             </c:forEach>

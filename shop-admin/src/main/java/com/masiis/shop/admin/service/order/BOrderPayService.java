@@ -267,7 +267,7 @@ public class BOrderPayService {
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 String name = comUser.getRealName();//申请人
-                String skuInfo = "有权于网络和实体渠道销售产品 " + pfBorderItem.getSkuName();
+                String skuInfo = "有权于网络和实体渠道销售产品-" + pfBorderItem.getSkuName();
                 String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
                 String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
                 String value1 = "授权书编号：" + pfUserCertificate.getCode() + "  手机：" + pfUserCertificate.getMobile();

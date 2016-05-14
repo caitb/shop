@@ -89,8 +89,9 @@ public class UserCertificateService {
         if(certificateInfo!=null && certificateInfo.getPid()!=0){
             ComUser comUser = comUserMapper.selectByPrimaryKey(certificateMapper.get(certificateInfo.getPid()).getUserId());
             pfc.setSjName(comUser.getRealName());
+        }else{
+            pfc.setSjName("平台");
         }
-        pfc.setSjName("平台");
         String ctValue = PropertiesUtils.getStringValue("index_user_certificate_url");
         pfc.setImgUrl(ctValue + pfc.getImgUrl());
         String beginTime = DateUtil.Date2String(pfc.getBeginTime(), "yyyy-MM-dd hh:mm:ss", null);

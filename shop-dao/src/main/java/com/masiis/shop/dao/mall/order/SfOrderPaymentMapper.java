@@ -8,9 +8,11 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderPayment;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Map;
-
+@Repository
 public interface SfOrderPaymentMapper {
     int deleteByPrimaryKey(Long id);
 

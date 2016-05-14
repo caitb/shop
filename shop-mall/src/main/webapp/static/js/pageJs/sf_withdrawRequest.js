@@ -30,7 +30,7 @@ function withdraw(userId){
         success:function(data){
             if(data.isTrue == "false"){
                 if(data.isBuy == "false"){
-                    alert("您的会员订单需要确认收货并且超过7天未产生退货才可以提现。");
+                    alert("您需要至少购买一件商品，确认收货7天后即可提现。");
                 }else {
                     alert(data.message);
                 }

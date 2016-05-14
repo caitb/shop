@@ -16,7 +16,7 @@
     <div class="wrap">
         <header style="margin-bottom: 0;">
             <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>我的奖励</p>
+            <p>佣金管理</p>
         </header>
         <p>我的分享</p>
         <nav>
@@ -40,7 +40,9 @@
         <p>我的财富</p>
         <h1>
             <span>￥<b><fmt:formatNumber value="${userAccount.extractableFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></b></span>
-            <span>可提现佣金（申请中：￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber>）</span>
+            <c:if test="${userAccount.appliedFee > 0}">
+                <span>可提现佣金（申请中：￥<fmt:formatNumber value="${userAccount.appliedFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber>）</span>
+            </c:if>
         </h1>
         <nav>
             <ul>

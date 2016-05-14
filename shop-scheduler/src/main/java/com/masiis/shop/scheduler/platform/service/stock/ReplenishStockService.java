@@ -4,6 +4,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;
 import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
@@ -21,7 +22,7 @@ public class ReplenishStockService {
 
     private static final Logger logger = Logger.getLogger(ReplenishStockService.class);
     @Autowired
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Autowired
     private ComUserService comUserService;
 
@@ -30,7 +31,7 @@ public class ReplenishStockService {
      */
     public void replenishStockRemind() throws Exception{
         logger.info("代理商库存不足短信提醒");
-        List<Map<String,Object>> mapList = pfUserSkuStockMapper.selectReplenishStock();
+        List<Map<String,Object>> mapList = pfUserSkuStockService.selectReplenishStock();
         String skuName;
         String mobile;
         String skuId;

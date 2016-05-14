@@ -30,7 +30,7 @@ public class SkuService {
     @Resource
     private ComSkuExtensionMapper comSkuExtensionMapper;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
@@ -56,7 +56,7 @@ public class SkuService {
      */
     public int getSkuStockStatus(Integer skuId, int quantity, Long pUserId) throws Exception {
         if (pUserId == 0) {
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             //如果进入排单直接返回-quantity
             if (pfSkuStock.getIsQueue() == 1) {
                 return 1;
@@ -105,7 +105,7 @@ public class SkuService {
      * 查看排单flag
      */
     public PfSkuStock getPfSkuStockInfoBySkuId(Integer skuId) {
-        return pfSkuStockMapper.selectBySkuId(skuId);
+        return pfSkuStockService.selectBySkuId(skuId);
     }
 
 }

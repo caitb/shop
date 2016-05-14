@@ -283,7 +283,7 @@ public class DrawPicUtil {
         drawPicParam3.setFont(new Font("华文细黑", Font.BOLD, 35));
         drawPicParams.add(drawPicParam3);
         DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
-        drawPicParam4.setContent("有权于网络和实体渠道销售产品 抗引力瘦脸精华");
+        drawPicParam4.setContent("有权于网络和实体渠道销售产品-抗引力瘦脸精华");
         drawPicParam4.setColor(new Color(139, 69, 19));
         drawPicParam4.setY(450);
         drawPicParam4.setFont(new Font("华文细黑", Font.PLAIN, 20));

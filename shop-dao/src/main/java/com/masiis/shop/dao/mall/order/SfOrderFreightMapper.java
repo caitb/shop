@@ -8,8 +8,10 @@
 package com.masiis.shop.dao.mall.order;
 
 import com.masiis.shop.dao.po.SfOrderFreight;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+@Repository
 public interface SfOrderFreightMapper {
     int deleteByPrimaryKey(Long id);
 

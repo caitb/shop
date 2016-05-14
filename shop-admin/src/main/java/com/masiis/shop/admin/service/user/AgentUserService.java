@@ -3,6 +3,7 @@ package com.masiis.shop.admin.service.user;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.AgentUser;
+import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
@@ -30,7 +31,7 @@ public class AgentUserService {
     @Resource
     private PfUserSkuMapper pfUserSkuMapper;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private ComUserMapper comUserMapper;
     @Resource
@@ -57,7 +58,7 @@ public class AgentUserService {
             ComSku comSku = comSkuMapper.selectById(puc.getSkuId());
             ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(puc.getAgentLevelId());
 
-            PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(puc.getUserId(), puc.getSkuId());
+            PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(puc.getUserId(), puc.getSkuId());
             ComUser parentUser = comUserMapper.selectByPrimaryKey(userSku.getUserPid());
             Integer lowerLevelCount = pfUserSkuMapper.findLowerCount(userSku.getId());
 

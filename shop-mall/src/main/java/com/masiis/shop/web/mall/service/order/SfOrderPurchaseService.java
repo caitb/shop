@@ -203,6 +203,10 @@ public class SfOrderPurchaseService {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
                 log.info("获得分润信息---end");
+                if(orderSumDisAmount.compareTo(skuTotalPrice)==1){
+                    log.info("商品的分润大于商品的订单");
+                    throw new BusinessException("商品的分润大于商品的订单");
+                }
                 //插入订单表
                 log.info("插入订单---start");
                 sfOrder = generateSfOrder(purchaseUserId, sfShopCartSkuDetails, message, skuTotalPrice, skuTotalShipAmount);

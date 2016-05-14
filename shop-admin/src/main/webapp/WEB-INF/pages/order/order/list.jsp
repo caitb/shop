@@ -493,7 +493,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var arr = ['<a class="detail" href="javascript:void(0);">查看</a>'];
-                            if(row.sfOrder && row.sfOrder.orderStatus == 3){
+                            if(row.sfOrder && row.sfOrder.orderStatus == 3 && new Date().getDate()-new Date(row.sfOrder.receiptTime).getDate()>7){
                                 arr.push('&nbsp;&nbsp;<a class="tuihuo" href="javascript:void(0);">退货</a>');
                             }
                             return arr.join('');
@@ -518,6 +518,7 @@
                                                         text: "订单退货成功",
                                                         class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                                                     });
+                                                    $('#table').bootstrapTable('refresh');
                                                 } else {
                                                     var resText = "";
                                                     if(msg.resMsg == "" || msg.resMsg == undefined){

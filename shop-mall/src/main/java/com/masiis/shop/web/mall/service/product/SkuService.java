@@ -7,9 +7,11 @@ import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuExtendMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
-import com.masiis.shop.dao.platform.product.*;
+import com.masiis.shop.dao.platform.product.ComSkuExtensionMapper;
+import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
+import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -154,7 +156,7 @@ public class SkuService {
      * @return
      */
     public List<ComSkuImage> findComSkuImages(Integer skuId) throws Exception {
-        String productImgValue = PropertiesUtils.getStringValue("index_product_800_800_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
         List<ComSkuImage> comSkuImageList = comSkuImageMapper.selectBySkuId(skuId);
         if (comSkuImageList != null) {
             for (ComSkuImage comSkuImage : comSkuImageList) {

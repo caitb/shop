@@ -79,6 +79,7 @@
 <script src="${path}/static/js/common/checkUtil.js"></script>
 <script src="${path}/static/js/common/comArea.js"></script>
 <script src="${path}/static/js/pageJs/address.js"></script>
+<script src="${path}/static/js/pageJs/hideWXShare.js"></script>
 <script>
     comAreaJS.init("edit");
     addressJS.init();

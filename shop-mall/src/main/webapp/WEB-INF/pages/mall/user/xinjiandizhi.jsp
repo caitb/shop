@@ -16,6 +16,7 @@
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/common/checkUtil.js"></script>
     <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+    <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </head>
 <script>
     var promise =  $.Deferred().promise();

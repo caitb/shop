@@ -159,13 +159,13 @@ public class WxEventService {
         }
 
         ComSku sku = skuService.getSkuById(skuId);
-        ComSkuImage skuImage = skuService.findComSkuImage(skuId);
-        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
+//        ComSkuImage skuImage = skuService.findComSkuImage(skuId);
+//        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();
 
         String url = PropertiesUtils.getStringValue("web.domain.name.address")
                 + "/product/skuDetails.shtml?skuId=" + userSku.getSkuId()
                 + "&pUserId=" + userSku.getUserId();
-        WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), imgUrl);
+        WxArticleRes res = createReturnToWxUser(body, url, sku.getName(), null);
 
         return res;
     }
@@ -191,7 +191,7 @@ public class WxEventService {
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
         Article article = new Article("点击继续", url);
-        article.setPicUrl(imgUrl);
+        article.setPicUrl("http://file.masiis.com/static/wx_notice_pic.jpg");
         article.setDescription("您正在申请" + skuName + "合伙人，点击继续");
         articles.add(article);
         res.setArticles(articles);

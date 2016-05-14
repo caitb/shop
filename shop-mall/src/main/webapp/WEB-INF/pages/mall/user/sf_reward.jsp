@@ -16,7 +16,7 @@
     <div class="wrap">
         <header style="margin-bottom: 0;">
             <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
-            <p>我的奖励</p>
+            <p>佣金管理</p>
         </header>
         <p>我的分享</p>
         <nav>

@@ -25,7 +25,7 @@ public enum UserSkuStockLogType {
         }
     },shopOrder{
         public Integer getCode() {
-            return 4;
+            return 2;
         }
 
         public String getDesc() {
@@ -33,7 +33,7 @@ public enum UserSkuStockLogType {
         }
     },shopReturn{
         public Integer getCode() {
-            return 5;
+            return 3;
         }
 
         public String getDesc() {

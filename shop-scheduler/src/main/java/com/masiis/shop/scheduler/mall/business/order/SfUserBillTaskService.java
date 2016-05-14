@@ -42,7 +42,7 @@ public class SfUserBillTaskService {
         log.info("创建每日结算账单,订单开始时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单结束时间
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
-        log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
+        log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countEndDay, DateUtil.DEFAULT_DATE_FMT_2));
 
         // 检查日期区间内是否有账单,确保只创建一次
         Long nums = billService.queryBillNumsByDate(getCountDay(new Date(), 0), getCountDay(new Date(), 1));

@@ -190,6 +190,30 @@ public class WxPFNoticeUtils {
     }
 
     /**
+     * 代理订单发货通知
+     *
+     * @param user     通知对象
+     * @param params   (1,商品名称;2,订单编号(不是id);3,快递公司;4,快递单号)
+     * @return
+     */
+    public Boolean trailOrderShippedNotice(ComUser user, String[] params) {
+        WxPFOrderShipped shipped = new WxPFOrderShipped();
+        WxNoticeReq<WxPFOrderShipped> req = new WxNoticeReq<>(shipped);
+
+        shipped.setFirst(new WxNoticeDataItem("您好，您的" + params[0] + "试用订单已发货", null));
+        shipped.setKeyword1(new WxNoticeDataItem(params[1], null));
+        shipped.setKeyword2(new WxNoticeDataItem(params[2], null));
+        shipped.setKeyword3(new WxNoticeDataItem(params[3], null));
+        shipped.setRemark(new WxNoticeDataItem("请注意查收。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        // 调用发货模板id
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_ORDER_SHIPPED);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
      * 有新的下级订单
      *
      * @param user

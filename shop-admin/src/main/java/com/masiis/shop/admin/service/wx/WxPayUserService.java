@@ -93,7 +93,12 @@ public class WxPayUserService {
                     || apply.getExtractFee().compareTo(new BigDecimal(1)) < 0){
                 throw new BusinessException("提现方式不正确或者提现金额不正确!");
             }
-            if(account.getExtractableFee().subtract(account.getAppliedFee()).compareTo(apply.getExtractFee()) < 0){
+            if(account.getAppliedFee().compareTo(apply.getExtractFee()) < 0){
+                // 账户可提现额度(可提现金额减去已经申请金额)小于申请提现金额
+                log.error("账户申请提现额度小于申请提现金额");
+                throw new BusinessException("账户申请提现额度小于申请提现金额");
+            }
+            if(account.getExtractableFee().compareTo(apply.getExtractFee()) < 0){
                 // 账户可提现额度(可提现金额减去已经申请金额)小于申请提现金额
                 log.error("账户可提现额度小于申请提现金额");
                 throw new BusinessException("账户可提现额度小于申请提现金额");

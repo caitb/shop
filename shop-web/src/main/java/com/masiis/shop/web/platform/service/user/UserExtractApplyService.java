@@ -46,7 +46,7 @@ public class UserExtractApplyService {
             apply.setExtractWay(info.getExtractWay());
             apply.setExtractwayInfoId(info.getId());
 
-            account.setAppliedFee(account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee().add(account.getAppliedFee()));
+            account.setAppliedFee((account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee()).add(account.getAppliedFee()));
             applyMapper.insert(apply);
             accountMapper.updateByPrimaryKey(account);
         } catch (Exception e) {

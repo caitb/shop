@@ -116,7 +116,6 @@
 //            preventDefault: false
 //        })
 
-
 //        $(".btn").on("click",function(){
 //            $(".back").css("display","-webkit-box");
 //            $(".back_que").css("display","-webkit-box");

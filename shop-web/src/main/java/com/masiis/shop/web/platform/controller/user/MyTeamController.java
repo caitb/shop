@@ -50,7 +50,8 @@ public class MyTeamController extends BaseController {
             Double totalSales = 0.0;
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 totalChild += Integer.parseInt(agentSkuMap.get("countChild").toString());
-                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString()) + comUserAccount.getTotalIncomeFee().intValue();
+                totalSales += Double.parseDouble(agentSkuMap.get("countSales").toString());
+                totalSales += comUserAccount.getTotalIncomeFee().doubleValue();
             }
             mav.addObject("totalChild", totalChild);
             mav.addObject("totalSales", totalSales);

@@ -70,7 +70,8 @@ public interface SfOrderMapper {
      * @param status
      * @return
      */
-    SfOrder selectNotIsBuyByUserId(Long userId,Integer status);
+    SfOrder selectNotIsBuyByUserId(@Param("userId") Long userId,
+                                   @Param("status") Integer status);
 
     List<SfOrder> selectByShopUserIds(List<Long> userIds);
 

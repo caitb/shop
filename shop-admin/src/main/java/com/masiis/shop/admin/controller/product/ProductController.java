@@ -5,6 +5,7 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.StringUtil;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.product.*;
 import com.masiis.shop.common.util.ImageUtils;
@@ -270,6 +271,9 @@ public class ProductController {
                 comSpu.setModifyTime(new Date());
                 comSpu.setModifyMan(pbUser.getId());
                 comSpu.setUnit(unitId);
+
+                if(StringUtil.isEmpty(comSpu.getContent())) comSpu.setContent(null);
+                if(StringUtil.isEmpty(comSpu.getPolicy()))  comSpu.setPolicy(null);
 
                 comSku.setId(skuId);
                 comSku.setModifyTime(new Date());

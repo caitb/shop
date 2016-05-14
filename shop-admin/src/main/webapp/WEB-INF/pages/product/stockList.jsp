@@ -404,7 +404,7 @@
             $.ajax({
                 url: '<%=basePath%>stock/update.do',
                 type: 'post',
-                data: {id: row.pfSkuStock.id, stock: row.stock},
+                data: {id: row.pfSkuStock.id, version: row.pfSkuStock.version, stock: row.stock},
                 success: function(msg){
                     $.gritter.add({
                         title: '消息',

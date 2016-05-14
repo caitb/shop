@@ -405,8 +405,14 @@
                         sortable: true,
                         footerFormatter: totalNameFormatter,
                         formatter: function(value, row, index){
-                            if(row.sfUserExtractApply && row.sfUserExtractApply.bankName){
-                                return row.sfUserExtractApply.bankName;
+                            if(row.sfUserExtractApply && row.sfUserExtractApply.extractWay == 1){
+                                return '微信';
+                            }
+                            if(row.sfUserExtractApply && row.sfUserExtractApply.extractWay == 2){
+                                return '支付宝';
+                            }
+                            if(row.sfUserExtractApply && row.sfUserExtractApply.extractWay == 3){
+                                return '银行卡';
                             }
                         }
                     },

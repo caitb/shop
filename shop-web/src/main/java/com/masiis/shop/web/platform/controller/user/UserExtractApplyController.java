@@ -123,7 +123,7 @@ public class UserExtractApplyController extends BaseController {
                 log.error("系统错误,用户资产未找到");
                 throw new BusinessException("系统错误,用户资产未找到");
             }
-            if (exMoney.compareTo(account.getExtractableFee().subtract(account.getAppliedFee())) == 1 || exMoney.compareTo(new BigDecimal(0)) <= 0){
+            if (exMoney.compareTo(account.getExtractableFee().subtract(account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee())) == 1 || exMoney.compareTo(new BigDecimal(0)) <= 0){
                 throw new BusinessException("申请金额有误");
             }
 

@@ -88,7 +88,7 @@ public class ExtractApplyService {
         int auditType = comUserExtractApply.getAuditType();
         String auditCause = comUserExtractApply.getAuditCause();
 
-        comUserExtractApply = comUserExtractApplyMapper.findById(comUserExtractApply.getId());
+        comUserExtractApply = comUserExtractApplyMapper.selectByPrimaryKey(comUserExtractApply.getId());
         comUserExtractApply.setAuditType(auditType);
         comUserExtractApply.setAuditCause(auditCause);
 

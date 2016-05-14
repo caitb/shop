@@ -298,7 +298,7 @@ public class WxPFNoticeUtils {
      * 提现申请通知
      *
      * @param user
-     * @param params    (1,提现金额;2,提现时间;3,提现状态)
+     * @param params    (1,提现金额;2,提现时间;3,提现状态; 4,拒绝原因)
      * @param isSuccess
      * @return
      */
@@ -317,7 +317,7 @@ public class WxPFNoticeUtils {
             apply.setKeyword1(new WxNoticeDataItem(params[0], null));
             apply.setKeyword2(new WxNoticeDataItem(params[1], null));
             apply.setKeyword3(new WxNoticeDataItem(params[2], null));
-            apply.setRemark(new WxNoticeDataItem("拒绝原因，您没有这么多余额，如有问题请联系客服!", null));
+            apply.setRemark(new WxNoticeDataItem("拒绝原因：" + params[3] + "，如有问题请联系客服!", null));
         }
 
         req.setTouser(getOpenIdByComUser(user));

@@ -36,7 +36,7 @@ html header a:first-child img {
 body header a:last-child,
 html header a:last-child {
   display: block;
-  width: 50px;
+  width: 60px;
   height: 100%;
   position: absolute;
   right: 10px;

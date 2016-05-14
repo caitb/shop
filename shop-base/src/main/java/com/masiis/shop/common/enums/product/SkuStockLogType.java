@@ -15,22 +15,6 @@ public enum SkuStockLogType {
         public String getDesc() {
             return "新加入合伙";
         }
-    }, downSupplement {
-        public Integer getCode() {
-            return 1;
-        }
-
-        public String getDesc() {
-            return "补货";
-        }
-    },downTake{
-        public Integer getCode() {
-            return 2;
-        }
-
-        public String getDesc() {
-            return "拿货";
-        }
     };
 
     public abstract Integer getCode();

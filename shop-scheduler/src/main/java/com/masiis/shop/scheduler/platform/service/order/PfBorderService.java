@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.dao.po.PfUserSkuStock;
+import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserAccountService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -30,10 +31,6 @@ public class PfBorderService {
     private PfBorderMapper borderMapper;
     @Resource
     private ComUserAccountService comUserAccountService;
-    @Resource
-    private PfBorderItemMapper pfBorderItemMapper;
-    @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
     @Resource
     private BOrderOperationLogService bOrderOperationLogService;
 
@@ -103,38 +100,6 @@ public class PfBorderService {
         //订单类型(0代理1补货2拿货)
         if (bOrder.getOrderType() == 0 || bOrder.getOrderType() == 1) {
             comUserAccountService.countingByOrder(bOrder);
-        }
-    }
-
-    /**
-     * 修改订单
-     *
-     * @author ZhaoLiang
-     * @date 2016/3/17 14:59
-     */
-    @Transactional
-    public void updateBOrder(PfBorder pfBorder) {
-        borderMapper.updateById(pfBorder);
-    }
-
-    /**
-     * 更新进货库存
-     *
-     * @author muchaofeng
-     * @date 2016/3/21 16:22
-     */
-    @Transactional
-    public void updateGetStock(PfBorder pfBorder, ComUser user) {
-        PfUserSkuStock pfUserSkuStock = null;
-        List<PfBorderItem> itemList = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
-        for (PfBorderItem pfBorderItem : itemList) {
-            pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(user.getId(), pfBorderItem.getSkuId());
-            if (pfUserSkuStock != null) {
-                pfUserSkuStock.setStock(pfUserSkuStock.getStock() + pfBorderItem.getQuantity());
-                if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
-                    throw new BusinessException("并发修改库存失败");
-                }
-            }
         }
     }
 }

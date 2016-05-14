@@ -30,9 +30,9 @@ public class SkuService {
     @Resource
     private ComSkuExtensionMapper comSkuExtensionMapper;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private ComUserMapper comUserMapper;
 
@@ -56,7 +56,7 @@ public class SkuService {
      */
     public int getSkuStockStatus(Integer skuId, int quantity, Long pUserId) throws Exception {
         if (pUserId == 0) {
-            PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(skuId);
+            PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             //如果进入排单直接返回-quantity
             if (pfSkuStock.getIsQueue() == 1) {
                 return 1;
@@ -71,7 +71,7 @@ public class SkuService {
             if (comUser == null) {
                 throw new BusinessException("找不到该用户");
             } else {
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(pUserId, skuId);
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pUserId, skuId);
                 //拿货方式: 0,未选择; 1,平台代发; 2,自己发货
                 if (comUser.getSendType() == 1) {
                     if (pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock() < quantity) {
@@ -105,7 +105,7 @@ public class SkuService {
      * 查看排单flag
      */
     public PfSkuStock getPfSkuStockInfoBySkuId(Integer skuId) {
-        return pfSkuStockMapper.selectBySkuId(skuId);
+        return pfSkuStockService.selectBySkuId(skuId);
     }
 
 }

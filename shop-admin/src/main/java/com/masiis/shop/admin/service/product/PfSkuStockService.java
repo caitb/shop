@@ -74,7 +74,6 @@ public class PfSkuStockService {
 
         switch (handleType) {
             case downAgent:
-            case downSupplement:
                 afterStock -= change;
                 afterFrozeStock -= change;
                 break;

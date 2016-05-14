@@ -14,6 +14,7 @@ import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.platform.service.product.SkuAgentService;
 import com.masiis.shop.web.platform.service.product.SkuService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
@@ -47,9 +48,7 @@ public class BOrderAddService {
     @Resource
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
-    @Resource
-    private PfUserSkuStockMapper pfUserSkuStockMapper;
+    private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private PfSkuAgentMapper pfSkuAgentMapper;
     @Resource
@@ -272,7 +271,7 @@ public class BOrderAddService {
         logger.info("<3>冻结usersku库存 用户加冻结库存存");
         PfUserSkuStock pfUserSkuStock = null;
         //冻结usersku库存 用户加冻结库存
-        pfUserSkuStock = pfUserSkuStockMapper.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
+        pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, pfBorderItem.getSkuId());
         if (pfUserSkuStock == null) {
             throw new BusinessException("拿货失败：没有库存信息");
         }
@@ -280,7 +279,7 @@ public class BOrderAddService {
             throw new BusinessException("拿货失败：拿货数量超过库存数量");
         }
         pfUserSkuStock.setFrozenStock(pfUserSkuStock.getFrozenStock() + quantity);
-        if (pfUserSkuStockMapper.updateByIdAndVersion(pfUserSkuStock) == 0) {
+        if (pfUserSkuStockService.updateByIdAndVersions(pfUserSkuStock) == 0) {
             throw new BusinessException("并发修改库存失败");
         }
         logger.info("<4>添加订单地址信息");

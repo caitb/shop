@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.product.SkuStockLogType;
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -45,7 +47,7 @@ public class BOrderService {
     @Resource
     private ComSpuMapper comSpuMapper;
     @Resource
-    private PfSkuStockMapper pfSkuStockMapper;
+    private PfSkuStockService pfSkuStockService;
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
@@ -180,12 +182,9 @@ public class BOrderService {
         List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pfBorder.getId());
         if (pfBorder.getUserPid().intValue() == 0 && pfBorder.getOrderType().intValue() != 2) {
             for (PfBorderItem pfBorderItem : pfBorderItems) {
-                PfSkuStock pfSkuStock = pfSkuStockMapper.selectBySkuId(pfBorderItem.getSkuId());
+                PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(pfBorderItem.getSkuId());
                 if (pfSkuStock.getStock() - pfBorderItem.getQuantity() >= 0 && pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity() >= 0) {
-                    pfSkuStock.setStock(pfSkuStock.getStock() - pfBorderItem.getQuantity());
-                    pfSkuStock.setFrozenStock(pfSkuStock.getFrozenStock() - pfBorderItem.getQuantity());
-                    int c = pfSkuStockMapper.updateByIdAndVersion(pfSkuStock);
-                    if (c == 0) throw new Exception("更改库存失败!");
+                    pfSkuStockService.updateSkuStockWithLog(pfBorderItem.getQuantity(), pfSkuStock, pfBorder.getId(), SkuStockLogType.downAgent);
                 } else {
                     throw new Exception("库存异常!");
                 }

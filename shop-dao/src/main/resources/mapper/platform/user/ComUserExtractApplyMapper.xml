@@ -56,16 +56,16 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.ComUserExtractApply" useGeneratedKeys="true"
             keyProperty="id">
-        insert into com_user_extract_apply (id, com_user_id, extract_fee, 
-            extractway_info_id, apply_time, extract_way, 
-            extract_time, pay_time, audit_type, audit_cause,
-            bank_card, bank_name, card_owner_name, 
-            deposit_bank_name, remark)
-        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL}, 
-            #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=BIGINT}, 
-            #{extractTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR},
-            #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR}, 
-            #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+        insert into com_user_extract_apply (id, com_user_id, extract_fee,
+        extractway_info_id, apply_time, extract_way,
+        extract_time, pay_time, audit_type, audit_cause,
+        bank_card, bank_name, card_owner_name,
+        deposit_bank_name, remark)
+        values (#{id,jdbcType=BIGINT}, #{comUserId,jdbcType=BIGINT}, #{extractFee,jdbcType=DECIMAL},
+        #{extractwayInfoId,jdbcType=BIGINT}, #{applyTime,jdbcType=TIMESTAMP}, #{extractWay,jdbcType=BIGINT},
+        #{extractTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{auditType,jdbcType=INTEGER}, #{auditCause,jdbcType=VARCHAR},
+        #{bankCard,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{cardOwnerName,jdbcType=VARCHAR},
+        #{depositBankName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserExtractApply">
@@ -120,7 +120,7 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
         extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
         from com_user_extract_apply
@@ -128,7 +128,7 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way, 
+        select id, com_user_id, extract_fee, extractway_info_id, apply_time, extract_way,
         extract_time, pay_time, audit_type, audit_cause, bank_card, bank_name, card_owner_name, deposit_bank_name,
         remark
         from com_user_extract_apply

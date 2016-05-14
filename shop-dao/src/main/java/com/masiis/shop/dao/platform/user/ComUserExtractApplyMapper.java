@@ -29,10 +29,6 @@ public interface ComUserExtractApplyMapper {
 
     int updateByPrimaryKey(ComUserExtractApply record);
 
-    List<ExtractApply> getExtractApplyList();
-
-    ExtractApply findById(Long id);
-
     void pass(Long id);
 
     void refuse(Long id);

@@ -8,6 +8,7 @@ import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
+import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
 import com.masiis.shop.web.mall.service.order.SfOrderManageService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserAccountService;
@@ -22,8 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单
@@ -41,6 +45,8 @@ public class SfOrderManagerController extends BaseController {
     private UserService userService;
     @Resource
     private SfUserAccountService sfUserAccountService;
+    @Resource
+    private SfOrderItemDistributionService sfOrderItemDistributionService;
 
 
     /**
@@ -237,12 +243,14 @@ public class SfOrderManagerController extends BaseController {
                 sfOrders8.add(sfOrder);//待收货
             }
         }
-        SfUserAccount accountByUserId = sfUserAccountService.findAccountByUserId(user.getId());
+//        SfUserAccount accountByUserId = sfUserAccountService.findAccountByUserId(user.getId());
+        Map<String, BigDecimal> stringBigDecimalMap = sfOrderItemDistributionService.selectUserAmounts(user.getId());
+//        Object serializable = stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("sfOrders0", sfOrders0.size()+sfOrders8.size());
 //        modelAndView.addObject("sfOrders7", sfOrders7.size());
 //        modelAndView.addObject("sfOrders8", sfOrders8.size());
-        modelAndView.addObject("cumulativeFee", accountByUserId.getCountingFee());
+        modelAndView.addObject("cumulativeFee", stringBigDecimalMap == null ? 0 : stringBigDecimalMap.get("sumAmount"));
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPName", userPid == null ? null : userPid.getRealName());
         modelAndView.setViewName("mall/order/gerenzhongxin");

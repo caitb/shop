@@ -91,7 +91,7 @@ public class SfUserExtractApplyService {
      * @param userId
      * @return
      */
-    public Map<String,Object> selectextractFeeByUserId(Long userId){
+    public Map<String,BigDecimal> selectextractFeeByUserId(Long userId){
         return sfUserExtractApplyMapper.selectextractFeeByUserId(userId);
     }
 }

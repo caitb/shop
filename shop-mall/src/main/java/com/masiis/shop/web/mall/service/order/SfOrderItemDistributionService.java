@@ -65,4 +65,9 @@ public class SfOrderItemDistributionService {
     public Map<String,BigDecimal> selectSumAmount(Long userId, List<Long> orderIds){
         return sfOrderItemDistributionExtendMapper.selectSumAmount(userId, orderIds);
     }
+
+    public Map<String,BigDecimal> selectUserAmounts(Long userId){
+        return sfOrderItemDistributionExtendMapper.selectUserAmount(userId);
+    }
+
 }

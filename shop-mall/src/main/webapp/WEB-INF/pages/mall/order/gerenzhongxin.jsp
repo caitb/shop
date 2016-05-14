@@ -32,7 +32,7 @@
     </div>
     <div class="jiang">
         <p>我的奖励</p>
-        <h1>￥<span>${cumulativeFee}</span></h1>
+        <h1>￥<span><fmt:formatNumber value="${cumulativeFee}" pattern="##.##" minFractionDigits="2" ></fmt:formatNumber></span></h1>
     </div>
     <nav>
         <ul>

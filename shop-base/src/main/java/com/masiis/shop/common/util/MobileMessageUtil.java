@@ -383,6 +383,23 @@ public class MobileMessageUtil {
         return sendMethod(phone, SMSConstants.OFFLINE_PAYMENTS_REMIND, content);
     }
 
+    /**
+     * 试用发货提醒
+     * @param phone
+     * @param skuName   商品名称
+     * @param shipName  物流公司
+     * @param shipCode  运单号
+     * @return
+     */
+    public boolean trialShipmentsRemind(String phone, String skuName, String shipName, String shipCode){
+        content = new String[5];
+        content[0] = skuName;
+        content[1] = shipName;
+        content[2] = shipCode;
+        content[3] = EVENING_MESSAGE;
+        return sendMethod(phone, SMSConstants.TRIAL_SHIPMENTS_REMIND, content);
+    }
+
     public boolean sendMethod(String phone, String code, String[] content){
         try{
             String[] smsRes = CCPRestSmsSDK.sendSMSWithResultMasiisShop(phone, code, content);

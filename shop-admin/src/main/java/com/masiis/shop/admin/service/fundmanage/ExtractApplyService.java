@@ -97,6 +97,7 @@ public class ExtractApplyService {
             double applied_fee = comUserAccount.getAppliedFee().doubleValue() - comUserExtractApply.getExtractFee().doubleValue();
             if(applied_fee >= 0){
                 comUserAccount.setAppliedFee(new BigDecimal(applied_fee));
+                comUserAccountMapper.updateByPrimaryKey(comUserAccount);
             }
         }
 

@@ -29,11 +29,11 @@ public class UserExtractApplyService {
 
     public void applyExtract(ComUserAccount account, BigDecimal exMoney, ComUser user, ComUserExtractwayInfo info){
         try{
-            if(exMoney.compareTo(account.getExtractableFee()) > 0
-                    || exMoney.compareTo(new BigDecimal(0)) <= 0){
-                log.error("提现金额错误,超过可提现金额或者小于0,用户id:" + user.getId());
-                throw new BusinessException("提现金额错误,超过可提现金额或者小于0");
-            }
+//            if(exMoney.compareTo(account.getExtractableFee()) > 0
+//                    || exMoney.compareTo(new BigDecimal(0)) <= 0){
+//                log.error("提现金额错误,超过可提现金额或者小于0,用户id:" + user.getId());
+//                throw new BusinessException("提现金额错误,超过可提现金额或者小于0");
+//            }
             ComUserExtractApply apply = new ComUserExtractApply();
             apply.setApplyTime(new Date());
             apply.setAuditType(0);
@@ -46,11 +46,12 @@ public class UserExtractApplyService {
             apply.setExtractWay(info.getExtractWay());
             apply.setExtractwayInfoId(info.getId());
 
-            account.setAppliedFee(account.getAppliedFee().add(exMoney));
+            account.setAppliedFee((account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee()).add(exMoney));
             applyMapper.insert(apply);
             accountMapper.updateByPrimaryKey(account);
         } catch (Exception e) {
             log.error("提现申请业务操作失败," + e.getMessage());
+            e.printStackTrace();
             throw new BusinessException(e.getMessage());
         }
     }

@@ -45,7 +45,7 @@ public class ExtractApplyService {
      * 提现申请记录列表
      */
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, Map<String, Object> con){
-        PageHelper.startPage(pageNumber, pageSize, "create_time desc");
+        PageHelper.startPage(pageNumber, pageSize, "apply_time desc");
         List<ComUserExtractApply> comUserExtractApplies = comUserExtractApplyMapper.selectByCondition(con);
         PageInfo<ComUserExtractApply> pageInfo = new PageInfo<>(comUserExtractApplies);
 
@@ -88,7 +88,7 @@ public class ExtractApplyService {
         int auditType = comUserExtractApply.getAuditType();
         String auditCause = comUserExtractApply.getAuditCause();
 
-        comUserExtractApply = comUserExtractApplyMapper.findById(comUserExtractApply.getId());
+        comUserExtractApply = comUserExtractApplyMapper.selectByPrimaryKey(comUserExtractApply.getId());
         comUserExtractApply.setAuditType(auditType);
         comUserExtractApply.setAuditCause(auditCause);
 

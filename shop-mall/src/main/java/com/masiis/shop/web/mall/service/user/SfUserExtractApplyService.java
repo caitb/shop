@@ -47,7 +47,7 @@ public class SfUserExtractApplyService {
         apply.setAuditType(0);      //设置为待审核状态
         apply.setAuditCause("分销用户提现申请");
         apply.setRemark("分销用户提现申请");
-        userAccount.setAppliedFee(userAccount.getAppliedFee().add(exMoney));
+        userAccount.setAppliedFee((userAccount.getAppliedFee() == null?new BigDecimal(0):userAccount.getAppliedFee()).add(exMoney));
         if (sfUserExtractApplyMapper.insert(apply) == 0){
             throw new BusinessException("插入用户提现记录表失败");
         }

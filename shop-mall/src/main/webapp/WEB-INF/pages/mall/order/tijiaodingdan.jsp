@@ -116,7 +116,7 @@
         <section class="sec3">
             <p><em>运费：</em><span>包邮</span></p>
             <p><em>留言：</em><input id="userMessageId" type="text"></p>
-            <h2>（共<b style="font-size:12px">${totalQuantity}</b>件商品　合计：<span>￥${skuTotalPrice}</span>）</h2>
+            <h2>共<b style="font-size:12px">${totalQuantity}</b>件商品　合计：<span>￥${skuTotalPrice}</span></h2>
             <h1>共需支付：<span>￥ ${totalPrice}</span></h1>
         </section>
         <a  onclick="submitOrder()" class="weixin">提交订单</a>

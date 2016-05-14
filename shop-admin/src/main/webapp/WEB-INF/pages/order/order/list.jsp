@@ -518,6 +518,7 @@
                                                         text: "订单退货成功",
                                                         class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
                                                     });
+                                                    $('#table').bootstrapTable('refresh');
                                                 } else {
                                                     var resText = "";
                                                     if(msg.resMsg == "" || msg.resMsg == undefined){

@@ -121,11 +121,10 @@ public class ExtractApplyService {
         ComUserExtractwayInfo comUserExtractwayInfo = comUserExtractwayInfoMapper.selectByPrimaryKey(comUserExtractApply.getExtractwayInfoId());
         if(auditType == 1){
             MobileMessageUtil.getInitialization("B").withdrawVerifyRefuseAgent(comUser.getMobile(), auditCause);
+            WxPFNoticeUtils.getInstance().pfExtractApply(comUser, new String[]{"￥"+comUserExtractApply.getExtractFee().toString(), new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date()), "审核拒绝"}, false);
         }
         if(auditType == 2){
             MobileMessageUtil.getInitialization("B").withdrawVerifyApproveAgent(comUser.getMobile(), "1", 3);
-        }
-        if(auditType == 1 || auditType == 2){
             WxPFNoticeUtils.getInstance().pfExtractApplySuccess(comUser,
                     new String[]{
                             comUser.getWxNkName(),

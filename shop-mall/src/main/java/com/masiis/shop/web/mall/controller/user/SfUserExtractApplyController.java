@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -292,8 +293,9 @@ public class SfUserExtractApplyController extends BaseController{
             mobile = MobileMessageUtil.getInitialization("C").withdrawRequestVerifyCustomer(user.getMobile(), SMSConstants.WITHDRAW_DAYS);
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         //提现申请成功发送微信
-        String[] params = new String[]{money.toString(),dateFormat.format(new Date()),"审核中"};
+        String[] params = new String[]{"￥"+decimalFormat.format(money),dateFormat.format(new Date()),"审核中"};
         boolean wechat = WxSFNoticeUtils.getInstance().extractApplyNotice(user, params, true);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("mobile",mobile);

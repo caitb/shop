@@ -14,8 +14,10 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/header.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/xinjiandizhi.css">
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="<%=path%>/static/js/common/checkUtil.js"></script>
     <script src="<%=path%>/static/js/common/definedAlertWindow.js"></script>
+    <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </head>
 <script>
     var promise =  $.Deferred().promise();

@@ -92,6 +92,14 @@ public class ExtractApplyService {
         comUserExtractApply.setAuditType(auditType);
         comUserExtractApply.setAuditCause(auditCause);
 
+        if(comUserExtractApply.getAuditType().intValue()==1){
+            ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUserExtractApply.getComUserId());
+            double applied_fee = comUserAccount.getAppliedFee().doubleValue() - comUserExtractApply.getExtractFee().doubleValue();
+            if(applied_fee >= 0){
+                comUserAccount.setAppliedFee(new BigDecimal(applied_fee));
+            }
+        }
+
         if(comUserExtractApply.getAuditType().intValue()==3){//打款业务
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(comUserExtractApply.getComUserId());
 

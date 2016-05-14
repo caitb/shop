@@ -79,11 +79,8 @@
             <img src="<%=path%>/static/images/chanpin%20(1).jpg" alt="">
         </section>
         <section class="sec2">
-            <h2 style="color:#f72946;">麦链合伙人提供技术支持</h2>
             <p>Copyright2005-2016 iimai.com 版权所有</p>
-            <p>京ICP证080047号[京ICP备08010314号-6]</p>
-            <p>文网文[2009]024号 新出网证（京）字069号</p>
-            <p>京公网安备 11000002000006号</p>
+            <p>京ICP备16001661号-3</p>
         </section>
 
     </main>

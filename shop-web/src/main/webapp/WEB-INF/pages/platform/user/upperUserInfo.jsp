@@ -34,10 +34,6 @@
                 <b>${ctname}</b>
             </h2>
         </div>
-        <p><span>等级</span>
-            <span>${ctname}</span>
-        </p>
-
         <p><span>手机号</span><span>${pfUserCertificate.mobile}</span></p>
 
         <p><span>微信号</span><span>${pfUserCertificate.wxId}</span></p>

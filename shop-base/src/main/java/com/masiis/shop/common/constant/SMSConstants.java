@@ -108,5 +108,9 @@ public class SMSConstants {
 	 * 线下支付提醒
 	 */
 	public static final String OFFLINE_PAYMENTS_REMIND = "86403";
+	/**
+	 * 试用货提醒
+	 */
+	public static final String TRIAL_SHIPMENTS_REMIND = "86552";
 
 }

@@ -64,7 +64,7 @@
            <c:forEach items="${orderMallDetail.sfOrderItems}" var="bdpi">
             <section class="sec2">
                 <p class="photo">
-                   <a href="<%=path%>/static/html/xiangqing.html">
+                   <a href="javascript:;">
                         <img src="${bdpi.skuUrl}" alt="">
                     </a>
                 </p>

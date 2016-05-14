@@ -243,7 +243,7 @@ public class WxPFNoticeUtils {
     }
 
     /**
-     * 小铺订单确认收货
+     * 订单确认收货
      *
      * @param user
      * @param params (第一个,订单号(ordercode); 第二个,商品名称; 第三个,下单时间;
@@ -255,6 +255,32 @@ public class WxPFNoticeUtils {
         WxNoticeReq<WxPFOrderConfirmNotice> req = new WxNoticeReq<>(confirm);
 
         confirm.setFirst(new WxNoticeDataItem("亲，您在我们商城买的宝贝已经确认收货。", null));
+        confirm.setKeyword1(new WxNoticeDataItem(params[0], null));
+        confirm.setKeyword2(new WxNoticeDataItem(params[1], null));
+        confirm.setKeyword3(new WxNoticeDataItem(params[2], null));
+        confirm.setKeyword4(new WxNoticeDataItem(params[3], null));
+        confirm.setKeyword5(new WxNoticeDataItem(params[4], null));
+        confirm.setRemark(new WxNoticeDataItem("感谢您的支持与厚爱。", null));
+
+        req.setTouser(getOpenIdByComUser(user));
+        req.setTemplate_id(WxConsPF.WX_PF_TM_ID_ORDER_CONFIRM);
+        return wxNotice(WxCredentialUtils.getInstance()
+                .getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET), req);
+    }
+
+    /**
+     * 订单7天自动确认收货
+     *
+     * @param user
+     * @param params (第一个,订单号(ordercode); 第二个,商品名称; 第三个,下单时间;
+     *               第四个,发货时间; 第五个,确认收货时间)
+     * @return
+     */
+    public Boolean orderAutoConfirmNotice(ComUser user, String[] params){
+        WxPFOrderConfirmNotice confirm = new WxPFOrderConfirmNotice();
+        WxNoticeReq<WxPFOrderConfirmNotice> req = new WxNoticeReq<>(confirm);
+
+        confirm.setFirst(new WxNoticeDataItem("亲，您在我们商城买的宝贝7天自动确认收货。", null));
         confirm.setKeyword1(new WxNoticeDataItem(params[0], null));
         confirm.setKeyword2(new WxNoticeDataItem(params[1], null));
         confirm.setKeyword3(new WxNoticeDataItem(params[2], null));

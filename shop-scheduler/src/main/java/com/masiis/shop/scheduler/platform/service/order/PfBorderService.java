@@ -12,6 +12,7 @@ import com.masiis.shop.dao.po.PfBorderItem;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 import com.masiis.shop.scheduler.platform.service.product.PfUserSkuStockService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserAccountService;
+import com.masiis.shop.scheduler.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

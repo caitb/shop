@@ -281,7 +281,7 @@
     </update>
 
     <select id="selectNotIsBuyByUserId" resultMap="BaseResultMap" >
-        select * from sf_order where id = (select min(id) from sf_order where user_id = #{0} and order_status = #{1}) and <![CDATA[ SYSDATE()-receipt_time >= 7 ]]>;
+        select * from sf_order where id = (select min(id) from sf_order where user_id = #{userId} and order_status = #{status}) and datediff(now(),receipt_time) &gt; 7 ;
     </select>
 
     <select id="selectByShopUserIds" resultMap="BaseResultMap">

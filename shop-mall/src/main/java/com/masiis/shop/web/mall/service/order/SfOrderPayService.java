@@ -346,7 +346,7 @@ public class SfOrderPayService {
     private void orderNotice(ComUser comUser, SfOrder order, List<SfOrderItem> orderItems) {
         //微信提醒
         log.info("订单通知提醒-----start");
-        String[] param = new String[]{order.getOrderCode(), order.getPayAmount() + "", "微信支付"};
+        String[] param = new String[]{order.getOrderCode(), "￥"+order.getPayAmount() + "", "微信支付"};
         /*消费者端微信提醒*/
         WxSFNoticeUtils.getInstance().orderCreateNotice(comUser, param);
         /*小铺端归属人微信提醒*/

@@ -5,7 +5,6 @@ import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import org.springframework.stereotype.Service;
@@ -69,7 +68,7 @@ public class ProductService {
         product.setBrand(comBrand.getContent());
         product.setPolicy(comSpu.getPolicy());
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
-        String productImgValue = PropertiesUtils.getStringValue("index_product_800_800_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
         if (skuImgList != null && skuImgList.size() > 0) {
             for (ComSkuImage comSkuImage : skuImgList) {
                 comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

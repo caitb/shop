@@ -342,7 +342,7 @@ public class SfUserAccountController extends BaseController {
                 isNotPayDistribution = isNotPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
             }
         }
-        mv.addObject("isPayDistribution",isPayDistribution);
+        mv.addObject("isPayDistribution",isPayDistribution.subtract(userAccount.getExtractableFee()));
         mv.addObject("isNotPayDistribution",isNotPayDistribution);
         log.info("查询已经提现成功的金额");
         Map<String,Object> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);

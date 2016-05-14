@@ -15,25 +15,16 @@
 <%
     String type = request.getParameter("type");
     if(StringUtils.isBlank(type)){
-        %><h6>参数为空</h6><%
         return;
     }
     ApplicationContext ac = ApplicationContextUtil.getContext();
     if(type.equals("pfcount")){
         PfOrderTask pfOrderTask = (PfOrderTask) ac.getBean("pfOrderTask");
         pfOrderTask.billCountJob();
-        %><h6>代理端结算中定时任务手动调用成功</h6><%
-        return;
-    }
-    if(type.equals("sfcount")){
+    } else if(type.equals("sfcount")){
         SfOrderTask sfOrderTask = (SfOrderTask) ac.getBean("sfOrderTask");
         sfOrderTask.sfBillCountJob();
-        %><h6>代理端结算中定时任务手动调用成功</h6><%
-        return;
     }
-
-    %><h6>参数type内容不正确</h6><%
-    return;
 %>
 </body>
 </html>

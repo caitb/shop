@@ -97,14 +97,14 @@ public class WxEventService {
      * @param body
      * @return
      */
-    private WxArticleRes handleQRScanEvent(WxEventBody body) {
+    private WxBaseMessage handleQRScanEvent(WxEventBody body) {
         Long paramId = null;
         String eventStr = body.getEventKey();
         if("SCAN".equals(body.getEvent())){
             if(StringUtils.isNotBlank(eventStr)) {
                 paramId = Long.valueOf(eventStr);
             } else {
-                return null;
+                return createDefaultSubscribeEventReturn(body, "欢迎关注麦链商城~");
             }
         }
         if("subscribe".equals(body.getEvent())){
@@ -112,7 +112,7 @@ public class WxEventService {
                 eventStr = eventStr.replaceAll("qrscene_", "");
                 paramId = Long.valueOf(eventStr);
             } else {
-                return null;
+                return createDefaultSubscribeEventReturn(body, "欢迎关注麦链商城~");
             }
         }
         if(paramId == null){
@@ -152,6 +152,18 @@ public class WxEventService {
         article.setUrl(url);
         articles.add(article);
         res.setArticles(articles);
+
+        return res;
+    }
+
+    private WxBaseMessage createDefaultSubscribeEventReturn(WxEventBody body, String content) {
+        WxContentRes res = new WxContentRes();
+
+        res.setToUserName(body.getFromUserName());
+        res.setFromUserName(body.getToUserName());
+        res.setCreateTime(new Date().getTime());
+        res.setMsgType("text");
+        res.setContent(content);
 
         return res;
     }

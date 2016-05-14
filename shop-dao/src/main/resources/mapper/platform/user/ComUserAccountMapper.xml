@@ -37,18 +37,42 @@
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.ComUserAccount">
         update com_user_account
-        set com_user_id = #{comUserId,jdbcType=BIGINT},
-            total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
-            cost_fee = #{costFee,jdbcType=DECIMAL},
-            profit_fee = #{profitFee,jdbcType=DECIMAL},
-            extractable_fee = #{extractableFee,jdbcType=DECIMAL},
-            applied_fee = #{appliedFee,jdbcType=DECIMAL},
-            counting_fee = #{countingFee,jdbcType=DECIMAL},
-            bail_fee = #{bailFee,jdbcType=DECIMAL},
-            created_time = #{createdTime,jdbcType=TIMESTAMP},
-            changed_time = #{changedTime,jdbcType=TIMESTAMP},
-            changed_by = #{changedBy,jdbcType=VARCHAR},
+        <set>
+            <if test="comUserId != null">
+                com_user_id = #{comUserId,jdbcType=BIGINT},
+            </if>
+            <if test="totalIncomeFee != null">
+                total_income_fee = #{totalIncomeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="costFee != null">
+                cost_fee = #{costFee,jdbcType=DECIMAL},
+            </if>
+            <if test="profitFee != null">
+                profit_fee = #{profitFee,jdbcType=DECIMAL},
+            </if>
+            <if test="extractableFee != null">
+                extractable_fee = #{extractableFee,jdbcType=DECIMAL},
+            </if>
+            <if test="appliedFee != null">
+                applied_fee = #{appliedFee,jdbcType=DECIMAL},
+            </if>
+            <if test="countingFee != null">
+                counting_fee = #{countingFee,jdbcType=DECIMAL},
+            </if>
+            <if test="bailFee != null">
+                bail_fee = #{bailFee,jdbcType=DECIMAL},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="changedTime != null">
+                changed_time = #{changedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="changedBy != null">
+                changed_by = #{changedBy,jdbcType=VARCHAR},
+            </if>
             version = version + 1
+        </set>
         where id = #{id,jdbcType=BIGINT} and version = #{version,jdbcType=BIGINT}
     </update>
 

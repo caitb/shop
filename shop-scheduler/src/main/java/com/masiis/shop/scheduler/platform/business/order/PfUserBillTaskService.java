@@ -49,14 +49,6 @@ public class PfUserBillTaskService {
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);
         log.info("创建每日结算账单,订单结束时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
 
-        // 检查日期区间内是否有账单,确保只创建一次
-        Long nums = billService.queryBillNumsByDate(getCountDay(new Date(), 0), getCountDay(new Date(), 1));
-        if(nums.intValue() != 0){
-            log.error("此日期内已存在账单,异常发生");
-            // 创建通知
-            return;
-        }
-
         // 查询所有用户
         List<ComUser> users = userService.findAll();
         // 多线程处理
@@ -64,6 +56,14 @@ public class PfUserBillTaskService {
             public Boolean doMyJob(Object obj) throws Exception {
                 ComUser pa = (ComUser) obj;
                 try {
+                    // 检查日期区间内是否有账单,确保只创建一次
+                    Long nums = billService.queryBillNumsByDateAndUser(getCountDay(new Date(), 0), getCountDay(new Date(), 1), pa.getId());
+                    if(nums.intValue() != 0){
+                        log.error("此日期内已存在账单,异常发生");
+                        // 创建通知
+                        return false;
+                    }
+
                     log.info("创建个人日结算单开始,用户id:" + pa.getId());
                     // 创建结算日的日账单
                     billService.createBillByUserAndDate(pa, countStartDay, countEndDay, balanceDate);

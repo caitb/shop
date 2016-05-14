@@ -129,7 +129,7 @@ public class ExtractApplyService {
             WxPFNoticeUtils.getInstance().pfExtractApplySuccess(comUser,
                     new String[]{
                             comUser.getWxNkName(),
-                            comUserExtractApply.getExtractFee().toString(),
+                            "￥"+comUserExtractApply.getExtractFee().toString(),
                             comUserExtractwayInfo.getBankName()+":"+comUserExtractwayInfo.getBankCard(),
                             new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date())
                     }

@@ -128,19 +128,11 @@ public class BorderManageController extends BaseController {
                     }
                 }
             }
-            for (PfBorder pfBorders : pfBorder) {
-//                if(pfBorders.getUserPid()==0){
-//                    pfBorders.setPidUserName("平台");
-//                }else if(pfBorders.getSendType()==0||pfBorders.getSendType()==null){
-//                    pfBorders.setPidUserName("未选择");
-//                } else{
-//                    ComUser users = userService.getUserById(pfBorders.getUserPid());
-//                    pfBorders.setPidUserName(users.getRealName());
-//                }
-                pfBorders.setPidUserName("平台");
-                String insertDay = DateUtil.insertDay(pfBorders.getCreateTime());
-                pfBorders.setPayTimes(insertDay);
-            }
+//            for (PfBorder pfBorders : pfBorder) {
+//                pfBorders.setPidUserName("平台");
+//                String insertDay = DateUtil.insertDay(pfBorders.getCreateTime());
+//                pfBorders.setPayTimes(insertDay);
+//            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -192,15 +184,15 @@ public class BorderManageController extends BaseController {
                     }
                 }
             }
-            for (PfBorder pfBorders : pfBorder) {
-                if (pfBorders.getSendType() == 1) {
-                    pfBorders.setPidUserName("平台");
-                } else if (pfBorders.getSendType() == 0 || pfBorders.getSendType() == null) {
-                    pfBorders.setPidUserName("未选择");
-                } else if (pfBorders.getSendType() == 2) {
-                    pfBorders.setPidUserName("自己发货");
-                }
-            }
+//            for (PfBorder pfBorders : pfBorder) {
+//                if (pfBorders.getSendType() == 1) {
+//                    pfBorders.setPidUserName("平台");
+//                } else if (pfBorders.getSendType() == 0 || pfBorders.getSendType() == null) {
+//                    pfBorders.setPidUserName("未选择");
+//                } else if (pfBorders.getSendType() == 2) {
+//                    pfBorders.setPidUserName("自己发货");
+//                }
+//            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);
@@ -424,6 +416,7 @@ public class BorderManageController extends BaseController {
                     pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                     pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
                 }
+                pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
 //                if(pfBorder.getUserPid()==0){
 //                    pfBorder.setPidUserName("平台");
 //                }else{
@@ -432,6 +425,8 @@ public class BorderManageController extends BaseController {
 //                }
                 pfBorder.setPidUserName("平台");
                 pfBorder.setPfBorderItems(pfBorderItems);
+                String insertDay = DateUtil.insertDay(pfBorder.getCreateTime());
+                pfBorder.setPayTimes(insertDay);
             }
         }
         ModelAndView modelAndView = new ModelAndView();

@@ -452,12 +452,12 @@
                                        trHtml+=" <p class=\"photo\">";
                                        trHtml+="<a href=\"javascript:void(0);\">";
                                        trHtml+="<img src=\""+pfBorderItem.skuUrl+"\" alt=\"\"></a></p>";
-                                       trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
+                                       trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.skuMoney+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                        trHtml+="</div></div>";
                                    });
-                                   trHtml+="<h1><b style=\"color:#FF6A2A\">合计：￥"+pfBorder.orderAmount+"</b>";
+                                   trHtml+="<h1><b style=\"color:#FF6A2A\">合计：￥"+pfBorder.orderMoney+"</b>";
                                    if(pfBorder.orderType==0){
-                                       trHtml+="(保证金：￥"+pfBorder.bailAmount+")";
+                                       trHtml+="(保证金：￥"+pfBorder.bailMoney+")";
                                    }else if(pfBorder.orderType==2){
                                        trHtml+="(运费：到付)";
                                    }else if(pfBorder.orderType==1){

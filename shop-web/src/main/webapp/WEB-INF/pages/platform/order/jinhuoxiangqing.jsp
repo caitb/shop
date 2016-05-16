@@ -167,6 +167,7 @@
                     dataType:"Json",
                     success:function(date){
                         $(".btn").html("已完成");
+                        location.reload(true);
                     }
                 })
             })

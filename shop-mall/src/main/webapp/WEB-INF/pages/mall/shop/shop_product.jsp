@@ -16,74 +16,76 @@
     <link rel="stylesheet" href="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.css">
 </head>
 <body>
-<div class="wrap">
-    <header>
-        <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
-        <p>商品详情</p>
-    </header>
-    <div class="banner">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <c:forEach items="${SkuImageList}" var="img">
-                    <div class="swiper-slide"><img src="${img.imgUrl}" alt=""></div>
-                </c:forEach>
+<div id="wrap">
+    <div class="box">
+        <header>
+            <a href="<%= request.getHeader("REFERER") %>"><img src="<%=path%>/static/images/xq_rt.png" alt=""></a>
+            <p>商品详情</p>
+        </header>
+        <div class="banner">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <c:forEach items="${SkuImageList}" var="img">
+                        <div class="swiper-slide"><img src="${img.imgUrl}" alt=""></div>
+                    </c:forEach>
+                </div>
+                <div class="swiper-pagination"></div>
             </div>
-            <div class="swiper-pagination"></div>
         </div>
-    </div>
-    <div class="price">
-        <p>${skuInfo.comSku.name}</p>
-        <p><span style="padding:0;">${skuInfo.slogan}</span></p>
-        <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
-    </div>
-    <div class="dlpople">
+        <div class="price">
+            <p>${skuInfo.comSku.name}</p>
+            <p><span style="padding:0;">${skuInfo.slogan}</span></p>
+            <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
+        </div>
+        <div class="dlpople">
 
-    <p>运费：
-            <%--<c:if test="${empty skuInfo.shipAmount}">--%>
-            <span>包邮</span></p>
-        <%--</c:if>--%>
-        <%--<c:if test="${ not empty skuInfo.shipAmount}">--%>
+            <p>运费：
+                <%--<c:if test="${empty skuInfo.shipAmount}">--%>
+                <span>包邮</span></p>
+            <%--</c:if>--%>
+            <%--<c:if test="${ not empty skuInfo.shipAmount}">--%>
             <%--<span>${skuInfo.shipAmount}</span></p>--%>
-        <%--</c:if>--%>
-        <p>总销量：<b>${skuInfo.saleNum}</b></p>
-        <%--<p>分享量：<b>${skuInfo.shareNum}</b></p>--%>
-    </div>
-    <div class="dlpople" onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">
-        <p>选择： 数量</p>
-        <p><img src="<%=path%>/static/images/next.png" alt=""></p>
-    </div>
-    <nav>
-        <ul>
-            <li>
-                <h1><img src="<%=path%>/static/images/xq_nav.png" alt=""></h1>
-                <span>正品保障</span>
-            </li>
-            <li>
-                <h1><img src="<%=path%>/static/images/xq_nav3.png" alt=""></h1>
-                <span>七天退换</span>
-            </li>
-            <li>
-                <h1><img src="<%=path%>/static/images/xq_nav4.png" alt=""></h1>
-                <span>分享赚钱</span>
-            </li>
-        </ul>
-    </nav>
-    <div class="tuw">
-        <h1>图文详情</h1>
-    </div>
-    <main>
-        <section class="sec1">
-            ${skuInfo.content}
-        </section>
-        <section class="sec1">
-            <img src="<%=path%>/static/images/chanpin%20(1).jpg" alt="">
-        </section>
-        <section class="sec2">
-            <p>Copyright2005-2016 iimai.com 版权所有</p>
-            <p>京ICP备16001661号-3</p>
-        </section>
+            <%--</c:if>--%>
+            <p>总销量：<b>${skuInfo.saleNum}</b></p>
+            <%--<p>分享量：<b>${skuInfo.shareNum}</b></p>--%>
+        </div>
+        <div class="dlpople" onclick="clickbuy('${sfShop.userId}','${loginUser.id}')">
+            <p>选择： 数量</p>
+            <p><img src="<%=path%>/static/images/next.png" alt=""></p>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <h1><img src="<%=path%>/static/images/xq_nav.png" alt=""></h1>
+                    <span>正品保障</span>
+                </li>
+                <li>
+                    <h1><img src="<%=path%>/static/images/xq_nav3.png" alt=""></h1>
+                    <span>七天退换</span>
+                </li>
+                <li>
+                    <h1><img src="<%=path%>/static/images/xq_nav4.png" alt=""></h1>
+                    <span>分享赚钱</span>
+                </li>
+            </ul>
+        </nav>
+        <div class="tuw">
+            <h1>图文详情</h1>
+        </div>
+        <main>
+            <section class="sec1">
+                ${skuInfo.content}
+            </section>
+            <section class="sec1">
+                <img src="<%=path%>/static/images/chanpin%20(1).jpg" alt="">
+            </section>
+            <section class="sec2">
+                <p>Copyright2005-2016 iimai.com 版权所有</p>
+                <p>京ICP备16001661号-3</p>
+            </section>
 
-    </main>
+        </main>
+    </div>
 </div>
 <div class="back_j" style="display: none">
     <span class="close">×</span>

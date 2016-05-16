@@ -10,7 +10,14 @@ import com.masiis.shop.dao.po.SfOrderItem;
 
 public class SfOrderItemImage {
     private String skuUrl;//商品首页地址
+    private String skuMoney;
 
+    public void setSkuMoney(String skuMoney) {
+        this.skuMoney = skuMoney;
+    }
+    public String getSkuMoney() {
+        return skuMoney;
+    }
     public void setSkuUrl(String skuUrl) {
         this.skuUrl = skuUrl;
     }

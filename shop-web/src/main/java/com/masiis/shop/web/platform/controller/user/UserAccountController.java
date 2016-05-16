@@ -8,6 +8,7 @@ import com.masiis.shop.dao.po.PfUserBill;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.PfUserBillService;
+import com.masiis.shop.web.platform.service.user.UserExtractApplyService;
 import com.masiis.shop.web.platform.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -23,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lzh on 2016/3/18.
@@ -40,6 +41,8 @@ public class UserAccountController extends BaseController{
     private ComUserAccountService accountService;
     @Resource
     private PfUserBillService pfUserBillService;
+    @Resource
+    private UserExtractApplyService userExtractApplyService;
 
     @RequestMapping("/home")
     public String accountHome(HttpServletRequest request, Model model) throws Exception{
@@ -72,11 +75,14 @@ public class UserAccountController extends BaseController{
         }
         String currentMonth = String.valueOf(year)+monthString;
         List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(user.getId(),currentMonth,0,0);
+        Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(user.getId());
+        BigDecimal withdraw = map == null?new BigDecimal(0.00):map.get("extractFee");
         model.addAttribute("currentPage",1);
         model.addAttribute("pageSize",10);
         model.addAttribute("year",year);
         model.addAttribute("month",monthString);
         model.addAttribute("day",day);
+        model.addAttribute("totalIncom",account.getExtractableFee().add(withdraw).add(account.getCountingFee()));
         model.addAttribute("account", account);
         model.addAttribute("userBills",userBills);
         return "platform/user/account";

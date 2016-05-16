@@ -8,12 +8,10 @@
 package com.masiis.shop.dao.platform.user;
 
 
-import com.masiis.shop.dao.beans.extract.ExtractApply;
 import com.masiis.shop.dao.po.ComUserExtractApply;
-import com.sun.tracing.dtrace.ProviderAttributes;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -58,4 +56,6 @@ public interface ComUserExtractApplyMapper {
                                                             @Param("qSize") Integer qSize);
 
     List<ComUserExtractApply> selectByCondition(Map<String, Object> con);
+
+    Map<String, BigDecimal> selectSumExtractfeeByUserId(@Param("userId") Long userId);
 }

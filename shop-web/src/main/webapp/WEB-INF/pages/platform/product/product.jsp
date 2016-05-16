@@ -121,19 +121,21 @@
                 <a class="first_p2"><span>已试用</span></a>
             </p>
         </c:if>
-        <c:if test="${productDetails.isUserByLink==0}"><!--链接进入><-->
-            <c:if test="${empty pfUserSku && empty pfBorder}"><!--未代理><-->
+            <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && empty pfBorder}"><!--未代理,链接进入><-->
             <p><a class="last_p" onclick="validateCodeJS.applyTrial('applyPartner')">申请合伙人</a>
             </p>
             </c:if>
-            <c:if test="${empty pfUserSku && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
+            <c:if test="${empty pfUserSku && productDetails.isUserByLink==1 && empty pfBorder}"><!--未代理，小白进入><-->
+            <p><a class="last_p" onclick="showDialogOfCommonUser()">申请合伙人</a>
+            </p>
+            </c:if>
+            <c:if test="${empty pfUserSku && productDetails.isUserByLink==0 && not empty pfBorder && (pfBorder.orderStatus==0 || pfBorder.orderStatus==9)}"><!--未支付><-->
             <p><a class="last_p" href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pfBorder.id}">申请合伙人</a>
             </p>
             </c:if>
-            <c:if test="${ not empty pfUserSku && pfUserSku.isPay==1}">
+            <c:if test="${not empty pfUserSku && pfUserSku.isPay==1}">
                 <p onclick="gotoBuhuo()"><a class="last_p2">您已合伙</a></p>
             </c:if>
-        </c:if>
     </section>
 </footer>
 <div class="back_box">
@@ -151,7 +153,7 @@
         <p class="tishi" id="errorMessageId"></p>
         <h1 class="j_qu" id="nextPageId">下一步</h1>
     </div>
-    <div class="back"></div>
+    <div class="back" style="display:block;"></div>
     <div class="back_q">
         <h1>什么是排单期？</h1>
         <p>
@@ -165,6 +167,12 @@
         <h1><span class="zhidao">我知道了</span><span
                 onclick="javascript:window.location.replace('<%=basePath%>product/user/${pfUserSku.userId}');">去补货</span>
         </h1>
+    </div>
+    <div class="back_user">
+        <p>
+            您需要通过您的上级发给您的二维码才可以申请合伙人。如无上级，请联系客服：4009619616
+        </p>
+        <button class="zhidao">我知道了</button>
     </div>
 </div>
 <script src="<%=path%>/static/js/jquery/jquery-1.8.3.min.js"></script>
@@ -226,20 +234,28 @@
         $(this).html("+")
     })
     $(".paidan").on("click", function () {
-        $(".back").css("display", "-webkit-box");
+        $(".back").show();
         $(".back_q").show();
         $(".back_box").show();
     })
     $(".zhidao").on("click", function () {
-        $(".back").css("display", "none");
+        $(".back").hide();
         $(".back_q").hide();
         $(".back_login").hide();
         $(".back_box").hide();
+        $(".back_user").hide();
     })
     function gotoBuhuo() {
-        $(".back").css("display", "-webkit-box");
+        $(".back").show();
         $(".back_login").show();
         $(".back_box").show()
+    }
+
+    //小白用户提醒
+    function showDialogOfCommonUser(){
+        $(".back_user").show();
+        $(".back_box").show();
+        $(".back").show();
     }
 </script>
 </body>

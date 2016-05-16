@@ -264,12 +264,6 @@ body .back_j .j_qu {
     border-radius: 5px;
     color: white;
 }
-body .back {
-    /* width: 100%; */
-    /* height: 100%; */
-    /* background-color: rgba(0, 0, 0, 0.4); */
-    /* z-index: 5; */
-}
 body footer {
     width: 100%;
     height: 42px;
@@ -474,4 +468,35 @@ body footer .sec3 p .last_p2{
     background: rgba(255,255,255,0);
     z-index: 11;
     display: none;
+}
+.back_user {
+    width: 90%;
+    position: fixed;
+    left: 5%;
+    top: 30%;
+    background: white;
+    padding-bottom: 15px;
+    border-radius: 5px;
+    z-index: 11;
+    display: none;
+}
+.back_user p {
+    margin: 20px 20px 10px 20px;
+    text-indent: 2em;
+    font-size: 12px;
+    color: #333;
+    line-height: 22px;
+}
+.back_user button {
+    margin: 0 auto;
+    display: block;
+    width: 90px;
+    height: 26px;
+    text-align: center;
+    line-height: 26px;
+    background: #0fc420;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+    margin-top: 20px;
 }

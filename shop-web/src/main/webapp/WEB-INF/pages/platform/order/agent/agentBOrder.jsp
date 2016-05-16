@@ -122,7 +122,7 @@
     <div class="Modal"></div>
 </div>
 <div class="fangshi">
-    <div class="back_q">
+    <div class="back_q" style="margin-top: -250px">
         <p>
             <img src="${path}/static/images/fangshi.png" alt="">
         </p>

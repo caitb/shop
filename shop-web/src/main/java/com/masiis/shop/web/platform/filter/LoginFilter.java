@@ -61,6 +61,7 @@ public class LoginFilter implements Filter{
         }else if(enviromentkey.equals("1")) {
             // 过滤静态资源,以及一些放行的路径
             if (uri.startsWith(request.getContextPath() + "/static/")
+                    || uri.startsWith(request.getContextPath() + "/druid/")
                     || (request.getContextPath() + "/verify/actk").equals(uri)
                     || (request.getContextPath() + "/verify/bactk").equals(uri)
                     || (request.getContextPath() + "/verify/wxcheck").equals(uri)

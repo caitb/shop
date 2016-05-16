@@ -1,13 +1,14 @@
-package com.masiis.shop.admin.utils;
+package com.masiis.shop.scheduler.utils.wx;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.admin.service.wx.WxUserService;
 import com.masiis.shop.common.beans.wx.notice.*;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
+import com.masiis.shop.scheduler.platform.service.wx.WxUserService;
+import com.masiis.shop.scheduler.utils.ApplicationContextUtil;
 import org.apache.log4j.Logger;
 
 /**

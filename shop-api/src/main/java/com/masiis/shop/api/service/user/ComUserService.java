@@ -3,6 +3,7 @@ package com.masiis.shop.api.service.user;
 import com.masiis.shop.api.bean.system.LoginWxReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
@@ -289,7 +290,7 @@ public class ComUserService {
     private ComUser createComUser(LoginWxReq req) {
         ComUser user = new ComUser();
 
-        user.setWxNkName(req.getNickName());
+        user.setWxNkName(EmojiUtils.removeNonBmpUnicode(req.getNickName()));
         user.setWxHeadImg(req.getHeadImgUrl());
         user.setCreateTime(new Date());
         user.setWxUnionid(req.getUnionid());

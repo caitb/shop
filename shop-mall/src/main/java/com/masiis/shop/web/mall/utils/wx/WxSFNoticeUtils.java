@@ -197,7 +197,7 @@ public class WxSFNoticeUtils {
         result.setRemark(new WxNoticeDataItem("您好，您的提现申请已经通过审核，汇款将会在1个工作日内完成，请注意查收", null));
 
         req.setTouser(getOpenIdByComUser(user));
-        req.setTemplate_id(WxConsSF.WX_SF_TM_ID_EXTRACT_APPLY);
+        req.setTemplate_id(WxConsSF.WX_SF_TM_ID_EXTRACT_RESULT);
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
     }

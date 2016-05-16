@@ -357,7 +357,7 @@ public class ProductController {
                         }
 
                         //上传原图
-                        OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "/static/product/prototype/");
+                        OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "static/product/prototype/");
                         //删除原图
                         new File(imgAbsoluteUrl).delete();
 

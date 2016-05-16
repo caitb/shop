@@ -128,7 +128,7 @@
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}">继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa" name="querenshouhuo_${pb.id}" onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -181,7 +181,7 @@
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                         <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -290,7 +290,7 @@
                                         <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==9 }">
-                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                        <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                     </c:if>
                                     <c:if test="${pb.orderStatus ==8}">
                                     <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -344,7 +344,7 @@
                                             <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"  onclick="querenshouhuo('${pb.orderStatus}','${pb.id}')">
@@ -400,7 +400,7 @@
                                             <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"
@@ -455,7 +455,7 @@
                                             <span class="jixu"><a href="<%=basePath%>border/goToPayBOrder.shtml?bOrderId=${pb.id}"> 继续支付</a></span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==9 }">
-                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}')">支付信息</span>
+                                            <span class="jixu" onclick="xinxi('${pb.orderAmount}','${pb.payTimes}','${pb.orderCode}')">支付信息</span>
                                         </c:if>
                                         <c:if test="${pb.orderStatus ==8}">
                                             <span class="fa"  name="querenshouhuo_${pb.id}"
@@ -491,7 +491,7 @@
            </div>
            <div class="back_pay">
                <div>
-                   <h1>￥<span id="1">1,000,000</span></h1>
+                   <h1>订单号：<span id="1">1,000,000</span></h1>
                    <p>您需要在<span id="2">2016-4-30</span>前将￥<span id="3">1,000,000.00</span>转到麦链合伙人对公账户。</p>
                </div>
                <%--<div>--%>
@@ -517,11 +517,14 @@
        <script src="<%=path%>/static/js/hideWXShare.js"></script>
        <script>
 
-           function xinxi(orderAmount,payTimes){
+           function xinxi(orderAmount,payTimes,ids){
                $(".back").css("display","-webkit-box");
                $(".back_pay").show();
-               $("#1").html(orderAmount);
-               $("#3").html(orderAmount);
+//               java.text.DecimalFormat df=new java.text.DecimalFormat("0.00");
+               var result   = Math.round(orderAmount*100)/100;
+//               var result   =   tmp.substr(0,tmp.indexOf(".")+3);
+               $("#1").html(ids);
+               $("#3").html(result);
                $("#2").html(payTimes);
            }
 
@@ -573,6 +576,7 @@
                                 trHtml+="<div><h2>"+pfBorderItem.skuName+"</h2><h3><span>￥"+pfBorderItem.unitPrice+"</span><b>x"+pfBorderItem.quantity+"</b></h3>";
                                 trHtml+="</div></div>";
                             });
+//                            var df= new DecimalFormat("0.00").Format(pfBorder.orderAmount);
                             trHtml+="<h1><b style=\"color:#A5A5A5\">合计：￥"+pfBorder.orderAmount+"</b>";
                             if(pfBorder.orderType==0){
                                 trHtml+="(保证金:￥"+pfBorder.bailAmount+")";
@@ -596,7 +600,7 @@
                             }else if(pfBorder.orderStatus ==0){
                                 trHtml+="<span class=\"jixu\"><a href=\"<%=basePath%>border/goToPayBOrder.shtml?bOrderId="+pfBorder.id+"\">继续支付</a></span></a>";
                             }else if(pfBorder.orderStatus ==9){
-                                trHtml+="<span class=\"jixu\" onclick=\"xinxi('"+pfBorder.orderAmount+"','"+pfBorder.payTimes+"')\">支付信息</span></a>";
+                                trHtml+="<span class=\"jixu\" onclick=\"xinxi('"+pfBorder.orderAmount+"','"+pfBorder.payTimes+"','"+pfBorder.orderCode+"')\">支付信息</span></a>";
                             }else{
                                 trHtml+="</a>";
                             }

@@ -432,6 +432,8 @@ public class BorderManageController extends BaseController {
 //                }
                 pfBorder.setPidUserName("平台");
                 pfBorder.setPfBorderItems(pfBorderItems);
+                String insertDay = DateUtil.insertDay(pfBorder.getCreateTime());
+                pfBorder.setPayTimes(insertDay);
             }
         }
         ModelAndView modelAndView = new ModelAndView();

@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
@@ -10,7 +11,9 @@ import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
+import com.masiis.shop.web.mall.utils.wx.WxPFNoticeUtils;
 import com.masiis.shop.web.mall.utils.wx.WxSFNoticeUtils;
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -346,13 +349,32 @@ public class SfOrderPayService {
     private void orderNotice(ComUser comUser, SfOrder order, List<SfOrderItem> orderItems) {
         //微信提醒
         log.info("订单通知提醒-----start");
-        String[] param = new String[]{order.getOrderCode(), "￥"+order.getPayAmount() + "", "微信支付"};
+        String[] param = new String[]{order.getOrderCode(), "￥" + order.getPayAmount() + "", "微信支付"};
         /*消费者端微信提醒*/
         WxSFNoticeUtils.getInstance().orderCreateNotice(comUser, param);
         /*小铺端归属人微信提醒*/
         ComUser shopUser = userService.getUserById(order.getShopUserId());
         if (shopUser != null) {
-            WxSFNoticeUtils.getInstance().orderCreateNotice(shopUser, param);
+            SfOrderConsignee sfOrderConsignee = ordConService.getOrdConByOrdId(order.getId());
+            //1,收件人;2,联系电话;3,收货地址;4,购物清单;5,备注
+            String[] param_shopuser = new String[4];
+            param_shopuser[0] = sfOrderConsignee.getConsignee();
+            param_shopuser[1] = sfOrderConsignee.getMobile();
+            param_shopuser[2] = sfOrderConsignee.getProvinceName() + sfOrderConsignee.getCityName() + sfOrderConsignee.getRegionName() + sfOrderConsignee.getAddress();
+            StringBuilder sb = new StringBuilder();
+            int n = 0;
+            for (SfOrderItem sfOrderItem : orderItems) {
+                if (n == 0) {
+                    sb.append(sfOrderItem.getSkuName() + sfOrderItem.getQuantity() + "件");
+                } else {
+                    sb.append(";" + sfOrderItem.getSkuName() + sfOrderItem.getQuantity() + "件");
+                }
+                n++;
+            }
+            param_shopuser[3] = sb.toString();
+            param_shopuser[4] = order.getRemark();
+            String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+            WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
         }
         //短信提醒
         /*消费者端提醒*/

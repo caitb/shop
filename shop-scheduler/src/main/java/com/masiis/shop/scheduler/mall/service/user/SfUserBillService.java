@@ -1,6 +1,8 @@
 package com.masiis.shop.scheduler.mall.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
@@ -8,6 +10,7 @@ import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
 import com.masiis.shop.dao.mall.user.SfUserBillItemMapper;
 import com.masiis.shop.dao.mall.user.SfUserBillMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.scheduler.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -63,6 +66,10 @@ public class SfUserBillService {
                     log.info("此账单子项是分润订单,分润额是:" + item.getAmount());
                     bill.setBillAmount(bill.getBillAmount().add(item.getAmount()));
                     bill.setCountAmount(bill.getCountAmount().add(item.getAmount()));
+
+                    String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfaccount/rewardHome.shtml";
+                    String[] params = {item.getAmount().toString(), DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss")};
+                    WxSFNoticeUtils.getInstance().profitInNotice(user, params, true, url);
                 } else if(item.getItemSubType() == 3) {
                     // 退货分润退款
                     log.info("此账单子项是分润退款,分润退款额是:" + item.getAmount());

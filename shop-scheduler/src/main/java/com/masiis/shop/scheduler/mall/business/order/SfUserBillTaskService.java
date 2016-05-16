@@ -7,6 +7,7 @@ import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.scheduler.mall.service.order.SfOrderService;
 import com.masiis.shop.scheduler.mall.service.user.SfUserBillService;
 import com.masiis.shop.scheduler.platform.service.user.ComUserService;
+import com.masiis.shop.scheduler.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,7 @@ public class SfUserBillTaskService {
                     // 检查日期区间内是否有账单,确保只创建一次
                     Long nums = billService.queryBillNumsByDateAndUser(getCountDay(new Date(), 0), getCountDay(new Date(), 1), pa.getId());
                     if(nums.intValue() != 0){
-                        log.error(pa.getId() + "的用户,此日期内已存在账单,异常发生");
+                        log.error(pa.getId() + "的用户,此日期内已存在账单");
                         // 创建通知
                         return false;
                     }

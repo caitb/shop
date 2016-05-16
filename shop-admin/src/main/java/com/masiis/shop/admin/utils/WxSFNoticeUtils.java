@@ -8,6 +8,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.HttpClientUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComWxUser;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,11 +37,15 @@ public class WxSFNoticeUtils {
      * @return
      */
     private Boolean wxNotice(String accessToken, WxNoticeReq noPay) {
-        String url = WxConsSF.URL_WX_NOTICE + "?access_token=" + accessToken;
-        String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
-        WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
-        if ("0".equals(res.getErrcode())) {
-            return true;
+        try {
+            String url = WxConsSF.URL_WX_NOTICE + "?access_token=" + accessToken;
+            String result = HttpClientUtils.httpPost(url, JSONObject.toJSONString(noPay));
+            WxNoticeRes res = JSONObject.parseObject(result, WxNoticeRes.class);
+            if ("0".equals(res.getErrcode())) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
         log.error("发送模板消息失败");
         return false;
@@ -125,19 +130,28 @@ public class WxSFNoticeUtils {
      *
      * @param user
      * @param params    (1,佣金金额; 2,时间)
+     * @param isReceipt 是否收到佣金(true,收到佣金的提示; false,未收到佣金的提示)
      * @return
      */
-    public Boolean profitInNotice(ComUser user, String[] params){
+    public Boolean profitInNotice(ComUser user, String[] params, boolean isReceipt, String url){
         WxSFProfitInNotice profit = new WxSFProfitInNotice();
         WxNoticeReq<WxSFProfitInNotice> req = new WxNoticeReq<>(profit);
 
-        profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的佣金，您可以在“个人中心-我的佣金”中查看详细佣金信息。", null));
+        if(isReceipt){
+            profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的佣金，您可以在“个人中心-我的佣金”中查看详细佣金信息。", null));
+        } else {
+            profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的佣金，等待对方确认收货7天后即可提现。您可以在“个人中心-佣金管理”中查看详细佣金信息。", null));
+        }
+
         profit.setKeyword1(new WxNoticeDataItem(params[0], null));
         profit.setKeyword2(new WxNoticeDataItem(params[1], null));
         profit.setRemark(new WxNoticeDataItem("感谢您的使用。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         req.setTemplate_id(WxConsSF.WX_SF_TM_ID_PROFIT_IN);
+        if(StringUtils.isNotBlank(url)){
+            req.setUrl(url);
+        }
         return wxNotice(WxCredentialUtils.getInstance()
                 .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET), req);
     }

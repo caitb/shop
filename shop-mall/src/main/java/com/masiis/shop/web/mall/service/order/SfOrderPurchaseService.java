@@ -2,7 +2,9 @@ package com.masiis.shop.web.mall.service.order;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.OrderMakeUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.SkuService;
 import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
@@ -52,12 +54,12 @@ public class SfOrderPurchaseService {
     @Resource
     private UserService userService;
 
-    private  BigDecimal orderSumDisAmount;//一条订单的总的分润
-    private  Map<Integer, BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
-    private  Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的购买上级的分润信息
+    private BigDecimal orderSumDisAmount;//一条订单的总的分润
+    private Map<Integer, BigDecimal> skuDisMap = null; //一条订单中每款产品的分润信息
+    private Map<Integer, List<SfOrderItemDistribution>> ordItemDisMap = null; //一款产品的购买上级的分润信息
 
-    private  BigDecimal skuTotalPrice = null;
-    private  Integer totalQuantity = null;
+    private BigDecimal skuTotalPrice = null;
+    private Integer totalQuantity = null;
 
     /**
      * 获得确认订单界面，地址信息和商品信息
@@ -131,6 +133,10 @@ public class SfOrderPurchaseService {
             sfShopCartSkuDetail.setComSku(comSku);
             sfShopCartSkuDetail.setQuantity(sfShopCart.getQuantity());
             sfShopCartSkuDetail.setSkuSumPrice(comSku.getPriceRetail().multiply(new BigDecimal(sfShopCart.getQuantity())));
+            //获取sku主图片
+            ComSkuImage comSkuImage = skuService.findComSkuImage(sfShopCart.getSkuId());
+            String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            sfShopCartSkuDetail.setSkuImg(skuImg + comSkuImage.getImgUrl());
             sfShopCartSkuDetails.add(sfShopCartSkuDetail);
         }
         return sfShopCartSkuDetails;
@@ -190,7 +196,7 @@ public class SfOrderPurchaseService {
             List<SfShopCartSkuDetail> sfShopCartSkuDetails = (List<SfShopCartSkuDetail>) map.get("shopCartSkuDetails");
             BigDecimal skuTotalPrice = (BigDecimal) map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal) map.get("skuTotalShipAmount");
-            if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0){
+            if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0) {
                 return -2L; //购物车清空了，微信上返回获取不到购物车数据
             }
             //判断商品是否有足够的库存
@@ -203,7 +209,7 @@ public class SfOrderPurchaseService {
                     getDisDetail(purchaseUserId, sfShopCartSkuDetail.getSfShopUserId(), sfShopCartSkuDetail.getComSku().getId(), sfShopCartSkuDetail.getSkuSumPrice());
                 }
                 log.info("获得分润信息---end");
-                if(orderSumDisAmount.compareTo(skuTotalPrice)==1){
+                if (orderSumDisAmount.compareTo(skuTotalPrice) == 1) {
                     log.info("商品的分润大于商品的订单");
                     throw new BusinessException("商品的分润大于商品的订单");
                 }
@@ -244,7 +250,7 @@ public class SfOrderPurchaseService {
                                     for (SfOrderItemDistribution orderItemDis : itemDisList) {
                                         log.info("插入子订单分润表--start");
                                         orderItemDis = generateSfOrderItemDistribution(sfOrder.getId(), sfOrderItem.getId(), orderItemDis);
-                                        log.info("插入的数据----"+orderItemDis.toString());
+                                        log.info("插入的数据----" + orderItemDis.toString());
                                         int iii = orderItemDisService.insert(orderItemDis);
                                         if (iii != 1) {
                                             log.info("插入子订单分润表失败");
@@ -293,8 +299,10 @@ public class SfOrderPurchaseService {
             return null;
         }
     }
+
     /**
      * 判断商品是否有足够的库存
+     *
      * @author hanzengzhi
      * @date 2016/4/14 15:18
      */
@@ -302,7 +310,7 @@ public class SfOrderPurchaseService {
         log.info("判断商品是否有足够的库存----start");
         Boolean bl = true;
         if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0) {
-           return false;
+            return false;
         }
         for (SfShopCartSkuDetail cartSkuDetail : sfShopCartSkuDetails) {
             int n = skuService.checkSkuStock(cartSkuDetail.getComSku().getId(), cartSkuDetail.getQuantity(), cartSkuDetail.getSfShopId());
@@ -315,12 +323,14 @@ public class SfOrderPurchaseService {
         log.info("判断商品是否有足够的库存----end");
         return bl;
     }
+
     /**
      * 初始化数据
+     *
      * @author hanzengzhi
      * @date 2016/4/28 12:19
      */
-    private void initData(){
+    private void initData() {
         log.info("初始化数据----skuDisMap,orderSumDisAmount,ordItemDisMap----start");
         skuDisMap = new LinkedHashMap<Integer, BigDecimal>();
         orderSumDisAmount = new BigDecimal(0);
@@ -349,11 +359,11 @@ public class SfOrderPurchaseService {
                     orderItemDisList = new LinkedList<SfOrderItemDistribution>();
                 }
                 log.info("向订单orderItem分润map放数据-----start");
-                log.info("shopUserId-------"+shopUserId+"-----上级userId----"+sfUserRelations.get(i).getUserId());
+                log.info("shopUserId-------" + shopUserId + "-----上级userId----" + sfUserRelations.get(i).getUserId());
                 if (!shopUserId.equals(sfUserRelations.get(i).getUserId())) {
                     log.info("购买不是自己店铺的进行分润");
                     SfOrderItemDistribution orderItemDistribution = generateSfOrderItemDistribution(sfUserRelations.get(i).getUserId(), sfSkuDistribution.get(i).getId(), skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                    log.info("向map放的key为----"+skuId+"-----value值为----"+orderItemDistribution.toString());
+                    log.info("向map放的key为----" + skuId + "-----value值为----" + orderItemDistribution.toString());
                     orderItemDisList.add(orderItemDistribution);
                     ordItemDisMap.put(skuId, orderItemDisList);
                     /*获得一款商品的购买人上级总的分润*/
@@ -365,9 +375,9 @@ public class SfOrderPurchaseService {
                     }
                     skuDisMap.put(skuId, skuDis);
                     /*一条订单的总的分润*/
-                    log.info("订单之前的分润------"+orderSumDisAmount);
+                    log.info("订单之前的分润------" + orderSumDisAmount);
                     orderSumDisAmount = orderSumDisAmount.add(skuTotalPrice.multiply(sfSkuDistribution.get(i).getDiscount()));
-                    log.info("订单加入商品分润后的分润------"+orderSumDisAmount);
+                    log.info("订单加入商品分润后的分润------" + orderSumDisAmount);
                 }
                 log.info("向订单orderItem分润map放数据-----end");
             }
@@ -420,13 +430,14 @@ public class SfOrderPurchaseService {
 
     /**
      * 获得发货方式
+     *
      * @author hanzengzhi
      * @date 2016/4/14 16:12
      */
-    private Integer getSendType(Long shopUserId){
+    private Integer getSendType(Long shopUserId) {
         ComUser comUser = userService.getUserById(shopUserId);
-        if (comUser == null){
-            log.info("支付成功获得发货方式comUser为null,shopUserId为"+shopUserId);
+        if (comUser == null) {
+            log.info("支付成功获得发货方式comUser为null,shopUserId为" + shopUserId);
             throw new BusinessException("支付成功获得发货方式comUser为null");
         }
         return comUser.getSendType();
@@ -527,16 +538,17 @@ public class SfOrderPurchaseService {
     }
 
     /**
-     *  服务器上打印出 ordItemDisMap数据
+     * 服务器上打印出 ordItemDisMap数据
+     *
      * @author hanzengzhi
      * @date 2016/4/26 16:25
      */
-    private void printlnOrdItemDisMapDate(){
+    private void printlnOrdItemDisMapDate() {
         log.info("遍历map查看map有的数据----start");
         for (Map.Entry<Integer, List<SfOrderItemDistribution>> entry : ordItemDisMap.entrySet()) {
-            log.info("map---key值为----"+entry.getKey());
-            for(SfOrderItemDistribution oid :entry.getValue()){
-                log.info("map---value值为---"+oid.toString());
+            log.info("map---key值为----" + entry.getKey());
+            for (SfOrderItemDistribution oid : entry.getValue()) {
+                log.info("map---value值为---" + oid.toString());
             }
             log.info("-------------------------");
         }
@@ -582,10 +594,10 @@ public class SfOrderPurchaseService {
             getSfUserRelation(sfUserRelation.getUserId(), sfUserRelation.getUserPid(), sfUserRelationList);
         }
         log.info("关系----start");
-        for (SfUserRelation sf :sfUserRelationList ){
+        for (SfUserRelation sf : sfUserRelationList) {
             log.info("-------------start--------");
-            log.info("用户id-----"+sf.getUserId());
-            log.info("上一级用户id-----"+sf.getUserPid());
+            log.info("用户id-----" + sf.getUserId());
+            log.info("上一级用户id-----" + sf.getUserPid());
             log.info("-------------end--------");
         }
         log.info("关系----end");

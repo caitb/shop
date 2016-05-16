@@ -37,13 +37,11 @@ public class PfUserBillTaskService {
      * 创建每日结算账单
      */
     public void createPfUserBillByDaily() {
-        // 账单创建日期
-        Date billCreateTime = new Date();
         // 获取结算日(当前时间前一天)
         final Date balanceDate = DateUtil.getDateNextdays(-1);
         log.info("创建每日结算账单,账单结算时间:" + DateUtil.Date2String(balanceDate, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单开始时间
-        final Date countStartDay = getCountDay(balanceDate, -8);
+        final Date countStartDay = getCountDay(balanceDate, -1);
         log.info("创建每日结算账单,订单开始时间:" + DateUtil.Date2String(countStartDay, DateUtil.DEFAULT_DATE_FMT_2));
         // 订单结束时间
         final Date countEndDay = DateUtil.getDateNextdays(countStartDay, 1);

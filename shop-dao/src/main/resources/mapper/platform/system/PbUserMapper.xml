@@ -30,13 +30,16 @@
                pb_user
         <where>
             <if test="pbUser.id != null">
-                id = #{pbUser.id}
+                AND id = #{pbUser.id}
             </if>
             <if test="pbUser.userName != null">
                 AND user_name = #{pbUser.userName}
             </if>
             <if test="pbUser.trueName != null">
                 AND true_name = #{pbUser.trueName}
+            </if>
+            <if test="pbUser.password != null">
+                AND password = #{pbUser.password}
             </if>
             <if test="pbUser.email != null">
                 AND email = #{pbUser.email}

@@ -29,6 +29,11 @@ public class SfShopCartSkuDetail {
     /*商品的详情信息*/
     private ComSku comSku;
 
+    /**
+     * 商品主图
+     */
+    private String skuImg;
+
     public Long getShopCartId() {
         return shopCartId;
     }
@@ -75,5 +80,13 @@ public class SfShopCartSkuDetail {
 
     public void setSfShopUserId(Long sfShopUserId) {
         this.sfShopUserId = sfShopUserId;
+    }
+
+    public String getSkuImg() {
+        return skuImg;
+    }
+
+    public void setSkuImg(String skuImg) {
+        this.skuImg = skuImg;
     }
 }

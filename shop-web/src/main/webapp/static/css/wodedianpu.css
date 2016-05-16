@@ -156,13 +156,14 @@
   -webkit-box-align: center;
   -webkit-box-pack: center;
   font-size:12px;
-}
-.wrap > nav p span:nth-child(1){
-  height:30px;
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 .wrap > nav p span img {
   display: block;
-  width: 40%;
+  width: 33%;
+  margin: 0 auto;
 }
 
 .wrap_no {

@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>麦链商城</title>
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/base.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
@@ -104,7 +104,7 @@
             <input id="skuId" type="hidden" value="${skuDetail.comSku.id}"/>
             <section class="sec2">
                 <p class="photo">
-                    <img src="<%=path%>/static/images/shenqing_1.png" alt="">
+                    <img src="${skuDetail.skuImg}" alt="">
                 </p>
                 <div>
                     <h2>${skuDetail.comSku.name}<span>x${skuDetail.quantity}</span></h2>
@@ -121,6 +121,6 @@
         </section>
         <a  onclick="submitOrder()" class="weixin">提交订单</a>
     </div>
-    
+
 </body>
 </html>

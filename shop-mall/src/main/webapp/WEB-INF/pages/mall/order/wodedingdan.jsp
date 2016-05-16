@@ -49,7 +49,7 @@
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
-                                   <a href="javascript:void(0);">
+                                   <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -82,7 +82,7 @@
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
-                                    <a href="javascript:void(0);">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -115,7 +115,7 @@
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
-                                    <a href="javascript:void(0);">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -148,7 +148,7 @@
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
-                                    <a href="javascript:void(0);">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -181,7 +181,7 @@
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
                             <div class="shangpin">
                                 <p class="photo">
-                                    <a href="javascript:void(0);">
+                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
                                 </p>
@@ -269,7 +269,7 @@
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
                                    trHtml+="<div class=\"shangpin\">";
                                    trHtml+=" <p class=\"photo\">";
-                                   trHtml+="<a href=\"javascript:void(0);\">";
+                                   trHtml+="<a href=\"<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId=<%= request.getSession().getAttribute("shopId") %>\">";
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#f73c8c;\">￥"+sfOrderItem.skuMoney+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
                                })

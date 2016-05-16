@@ -357,7 +357,7 @@ public class SfOrderPayService {
         if (shopUser != null) {
             SfOrderConsignee sfOrderConsignee = ordConService.getOrdConByOrdId(order.getId());
             //1,收件人;2,联系电话;3,收货地址;4,购物清单;5,备注
-            String[] param_shopuser = new String[4];
+            String[] param_shopuser = new String[5];
             param_shopuser[0] = sfOrderConsignee.getConsignee();
             param_shopuser[1] = sfOrderConsignee.getMobile();
             param_shopuser[2] = sfOrderConsignee.getProvinceName() + sfOrderConsignee.getCityName() + sfOrderConsignee.getRegionName() + sfOrderConsignee.getAddress();

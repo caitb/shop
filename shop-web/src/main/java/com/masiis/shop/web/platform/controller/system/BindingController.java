@@ -26,7 +26,7 @@ public class BindingController {
     private UserService userService;
 
    /**
-    * 跳转到绑定界面
+    * 跳转界面
     * @author muchaofeng
     * @date 2016/3/7 13:52
     */

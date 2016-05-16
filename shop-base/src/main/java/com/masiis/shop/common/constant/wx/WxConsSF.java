@@ -115,25 +115,25 @@ public class WxConsSF {
     /**
      * 小铺订单下单通知(通知麦链商城)
      */
-    public static final String WX_SF_TM_ID_ORDER_CREATE = "G4sZsZ9AQilP-bO-WPMPkDnwkcjpROn4h-ErZJKcoZU";
+    public static final String WX_SF_TM_ID_ORDER_CREATE = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_ORDER_CREATE");
     /**
      * 小铺订单发货通知
      */
-    public static final String WX_SF_TM_ID_ORDER_SHIP = "pcOehP8XA9o1pTTB9aX_fRJxnP7xZxesNE78SmIAVIE";
+    public static final String WX_SF_TM_ID_ORDER_SHIP = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_ORDER_SHIP");
     /**
      * 小铺订单确认收货
      */
-    public static final String WX_SF_TM_ID_ORDER_CONFIRM = "fwJRl-yYTGgbzdlcktSPdezOmBgtsRENB_EEBLztJCo";
+    public static final String WX_SF_TM_ID_ORDER_CONFIRM = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_ORDER_CONFIRM");
     /**
      * 佣金提醒
      */
-    public static final String WX_SF_TM_ID_PROFIT_IN = "hkCjoUlNOAg56hRD7QtOZ4mHG06pZ04fMY6aW0bwuOY";
+    public static final String WX_SF_TM_ID_PROFIT_IN = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_PROFIT_IN");
     /**
      * 提现申请通知
      */
-    public static final String WX_SF_TM_ID_EXTRACT_APPLY = "OEzsSSLWz10Xcj_c5-cwfavX81lc1kL8jSxH_sBvuVk";
+    public static final String WX_SF_TM_ID_EXTRACT_APPLY = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_EXTRACT_APPLY");
     /**
      * 提现结果通知
      */
-    public static final String WX_SF_TM_ID_EXTRACT_RESULT = "dAzmZlN8YX8N0E4fjFDY2ocVaPxjnQfwuFhrtdZo_Pg";
+    public static final String WX_SF_TM_ID_EXTRACT_RESULT = WxPropertiesUtils.getStringValue("wx.conf.sf.WX_SF_TM_ID_EXTRACT_RESULT");
 }

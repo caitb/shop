@@ -9,6 +9,7 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.PersonalCenterService;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfSkuAgentDetail;
@@ -66,7 +67,7 @@ public class PersonalCenterController extends BaseController {
             }
         }
         res.setMobile(user.getMobile()==null?"":user.getMobile());
-        res.setWxNkName(user.getWxNkName());
+        res.setWxNkName(EmojiUtils.removeNonBmpUnicode(user.getWxNkName()));
         res.setWxHeadImg(user.getWxHeadImg());
         res.setIsBinding(user.getIsBinding());
         res.setAuditStatus(user.getAuditStatus());

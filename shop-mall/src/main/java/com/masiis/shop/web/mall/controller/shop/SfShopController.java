@@ -113,7 +113,7 @@ public class SfShopController extends BaseController {
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
             SfShop sfShop = sfShopService.getSfShopById(shopId);
             String realPath = request.getServletContext().getRealPath("/");
-            String posterName = comUser.getId() + ".jpg";
+            String posterName = "shop-" + comUser.getId() + "-" + shopId + ".jpg";
 
             File posterDir = new File(realPath + "static/images/shop/poster/");
             if (!posterDir.exists()) posterDir.mkdirs();
@@ -147,6 +147,10 @@ public class SfShopController extends BaseController {
             positionMap.put("content-left", 520 / 2 - content.length() / 2 * 28 - (content.length() % 2 * 14));
             positionMap.put("content-top", 270);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247, 60, 140));
+
+            //删除头像和二维码
+            new File(headImgPath).delete();
+            new File(qrCodePath).delete();
 
 
             String curUrl = request.getRequestURL().toString() + "?shopId=" + shopId;

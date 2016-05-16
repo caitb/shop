@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.platform.order.PfUserTrialMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
@@ -262,7 +263,7 @@ public class UserService {
     private ComUser createComUser(WxUserInfo userRes) {
         ComUser user = new ComUser();
 
-        user.setWxNkName(userRes.getNickname());
+        user.setWxNkName(EmojiUtils.removeNonBmpUnicode(userRes.getNickname()));
         user.setWxHeadImg(userRes.getHeadimgurl());
         user.setCreateTime(new Date());
         user.setWxUnionid(userRes.getUnionid());

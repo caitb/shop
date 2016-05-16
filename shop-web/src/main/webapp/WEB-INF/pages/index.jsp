@@ -34,8 +34,8 @@
         <div class="banner">
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <c:forEach items="${urls}" var="url">
-                        <div class="swiper-slide"><img src="${url}" alt=""></div>
+                    <c:forEach items="${pbBanner}" var="url">
+                        <div class="swiper-slide" onclick="javascript:window.location.replace('<%=path%>${url.hyperlinkUrl}');"><img src="${url.imgUrl}" alt=""></div>
                     </c:forEach>
                     <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner.png" alt=""></div>--%>
                     <%--<div class="swiper-slide"><img src="<%=path%>/static/images/shouye_banner2.png" alt=""></div>--%>

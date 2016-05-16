@@ -55,8 +55,9 @@ public class ShopIndexController extends BaseController {
         String value = PropertiesUtils.getStringValue("index_banner_url");//获取图片地址常量
         List<PbBanner> pbBanner = indexShowService.findPbBanner();//获取轮播图片
         for (PbBanner banner : pbBanner) {
-            String url = value + banner.getImgUrl();//图片地址
-            urls.add(url);
+//            String url = value + banner.getImgUrl();//图片地址
+            banner.setImgUrl(value + banner.getImgUrl());
+//            urls.add(url);
         }
 
         ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(user.getId());
@@ -92,7 +93,7 @@ public class ShopIndexController extends BaseController {
 //        modelAndView.addObject("forcusPF",forcusPF);
         modelAndView.addObject("num", num);//订单数量
         modelAndView.addObject("comUserAccount", comUserAccount);//封装用户统计信息
-        modelAndView.addObject("urls", urls);//封装图片地址集合
+        modelAndView.addObject("pbBanner", pbBanner);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
         return modelAndView;

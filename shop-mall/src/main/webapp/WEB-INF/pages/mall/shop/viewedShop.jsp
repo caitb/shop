@@ -40,7 +40,7 @@
                             <c:forEach items="${userShopView.shopSkus}" var="shopSku">
                                 <img src="${shopSku.icon}" alt="">
                             </c:forEach>
-                                ${userShopView.bailFee}保证金
+                                ${userShopView.bailFee}元保证金
                         </h1>
                         <h3>${userShopView.explanation}</h3>
                         <h2><span onclick="share(${userShopView.shopId})">获取分享海报</span><b onclick="showShop(${userShopView.shopId},${userShopView.shopUserId})">点击查看></b></h2>

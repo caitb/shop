@@ -24,7 +24,6 @@
 }
 .wrap main {
   -webkit-box-flex: 1;
-  margin-top: 5px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   margin-top: 10px;
@@ -148,53 +147,58 @@
   line-height: 30px;
   margin-top: 3rem;
 }
+
 .back_que {
+  position: fixed;
+  left: 5%;
+  top: 30%;
   width: 90%;
   background: white;
   border-radius: 5px;
   z-index: 10;
-  position: fixed;
-  left: 5%;
-  top: 30%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  display: none;
 }
 .back_que p {
   margin: 0 10px;
   color: #F74A11;
   border-bottom: 1px solid #F74A11;
   line-height: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   text-indent: 10px;
+  font-size: 15px;
 }
 .back_que h4 {
   margin: 0 10px;
-  text-indent: 10px;
   letter-spacing: 1px;
   display: -webkit-box;
 }
-.back_que h4 span:nth-child(1) {
+.back_que h4 b {
+  display: block;
   text-align: left;
-  font-weight: 600;
-  color: #555555;
+  -webkit-box-flex: 1;
+  width: 1px;
+  line-height: 21px;
   text-indent: 10px;
-}
-.back_que h4 span:nth-child(2) {
-  -webkit-box-flex: 2;
-  margin-left: -10%;
+  color: #333;
+  font-size: 12px;
 }
 .back_que h4 span {
-  -webkit-box-flex: 1;
-  display: block;
   width: 1px;
+  display: block;
+  -webkit-box-flex: 1;
+  margin-left: 10px;
+  line-height: 21px;
+  font-size: 12px;
+  color: #666;
 }
 .back_que h3 {
-  margin-top: 10px;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  margin: 15px 10px;
-  border-top: 1px solid #999;
-}
+   display: -webkit-box;
+   -webkit-box-align: center;
+   margin: 15px 10px;
+   border-top: 1px solid #999;
+ }
 .back_que h3 span {
   display: block;
   -webkit-box-flex: 1;
@@ -202,26 +206,17 @@
   line-height: 33px;
   background: #d6d6d6;
   margin-left: 10%;
-  color: white;
   width: 1px;
   border-radius: 5px;
   color: #333;
   margin-top: 15px;
+  font-size: 12px;
 }
 .back_que h3 span:nth-child(2) {
   margin-right: 10%;
   background: #0fc420;
   color: white;
 }
-.back {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: -webkit-box;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
+.back_box{
   display: none;
 }

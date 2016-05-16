@@ -28,6 +28,17 @@
             <p id="chooseBankCardId">选择提现银行卡</p>
         </main>
      </div>
+   <div class="back_box">
+       <div class="back" style="display: block;"></div>
+       <div class="back_que" style="display: block;">
+           <p>删除</p>
+                <h4>确定删除银行卡</h4>
+           <h3>
+               <span class="que_qu" id="getBack">取消</span>
+               <span class="que_que" id="submit">删除</span>
+           </h3>
+       </div>
+   </div>
    <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
      <script src="${path}/static/js/bankCard.js"></script>
 </body>

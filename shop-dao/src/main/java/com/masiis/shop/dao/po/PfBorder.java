@@ -147,11 +147,29 @@ public class PfBorder {
     private Integer totalQuantity = 0;
     private String pidUserName;
     private String payTimes;//线下支付到期时间
+    private String orderMoney;
+    private String  bailMoney;
     /**
      * 订单商品
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
+
+    public String getBailMoney() {
+        return bailMoney;
+    }
+
+    public void setBailMoney(String bailMoney) {
+        this.bailMoney = bailMoney;
+    }
+
+    public void setOrderMoney(String orderMoney) {
+        this.orderMoney = orderMoney;
+    }
+
+    public String getOrderMoney() {
+        return orderMoney;
+    }
 
     public void setPayTimes(String payTimes) {
         this.payTimes = payTimes;

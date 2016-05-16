@@ -33,7 +33,7 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    private final static String key = "MASIIS";
+    private final static String key = "^MASIIS-$2016!5!16";
 
     @Resource
     private PbUserService pbUserService;

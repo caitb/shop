@@ -85,7 +85,7 @@
         <main>
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_1.png') no-repeat 10px;background-size: 15px;">
                 <a name="1f">品牌介绍</a></h1>
-            <img src="${productDetails.logoUrl}" alt="">
+            <%--<img src="${productDetails.logoUrl}" alt="">--%>
             <p>${productDetails.brand}</p>
             <h1 style="background:white url('<%=path%>/static/images/xiangqing_2.png') no-repeat 10px;background-size: 15px;">
                 <a name="2f">商业政策</a></h1>

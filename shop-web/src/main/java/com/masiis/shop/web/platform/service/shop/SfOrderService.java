@@ -68,7 +68,9 @@ public class SfOrderService {
             List<SfOrderItem> sfOrderItems = sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId());
             for (SfOrderItem sfOrderItem : sfOrderItems) {
                 sfOrderItem.setSkuUrl(skuValue + skuService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
+                sfOrderItem.setSkuMoney(sfOrderItem.getUnitPrice().toString());
                 sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+                sfOrder.setOrderMoney(sfOrder.getOrderAmount().toString());
             }
             sfOrder.setSfOrderItems(sfOrderItems);
             sfOrder.setSfOrderConsignee(orderConsignee);

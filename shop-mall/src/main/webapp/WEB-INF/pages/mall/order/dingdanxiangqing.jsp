@@ -97,7 +97,7 @@
         <div class="back">
                 <div class="back_que">
                     <p>确认收货?</p>
-                    <h4>亲，请您核对商品后在操作确认收货</h4>
+                    <h4>亲，请您核对商品后再操作确认收货</h4>
 
                     <h3>
                         <span class="que_qu">取消</span>

@@ -10,32 +10,33 @@ function hideWXShare(config){
         console.log('参数格式不对!');
         return;
     }
-    wx.config({
-        debug: false,
-        appId: config.appId,
-        timestamp: config.timestamp,
-        nonceStr: config.nonceStr,
-        signature: config.signature,
-        jsApiList: [
-            'checkJsApi',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'onMenuShareQZone',
-            'hideOptionMenu',
-        ]
-    });
 
-    wx.hideOptionMenu();
+    wx.ready(function(){
+        wx.config({
+            debug: false,
+            appId: config.appId,
+            timestamp: config.timestamp,
+            nonceStr: config.nonceStr,
+            signature: config.signature,
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideOptionMenu',
+            ]
+        });
+
+        wx.hideOptionMenu();
+    });
 }
 
-$(function(){
-    $.ajax({
-        url: '/hideWXShare',
-        data: {hideUrl: window.location.href},
-        success: function(config){
-            hideWXShare(config);
-        }
-    })
+$.ajax({
+    url: '/hideWXShare',
+    data: {hideUrl: window.location.href},
+    success: function(config){
+        hideWXShare(config);
+    }
 });

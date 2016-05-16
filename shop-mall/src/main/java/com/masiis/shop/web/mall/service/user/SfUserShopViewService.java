@@ -64,21 +64,32 @@ public class SfUserShopViewService {
       * 增加店铺浏览量
       */
 
-    public void addShopView(Long userId,Long shopId) throws Exception{
-        SfShop sfShop = sfshopMapper.selectByPrimaryKey(shopId);
-        if(sfShop==null){
-            throw new BusinessException("店铺不存在");
-        }
-        SfUserShopView sfUserShopView =sfUserShopViewMapper.selectByShopIdAndUserId(userId,shopId);
-        if(sfUserShopView==null){
-            SfUserShopView sf = new SfUserShopView();
-            sf.setCreateTime(new Date());
-            sf.setShopId(shopId);
-            sf.setUserId(userId);
-            sf.setShopUserId(sfShop.getUserId());
-            sf.setRemark("");
-            sfUserShopViewMapper.insert(sf);
-            logger.info(""+userId+"浏览了店铺"+shopId+"");
+    public void addShopView(Long userId,Long shopId){
+        try {
+            SfShop sfShop = sfshopMapper.selectByPrimaryKey(shopId);
+            if(sfShop==null){
+                throw new BusinessException("店铺不存在");
+            }
+            SfUserShopView sfUserShopView =sfUserShopViewMapper.selectByShopIdAndUserId(userId,shopId);
+            if(sfUserShopView==null){
+                SfUserShopView sf = new SfUserShopView();
+                sf.setCreateTime(new Date());
+                sf.setShopId(shopId);
+                sf.setUserId(userId);
+                sf.setShopUserId(sfShop.getUserId());
+                sf.setRemark("");
+                sfUserShopViewMapper.insert(sf);
+                logger.info(""+userId+"浏览了店铺"+shopId+"");
+            }else{
+                sfUserShopView.setCreateTime(new Date());
+                int updateByPrimaryKey = sfUserShopViewMapper.updateByPrimaryKey(sfUserShopView);
+                if(updateByPrimaryKey==0){
+                    throw new BusinessException("更新浏览店铺时间失败");
+                }
+                logger.info(""+userId+"更新浏览了店铺"+shopId+"时间");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

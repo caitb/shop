@@ -228,6 +228,10 @@ public class SfShopManageController extends BaseController {
             positionMap.put("content-top", 330);
             drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(51,51,51));
 
+            //删除头像和二维码
+            new File(headImgPath).delete();
+            new File(qrCodePath).delete();
+
             //jssdk
             String curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
             /** 获取调用JSSDK所需要的数据 **/

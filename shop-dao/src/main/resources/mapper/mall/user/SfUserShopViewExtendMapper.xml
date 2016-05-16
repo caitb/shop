@@ -28,6 +28,7 @@
 	      LEFT JOIN sf_shop s on sview.shop_id = s.id and s.status = 1
 	      LEFT JOIN com_user_account a on sview.shop_user_id = a.com_user_id
         where sview.user_id = #{userId,jdbcType=BIGINT}
+        order by sview.create_time desc
     </select>
 
 </mapper>

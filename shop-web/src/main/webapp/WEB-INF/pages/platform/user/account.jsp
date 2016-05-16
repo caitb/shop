@@ -34,7 +34,7 @@
         <main>
             <div class="ban">
                 <img src="<%=basePath%>static/images/icon_55.png" alt="">
-                <h1>￥<b>${account.totalIncomeFee}</b></h1>
+                <h1>￥<b>${account.profitFee}</b></h1>
                 <p>累计收入</p>
                 <h2>(截止到<span>${year}-${month}-${day}</span>)</h2>
             </div>
@@ -56,10 +56,12 @@
                 <p>收入记录：<label id="lable" for="beginTime" ><b>${year}</b>年<b>  ${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
                 <div id="divall">
                     <c:forEach var="userBill" items="${userBills}">
-                        <div>
-                            <p><span class="sd"><fmt:formatDate value="${userBill.balanceDate}"  type="time" pattern="MM-dd"/></span><span>${year}</span></p>
-                            <h1>+${userBill.billAmount}</h1>
-                        </div>
+                        <c:if test="${userBill.billAmount > 0}">
+                            <div>
+                                <p><span class="sd"><fmt:formatDate value="${userBill.balanceDate}"  type="time" pattern="MM-dd"/></span><span>${year}</span></p>
+                                <h1>+${userBill.billAmount}</h1>
+                            </div>
+                        </c:if>
                     </c:forEach>
                 </div>
             </div>

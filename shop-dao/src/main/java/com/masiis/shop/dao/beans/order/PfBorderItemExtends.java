@@ -8,8 +8,17 @@ public class PfBorderItemExtends {
     private String spuNmme;
 
     private String logoUrl;
+    private String skuMoney;
 
     private Integer realStock;
+
+    public String getSkuMoney() {
+        return skuMoney;
+    }
+
+    public void setSkuMoney(String skuMoney) {
+        this.skuMoney = skuMoney;
+    }
 
     public String getSpuNmme() {
         return spuNmme;

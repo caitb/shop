@@ -69,8 +69,10 @@ public class SfOrderManageService {
             List<SfOrderItem> sfOrderItems = sfOrderItemMallMapper.selectBySfOrderId(sfOrder.getId());
             for (SfOrderItem sfOrderItem : sfOrderItems) {
                 ComSkuImage comSkuImage = skuService.findComSkuImage(sfOrderItem.getSkuId());
+                sfOrderItem.setSkuMoney(sfOrderItem.getUnitPrice().toString());
                 sfOrderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
                 sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
+                sfOrder.setOrderMoney(sfOrder.getOrderAmount().toString());
             }
             sfOrder.setSfOrderItems(sfOrderItems);
         }

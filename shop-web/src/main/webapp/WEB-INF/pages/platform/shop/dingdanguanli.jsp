@@ -299,9 +299,9 @@
                             trHtml+=" <p class=\"photo\">";
                             trHtml+="<a href=\"javascript:void(0);\">";
                             trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";
-                            trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.unitPrice+"</span></p> </div> </div>";
+                            trHtml+="<div><h2>"+sfOrderItem.skuName+"<b>x"+sfOrderItem.quantity+"</b></h2><p class=\"defult\"><span style=\"float:none;color:#FF6A2A;\">￥"+sfOrderItem.skuMoney+"</span></p> </div> </div>";
                         });
-                        trHtml+="<p class=\"money\">合计：<span>￥"+sfOrder.orderAmount+"</span><span>发货方：<b>";
+                        trHtml+="<p class=\"money\">合计：<span>￥"+sfOrder.orderMoney+"</span><span>发货方：<b>";
                         if(sfOrder.sendType==1){
                             trHtml+="平台发货"
                         }else if(sfOrder.sendType==0 ||sfOrder.sendType==null){

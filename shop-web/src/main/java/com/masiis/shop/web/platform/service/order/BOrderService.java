@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.service.order;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.order.*;
@@ -189,13 +190,19 @@ public class BOrderService {
             for (PfBorderItem pfBorderItem : pfBorderItems) {
                 pfBorderItem.setSkuUrl(skuValue + skuService.findComSkuImage(pfBorderItem.getSkuId()).getImgUrl());
                 pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+                pfBorderItem.setSkuMoney(pfBorderItem.getUnitPrice().toString());
             }
-            if (pfBorder.getUserPid() == 0) {
-                pfBorder.setPidUserName("平台代理");
-            } else {
-                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-                pfBorder.setPidUserName(user.getRealName());
-            }
+            pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
+            pfBorder.setBailMoney(pfBorder.getBailAmount().toString());
+//            if (pfBorder.getUserPid() == 0) {
+//                pfBorder.setPidUserName("平台代理");
+//            } else {
+//                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+//                pfBorder.setPidUserName(user.getRealName());
+//            }
+            pfBorder.setPidUserName("平台");
+            String insertDay = DateUtil.insertDay(pfBorder.getCreateTime());
+            pfBorder.setPayTimes(insertDay);
             pfBorder.setPfBorderItems(pfBorderItems);
         }
         return pfBorders;
@@ -216,13 +223,23 @@ public class BOrderService {
                 ComSkuImage comSkuImage = skuService.findComSkuImage(pfBorderItem.getSkuId());
                 pfBorderItem.setSkuUrl(skuValue + comSkuImage.getImgUrl());
                 pfBorder.setTotalQuantity(pfBorder.getTotalQuantity() + pfBorderItem.getQuantity());//订单商品总量
+                pfBorderItem.setSkuMoney(pfBorderItem.getUnitPrice().toString());
             }
-            if (pfBorder.getUserPid() == 0) {
-                pfBorder.setPidUserName("平台代理");
-            } else {
-                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
-                pfBorder.setPidUserName(user.getRealName());
+            pfBorder.setOrderMoney(pfBorder.getOrderAmount().toString());
+            pfBorder.setBailMoney(pfBorder.getBailAmount().toString());
+            if (pfBorder.getSendType() == 1) {
+                pfBorder.setPidUserName("平台");
+            } else if (pfBorder.getSendType() == 0 || pfBorder.getSendType() == null) {
+                pfBorder.setPidUserName("未选择");
+            } else if (pfBorder.getSendType() == 2) {
+                pfBorder.setPidUserName("自己发货");
             }
+//            if (pfBorder.getUserPid() == 0) {
+//                pfBorder.setPidUserName("平台");
+//            } else {
+//                ComUser user = comUserMapper.selectByPrimaryKey(pfBorder.getUserPid());
+//                pfBorder.setPidUserName(user.getRealName());
+//            }
             pfBorder.setPfBorderItems(pfBorderItems);
         }
         return pfBorders;

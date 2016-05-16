@@ -50,7 +50,7 @@ public class SfOrderService {
         return sfOrderMapper.selectByShopUserIds(userIds);
     }
 
-    public List<SfOrder> findByUserIds(List<Long> userIds){
-        return sfOrderMapper.selectByUserIds(userIds);
+    public List<SfOrder> findByUserIds(Long userId,List<Long> userIds){
+        return sfOrderMapper.selectByUserIds(userId,userIds);
     }
 }

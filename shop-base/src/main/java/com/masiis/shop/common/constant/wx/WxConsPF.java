@@ -117,53 +117,53 @@ public class WxConsPF {
     /**
      * 合伙人申请成功提示
      */
-    public static final String WX_PF_TM_ID_PTNER_APPLY_OK = "ynmYfDzdSp22Ohaekl3B0TFVZPFVQrX2EfT5soEQo90";
+    public static final String WX_PF_TM_ID_PTNER_APPLY_OK = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_PTNER_APPLY_OK");
     /**
      * 下线加入通知
      */
-    public static final String WX_PF_TM_ID_PTNER_JOIN_NOTICE = "w6oDOs9sYwujT3bAnimYQi8JC6G__yg1hJt8dJ3N95Q";
+    public static final String WX_PF_TM_ID_PTNER_JOIN_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_PTNER_JOIN_NOTICE");
     /**
      * 实名认证审核结通知
      */
-    public static final String WX_PF_TM_ID_AUTH_NOTICE = "CLkaQaL4eEuO9TP4VHwBVsuivYPWyqdJ5uSbHrVHrwI";
+    public static final String WX_PF_TM_ID_AUTH_NOTICE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_AUTH_NOTICE");
     /**
      * 实名认证资料提交通知
      */
-    public static final String WX_PF_TM_ID_RM_SUBMIT = "sZEOLMywZ8_GXW44K21oXzCZdc772kX7G1dzIyyyiSQ";
+    public static final String WX_PF_TM_ID_RM_SUBMIT = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_RM_SUBMIT");
     /**
      * 订单发货通知
      */
-    public static final String WX_PF_TM_ID_ORDER_SHIPPED = "f8k2LudPdd_BfoNCC0HVK-bj53VZc1My0HlDWEH29uU";
+    public static final String WX_PF_TM_ID_ORDER_SHIPPED = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_ORDER_SHIPPED");
     /**
      * 新代理订单提醒
      */
-    public static final String WX_PF_TM_ID_NEW_PF_ORDER = "EJlLVU0QqOgWSfZnlbxHj17tphR3HO68NR4rPk6oI6U";
+    public static final String WX_PF_TM_ID_NEW_PF_ORDER = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_NEW_PF_ORDER");
     /**
      * 代理提现申请
      */
-    public static final String WX_PF_TM_ID_EXTRACT_APPLY = "V7BYNEQv-_3bX9KENLjRmhY-ROXlGmoBHCYoxSqSGhs";
+    public static final String WX_PF_TM_ID_EXTRACT_APPLY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_EXTRACT_APPLY");
     /**
      * 提现结果通知
      */
-    public static final String WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS = "ze3Hn4bt8_fTxxUv9V3WVeK70RyfxqEcXCOW6IREKto";
+    public static final String WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_EXTRACT_APPLY_SUCCESS");
     /**
      * 新订单通知(详细)(补货成功提醒;进入排单提醒;处理排单提醒)
      */
-    public static final String WX_PF_TM_ID_NEW_ORDER_DETAIL = "qWbY38zqoRLz2iWxK6Qtjewflm8W2XNt-DJWYL0R07Y";
+    public static final String WX_PF_TM_ID_NEW_ORDER_DETAIL = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_NEW_ORDER_DETAIL");
     /**
      * 库存不足预警
      */
-    public static final String WX_PF_TM_ID_INVENTORY_SHORTAGE = "H1eh8fdG04b00J2kyZhRDYov3y6NHlrBra822P-fy4I";
+    public static final String WX_PF_TM_ID_INVENTORY_SHORTAGE = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_INVENTORY_SHORTAGE");
     /**
      * 小铺新订单提醒
      */
-    public static final String WX_PF_TM_ID_NEW_SHOP_ORDER = "r0tjUdJA1StfjOxVTYom0UWwL7WSpq9lGwzIApWq3g0";
+    public static final String WX_PF_TM_ID_NEW_SHOP_ORDER = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_NEW_SHOP_ORDER");
     /**
      * 代理订单确认收货通知
      */
-    public static final String WX_PF_TM_ID_ORDER_CONFIRM = "cmHM5OuaNpnkJvDyBsRFLARSl5MdAV35MZqAp3r_XHI";
+    public static final String WX_PF_TM_ID_ORDER_CONFIRM = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_ORDER_CONFIRM");
     /**
      * 线下支付提醒
      */
-    public static final String WX_PF_TM_ID_OFFLINE_PAY = "AO0NRZmPuWK7TbVjDIP-_oEXwzavqLvgSmnEquYFQMo";
+    public static final String WX_PF_TM_ID_OFFLINE_PAY = WxPropertiesUtils.getStringValue("wx.conf.pf.WX_PF_TM_ID_OFFLINE_PAY");
 }

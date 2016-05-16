@@ -3,7 +3,6 @@ package com.masiis.shop.web.mall.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderItemDistributionService;
@@ -12,7 +11,6 @@ import com.masiis.shop.web.mall.service.user.SfUserAccountService;
 import com.masiis.shop.web.mall.service.user.SfUserExtractApplyService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserService;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,7 +220,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -237,7 +235,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);
@@ -252,7 +250,7 @@ public class SfUserAccountController extends BaseController {
                     userPids.add(userRelation.getUserId());
                 }
                 Map<Long,String> map = new HashMap<>();
-                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userPids);
+                List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
                     allOrders.add(sfOrder);

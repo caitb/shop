@@ -66,7 +66,8 @@ public class LoginFilter implements Filter{
                     || (request.getContextPath() + "/verify/wxcheck").equals(uri)
                     || (request.getContextPath() + "/verify/bactk").equals(uri)
                     || (request.getContextPath() + "/wxntfy/orderNtfy").equals(uri)
-                    || (request.getContextPath() + "/wxevent/check").equals(uri)) {
+                    || (request.getContextPath() + "/wxevent/check").equals(uri)
+                    || (request.getContextPath() + "/monitor/mallmonitor").equals(uri)) {
                 // 放行
                 chain.doFilter(request, response);
                 return;

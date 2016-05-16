@@ -67,7 +67,7 @@
                 </li>
                 <li class="market">
                     <a class="herf" href="<%=basePath%>product/user/${user.id}">
-                        <h1><img src="<%=path%>/static/images/1%20(2).png" style="height: 18px;margin-top: 2px;"></h1>
+                        <h1><img src="<%=path%>/static/images/1%20(2).png" ></h1>
                         <span>库存管理</span></a>
                 </li>
                 <li>

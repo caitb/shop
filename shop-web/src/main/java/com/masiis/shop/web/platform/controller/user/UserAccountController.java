@@ -58,6 +58,7 @@ public class UserAccountController extends BaseController{
             account.setTotalIncomeFee(fee);
             account.setExtractableFee(fee);
             account.setCountingFee(fee);
+            account.setProfitFee(fee);
         }
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

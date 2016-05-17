@@ -199,6 +199,10 @@
 .wrap .content .sec1 div h2 {
   color: #333333;
   font-size: 14px;
+  display: block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 .wrap .content .sec1 div h2 b {
   float: right;

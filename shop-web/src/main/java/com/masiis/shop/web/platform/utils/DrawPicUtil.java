@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.utils;
 
+import org.springframework.beans.factory.config.YamlProcessor;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -218,8 +220,8 @@ public class DrawPicUtil {
         private String content;
         private int x = 0;
         private int y = 0;
-        private Color color = Color.black;
-        private Font font = new Font("华文细黑", Font.PLAIN, 15);
+        private Color color = Color.decode("#231815");
+        private Font font = new Font("楷体", Font.PLAIN, 35);
 
         public String getContent() {
             return content;
@@ -263,39 +265,64 @@ public class DrawPicUtil {
     }
 
 
-//    public static void main(String[] args) {
-//        DrawPicUtil drawPicUtil = new DrawPicUtil();
-//        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
-//        List<DrawPicParam> drawPicParams = new ArrayList<>();
-//        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
-//        drawPicParam1.setContent("授权书编号：MASIIS200461600268  手机：18612111522");
-//        drawPicParam1.setColor(Color.GRAY);
-//        drawPicParam1.setY(490);
-//        drawPicParams.add(drawPicParam1);
-//        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
-//        drawPicParam2.setContent("授权期限：2016-05-09 至 2018-05-09  微信：NeverMore1126");
-//        drawPicParam2.setColor(Color.GRAY);
-//        drawPicParam2.setY(520);
-//        drawPicParams.add(drawPicParam2);
-//        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
-//        drawPicParam3.setContent("赵  亮");
-//        drawPicParam3.setY(380);
-//        drawPicParam3.setFont(new Font("华文细黑", Font.BOLD, 35));
-//        drawPicParams.add(drawPicParam3);
-//        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
-//        drawPicParam4.setContent("有权于网络和实体渠道销售产品-抗引力瘦脸精华");
-//        drawPicParam4.setColor(new Color(139, 69, 19));
-//        drawPicParam4.setY(450);
-//        drawPicParam4.setFont(new Font("华文细黑", Font.PLAIN, 20));
-//        drawPicParams.add(drawPicParam4);
-//        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
-//        drawPicParam5.setContent("AAA级代理");
-//        drawPicParam5.setY(265);
-//        drawPicParam5.setFont(new Font("华文细黑", Font.BOLD, 30));
-//        drawPicParams.add(drawPicParam5);
-////        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
-//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
-//        System.out.print("success");
-//    }
+    public static void main(String[] args) {
+        DrawPicUtil drawPicUtil = new DrawPicUtil();
+        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
+        List<DrawPicParam> drawPicParams = new ArrayList<>();
+        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
+        drawPicParam1.setY(200);
+        drawPicParam1.setContent("授权编号：MASIIS200461600268");//
+        drawPicParams.add(drawPicParam1);
+        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
+        drawPicParam5.setY(630);
+        drawPicParam5.setContent("BOSS");
+        drawPicParam5.setFont(new Font("楷体", Font.BOLD, 60));
+        drawPicParams.add(drawPicParam5);
+        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
+        drawPicParam3.setY(840);
+        drawPicParam3.setContent("赵  亮");
+        drawPicParam3.setFont(new Font("楷体", Font.BOLD, 60));
+        drawPicParams.add(drawPicParam3);
+        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
+        drawPicParam4.setY(900);
+        drawPicParam4.setContent("有权于网络和实体渠道销售麦士生物科技产品");
+        drawPicParams.add(drawPicParam4);
+        DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
+        drawPicParam9.setY(950);
+        drawPicParam9.setContent("抗引力光感精华液");
+        drawPicParams.add(drawPicParam9);
+        int x = 280;
+        int y = 80;
+        DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
+        drawPicParam6.setX(x);
+        drawPicParam6.setY(drawPicParam9.getY() + y);
+        drawPicParam6.setContent("证件号：210381111111223455");
+        drawPicParams.add(drawPicParam6);
+        DrawPicParam drawPicParam7 = drawPicUtil.getDrawPicParam();
+        drawPicParam7.setX(x);
+        drawPicParam7.setY(drawPicParam6.getY() + y);
+        drawPicParam7.setContent("手  机：18612111522");
+        drawPicParams.add(drawPicParam7);
+        DrawPicParam drawPicParam8 = drawPicUtil.getDrawPicParam();
+        drawPicParam8.setX(x);
+        drawPicParam8.setY(drawPicParam7.getY() + y);
+        drawPicParam8.setContent("微  信：nevermore1126");
+        drawPicParams.add(drawPicParam8);
+        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
+        drawPicParam2.setX(x);
+        drawPicParam2.setY(drawPicParam8.getY() + y);
+        drawPicParam2.setContent("授权期限：2016年05月09日至2018年05月09日");
+        drawPicParams.add(drawPicParam2);
+        DrawPicParam drawPicParam10 = drawPicUtil.getDrawPicParam();
+        drawPicParam10.setX(x);
+        drawPicParam10.setY(drawPicParam2.getY() + 50);
+        drawPicParam10.setContent("最终解释权归北京麦士生物科技有限责任公司");
+        drawPicParam10.setFont(new Font("楷体", Font.BOLD, 25));
+        drawPicParams.add(drawPicParam10);
+
+//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
+        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
+        System.out.print("success");
+    }
 
 }

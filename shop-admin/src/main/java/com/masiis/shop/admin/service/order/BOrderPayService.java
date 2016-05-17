@@ -266,14 +266,17 @@ public class BOrderPayService {
                 pfUserSkuMapper.insert(thisUS);
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
-                String name = comUser.getRealName();//申请人
-                String skuInfo = "有权于网络和实体渠道销售产品-" + pfBorderItem.getSkuName();
-                String beginTime = DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null);
-                String endTime = DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null);
-                String value1 = "授权书编号：" + pfUserCertificate.getCode() + "  手机：" + pfUserCertificate.getMobile();
-                String value2 = "授权期限：" + beginTime + " 至 " + endTime + "  微信：" + pfUserCertificate.getWxId();
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(), comAgentLevel.getName(), name, skuInfo, value1, value2);
+                String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
+                        pfUserCertificate.getCode(),//certificateCode - 证书编号
+                        comUser.getRealName(),//userName - 用户名称
+                        comAgentLevel.getName(),//levelName - 代理等级名称
+                        pfBorderItem.getSkuName(),//skuName - 商品名称
+                        comUser.getIdCard(),//idCard - 身份证号
+                        comUser.getMobile(),//mobile - 手机号
+                        pfBorderItem.getWxId(),//wxId - 微信号
+                        DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期
+                        DateUtil.Date2String(pfUserCertificate.getEndTime(), "yyyy-MM-dd", null));//endDate - 结束日期
                 pfUserCertificate.setImgUrl(picName + ".jpg");
                 pfUserCertificateMapper.insert(pfUserCertificate);
             }
@@ -502,43 +505,81 @@ public class BOrderPayService {
     /**
      * 给jpg添加文字并上传
      *
-     * @author ZhaoLiang
-     * @date 2016/3/31 11:26
+     * @param filePath        原图的物理路径
+     * @param certificateCode 证书编号
+     * @param userName        用户名称
+     * @param levelName       代理等级名称
+     * @param skuName         商品名称
+     * @param idCard          身份证号
+     * @param mobile          手机号
+     * @param wxId            微信号
+     * @param beginDate       开始日期
+     * @param endDate         结束日期
+     * @return
      */
-    private String uploadFile(String filePath, String agentLevelName, String userName, String skuInfo, String param1, String param2) {
+    private String uploadFile(String filePath,
+                              String certificateCode,
+                              String userName,
+                              String levelName,
+                              String skuName,
+                              String idCard,
+                              String mobile,
+                              String wxId,
+                              String beginDate,
+                              String endDate) {
         DrawPicUtil drawPicUtil = new DrawPicUtil();
         BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
         List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
-        //证书代理等级
-        DrawPicUtil.DrawPicParam d_agentLevelName = drawPicUtil.getDrawPicParam();
-        d_agentLevelName.setContent(agentLevelName);
-        d_agentLevelName.setY(265);
-        d_agentLevelName.setFont(new Font("华文细黑", Font.BOLD, 30));
-        drawPicParams.add(d_agentLevelName);
-        //姓名
-        DrawPicUtil.DrawPicParam d_userName = drawPicUtil.getDrawPicParam();
-        d_userName.setContent(userName);
-        d_userName.setY(380);
-        d_userName.setFont(new Font("华文细黑", Font.BOLD, 35));
-        drawPicParams.add(d_userName);
-        //代理产品
-        DrawPicUtil.DrawPicParam d_skuInfo = drawPicUtil.getDrawPicParam();
-        d_skuInfo.setContent(skuInfo);
-        d_skuInfo.setColor(new Color(139, 69, 19));
-        d_skuInfo.setY(450);
-        d_skuInfo.setFont(new Font("华文细黑", Font.PLAIN, 20));
-        drawPicParams.add(d_skuInfo);
-        //其他信息
-        DrawPicUtil.DrawPicParam d_param1 = drawPicUtil.getDrawPicParam();
-        d_param1.setContent(param1);
-        d_param1.setColor(Color.GRAY);
-        d_param1.setY(490);
-        drawPicParams.add(d_param1);
-        DrawPicUtil.DrawPicParam d_param2 = drawPicUtil.getDrawPicParam();
-        d_param2.setContent(param2);
-        d_param2.setColor(Color.GRAY);
-        d_param2.setY(520);
-        drawPicParams.add(d_param2);
+        DrawPicUtil.DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
+        drawPicParam1.setY(200);
+        drawPicParam1.setContent("授权编号：" + certificateCode);//
+        drawPicParams.add(drawPicParam1);
+        DrawPicUtil.DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
+        drawPicParam5.setY(630);
+        drawPicParam5.setContent(levelName);
+        drawPicParam5.setFont(new Font("楷体", Font.BOLD, 60));
+        drawPicParams.add(drawPicParam5);
+        DrawPicUtil.DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
+        drawPicParam3.setY(840);
+        drawPicParam3.setContent(userName);
+        drawPicParam3.setFont(new Font("楷体", Font.BOLD, 60));
+        drawPicParams.add(drawPicParam3);
+        DrawPicUtil.DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
+        drawPicParam4.setY(900);
+        drawPicParam4.setContent("有权于网络和实体渠道销售麦士生物科技产品");
+        drawPicParams.add(drawPicParam4);
+        DrawPicUtil.DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
+        drawPicParam9.setY(950);
+        drawPicParam9.setContent(skuName);
+        drawPicParams.add(drawPicParam9);
+        int x = 280;
+        int y = 80;
+        DrawPicUtil.DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
+        drawPicParam6.setX(x);
+        drawPicParam6.setY(drawPicParam9.getY() + y);
+        drawPicParam6.setContent("证件号：" + idCard);
+        drawPicParams.add(drawPicParam6);
+        DrawPicUtil.DrawPicParam drawPicParam7 = drawPicUtil.getDrawPicParam();
+        drawPicParam7.setX(x);
+        drawPicParam7.setY(drawPicParam6.getY() + y);
+        drawPicParam7.setContent("手  机：" + mobile);
+        drawPicParams.add(drawPicParam7);
+        DrawPicUtil.DrawPicParam drawPicParam8 = drawPicUtil.getDrawPicParam();
+        drawPicParam8.setX(x);
+        drawPicParam8.setY(drawPicParam7.getY() + y);
+        drawPicParam8.setContent("微  信：" + wxId);
+        drawPicParams.add(drawPicParam8);
+        DrawPicUtil.DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
+        drawPicParam2.setX(x);
+        drawPicParam2.setY(drawPicParam8.getY() + y);
+        drawPicParam2.setContent("授权期限：" + beginDate + "至" + endDate);
+        drawPicParams.add(drawPicParam2);
+        DrawPicUtil.DrawPicParam drawPicParam10 = drawPicUtil.getDrawPicParam();
+        drawPicParam10.setX(x);
+        drawPicParam10.setY(drawPicParam2.getY() + 50);
+        drawPicParam10.setContent("最终解释权归北京麦士生物科技有限责任公司");
+        drawPicParam10.setFont(new Font("楷体", Font.BOLD, 25));
+        drawPicParams.add(drawPicParam10);
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         try {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);

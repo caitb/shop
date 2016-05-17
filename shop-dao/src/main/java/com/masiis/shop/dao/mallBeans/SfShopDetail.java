@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 public class SfShopDetail {
     private Integer skuId;
     private String skuName;//商品名
+    private String skuAssia;//商品别名
     private String skuUrl;//商品首页地址
     private BigDecimal priceRetail;//销售价
     private String slogan;
@@ -27,6 +28,14 @@ public class SfShopDetail {
      * 保证金
      */
     private BigDecimal bail;
+
+    public void setSkuAssia(String skuAssia) {
+        this.skuAssia = skuAssia;
+    }
+
+    public String getSkuAssia() {
+        return skuAssia;
+    }
 
     public void setSlogan(String slogan) {
         this.slogan = slogan;

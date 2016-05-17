@@ -20,6 +20,10 @@ public class BrandService {
     @Resource
     private ComBrandMapper comBrandMapper;
 
+    public ComBrand find(Integer brandId){
+        return comBrandMapper.selectById(brandId);
+    }
+
     /**
      * 获取所有品牌数据
      * @return
@@ -39,5 +43,13 @@ public class BrandService {
         pageMap.put("rows", comBrands);
 
         return pageMap;
+    }
+
+    public void add(ComBrand comBrand){
+        comBrandMapper.insert(comBrand);
+    }
+
+    public void update(ComBrand comBrand){
+        comBrandMapper.updateById(comBrand);
     }
 }

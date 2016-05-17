@@ -73,7 +73,7 @@
                         <span>库存管理</span></a>
                 </li>
                 <li>
-                    <a class="herf" href="<%=path%>/borderManage/borderManagement.html">
+                    <a href="<%=path%>/borderManage/borderManagement.html">
                         <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
                         <span>合伙人订单</span></a>
                 </li>

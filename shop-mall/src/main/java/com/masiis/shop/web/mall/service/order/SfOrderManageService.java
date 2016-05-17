@@ -154,7 +154,7 @@ public class SfOrderManageService {
         sfOrderOperationLog.setRemark("订单完成");
         sfOrderOperationLogMapper.insert(sfOrderOperationLog);
         String[] params = new String[5];
-        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         params[0] = sfOrder.getOrderCode();
         if(orderItemByOrderId.size()==1){
             params[1] = orderItemByOrderId.get(0).getSkuName();

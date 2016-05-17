@@ -49,6 +49,7 @@ public class SfUserExtractApplyController {
             return pageMap;
         } catch (Exception e) {
             log.error("获取分销用户提现申请列表失败![conditionMap="+conditionMap+"]");
+            e.printStackTrace();
         }
 
         return "error";

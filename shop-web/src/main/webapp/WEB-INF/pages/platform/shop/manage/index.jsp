@@ -95,7 +95,7 @@
         }
         $("#showUrl").on("click",function(){
             $(".na").css("display","-webkit-box");
-        });x
+        });
         $("#copyShopUrl").on("click",function(){
             $(this).parent().hide();
         });

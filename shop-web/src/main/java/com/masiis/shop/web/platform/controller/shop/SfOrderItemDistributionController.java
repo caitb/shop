@@ -76,10 +76,17 @@ public class SfOrderItemDistributionController extends BaseController {
             List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,1,10);
             List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
             distributionAmount = sfCount.getDistributionAmount();
+            StringBuffer buffer;
             for (SfDistributionRecord sfDistributionRecord : sflist){
                 List<SfDistributionPerson> persons = sfOrderItemDistributionService.findListSfDistributionPerson(sfDistributionRecord.getItemId());
+                buffer = new StringBuffer("");
+                for (SfDistributionPerson person : persons){
+                    buffer.append("<div><p>" + person.getWxNkName() + ":</p><p>￥" + person.getAmount() + "</p></div>");
+                }
                 sfDistributionRecord.setSfDistributionPersons(persons);
+                sfDistributionRecord.setSfDistributionPersonStr(buffer.toString());
                 sfDistributionRecords.add(sfDistributionRecord);
+
             }
             mv.addObject("sumLevel",sumLevel);
 //            mv.addObject("totalCount",count);

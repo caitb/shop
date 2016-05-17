@@ -1,11 +1,9 @@
-function showDetails(sfDistributionPersons){
-    if (sfDistributionPersons.length == 0){
+function showDetails(sfDistributionPersonStr){
+    if (sfDistributionPersonStr == ""){
+        alert("暂无明细");
         return;
     }
-    var html = "";
-    for (var i = 0;i <sfDistributionPersons.length;i++){
-        html = html + "<div><p>"+sfDistributionPersons[i].wxNkName+":</p><p>￥"+sfDistributionPersons[i].amount+"</p></div>";
-    }
+    var html = sfDistributionPersonStr;
     html = html + "<button onclick=\"hideDetail()\">知道了</button>";
     $(".back_f").html(html);
     $(".back_f").show();
@@ -94,6 +92,6 @@ function viewOrder(orderId){
     if (orderId == ""){
         return;
     }
-    window.location.href = basePath + "borderManage/borderDetils.html?id=" + orderId;
+    window.location.href = basePath + "sfOrderController/sfOrderDetal.html?id=" + orderId;
 }
 

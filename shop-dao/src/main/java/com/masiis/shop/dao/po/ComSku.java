@@ -20,6 +20,8 @@ public class ComSku {
      */
     private String name;
 
+    private String alias;
+
     /**
      * 商品标志
      */
@@ -121,6 +123,14 @@ public class ComSku {
         this.name = name;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public String getIcon() {
         return icon;
     }
@@ -214,6 +224,7 @@ public class ComSku {
         return "ComSku{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", alias='" + alias + '\'' +
                 ", icon='" + icon + '\'' +
                 ", spuId=" + spuId +
                 ", createTime=" + createTime +

@@ -417,8 +417,8 @@ public class MobileMessageUtil {
         }
     }
 
-    public static void main(String[] args){
-        MobileMessageUtil.getInitialization("B").trialShipmentsRemind("18911155707","康引力","3","1121212323");
+//    public static void main(String[] args){
+//        MobileMessageUtil.getInitialization("B").trialShipmentsRemind("18911155707","康引力","3","1121212323");
 //        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18911155707","B16051218360168","100","2016-05-13","可口可乐");
-    }
+//    }
 }

@@ -22,7 +22,7 @@
                                 appendString += " <span>持卡人:<b>" + jsonData[i].cardOwnerName + "</b>卡号:<b>" + bankCard.substr(0,4);
                                 appendString += "***********";
                                 appendString += bankCard.substr(bankCard.length -4)+"</b></span></p>";
-                                appendString += "<h1 onclick=bankCardJS.deleteBankCard(" + jsonData[i].id + ") class=\"remove\"><img src=\"\\static\\images\\delete.png \" alt=\"\"></h1></div>";
+                                appendString += "<h1 onclick=bankCardJS.showDeleteDialog(" + jsonData[i].id + ") class=\"remove\"><img src=\"\\static\\images\\delete.png \" alt=\"\"></h1></div>";
                             })
                             $("#chooseBankCardId").empty();
                             $("#chooseBankCardId").append(appendString);
@@ -33,23 +33,33 @@
                     }
                 })
             },
-            deleteBankCard: function (id) {
-                if (confirm("确定要删除银行卡")) {
-                    $.ajax({
-                        type: "POST",
-                        url: "/personalInfo/deleteBankCardInfoById.do",
-                        data: "id="+id,
-                        dataType: "text",
-                        success: function (result) {
-                            if (result == "true") {
-                                $("#sec1_" + id).remove();
-                            }
-                        },
-                        error: function () {
-                            alert("删除银行卡失败");
+            showDeleteDialog: function (id) {
+                $("#confirmBankCardId").val(id);
+                $(".back").show();
+                $(".back_que").show();
+            },
+            hideDeleteDialog: function () {
+                $(".back_que").hide();
+                $(".back").hide();
+            },
+            deleteBankCard:function(){
+                var id =  $("#confirmBankCardId").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/personalInfo/deleteBankCardInfoById.do",
+                    data: "id="+id,
+                    dataType: "text",
+                    success: function (result) {
+                        if (result == "true") {
+                            $("#sec1_" + id).remove();
                         }
-                    })
-                }
+                    },
+                    error: function () {
+                        alert("删除银行卡失败");
+                    }
+                })
+                $(".back_que").hide();
+                $(".back").hide();
             }
         }
 })();

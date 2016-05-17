@@ -194,7 +194,7 @@ public class OrderService {
         SfOrderConsignee sfOrderConsignee = sfOrderConsigneeMapper.getOrdConByOrdId(sfOrder.getId());
         ComUser comUser = comUserMapper.selectByPrimaryKey(sfOrder.getUserId());
         //短信和微信通知
-        MobileMessageUtil.getInitialization("C").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode());
+        MobileMessageUtil.getInitialization("C").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight());
         WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/borderDetils.html?id=" + sfOrder.getId());
     }
 

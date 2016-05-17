@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.ComSku" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
         <result column="icon" property="icon" jdbcType="VARCHAR" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -25,6 +26,7 @@
         update com_sku
         set
             name = #{name,jdbcType=VARCHAR},
+            alias = #{alias,jdbcType=VARCHAR},
             icon = #{icon,jdbcType=VARCHAR},
             spu_id = #{spuId,jdbcType=INTEGER},
             create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -40,20 +42,20 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{id,jdbcType=INTEGER}
     </select>
     <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{skuId,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
     </select>
@@ -73,6 +75,7 @@
         SELECT
                id,
                name,
+               alias,
                icon,
                spu_id,
                create_time,
@@ -95,6 +98,7 @@
         SELECT
                id,
                name,
+               alias,
                icon,
                spu_id,
                create_time,
@@ -130,6 +134,7 @@
                 (
                 id,
                 name,
+                alias,
                 icon,
                 spu_id,
                 create_time,
@@ -145,6 +150,7 @@
                 (
                 #{id,jdbcType=INTEGER},
                 #{name,jdbcType=VARCHAR},
+                #{alias,jdbcType=VARCHAR},
                 #{icon,jdbcType=VARCHAR},
                 #{spuId,jdbcType=INTEGER},
                 #{createTime,jdbcType=TIMESTAMP},
@@ -164,7 +170,10 @@
         UPDATE com_sku
         <set>
             <if test="name != null">
-            name = #{name},
+                name = #{name},
+            </if>
+            <if test="alias != null">
+                alias = #{alias},
             </if>
             <if test="icon != null">
                 icon = #{icon},

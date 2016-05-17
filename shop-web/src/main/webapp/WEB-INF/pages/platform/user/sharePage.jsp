@@ -34,6 +34,9 @@
     </div>
 </div>
 </body>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>static/js/hideWXShare.js"></script>
 <%--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>--%>
 <%--<script>--%>
     <%--/*--%>
@@ -102,6 +105,6 @@
 <%--</script>--%>
 <%--<script src="<%=basePath%>static/js/zepto.min.js"></script>--%>
 <%--<script src="<%=basePath%>static/js/share.js"> </script>--%>
-<jsp:include page="/WEB-INF/pages/common/foot.jsp"></jsp:include>
+<%--<jsp:include page="/WEB-INF/pages/common/foot.jsp"></jsp:include>--%>
 </html>
 

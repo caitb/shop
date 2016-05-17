@@ -47,7 +47,7 @@
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}')">
                                 <p class="photo">
                                    <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -80,7 +80,7 @@
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}')">
                                 <p class="photo">
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -113,7 +113,7 @@
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}')">
                                 <p class="photo">
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -146,7 +146,7 @@
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}')">
                                 <p class="photo">
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
@@ -179,8 +179,8 @@
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
                             </h2><c:forEach items="${pb.sfOrderItems}" var="pbi">
-                            <div class="shangpin">
-                                <p class="photo">
+                            <div class="shangpin" onclick="javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}')">
+                                <p class="photo" >
                                     <a href="<%=basePath%>shop/detail.shtml/?skuId=${pbi.skuId}&shopId=${shopId}">
                                         <img src="${pbi.skuUrl}" alt="">
                                     </a>
@@ -267,7 +267,7 @@
                                    trHtml+="<h2>订单号：<span>"+sfOrder.orderCode+"</span><b class='querenshouhuo_"+sfOrder.id+"' >已完成</b ></h2>";
                                }
                                $.each(sfOrder.sfOrderItems, function(i, sfOrderItem) {
-                                   trHtml+="<div class=\"shangpin\">";
+                                   trHtml+="<div class=\"shangpin\" onclick=\"javascript:window.location.replace('<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId=<%= request.getSession().getAttribute("shopId") %>')\">";
                                    trHtml+=" <p class=\"photo\">";
                                    trHtml+="<a href=\"<%=basePath%>shop/detail.shtml/?skuId="+sfOrderItem.skuId+"&shopId=<%= request.getSession().getAttribute("shopId") %>\">";
                                    trHtml+="<img src=\""+sfOrderItem.skuUrl+"\" alt=\"\"></a></p>";

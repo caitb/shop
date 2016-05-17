@@ -139,7 +139,7 @@ public class WxSFNoticeUtils {
         WxNoticeReq<WxSFProfitInNotice> req = new WxNoticeReq<>(profit);
 
         if(isReceipt){
-            profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的佣金，您可以在“个人中心-我的佣金”中查看详细佣金信息。", null));
+            profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的可提现佣金，您可以在“个人中心-我的佣金”中查看详细佣金信息。", null));
         } else {
             profit.setFirst(new WxNoticeDataItem("恭喜您，获得了一笔新的佣金，等待对方确认收货7天后即可提现。您可以在“个人中心-佣金管理”中查看详细佣金信息。", null));
         }

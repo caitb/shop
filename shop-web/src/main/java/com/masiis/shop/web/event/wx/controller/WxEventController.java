@@ -119,17 +119,18 @@ public class WxEventController extends BaseController {
         List<Button> sub_button2 = new ArrayList<>();
         sub_button1.add(new Button("关于我们", "view", "http://mp.weixin.qq.com/s?__biz=MzAxMDg1NjY4Mw==&mid=100000035&idx=1&sn=8d77d86ffb986436b94cd3dfb6a08037&scene=23&srcid=0420B5a64GJHrlchm8mdF2O2#wechat_redirect"));
         sub_button1.add(new Button("新闻报道", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
+        Button b2 = new Button("使用帮助", "media_id", null);
+        b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
+        sub_button1.add(b2);
         Button b1 = new Button("联系我们", "click", null);
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
 
-        Button b2 = new Button("使用帮助", "media_id", null);
-        b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
-        sub_button2.add(b2);
-        sub_button2.add(new Button("最新活动", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
+        sub_button2.add(new Button("店铺推广", "view", PropertiesUtils.getStringValue("web.domain.name.address") + "/menu/pmnshop"));
+        sub_button2.add(new Button("发展合伙人", "view", PropertiesUtils.getStringValue("web.domain.name.address") + "/menu/pmnpartner"));
 
         buttons.add(new Button("关于麦链", sub_button1));
-        buttons.add(new Button("微商学院", sub_button2));
+        buttons.add(new Button("推广", sub_button2));
         buttons.add(new Button("麦链合伙", "view", PropertiesUtils.getStringValue("web.domain.name.address")));
         menu.setButton(buttons);
 

@@ -252,7 +252,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             background-size: 7px 13px;
             padding-right: 16px;
         }
-
+        .sec1 div h2 {
+            display: block;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            padding-right: 15px;
+        }
     </style>
 </head>
 <body>

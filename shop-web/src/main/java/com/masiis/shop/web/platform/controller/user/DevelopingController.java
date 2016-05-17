@@ -181,7 +181,11 @@ public class DevelopingController extends BaseController {
                     contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                     contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。";
-                    drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
+                    if(comSkuExtension.getPoster() != null && "kangyinli.png".equals(comSkuExtension.getPoster())){
+                        drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
+                    }else if(comSkuExtension.getPoster() != null && "mss.png".equals(comSkuExtension.getPoster())){
+                        drawPost2(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
+                    }
                     //删除本地二维码图片
                     new File(qrcodePath).delete();
                     //删除本地头像
@@ -243,15 +247,7 @@ public class DevelopingController extends BaseController {
         g.setFont(new Font("华文细黑", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
         g.drawString(contents[0], 92, 785);
-//        for(int i=1; i<contents.length; i++){
-//            int length = contents[i].length()/10;
-//            int more = contents[i].length() - length*10;
-//            for(int j=0; j<length; j++){
-//                if((j+1)<=length) g.drawString(contents[i].substring(j*10, (j+1)*10), 92, 780+(i*50)+j*50);
-//                if((j+1)>length) g.drawString(contents[i].substring(j*10), 92, 780+(i*50)+j*50);
-//            }
-//            if(more>0) g.drawString(contents[i].substring(length*10), 92, 780+(i*45)+(length+1)*40);
-//        }
+
         for(int i=0; i<contents[1].length(); i++){
             int l = i%11;
             int t = i/11;
@@ -268,6 +264,64 @@ public class DevelopingController extends BaseController {
         g.setColor(new Color(51, 51, 51));
         g.drawString("该二维码有效期为", 598, 1016);
         g.drawString(startTime+"-"+endDate, 575, 1046);
+        g.dispose();
+
+        try {
+            ByteArrayOutputStream bs = new ByteArrayOutputStream();
+            ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(bufferedImage, "png", imOut);
+            InputStream is = new ByteArrayInputStream(bs.toByteArray());
+            OSSObjectUtils.uploadFile( "static/user/poster/" + saveFileName, is);
+        } catch (Exception e) {
+            log.error("画海报出错了!");
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    /**
+     * 画海报
+     * @param bPath        海报背景图路径
+     * @param qrcodePath   二维码背景图路径
+     * @param saveFileName 保存名字
+     */
+    public void drawPost2(String bPath, String qrcodePath, String headImgPath, String saveFileName, String[] contents) {
+        ImageIcon bImgIcon = new ImageIcon(bPath);
+        ImageIcon qrcodeImgIcon = new ImageIcon(qrcodePath);
+        ImageIcon headImgIcon = new ImageIcon(headImgPath);
+        Image bImage = bImgIcon.getImage();
+        Image qrcodeImage = qrcodeImgIcon.getImage();
+        Image headImage = headImgIcon.getImage();
+
+        int width = bImage.getWidth(null) == -1 ? 904 : bImage.getWidth(null);
+        int height = bImage.getHeight(null) == -1 ? 1200 : bImage.getHeight(null);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bufferedImage.createGraphics();
+
+        g.drawImage(headImage, 36, 880, 132, 132, null);
+        g.drawImage(bImage, 0, 0, null);
+        g.drawImage(qrcodeImage, 604, 874, 220, 220, null);
+
+        g.setFont(new Font("华文细黑", Font.PLAIN, 28));
+        g.setColor(new Color(51,51,51));
+        g.drawString(contents[0], 176, 905);
+
+        for(int i=0; i<contents[1].length(); i++){
+            int l = i%13;
+            int t = i/13;
+            g.drawString(contents[1].substring(i, i+1), 176+28*l, 905+40*(t+1));
+        }
+
+        Date curDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String startTime = sdf.format(curDate);
+        curDate.setDate(curDate.getDate()+30);
+        String endDate = sdf.format(curDate);
+
+        g.setFont(new Font("华文细黑", Font.PLAIN, 20));
+        g.setColor(new Color(51, 51, 51));
+        g.drawString("该二维码有效期为", 635, 1125);
+        g.drawString(startTime+"-"+endDate, 610, 1165);
         g.dispose();
 
         try {

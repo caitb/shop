@@ -263,39 +263,39 @@ public class DrawPicUtil {
     }
 
 
-    public static void main(String[] args) {
-        DrawPicUtil drawPicUtil = new DrawPicUtil();
-        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
-        List<DrawPicParam> drawPicParams = new ArrayList<>();
-        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
-        drawPicParam1.setContent("授权书编号：MASIIS200461600268  手机：18612111522");
-        drawPicParam1.setColor(Color.GRAY);
-        drawPicParam1.setY(490);
-        drawPicParams.add(drawPicParam1);
-        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
-        drawPicParam2.setContent("授权期限：2016-05-09 至 2018-05-09  微信：NeverMore1126");
-        drawPicParam2.setColor(Color.GRAY);
-        drawPicParam2.setY(520);
-        drawPicParams.add(drawPicParam2);
-        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
-        drawPicParam3.setContent("赵  亮");
-        drawPicParam3.setY(380);
-        drawPicParam3.setFont(new Font("华文细黑", Font.BOLD, 35));
-        drawPicParams.add(drawPicParam3);
-        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
-        drawPicParam4.setContent("有权于网络和实体渠道销售产品-抗引力瘦脸精华");
-        drawPicParam4.setColor(new Color(139, 69, 19));
-        drawPicParam4.setY(450);
-        drawPicParam4.setFont(new Font("华文细黑", Font.PLAIN, 20));
-        drawPicParams.add(drawPicParam4);
-        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
-        drawPicParam5.setContent("AAA级代理");
-        drawPicParam5.setY(265);
-        drawPicParam5.setFont(new Font("华文细黑", Font.BOLD, 30));
-        drawPicParams.add(drawPicParam5);
-//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
-        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
-        System.out.print("success");
-    }
+//    public static void main(String[] args) {
+//        DrawPicUtil drawPicUtil = new DrawPicUtil();
+//        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
+//        List<DrawPicParam> drawPicParams = new ArrayList<>();
+//        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
+//        drawPicParam1.setContent("授权书编号：MASIIS200461600268  手机：18612111522");
+//        drawPicParam1.setColor(Color.GRAY);
+//        drawPicParam1.setY(490);
+//        drawPicParams.add(drawPicParam1);
+//        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
+//        drawPicParam2.setContent("授权期限：2016-05-09 至 2018-05-09  微信：NeverMore1126");
+//        drawPicParam2.setColor(Color.GRAY);
+//        drawPicParam2.setY(520);
+//        drawPicParams.add(drawPicParam2);
+//        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
+//        drawPicParam3.setContent("赵  亮");
+//        drawPicParam3.setY(380);
+//        drawPicParam3.setFont(new Font("华文细黑", Font.BOLD, 35));
+//        drawPicParams.add(drawPicParam3);
+//        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
+//        drawPicParam4.setContent("有权于网络和实体渠道销售产品-抗引力瘦脸精华");
+//        drawPicParam4.setColor(new Color(139, 69, 19));
+//        drawPicParam4.setY(450);
+//        drawPicParam4.setFont(new Font("华文细黑", Font.PLAIN, 20));
+//        drawPicParams.add(drawPicParam4);
+//        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
+//        drawPicParam5.setContent("AAA级代理");
+//        drawPicParam5.setY(265);
+//        drawPicParam5.setFont(new Font("华文细黑", Font.BOLD, 30));
+//        drawPicParams.add(drawPicParam5);
+////        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
+//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
+//        System.out.print("success");
+//    }
 
 }

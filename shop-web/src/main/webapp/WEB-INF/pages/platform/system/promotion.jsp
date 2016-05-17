@@ -16,7 +16,7 @@
         }
 
         function auto_redirect(){
-            window.href.location = "${redirectUrl}";
+            window.location.href = "${redirectUrl}";
         }
     </script>
 </head>

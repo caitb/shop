@@ -186,11 +186,11 @@ public class MyTeamService {
             return null;
         }
 
-        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId());
         ComUser comUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
         ComSku comSku = comSkuMapper.selectById(pfUserCertificate.getSkuId());
-        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), comSku.getId());
+        Map<String, Double> statisticsBuy = pfBorderMapper.statisticsBuy(pfUserCertificate.getUserId(), pfUserSku.getUserPid());
+        ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
         Map<String, String> curMap = countChild(pfUserSku.getId());
         Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
 

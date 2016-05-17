@@ -21,7 +21,10 @@ public class WxNoticeUtils {
         String token = "wKOWfyCaBc2XR3iM3A2I3m1vnmaF4zVC-nI9FP910hW5Bx_Y9R0nVH4leYVHsTtmVwXqGaRQRABff3EoV_jQpgY3ZgspUvvdhGDtI9P_wRqZzmXpMcMbEvqXBav-Eqj_CLFdAJAOXR";
         String qrTicket = "gQGa8DoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xLzFFajR5by1sanZIM0VIN1AxV1F2AAIEonssVwMEAAAAAA==";
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsPF.APPID+"&secret=" + WxConsPF.APPSECRET;
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsPF.APPID+"&secret=" + WxConsPF.APPSECRET;
+        // M合伙人测试
+        // String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxddaad94806955802&secret=fdcef6f6d485847ee8824e38e6e1610e";
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));

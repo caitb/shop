@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="price">
-            <p>${skuInfo.comSku.name}</p>
+            <p>${skuInfo.comSku.alias}</p>
             <p><span style="padding:0;">${skuInfo.slogan}</span></p>
             <p>￥<b>${skuInfo.comSku.priceRetail}</b></p>
         </div>

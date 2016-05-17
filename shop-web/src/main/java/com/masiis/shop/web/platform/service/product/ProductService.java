@@ -55,13 +55,6 @@ public class ProductService {
     public Product getSkuDetails(Integer skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         product.setStock(product.getStock()-product.getFrozenStock());
-        if (product != null && product.getName().length() > 40) {
-            product.setName(product.getName().substring(0, 41) + "......");
-        }
-        if (product != null && product.getSlogan() != null && product.getSlogan().length() > 50) {
-
-            product.setSlogan(product.getSlogan().substring(0, 51) + "......");
-        }
         ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
         ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
         product.setLogoUrl(comBrand.getLogoUrl());

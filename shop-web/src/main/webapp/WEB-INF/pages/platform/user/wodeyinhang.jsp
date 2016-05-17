@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>麦链合伙人</title>
     <%@ include file="/WEB-INF/pages/common/head.jsp" %>
+    <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
+    <script src="${path}/static/js/bankCard.js"></script>
     <link rel="stylesheet" href="${path}/static/css/wodeyinhang.css">
 </head>
 <body>
@@ -28,7 +30,17 @@
             <p id="chooseBankCardId">选择提现银行卡</p>
         </main>
      </div>
-   <%@ include file="/WEB-INF/pages/common/foot.jsp" %>
-     <script src="${path}/static/js/bankCard.js"></script>
+   <input id="confirmBankCardId" value="" type="hidden"/>
+   <div class="back_box" style="display: block;">
+       <div class="back" style="display: none;"></div>
+       <div class="back_que" style="display: none;">
+           <p>删除</p>
+           <h4>确定删除银行卡?</h4>
+           <h3>
+               <span class="que_qu" id="getBack" onclick="bankCardJS.hideDeleteDialog()">取消</span>
+               <span class="que_que" id="submit" onclick="bankCardJS.deleteBankCard()">删除</span>
+           </h3>
+       </div>
+   </div>
 </body>
 </html>

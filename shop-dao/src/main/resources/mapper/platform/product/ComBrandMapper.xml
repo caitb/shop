@@ -40,7 +40,7 @@
     </select>
 
     <!-- 添加一条记录 -->
-    <insert id="insert">
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComBrand" useGeneratedKeys="true" keyProperty="id">
         insert into com_brand
                     (
                     id,
@@ -54,7 +54,7 @@
         values
                     (
                     #{id,jdbcType=INTEGER},
-                    #{createTime,jdbcType=TIMESTAMP}, 
+                    #{createTime,jdbcType=TIMESTAMP},
                     #{cname,jdbcType=VARCHAR},
                     #{ename,jdbcType=VARCHAR},
                     #{logoUrl,jdbcType=VARCHAR},

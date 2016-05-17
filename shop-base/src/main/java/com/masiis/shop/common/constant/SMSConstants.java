@@ -87,7 +87,7 @@ public class SMSConstants {
 	/**
 	 * 消费者发货提醒
 	 */
-	public static final String CONSUMER_SHIP_REMIND = "82643";
+	public static final String CONSUMER_SHIP_REMIND = "86796";
 	/**
 	 * 消费者交易成功提醒
 	 */
@@ -109,7 +109,7 @@ public class SMSConstants {
 	 */
 	public static final String OFFLINE_PAYMENTS_REMIND = "86403";
 	/**
-	 * 试用货提醒
+	 * 试用发货提醒
 	 */
 	public static final String TRIAL_SHIPMENTS_REMIND = "86552";
 

@@ -299,13 +299,17 @@ public class MobileMessageUtil {
     /**
      * 消费者发货提醒
      * @param phone
-     * @param orderCode    订单编码
+     * @param orderCode 订单编号
+     * @param shipName  物流公司名称
+     * @param shipCode  运单号
      * @return
      */
-    public boolean consumerShipRemind(String phone, String orderCode){
-        content = new String[2];
+    public boolean consumerShipRemind(String phone, String orderCode, String shipName, String shipCode){
+        content = new String[4];
         content[0] = orderCode;
-        content[1] = EVENING_MESSAGE;
+        content[1] = shipName;
+        content[2] = shipCode;
+        content[3] = EVENING_MESSAGE;
         return sendMethod(phone, SMSConstants.CONSUMER_SHIP_REMIND, content);
     }
 
@@ -414,7 +418,7 @@ public class MobileMessageUtil {
     }
 
 //    public static void main(String[] args){
-//        MobileMessageUtil.getInitialization("B").addStockSuccess("18911155707",1,"3");
+//        MobileMessageUtil.getInitialization("B").trialShipmentsRemind("18911155707","康引力","3","1121212323");
 //        MobileMessageUtil.getInitialization("C").offlinePaymentsRemind("18911155707","B16051218360168","100","2016-05-13","可口可乐");
 //    }
 }

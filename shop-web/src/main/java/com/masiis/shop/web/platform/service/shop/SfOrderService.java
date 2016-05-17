@@ -125,7 +125,7 @@ public class SfOrderService {
             if(aBoolean==false){
                 throw new Exception("消费者订单发货微信提示失败");
             }
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
+            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode(),shipManName,freight);
         } else if (sfOrder.getSendType() == 2) {//自己发货
             sfOrder.setShipStatus(5);
             sfOrder.setOrderStatus(8);
@@ -157,7 +157,7 @@ public class SfOrderService {
             if(aBoolean==false){
                 throw new Exception("消费者订单发货微信提示失败");
             }
-            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode());
+            MobileMessageUtil.getInitialization("C").consumerShipRemind(comUser.getMobile(),sfOrder.getOrderCode(),shipManName,freight);
         }
     }
 }

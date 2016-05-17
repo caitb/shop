@@ -321,7 +321,7 @@ public class DevelopingController extends BaseController {
         g.setFont(new Font("华文细黑", Font.PLAIN, 20));
         g.setColor(new Color(51, 51, 51));
         g.drawString("该二维码有效期为", 635, 1125);
-        g.drawString(startTime+"-"+endDate, 600, 1165);
+        g.drawString(startTime+"-"+endDate, 610, 1165);
         g.dispose();
 
         try {

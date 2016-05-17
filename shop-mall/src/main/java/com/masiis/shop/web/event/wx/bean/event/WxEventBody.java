@@ -22,6 +22,9 @@ public class WxEventBody extends WxBaseEvent{
     private String msgId;
     @XStreamAlias("MenuId")
     private String menuId;
+    @XStreamAlias("MediaId")
+    private String mediaId;
+
     public String getEventKey() {
         return eventKey;
     }
@@ -76,5 +79,13 @@ public class WxEventBody extends WxBaseEvent{
 
     public void setMenuId(String menuId) {
         this.menuId = menuId;
+    }
+
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
     }
 }

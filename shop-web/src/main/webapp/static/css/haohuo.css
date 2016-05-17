@@ -89,7 +89,11 @@
   margin-left: 10px;
 }
 .wrap .box .main .sec1 div h2 {
-  /* padding-bottom: 5px; */
+  display: block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right: 15px;
 }
 .wrap .box .main .sec1 div h3 {
   font-size: 12px;

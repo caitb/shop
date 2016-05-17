@@ -383,7 +383,7 @@ public class SfOrderPayService {
         /*分润人微信提醒*/
         List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderItemId(order.getId());
         for(SfOrderItemDistribution ordItemDis : ordItemDisList){
-            String[] _param =new String[]{ordItemDis.getDistributionAmount()+"", DateUtil.Date2String(ordItemDis.getCreateTime(),DateUtil.SQL_TIME_FMT)};
+            String[] _param =new String[]{"￥"+ordItemDis.getDistributionAmount(), DateUtil.Date2String(ordItemDis.getCreateTime(),DateUtil.SQL_TIME_FMT)};
             ComUser _comUser=userService.getUserById(ordItemDis.getUserId());
             WxSFNoticeUtils.getInstance().profitInNotice(_comUser,_param,false, SysConstants.MALL_DOMAIN_NAME_ADDRESS +"/sfaccount/rewardHome.shtml");
         }

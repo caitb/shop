@@ -54,12 +54,12 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-box-pack: center;
+    padding-top: 10px;
     display: -moz-box;
     -moz-box-orient: vertical;
     -moz-box-pack: center;
 }
 #wrap .price p:nth-child(3) {
-    text-indent: 8px;
     color: #f73c8c;
 }
 #wrap .price p:nth-child(2) span {
@@ -68,7 +68,7 @@
 #wrap .price p {
     color: #333;
     font-size: 13px;
-    text-indent: 10px;
+    padding: 0 10px;
 }
 #wrap .price p b {
     color: #f72946;
@@ -371,13 +371,19 @@ footer .sec3 p a {
     line-height: 20px;
 }
 .shoping>p{
-    text-indent: 130px;
     padding: 10px 0;
     border-bottom: 1px solid #f6f6f6;
+    padding-left: 130px;
 }
 .shoping>p span{
     display: block;
-    line-height: 30px
+    line-height: 30px;
+    font-size: 12px;
+    display: block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-right: 40px;
 }
 .shoping img{
     position: absolute;

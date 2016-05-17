@@ -51,11 +51,19 @@
 .wrap main .sec1 div {
   margin-left: 10px;
   display: -webkit-box;
+  -webkit-box-flex: 1;
   -webkit-box-orient: vertical;
 }
 .wrap main .sec1 div p span {
   display: block;
   font-size: 12px;
+}
+.wrap main .sec1 div p b{
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right: 20px;
 }
 .wrap main .sec1 div p:first-child{
   margin: 3px 0 0 0;

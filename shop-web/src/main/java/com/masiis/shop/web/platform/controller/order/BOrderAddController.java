@@ -60,13 +60,14 @@ public class BOrderAddController extends BaseController {
 
     /**
      * 代理订单确认订单页
+     *
      * @param request
-     * @param skuId 代理skuId
-     * @param agentLevelId 代理等级
-     * @param weiXinId 微信号
-     * @param sendType 拿货方式
+     * @param skuId            代理skuId
+     * @param agentLevelId     代理等级
+     * @param weiXinId         微信号
+     * @param sendType         拿货方式
      * @param previousPageType 0：上一页是注册 1：上一页是选择拿货方式
-     * @param userAddressId 用户地址
+     * @param userAddressId    用户地址
      * @return
      * @throws Exception
      */
@@ -161,12 +162,13 @@ public class BOrderAddController extends BaseController {
 
     /**
      * 生成代理订单
+     *
      * @param request
      * @param skuId
-     * @param agentLevelId 代理等级
-     * @param weiXinId 微信号
-     * @param sendType 拿货方式
-     * @param userMessage 用户留言
+     * @param agentLevelId  代理等级
+     * @param weiXinId      微信号
+     * @param sendType      拿货方式
+     * @param userMessage   用户留言
      * @param userAddressId 用户地址
      * @return
      */
@@ -191,15 +193,18 @@ public class BOrderAddController extends BaseController {
                 throw new BusinessException("参数校验失败：weiXinId:" + weiXinId);
             }
             ComUser comUser = getComUser(request);
+            PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, comUser.getId());
+            if (pfBorder != null) {
+                throw new BusinessException("您已经有了此款产品的代理订单，订单号编码为:" + pfBorder.getOrderCode());
+            }
             Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
             if (comUser.getSendType() > 0) {
                 sendType = comUser.getSendType();
             } else if (pUserId > 0) {
                 sendType = userService.getUserById(pUserId).getSendType();
-            } else {
-                if (sendType == null && sendType <= 0) {
-                    throw new BusinessException("参数校验失败：sendType:" + sendType);
-                }
+            }
+            if (sendType == null && sendType <= 0) {
+                throw new BusinessException("参数校验失败：sendType:" + sendType);
             }
             if (StringUtils.isBlank(userMessage)) {
                 userMessage = "";
@@ -237,9 +242,10 @@ public class BOrderAddController extends BaseController {
 
     /**
      * 补货订单确认订单页
+     *
      * @param request
-     * @param skuId 补货sku
-     * @param quantity 补货数量
+     * @param skuId         补货sku
+     * @param quantity      补货数量
      * @param userAddressId 用户地址
      * @return
      * @throws Exception

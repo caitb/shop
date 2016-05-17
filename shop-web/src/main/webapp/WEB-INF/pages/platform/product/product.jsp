@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="price">
-            <p>${productDetails.name}</p>
+            <p style="padding-right:30px">${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
             </span><span style="color: #999999;float:right;margin:4px 10px 0 0;">代理人数：

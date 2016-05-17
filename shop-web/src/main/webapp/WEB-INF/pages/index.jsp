@@ -74,7 +74,7 @@
                 </li>
                 <li>
                     <a class="herf" href="<%=path%>/borderManage/borderManagement.html">
-                        <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
+                        <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""><%--<c:if test="${borderNum!=0}"><span></span></c:if>--%></h1>
                         <span>合伙人订单</span></a>
                 </li>
             </ul>
@@ -88,11 +88,11 @@
                     <span>我的团队</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>developing/ui">
-                    <h1><img src="<%=path%>/static/images/1%20(5).png" alt=""></h1>
+                    <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
                     <span>发展合伙人</span></a>
                 </li>
                 <li class="market"><a class="herf" href="<%=basePath%>userCertificate/userList/${user.id}">
-                    <h1><img src="<%=path%>/static/images/1%20(6).png" alt=""></h1>
+                    <h1><img src="<%=path%>/static/images/1%20(3).png" alt=""></h1>
                     <span>我的授权书 </span></a>
                 </li>
             </ul>

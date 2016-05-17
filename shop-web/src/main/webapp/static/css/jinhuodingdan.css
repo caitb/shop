@@ -115,6 +115,11 @@
   font-size: 12px;
   margin-top: -5px;
   line-height:25px;
+  display: block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right: 30px;
 }
 .wrap .box main .all .sec1 .shangpin div h3 {
   font-size: 12px;

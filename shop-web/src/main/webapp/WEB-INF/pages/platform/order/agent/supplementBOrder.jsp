@@ -96,8 +96,8 @@
     </div>
 </div>
 <div class="fangshi">
-    <div class="back_q">
-        <p>
+    <div class="back_q" style="margin-top: -180px;">
+        <p style="height: 300px;overflow-x: hidden;overflow-y: auto;">
             <img src="${path}/static/images/fangshi.png" alt="">
         </p>
         <button class="kNow">我知道了</button>

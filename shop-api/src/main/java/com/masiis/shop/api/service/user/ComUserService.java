@@ -277,7 +277,7 @@ public class ComUserService {
         wxUser.setCity(req.getCity());
         wxUser.setCountry(req.getCountry());
         wxUser.setHeadImgUrl(req.getHeadImgUrl());
-        wxUser.setNkName(req.getNickName());
+        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(req.getNickName()));
         wxUser.setOpenid(req.getOpenId());
         wxUser.setProvince(req.getProvince());
         wxUser.setSex(req.getSex());
@@ -320,7 +320,7 @@ public class ComUserService {
         wxUser.setCity(req.getCity());
         wxUser.setCountry(req.getCountry());
         wxUser.setHeadImgUrl(req.getHeadImgUrl());
-        wxUser.setNkName(req.getNickName());
+        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(req.getNickName()));
         wxUser.setProvince(req.getProvince());
         wxUser.setSex(req.getSex());
     }

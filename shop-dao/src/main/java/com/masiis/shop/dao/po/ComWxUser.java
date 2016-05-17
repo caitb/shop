@@ -7,6 +7,8 @@
  */
 package com.masiis.shop.dao.po;
 
+import com.masiis.shop.common.util.EmojiUtils;
+
 import java.util.Date;
 
 public class ComWxUser {
@@ -110,7 +112,7 @@ public class ComWxUser {
         return nkName;
     }
     public void setNkName(String nkName) {
-        this.nkName = nkName == null ? null : nkName.trim();
+        this.nkName = nkName == null ? null : EmojiUtils.removeNonBmpUnicode(nkName.trim());
     }
     public Integer getSex() {
         return sex;

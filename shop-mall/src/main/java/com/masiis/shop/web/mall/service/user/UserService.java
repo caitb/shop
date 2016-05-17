@@ -363,7 +363,7 @@ public class UserService {
         wxUser.setCity(userInfo.getCity());
         wxUser.setCountry(userInfo.getCountry());
         wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(userInfo.getNickname());
+        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(userInfo.getNickname()));
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());
         wxUser.setSex(Integer.valueOf(userInfo.getSex()));
@@ -390,7 +390,7 @@ public class UserService {
         wxUser.setCity(userInfo.getCity());
         wxUser.setCountry(userInfo.getCountry());
         wxUser.setHeadImgUrl(userInfo.getHeadimgurl());
-        wxUser.setNkName(userInfo.getNickname());
+        wxUser.setNkName(EmojiUtils.removeNonBmpUnicode(userInfo.getNickname()));
         wxUser.setOpenid(userInfo.getOpenid());
         wxUser.setProvince(userInfo.getProvince());
         wxUser.setRefreshToken(res.getRefresh_token());

@@ -68,7 +68,7 @@ public class SfUserBillService {
                     bill.setCountAmount(bill.getCountAmount().add(item.getAmount()));
 
                     String url = PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfaccount/rewardHome.shtml";
-                    String[] params = {item.getAmount().toString(), DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss")};
+                    String[] params = {"￥" + item.getAmount().toString(), DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss")};
                     WxSFNoticeUtils.getInstance().profitInNotice(user, params, true, url);
                 } else if(item.getItemSubType() == 3) {
                     // 退货分润退款

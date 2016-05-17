@@ -53,7 +53,7 @@
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==9}">
                     <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;">
-                    <h1>线下支付中</h1><p>亲，您选择的是线下支付，请及时付款~~</p>
+                    <h1>线下支付中</h1><p>您的下级选择的是线下支付，请耐心等待~~</p>
                 </c:if>
             </div>
             <div class="sec2">

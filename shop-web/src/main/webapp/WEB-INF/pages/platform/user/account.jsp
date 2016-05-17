@@ -34,7 +34,7 @@
         <main>
             <div class="ban">
                 <img src="<%=basePath%>static/images/icon_55.png" alt="">
-                <h1>￥<b>${account.profitFee}</b></h1>
+                <h1>￥<b>${totalIncom}</b></h1>
                 <p>累计收入</p>
                 <h2>(截止到<span>${year}-${month}-${day}</span>)</h2>
             </div>

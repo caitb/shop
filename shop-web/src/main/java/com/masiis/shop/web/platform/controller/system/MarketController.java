@@ -53,12 +53,13 @@ public class MarketController extends BaseController {
         List<String> urls = new ArrayList<>();
         for (PbBanner banner:pbBanner) {
             //图片地址
-            String url = value + banner.getImgUrl();
-            urls.add(url);
+            banner.setImgUrl(value + banner.getImgUrl());
+//            String url = value + banner.getImgUrl();
+//            urls.add(url);
         }
         ModelAndView modelAndView = new ModelAndView();
         //封装图片地址集合
-        modelAndView.addObject("urls",urls);
+        modelAndView.addObject("pbBanner",pbBanner);
 
         //获取商品图片地址常量
         String skuValue = PropertiesUtils.getStringValue("index_product_800_800_url");

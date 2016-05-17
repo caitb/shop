@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lzh on 2016/3/20.
@@ -66,5 +67,9 @@ public class UserExtractApplyService {
 
     public List<ComUserExtractApply> findListByUserAndDateAndPageNum(ComUser user, Date start, Date end, Integer startNum, Integer qSize) {
         return applyMapper.selectByUserAndDateAndPageNum(user.getId(), start, end, startNum, qSize);
+    }
+
+    public Map<String, BigDecimal> findSumExtractfeeByUserId(Long userId){
+        return applyMapper.selectSumExtractfeeByUserId(userId);
     }
 }

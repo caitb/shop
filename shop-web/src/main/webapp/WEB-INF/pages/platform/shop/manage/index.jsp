@@ -54,7 +54,7 @@
                 <c:if test="${shopView == null}">0</c:if>
                 <c:if test="${shopView != null}">${shopView}</c:if>
                </span>
-                <span>店铺总参与人数</span>
+                <span>店铺总浏览人数</span>
             </p>
         </nav>
     </div>

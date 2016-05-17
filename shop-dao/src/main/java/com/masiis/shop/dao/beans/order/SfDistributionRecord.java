@@ -56,7 +56,11 @@ public class SfDistributionRecord {
     /**
      * 分润人列表
      */
-    List<SfDistributionPerson> sfDistributionPersons;
+    private List<SfDistributionPerson> sfDistributionPersons;
+    /**
+     * 分润人列表(组装页面的String)
+     */
+    private String sfDistributionPersonStr;
 
     public Long getOrderId() {
         return orderId;
@@ -137,5 +141,13 @@ public class SfDistributionRecord {
 
     public void setDistributionAmount(BigDecimal distributionAmount) {
         this.distributionAmount = distributionAmount;
+    }
+
+    public String getSfDistributionPersonStr() {
+        return sfDistributionPersonStr;
+    }
+
+    public void setSfDistributionPersonStr(String sfDistributionPersonStr) {
+        this.sfDistributionPersonStr = sfDistributionPersonStr;
     }
 }

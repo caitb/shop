@@ -30,13 +30,13 @@ public interface ComBrandMapper {
      * 添加一条记录
      * @param comBrand
      */
-    void insert(@Param("comBrand")ComBrand comBrand);
+    void insert(ComBrand comBrand);
 
     /**
      * 根据id更新一条记录
      * @param comBrand
      */
-    void updateById(@Param("comBrand")ComBrand comBrand);
+    void updateById(ComBrand comBrand);
 
     /**
      * 根据id删除一条记录

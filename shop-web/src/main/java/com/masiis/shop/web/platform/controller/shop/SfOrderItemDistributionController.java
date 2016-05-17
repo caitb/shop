@@ -76,10 +76,17 @@ public class SfOrderItemDistributionController extends BaseController {
             List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,1,10);
             List<SfDistributionRecord> sfDistributionRecords = new ArrayList<>();
             distributionAmount = sfCount.getDistributionAmount();
+            StringBuffer buffer;
             for (SfDistributionRecord sfDistributionRecord : sflist){
                 List<SfDistributionPerson> persons = sfOrderItemDistributionService.findListSfDistributionPerson(sfDistributionRecord.getItemId());
+                buffer = new StringBuffer("");
+                for (SfDistributionPerson person : persons){
+                    buffer.append("<div><p>" + person.getWxNkName() + ":</p><p>￥" + person.getAmount() + "</p></div>");
+                }
                 sfDistributionRecord.setSfDistributionPersons(persons);
+                sfDistributionRecord.setSfDistributionPersonStr(buffer.toString());
                 sfDistributionRecords.add(sfDistributionRecord);
+
             }
             mv.addObject("sumLevel",sumLevel);
 //            mv.addObject("totalCount",count);
@@ -152,17 +159,20 @@ public class SfOrderItemDistributionController extends BaseController {
         }
         List<SfDistributionRecord> sflist = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,currentPage + 1,10);
         StringBuffer str = new StringBuffer();
+        StringBuffer buffer;
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         for (SfDistributionRecord sfDistributionRecord : sflist){
             List<SfDistributionPerson> persons = sfOrderItemDistributionService.findListSfDistributionPerson(sfDistributionRecord.getItemId());
             BigDecimal amount =new BigDecimal(0);
+            buffer = new StringBuffer("");
             for (SfDistributionPerson sfDistributionPerson : persons){
+                buffer.append("<div><p>" + sfDistributionPerson.getWxNkName() + ":</p><p>￥" + sfDistributionPerson.getAmount() + "</p></div>");
                 amount = amount.add(sfDistributionPerson.getAmount());
             }
             str.append("<div class=\"record\">");
             str.append("<p><span><b>"+sfDistributionRecord.getLevel()+"</b>人参加</span><span>抗引力-瘦脸精华</span><span>查看订单></span></p>");
             str.append("<h1><span>"+sdf.format(sfDistributionRecord.getCreateTime())+"日</span><span>购买人："+sfDistributionRecord.getWxNkName()+"</span><span>￥"+sfDistributionRecord.getOrderAmount()+"}</span></h1>");
-            str.append("<h1><span><b>"+persons.size()+"</b>人分佣</span><span>￥"+amount+"</span><span onclick=\"showDetails("+persons+")\">分佣明细></span></h1></div>");
+            str.append("<h1><span><b>"+persons.size()+"</b>人分佣</span><span>￥"+amount+"</span><span onclick=\"showDetails('"+buffer+"')\">分佣明细></span></h1></div>");
         }
         jsonObject.put("isTrue","true");
         jsonObject.put("totalCount",totalCount);

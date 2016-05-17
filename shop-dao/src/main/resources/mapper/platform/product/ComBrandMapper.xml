@@ -40,24 +40,52 @@
     </select>
 
     <!-- 添加一条记录 -->
-    <insert id="insert">
-        insert into com_brand (id, create_time, cname,
-            ename, logo_url, content,
-            remark)
-        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{cname,jdbcType=VARCHAR},
-            #{ename,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR},
-            #{remark,jdbcType=VARCHAR})
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.ComBrand" useGeneratedKeys="true" keyProperty="id">
+        insert into com_brand
+                    (
+                    id,
+                    create_time,
+                    cname,
+                    ename,
+                    logo_url,
+                    content,
+                    remark
+                    )
+        values
+                    (
+                    #{id,jdbcType=INTEGER},
+                    #{createTime,jdbcType=TIMESTAMP},
+                    #{cname,jdbcType=VARCHAR},
+                    #{ename,jdbcType=VARCHAR},
+                    #{logoUrl,jdbcType=VARCHAR},
+                    #{content,jdbcType=LONGVARCHAR},
+                    #{remark,jdbcType=VARCHAR}
+                    )
     </insert>
 
     <!-- 根据id更新一条记录 -->
-    <update id="updateById">
+    <update id="updateById" parameterType="com.masiis.shop.dao.po.ComBrand">
         update com_brand
-        set create_time = #{createTime,jdbcType=TIMESTAMP},
-            cname = #{cname,jdbcType=VARCHAR},
-            ename = #{ename,jdbcType=VARCHAR},
-            logo_url = #{logoUrl,jdbcType=VARCHAR},
-            content = #{content,jdbcType=LONGVARCHAR},
-            remark = #{remark,jdbcType=VARCHAR}
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="cname != null">
+                cname = #{cname,jdbcType=VARCHAR},
+            </if>
+            <if test="ename != null">
+                ename = #{ename,jdbcType=VARCHAR},
+            </if>
+            <if test="logoUrl != null">
+                logo_url = #{logoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 

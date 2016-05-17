@@ -34,43 +34,69 @@ public class ComBrand {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Date getCreateTime() {
         return createTime;
     }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
     public String getCname() {
         return cname;
     }
+
     public void setCname(String cname) {
-        this.cname = cname == null ? null : cname.trim();
+        this.cname = cname;
     }
+
     public String getEname() {
         return ename;
     }
+
     public void setEname(String ename) {
-        this.ename = ename == null ? null : ename.trim();
+        this.ename = ename;
     }
+
     public String getLogoUrl() {
         return logoUrl;
     }
+
     public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl == null ? null : logoUrl.trim();
+        this.logoUrl = logoUrl;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content;
     }
+
     public String getRemark() {
         return remark;
     }
+
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "ComBrand{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", cname='" + cname + '\'' +
+                ", ename='" + ename + '\'' +
+                ", logoUrl='" + logoUrl + '\'' +
+                ", content='" + content + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

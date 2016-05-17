@@ -387,7 +387,7 @@
         SELECT sum(pay_amount - bail_amount) FROM pf_border WHERE FIND_IN_SET(user_id,#{sUserIds})
     </select>
 
-    <select id="statisticsBuy" parameterType="Long" resultType="Map">
+    <select id="statisticsBuy" resultType="Map">
         SELECT
                COUNT(1) stock,
                SUM(pay_amount - bail_amount) totalAmount
@@ -395,6 +395,7 @@
                pf_border
         WHERE
                user_id = #{userId}
+               AND user_pid = #{userPid}
                AND order_type IN (0,1)
                AND pay_status = 1
     </select>

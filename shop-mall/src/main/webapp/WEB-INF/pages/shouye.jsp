@@ -71,7 +71,7 @@
             </p>
 
             <div>
-                <h2>${sd.skuAssia}</h2>
+                <h2 style="padding-right: 20px;">${sd.skuAssia}</h2>
 
                 <h3>${sd.slogan}</h3>
 

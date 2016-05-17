@@ -36,6 +36,14 @@ public class SfOrderItemDistributionService {
     public int insert(SfOrderItemDistribution orderItemDis){
         return sfOrderItemDistributionMapper.insert(orderItemDis);
     }
+    /**
+     * 根据小铺订单id查找
+     * @author hanzengzhi
+     * @date 2016/5/17 10:08
+     */
+    public List<SfOrderItemDistribution> selectBySfOrderItemId(Long sfOrderId){
+        return sfOrderItemDistributionMapper.selectBySfOrderItemId(sfOrderId);
+    }
 
     /**
      * 根据条件查询小铺订单商品分润 数量

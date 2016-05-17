@@ -6,6 +6,7 @@ import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
@@ -53,6 +54,8 @@ public class SfOrderPayService {
     private UserService userService;
     @Resource
     private SfShopSkuService shopSkuService;
+    @Resource
+    private SfOrderItemDistributionService  ordItemDisService;
 
     /**
      * 获得需要支付的订单的信息
@@ -375,6 +378,13 @@ public class SfOrderPayService {
             param_shopuser[4] = order.getRemark();
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
             WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
+        }
+        /*分润人微信提醒*/
+        List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderItemId(order.getId());
+        for(SfOrderItemDistribution ordItemDis : ordItemDisList){
+            String[] _param =new String[]{ordItemDis.getDistributionAmount()+"",ordItemDis.getCreateTime().toString()};
+            ComUser _comUser=userService.getUserById(ordItemDis.getUserId());
+            WxSFNoticeUtils.getInstance().profitInNotice(_comUser,_param,false, SysConstants.MALL_DOMAIN_NAME_ADDRESS +"/sfaccount/rewardHome.shtml");
         }
         //短信提醒
         /*消费者端提醒*/

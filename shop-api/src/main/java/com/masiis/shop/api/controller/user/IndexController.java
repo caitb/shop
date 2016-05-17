@@ -12,6 +12,7 @@ import com.masiis.shop.api.service.user.ComUserAccountService;
 import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -97,7 +98,7 @@ public class IndexController extends BaseController {
             res.setImgs(urls);
             res.setIsPartner(user.getIsAgent());
             res.setIsBind(user.getIsBinding());
-            res.setNkName(user.getWxNkName());
+            res.setNkName(EmojiUtils.removeNonBmpUnicode(user.getWxNkName()));
             res.setUserHeadImg(user.getWxHeadImg());
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

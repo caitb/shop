@@ -99,6 +99,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="alias" class="col-sm-2 control-label">商品别名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="alias" name="alias" placeholder="商品别名">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">商品标志</label>
                                 <div class="col-sm-9">
                                     <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">

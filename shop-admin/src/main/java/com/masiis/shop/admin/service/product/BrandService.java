@@ -24,6 +24,10 @@ public class BrandService {
      * 获取所有品牌数据
      * @return
      */
+    public List<ComBrand> list(ComBrand comBrand){
+        return comBrandMapper.selectByCondition(comBrand);
+    }
+
     public Map<String, Object> list(Integer pageNumber, Integer pageSize, ComBrand comBrand){
         String sort = "create_time desc";
         PageHelper.startPage(pageNumber, pageSize, sort);

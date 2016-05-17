@@ -131,11 +131,11 @@
   -webkit-box-pack: center;
   background: white;
   margin-right: 1px;
-  padding: 10px 0;
+  padding: 18px 0;
 }
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation : portrait) {
   .wrap .box nav ul li {
-    padding: 16px 0;
+    padding: 18px 0;
   }
 }
 .wrap .box nav ul li h1 {

@@ -42,6 +42,11 @@
 .wrap .sec1 div h1 {
     color: #333;
     text-indent: 5px;
+    display: block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding-right: 20px;
 }
 .wrap .sec1 div h2 {
     font-size: 12px;

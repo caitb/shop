@@ -110,7 +110,7 @@
 </head>
 <body>
 <header>
-    <a href="<%=basePath%>shop/sharePlan?shopId=${shopId}"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="<%=basePath%><%=request.getSession().getAttribute("shopId")%>/<%=request.getSession().getAttribute("userPid")%>/shop.shtml"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>我的专属海报</p>
 </header>
 <div class="wrap">

@@ -12,39 +12,33 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
-import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
-import com.masiis.shop.dao.platform.product.*;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
+import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.constants.SysConstants;
 import com.masiis.shop.web.platform.service.product.PfSkuStockService;
 import com.masiis.shop.web.platform.service.product.PfUserSkuStockService;
-import com.masiis.shop.web.platform.utils.ApplicationContextUtil;
 import com.masiis.shop.web.platform.utils.DrawPicUtil;
 import com.masiis.shop.web.platform.utils.wx.WxPFNoticeUtils;
 import org.apache.log4j.Logger;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
-import javax.xml.datatype.DatatypeConfigurationException;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -273,6 +267,7 @@ public class BOrderPayService {
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
+                        rootPath + "/static/font/simkai.ttf",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号
                         comUser.getRealName(),//userName - 用户名称
                         comAgentLevel.getName(),//levelName - 代理等级名称
@@ -471,6 +466,7 @@ public class BOrderPayService {
      * 给jpg添加文字并上传
      *
      * @param filePath        原图的物理路径
+     * @param fontPath        字体地址
      * @param certificateCode 证书编号
      * @param userName        用户名称
      * @param levelName       代理等级名称
@@ -483,6 +479,7 @@ public class BOrderPayService {
      * @return
      */
     private String uploadFile(String filePath,
+                              String fontPath,
                               String certificateCode,
                               String userName,
                               String levelName,
@@ -494,56 +491,72 @@ public class BOrderPayService {
                               String endDate) {
         DrawPicUtil drawPicUtil = new DrawPicUtil();
         BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
+        Font font = null;
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+        } catch (Exception e) {
+            throw new BusinessException("创建字体异常");
+        }
+        Font font_25 = font.deriveFont(Font.PLAIN, 25);
+        Font font_35 = font.deriveFont(Font.PLAIN, 35);
+        Font font_60 = font.deriveFont(Font.BOLD, 60);
         List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
         DrawPicUtil.DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
+        drawPicParam1.setFont(font_35);
         drawPicParam1.setY(200);
         drawPicParam1.setContent("授权编号：" + certificateCode);//
         drawPicParams.add(drawPicParam1);
         DrawPicUtil.DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
+        drawPicParam5.setFont(font_60);
         drawPicParam5.setY(630);
         drawPicParam5.setContent(levelName);
-        drawPicParam5.setFont(new Font("楷体", Font.BOLD, 60));
         drawPicParams.add(drawPicParam5);
         DrawPicUtil.DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
+        drawPicParam3.setFont(font_60);
         drawPicParam3.setY(840);
         drawPicParam3.setContent(userName);
-        drawPicParam3.setFont(new Font("楷体", Font.BOLD, 60));
         drawPicParams.add(drawPicParam3);
         DrawPicUtil.DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
+        drawPicParam4.setFont(font_35);
         drawPicParam4.setY(900);
         drawPicParam4.setContent("有权于网络和实体渠道销售麦士生物科技产品");
         drawPicParams.add(drawPicParam4);
         DrawPicUtil.DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
+        drawPicParam9.setFont(font_35);
         drawPicParam9.setY(950);
         drawPicParam9.setContent(skuName);
         drawPicParams.add(drawPicParam9);
         int x = 280;
         int y = 80;
         DrawPicUtil.DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
+        drawPicParam6.setFont(font_35);
         drawPicParam6.setX(x);
         drawPicParam6.setY(drawPicParam9.getY() + y);
         drawPicParam6.setContent("证件号：" + idCard);
         drawPicParams.add(drawPicParam6);
         DrawPicUtil.DrawPicParam drawPicParam7 = drawPicUtil.getDrawPicParam();
+        drawPicParam7.setFont(font_35);
         drawPicParam7.setX(x);
         drawPicParam7.setY(drawPicParam6.getY() + y);
         drawPicParam7.setContent("手  机：" + mobile);
         drawPicParams.add(drawPicParam7);
         DrawPicUtil.DrawPicParam drawPicParam8 = drawPicUtil.getDrawPicParam();
+        drawPicParam8.setFont(font_35);
         drawPicParam8.setX(x);
         drawPicParam8.setY(drawPicParam7.getY() + y);
         drawPicParam8.setContent("微  信：" + wxId);
         drawPicParams.add(drawPicParam8);
         DrawPicUtil.DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
+        drawPicParam2.setFont(font_35);
         drawPicParam2.setX(x);
         drawPicParam2.setY(drawPicParam8.getY() + y);
         drawPicParam2.setContent("授权期限：" + beginDate + "至" + endDate);
         drawPicParams.add(drawPicParam2);
         DrawPicUtil.DrawPicParam drawPicParam10 = drawPicUtil.getDrawPicParam();
+        drawPicParam10.setFont(font_25);
         drawPicParam10.setX(x);
         drawPicParam10.setY(drawPicParam2.getY() + 50);
         drawPicParam10.setContent("最终解释权归北京麦士生物科技有限公司");
-        drawPicParam10.setFont(new Font("楷体", Font.BOLD, 25));
         drawPicParams.add(drawPicParam10);
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         try {

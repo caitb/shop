@@ -352,13 +352,15 @@ public class SfOrderPayService {
      */
     private void orderNotice(ComUser comUser, SfOrder order, List<SfOrderItem> orderItems) {
         //微信提醒
-        log.info("订单通知提醒-----start");
+        log.info("微信提醒--------------------------------start");
         String[] param = new String[]{order.getOrderCode(), "￥" + order.getPayAmount() + "", "微信支付"};
         /*消费者端微信提醒*/
         WxSFNoticeUtils.getInstance().orderCreateNotice(comUser, param);
         /*小铺端归属人微信提醒*/
+        log.info("小铺归属人微信提醒-------start");
         ComUser shopUser = userService.getUserById(order.getShopUserId());
         if (shopUser != null) {
+            log.info("小铺id------"+shopUser.getId());
             SfOrderConsignee sfOrderConsignee = ordConService.getOrdConByOrdId(order.getId());
             //1,收件人;2,联系电话;3,收货地址;4,购物清单;5,备注
             String[] param_shopuser = new String[5];
@@ -378,16 +380,24 @@ public class SfOrderPayService {
             param_shopuser[3] = sb.toString();
             param_shopuser[4] = order.getRemark();
             String url = PropertiesUtils.getStringValue("web.domain.name.address") + "/sfOrderController/stockShipOrder";
+            log.info("小铺发送微信----param参数-----"+param_shopuser.toString());
             WxPFNoticeUtils.getInstance().newShopOrderNotice(shopUser, param_shopuser, url);
         }
+        log.info("小铺归属人微信提醒-------end");
         /*分润人微信提醒*/
+        log.info("分润人微信提醒------start");
         List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderItemId(order.getId());
         for(SfOrderItemDistribution ordItemDis : ordItemDisList){
+            log.info("分润人id-------"+ordItemDis.getUserId());
+            log.info("分润金额--------"+ordItemDis.getDistributionAmount());
             String[] _param =new String[]{"￥"+ordItemDis.getDistributionAmount(), DateUtil.Date2String(ordItemDis.getCreateTime(),DateUtil.SQL_TIME_FMT)};
             ComUser _comUser=userService.getUserById(ordItemDis.getUserId());
             WxSFNoticeUtils.getInstance().profitInNotice(_comUser,_param,false, SysConstants.MALL_DOMAIN_NAME_ADDRESS +"/sfaccount/rewardHome.shtml");
         }
+        log.info("分润人微信提醒------end");
+        log.info("微信提醒--------------------------------end");
         //短信提醒
+        log.info("短信提醒-------------------------------start");
         /*消费者端提醒*/
         StringBuffer skuNames = new StringBuffer();
         for (SfOrderItem orderItem : orderItems) {
@@ -396,9 +406,10 @@ public class SfOrderPayService {
         MobileMessageUtil.getInitialization("C").consumerOrderRemind(comUser.getMobile(), skuNames.toString());
         /*小铺归属人提醒*/
         if (shopUser != null) {
+            log.info("小铺归属人短信提醒------小铺人的电话-----"+shopUser.getMobile());
             MobileMessageUtil.getInitialization("C").newMallOrderRemind(shopUser.getMobile());
         }
-        log.info("订单通知提醒-----end");
+        log.info("短信提醒-------------------------------end");
     }
 
     public void addSfOrderPayment(SfOrderPayment payment) {

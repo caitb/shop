@@ -390,7 +390,7 @@
     <select id="statisticsBuy" resultType="Map">
         SELECT
                COUNT(1) stock,
-               SUM(pay_amount - bail_amount) totalAmount
+               SUM(border.pay_amount - border.bail_amount) totalAmount
         FROM
                pf_border border
         LEFT JOIN pf_border_item item ON item.pf_border_id = border.id

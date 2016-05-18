@@ -110,8 +110,8 @@
 </head>
 <body>
 <header>
-    <c:if test="${userPid == null}"><a href="javascript:window.history.go(-1);"></c:if>
-    <c:if test="${userPid != null}"><a href="<%=basePath%><%=request.getSession().getAttribute("shopId")%>/<%=request.getSession().getAttribute("userPid")%>/shop.shtml"></c:if>
+    <c:if test="${sessionScope.userPid == null}"><a href="javascript:window.history.go(-1);"></c:if>
+    <c:if test="${sessionScope.userPid != null}"><a href="<%=basePath%>${sessionScope.shopId}/${sessionScope.userPid}/shop.shtml"></c:if>
         <img src="<%=basePath%>static/images/xq_rt.png" alt="">
     </a>
     <p>我的专属海报</p>

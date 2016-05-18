@@ -73,6 +73,7 @@ public class WxEventController extends BaseController {
             String requestBody = getRequestBody(request);
             System.out.println(requestBody);
             XStream xStream = new XStream(new DomDriver("UTF-8"));
+            xStream.ignoreUnknownElements();
             xStream.processAnnotations(WxEventBody.class);
             WxEventBody body = (WxEventBody) xStream.fromXML(requestBody);
 

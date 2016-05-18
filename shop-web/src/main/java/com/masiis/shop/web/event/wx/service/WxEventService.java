@@ -245,6 +245,7 @@ public class WxEventService {
                 PropertiesUtils.getStringValue("web.domain.name.address") + "/product/skuDetails.shtml?skuId=40&pUserId=11"));
         res.setArticles(articles);
         XStream xStream = new XStream(new DomDriver("UTF-8"));
+        xStream.ignoreUnknownElements();
         xStream.processAnnotations(res.getClass());
         String result = xStream.toXML(res);
         result = result.replaceAll("&amp;", "&");

@@ -79,6 +79,7 @@ public class HttpsUtils {
             //解决XStream对出现双下划线的bug
             XStream xStreamForRequestPostData = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
             //将要提交给API的数据对象转换成XML格式数据Post给API
+            xStreamForRequestPostData.ignoreUnknownElements();
             xStreamForRequestPostData.processAnnotations(xmlObj.getClass());
             String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
             StringEntity postEntity = new StringEntity(postDataXML, "UTF-8");
@@ -120,6 +121,7 @@ public class HttpsUtils {
                 throw new BusinessException("result is null");
             }
             XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+            xStream.ignoreUnknownElements();
             xStream.processAnnotations(clazz);
             res = (T) xStream.fromXML(result);
         } catch (Exception e) {

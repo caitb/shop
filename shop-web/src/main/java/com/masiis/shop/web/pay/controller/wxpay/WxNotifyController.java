@@ -35,6 +35,7 @@ public class WxNotifyController extends BaseController {
     @RequestMapping("/orderNtfy")
     public void uniOrderNotify(HttpServletRequest request, HttpServletResponse response){
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        xStream.ignoreUnknownElements();
         CallBackNotifyRes resObj = new CallBackNotifyRes();
         try {
             String requestBody = null;

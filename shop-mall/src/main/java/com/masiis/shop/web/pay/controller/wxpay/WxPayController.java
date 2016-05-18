@@ -67,6 +67,7 @@ public class WxPayController extends BaseController {
         // 组织微信预付订单参数对象,并生成签名
         HttpsRequest h = new HttpsRequest();
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        xStream.ignoreUnknownElements();
         // 生成预付订单参数签名
         String res = null;
         UnifiedOrderRes resObj = null;
@@ -147,6 +148,7 @@ public class WxPayController extends BaseController {
         // 组织微信预付订单参数对象,并生成签名
         HttpsRequest h = new HttpsRequest();
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        xStream.ignoreUnknownElements();
         // 生成预付订单参数签名
         String res = null;
         UnifiedOrderRes resObj = null;

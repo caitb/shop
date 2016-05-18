@@ -150,6 +150,7 @@ public class HttpsRequest implements IServiceRequest {
             //解决XStream对出现双下划线的bug
             XStream xStreamForRequestPostData = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
             //将要提交给API的数据对象转换成XML格式数据Post给API
+            xStreamForRequestPostData.ignoreUnknownElements();
             xStreamForRequestPostData.processAnnotations(xmlObj.getClass());
             String postDataXML = xStreamForRequestPostData.toXML(xmlObj);
             //String postDataXML = "<xml><appid><![CDATA[wxd5afa1deb29c6197]]></appid><mch_id><![CDATA[1319531601]]></mch_id><nonce_str><![CDATA[AAAAAAAAAABBBBBBBBBB223223211]]></nonce_str><sign><![CDATA[CF6E9C1A47CBA796F5A42BA7C3829075]]></sign><body><![CDATA[麦士测试商品02]]></body><out_trade_no><![CDATA[TESTORDER0000000000000002]]></out_trade_no><total_fee><![CDATA[1]]></total_fee><spbill_create_ip><![CDATA[127.0.0.1]]></spbill_create_ip><notify_url><![CDATA[http://www.rd.masiis.com]]></notify_url><trade_type><![CDATA[JSAPI]]></trade_type><openid><![CDATA[o2-m4wZWlG4mdln4SQJRo29YnL2U]]></openid></xml>"; //xStreamForRequestPostData.toXML(xmlObj);

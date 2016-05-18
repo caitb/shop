@@ -77,6 +77,7 @@ public class WxPayController extends BaseController{
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayPage:下预付单响应成功,response:" + res);
 
+            xStream.ignoreUnknownElements();
             xStream.processAnnotations(UnifiedOrderRes.class);
             resObj = (UnifiedOrderRes) xStream.fromXML(res);
             if(resObj == null || StringUtils.isBlank(resObj.getReturn_code())){
@@ -157,6 +158,7 @@ public class WxPayController extends BaseController{
             res = h.sendPost(WxConsPF.WX_PAY_URL_UNIORDER, uniOrder);
             log.info("wxpayJs:下预付单响应成功,response:" + res);
 
+            xStream.ignoreUnknownElements();
             xStream.processAnnotations(UnifiedOrderRes.class);
             resObj = (UnifiedOrderRes) xStream.fromXML(res);
             if(resObj == null || StringUtils.isBlank(resObj.getReturn_code())){

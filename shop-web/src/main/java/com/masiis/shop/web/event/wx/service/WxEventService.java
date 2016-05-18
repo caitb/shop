@@ -20,6 +20,7 @@ import com.masiis.shop.web.platform.service.user.WxUserService;
 import com.masiis.shop.web.platform.utils.wx.WxCredentialUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -244,7 +245,7 @@ public class WxEventService {
         articles.add(new Article("点击继续注册",
                 PropertiesUtils.getStringValue("web.domain.name.address") + "/product/skuDetails.shtml?skuId=40&pUserId=11"));
         res.setArticles(articles);
-        XStream xStream = new XStream(new DomDriver("UTF-8"));
+        XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
         xStream.ignoreUnknownElements();
         xStream.processAnnotations(res.getClass());
         String result = xStream.toXML(res);

@@ -16,6 +16,7 @@ import com.masiis.shop.web.event.wx.service.WxEventService;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.XmlFriendlyNameCoder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -72,7 +73,7 @@ public class WxEventController extends BaseController {
             // 解析消息参数
             String requestBody = getRequestBody(request);
             System.out.println(requestBody);
-            XStream xStream = new XStream(new DomDriver("UTF-8"));
+            XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
             xStream.ignoreUnknownElements();
             xStream.processAnnotations(WxEventBody.class);
             WxEventBody body = (WxEventBody) xStream.fromXML(requestBody);

@@ -386,7 +386,7 @@ public class SfOrderPayService {
         log.info("小铺归属人微信提醒-------end");
         /*分润人微信提醒*/
         log.info("分润人微信提醒------start");
-        List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderItemId(order.getId());
+        List<SfOrderItemDistribution> ordItemDisList = ordItemDisService.selectBySfOrderId(order.getId());
         for(SfOrderItemDistribution ordItemDis : ordItemDisList){
             log.info("分润人id-------"+ordItemDis.getUserId());
             log.info("分润金额--------"+ordItemDis.getDistributionAmount());

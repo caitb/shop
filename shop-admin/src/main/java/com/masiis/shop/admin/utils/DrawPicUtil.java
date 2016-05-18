@@ -216,8 +216,8 @@ public class DrawPicUtil {
         private String content;
         private int x = 0;
         private int y = 0;
-        private Color color = Color.black;
-        private Font font = new Font("华文细黑", Font.PLAIN, 15);
+        private Color color = Color.decode("#231815");
+        private Font font = new Font("楷体", Font.PLAIN, 35);
 
         public String getContent() {
             return content;

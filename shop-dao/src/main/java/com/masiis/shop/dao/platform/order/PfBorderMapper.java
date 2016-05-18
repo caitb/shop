@@ -74,7 +74,7 @@ public interface PfBorderMapper {
      * @param userId
      * @return
      */
-    Map<String, Double> statisticsBuy(@Param("userId")Long userId, @Param("userPid")Long userPid);
+    Map<String, Double> statisticsBuy(@Param("userId")Long userId, @Param("userPid")Long userPid, @Param("skuId")Integer skuId);
 
     Integer selectQueuingOrderCount(@Param("skuId") Integer skuId);
 

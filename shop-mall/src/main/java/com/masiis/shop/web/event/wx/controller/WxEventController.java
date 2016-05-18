@@ -117,12 +117,13 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=bWE-dYBVIrHza7Y6oFqNuofJyZYlN2YsJ_jI0twKdsW7Dzb0fDrsxEpiyHgI9D0Ylk0qlde_8KTaVyVQxuejCShcBC1bv4sGIIHeGr7qXxpz7IWISdLsSTjFt_OXptCzRYNaAFANUJ";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=AoObCAj-huY0XHRt-tQLUhx1QOC74VPSvW4q31hnDZtckCJaTTnjdubE8HKHw1M4KEJlSZynmrNf_Eh8AqfyOVleeoejkFOuJq8pwwp5UY9tkOzQPbYhHYtlV1FfZwWsDKUjAFAUBL";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();

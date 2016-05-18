@@ -191,13 +191,15 @@
   margin: 0 5px;
   border-bottom: 1px solid #F74A11;
   text-indent: 10px;
-  line-height: 28px;
+  line-height: 44px;
   margin-bottom: 5px;
   color: #FF5200;
+  font-weight: normal;
 }
 .back_j p {
   margin: 10px;
   text-indent: 2em;
+  padding: 15px 0;
 }
 .back_j botton {
   margin: 0 auto;
@@ -206,8 +208,9 @@
   height: 30px;
   text-align: center;
   line-height: 30px;
-  background: #C2C2C2;
+  background: #0fc420;
   border-radius: 5px;
+  color: #fff;
 }
 .back {
   width: 100%;

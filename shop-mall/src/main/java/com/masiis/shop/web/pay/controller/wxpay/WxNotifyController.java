@@ -50,6 +50,7 @@ public class WxNotifyController extends BaseController {
 
             CallBackNotifyReq param = null;
             try{
+                xStream.ignoreUnknownElements();
                 xStream.processAnnotations(CallBackNotifyReq.class);
                 param = (CallBackNotifyReq) xStream.fromXML(requestBody);
                 log.info("uniOrderNotify:xml解析通过!");

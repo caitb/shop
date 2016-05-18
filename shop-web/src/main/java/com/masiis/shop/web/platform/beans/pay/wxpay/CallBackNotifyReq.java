@@ -363,6 +363,7 @@ public class CallBackNotifyReq {
                 "  <transaction_id><![CDATA[1004400740201409030005092168]]></transaction_id>\n" +
                 "</xml>";
         XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
+        xStream.ignoreUnknownElements();
         xStream.processAnnotations(CallBackNotifyReq.class);
         Object ss = xStream.fromXML(xml);
         CallBackNotifyReq res = (CallBackNotifyReq) ss;

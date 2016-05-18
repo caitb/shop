@@ -10,11 +10,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/warning.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/base.css">
-    <script type="application/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script type="application/javascript">
         window.onload = function(){
-            setInterval("auto_redirect()", 5000);
-            WeixinJSBridge.call('hideOptionMenu');
+            setInterval("auto_redirect()", 2000);
         }
 
         function auto_redirect(){

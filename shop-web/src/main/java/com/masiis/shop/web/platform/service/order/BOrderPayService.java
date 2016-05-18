@@ -542,7 +542,7 @@ public class BOrderPayService {
         DrawPicUtil.DrawPicParam drawPicParam10 = drawPicUtil.getDrawPicParam();
         drawPicParam10.setX(x);
         drawPicParam10.setY(drawPicParam2.getY() + 50);
-        drawPicParam10.setContent("最终解释权归北京麦士生物科技有限责任公司");
+        drawPicParam10.setContent("最终解释权归北京麦士生物科技有限公司");
         drawPicParam10.setFont(new Font("楷体", Font.BOLD, 25));
         drawPicParams.add(drawPicParam10);
         ByteArrayOutputStream bs = new ByteArrayOutputStream();

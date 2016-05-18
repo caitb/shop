@@ -72,7 +72,7 @@
     <div class="back_j">
         <h1>什么是结算中</h1>
         <p>
-            您的资金在对方确认收货后7天内属于结算中，7天后将自动转到可提现。
+            您的资金系统正在结算中，1天后即可转入可提现。
         </p>
         <botton onClick="hideDetail()">我知道了</botton>
     </div>

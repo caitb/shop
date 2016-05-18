@@ -13,6 +13,7 @@
     <script type="application/javascript">
         window.onload = function(){
             setInterval("auto_redirect()", 2000);
+            WeixinJSBridge.call('hideOptionMenu');
         }
 
         function auto_redirect(){

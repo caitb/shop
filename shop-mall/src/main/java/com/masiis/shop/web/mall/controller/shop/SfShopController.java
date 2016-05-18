@@ -170,7 +170,7 @@ public class SfShopController extends BaseController {
             e.printStackTrace();
         }
 
-        mav.setViewName("error");
+        //mav.setViewName("error");
         return mav;
     }
 

@@ -105,4 +105,11 @@
         where sf_order_item_id = #{itemId,jdbcType=BIGINT}
     </select>
 
+    <select id="selectBySfOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select id, create_time, sf_order_id, sf_order_item_id, user_id, sf_sku_distribution_id,
+        distribution_amount, is_counting, remark
+        from sf_order_item_distribution
+        where sf_order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+
 </mapper>

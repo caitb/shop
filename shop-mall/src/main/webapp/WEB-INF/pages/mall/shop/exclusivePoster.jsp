@@ -110,7 +110,7 @@
 </head>
 <body>
 <header>
-    <a href="<%=basePath%><%=request.getSession().getAttribute("shopId")%>/<%=request.getSession().getAttribute("userPid")%>/shop.shtml"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
     <p>我的专属海报</p>
 </header>
 <div class="wrap">
@@ -121,7 +121,7 @@
     <%--<canvas id="canvasOne" style="display: none;">--%>
         <%--Your browser does not support HTML5 Canvas.--%>
     <%--</canvas>--%>
-    <img src="${shopPoster}" />
+    <img src="${shopPoster}" alt="获取海报失败,刷新试试吧" />
     <b id="downloadPoster2">长按图片保存海报</b>
 </div>
 <div class="back_box">

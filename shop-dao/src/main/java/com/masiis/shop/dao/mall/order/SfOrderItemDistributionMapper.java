@@ -32,4 +32,10 @@ public interface SfOrderItemDistributionMapper {
      * @return
      */
     List<SfOrderItemDistribution> selectBySfOrderItemId(Long itemId);
+    /**
+     * 根据orderId查询商品分润记录
+     * @author hanzengzhi
+     * @date 2016/5/18 11:58
+     */
+    List<SfOrderItemDistribution> selectBySfOrderId(Long orderId);
 }

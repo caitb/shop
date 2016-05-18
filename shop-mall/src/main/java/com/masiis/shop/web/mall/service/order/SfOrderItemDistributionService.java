@@ -37,12 +37,21 @@ public class SfOrderItemDistributionService {
         return sfOrderItemDistributionMapper.insert(orderItemDis);
     }
     /**
-     * 根据小铺订单id查找
+     * 根据小铺详情订单id查找
      * @author hanzengzhi
      * @date 2016/5/17 10:08
      */
     public List<SfOrderItemDistribution> selectBySfOrderItemId(Long sfOrderId){
         return sfOrderItemDistributionMapper.selectBySfOrderItemId(sfOrderId);
+    }
+
+    /**
+     * 根据小铺订单id查找
+     * @author hanzengzhi
+     * @date 2016/5/17 10:08
+     */
+    public List<SfOrderItemDistribution> selectBySfOrderId(Long sfOrderId){
+        return sfOrderItemDistributionMapper.selectBySfOrderId(sfOrderId);
     }
 
     /**

@@ -3,24 +3,18 @@
   display: -webkit-box;
   width: 100%;
   height:100%;
-  overflow: hidden;
   -webkit-box-orient: vertical;
+  padding-bottom: 100px;
 }
-.box{
-  -webkit-box-flex:1;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-bottom: 70px;
-}
-.wrap .box .banner {
+.wrap .banner {
   width: 100%;
   border-bottom: 1px solid #f6f6f6;
 }
-.wrap .box .banner img {
+.wrap .banner img {
   display: block;
   width: 100%;
 }
-.wrap .box .index_login {
+.wrap .index_login {
   width: 100%;
   background: white;
   display: -webkit-box;
@@ -28,7 +22,7 @@
   margin-bottom: 10px;
   display: none;
 }
-.wrap .box .index_login > p {
+.wrap .index_login > p {
   margin: 0 10px;
   border-bottom: 1px solid #F3F4F5;
   display: -webkit-box;
@@ -37,48 +31,48 @@
   -webkit-box-align: center;
   padding-bottom: 12px;
 }
-.wrap .box .index_login > p b,
-.wrap .box .index_login > p span {
+.wrap .index_login > p b,
+.wrap .index_login > p span {
   display: block;
 }
-.wrap .box .index_login > p b {
+.wrap .index_login > p b {
   font-size: 18px;
   font-weight: 600;
   color: #F84E0F;
 }
-.wrap .box .index_login > p span {
+.wrap .index_login > p span {
   color: #999;
   padding-bottom: 10px;
   font-size: 12px;
 }
-.wrap .box .index_login > ul {
+.wrap .index_login > ul {
   display: -webkit-box;
 }
-.wrap .box .index_login > ul li {
+.wrap .index_login > ul li {
   -webkit-box-flex: 1;
   width: 1px;
   padding: 0 10px;
   margin: 10px 0;
 }
-.wrap .box .index_login > ul li p {
+.wrap .index_login > ul li p {
   color: #999;
   margin-bottom: 5px;
   letter-spacing: 1px;
   font-size:12px;
 }
-.wrap .box .index_login > ul li h1 {
+.wrap .index_login > ul li h1 {
   text-align: right;
   font-size:12px;
   color: #666;
 }
-.wrap .box .index_login > ul li h1 span {
+.wrap .index_login > ul li h1 span {
   font-size: 16px;
   color: #333;
 }
-.wrap .box .index_login > ul li:nth-child(1) {
+.wrap .index_login > ul li:nth-child(1) {
   border-right: 1px solid #F3F4F5;
 }
-.wrap .box .index_Nlogin {
+.wrap .index_Nlogin {
   background: white;
   display: -webkit-box;
   -webkit-box-align: center;
@@ -87,7 +81,7 @@
   margin-bottom: 10px;
   position: relative;
 }
-.wrap .box .index_Nlogin span {
+.wrap .index_Nlogin span {
   display: block;
   width: 30px;
   height: 15px;
@@ -97,32 +91,32 @@
   left: 0;
   top: 5px;
 }
-.wrap .box .index_Nlogin img {
+.wrap .index_Nlogin img {
   display: block;
   width: 30px;
   height: 30px;
 }
-.wrap .box .index_Nlogin p {
+.wrap .index_Nlogin p {
   padding-left: 10px;
 }
-.wrap .box nav {
+.wrap nav {
   width: 100%;
   display: -webkit-box;
   margin-bottom: 1px;
 }
-.wrap .box nav ul {
+.wrap nav ul {
   width: 100%;
   display: -webkit-box;
 }
-.wrap .box nav ul li a{
+.wrap nav ul li a{
   display: block;
   width: 100%;
   height: 100%;
 }
-.wrap .box nav ul li:last-child {
+.wrap nav ul li:last-child {
   margin: 0;
 }
-.wrap .box nav ul li {
+.wrap nav ul li {
   width: 1px;
   -webkit-box-flex: 1;
   display: -webkit-box;
@@ -134,14 +128,14 @@
   padding: 18px 0;
 }
 @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation : portrait) {
-  .wrap .box nav ul li {
+  .wrap nav ul li {
     padding: 18px 0;
   }
 }
-.wrap .box nav ul li h1 {
+.wrap nav ul li h1 {
   position: relative;
 }
-.wrap .box nav ul li h1 span{
+.wrap nav ul li h1 span{
   position: absolute;
   display: block;
   top: -8px;
@@ -152,12 +146,12 @@
   width: 10px;
   height: 10px;
 }
-.box nav ul li h1 img {
+nav ul li h1 img {
   display: block;
   width: 33%;
   margin: 0 auto;
 }
-.box nav ul li span {
+nav ul li span {
   display: block;
   text-align: center;
   margin-top: 4px;

@@ -392,12 +392,14 @@
                COUNT(1) stock,
                SUM(pay_amount - bail_amount) totalAmount
         FROM
-               pf_border
+               pf_border border
+        LEFT JOIN pf_border_item item ON item.pf_border_id = border.id
         WHERE
-               user_id = #{userId}
-               AND user_pid = #{userPid}
-               AND order_type IN (0,1)
-               AND pay_status = 1
+               border.user_id = #{userId}
+               AND border.user_pid = #{userPid}
+               AND border.order_type IN (0,1)
+               AND border.pay_status = 1
+               AND item.sku_id = #{skuId}
     </select>
     <select id="selectQueuingOrderCount" resultType="java.lang.Integer">
         SELECT COUNT(pb.id) FROM pf_border pb

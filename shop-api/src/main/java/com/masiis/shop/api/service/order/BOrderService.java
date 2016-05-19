@@ -379,4 +379,12 @@ public class BOrderService {
     public Integer queryOrderNumsByUpidAndStatus(Long userPid, Integer orderStatus) {
         return pfBorderMapper.queryOrderNumsByUpidAndStatus(userPid, orderStatus);
     }
+
+    /**
+     * 根据userId 和SkuId获取订单信息
+     * jjh
+     */
+    public PfBorder getPfBorderBySkuAndUserId(Integer skuId, Long userId) {
+        return pfBorderMapper.selectPfBOrderBySkuIdAndUserId(skuId, userId);
+    }
 }

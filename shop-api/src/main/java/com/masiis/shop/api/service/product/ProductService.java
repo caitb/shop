@@ -6,7 +6,6 @@ import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.product.ProductSimple;
 import com.masiis.shop.dao.platform.product.*;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,13 +54,6 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
-        if (product != null && product.getName().length() > 40) {
-            product.setName(product.getName().substring(0, 41) + "......");
-        }
-        if (product != null && product.getSlogan() != null && product.getSlogan().length() > 50) {
-
-            product.setSlogan(product.getSlogan().substring(0, 51) + "......");
-        }
         ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
         ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
         product.setLogoUrl(comBrand.getLogoUrl());

@@ -35,7 +35,7 @@
             <div class="tai">
                 <c:if test="${borderDetail.pfBorder.orderStatus==0}">
                     <img src="<%=path%>/static/images/icon_65.png" alt="" style="display: block;width: 40px;height: 30px;top: 18px;"><h1>未付款</h1>
-                    <p>亲，未付款的订单可以保留7天~~</p>
+                    <p>亲，未付款的订单可以保留3天~~</p>
                 </c:if>
                 <c:if test="${borderDetail.pfBorder.orderStatus==7}">
                     <img src="<%=path%>/static/images/icon_40.png" alt=""  style="display: block;width: 35px;height: 25px;top: 18px;"><h1>待发货</h1>

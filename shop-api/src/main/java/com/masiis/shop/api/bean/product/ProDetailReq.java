@@ -15,5 +15,15 @@ public class ProDetailReq extends BaseReq {
     public void setToken(String token) {
         this.token = token;
     }
+
+    private Integer skuId;
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
 }
 

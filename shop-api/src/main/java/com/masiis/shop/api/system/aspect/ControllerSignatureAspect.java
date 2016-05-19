@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,12 +34,14 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * 校验签名,校验token,绑定参数的aop
+ *
  * @Date 2016/4/28
  * @Auther lzh
  */
 @Aspect
 @Component
-public class ControllerSignatureAspect {
+public class ControllerSignatureAspect implements Ordered {
     private Logger log = Logger.getLogger(this.getClass());
     private final String DATA_NAME = "data";
 
@@ -242,5 +245,10 @@ public class ControllerSignatureAspect {
         }
 
         return res;
+    }
+
+    @Override
+    public int getOrder() {
+        return 10;
     }
 }

@@ -47,7 +47,7 @@ public class DevelopController {
     @RequestMapping("/listAgentSku")
     @ResponseBody
     @SignValid(paramType = BaseBusinessReq.class)
-    public List<AgentSkuRes> listAgentSku(HttpServletRequest request, BaseBusinessRes bbs, ComUser comUser){
+    public Object listAgentSku(HttpServletRequest request, BaseBusinessRes bbs, ComUser comUser){
         List<AgentSkuRes> agentSkuResList = new ArrayList<>();
 
         try {
@@ -77,6 +77,7 @@ public class DevelopController {
             log.error("获取用户代理产品失败![bbs="+bbs+"][comUser="+comUser+"]");
             e.printStackTrace();
         }
-        return null;
+        
+        return "获取用户代理产品失败!";
     }
 }

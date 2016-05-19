@@ -29,7 +29,7 @@
     <div class="na">
         <p><img src="${pUser.wxHeadImg}" alt=""></p>
         <h1>
-            <span>我是${pUser.wxNkName}，我为好友代言！跟我一起分享赚佣金</span>
+            <span>我是${pUser.wxNkName}<br>我为好友代言，跟我一起分享赚佣金！</span>
             <%--<span>跟我一起：呐喊得红包，分享赚佣金</span>--%>
         </h1>
     </div>

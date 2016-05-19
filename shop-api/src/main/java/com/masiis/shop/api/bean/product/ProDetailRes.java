@@ -2,7 +2,6 @@ package com.masiis.shop.api.bean.product;
 
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfUserSku;
 
 /**
@@ -14,7 +13,7 @@ public class ProDetailRes extends BaseRes {
 
     private PfUserSku pfUserSku;
 
-    private PfBorder pfBorder;
+    private Integer orderStatus;
 
     public Product getProduct() {
         return product;
@@ -32,11 +31,11 @@ public class ProDetailRes extends BaseRes {
         this.pfUserSku = pfUserSku;
     }
 
-    public PfBorder getPfBorder() {
-        return pfBorder;
+    public Integer getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setPfBorder(PfBorder pfBorder) {
-        this.pfBorder = pfBorder;
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

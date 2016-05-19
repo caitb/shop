@@ -130,10 +130,11 @@ public class ProductController extends BaseController {
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, user.getId());
             proDetailRes.setProduct(product);
             proDetailRes.setPfUserSku(pfUserSku);
-            proDetailRes.setPfBorder(pfBorder);
+            proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
+            e.printStackTrace();
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }

@@ -41,6 +41,21 @@ public class PfOrderTask {
         log.info("创建每日结算账单定时任务结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * 下单后72小时未支付订单自动取消(目前做成半小时自动扫描取消)
+     */
+    public void offlineBorderCancelJob(){
+        Date nowTime = new Date();
+        log.info("7天未支付线下支付订单自动取消job开始,开始时间为:" + DateUtil.Date2String(nowTime, "yyyy-MM-dd HH:mm:ss"));
+        try{
+            // 订单取消
+            bOrderTaskService.autoCancelOfflineBorder();
+        } catch (Exception e) {
+            log.error("7天未支付线下支付订单自动取消job失败," + e.getMessage());
+        }
+        log.info("7天未支付线下支付订单自动取消job结束,结束时间为:" + DateUtil.Date2String(new Date(), "yyyy-MM-dd HH:mm:ss"));
+    }
+
 
     /**
      * 下单后72小时未支付订单自动取消(目前做成半小时自动扫描取消)

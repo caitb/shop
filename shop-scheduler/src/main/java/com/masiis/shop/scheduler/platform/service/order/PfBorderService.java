@@ -103,4 +103,38 @@ public class PfBorderService {
             comUserAccountService.countingByOrder(bOrder);
         }
     }
+
+    /**
+     * 自动取消7天未支付线下支付订单
+     *
+     * @param bOrder
+     */
+    public void cancelOfflinePayBOrder(PfBorder bOrder) {
+        try {
+            // 重新根据id查询该订单
+            bOrder = borderMapper.selectByPrimaryKey(bOrder.getId());
+            // 检查订单状态的有效性
+            if (bOrder.getOrderStatus() != BOrderStatus.offLineNoPay.getCode().intValue()) {
+                throw new BusinessException("订单状态不正确,订单号:" + bOrder.getOrderCode()
+                        + ",当前订单状态为:" + bOrder.getOrderStatus());
+            }
+            if (bOrder.getPayStatus() != 0) {
+                throw new BusinessException("订单支付状态不正确,订单号:" + bOrder.getOrderCode()
+                        + ",当前订单支付状态为:" + bOrder.getPayStatus());
+            }
+            log.info("订单状态和支付状态校验通过!");
+            // 修改订单的状态为已取消状态
+            int result = borderMapper.updateOfflineBOrderCancelById(bOrder.getId());
+            if (result != 1) {
+                bOrder = borderMapper.selectByPrimaryKey(bOrder.getId());
+                throw new BusinessException("订单取消失败,订单此时状态为:" + bOrder.getOrderStatus()
+                        + ",支付状态为:" + bOrder.getPayStatus());
+            }
+            // 插入订单操作记录
+            bOrderOperationLogService.insertBOrderOperationLog(bOrder,"超过7天未支付线下支付订单,系统自动取消");
+        } catch (Exception e) {
+            log.error("订单超7天未支付线下支付订单取消失败," + e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
 }

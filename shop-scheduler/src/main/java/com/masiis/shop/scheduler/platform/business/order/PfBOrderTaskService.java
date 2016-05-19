@@ -25,6 +25,41 @@ public class PfBOrderTaskService {
     private PfBorderService bOrderService;
 
     /**
+     * 自动取消7天未支付的线下支付订单
+     */
+    public void autoCancelOfflineBorder(){
+        Date expiraTime = DateUtil.getDateNextdays(-7);
+        log.info("计算过期时间界限点,时间点是:" + DateUtil.Date2String(expiraTime, "yyyy-MM-dd HH:mm:ss"));
+
+        // 查询3天前创建的未支付订单
+        // 查询代理订单
+        List<PfBorder> bList = bOrderService.findListByStatusAndDate(expiraTime,
+                BOrderStatus.offLineNoPay.getCode(), 0);
+        if (bList == null) {
+            log.info("暂无超过7天未支付线下支付代理订单!");
+        } else {
+            log.info("超过7天未支付线下支付代理订单个数:" + bList.size());
+            // 多线程处理
+            CurrentThreadUtils.parallelJob(new IParallelThread() {
+                @Override
+                public Boolean doMyJob(Object obj) throws Exception {
+                    PfBorder bOrder = (PfBorder) obj;
+                    try{
+                        log.info("开始取消线下订单,订单号为:" + bOrder.getOrderCode());
+                        bOrderService.cancelOfflinePayBOrder(bOrder);
+                        log.info("取消订单线下成功,订单号为:" + bOrder.getOrderCode());
+                        return true;
+                    } catch (Exception e) {
+                        log.info("取消线下订单失败,订单号为:" + bOrder.getOrderCode());
+                        log.error(e.getMessage(), e);
+                    }
+                    return false;
+                }
+            }, new LinkedBlockingDeque<Object>(bList), 0);
+        }
+    }
+
+    /**
      * 自动取消72小时未支付订单
      */
     public void autoCancelUnPayOrder() {

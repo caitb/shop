@@ -11,6 +11,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_SUCCESS = "0";
     public static final String RES_CODE_SUCCESS_MSG = "请求成功";
 
+    public static final String RES_CODE_ILLEGAL = "-2";
+    public static final String RES_CODE_ILLEGAL_MSG = "非法请求";
+
     /**
      * 请求参数校验
      */

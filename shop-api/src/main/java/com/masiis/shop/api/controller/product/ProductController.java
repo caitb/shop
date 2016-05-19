@@ -1,10 +1,9 @@
 package com.masiis.shop.api.controller.product;
 
-import com.masiis.shop.api.bean.base.BaseReq;
-import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.product.ProAllListReq;
 import com.masiis.shop.api.bean.product.ProAllListRes;
-import com.masiis.shop.api.bean.user.MarketIndexRes;
+import com.masiis.shop.api.bean.product.ProDetailReq;
+import com.masiis.shop.api.bean.product.ProDetailRes;
 import com.masiis.shop.api.bean.user.MarketProItem;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -12,16 +11,18 @@ import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.product.ProductService;
 import com.masiis.shop.api.service.product.SkuAgentService;
+import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.shop.IndexShowService;
-import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.beans.system.IndexComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PbBanner;
-import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -46,6 +47,10 @@ public class ProductController extends BaseController {
     private SkuAgentService skuAgentService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SkuService skuService;
+    @Resource
+    private UserSkuService userSkuService;
 
     @RequestMapping("/alist")
     @ResponseBody
@@ -100,4 +105,40 @@ public class ProductController extends BaseController {
 
         return res;
     }
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/19 0019 下午 2:46
+      *
+      */
+    @RequestMapping(value = "detail/{skuId}",method = RequestMethod.GET)
+    @ResponseBody
+    @SignValid(paramType = ProDetailReq.class)
+    public ProDetailRes getProDetail(HttpServletRequest request, ProDetailReq req,
+                                     @PathVariable("skuId") Integer skuId,
+                                     ComUser user) {
+        ProDetailRes proDetailRes = new ProDetailRes();
+        ComSku comSku = skuService.getSkuById(skuId);
+        if (comSku == null) {
+            proDetailRes.setResCode("1");
+            proDetailRes.setResMsg("sku不合法,系统不存在该sku");
+            return proDetailRes;
+        }
+        try {
+            Product product = productService.getSkuDetails(skuId);
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+            PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, user.getId());
+            proDetailRes.setProduct(product);
+            proDetailRes.setPfUserSku(pfUserSku);
+            proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            e.printStackTrace();
+            proDetailRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            proDetailRes.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+        }
+        return proDetailRes;
+    }
+
 }

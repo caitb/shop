@@ -171,4 +171,16 @@ public class UserSkuService {
         }
         return pfUserSku;
     }
+
+    /**
+     * 获取用户所有的代理产品关系
+     * @param comUserId
+     * @return
+     */
+    public List<PfUserSku> listByUserId(Long comUserId){
+        PfUserSku userSku = new PfUserSku();
+        userSku.setUserId(comUserId);
+
+        return pfUserSkuMapper.selectByCondition(userSku);
+    }
 }

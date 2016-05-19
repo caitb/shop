@@ -83,7 +83,7 @@ public class UserAddressController extends BaseController {
                 if (addressReq!=null&&isValidateParam(addressReq,address)){
                     addressReq.setUserId(comUser.getId());
                     addressReq.setCreateTime(new Date());
-                    s = userAddressService.addOrUpdateAddress(request,addressReq.getId(),addressReq.getIsDefault(),address,addressReq.getOperateType(),0);
+                    s = userAddressService.addOrUpdateAddress(request,addressReq.getId(),addressReq.getIsDefault(),address,addressReq.getOperateType(),10000);
                 }else{
                     addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
                     addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
@@ -92,7 +92,7 @@ public class UserAddressController extends BaseController {
                 addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
                 addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
             }
-            if (s!=null&&s.equals("success")){
+            if (s!=null&&!s.equals("false")){
                 addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS);
                 addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS_MSG);
             }

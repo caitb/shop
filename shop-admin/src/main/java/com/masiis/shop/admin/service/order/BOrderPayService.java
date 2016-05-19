@@ -2,6 +2,7 @@ package com.masiis.shop.admin.service.order;
 
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
+import com.masiis.shop.admin.service.product.SkuService;
 import com.masiis.shop.admin.service.user.ComUserAccountService;
 import com.masiis.shop.admin.utils.DrawPicUtil;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
@@ -87,6 +88,8 @@ public class BOrderPayService {
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private ComUserAccountService comUserAccountService;
+    @Resource
+    private SkuService skuService;
 
     /**
      * 订单支付回调入口
@@ -268,12 +271,14 @@ public class BOrderPayService {
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+                ComSku comSku = skuService.findById(pfBorderItem.getSkuId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
-                        rootPath + "/static/font/simkai.ttf",//字体路径
+                        rootPath + "/static/font/",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号
                         comUser.getRealName(),//userName - 用户名称
                         comAgentLevel.getName(),//levelName - 代理等级名称
                         pfBorderItem.getSkuName(),//skuName - 商品名称
+                        comSku.geteName(),
                         comUser.getIdCard(),//idCard - 身份证号
                         comUser.getMobile(),//mobile - 手机号
                         pfBorderItem.getWxId(),//wxId - 微信号
@@ -513,6 +518,7 @@ public class BOrderPayService {
      * @param userName        用户名称
      * @param levelName       代理等级名称
      * @param skuName         商品名称
+     * @param skuEName        商品英文名称
      * @param idCard          身份证号
      * @param mobile          手机号
      * @param wxId            微信号
@@ -526,6 +532,7 @@ public class BOrderPayService {
                               String userName,
                               String levelName,
                               String skuName,
+                              String skuEName,
                               String idCard,
                               String mobile,
                               String wxId,
@@ -533,73 +540,74 @@ public class BOrderPayService {
                               String endDate) {
         DrawPicUtil drawPicUtil = new DrawPicUtil();
         BufferedImage bufferedImage = drawPicUtil.loadImageLocal(filePath);
-        Font font = null;
+        //宋体
+        Font simsun_font = null;
+        //微软雅黑
+        Font msyh_font = null;
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath));
+            simsun_font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath + "simsun.ttc"));
+            msyh_font = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath + "msyh.ttc"));
         } catch (Exception e) {
             throw new BusinessException("创建字体异常");
         }
-        Font font_25 = font.deriveFont(Font.PLAIN, 25);
-        Font font_35 = font.deriveFont(Font.PLAIN, 35);
-        Font font_60 = font.deriveFont(Font.BOLD, 60);
+        Font msyh_font_25 = msyh_font.deriveFont(Font.PLAIN, 25);
+        Font msyh_font_30 = msyh_font.deriveFont(Font.PLAIN, 30);
+        Font msyh_font_100 = msyh_font.deriveFont(Font.PLAIN, 100);
+        Font simsun_font_30 = simsun_font.deriveFont(Font.PLAIN, 30);
+        Font simsun_font_45 = simsun_font.deriveFont(Font.PLAIN, 45);
+        Font simsun_font_50 = simsun_font.deriveFont(Font.PLAIN, 50);
         List<DrawPicUtil.DrawPicParam> drawPicParams = new ArrayList<>();
+        //授权书编号
         DrawPicUtil.DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
-        drawPicParam1.setFont(font_35);
+        drawPicParam1.setX(90);
         drawPicParam1.setY(200);
-        drawPicParam1.setContent("授权编号：" + certificateCode);//
+        drawPicParam1.setContent(certificateCode);
+        drawPicParam1.setFont(msyh_font_30);
         drawPicParams.add(drawPicParam1);
+        //代理等级名称
         DrawPicUtil.DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
-        drawPicParam5.setFont(font_60);
-        drawPicParam5.setY(630);
+        drawPicParam5.setY(200);
         drawPicParam5.setContent(levelName);
+        drawPicParam5.setFont(msyh_font_100);
+        drawPicParam5.setColor(Color.WHITE);
         drawPicParams.add(drawPicParam5);
+        //代理人姓名
         DrawPicUtil.DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
-        drawPicParam3.setFont(font_60);
-        drawPicParam3.setY(840);
+        drawPicParam3.setX(900);
+        drawPicParam3.setY(565);
         drawPicParam3.setContent(userName);
+        drawPicParam3.setFont(simsun_font_50);
         drawPicParams.add(drawPicParam3);
+        //英文介绍
         DrawPicUtil.DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
-        drawPicParam4.setFont(font_35);
-        drawPicParam4.setY(900);
-        drawPicParam4.setContent("有权于网络和实体渠道销售麦士生物科技产品");
+        drawPicParam4.setY(690);
+        drawPicParam4.setContent("Has the right to sell the product of Beijing Masiis Biotech Co., Ltd.(" + skuEName + ")");
+        drawPicParam4.setFont(msyh_font_25);
         drawPicParams.add(drawPicParam4);
+        DrawPicUtil.DrawPicParam drawPicParam11 = drawPicUtil.getDrawPicParam();
+        drawPicParam11.setY(725);
+        drawPicParam11.setContent("via both e-commerce channel and physical store. ");
+        drawPicParam11.setFont(msyh_font_25);
+        drawPicParams.add(drawPicParam11);
+        //代理商品名称
         DrawPicUtil.DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
-        drawPicParam9.setFont(font_35);
-        drawPicParam9.setY(950);
+        drawPicParam9.setY(770);
         drawPicParam9.setContent(skuName);
+        drawPicParam9.setFont(simsun_font_30);
+        drawPicParam9.setColor(Color.decode("#FF4B21"));
         drawPicParams.add(drawPicParam9);
-        int x = 280;
-        int y = 80;
+        //证件号等
         DrawPicUtil.DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
-        drawPicParam6.setFont(font_35);
-        drawPicParam6.setX(x);
-        drawPicParam6.setY(drawPicParam9.getY() + y);
-        drawPicParam6.setContent("证件号：" + idCard);
+        drawPicParam6.setY(850);
+        drawPicParam6.setContent("证件号：" + idCard + "，手机：" + mobile + "，微信：" + wxId);
+        drawPicParam6.setFont(simsun_font_45);
         drawPicParams.add(drawPicParam6);
-        DrawPicUtil.DrawPicParam drawPicParam7 = drawPicUtil.getDrawPicParam();
-        drawPicParam7.setFont(font_35);
-        drawPicParam7.setX(x);
-        drawPicParam7.setY(drawPicParam6.getY() + y);
-        drawPicParam7.setContent("手  机：" + mobile);
-        drawPicParams.add(drawPicParam7);
-        DrawPicUtil.DrawPicParam drawPicParam8 = drawPicUtil.getDrawPicParam();
-        drawPicParam8.setFont(font_35);
-        drawPicParam8.setX(x);
-        drawPicParam8.setY(drawPicParam7.getY() + y);
-        drawPicParam8.setContent("微  信：" + wxId);
-        drawPicParams.add(drawPicParam8);
+        //授权期限
         DrawPicUtil.DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
-        drawPicParam2.setFont(font_35);
-        drawPicParam2.setX(x);
-        drawPicParam2.setY(drawPicParam8.getY() + y);
+        drawPicParam2.setY(920);
         drawPicParam2.setContent("授权期限：" + beginDate + "至" + endDate);
+        drawPicParam2.setFont(simsun_font_45);
         drawPicParams.add(drawPicParam2);
-        DrawPicUtil.DrawPicParam drawPicParam10 = drawPicUtil.getDrawPicParam();
-        drawPicParam10.setFont(font_25);
-        drawPicParam10.setX(x);
-        drawPicParam10.setY(drawPicParam2.getY() + 50);
-        drawPicParam10.setContent("最终解释权归北京麦士生物科技有限公司");
-        drawPicParams.add(drawPicParam10);
         ByteArrayOutputStream bs = new ByteArrayOutputStream();
         try {
             ImageOutputStream imOut = ImageIO.createImageOutputStream(bs);

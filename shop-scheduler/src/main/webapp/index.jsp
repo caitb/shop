@@ -24,6 +24,9 @@
     } else if(type.equals("sfcount")){
         SfOrderTask sfOrderTask = (SfOrderTask) ac.getBean("sfOrderTask");
         sfOrderTask.sfBillCountJob();
+    } else if(type.equals("offline")){
+        PfOrderTask pfOrderTask = (PfOrderTask) ac.getBean("pfOrderTask");
+        pfOrderTask.offlineBorderCancelJob();
     }
 %>
 </body>

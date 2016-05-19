@@ -4,7 +4,7 @@ package com.masiis.shop.api.bean.base;
  * @Date 2016/5/5
  * @Auther lzh
  */
-public class BasePagingReq extends BaseReq {
+public class BasePagingReq extends BaseBusinessReq {
     /**
      * 请求的页数
      */

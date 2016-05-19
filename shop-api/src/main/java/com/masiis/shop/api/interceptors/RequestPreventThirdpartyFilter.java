@@ -1,5 +1,6 @@
 package com.masiis.shop.api.interceptors;
 
+import com.masiis.shop.api.constants.SysResCodeCons;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -36,10 +37,11 @@ public class RequestPreventThirdpartyFilter implements Filter {
                 chain.doFilter(req,res);
                 return;
             }else {
-                response.sendRedirect(basePath+"index.jsp");
+                String data = SysResCodeCons.RES_CODE_ILLEGAL_MSG;
+                response.getWriter().write(data);
+//                response.sendRedirect(basePath+"index.jsp");
             }
         }
-//        response.getWriter().write(data);
     }
 
     @Override

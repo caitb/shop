@@ -11,6 +11,7 @@ import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "orderPay")
 public class SfOrderPayController extends BaseController {
+
+    private Logger log = Logger.getLogger(this.getClass());
     @Resource
     private SfOrderPayService orderPayService;
 
@@ -79,7 +82,8 @@ public class SfOrderPayController extends BaseController {
         Map<String,Object> map = orderPayService.paySuccessCallBack(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
-        model.addAttribute("userPid",map.get("userPid"));
+        log.info("userPid--------------------"+request.getSession().getAttribute("userPid"));
+        model.addAttribute("userPid",request.getSession().getAttribute("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);
         return "mall/order/paySuccess";
     }

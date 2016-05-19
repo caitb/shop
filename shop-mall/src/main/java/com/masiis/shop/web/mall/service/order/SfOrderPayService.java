@@ -262,8 +262,8 @@ public class SfOrderPayService {
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
             //获得用户的分销关系的父id
-            Long userPid = getUserPid(order.getUserId());
-            map.put("userPid", userPid);
+           /* Long userPid = getUserPid(order.getUserId());
+            map.put("userPid", userPid);*/
         } catch (Exception e) {
             throw new BusinessException(e);
         }

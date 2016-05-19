@@ -6,7 +6,7 @@ package com.masiis.shop.api.bean.base;
  * @Date 2016/5/5
  * @Auther lzh
  */
-public class BasePagingRes extends BaseRes {
+public class BasePagingRes extends BaseBusinessRes {
     /**
      * 总数量
      */

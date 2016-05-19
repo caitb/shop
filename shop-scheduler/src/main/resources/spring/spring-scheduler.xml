@@ -19,6 +19,7 @@
         <task:scheduled ref="pfOrderTask" method="unPayOrderCancelJob" cron="0 0/10 * * * ?"/>
         <!-- 订单发货后7天自动收货 -->
         <task:scheduled ref="pfOrderTask" method="orderReceivedConfirmJob" cron="0 0/10 * * * ?" />
+        <task:scheduled ref="pfOrderTask" method="offlineBorderCancelJob" cron="0 0/10 * * * ?" />
 
         <!-- mall订单相关job -->
         <task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 30 0 * * ?" />

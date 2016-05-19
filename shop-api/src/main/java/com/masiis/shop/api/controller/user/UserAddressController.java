@@ -2,12 +2,18 @@ package com.masiis.shop.api.controller.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.masiis.shop.api.bean.order.OManagementIndexReq;
+import com.masiis.shop.api.bean.user.ComUserAddressReq;
+import com.masiis.shop.api.bean.user.ComUserAddressRes;
+import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
+import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.UserAddressService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -65,57 +71,37 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/addOrUpdateAddress.do")
     @ResponseBody
-    public String addOrUpdateAddress(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     @RequestParam(value = "id", required = false) Long id,
-                                     @RequestParam(value = "name", required = true) String name,
-                                     @RequestParam(value = "phone", required = true) String phone,
-                                     @RequestParam(value = "postcode", required = true) String postcode,
-                                     @RequestParam(value = "provinceId", required = true) Integer provinceId,
-                                     @RequestParam(value = "provinceName", required = true) String provinceName,
-                                     @RequestParam(value = "cityId", required = true) Integer cityId,
-                                     @RequestParam(value = "cityName", required = true) String cityName,
-                                     @RequestParam(value = "countyId", required = true) Integer countyId,
-                                     @RequestParam(value = "countyName", required = true) String countyName,
-                                     @RequestParam(value = "detailAddress", required = true) String detailAddress,
-                                     @RequestParam(value = "isDefault", required = false) Integer isDefault,
-                                     @RequestParam(value = "operateType", required = true) String operateType,
-                                     @RequestParam(value = "addressId", required = false) Integer selectedAddressId,
-                                     @RequestParam(value = "pfCorderId", required = false) Integer pfCorderId,
-                                     @RequestParam(value = "addAddressJumpType",required = false,defaultValue = "0")int addAddressJumpType,
-                                     Model model) throws JsonProcessingException {
+    @SignValid(paramType = ComUserAddressRes.class)
+    public ComUserAddressRes addOrUpdateAddress(HttpServletRequest request,
+                                     ComUserAddressReq addressReq,
+                                     ComUser comUser ) throws JsonProcessingException {
+        ComUserAddressRes addressRes = new ComUserAddressRes();
         try{
-            ComUser comUser = null;
-            ComUserAddress comUserAddress = new ComUserAddress();
+            ComUserAddress address = new ComUserAddress();
+            String s = null;
             if (comUser != null) {
-                comUserAddress.setUserId(comUser.getId());
+                if (addressReq!=null&&isValidateParam(addressReq,address)){
+                    addressReq.setUserId(comUser.getId());
+                    addressReq.setCreateTime(new Date());
+                    s = userAddressService.addOrUpdateAddress(request,addressReq.getId(),addressReq.getIsDefault(),address,addressReq.getOperateType(),0);
+                }else{
+                    addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
+                    addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                }
             } else {
-                throw new BusinessException("请重新登录");
+                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
+                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
             }
-            comUserAddress.setName(name);
-            comUserAddress.setMobile(phone);
-            comUserAddress.setZip(postcode);
-            comUserAddress.setProvinceId(provinceId);
-            comUserAddress.setProvinceName(provinceName);
-            comUserAddress.setCityId(cityId);
-            comUserAddress.setCityName(cityName);
-            comUserAddress.setRegionId(countyId);
-            comUserAddress.setRegionName(countyName);
-            comUserAddress.setAddress(detailAddress);
-            comUserAddress.setCreateTime(new Date());
-
-            model.addAttribute("addressId", selectedAddressId);
-            model.addAttribute("pfCorderId", pfCorderId);
-            String s = userAddressService.addOrUpdateAddress(request,id,isDefault,comUserAddress,operateType,addAddressJumpType);
-            return s;
+            if (s!=null&&s.equals("success")){
+                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS);
+                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS_MSG);
+            }
         }catch (Exception ex){
-            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
+            addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL);
+            addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL_MSG);
         }
-}
+        return addressRes;
+    }
 
     /**
      * 选择地址点击某个地址或者返回
@@ -339,5 +325,64 @@ public class UserAddressController extends BaseController {
                 throw new BusinessException("设置默认地址失败", ex);
             }
         }
+    }
+
+    private Boolean isValidateParam(ComUserAddressReq addressReq,ComUserAddress address){
+        if (addressReq.getUserId()==null){
+            return false;
+        }else{
+            address.setUserId(addressReq.getUserId());
+        }
+        if (StringUtils.isEmpty(addressReq.getName())){
+            return false;
+        }else{
+            address.setName(addressReq.getName());
+        }
+        if (StringUtils.isEmpty(addressReq.getZip())){
+            return false;
+        }else{
+            address.setZip(addressReq.getZip());
+        }
+        if (addressReq.getProvinceId()==null){
+            return false;
+        }else{
+            address.setProvinceId(addressReq.getProvinceId());
+        }
+        if (StringUtils.isEmpty(addressReq.getProvinceName())){
+            return false;
+        }else{
+            address.setProvinceName(addressReq.getProvinceName());
+        }
+        if (addressReq.getCityId()==null){
+            return false;
+        }else{
+            address.setCityId(addressReq.getCityId());
+        }
+        if (StringUtils.isEmpty(addressReq.getCityName())){
+            return false;
+        }else{
+            address.setCityName(addressReq.getCityName());
+        }
+        if (addressReq.getRegionId()==null){
+            return false;
+        }else{
+            address.setRegionId(addressReq.getRegionId());
+        }
+        if (StringUtils.isEmpty(addressReq.getRegionName())){
+            return false;
+        }else{
+            address.setRegionName(addressReq.getRegionName());
+        }
+        if (StringUtils.isEmpty(addressReq.getAddress())){
+            return false;
+        }else{
+            address.setAddress(addressReq.getAddress());
+        }
+        if (StringUtils.isEmpty(addressReq.getMobile())){
+            return false;
+        }else{
+            address.setMobile(addressReq.getMobile());
+        }
+        return true;
     }
 }

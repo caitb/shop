@@ -70,4 +70,12 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_WXLOGIN_APPID_NULL = "100303";
     public static final String RES_CODE_WXLOGIN_APPID_NULL_MSG = "appid为空";
+
+    /*地址*/
+    public static final String RES_CODE_ADDRESS_NULL = "100401";
+    public static final String RES_CODE_ADDRESS_NULL_MSG = "参数格式不正确";
+    public static final String RES_CODE_ADDRESS_ADD_SUCCESS = "100402";
+    public static final String RES_CODE_ADDRESS_ADD_SUCCESS_MSG = "添加地址成功";
+    public static final String RES_CODE_ADDRESS_ADD_FAIL = "100402";
+    public static final String RES_CODE_ADDRESS_ADD_FAIL_MSG = "100402";
 }

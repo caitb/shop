@@ -98,4 +98,12 @@ public interface PfBorderMapper {
      * 根据商品Id和用户Id 查询订单信息
      */
     PfBorder selectPfBOrderBySkuIdAndUserId(@Param("skuId") Integer skuId,@Param("userId") Long userId);
+
+    /**
+     * 根据orderid来取消线下支付订单
+     *
+     * @param orderId
+     * @return
+     */
+    int updateOfflineBOrderCancelById(@Param("orderId") Long orderId);
 }

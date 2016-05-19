@@ -383,6 +383,17 @@
         AND pay_status = 0
     </update>
 
+    <update id="updateOfflineBOrderCancelById">
+        update
+            pf_border
+        SET
+            order_status = 2
+        WHERE
+            id = #{orderId,jdbcType=BIGINT}
+        AND order_status = 9
+        AND pay_status = 0
+    </update>
+
     <select id="countSales" parameterType="String" resultType="Double">
         SELECT sum(pay_amount - bail_amount) FROM pf_border WHERE FIND_IN_SET(user_id,#{sUserIds})
     </select>

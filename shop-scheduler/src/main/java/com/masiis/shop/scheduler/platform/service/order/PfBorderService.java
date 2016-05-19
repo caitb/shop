@@ -124,7 +124,7 @@ public class PfBorderService {
             }
             log.info("订单状态和支付状态校验通过!");
             // 修改订单的状态为已取消状态
-            int result = borderMapper.updateOrderCancelById(bOrder.getId());
+            int result = borderMapper.updateOfflineBOrderCancelById(bOrder.getId());
             if (result != 1) {
                 bOrder = borderMapper.selectByPrimaryKey(bOrder.getId());
                 throw new BusinessException("订单取消失败,订单此时状态为:" + bOrder.getOrderStatus()

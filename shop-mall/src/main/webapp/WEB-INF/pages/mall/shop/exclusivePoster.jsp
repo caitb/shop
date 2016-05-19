@@ -110,7 +110,10 @@
 </head>
 <body>
 <header>
-    <a href="javascript:window.history.go(-1);"><img src="<%=basePath%>static/images/xq_rt.png" alt=""></a>
+    <c:if test="${sessionScope.userPid == null}"><a href="javascript:window.history.go(-1);"></c:if>
+    <c:if test="${sessionScope.userPid != null}"><a href="<%=basePath%>${sessionScope.shopId}/${sessionScope.userPid}/shop.shtml"></c:if>
+        <img src="<%=basePath%>static/images/xq_rt.png" alt="">
+    </a>
     <p>我的专属海报</p>
 </header>
 <div class="wrap">

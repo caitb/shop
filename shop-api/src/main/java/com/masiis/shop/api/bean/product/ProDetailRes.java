@@ -4,16 +4,20 @@ import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.PfUserSku;
 
+import java.util.List;
+
 /**
  * Created by JingHao on 2016/5/19 0019.
  */
 public class ProDetailRes extends BaseRes {
 
-    private Product product;
+    private Product product; //商品详情
 
-    private PfUserSku pfUserSku;
+    private PfUserSku pfUserSku;//代理关系
 
-    private Integer orderStatus;
+    private Integer orderStatus;// 订单状态
+
+    private List<Product> productList;//商品列表
 
     public Product getProduct() {
         return product;
@@ -37,5 +41,13 @@ public class ProDetailRes extends BaseRes {
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 }

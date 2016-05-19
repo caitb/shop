@@ -126,24 +126,28 @@ public class ProductService {
      * @Date 2016/3/16 0016 上午 10:31
      * 个人中心商品列表
      */
-    public List<Product> productListByUser(Long userId) {
+    public List<Product> productListByUser(Long userId) throws Exception {
         List<Product> userProducts = productMapper.getProductsByUser(userId);
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
-                product.setStock(product.getStock() - product.getFrozenStock());
+                int currentStock = product.getStock()-product.getFrozenStock();
+                if(currentStock>=0){
+                    product.setStock(currentStock);
+                }else{
+                    product.setStock(0);
+                }
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
                 product.setComSkuImage(comSkuImage);
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
                 PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(product.getId());
                 product.setIsQueue(pfSkuStock.getIsQueue());
-                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, product.getId());
+                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId,product.getId());
                 product.setUserPid(pfUserSku.getUserPid());
             }
         }
         return userProducts;
     }
-
     /**
      * @Author 贾晶豪
      * @Date 2016/3/16 0016 下午 7:38

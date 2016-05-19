@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="alias" property="alias" jdbcType="VARCHAR" />
+        <result column="e_name" property="eName" jdbcType="VARCHAR" />
         <result column="icon" property="icon" jdbcType="VARCHAR" />
         <result column="spu_id" property="spuId" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -27,6 +28,7 @@
         set
             name = #{name,jdbcType=VARCHAR},
             alias = #{alias,jdbcType=VARCHAR},
+            e_name = #{eName,jdbcType=VARCHAR},
             icon = #{icon,jdbcType=VARCHAR},
             spu_id = #{spuId,jdbcType=INTEGER},
             create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -42,20 +44,20 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{id,jdbcType=INTEGER}
     </select>
     <select id="findBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
         where id = #{skuId,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap" >
-        select id, name, alias, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
+        select id, name, alias, e_name, icon, spu_id, create_time, create_man, modify_time, modify_man, bar_code,
         price_cost, price_market, price_retail, remark
         from com_sku
     </select>
@@ -76,6 +78,7 @@
                id,
                name,
                alias,
+               e_name,
                icon,
                spu_id,
                create_time,
@@ -99,6 +102,7 @@
                id,
                name,
                alias,
+               e_name,
                icon,
                spu_id,
                create_time,
@@ -122,6 +126,9 @@
                     <if test="name != null">
                         AND name = #{name}
                     </if>
+                    <if test="eName != null">
+                        AND e_name = #{eName}
+                    </if>
                     <if test="barCode != null">
                         AND bar_code = #{barCode}
                     </if>
@@ -135,6 +142,7 @@
                 id,
                 name,
                 alias,
+                e_name,
                 icon,
                 spu_id,
                 create_time,
@@ -151,6 +159,7 @@
                 #{id,jdbcType=INTEGER},
                 #{name,jdbcType=VARCHAR},
                 #{alias,jdbcType=VARCHAR},
+                #{eName,jdbcType=VARCHAR},
                 #{icon,jdbcType=VARCHAR},
                 #{spuId,jdbcType=INTEGER},
                 #{createTime,jdbcType=TIMESTAMP},
@@ -174,6 +183,9 @@
             </if>
             <if test="alias != null">
                 alias = #{alias},
+            </if>
+            <if test="eName != null">
+                e_name = #{eName},
             </if>
             <if test="icon != null">
                 icon = #{icon},

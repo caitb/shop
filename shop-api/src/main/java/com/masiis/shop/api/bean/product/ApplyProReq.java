@@ -9,7 +9,7 @@ public class ApplyProReq extends BaseReq{
 
     private Long id;//pfUserSkuStockId
 
-    private Long selectedAddressId;
+    private Long selectedAddressId;//地址id
 
     public Long getId() {
         return id;

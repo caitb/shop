@@ -1,4 +1,4 @@
-package com.masiis.shop.api.utils;
+package com.masiis.shop.common.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,5 +105,12 @@ public class CheckBankCardUtil {
         else{
             return ILLEGAL_NUMBER;
         }
+    }
+
+    public static void main(String[] args) {
+        String bankno = "6214857110432079";
+        System.out.println(bankno+":"+luhmCheck(bankno));
+        String bankno1 = "6212164000046323291";
+        System.out.println(bankno1+":"+luhmCheck(bankno1));
     }
 }

@@ -29,6 +29,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_REQ_TOKEN_PASTDUE = "100004";
     public static final String RES_CODE_REQ_TOKEN_PASTDUE_MSG = "请求token已过期";
 
+    public static final String RES_CODE_REQ_PARAMETER_MISTAKEN = "100005";
+    public static final String RES_CODE_REQ_PARAMETER_MISTAKEN_MSG = "请求参数有误";
+
     /**
      * 获取手机验证码返回码
      */

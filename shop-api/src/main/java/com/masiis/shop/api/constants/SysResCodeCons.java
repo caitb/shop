@@ -90,4 +90,10 @@ public class SysResCodeCons {
     public static final String RES_CODE_ADDRESS_DEFAULT_FAIL_MEG = "设置默认地址失败";
     public static final String RES_CODE_ADDRESS_DEFAULT_SUCCESS = "100407";
     public static final String RES_CODE_ADDRESS_DEFAULT_SUCCESS_MEG = "设置默认地址成功";
+
+    /**
+     * 商品
+     */
+    public static final String RES_CODE_SKU_NULL = "100501";
+    public static final String RES_CODE_SKU_NULL_MSG = "sku不合法,系统不存在该sku";
 }

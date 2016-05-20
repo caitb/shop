@@ -46,31 +46,30 @@ public class ComAreaController {
 
     @RequestMapping(value = "queryCityByProviceId.do")
     @ResponseBody
-    public String queryCityByProviceId(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(value = "proviceId")Integer proviceId){
-
+    @SignValid(paramType = ComAreaReq.class)
+    public ComAreaRes queryCityByProviceId(HttpServletRequest request, ComAreaReq comAreaReq){
+        ComAreaRes comAreaRes = new ComAreaRes();
         try {
-            List<ComArea> comAreas = comAreaService.queryCityByProviceId(proviceId);
-            String returnJson = objectMapper.writeValueAsString(comAreas);;
-            return returnJson;
+            List<ComArea> comAreas = comAreaService.queryCityByProviceId(comAreaReq.getPid());
+            comAreaRes.setComAreas(comAreas);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return comAreaRes;
     }
 
     @RequestMapping(value = "queryCountyByCityId.do")
     @ResponseBody
-    public String queryCountyByCityId(HttpServletRequest request, HttpServletResponse response,
-                                       @RequestParam(value = "cityId")Integer cityId){
-
+    @SignValid(paramType = ComAreaReq.class)
+    public ComAreaRes queryCountyByCityId(HttpServletRequest request,
+                                      ComAreaReq comAreaReq){
+        ComAreaRes comAreaRes = new ComAreaRes();
         try {
-            List<ComArea> comAreas = comAreaService.queryCountyByCityId(cityId);
-            String returnJson = objectMapper.writeValueAsString(comAreas);;
-            return returnJson;
+            List<ComArea> comAreas = comAreaService.queryCountyByCityId(comAreaReq.getPid());
+            comAreaRes.setComAreas(comAreas);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return comAreaRes;
     }
 }

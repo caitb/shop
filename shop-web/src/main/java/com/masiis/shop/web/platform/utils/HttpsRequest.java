@@ -1,6 +1,5 @@
 package com.masiis.shop.web.platform.utils;
 
-import com.masiis.shop.web.platform.beans.pay.wxpay.Configure;
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
 import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
@@ -59,44 +58,7 @@ public class HttpsRequest implements IServiceRequest {
     //HTTP请求器
     private CloseableHttpClient httpClient;
 
-    public HttpsRequest() {
-        //init();
-    }
-
-    private void init() throws IOException, KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyManagementException {
-
-        KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        FileInputStream instream = new FileInputStream(new File(Configure.getCertLocalPath()));//加载本地的证书进行https加密传输
-        try {
-            keyStore.load(instream, Configure.getCertPassword().toCharArray());//设置证书密码
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } finally {
-            instream.close();
-        }
-
-        // Trust own CA and all self-signed certs
-        SSLContext sslcontext = SSLContexts.custom()
-                .loadKeyMaterial(keyStore, Configure.getCertPassword().toCharArray())
-                .build();
-        // Allow TLSv1 protocol only
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-                sslcontext,
-                new String[]{"TLSv1"},
-                null,
-                SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-
-        httpClient = HttpClients.custom()
-                .setSSLSocketFactory(sslsf)
-                .build();
-
-        //根据默认超时限制初始化requestConfig
-        requestConfig = RequestConfig.custom().setSocketTimeout(socketTimeout).setConnectTimeout(connectTimeout).build();
-
-        hasInit = true;
-    }
+    public HttpsRequest() {}
 
     public static void main(String[] args) throws UnrecoverableKeyException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         HttpsRequest h = new HttpsRequest();

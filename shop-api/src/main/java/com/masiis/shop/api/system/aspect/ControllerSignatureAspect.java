@@ -7,6 +7,7 @@ import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComUserKeyboxService;
 import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.utils.ApplicationContextUtil;
+import com.masiis.shop.api.utils.ReflectUtils;
 import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
@@ -145,7 +146,7 @@ public class ControllerSignatureAspect implements Ordered {
         ComUser user = null;
         if(rl.hasToken() == true) {
             // 校验token
-            Field toField = clazz.getDeclaredField("token");
+            Field toField = ReflectUtils.getFieldByNameAllInSuperClass(clazz, "token");
             toField.setAccessible(true);
             String token = (String) toField.get(req);
             ComUserKeybox keybox = keyboxService.getComUserKeyboxByToken(token);
@@ -192,15 +193,7 @@ public class ControllerSignatureAspect implements Ordered {
     }
 
     private String getFieldValue(Class clazz, Object req) throws IllegalAccessException {
-        Field field = null;
-        do {
-            try {
-                field = clazz.getSuperclass().getDeclaredField("sign");
-                if(field != null){
-                    break;
-                }
-            } catch (NoSuchFieldException e) {}
-        } while ((clazz = clazz.getSuperclass()) != Object.class);
+        Field field = ReflectUtils.getFieldByNameAllInSuperClass(clazz, "sign");
         if(field == null){
             throw new BusinessException();
         }

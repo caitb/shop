@@ -7,13 +7,13 @@ import com.masiis.shop.api.bean.base.BaseBusinessReq;
  * @Auther lzh
  */
 public class WxPayPrepareBOrderReq extends BaseBusinessReq {
-    private Long orderId;
+    private String orderCode;
 
-    public Long getOrderId() {
-        return orderId;
+    public String getOrderCode() {
+        return orderCode;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
     }
 }

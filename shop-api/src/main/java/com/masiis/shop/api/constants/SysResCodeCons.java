@@ -78,4 +78,11 @@ public class SysResCodeCons {
     public static final String RES_CODE_ADDRESS_ADD_SUCCESS_MSG = "添加地址成功";
     public static final String RES_CODE_ADDRESS_ADD_FAIL = "100402";
     public static final String RES_CODE_ADDRESS_ADD_FAIL_MSG = "100402";
+
+
+    /**
+     * 微信支付
+     */
+    public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";
+    public static final String RES_CODE_WXPAY_ORDERCODE_NULL_MSG = "ordercode为空";
 }

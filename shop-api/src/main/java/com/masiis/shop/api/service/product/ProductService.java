@@ -71,6 +71,11 @@ public class ProductService {
     }
 
     /**
+     * 图文详情
+     * jjh
+     */
+
+    /**
      * @Author Jing Hao
      * @Date 2016/3/5 0005 下午 2:30
      * 代理商利润

@@ -77,5 +77,23 @@ public class SysResCodeCons {
     public static final String RES_CODE_ADDRESS_ADD_SUCCESS = "100402";
     public static final String RES_CODE_ADDRESS_ADD_SUCCESS_MSG = "添加地址成功";
     public static final String RES_CODE_ADDRESS_ADD_FAIL = "100402";
-    public static final String RES_CODE_ADDRESS_ADD_FAIL_MSG = "100402";
+    public static final String RES_CODE_ADDRESS_ADD_FAIL_MSG = "添加地址失败";
+    public static final String RES_CODE_ADDRESS_QUERY_FAIL = "100403";
+    public static final String RES_CODE_ADDRESS_QUERY_FAIL_MSG = "查询地址失败";
+    public static final String RES_CODE_ADDRESS_QUERY_SUCCESS = "100403";
+    public static final String RES_CODE_ADDRESS_QUERY_SUCCESS_MEG = "查询地址成功";
+    public static final String RES_CODE_ADDRESS_DELETE_SUCCESS = "100404";
+    public static final String RES_CODE_ADDRESS_DELETE_SUCCESS_MEG = "删除地址成功";
+    public static final String RES_CODE_ADDRESS_DELETE_FAIL = "100405";
+    public static final String RES_CODE_ADDRESS_DELETE_FAIL_MEG = "删除地址失败";
+    public static final String RES_CODE_ADDRESS_DEFAULT_FAIL = "100406";
+    public static final String RES_CODE_ADDRESS_DEFAULT_FAIL_MEG = "设置默认地址失败";
+    public static final String RES_CODE_ADDRESS_DEFAULT_SUCCESS = "100407";
+    public static final String RES_CODE_ADDRESS_DEFAULT_SUCCESS_MEG = "设置默认地址成功";
+
+    /**
+     * 商品
+     */
+    public static final String RES_CODE_SKU_NULL = "100501";
+    public static final String RES_CODE_SKU_NULL_MSG = "sku不合法,系统不存在该sku";
 }

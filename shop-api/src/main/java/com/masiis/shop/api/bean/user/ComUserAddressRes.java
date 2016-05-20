@@ -1,28 +1,22 @@
 package com.masiis.shop.api.bean.user;
 
+import com.masiis.shop.api.bean.base.BaseBusinessReq;
 import com.masiis.shop.api.bean.base.BaseRes;
+import com.masiis.shop.dao.po.ComUserAddress;
+
+import java.util.List;
 
 /**
  * Created by hzz on 2016/5/19.
  */
 public class ComUserAddressRes extends BaseRes {
+    private List<ComUserAddress> addresses;
 
-    private String resultCode;
-    private String resultMessage;
-
-    public String getResultCode() {
-        return resultCode;
+    public List<ComUserAddress> getAddresses() {
+        return addresses;
     }
 
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
-    }
-
-    public String getResultMessage() {
-        return resultMessage;
-    }
-
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public void setAddresses(List<ComUserAddress> addresses) {
+        this.addresses = addresses;
     }
 }

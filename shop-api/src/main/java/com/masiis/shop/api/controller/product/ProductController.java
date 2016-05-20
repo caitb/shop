@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -112,13 +113,15 @@ public class ProductController extends BaseController {
     @RequestMapping("/detail")
     @ResponseBody
     @SignValid(paramType = ProDetailReq.class)
-    public ProDetailRes getProDetail(HttpServletRequest request, ProDetailReq req, Integer skuId,ComUser user) {
+    public ModelAndView getProDetail(HttpServletRequest request, ProDetailReq req, Integer skuId,ComUser user) {
         ProDetailRes proDetailRes = new ProDetailRes();
+        ModelAndView mav = new ModelAndView("/product");
         ComSku comSku = skuService.getSkuById(skuId);
         if (comSku == null) {
-            proDetailRes.setResCode("1");
-            proDetailRes.setResMsg("sku不合法,系统不存在该sku");
-            return proDetailRes;
+            proDetailRes.setResCode(SysResCodeCons.RES_CODE_SKU_NULL);
+            proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SKU_NULL_MSG);
+            mav.addObject("proDetailRes",proDetailRes);
+            return mav;
         }
         try {
             Product product = productService.getSkuDetails(skuId);
@@ -127,14 +130,16 @@ public class ProductController extends BaseController {
             proDetailRes.setProduct(product);
             proDetailRes.setPfUserSku(pfUserSku);
             proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            mav.addObject("productDetails", product);
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            mav.addObject("proDetailRes",proDetailRes);
         } catch (Exception e) {
             e.printStackTrace();
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            proDetailRes.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+            proDetailRes.setResMsg(e.getMessage());
         }
-        return proDetailRes;
+        return mav;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.masiis.shop.api.bean.user;
 
 import com.github.pagehelper.StringUtil;
+import com.masiis.shop.api.bean.base.BaseBusinessReq;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
 /**
  * Created by hzz on 2016/5/19.
  */
-public class ComUserAddressReq {
+public class ComUserAddressReq extends BaseBusinessReq {
     private Long id;
     /**
      * 创建时间

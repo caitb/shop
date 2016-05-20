@@ -43,6 +43,7 @@ body main .wrap .box .sec1 div:nth-child(1) {
   display: -webkit-box;
   -webkit-box-pack: center;
   -webkit-box-orient: vertical;
+  padding: 10px 0 5px 0;
 }
 body main .wrap .box .sec1 div:nth-child(1) h2 span {
   float: right;
@@ -90,6 +91,7 @@ body main .wrap .box .sec1 .setting h3 {
   color: #999999;
   text-indent: 32px;
   font-size: 12px;
+  padding: 5px 0;
 }
 body main .wrap .box .sec1 .setting p span,
 body main .wrap .box .sec1 .setting h2 span,
@@ -99,7 +101,7 @@ body main .wrap .box .sec1 .setting h3 span {
   border-left: 1px solid #E9E9E9;
   position: absolute;
   right: 0;
-  top: 7px;
+  top: 12px;
 }
 body main .wrap .box .sec1 .setting p {
   background: url("../../images/icon_14.png") no-repeat 10px;

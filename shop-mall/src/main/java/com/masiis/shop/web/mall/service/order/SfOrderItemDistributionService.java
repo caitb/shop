@@ -78,7 +78,13 @@ public class SfOrderItemDistributionService {
         PageHelper.startPage(currentPage,pageSize);
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordByUserId(userId);
     }
-
+    /**
+     * 通过userId查询佣金记录数量
+     * @param userId        userId
+     */
+    public int findCommissionRecordCountByUserId(Long userId){
+        return sfOrderItemDistributionExtendMapper.selectCommissionRecordCountByUserId(userId);
+    }
     public Map<String,BigDecimal> selectSumAmount(Long userId, List<Long> orderIds){
         return sfOrderItemDistributionExtendMapper.selectSumAmount(userId, orderIds);
     }

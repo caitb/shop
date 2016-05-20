@@ -252,7 +252,7 @@ public class UserExtractwayInfoController extends BaseController {
             log.info("userId:"+userId);
             List<ComUserExtractwayInfo> list = userExtractwayInfoService.findByUserId(userId);
             for (ComUserExtractwayInfo info:list){
-                if (info.getId()==Long.valueOf(id)){
+                if (info.getId().longValue()==Long.valueOf(id).longValue()){
                     if (info.getIsDefault() != 0){
                         info.setIsDefault(0);
                         userExtractwayInfoService.updataComUserExtractwayInfo(info);

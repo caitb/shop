@@ -272,11 +272,8 @@ public class SfUserAccountController extends BaseController {
             mv.addObject("orderItemDistributions",null);
             return mv;
         }
-        SfOrderItemDistribution record = new SfOrderItemDistribution();
-        record.setUserId(userId);
-        record.setIsCounting(1);
         //根据条件查询 小铺订单商品分润 数量
-        int totalCount = sfOrderItemDistributionService.findCountByCondition(record);
+        int totalCount = sfOrderItemDistributionService.findCommissionRecordCountByUserId(userId);
         log.info("userId:"+userId+"   小铺订单商品分润数量:"+totalCount);
         List<SfOrderItemDistribution> list = null;
         if (totalCount > 0){

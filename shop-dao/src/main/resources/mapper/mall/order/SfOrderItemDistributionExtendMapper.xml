@@ -25,9 +25,21 @@
 --             LEFT JOIN com_user u on dis.user_id = u.id
             LEFT JOIN sf_sku_distribution sdis on dis.sf_sku_distribution_id = sdis.id
             LEFT JOIN com_sku sku on sdis.sku_id = sku.id
-        where dis.is_counting = 1 and dis.user_id = #{0}
+        where /*dis.is_counting = 1 and */
+            dis.user_id = #{0}
+            and od.pay_status = 1
+            order by create_time desc
     </select>
-
+    <select id="selectCommissionRecordCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+            from sf_order_item_distribution dis
+            LEFT JOIN sf_order od on dis.sf_order_id = od.id
+            LEFT JOIN com_user u on od.user_id = u.id
+            LEFT JOIN sf_sku_distribution sdis on dis.sf_sku_distribution_id = sdis.id
+            LEFT JOIN com_sku sku on sdis.sku_id = sku.id
+        where dis.user_id = #{userId}
+            and od.pay_status = 1
+    </select>
     <select id="selectSumAmount" resultType="java.util.HashMap">
         select sum(dis.distribution_amount) as sumAmount
             from sf_order_item_distribution dis
@@ -44,12 +56,13 @@
     <select id="selectUserAmount" resultType="java.util.HashMap">
         select sum(dis.distribution_amount) as sumAmount
         from sf_order_item_distribution dis
-        LEFT JOIN sf_order od on dis.sf_order_id = od.id
-        LEFT JOIN com_user u on dis.user_id = u.id
-        LEFT JOIN sf_sku_distribution sdis on dis.sf_sku_distribution_id = sdis.id
-        LEFT JOIN com_sku sku on sdis.sku_id = sku.id
+            LEFT JOIN sf_order od on dis.sf_order_id = od.id
+            LEFT JOIN com_user u on dis.user_id = u.id
+            LEFT JOIN sf_sku_distribution sdis on dis.sf_sku_distribution_id = sdis.id
+            LEFT JOIN com_sku sku on sdis.sku_id = sku.id
         where dis.user_id = #{userId, jdbcType=BIGINT}
---         and dis.is_counting=1
+            and od.pay_status = 1
+--          and dis.is_counting=1
     </select>
 
 </mapper>

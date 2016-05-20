@@ -20,9 +20,7 @@ import com.masiis.shop.dao.beans.system.IndexComSku;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -111,12 +109,10 @@ public class ProductController extends BaseController {
       * @Date 2016/5/19 0019 下午 2:46
       *
       */
-    @RequestMapping(value = "detail/{skuId}",method = RequestMethod.GET)
+    @RequestMapping("/detail")
     @ResponseBody
     @SignValid(paramType = ProDetailReq.class)
-    public ProDetailRes getProDetail(HttpServletRequest request, ProDetailReq req,
-                                     @PathVariable("skuId") Integer skuId,
-                                     ComUser user) {
+    public ProDetailRes getProDetail(HttpServletRequest request, ProDetailReq req, Integer skuId,ComUser user) {
         ProDetailRes proDetailRes = new ProDetailRes();
         ComSku comSku = skuService.getSkuById(skuId);
         if (comSku == null) {
@@ -130,10 +126,11 @@ public class ProductController extends BaseController {
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, user.getId());
             proDetailRes.setProduct(product);
             proDetailRes.setPfUserSku(pfUserSku);
-            proDetailRes.setPfBorder(pfBorder);
+            proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
+            e.printStackTrace();
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }

@@ -74,7 +74,7 @@ public class UserAddressController extends BaseController {
     @SignValid(paramType = ComUserAddressRes.class)
     public ComUserAddressRes addOrUpdateAddress(HttpServletRequest request,
                                      ComUserAddressReq addressReq,
-                                     ComUser comUser ) throws JsonProcessingException {
+                                     ComUser comUser ) {
         ComUserAddressRes addressRes = new ComUserAddressRes();
         try{
             ComUserAddress address = new ComUserAddress();
@@ -85,20 +85,20 @@ public class UserAddressController extends BaseController {
                     addressReq.setCreateTime(new Date());
                     s = userAddressService.addOrUpdateAddress(request,addressReq.getId(),addressReq.getIsDefault(),address,addressReq.getOperateType(),10000);
                 }else{
-                    addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                    addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
+                    addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
                 }
             } else {
-                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
             }
             if (s!=null&&!s.equals("false")){
-                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS);
-                addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS_MSG);
             }
         }catch (Exception ex){
-            addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL);
-            addressRes.setResultCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL_MSG);
+            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL);
+            addressRes.setResMsg(ex.getMessage());
         }
         return addressRes;
     }
@@ -231,28 +231,30 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/getUserAddressByUserId.do")
     @ResponseBody
-    public String getUserAddressByUserId(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         Model model) {
+    @SignValid(paramType = ComUserAddressRes.class)
+    public ComUserAddressRes getUserAddressByUserId(HttpServletRequest request,
+                                         ComUserAddressReq addressReq,
+                                         ComUser comUser) {
+        ComUserAddressRes addressRes = new ComUserAddressRes();
         try{
-            ObjectMapper objectMapper = new ObjectMapper();
-            ComUser comUser = null;
-            ComUserAddress comUserAddress = new ComUserAddress();
             if (comUser != null) {
-                comUserAddress.setUserId(comUser.getId());
+                addressReq.setUserId(comUser.getId());
             } else {
-                comUserAddress.setUserId(1L);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                return addressRes;
             }
+            ComUserAddress comUserAddress = new ComUserAddress();
+            cloneAddressReqToAddress(addressReq,comUserAddress);
             List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
-            String returnJson = objectMapper.writeValueAsString(comUserAddressList);
-            return returnJson;
+            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_QUERY_SUCCESS);
+            addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_QUERY_SUCCESS_MEG);
+            addressRes.setAddresses(comUserAddressList);
         }catch (Exception ex){
-            if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("获得地址失败", ex);
-            }
+            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_QUERY_FAIL);
+            addressRes.setResMsg(ex.getMessage());
         }
+        return addressRes;
     }
 
     /**
@@ -326,63 +328,65 @@ public class UserAddressController extends BaseController {
             }
         }
     }
-
+    /**
+     * 判断参数是否合法
+     * @author hanzengzhi
+     * @date 2016/5/19 17:57
+     */
     private Boolean isValidateParam(ComUserAddressReq addressReq,ComUserAddress address){
         if (addressReq.getUserId()==null){
             return false;
-        }else{
-            address.setUserId(addressReq.getUserId());
         }
         if (StringUtils.isEmpty(addressReq.getName())){
             return false;
-        }else{
-            address.setName(addressReq.getName());
         }
         if (StringUtils.isEmpty(addressReq.getZip())){
             return false;
-        }else{
-            address.setZip(addressReq.getZip());
         }
         if (addressReq.getProvinceId()==null){
             return false;
-        }else{
-            address.setProvinceId(addressReq.getProvinceId());
         }
         if (StringUtils.isEmpty(addressReq.getProvinceName())){
             return false;
-        }else{
-            address.setProvinceName(addressReq.getProvinceName());
         }
         if (addressReq.getCityId()==null){
             return false;
-        }else{
-            address.setCityId(addressReq.getCityId());
         }
         if (StringUtils.isEmpty(addressReq.getCityName())){
             return false;
-        }else{
-            address.setCityName(addressReq.getCityName());
         }
         if (addressReq.getRegionId()==null){
             return false;
-        }else{
-            address.setRegionId(addressReq.getRegionId());
         }
         if (StringUtils.isEmpty(addressReq.getRegionName())){
             return false;
-        }else{
-            address.setRegionName(addressReq.getRegionName());
         }
         if (StringUtils.isEmpty(addressReq.getAddress())){
             return false;
-        }else{
-            address.setAddress(addressReq.getAddress());
         }
         if (StringUtils.isEmpty(addressReq.getMobile())){
             return false;
-        }else{
-            address.setMobile(addressReq.getMobile());
         }
+        cloneAddressReqToAddress(addressReq,address);
         return true;
+    }
+    /**
+     * address接口参数转化为address实体类
+     * @author hanzengzhi
+     * @date 2016/5/19 17:57
+     */
+    private ComUserAddress cloneAddressReqToAddress(ComUserAddressReq addressReq,ComUserAddress address){
+        address.setUserId(addressReq.getUserId());
+        address.setName(addressReq.getName());
+        address.setZip(addressReq.getZip());
+        address.setProvinceId(addressReq.getProvinceId());
+        address.setProvinceName(addressReq.getProvinceName());
+        address.setCityId(addressReq.getCityId());
+        address.setCityName(addressReq.getCityName());
+        address.setRegionId(addressReq.getRegionId());
+        address.setRegionName(addressReq.getRegionName());
+        address.setAddress(addressReq.getAddress());
+        address.setMobile(addressReq.getMobile());
+        return address;
     }
 }

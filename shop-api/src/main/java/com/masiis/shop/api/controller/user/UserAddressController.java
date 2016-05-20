@@ -1,24 +1,16 @@
 package com.masiis.shop.api.controller.user;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masiis.shop.api.bean.order.OManagementIndexReq;
 import com.masiis.shop.api.bean.user.ComUserAddressReq;
 import com.masiis.shop.api.bean.user.ComUserAddressRes;
 import com.masiis.shop.api.constants.SignValid;
-import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.UserAddressService;
-import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -57,7 +49,7 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/addOrUpdateAddress.do")
     @ResponseBody
-    @SignValid(paramType = ComUserAddressRes.class)
+    @SignValid(paramType = ComUserAddressReq.class)
     public ComUserAddressRes addOrUpdateAddress(HttpServletRequest request,
                                      ComUserAddressReq addressReq,
                                      ComUser comUser ) {
@@ -71,16 +63,16 @@ public class UserAddressController extends BaseController {
                     addressReq.setCreateTime(new Date());
                     s = userAddressService.addOrUpdateAddress(request,addressReq.getId(),addressReq.getIsDefault(),address,addressReq.getOperateType(),10000);
                 }else{
-                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                    addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                    addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                    addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
                 }
             } else {
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
             }
             if (s!=null&&!s.equals("false")){
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS);
-                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_ADD_SUCCESS_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             }
         }catch (Exception ex){
             addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_ADD_FAIL);
@@ -97,7 +89,7 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/getUserAddressByUserId.do")
     @ResponseBody
-    @SignValid(paramType = ComUserAddressRes.class)
+    @SignValid(paramType = ComUserAddressReq.class)
     public ComUserAddressRes getUserAddressByUserId(HttpServletRequest request,
                                          ComUserAddressReq addressReq,
                                          ComUser comUser) {
@@ -106,15 +98,15 @@ public class UserAddressController extends BaseController {
             if (comUser != null) {
                 addressReq.setUserId(comUser.getId());
             } else {
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
                 return addressRes;
             }
             ComUserAddress comUserAddress = new ComUserAddress();
             cloneAddressReqToAddress(addressReq,comUserAddress);
             List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
-            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_QUERY_SUCCESS);
-            addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_QUERY_SUCCESS_MEG);
+            addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             addressRes.setAddresses(comUserAddressList);
         }catch (Exception ex){
             addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_QUERY_FAIL);
@@ -131,7 +123,7 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/deleteUserAddressById.do")
     @ResponseBody
-    @SignValid(paramType = ComUserAddressRes.class)
+    @SignValid(paramType = ComUserAddressReq.class)
     public ComUserAddressRes deleteUserAddressById(HttpServletRequest request,
                                       HttpServletResponse response,
                                       ComUserAddressReq addressReq,
@@ -144,15 +136,15 @@ public class UserAddressController extends BaseController {
                     addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL);
                     addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL_MEG);
                 } else {
-                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_SUCCESS);
-                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_SUCCESS_MEG);
+                    addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                    addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
                 }
             }else{
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
             }
         }catch (Exception ex){
-            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_SUCCESS);
+            addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL);
             addressRes.setResCode(ex.getMessage());
         }
         return addressRes;
@@ -166,7 +158,7 @@ public class UserAddressController extends BaseController {
      */
     @RequestMapping("/settingDefaultAddress.do")
     @ResponseBody
-    @SignValid(paramType = ComUserAddressRes.class)
+    @SignValid(paramType = ComUserAddressReq.class)
     public ComUserAddressRes settingDefaultAddress(HttpServletRequest request,
                                          ComUserAddressReq addressReq,
                                          ComUser comUser) {
@@ -175,15 +167,15 @@ public class UserAddressController extends BaseController {
             if (addressReq!=null&&addressReq.getId()!=null&&comUser!=null&&comUser.getId()!=null){
                 Boolean bl = userAddressService.settingDefaultAddress(addressReq.getId(), comUser.getId());
                 if (bl){
-                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_SUCCESS);
-                    addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_SUCCESS_MEG);
+                    addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                    addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
                 }else{
                     addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL);
                     addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL_MEG);
                 }
             }else{
-                addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_NULL);
-                addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_NULL_MSG);
+                addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
             }
         }catch (Exception ex){
             addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL);
@@ -239,6 +231,7 @@ public class UserAddressController extends BaseController {
      * @date 2016/5/19 17:57
      */
     private ComUserAddress cloneAddressReqToAddress(ComUserAddressReq addressReq,ComUserAddress address){
+        address.setId(addressReq.getId());
         address.setUserId(addressReq.getUserId());
         address.setName(addressReq.getName());
         address.setZip(addressReq.getZip());

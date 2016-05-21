@@ -66,32 +66,45 @@ public class ControllerSignatureAspect implements Ordered {
         Class returnType = method.getReturnType();
         Object errRes = returnType.getDeclaredConstructor().newInstance();
         try {
-            // 对请求参数进行解析，并获取参数对象引用
-            req = getReqBean(parames, clazz, errRes, rl);
             if(!rl.isPageReturn()) {
+                // 对请求参数进行解析，并获取参数对象引用
+                req = getReqBean(parames, clazz, errRes, rl);
                 if (StringUtils.isNotBlank(((BaseRes) errRes).getResCode())) {
                     return errRes;
                 }
-            }
-            if(req == null){
 
-            }
+                if(req == null){
+                    setResUnknown((BaseRes) errRes);
+                    return errRes;
+                }
 
-            log.info("进入" + tarName + "......");
+                log.info("进入" + tarName + "......");
 
-            // 进入controller
-            Object res = point.proceed(parames);
+                // 进入controller
+                Object res = point.proceed(parames);
 
-            log.info("离开" + tarName + "......");
-            // 自动校验返回码,没有补齐系统繁忙
-            // 允许返回String
-            if(!rl.isPageReturn()) {
+                log.info("离开" + tarName + "......");
+                // 自动校验返回码,没有补齐系统繁忙
+                // 允许返回String
                 BaseRes res1 = (BaseRes) res;
                 if (res1 == null || StringUtils.isBlank(res1.getResCode())) {
                     setResUnknown(res1);
                 }
+                return res;
+            } else {
+                req = getReqBean(parames, clazz, errRes, rl);
+                if(req == null){
+                    return errRes;
+                }
+
+                log.info("进入" + tarName + "......");
+
+                // 进入controller
+                Object res = point.proceed(parames);
+
+                log.info("离开" + tarName + "......");
+                return res;
             }
-            return res;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -115,8 +128,6 @@ public class ControllerSignatureAspect implements Ordered {
         BaseRes res = null;
         if(!rl.isPageReturn()){
             res = (BaseRes) res1;
-        }else{
-            res = new BaseRes();
         }
         // 解析参数
         for (Object obj : parames) {
@@ -152,8 +163,10 @@ public class ControllerSignatureAspect implements Ordered {
 
         if(req == null){
             log.error(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
-            res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
-            res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            if(res != null) {
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            }
             return null;
         }
 
@@ -165,13 +178,17 @@ public class ControllerSignatureAspect implements Ordered {
             String token = (String) toField.get(req);
             ComUserKeybox keybox = keyboxService.getComUserKeyboxByToken(token);
             if (keybox == null) {
-                res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID);
-                res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID_MSG);
+                if(res != null) {
+                    res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID);
+                    res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_INVALID_MSG);
+                }
                 return null;
             }
             if (new Date().compareTo(keybox.getExTime()) >= 0) {
-                res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE);
-                res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE_MSG);
+                if(res != null) {
+                    res.setResCode(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE);
+                    res.setResMsg(SysResCodeCons.RES_CODE_REQ_TOKEN_PASTDUE_MSG);
+                }
                 return null;
             }
 
@@ -189,6 +206,7 @@ public class ControllerSignatureAspect implements Ordered {
             user = userService.getUserById(keybox.getComUserId());
         }
 
+        // 绑定参数
         for(int i = 0; i < parames.length; i++){
             if (parames[i].getClass() == clazz) {
                 if(!isSet){

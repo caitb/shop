@@ -1,4 +1,4 @@
-package com.masiis.shop.web.mall.beans.pay.wxpay;
+package com.masiis.shop.common.beans.wxpay;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.annotation.SignField;

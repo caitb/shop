@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.masiis.shop.common.annotation.SignField;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.MD5Utils;
-import com.masiis.shop.web.mall.beans.pay.wxpay.BrandWCPayReq;
+import com.masiis.shop.common.beans.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import org.apache.commons.lang.StringUtils;

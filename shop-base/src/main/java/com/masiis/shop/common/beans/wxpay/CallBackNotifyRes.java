@@ -1,4 +1,4 @@
-package com.masiis.shop.web.platform.beans.pay.wxpay;
+package com.masiis.shop.common.beans.wxpay;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 

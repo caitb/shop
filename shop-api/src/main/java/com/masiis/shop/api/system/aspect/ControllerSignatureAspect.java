@@ -19,6 +19,7 @@ import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -66,9 +67,11 @@ public class ControllerSignatureAspect implements Ordered {
         Object errRes = returnType.getDeclaredConstructor().newInstance();
         try {
             // 对请求参数进行解析，并获取参数对象引用
-            req = getReqBean(parames, clazz, (BaseRes) errRes, rl);
-            if(StringUtils.isNotBlank(((BaseRes) errRes).getResCode())){
-                return errRes;
+            req = getReqBean(parames, clazz, errRes, rl);
+            if(!rl.isPageReturn()) {
+                if (StringUtils.isNotBlank(((BaseRes) errRes).getResCode())) {
+                    return errRes;
+                }
             }
             if(req == null){
 
@@ -81,16 +84,21 @@ public class ControllerSignatureAspect implements Ordered {
 
             log.info("离开" + tarName + "......");
             // 自动校验返回码,没有补齐系统繁忙
-            BaseRes res1 = (BaseRes) res;
-            if(res1 == null || StringUtils.isBlank(res1.getResCode())){
-                setResUnknown(res1);
+            // 允许返回String
+            if(!rl.isPageReturn()) {
+                BaseRes res1 = (BaseRes) res;
+                if (res1 == null || StringUtils.isBlank(res1.getResCode())) {
+                    setResUnknown(res1);
+                }
             }
             return res;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
 
-        setResUnknown((BaseRes) errRes);
+        if(!rl.isPageReturn()) {
+            setResUnknown((BaseRes) errRes);
+        }
         return errRes;
     }
 
@@ -101,9 +109,15 @@ public class ControllerSignatureAspect implements Ordered {
      * @param clazz
      * @return
      */
-    private Object getReqBean(Object[] parames, Class clazz, BaseRes res, SignValid rl) throws UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+    private Object getReqBean(Object[] parames, Class clazz, Object res1, SignValid rl) throws UnsupportedEncodingException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Object req = null;
         boolean isSet = true;
+        BaseRes res = null;
+        if(!rl.isPageReturn()){
+            res = (BaseRes) res1;
+        }else{
+            res = new BaseRes();
+        }
         // 解析参数
         for (Object obj : parames) {
             if (obj instanceof HttpServletRequest) {

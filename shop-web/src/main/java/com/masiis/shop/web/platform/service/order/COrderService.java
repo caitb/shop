@@ -8,7 +8,7 @@ import com.masiis.shop.dao.platform.order.PfCorderOperationLogMapper;
 import com.masiis.shop.dao.platform.order.PfCorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.platform.service.product.ProductService;
 import com.masiis.shop.web.platform.service.user.UserAddressService;
 import com.masiis.shop.web.platform.utils.WXBeanUtils;

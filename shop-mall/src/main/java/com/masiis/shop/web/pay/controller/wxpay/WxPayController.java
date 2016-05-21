@@ -5,7 +5,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.exceptions.OrderPaidException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.web.mall.beans.pay.wxpay.BrandWCPayReq;
+import com.masiis.shop.common.beans.wxpay.BrandWCPayReq;
 import com.masiis.shop.web.mall.beans.pay.wxpay.UnifiedOrderReq;
 import com.masiis.shop.web.mall.beans.pay.wxpay.UnifiedOrderRes;
 import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;

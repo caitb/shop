@@ -1,7 +1,7 @@
 package com.masiis.shop.web.platform.utils;
 
 import com.masiis.shop.web.platform.beans.pay.wxpay.IServiceRequest;
-import com.masiis.shop.web.platform.beans.pay.wxpay.UnifiedOrderReq;
+import com.masiis.shop.common.beans.wxpay.UnifiedOrderReq;
 import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -12,22 +12,15 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionPoolTimeoutException;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.security.*;
-import java.security.cert.CertificateException;
 
 /**
  * @author lzh

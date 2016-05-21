@@ -15,4 +15,5 @@ public @interface SignValid {
     Class paramType();
     Class superClass() default BaseReq.class;
     boolean hasToken() default true;
+    boolean isPageReturn() default false;
 }

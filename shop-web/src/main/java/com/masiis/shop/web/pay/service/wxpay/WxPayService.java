@@ -96,7 +96,7 @@ public class WxPayService {
                 res.setBody(sku.getName());
                 res.setOut_trade_no(SysBeanUtils.createPaySerialNumByOrderType(orderType));
                 res.setTotal_fee(order.getReceivableAmount().multiply(new BigDecimal(100)).intValue() + ""); //res.setTotal_fee("1");
-                log.info("订单类型orderType:B");
+                log.info("订单类型orderType:C");
             } else {
                 throw new BusinessException("订单号错误,不存在该订单号!");
             }

@@ -107,5 +107,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL_MSG = "ordercode为空";
 
+    public static final String RES_CODE_WXPAY_ORDERCODE_NOTVALID = "900102";
+    public static final String RES_CODE_WXPAY_ORDERCODE_NOTVALID_MSG = "ordercode不合法";
 
+    public static final String RES_CODE_WXPAY_PREORDER_FAIL = "900105";
+    public static final String RES_CODE_WXPAY_PREORDER_FAIL_MSG = "微信预付单下单失败";
 }

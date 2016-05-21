@@ -28,7 +28,22 @@ import java.util.*;
  */
 public class SysSignUtils {
     private static Logger log = Logger.getLogger(SysSignUtils.class);
+    private final static String[] charArrs = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+            "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
 
+    /**
+     * 生成32位随机字符串
+     *
+     * @return
+     */
+    public static String createGenerateStr(){
+        int len = 32;
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < len; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
+    }
     /**
      * 根据反射来组织bean对象的签名字符串
      *

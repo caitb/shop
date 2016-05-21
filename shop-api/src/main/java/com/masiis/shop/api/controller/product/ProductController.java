@@ -113,33 +113,47 @@ public class ProductController extends BaseController {
     @RequestMapping("/detail")
     @ResponseBody
     @SignValid(paramType = ProDetailReq.class)
-    public ModelAndView getProDetail(HttpServletRequest request, ProDetailReq req, Integer skuId,ComUser user) {
+    public ProDetailRes getProDetail(HttpServletRequest request, ProDetailReq req,ComUser user) {
         ProDetailRes proDetailRes = new ProDetailRes();
-        ModelAndView mav = new ModelAndView("/product");
-        ComSku comSku = skuService.getSkuById(skuId);
+        ComSku comSku = skuService.getSkuById(req.getSkuId());
         if (comSku == null) {
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SKU_NULL);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SKU_NULL_MSG);
-            mav.addObject("proDetailRes",proDetailRes);
-            return mav;
+            return proDetailRes;
         }
         try {
-            Product product = productService.getSkuDetails(skuId);
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
-            PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, user.getId());
+            Product product = productService.getSkuDetails(req.getSkuId());
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getSkuId());
+            PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(req.getSkuId(), user.getId());
             proDetailRes.setProduct(product);
             proDetailRes.setPfUserSku(pfUserSku);
             proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
-            mav.addObject("productDetails", product);
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
-            mav.addObject("proDetailRes",proDetailRes);
         } catch (Exception e) {
             e.printStackTrace();
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             proDetailRes.setResMsg(e.getMessage());
         }
+        return proDetailRes;
+    }
+    
+    
+    /**
+      * @Author jjh
+      * @Date 2016/5/21 0021 上午 10:20
+      *
+      */
+    @RequestMapping("/htmlView")
+    @SignValid(paramType = ProDetailReq.class,isPageReturn = true)
+    public ModelAndView getProHtml(HttpServletRequest request, ProDetailReq req){
+        ModelAndView mav = new ModelAndView("product/product");
+        try {
+            Product product = productService.getSkuHtml(req.getSkuId());
+            mav.addObject("productDetails", product);
+        } catch (Exception e){
+            mav.addObject("message", e.getMessage());
+        }
         return mav;
     }
-
 }

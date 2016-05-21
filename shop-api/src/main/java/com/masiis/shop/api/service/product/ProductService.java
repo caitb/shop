@@ -52,11 +52,18 @@ public class ProductService {
      * @Date 2016/3/5 0005 下午 2:30
      * 根据商品ID展示商品属性详情
      */
-    public Product getSkuDetails(Integer skuId) {
+    public Product getSkuDetails(Integer skuId) throws Exception{
+        Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        return product;
+    }
+    /**
+     * 图文详情
+     * jjh
+     */
+    public Product getSkuHtml(Integer skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
         ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
         ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
-        product.setLogoUrl(comBrand.getLogoUrl());
         product.setBrand(comBrand.getContent());
         product.setPolicy(comSpu.getPolicy());
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
@@ -69,11 +76,6 @@ public class ProductService {
         }
         return product;
     }
-
-    /**
-     * 图文详情
-     * jjh
-     */
 
     /**
      * @Author Jing Hao

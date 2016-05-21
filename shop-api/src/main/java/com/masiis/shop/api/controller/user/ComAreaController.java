@@ -84,6 +84,11 @@ public class ComAreaController {
         return comAreaRes;
     }
 
+    /**
+     * 查询所有省市区的json文件
+     * @author hanzengzhi
+     * @date 2016/5/21 16:40
+     */
     @RequestMapping(value = "generateComAreaJson.do")
     @ResponseBody
     @SignValid(paramType = ComAreaReq.class)

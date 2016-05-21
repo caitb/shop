@@ -27,7 +27,11 @@ public class ComAreaService {
     public List<ComArea> queryComAreasByParams(ComArea comArea){
         return comAreaMapper.queryComAreasByParam(new ComArea());
     }
-
+    /**
+     * 查询所有省市区的json文件
+     * @author hanzengzhi
+     * @date 2016/5/21 16:40
+     */
     public List<Province> generateComAreaJson(){
         List<ComArea> provinces = comAreaMapper.queryAllProvince();
         List<Province> returnProvince = new ArrayList<Province>();

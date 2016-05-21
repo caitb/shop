@@ -5,6 +5,7 @@ import com.masiis.shop.api.bean.user.ComAreaReq;
 import com.masiis.shop.api.bean.user.ComAreaRes;
 import com.masiis.shop.api.bean.user.ComUserAddressReq;
 import com.masiis.shop.api.constants.SignValid;
+import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComAreaService;
 import com.masiis.shop.dao.po.ComArea;
 import org.springframework.stereotype.Controller;
@@ -27,8 +28,6 @@ public class ComAreaController {
     @Resource
     private ComAreaService comAreaService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @RequestMapping(value = "queryAllProvince.do")
     @ResponseBody
     @SignValid(paramType = ComAreaReq.class)
@@ -37,9 +36,12 @@ public class ComAreaController {
         ComAreaRes comAreaRes = new ComAreaRes();
         try {
             List<ComArea> comAreas = comAreaService.queryAllProvince();
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            comAreaRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             comAreaRes.setComAreas(comAreas);
         }catch (Exception e){
-            e.printStackTrace();
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_AREA_PROVINCE_QUERY_FAIL);
+            comAreaRes.setResMsg(e.getMessage());
         }
         return comAreaRes;
     }
@@ -51,9 +53,12 @@ public class ComAreaController {
         ComAreaRes comAreaRes = new ComAreaRes();
         try {
             List<ComArea> comAreas = comAreaService.queryCityByProviceId(comAreaReq.getPid());
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            comAreaRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             comAreaRes.setComAreas(comAreas);
         }catch (Exception e){
-            e.printStackTrace();
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_AREA_CITY_QUERY_FAIL);
+            comAreaRes.setResMsg(e.getMessage());
         }
         return comAreaRes;
     }
@@ -66,9 +71,12 @@ public class ComAreaController {
         ComAreaRes comAreaRes = new ComAreaRes();
         try {
             List<ComArea> comAreas = comAreaService.queryCountyByCityId(comAreaReq.getPid());
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            comAreaRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
             comAreaRes.setComAreas(comAreas);
         }catch (Exception e){
-            e.printStackTrace();
+            comAreaRes.setResCode(SysResCodeCons.RES_CODE_AREA_COUNTY_QUERY_FAIL);
+            comAreaRes.setResMsg(e.getMessage());
         }
         return comAreaRes;
     }

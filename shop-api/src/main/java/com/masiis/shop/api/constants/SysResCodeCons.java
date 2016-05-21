@@ -92,9 +92,20 @@ public class SysResCodeCons {
     public static final String RES_CODE_SKU_NULL = "100501";
     public static final String RES_CODE_SKU_NULL_MSG = "sku不合法,系统不存在该sku";
 
+    public static final String RES_CODE_AREA_PROVINCE_QUERY_FAIL = "100601";
+    public static final String RES_CODE_AREA_PROVINCE_QUERY_FAIL_MEG = "查询所有的省失败";
+
+    public static final String RES_CODE_AREA_CITY_QUERY_FAIL = "100602";
+    public static final String RES_CODE_AREA_CITY_QUERY_FAIL_MEG = "查询所有的市失败";
+
+    public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL = "100603";
+    public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MEG = "查询所有的区失败";
+
     /**
      * 微信支付
      */
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL_MSG = "ordercode为空";
+
+
 }

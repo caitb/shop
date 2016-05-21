@@ -8,6 +8,7 @@
 package com.masiis.shop.api.bean.user;
 
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
+import com.masiis.shop.api.bean.base.BaseBusinessRes;
 import com.masiis.shop.dao.po.ComArea;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author masiis
  * @version 1.0 2016-03-03
  */
-public class ComAreaRes extends BaseBusinessReq {
+public class ComAreaRes extends BaseBusinessRes {
 
     private List<ComArea> comAreas;
 

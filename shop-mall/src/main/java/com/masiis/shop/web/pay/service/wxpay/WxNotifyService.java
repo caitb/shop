@@ -2,7 +2,7 @@ package com.masiis.shop.web.pay.service.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.po.SfOrderPayment;
-import com.masiis.shop.web.mall.beans.pay.wxpay.CallBackNotifyReq;
+import com.masiis.shop.common.beans.wxpay.CallBackNotifyReq;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;
 import com.masiis.shop.web.mall.service.order.SfOrderPaymentService;
 import com.masiis.shop.web.mall.service.order.SfOrderService;

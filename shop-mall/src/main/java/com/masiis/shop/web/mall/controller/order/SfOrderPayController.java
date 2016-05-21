@@ -6,7 +6,7 @@ package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.dao.po.SfOrder;
-import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPayService;

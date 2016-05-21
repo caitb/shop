@@ -1,8 +1,8 @@
 package com.masiis.shop.web.pay.controller.wxpay;
 
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.web.mall.beans.pay.wxpay.CallBackNotifyReq;
-import com.masiis.shop.web.mall.beans.pay.wxpay.CallBackNotifyRes;
+import com.masiis.shop.common.beans.wxpay.CallBackNotifyReq;
+import com.masiis.shop.common.beans.wxpay.CallBackNotifyRes;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.web.pay.service.wxpay.WxNotifyService;

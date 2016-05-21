@@ -4,7 +4,7 @@ import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.dao.mall.order.SfOrderPaymentMapper;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.mall.beans.pay.wxpay.WxPaySysParamReq;
+import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.utils.WXBeanUtils;
 import com.masiis.shop.dao.po.SfOrder;
 import com.masiis.shop.dao.po.SfOrderConsignee;

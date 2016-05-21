@@ -1,9 +1,11 @@
 package com.masiis.shop.api.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.api.bean.user.ComAreaReq;
 import com.masiis.shop.api.bean.user.ComAreaRes;
 import com.masiis.shop.api.bean.user.ComUserAddressReq;
+import com.masiis.shop.api.bean.user.Province;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComAreaService;
@@ -27,6 +29,7 @@ public class ComAreaController {
 
     @Resource
     private ComAreaService comAreaService;
+
 
     @RequestMapping(value = "queryAllProvince.do")
     @ResponseBody
@@ -79,5 +82,15 @@ public class ComAreaController {
             comAreaRes.setResMsg(e.getMessage());
         }
         return comAreaRes;
+    }
+
+    @RequestMapping(value = "generateComAreaJson.do")
+    @ResponseBody
+    @SignValid(paramType = ComAreaReq.class)
+    public ComAreaRes generateComAreaJson(HttpServletRequest request,ComAreaReq comAreaReq){
+        List<Province> allComAreas = comAreaService.generateComAreaJson();
+        String json = JSONObject.toJSONString(allComAreas);
+        System.out.println(json);
+        return null;
     }
 }

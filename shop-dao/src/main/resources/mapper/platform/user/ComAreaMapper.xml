@@ -79,18 +79,18 @@
 
 
     <select id="queryAllProvince"  resultMap="BaseResultMap">
-        select id,name
+        select id,name,pid
         from com_area
         WHERE pid=1
     </select>
 
     <select id="queryCityByProviceId"  resultMap="BaseResultMap">
-        select id,name
+        select id,name,pid
         from com_area
         WHERE pid = #{pid,jdbcType=INTEGER}
     </select>
     <select id="queryCountyByCityId"  resultMap="BaseResultMap">
-        select id,name
+        select id,name,pid
         from com_area
         WHERE pid = #{pid,jdbcType=INTEGER}
     </select>

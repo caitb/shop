@@ -9,13 +9,16 @@ import com.masiis.shop.api.service.user.UserAddressService;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAddress;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +59,7 @@ public class UserAddressController extends BaseController {
         ComUserAddressRes addressRes = new ComUserAddressRes();
         try{
             ComUserAddress address = new ComUserAddress();
+            addressReq.setUserId(comUser.getId());
             String s = null;
             if (comUser != null) {
                 if (addressReq!=null&&isValidateParam(addressReq,address)){
@@ -95,15 +99,13 @@ public class UserAddressController extends BaseController {
                                          ComUser comUser) {
         ComUserAddressRes addressRes = new ComUserAddressRes();
         try{
-            if (comUser != null) {
-                addressReq.setUserId(comUser.getId());
-            } else {
+            if (comUser == null) {
                 addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
                 addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
                 return addressRes;
             }
             ComUserAddress comUserAddress = new ComUserAddress();
-            cloneAddressReqToAddress(addressReq,comUserAddress);
+            comUserAddress.setUserId(comUser.getId());
             List<ComUserAddress> comUserAddressList = userAddressService.queryComUserAddressesByParam(comUserAddress);
             addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -114,7 +116,35 @@ public class UserAddressController extends BaseController {
         }
         return addressRes;
     }
-
+    /**
+     * 查询某个地址
+     *
+     * @author hanzengzhi
+     * @date 2016/3/9 18:14
+     */
+    @RequestMapping("/getAddressById.do")
+    @ResponseBody
+    @SignValid(paramType = ComUserAddressReq.class)
+    public ComUserAddressRes getAddressById(HttpServletRequest request,
+                                 ComUserAddressReq addressReq,
+                                 ComUser comUser
+                                ) throws Exception {
+        ComUserAddressRes addressRes = new ComUserAddressRes();
+        ComUserAddress comUserAddress = null;
+        List<ComUserAddress> addresses = new ArrayList<>();
+        if (addressReq==null||addressReq.getId()==null){
+            addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+            addressRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
+            return addressRes;
+        }else{
+            comUserAddress = userAddressService.getUserAddressById(addressReq.getId());
+            addresses.add(comUserAddress);
+        }
+        addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        addressRes.setAddresses(addresses);
+        return addressRes;
+    }
     /**
      * 删除地址
      *
@@ -189,6 +219,9 @@ public class UserAddressController extends BaseController {
      * @date 2016/5/19 17:57
      */
     private Boolean isValidateParam(ComUserAddressReq addressReq,ComUserAddress address){
+        if (addressReq.getId()==null&&addressReq.getOperateType().equals("edit")){
+            return false;
+        }
         if (addressReq.getUserId()==null){
             return false;
         }
@@ -222,6 +255,7 @@ public class UserAddressController extends BaseController {
         if (StringUtils.isEmpty(addressReq.getMobile())){
             return false;
         }
+        addressReq.setCreateTime(new Date());
         cloneAddressReqToAddress(addressReq,address);
         return true;
     }
@@ -243,6 +277,12 @@ public class UserAddressController extends BaseController {
         address.setRegionName(addressReq.getRegionName());
         address.setAddress(addressReq.getAddress());
         address.setMobile(addressReq.getMobile());
+        address.setCreateTime(addressReq.getCreateTime());
+        if (addressReq.getIsDefault()!=null){
+            address.setIsDefault(addressReq.getIsDefault());
+        }else{
+            address.setIsDefault(0);
+        }
         return address;
     }
 }

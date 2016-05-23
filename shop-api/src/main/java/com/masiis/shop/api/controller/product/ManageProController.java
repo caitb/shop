@@ -8,6 +8,7 @@ import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.api.service.order.BOrderAddService;
 import com.masiis.shop.api.service.product.ProductService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserAddressService;
@@ -44,6 +45,8 @@ public class ManageProController extends BaseController {
     private SkuService skuService;
     @Resource
     private UserSkuService userSkuService;
+    @Resource
+    private BOrderAddService bOrderAddService;
     /**
       * @Author jjh
       * @Date 2016/5/19 0019 下午 5:49
@@ -80,15 +83,15 @@ public class ManageProController extends BaseController {
     @RequestMapping("/applyInfo")
     @ResponseBody
     @SignValid(paramType = ApplyProReq.class)
-    public ApplyProRes applyProInfo(HttpServletRequest request, ApplyProRes req, Long id, Long selectedAddressId,
+    public ApplyProRes applyProInfo(HttpServletRequest request, ApplyProReq req,
                                     ComUser user) {
         ApplyProRes applyProRes = new ApplyProRes();
         try {
-            ComUserAddress comUserAddress = userAddressService.getOrderAddress(selectedAddressId, user.getId());
+            ComUserAddress comUserAddress = userAddressService.getOrderAddress(req.getSelectedAddressId(), user.getId());
             if (comUserAddress != null) {
                 applyProRes.setComUserAddress(comUserAddress);
             }
-            PfUserSkuStock pfUserSkuStock = productService.getStockByUser(id);
+            PfUserSkuStock pfUserSkuStock = productService.getStockByUser(req.getId());
             pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());//冻结库存
             ComSku comSku = skuService.getSkuById(pfUserSkuStock.getSkuId());
             ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
@@ -104,10 +107,36 @@ public class ManageProController extends BaseController {
             applyProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             applyProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
-            e.printStackTrace();
             applyProRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            applyProRes.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
+            applyProRes.setResMsg(e.getMessage());
+
         }
         return applyProRes;
     }
+
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/23 0023 下午 4:03
+      *
+      */
+    @RequestMapping("/applyStock.do")
+    @ResponseBody
+    @SignValid(paramType = ApplyProReq.class)
+    public ApplyProRes applySkuStock(HttpServletRequest request, ApplyProReq req,
+                                     ComUser user){
+        ApplyProRes applyProRes = new ApplyProRes();
+        try{
+            PfUserSkuStock product = productService.getStockByUser(req.getId());
+            Long orderCode = bOrderAddService.addProductTake(user.getId(), product.getSkuId(), req.getStock(), req.getMessage(), req.getSelectedAddressId());
+            applyProRes.setOrderCode(orderCode);
+            applyProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            applyProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            applyProRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            applyProRes.setResMsg(e.getMessage());
+        }
+         return applyProRes;
+    }
+
 }

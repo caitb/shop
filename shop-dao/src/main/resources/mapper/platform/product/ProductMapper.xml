@@ -23,6 +23,8 @@
         <result column="pfuid" property="pfuId" jdbcType="INTEGER" />
         <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
         <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+
         <result column="is_trial" property="isTrial" jdbcType="INTEGER"/>
         <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
         <result column="version" property="version" jdbcType="INTEGER"/>

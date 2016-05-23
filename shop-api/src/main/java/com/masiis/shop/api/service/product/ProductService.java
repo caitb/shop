@@ -54,6 +54,10 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
+        product.setComSkuImage(comSkuImage);
+        product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
         return product;
     }
     /**

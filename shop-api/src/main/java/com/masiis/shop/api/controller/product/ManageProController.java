@@ -86,11 +86,8 @@ public class ManageProController extends BaseController {
     public ApplyProRes applyProInfo(HttpServletRequest request, ApplyProReq req,
                                     ComUser user) {
         ApplyProRes applyProRes = new ApplyProRes();
-        ComUserAddress comUserAddress = null;
         try {
-            if (req.getSelectedAddressId() != null) {
-                 comUserAddress = userAddressService.getOrderAddress(req.getSelectedAddressId(), user.getId());
-            }
+            ComUserAddress comUserAddress = userAddressService.getOrderAddress(req.getSelectedAddressId(), user.getId());
             if (comUserAddress != null) {
                 applyProRes.setComUserAddress(comUserAddress);
             }

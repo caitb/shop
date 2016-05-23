@@ -28,6 +28,12 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <servlet-mapping>
+    <!-- 假如静态内容css和js放在 static 目录下，由容器定义的 default servlet 处理 -->
+    <servlet-name>default</servlet-name>
+    <url-pattern>/static/*</url-pattern>
+  </servlet-mapping>
+
   <filter>
     <filter-name>DruidWebStatFilter</filter-name>
     <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>

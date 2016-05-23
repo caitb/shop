@@ -24,6 +24,9 @@ public class SkuService {
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
 
+    public ComSku getSkuById(Integer skuId) {
+        return comSkuMapper.selectByPrimaryKey(skuId);
+    }
     /**
      * 根据id查找商品
      *

@@ -45,7 +45,7 @@ public class UserSkuService {
      * @author ZhaoLiang
      * @date 2016/3/8 16:16
      */
-    public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) throws Exception {
+    public PfUserSku getUserSkuByUserIdAndSkuId(Long userId, Integer SkuId) {
         return pfUserSkuMapper.selectByUserIdAndSkuId(userId, SkuId);
     }
 
@@ -101,10 +101,10 @@ public class UserSkuService {
      * @author ZhaoLiang
      * @date 2016/4/1 12:11
      */
-    public PfUserSku checkParentData(ComUser comUser, Long pUserId, Integer skuId) throws Exception {
+    public PfUserSku checkParentData(ComUser comUser, Long pUserId, Integer skuId) {
         PfUserSku pfUserSku = null;
         if (pUserId == null || pUserId <= 0) {
-            throw new BusinessException(" 上级用户id不合法!");
+            throw new BusinessException("上级用户id不合法!");
         }
         ComUser pUser = userService.getUserById(pUserId);
         if (pUser == null) {

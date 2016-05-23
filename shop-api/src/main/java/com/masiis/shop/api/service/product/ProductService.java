@@ -54,6 +54,10 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) throws Exception{
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
+        String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
+        product.setComSkuImage(comSkuImage);
+        product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
         return product;
     }
     /**
@@ -67,7 +71,7 @@ public class ProductService {
         product.setBrand(comBrand.getContent());
         product.setPolicy(comSpu.getPolicy());
         List<ComSkuImage> skuImgList = productMapper.getSkuImgById(skuId);
-        String productImgValue = PropertiesUtils.getStringValue("index_product_prototype_url");
+        String productImgValue = PropertiesUtils.getStringValue("index_product_800_800_url");
         if (skuImgList != null && skuImgList.size() > 0) {
             for (ComSkuImage comSkuImage : skuImgList) {
                 comSkuImage.setFullImgUrl(productImgValue + comSkuImage.getImgUrl());

@@ -234,9 +234,11 @@ public class BOrderPayService {
                 if (parentUS == null) {
                     thisUS.setPid(0);
                     thisUS.setUserPid(0L);
+                    thisUS.setTreeLevel(1);
                 } else {
                     thisUS.setPid(parentUS.getId());
                     thisUS.setUserPid(parentUS.getUserId());
+                    thisUS.setTreeLevel(parentUS.getTreeLevel() + 1);
                 }
                 thisUS.setAgentNum(0l);
                 thisUS.setUserId(pfBorder.getUserId());
@@ -268,10 +270,17 @@ public class BOrderPayService {
                 String code = getCertificateCode(pfUserCertificate);
                 thisUS.setCode(code);
                 pfUserSkuMapper.insert(thisUS);
+                String treeCode = "";
+                if (parentUS == null) {
+                    treeCode = thisUS.getSkuId() + "," + thisUS.getId() + ",";
+                } else {
+                    treeCode = parentUS.getTreeCode() + thisUS.getId() + ",";
+                }
+                pfUserSkuMapper.updateTreeCodeById(thisUS.getId(), treeCode);
                 pfUserCertificate.setPfUserSkuId(thisUS.getId());
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                ComSku comSku = skuService.findById(pfBorderItem.getSkuId());
+                ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号

@@ -52,19 +52,23 @@ public class ControllerSignatureAspect implements Ordered {
     @Resource
     private ComUserKeyboxService keyboxService;
 
-    @Around("within(com.masiis.shop.api.controller..*) && @annotation(rl)")
-    public Object signatureValid(ProceedingJoinPoint point, SignValid rl) throws Throwable {
+    @Around("within(com.masiis.shop.api.controller..*)")
+    public Object signatureValid(ProceedingJoinPoint point) throws Throwable {
         System.out.println("aspect......");
+        MethodSignature signature = (MethodSignature) point.getSignature();
+        Method method = signature.getMethod();
+        Class returnType = method.getReturnType();
+        Object errRes = returnType.getDeclaredConstructor().newInstance();
+        SignValid rl = method.getAnnotation(SignValid.class);
+        if(rl == null){
+            return "系统错误";
+        }
         Class clazz = rl.paramType();
         //获取目标方法体参数
         Object[] parames = point.getArgs();
         String tarName = point.getTarget().getClass().getSimpleName();
 
         Object req = null;
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        Class returnType = method.getReturnType();
-        Object errRes = returnType.getDeclaredConstructor().newInstance();
         try {
             if(!rl.isPageReturn()) {
                 // 对请求参数进行解析，并获取参数对象引用

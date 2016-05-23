@@ -37,7 +37,7 @@
             -moz-box-pack: center;
         }
         .xinz p {
-            background: url("../images/xz.png") no-repeat 5px;
+            background: url("/static/images/xz.png") no-repeat 5px;
             text-indent: 20px;
             background-size: 10%;
         }
@@ -115,12 +115,12 @@
             padding-left: 2px;
         }
         #header .header_bottom #header_right h2 span:nth-child(1) {
-            background: url("../images/icon_02.png") no-repeat 1px;
+            background: url("/static/images/icon_02.png") no-repeat 1px;
             background-size: 12px 12px;
             margin-right: 8px;
         }
         #header .header_bottom #header_right h2 span:nth-child(2) {
-            background: url("../images/icon_03.png") no-repeat 1px;
+            background: url("/static/images/icon_03.png") no-repeat 1px;
             background-size: 12px 12px;
         }
         #header .header_bottom #add {
@@ -136,7 +136,7 @@
             text-indent: 15px;
             line-height: 22px;
             font-size: 12px;
-            background: #f74a11 url("../images/icon_04.png") no-repeat 8px;
+            background: #f74a11 url("/static/images/icon_04.png") no-repeat 8px;
             background-size: 12px 12px;
             /*-webkit-box-shadow:0 1px 1px #F74A11;   */
         }
@@ -827,7 +827,7 @@
             -webkit-box-align: center;
             -moz-box-align: center;
             margin-bottom: 5px;
-            background: white url("../images/zhuce_1.png") no-repeat;
+            background: white url("/static/images/zhuce_1.png") no-repeat;
             background-size: 80%;
             background-position: center 85%;
         }

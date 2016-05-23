@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -11,7 +12,9 @@ import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.PfUserRelationService;
 import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -241,5 +244,64 @@ public class UserPartnerApplyController extends BaseController {
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         return res;
+    }
+
+    @RequestMapping("/checkphone")
+    @ResponseBody
+    @SignValid(paramType = CheckPUserPhoneReq.class)
+    public CheckPUserPhoneRes checkPPhone(HttpServletRequest request, CheckPUserPhoneReq req, ComUser user){
+        CheckPUserPhoneRes res = new CheckPUserPhoneRes();
+        Integer skuId = req.getSkuId();
+        String phoneNum = req.getPhoneNum();
+        if(StringUtils.isBlank(phoneNum)){
+            // 手机号为空
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
+            return res;
+        }
+        if(!PhoneNumUtils.isPhoneNum(phoneNum)){
+            // 手机号格式不正确
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
+            return res;
+        }
+        if(skuId == null || skuId == 0){
+            // skuId为空
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            return res;
+        }
+        ComSku sku = skuService.getSkuById(skuId);
+        if(sku == null){
+            // skuId不存在
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            return res;
+        }
+        ComUser pUser = userService.getUserByMobile(phoneNum);
+        if(pUser == null){
+            // 手机号尚未注册
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
+            return res;
+        }
+        PfUserSku pPfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+        if(pPfUserSku == null){
+            // 手机号用户尚未代理该产品
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            return res;
+        }
+
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        res.setPhoneIsOk(1);
+        return null;
     }
 }

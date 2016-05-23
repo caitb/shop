@@ -47,7 +47,7 @@ public class UserIdentityAuthService {
     public ComUser getIdentityAuthInfo(HttpServletRequest request,ComUser comUser ){
         switch (comUser.getAuditStatus()){
             case 3://审核不通过，从云服务器身份证下载到本地服务器供展示
-                loadIdCardFromOSSToLocal(request,comUser);
+                //loadIdCardFromOSSToLocal(request,comUser);
                 break;
             default:
                 break;
@@ -108,26 +108,24 @@ public class UserIdentityAuthService {
      * @date 2016/3/30 15:39
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
-    public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontUrl,String idCardBackUrl,Integer type){
+    public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontName,String idCardBackName,Integer type){
         try{
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+            /*String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
             String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             if (type.equals(updateType)){
                 //第一次审核不通过重新提交身份证审核,删除服务器之前的身份证
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
-            }
+            }*/
             //修改用户数据
-            comUser.setIdCardFrontUrl(frontFillFullName);
-            comUser.setIdCardBackUrl(backFillFullName);
+            comUser.setIdCardFrontUrl(idCardFrontName);
+            comUser.setIdCardBackUrl(idCardBackName);
             comUser.setAuditStatus(1);
             int i = userService.updateComUser(comUser);
             if (i == 1){
                 //更新缓存
-                request.getSession().removeAttribute("comUser");
-                request.getSession().setAttribute("comUser", comUser);
                 if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
@@ -135,8 +133,8 @@ public class UserIdentityAuthService {
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
                 //删除最新上传的本地服务器照片
-                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
-                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
+                /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+                UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/
             }
             return i;
         }catch (Exception ex){

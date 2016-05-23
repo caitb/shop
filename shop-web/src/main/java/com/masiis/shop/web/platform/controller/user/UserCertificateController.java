@@ -104,17 +104,20 @@ public class UserCertificateController extends BaseController {
         try {
             String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            String savepath = SysConstants.ID_CARD_PATH;
+            //String savepath = SysConstants.ID_CARD_PATH;
+            String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
             String realpath = webappPath + savepath;
-            String imgPath = UploadImage.upload(idCardImg, realpath);
-            if (StringUtils.isBlank(imgPath)) {
+            //String imgPath = UploadImage.upload(idCardImg, realpath);
+            String fileName = userCertificateService.uploadCertificateToOss(idCardImg,getComUser(request));
+            if (StringUtils.isBlank(fileName)) {
                 object.put("code", "0");
                 object.put("msg", "");
                 object.put("imgPath", "");
             } else {
                 object.put("code", "1");
                 object.put("msg", "上传成功");
-                object.put("imgPath", savepath + imgPath);// java.net.URLEncoder.encode(savepath + imgPath, "UTF-8")
+                object.put("fileName",fileName);
+                object.put("imgPath", savepath + fileName);// java.net.URLEncoder.encode(savepath + imgPath, "UTF-8")
             }
         } catch (Exception e) {
             object.put("code", "99");

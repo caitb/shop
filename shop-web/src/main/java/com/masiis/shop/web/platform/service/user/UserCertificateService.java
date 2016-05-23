@@ -1,6 +1,7 @@
 package com.masiis.shop.web.platform.service.user;
 
 import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
 import com.masiis.shop.dao.platform.certificate.CertificateMapper;
@@ -11,11 +12,18 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
+import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * UserCertificateService
@@ -26,6 +34,10 @@ import java.util.List;
 @Service
 @Transactional
 public class UserCertificateService {
+
+    private final static String[] charArrs = {"A", "D", "E", "C", "H", "Y", "6", "7", "8", "9",
+            "M", "N", "O", "Z", "1", "5", "P", "Q", "R", "S", "2", "3", "4", "T", "I", "J", "F",
+            "G", "B", "K", "L", "W", "X", "U", "V", "0"};
 
     @Resource
     private PfUserCertificateMapper pfUserCertificateMapper;
@@ -120,5 +132,39 @@ public class UserCertificateService {
      */
     public String getCtname(Integer agentLevelId){
         return comAgentLevelMapper.selectByPrimaryKey(agentLevelId).getName();
+    }
+    public String uploadCertificateToOss(MultipartFile idCardImg,ComUser comUser){
+        try {
+            String contentType = idCardImg.getContentType();
+            String imageType = contentType.substring(contentType.indexOf("/")+1);
+           return uploadCertificateToOss(idCardImg.getInputStream(),idCardImg.getSize(),imageType,comUser.getId());
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return null;
+    }
+    public String uploadCertificateToOss(InputStream is,long fileSize,String imageType, Long userId){
+        String fileName = null;
+        try {
+            fileName = userId+"_"+"certificate_"+ createGenerateStr()+"."+imageType;
+            OSSObjectUtils.uploadFile(fileName,fileSize,is,OSSObjectUtils.OSS_CERTIFICATE_TEMP + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
+    /**
+     * 生成32位随机字符串
+     *
+     * @return
+     */
+    private static String createGenerateStr(){
+        int len = 10;
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < len; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
     }
 }

@@ -61,6 +61,8 @@
             <div class="sf" style="border-bottom:none;">
                 身份证照片：
             </div>
+            <input id="idCardFrontName" style="display: none" value="">
+            <input id="idCardBackName" style="display: none" value="">
             <div class="sfphoto">
                 <input type="file" id="idCardImg" name="idCardImg" onchange="uploadIdCardImg()"
                        style="display: none;">
@@ -121,6 +123,7 @@
                     if (selector == "idCardBack") {
                         isRuningB = true;
                     }
+                     $("#" + selector+"Name").val(data.fileName);
                 } else {
                     alert(data.msg);
                 }
@@ -159,11 +162,12 @@
         }
         fCardUrl = fCardUrl.substr(fCardUrl.lastIndexOf('/') + 1);
         bCardUrl = bCardUrl.substr(bCardUrl.lastIndexOf('/') + 1);
+
         var paraData = {};
         paraData.name = $("#name").val();
         paraData.idCard = legalIdCard;
-        paraData.idCardFrontUrl = fCardUrl;
-        paraData.idCardBackUrl = bCardUrl;
+        paraData.idCardFrontName = $("#idCardFrontName").val();
+        paraData.idCardBackName = $("#idCardBackName").val();
         paraData.type = 0;
         $.ajax({
             url: "${path}/identityAuth/sumbitAudit.do",

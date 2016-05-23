@@ -50,7 +50,7 @@ public class PersonalCenterController extends BaseController {
         if (map != null){
             SkuAgentDetail skuAgentDetail;
             pfSkuAgentDetails = (List<PfSkuAgentDetail>) map.get("pfSkuAgentDetails");
-            if (pfSkuAgentDetails != null){
+            if (pfSkuAgentDetails != null && pfSkuAgentDetails.size() > 0){
                 for (PfSkuAgentDetail pfSkuAgentDetail : pfSkuAgentDetails){
                     skuAgentDetail = new SkuAgentDetail();
                     skuAgentDetail.setAgentLevelIConUrl(map.get("agentLevelIConUrl").toString() + pfSkuAgentDetail.getPfSkuAgent().getIcon());

@@ -8,7 +8,25 @@ import com.masiis.shop.api.bean.base.BasePagingReq;
  */
 public class OrderListPagingReq extends BasePagingReq {
     private String token;
-    private Integer ostatus;
+    private Integer orderStatus;
+    private Integer index;
+    private Integer sendType;
+
+    public void setOrderStatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Integer getSendType() {
+        return sendType;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
 
     public String getToken() {
         return token;
@@ -18,11 +36,11 @@ public class OrderListPagingReq extends BasePagingReq {
         this.token = token;
     }
 
-    public Integer getOstatus() {
-        return ostatus;
+    public Integer getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOstatus(Integer ostatus) {
-        this.ostatus = ostatus;
+    public void setOstatus(Integer orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

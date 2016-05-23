@@ -1,13 +1,10 @@
 package com.masiis.shop.api.controller.shop;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.base.ShopApiConstant;
-import com.masiis.shop.api.bean.base.ShopApiResModel;
 import com.masiis.shop.api.bean.shop.DistributionRecord;
 import com.masiis.shop.api.bean.shop.ItemDistributionReq;
 import com.masiis.shop.api.bean.shop.ItemDistributionRes;
 import com.masiis.shop.api.bean.shop.SfDistribution;
-import com.masiis.shop.api.bean.user.WithdrawRecordReq;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
@@ -24,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;

@@ -127,7 +127,9 @@ public class ProductController extends BaseController {
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(req.getSkuId(), user.getId());
             proDetailRes.setProduct(product);
             proDetailRes.setPfUserSku(pfUserSku);
-            proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            if(pfBorder!=null){
+                proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            }
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

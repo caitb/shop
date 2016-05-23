@@ -104,34 +104,28 @@ public class UserPartnerApplyController extends BaseController {
             res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
             return res;
         }
-        Long pUserId = req.getpUserId();
         Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
         res.setIsAgent(0);
-        if (pUserId != null && pUserId > 0) {
-            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
-            if (pfUserSku != null && pfUserSku.getIsCertificate() == 1) {
-                // 已经绑定过代理关系
-                res.setIsAgent(1);
-            }
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+        if (pfUserSku != null) {
+            // 已经绑定过代理关系
+            log.error(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT);
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT_MSG);
+            return res;
         }
 
         try {
             if (temPUserId == 0) {
-                if (pUserId != null && pUserId > 0) {
-                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                    userSkuService.checkParentData(user, pUserId, skuId);
-                    PfUserRelation pfUserRelation = new PfUserRelation();
-                    pfUserRelation.setUserId(user.getId());
-                    pfUserRelation.setSkuId(skuId);
-                    pfUserRelation.setCreateTime(new Date());
-                    pfUserRelation.setIsEnable(1);
-                    pfUserRelation.setUserPid(pUserId);
-                    pfUserRelationService.insert(pfUserRelation);
-                } else {
-                    pUserId = 0l;
-                }
-            } else {
-                pUserId = temPUserId;
+                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
+                userSkuService.checkParentData(user, temPUserId, skuId);
+                PfUserRelation pfUserRelation = new PfUserRelation();
+                pfUserRelation.setUserId(user.getId());
+                pfUserRelation.setSkuId(skuId);
+                pfUserRelation.setCreateTime(new Date());
+                pfUserRelation.setIsEnable(1);
+                pfUserRelation.setUserPid(temPUserId);
+                pfUserRelationService.insert(pfUserRelation);
             }
         } catch (Exception e) {
             if(e instanceof BusinessException) {
@@ -146,7 +140,7 @@ public class UserPartnerApplyController extends BaseController {
         }
         Integer isQueuing = 0;
         Integer count = 0;
-        int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
+        int status = skuService.getSkuStockStatus(skuId, 1, temPUserId);
         if (status == 1) {
             isQueuing = 1;
             count = bOrderService.selectQueuingOrderCount(skuId);
@@ -244,6 +238,8 @@ public class UserPartnerApplyController extends BaseController {
         }
         res.setIsQueuing(isQueuing);
         res.setQueueNum(count);
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         return res;
     }
 }

@@ -8,7 +8,6 @@ import com.masiis.shop.api.bean.base.BaseBusinessReq;
  */
 public class PartnerPreApplyReq extends BaseBusinessReq {
     private Integer skuId;
-    private Long pUserId;
 
     public Integer getSkuId() {
         return skuId;
@@ -16,13 +15,5 @@ public class PartnerPreApplyReq extends BaseBusinessReq {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
-    }
-
-    public Long getpUserId() {
-        return pUserId;
-    }
-
-    public void setpUserId(Long pUserId) {
-        this.pUserId = pUserId;
     }
 }

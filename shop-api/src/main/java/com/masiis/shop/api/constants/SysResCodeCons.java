@@ -105,6 +105,26 @@ public class SysResCodeCons {
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MEG = "查询所有的区失败";
 
     /**
+     * 合伙人申请
+     */
+    public static final String RES_CODE_UPAPPLY_SKU_NULL = "100701";
+    public static final String RES_CODE_UPAPPLY_SKU_NULL_MSG = "skuid为空";
+
+    public static final String RES_CODE_UPAPPLY_SKU_INVALID = "100702";
+    public static final String RES_CODE_UPAPPLY_SKU_INVALID_MSG = "sku不合法,系统不存在该sku";
+
+    public static final String RES_CODE_ISAGENT_SKU_NULL = "100705";
+    public static final String RES_CODE_ISAGENT_SKU_NULL_MSG = "skuid为空";
+
+    public static final String RES_CODE_ISAGENT_SKU_INVALID = "100706";
+    public static final String RES_CODE_ISAGENT_SKU_INVALID_MSG = "sku不合法,系统不存在该sku";
+
+    public static final String RES_CODE_ISAGENT_NOTAGENT = "100707";
+    public static final String RES_CODE_ISAGENT_NOTAGENT_MSG = "您还不能申请该产品合伙人";
+
+    public static final String RES_CODE_UPAPPLY_PUSER_INVALID = "100709";
+    public static final String RES_CODE_UPAPPLY_PUSER_INVALID_MSG = "其他";
+    /**
      * 微信支付
      */
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";

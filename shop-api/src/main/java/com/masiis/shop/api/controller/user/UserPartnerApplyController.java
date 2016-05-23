@@ -50,25 +50,34 @@ public class UserPartnerApplyController extends BaseController {
         Integer skuId = req.getSkuId();
         canApplyRes res = new canApplyRes();
         if(skuId == null){
-            log.error(SysResCodeCons.RES_CODE_ISAGENT_SKU_NULL_MSG);
-            res.setResCode(SysResCodeCons.RES_CODE_ISAGENT_SKU_NULL);
-            res.setResMsg(SysResCodeCons.RES_CODE_ISAGENT_SKU_NULL_MSG);
+            log.error(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL_MSG);
             return res;
         }
         ComSku sku = skuService.getSkuById(skuId);
         if (sku == null) {
-            log.error(SysResCodeCons.RES_CODE_ISAGENT_SKU_INVALID_MSG);
-            res.setResCode(SysResCodeCons.RES_CODE_ISAGENT_SKU_INVALID);
-            res.setResMsg(SysResCodeCons.RES_CODE_ISAGENT_SKU_INVALID_MSG);
+            log.error(SysResCodeCons.RES_CODE_CANAGENT_SKU_INVALID_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_SKU_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_SKU_INVALID_MSG);
             return res;
         }
         PfUserRelation relation = pfUserRelationService.getRelation(user.getId(), skuId);
-        if(relation == null){
-            res.setResCode(SysResCodeCons.RES_CODE_ISAGENT_SKU_NULL);
-            res.setResMsg(SysResCodeCons.RES_CODE_ISAGENT_SKU_NULL_MSG);
+        PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+        if (pfUserSku != null) {
+            // 已经代理过该产品
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT_MSG);
         } else {
-            res.setResCode(SysResCodeCons.RES_CODE_ISAGENT_NOTAGENT);
-            res.setResMsg(SysResCodeCons.RES_CODE_ISAGENT_NOTAGENT_MSG);
+            if(relation == null) {
+                // 临时代理关系没有,不能申请
+                res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT);
+                res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
+            } else {
+                // 已经绑定过临时代理关系
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            }
         }
         log.error(res.getResMsg());
         return res;

@@ -113,14 +113,17 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPAPPLY_SKU_INVALID = "100702";
     public static final String RES_CODE_UPAPPLY_SKU_INVALID_MSG = "sku不合法,系统不存在该sku";
 
-    public static final String RES_CODE_ISAGENT_SKU_NULL = "100705";
-    public static final String RES_CODE_ISAGENT_SKU_NULL_MSG = "skuid为空";
+    public static final String RES_CODE_CANAGENT_SKU_NULL = "100705";
+    public static final String RES_CODE_CANAGENT_SKU_NULL_MSG = "skuid为空";
 
-    public static final String RES_CODE_ISAGENT_SKU_INVALID = "100706";
-    public static final String RES_CODE_ISAGENT_SKU_INVALID_MSG = "sku不合法,系统不存在该sku";
+    public static final String RES_CODE_CANAGENT_SKU_INVALID = "100706";
+    public static final String RES_CODE_CANAGENT_SKU_INVALID_MSG = "sku不合法,系统不存在该sku";
 
-    public static final String RES_CODE_ISAGENT_NOTAGENT = "100707";
-    public static final String RES_CODE_ISAGENT_NOTAGENT_MSG = "您还不能申请该产品合伙人";
+    public static final String RES_CODE_CANAGENT_NOTAGENT = "100707";
+    public static final String RES_CODE_CANAGENT_NOTAGENT_MSG = "您还不能申请该产品合伙人";
+
+    public static final String RES_CODE_CANAGENT_ALREADY_AGENT = "100708";
+    public static final String RES_CODE_CANAGENT_ALREADY_AGENT_MSG = "您已经申请该产品的合伙人";
 
     public static final String RES_CODE_UPAPPLY_PUSER_INVALID = "100709";
     public static final String RES_CODE_UPAPPLY_PUSER_INVALID_MSG = "其他";

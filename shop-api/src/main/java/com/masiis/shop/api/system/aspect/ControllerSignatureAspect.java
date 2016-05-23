@@ -55,6 +55,7 @@ public class ControllerSignatureAspect implements Ordered {
     @Around("within(com.masiis.shop.api.controller..*)")
     public Object signatureValid(ProceedingJoinPoint point) throws Throwable {
         System.out.println("aspect......");
+        long start = System.currentTimeMillis();
         MethodSignature signature = (MethodSignature) point.getSignature();
         Method method = signature.getMethod();
         Class returnType = method.getReturnType();
@@ -83,10 +84,12 @@ public class ControllerSignatureAspect implements Ordered {
                 }
 
                 log.info("进入" + tarName + "......");
-
+                long before = System.currentTimeMillis();
+                log.info("之前:" + (before - start));
                 // 进入controller
                 Object res = point.proceed(parames);
-
+                log.info("过程:" + (System.currentTimeMillis() - before));
+                log.info("总:" + (System.currentTimeMillis() - start));
                 log.info("离开" + tarName + "......");
                 // 自动校验返回码,没有补齐系统繁忙
                 // 允许返回String
@@ -103,9 +106,12 @@ public class ControllerSignatureAspect implements Ordered {
 
                 log.info("进入" + tarName + "......");
 
+                long before = System.currentTimeMillis();
+                log.info("之前:" + (before - start));
                 // 进入controller
                 Object res = point.proceed(parames);
-
+                log.info("过程:" + (System.currentTimeMillis() - before));
+                log.info("总:" + (System.currentTimeMillis() - start));
                 log.info("离开" + tarName + "......");
                 return res;
             }

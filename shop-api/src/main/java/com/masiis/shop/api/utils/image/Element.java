@@ -22,6 +22,25 @@ public class Element<T> {
     /* 内容 */
     private T content;
 
+    public Element() {
+    }
+
+    public Element(int x, int y, Font font, Color color, T content) {
+        this.x = x;
+        this.y = y;
+        this.font = font;
+        this.color = color;
+        this.content = content;
+    }
+
+    public Element(int x, int y, int w, int h, T content) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.content = content;
+    }
+
     public int getX() {
         return x;
     }

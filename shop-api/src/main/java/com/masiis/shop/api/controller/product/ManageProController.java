@@ -92,12 +92,17 @@ public class ManageProController extends BaseController {
                 applyProRes.setComUserAddress(comUserAddress);
             }
             PfUserSkuStock pfUserSkuStock = productService.getStockByUser(req.getId());
-            pfUserSkuStock.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());//冻结库存
+            int userStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
+            if(userStock<0){
+                pfUserSkuStock.setStock(0);
+            }else{
+                pfUserSkuStock.setStock(userStock);//冻结库存
+            }
             ComSku comSku = skuService.getSkuById(pfUserSkuStock.getSkuId());
             ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
             String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), pfUserSkuStock.getSkuId());
-            Map<String, Object> objectMap = productService.getLowerCount(pfUserSkuStock.getSkuId(), pfUserSkuStock.getStock(), pfUserSku.getAgentLevelId());
+            Map<String, Object> objectMap = productService.getLowerCount(pfUserSkuStock.getSkuId(), req.getStock(), pfUserSku.getAgentLevelId());
             applyProRes.setComSku(comSku);
             applyProRes.setComSkuImg(productImgValue + comSkuImage.getImgUrl());
             applyProRes.setPfUserSkuStock(pfUserSkuStock);
@@ -118,7 +123,7 @@ public class ManageProController extends BaseController {
     /**
       * @Author jjh
       * @Date 2016/5/23 0023 下午 4:03
-      *
+      * 申请拿货生成订单
       */
     @RequestMapping("/applyStock.do")
     @ResponseBody

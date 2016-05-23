@@ -94,6 +94,7 @@ public class LoginController extends BaseController {
             res.setUserKey(userKey);
             res.setExpire(30);
             res.setExpireUnit("天");
+            res.setIsBind(user.getIsBinding());
             res.setSign(SysSignUtils.toSignString(res, null));
         } catch (Exception e) {
             log.error(e.getMessage(), e);

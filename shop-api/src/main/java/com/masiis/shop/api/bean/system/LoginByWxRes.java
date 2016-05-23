@@ -1,5 +1,7 @@
 package com.masiis.shop.api.bean.system;
 
+import com.masiis.shop.api.bean.base.BaseBusinessReq;
+import com.masiis.shop.api.bean.base.BaseBusinessRes;
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.common.annotation.SignField;
 
@@ -7,14 +9,12 @@ import com.masiis.shop.common.annotation.SignField;
  * @Date 2016/4/27
  * @Auther lzh
  */
-public class LoginByWxRes extends BaseRes {
+public class LoginByWxRes extends BaseBusinessRes {
     private String token;
     private Integer expire;
     private String expireUnit;
     private String userKey;
-    private String nonceStr;
-    @SignField
-    private String sign;
+    private Integer isBind;
 
     public String getToken() {
         return token;
@@ -48,19 +48,11 @@ public class LoginByWxRes extends BaseRes {
         this.userKey = userKey;
     }
 
-    public String getNonceStr() {
-        return nonceStr;
+    public Integer getIsBind() {
+        return isBind;
     }
 
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
-    }
-
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
+    public void setIsBind(Integer isBind) {
+        this.isBind = isBind;
     }
 }

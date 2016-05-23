@@ -54,7 +54,7 @@ public class SkuService {
      * @return 0库存充足1库存不足进入排单2库存不足不可下单
      * @throws Exception
      */
-    public int getSkuStockStatus(Integer skuId, int quantity, Long pUserId) throws Exception {
+    public int getSkuStockStatus(Integer skuId, int quantity, Long pUserId) {
         if (pUserId == 0) {
             PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             //如果进入排单直接返回-quantity

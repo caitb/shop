@@ -171,10 +171,8 @@
 #wrap main .sec1 p {
     font-size: 12px;
     color: #999999;
-    margin-top: 2px;
 }
 #wrap main .sec1 p:last-child {
-    padding-bottom: 5px;
 }
 #wrap main .sec2 {
     width: 100%;

@@ -513,7 +513,7 @@ public class BOrderPayService {
         value = DateUtil.Date2String(certificateInfo.getBeginTime(), "yyyy", null).substring(2);//时间
         String value1 = certificateInfo.getAgentLevelId().toString();
         String value2 = String.format("%04d", certificateInfo.getSkuId());
-        String value3 = String.format("%04d", certificateInfo.getUserId());
+        String value3 = String.format("%05d", certificateInfo.getUserId());
         certificateCode = Code.append(value1).append(value2).append(value).append(value3).toString();
         return certificateCode;
     }

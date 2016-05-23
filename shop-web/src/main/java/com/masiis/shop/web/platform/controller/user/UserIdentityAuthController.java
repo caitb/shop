@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.user;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.asm.Opcodes;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.platform.constants.AuditStatusEnum;
 import com.masiis.shop.web.platform.constants.SysConstants;
@@ -83,10 +84,13 @@ public class UserIdentityAuthController extends BaseController {
         String returnPagePath = null;
         switch (comUser.getAuditStatus()){
             case 3://审核失败
+                String basePath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
                 model.addAttribute("returnPageIdentity", returnPageIdentity);
                 model.addAttribute("skuId", skuId);
-                model.addAttribute("idCardFrontUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardFrontUrl());
-                model.addAttribute("idCardBackUrl", SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
+                model.addAttribute("idCardFrontName", comUser.getIdCardFrontUrl());
+                model.addAttribute("idCardBackName", comUser.getIdCardBackUrl());
+                model.addAttribute("idCardFrontUrl", basePath+ comUser.getIdCardFrontUrl());
+                model.addAttribute("idCardBackUrl",  basePath + comUser.getIdCardBackUrl());
                 returnPagePath = "platform/user/shimingrenzhengfail";
                 break;
             default:
@@ -121,8 +125,8 @@ public class UserIdentityAuthController extends BaseController {
     public String sumbitAudit(HttpServletRequest request,
                                   @RequestParam(value = "name", required = true) String name,
                                   @RequestParam(value = "idCard", required = true) String idCard,
-                                  @RequestParam(value = "idCardFrontUrl", required = true) String idCardFrontUrl,
-                                  @RequestParam(value = "idCardBackUrl", required = true) String idCardBackUrl,
+                                  @RequestParam(value = "idCardFrontName", required = true) String idCardFrontName,
+                                  @RequestParam(value = "idCardBackName", required = true) String idCardBackName,
                                   @RequestParam(value = "type", required = false,defaultValue = "0") int type
 
     ) {
@@ -140,15 +144,15 @@ public class UserIdentityAuthController extends BaseController {
             if (org.apache.commons.lang.StringUtils.isBlank(idCard)) {
                 throw new BusinessException("身份证不能为空");
             }
-            if (org.apache.commons.lang.StringUtils.isBlank(idCardFrontUrl)) {
+            if (org.apache.commons.lang.StringUtils.isBlank(idCardFrontName)) {
                 throw new BusinessException("身份证照片不能为空");
             }
-            if (org.apache.commons.lang.StringUtils.isBlank(idCardBackUrl)) {
+            if (org.apache.commons.lang.StringUtils.isBlank(idCardBackName)) {
                 throw new BusinessException("身份证照片不能为空");
             }
             comUser.setRealName(name);
             comUser.setIdCard(idCard);
-            int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontUrl,idCardBackUrl,type);
+            int i = userIdentityAuthService.sumbitAudit(request,comUser,idCardFrontName,idCardBackName,type);
             if (i == 1){
                 object.put("isError", false);
             }else{

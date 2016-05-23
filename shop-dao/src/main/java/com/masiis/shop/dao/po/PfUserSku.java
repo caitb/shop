@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-03-31 Created
+ * 2016-05-21 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -65,6 +65,14 @@ public class PfUserSku {
      * 备注
      */
     private String remark;
+    /**
+     * 树结构编码(方便查询)
+     */
+    private String treeCode;
+    /**
+     * 树结构等级(方便查询)
+     */
+    private Integer treeLevel;
 
     public Integer getId() {
         return id;
@@ -149,5 +157,17 @@ public class PfUserSku {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+    public String getTreeCode() {
+        return treeCode;
+    }
+    public void setTreeCode(String treeCode) {
+        this.treeCode = treeCode == null ? null : treeCode.trim();
+    }
+    public Integer getTreeLevel() {
+        return treeLevel;
+    }
+    public void setTreeLevel(Integer treeLevel) {
+        this.treeLevel = treeLevel;
     }
 }

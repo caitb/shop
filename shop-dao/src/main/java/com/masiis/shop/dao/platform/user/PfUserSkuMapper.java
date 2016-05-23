@@ -84,15 +84,26 @@ public interface PfUserSkuMapper {
 
     /**
      * 根据代理登记查询
+     *
      * @param level
      * @return
      */
     List<PfUserSku> selectByLevel(Integer level);
+
     /**
      * 获取用户代理商品种类的数量
      *
      * @return
      */
     Integer selectUserSkuCount(@Param("userId") Long userId, @Param("skuId") Integer skuId);
+
+
+    /**
+     * 修改树形编码
+     * @param id 主键id
+     * @param treeCode 属性编码
+     * @return
+     */
+    int updateTreeCodeById(@Param("id") Integer id, @Param("treeCode") String treeCode);
 
 }

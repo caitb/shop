@@ -120,6 +120,18 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
             }*/
             //修改用户数据
+            if (!comUser.getIdCardFrontUrl().equals(idCardFrontName)){
+                //临时目录copy到正式目录
+                OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardFrontName);
+                //删除临时目录
+                OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName);
+            }
+            if (!comUser.getIdCardBackUrl().equals(idCardBackName)){
+                //临时目录copy到正式目录
+                OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardBackName);
+                //删除临时目录
+                OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName);
+            }
             comUser.setIdCardFrontUrl(idCardFrontName);
             comUser.setIdCardBackUrl(idCardBackName);
             comUser.setAuditStatus(1);

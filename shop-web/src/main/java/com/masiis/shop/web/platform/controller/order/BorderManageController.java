@@ -184,15 +184,6 @@ public class BorderManageController extends BaseController {
                     }
                 }
             }
-//            for (PfBorder pfBorders : pfBorder) {
-//                if (pfBorders.getSendType() == 1) {
-//                    pfBorders.setPidUserName("平台");
-//                } else if (pfBorders.getSendType() == 0 || pfBorders.getSendType() == null) {
-//                    pfBorders.setPidUserName("未选择");
-//                } else if (pfBorders.getSendType() == 2) {
-//                    pfBorders.setPidUserName("自己发货");
-//                }
-//            }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);

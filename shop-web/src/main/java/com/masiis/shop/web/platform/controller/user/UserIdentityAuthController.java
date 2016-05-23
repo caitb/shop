@@ -84,7 +84,7 @@ public class UserIdentityAuthController extends BaseController {
         String returnPagePath = null;
         switch (comUser.getAuditStatus()){
             case 3://审核失败
-                String basePath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
+                String basePath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY;
                 model.addAttribute("returnPageIdentity", returnPageIdentity);
                 model.addAttribute("skuId", skuId);
                 model.addAttribute("idCardFrontName", comUser.getIdCardFrontUrl());

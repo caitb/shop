@@ -1,10 +1,12 @@
 package com.masiis.shop.api.utils.image;
 
+import com.masiis.shop.common.util.OSSObjectUtils;
+
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ import java.util.List;
  */
 public class DrawImageUtil {
 
-    public static void drawImage(int width, int height, List<Element> elements, String savePath){
+    public static void drawImage(int width, int height, List<Element> elements, String savePath) throws IOException {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bufferedImage.createGraphics();
 
@@ -30,6 +32,7 @@ public class DrawImageUtil {
                             element.getY()+element.getFont().getSize()*(t+1)
                     );
                 }
+
             }else if(element.getContent() instanceof BufferedImage){
 
                 g.drawImage(
@@ -43,9 +46,22 @@ public class DrawImageUtil {
             }
         }
 
+        ByteArrayOutputStream bs = null;
+        ImageOutputStream imOut = null;
+        InputStream is = null;
         try {
-            ImageIO.write(bufferedImage, "png", new File(savePath));
-        } catch (IOException e) {
+            bs = new ByteArrayOutputStream();
+            imOut = ImageIO.createImageOutputStream(bs);
+            ImageIO.write(bufferedImage, "png", imOut);
+            is = new ByteArrayInputStream(bs.toByteArray());
+
+            OSSObjectUtils.deleteBucketFile(savePath);
+            OSSObjectUtils.uploadFile(savePath, is);
+        } catch (Exception e) {
+            bs.close();
+            imOut.close();
+            is.close();
+
             e.printStackTrace();
         }
     }

@@ -645,6 +645,7 @@ public class UserAccountController {
             res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
         return res;
     }
 

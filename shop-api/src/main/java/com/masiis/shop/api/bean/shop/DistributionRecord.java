@@ -1,6 +1,5 @@
 package com.masiis.shop.api.bean.shop;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -16,11 +15,11 @@ public class DistributionRecord {
     /**
      * 店铺总销售额
      */
-    private BigDecimal saleAmount;
+    private String saleAmount;
     /**
      * 发放佣金总额
      */
-    private BigDecimal distributionAmount;
+    private String distributionAmount;
     /**
      * 分销记录列表
      */
@@ -34,19 +33,19 @@ public class DistributionRecord {
         this.sumLevel = sumLevel;
     }
 
-    public BigDecimal getSaleAmount() {
+    public String getSaleAmount() {
         return saleAmount;
     }
 
-    public void setSaleAmount(BigDecimal saleAmount) {
+    public void setSaleAmount(String saleAmount) {
         this.saleAmount = saleAmount;
     }
 
-    public BigDecimal getDistributionAmount() {
+    public String getDistributionAmount() {
         return distributionAmount;
     }
 
-    public void setDistributionAmount(BigDecimal distributionAmount) {
+    public void setDistributionAmount(String distributionAmount) {
         this.distributionAmount = distributionAmount;
     }
 

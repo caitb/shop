@@ -1,15 +1,22 @@
 package com.masiis.shop.api.controller.shop;
 
+import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.api.bean.base.ShopApiConstant;
 import com.masiis.shop.api.bean.base.ShopApiResModel;
 import com.masiis.shop.api.bean.shop.DistributionRecord;
+import com.masiis.shop.api.bean.shop.ItemDistributionReq;
+import com.masiis.shop.api.bean.shop.ItemDistributionRes;
 import com.masiis.shop.api.bean.shop.SfDistribution;
+import com.masiis.shop.api.bean.user.WithdrawRecordReq;
+import com.masiis.shop.api.constants.SignValid;
+import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.shop.SfOrderItemDistributionService;
 import com.masiis.shop.api.service.shop.SfShopService;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 import com.masiis.shop.dao.beans.order.SfDistributionRecord;
+import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.SfShop;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -20,10 +27,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 小铺分销记录
@@ -39,64 +50,90 @@ public class SfOrderItemDistributionController extends BaseController {
     @Autowired
     private SfShopService sfShopService;
 
+    private final Integer pageSize = 10;
+
     /**
      * 分销记录首页
-     * @param userId    用户id
-     * @param yDate      日期字符串精确到月份 格式为"yyyyMM"
+     * @param request
+     * @param req
+     * @param user
      * @author:wbj
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/home.do",method = RequestMethod.POST)
-    public ShopApiResModel itemDistributionHome(@RequestParam(value = "userId",required = true) Long userId,
-                                                @RequestParam(value = "yDate",required = true) String yDate,
-                                                @RequestParam(value = "currentPage",required = true) Integer currentPage,
-                                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize){
+    @SignValid(paramType = ItemDistributionReq.class)
+    public ItemDistributionRes itemDistributionHome(HttpServletRequest request, ItemDistributionReq req, ComUser user){
         logger.info("分销记录查询");
-        logger.info("userCode="+userId);
-        logger.info("yDate="+yDate);
-        logger.info("currentPage="+currentPage);
-        ShopApiResModel responseModel = new ShopApiResModel();
-        if (userId == null){
-            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
-            responseModel.setResMsg("userId");
-            return responseModel;
+        logger.info("userId=" + user.getId());
+        logger.info("Date=" + req.getDate());
+        logger.info("currentPage = " + req.getPageNum());
+        ItemDistributionRes res = new ItemDistributionRes();
+        if (!StringUtils.isNotBlank(req.getDate()) || req.getPageNum() == null || req.getPageNum() <= 0){
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG + "【日期或页码有误】");
+            logger.info("返回参数：" + JSONObject.toJSONString(res));
+            return res;
         }
-        if (!StringUtils.isNotBlank(yDate)){
-            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
-            responseModel.setResMsg("yDate");
-            return responseModel;
+        Date currentTime = null;
+        try{
+            currentTime = DateUtil.String2Date(req.getDate(), "yyyy-MM");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("时间格式化错误,原时间字符串为:" + req.getDate());
+            res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
+            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG + "【时间格式化错误,原时间字符串为" + req.getDate() + "】");
+            logger.info("返回参数：" + JSONObject.toJSONString(res));
+            return res;
         }
-        if (currentPage < 1){
-            responseModel.setResCode(ShopApiConstant.PARAMETER_ERROR + "");
-            responseModel.setResMsg("currentPage不大于0");
-            return responseModel;
-        }
-        Date date = DateUtil.String2Date(yDate);
-        Date start = DateUtil.getFirstTimeInMonth(date);
-        Date end = DateUtil.getLastTimeInMonth(date);
-        Integer totalCount = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(userId,start,end);
-        if (totalCount == 0){
-            responseModel.setResCode(ShopApiConstant.DATA_NOT_EXIST + "");
-            responseModel.setResMsg("noData");
-            return responseModel;
+
+        Date start = DateUtil.getFirstTimeInMonth(currentTime);
+        Date end = DateUtil.getLastTimeInMonth(currentTime);
+        Integer totalCount = sfOrderItemDistributionService.findCountSfDistributionRecordLimit(user.getId(),start,end);
+        if (totalCount == null || totalCount == 0){
+            logger.error("当前时间区间内没有数据");
+            res.setPageSize(0);
+            res.setTotalCount(0);
+            res.setTotalPage(0);
+            res.setHasQueryData(0);
+            res.setLast(true);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            logger.info("返回参数：" + JSONObject.toJSONString(res));
+            return res;
         }
         try {
-            SfDistributionRecord sfCount = sfOrderItemDistributionService.findCountSfDistributionRecord(userId);
-            SfShop sfShop = sfShopService.getSfShopByUserId(userId);
+            SfDistributionRecord sfCount = sfOrderItemDistributionService.findCountSfDistributionRecord(user.getId());
+            SfShop sfShop = sfShopService.getSfShopByUserId(user.getId());
             DistributionRecord distributionRecord = new DistributionRecord();
             Integer totalPage = 0;
+            Integer startNum = req.getPageNum();
+            Integer qSize = pageSize;
+            NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
             if (sfCount.getCount() == 0){
-                distributionRecord.setDistributionAmount(new BigDecimal(0));
+                distributionRecord.setDistributionAmount(numberFormat.format(0));
                 distributionRecord.setSumLevel(0);
-                distributionRecord.setSaleAmount(sfShop == null?new BigDecimal(0):sfShop.getSaleAmount());
+                distributionRecord.setSaleAmount(sfShop == null?numberFormat.format(0):numberFormat.format(sfShop.getSaleAmount()));
             }else {
                 //默认设置每页显示10条
-                totalPage = totalCount%pageSize == 0 ? pageSize/10 : pageSize/10 + 1;
-                List<SfDistributionRecord> sfDistributionRecords = sfOrderItemDistributionService.findListSfDistributionRecordLimit(userId,start,end,currentPage,pageSize);
+                totalPage = totalCount%pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
+                startNum = (req.getPageNum() - 1) * pageSize;
+                if(req.getPageNum() > totalPage){
+                    logger.error("当前所传页码超过总页码数,总页数:" + totalPage + ",所传页码数:" + req.getPageNum());
+                    res.setLast(true);
+                    res.setResCode(SysResCodeCons.RES_CODE_REQ_BUSINESS_ERROR);
+                    res.setResMsg(SysResCodeCons.RES_CODE_REQ_BUSINESS_ERROR_MSG + "【所传页码超过总页数】");
+                    logger.info("返回参数：" + JSONObject.toJSONString(res));
+                    return res;
+                }
+                if(req.getPageNum() == totalPage){
+                    qSize = totalCount - startNum;
+                    res.setLast(true);
+                }
+                List<SfDistributionRecord> sfDistributionRecords = sfOrderItemDistributionService.findListSfDistributionRecordLimit(user.getId(),start,end,req.getPageNum(),qSize);
                 List<SfDistribution> sfDistributions = new ArrayList<>();
-                distributionRecord.setDistributionAmount(sfCount.getDistributionAmount());
-                distributionRecord.setSaleAmount(sfShop == null?new BigDecimal(0):sfShop.getSaleAmount());
+                distributionRecord.setDistributionAmount(numberFormat.format(sfCount.getDistributionAmount()));
+                distributionRecord.setSaleAmount(sfShop == null?numberFormat.format(0):numberFormat.format(sfShop.getSaleAmount()));
                 distributionRecord.setSumLevel(sfCount.getSumLevel());
                 SfDistribution sfDistribution;
                 BigDecimal personTotalAmount;
@@ -107,7 +144,7 @@ public class SfOrderItemDistributionController extends BaseController {
                     sfDistribution.setCreateTime(sfDistributionRecords.get(i).getCreateTime());
                     sfDistribution.setItemId(sfDistributionRecords.get(i).getItemId());
                     sfDistribution.setLevel(sfDistributionRecords.get(i).getLevel());
-                    sfDistribution.setOrderAmount(sfDistributionRecords.get(i).getOrderAmount());
+                    sfDistribution.setOrderAmount(numberFormat.format(sfDistributionRecords.get(i).getOrderAmount()));
                     sfDistribution.setOrderId(sfDistributionRecords.get(i).getOrderId());
                     sfDistribution.setSkuId(sfDistributionRecords.get(i).getSkuId());
                     sfDistribution.setSkuName(sfDistributionRecords.get(i).getSkuName());
@@ -117,56 +154,27 @@ public class SfOrderItemDistributionController extends BaseController {
                     for (SfDistributionPerson sfDistributionPerson : persons){
                         personTotalAmount.add(sfDistributionPerson.getAmount());
                     }
-                    sfDistribution.setTotalAmount(personTotalAmount);
+                    sfDistribution.setTotalAmount(numberFormat.format(personTotalAmount));
                     sfDistribution.setSfDistributionPersons(persons);
                     sfDistributions.add(sfDistribution);
                 }
                 distributionRecord.setSfDistributions(sfDistributions);
             }
-            responseModel.setData(distributionRecord);
-            responseModel.setResCode(ShopApiConstant.SUCCESS + "");
-            responseModel.setResMsg(SUCCESS);
-            responseModel.setCurrentPage(currentPage);
-            responseModel.setTotalCount(totalCount);
-            responseModel.setTotalPage(totalPage);
-            responseModel.setData(distributionRecord);
+            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            res.setHasQueryData(1);
+            res.setTotalPage(totalPage);
+            res.setTotalCount(totalCount);
+            res.setCurrentPage(startNum);
+            res.setPageSize(qSize);
+            res.setDistributionRecord(distributionRecord);
         }catch (Exception e){
             e.printStackTrace();
-            responseModel.setResCode(ShopApiConstant.ERROR + "");
-            responseModel.setResMsg(ERROR);
-            logger.info(responseModel);
-            return responseModel;
+            logger.error(e.getMessage());
+            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
         }
-        logger.info(responseModel);
-        return responseModel;
+        logger.info("返回参数：" + JSONObject.toJSONString(res));
+        return res;
     }
-
-
-//    public static void main(String[] args){
-//        try{
-//            byte[] info ="待签名信息".getBytes();
-//
-//            //产生RSA密钥对(myKeyPair)
-//            KeyPairGenerator myKeyGen= KeyPairGenerator.getInstance("RSA");
-//            myKeyGen.initialize(1024);
-//            KeyPair myKeyPair = myKeyGen.generateKeyPair();
-//            System.out.println( "得到RSA密钥对    "+myKeyPair);
-//
-//            //产生Signature对象,用私钥对信息(info)签名.
-//            Signature mySig = Signature.getInstance("SHA1WithRSA");  //用指定算法产生签名对象
-//            mySig.initSign(myKeyPair.getPrivate());  //用私钥初始化签名对象
-//            mySig.update(info);  //将待签名的数据传送给签名对象(须在初始化之后)
-//            byte[] sigResult = mySig.sign();  //返回签名结果字节数组
-//            System.out.println("签名后信息: "+ new String(sigResult) );
-//
-//            //用公钥验证签名结果
-//            mySig.initVerify(myKeyPair.getPublic());  //使用公钥初始化签名对象,用于验证签名
-//            System.out.println("########"+myKeyPair.getPublic());
-//            mySig.update(info); //更新签名内容
-//            boolean verify= mySig.verify(sigResult); //得到验证结果
-//            System.out.println( "签名验证结果: " +verify);
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//    }
 }

@@ -120,18 +120,30 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
             }*/
             //修改用户数据
+            if (!comUser.getIdCardFrontUrl().equals(idCardFrontName)){
+                //临时目录copy到正式目录
+                OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardFrontName);
+                //删除临时目录
+                OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName);
+            }
+            if (!comUser.getIdCardBackUrl().equals(idCardBackName)){
+                //临时目录copy到正式目录
+                OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardBackName);
+                //删除临时目录
+                OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName);
+            }
             comUser.setIdCardFrontUrl(idCardFrontName);
             comUser.setIdCardBackUrl(idCardBackName);
             comUser.setAuditStatus(1);
             int i = userService.updateComUser(comUser);
             if (i == 1){
                 //更新缓存
-                if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
+               /* if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
                 //发送微信提示
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
-                WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
+                WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);*/
                 //删除最新上传的本地服务器照片
                 /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/

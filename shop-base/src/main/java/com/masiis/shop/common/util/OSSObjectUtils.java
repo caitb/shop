@@ -99,4 +99,20 @@ public class OSSObjectUtils {
         client.getObject(new GetObjectRequest(BUCKET, key),
                 new File(localPath));
     }
+
+    public static void copyObject(String srcBucketName, String srcKey, String destBucketName, String destKey) {
+        // 初始化OSSClient
+        OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
+        // 拷贝Object
+        CopyObjectResult result = client.copyObject(srcBucketName, srcKey, destBucketName, destKey);
+        // 打印结果
+        System.out.println("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+    }
+
+    public static void deleteObject(String bucketName, String key) {
+        // 初始化OSSClient
+        OSSClient client = new OSSClient(ENDPOINT, ACCESS_ID, ACCESS_KEY);
+        // 删除Object
+        client.deleteObject(bucketName, key);
+    }
 }

@@ -1,9 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
-import com.masiis.shop.api.bean.user.canApplyReq;
-import com.masiis.shop.api.bean.user.canApplyRes;
-import com.masiis.shop.api.bean.user.PartnerPreApplyReq;
-import com.masiis.shop.api.bean.user.PartnerPreApplyRes;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
@@ -153,5 +150,14 @@ public class UserPartnerApplyController extends BaseController {
         res.setQueueNum(count);
         res.setIsCreditAudit(user.getAuditStatus());
         return res;
+    }
+
+
+    @RequestMapping("/toinfo")
+    @ResponseBody
+    @SignValid(paramType = PartnerApplyInfoReq.class)
+    public PartnerApplyInfoRes toPartnerApplyInfo(HttpServletRequest request, PartnerApplyInfoReq req, ComUser user){
+
+        return null;
     }
 }

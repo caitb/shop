@@ -151,6 +151,7 @@ public class UserPartnerApplyController extends BaseController {
         res.setIsBind(user.getIsBinding());
         res.setIsQueuing(isQueuing);
         res.setQueueNum(count);
+        res.setIsCreditAudit(user.getAuditStatus());
         return res;
     }
 }

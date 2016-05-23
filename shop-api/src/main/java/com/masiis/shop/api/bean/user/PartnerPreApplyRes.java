@@ -11,6 +11,7 @@ public class PartnerPreApplyRes extends BaseBusinessRes {
     private Integer isBind;
     private Integer isQueuing;
     private Integer queueNum;
+    private Integer isCreditAudit;
 
     public Integer getIsAgent() {
         return isAgent;
@@ -42,5 +43,13 @@ public class PartnerPreApplyRes extends BaseBusinessRes {
 
     public void setQueueNum(Integer queueNum) {
         this.queueNum = queueNum;
+    }
+
+    public Integer getIsCreditAudit() {
+        return isCreditAudit;
+    }
+
+    public void setIsCreditAudit(Integer isCreditAudit) {
+        this.isCreditAudit = isCreditAudit;
     }
 }

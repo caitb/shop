@@ -1,6 +1,7 @@
 package com.masiis.shop.api.bean.order;
 
 import com.masiis.shop.api.bean.base.BasePagingRes;
+import com.masiis.shop.dao.po.PfBorder;
 
 import java.util.List;
 
@@ -15,10 +16,28 @@ public class OrderListPagingRes extends BasePagingRes {
     private Integer completeNum;
     private Integer isMPS;
     private Integer mpsNum;
+    private String index;
+    private List<PfBorder> pfBorders;
     private List<OrderDetail> oList;
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getIndex() {
+        return index;
+    }
 
     public Integer getWaitShipNum() {
         return waitShipNum;
+    }
+
+    public void setPfBorders(List<PfBorder> pfBorders) {
+        this.pfBorders = pfBorders;
+    }
+
+    public List<PfBorder> getPfBorders() {
+        return pfBorders;
     }
 
     public void setWaitShipNum(Integer waitShipNum) {

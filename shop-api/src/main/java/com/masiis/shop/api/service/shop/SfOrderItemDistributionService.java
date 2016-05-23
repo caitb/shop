@@ -54,7 +54,7 @@ public class SfOrderItemDistributionService {
      * @return
      */
     public List<SfDistributionRecord> findListSfDistributionRecordLimit(Long userid, Date start, Date end, Integer currentPage, Integer pageSize){
-        if (currentPage == 0||currentPage == 0){
+        if (currentPage == 0||pageSize == 0){
             return sfDistributionRecordMapper.selectListByUserIdLimt(userid,start,end);
         }
         PageHelper.startPage(currentPage,pageSize);

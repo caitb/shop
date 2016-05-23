@@ -337,6 +337,12 @@
             <artifactId>constretto-core</artifactId>
             <version>2.2.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>

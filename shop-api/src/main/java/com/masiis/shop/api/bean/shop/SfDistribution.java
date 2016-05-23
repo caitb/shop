@@ -2,7 +2,6 @@ package com.masiis.shop.api.bean.shop;
 
 import com.masiis.shop.dao.beans.order.SfDistributionPerson;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class SfDistribution {
     /**
      * 订单金额
      */
-    private BigDecimal orderAmount;
+    private String orderAmount;
     /**
      * 用户平台昵称，不同于微信昵称
      */
@@ -54,7 +53,7 @@ public class SfDistribution {
     /**
      * 分润总金额
      */
-    private BigDecimal totalAmount;
+    private String totalAmount;
     /**
      * 分润人列表
      */
@@ -66,10 +65,10 @@ public class SfDistribution {
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
-    public BigDecimal getOrderAmount() {
+    public String getOrderAmount() {
         return orderAmount;
     }
-    public void setOrderAmount(BigDecimal orderAmount) {
+    public void setOrderAmount(String orderAmount) {
         this.orderAmount = orderAmount;
     }
     public String getWxNkName() {
@@ -133,11 +132,11 @@ public class SfDistribution {
         this.sfDistributionPersons = sfDistributionPersons;
     }
 
-    public BigDecimal getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
     }
 }

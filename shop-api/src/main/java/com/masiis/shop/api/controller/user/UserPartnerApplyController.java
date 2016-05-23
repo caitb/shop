@@ -1,21 +1,17 @@
 package com.masiis.shop.api.controller.user;
 
-import com.masiis.shop.api.bean.user.canApplyReq;
-import com.masiis.shop.api.bean.user.canApplyRes;
-import com.masiis.shop.api.bean.user.PartnerPreApplyReq;
-import com.masiis.shop.api.bean.user.PartnerPreApplyRes;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
+import com.masiis.shop.api.service.product.SkuAgentService;
 import com.masiis.shop.api.service.product.SkuService;
+import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.PfUserRelationService;
 import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.PfUserRelation;
-import com.masiis.shop.dao.po.PfUserSku;
+import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Date 2016/5/23
@@ -42,6 +42,10 @@ public class UserPartnerApplyController extends BaseController {
     private PfUserRelationService pfUserRelationService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SkuAgentService skuAgentService;
+    @Resource
+    private ComUserService userService;
 
     @RequestMapping("/canagent")
     @ResponseBody
@@ -152,6 +156,94 @@ public class UserPartnerApplyController extends BaseController {
         res.setIsQueuing(isQueuing);
         res.setQueueNum(count);
         res.setIsCreditAudit(user.getAuditStatus());
+        return res;
+    }
+
+
+    @RequestMapping("/register")
+    @ResponseBody
+    @SignValid(paramType = PartnerApplyRegisterReq.class)
+    public PartnerApplyRegisterRes partnerApplyRegister(HttpServletRequest request, PartnerApplyRegisterReq req, ComUser user){
+        PartnerApplyRegisterRes res = new PartnerApplyRegisterRes();
+        Integer skuId = req.getSkuId();
+        if (skuId == null || skuId < 0) {
+            log.error("skuId不合法,skuId:" + skuId + ",用户id为:" + user.getId());
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            return res;
+        }
+        //获取商品信息
+        ComSku comSku = skuService.getSkuById(skuId);
+        if (comSku == null) {
+            log.error("该skuId对应的商品不存在,skuId:" + skuId);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            return res;
+        }
+        //获取商品代理信息
+        List<PfSkuAgent> pfSkuAgents = skuAgentService.getAllBySkuId(skuId);
+        //获取代理信息
+        List<ComAgentLevel> comAgentLevels = skuAgentService.getComAgentLevel();
+        //上级代理等级
+        Integer pUserLevelId = 0;
+        PfUserRelation relation = pfUserRelationService.getRelation(user.getId(), skuId);
+        if(userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId) != null
+                    || relation == null){
+            log.error(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
+            return res;
+        }
+        Long pUserId = relation.getUserPid();
+        if (pUserId > 0) {
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUserId, skuId);
+            pUserLevelId = pfUserSku.getAgentLevelId();
+        }
+        // 创建该sku代理商的代理门槛信息
+        List<AgentSkuView> agentSkuViews = new ArrayList<AgentSkuView>();
+        for (PfSkuAgent pfSkuAgent : pfSkuAgents) {
+            AgentSkuView view = new AgentSkuView();
+            view.setQuantity(pfSkuAgent.getQuantity());
+            view.setBailFee(pfSkuAgent.getBail());
+            for (ComAgentLevel comAgentLevel : comAgentLevels) {
+                if (pfSkuAgent.getAgentLevelId() == comAgentLevel.getId()) {
+                    view.setLevelId(comAgentLevel.getId());
+                    view.setLevelName(comAgentLevel.getName());
+                }
+            }
+            BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+            // 总金额加上保证金
+            amount = amount.add(pfSkuAgent.getBail()).setScale(2, RoundingMode.HALF_DOWN);
+            view.setAgentFee(amount);
+            view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
+            view.setIsShow(pfSkuAgent.getIsShow());
+            agentSkuViews.add(view);
+        }
+        res.setSkuName(comSku.getName());
+        res.setpUserLevelId(pUserLevelId);
+        res.setAgentSkuViews(agentSkuViews);
+        Integer sendType = 0;
+        if (user.getSendType() > 0) {
+            sendType = user.getSendType();
+        }
+        if (pUserId != null && pUserId > 0) {
+            ComUser pUser = userService.getUserById(pUserId);
+            // 上级代理商品关系
+            res.setpWxNkName(pUser.getWxNkName());
+            if (sendType == 0) {
+                sendType = pUser.getSendType();
+            }
+        }
+        res.setSendType(sendType);
+        Integer isQueuing = 0;
+        Integer count = 0;
+        int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
+        if (status == 1) {
+            isQueuing = 1;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
+        res.setIsQueuing(isQueuing);
+        res.setQueueNum(count);
         return res;
     }
 }

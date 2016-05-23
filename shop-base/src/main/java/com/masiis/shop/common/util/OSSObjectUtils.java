@@ -30,13 +30,15 @@ public class OSSObjectUtils {
 
     private static final String ACCESS_ID = "q08DRrrJrO5IucbU";
     private static final String ACCESS_KEY = "5vvMM8VQfar454PIQadqmVu8ZiZMiK";
-    private static final String ENDPOINT = "oss-cn-beijing.aliyuncs.com";
+    public static final String ENDPOINT = "oss-cn-beijing.aliyuncs.com";
 
-    private static final String BUCKET = "mmshop";
+    public static final String BUCKET = "mmshop";
     public static final String OSS_URL = "http://static.masiis.com";
     public static final String CERTIFICATE_TEMPLATE = "/certificateTemplate";
     /* OSS下载身份证照片到本地用到的身份证key */
     public static final String OSS_DOWN_LOAD_IMG_KEY = "static/user/idCard/";
+
+    public static final String OSS_CERTIFICATE_TEMP = "static/user/temp/";//上传身份证临时文件目录
 
     // 删除一个Bucket和其中的Objects
     public static void deleteBucketFile(String fileName)

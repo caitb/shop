@@ -43,7 +43,7 @@ public class UserPartnerApplyController extends BaseController {
     @Resource
     private BOrderService bOrderService;
 
-    @RequestMapping("/toapply")
+    @RequestMapping("/canagent")
     @ResponseBody
     @SignValid(paramType = PartnerPreApplyReq.class)
     public canApplyRes isAgent(HttpServletRequest request, canApplyReq req, ComUser user){

@@ -137,20 +137,20 @@ public class UserPartnerApplyController extends BaseController {
                 res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
                 res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
             }
+            log.error(res.getResMsg());
             return res;
         }
-        boolean isQueuing = false;
+        Integer isQueuing = 0;
         Integer count = 0;
         int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
         if (status == 1) {
-            isQueuing = true;
+            isQueuing = 1;
             count = bOrderService.selectQueuingOrderCount(skuId);
         }
 
         res.setIsBind(user.getIsBinding());
-        res.setIsQueuing(isQueuing?1:0);
+        res.setIsQueuing(isQueuing);
         res.setQueueNum(count);
-
         return res;
     }
 }

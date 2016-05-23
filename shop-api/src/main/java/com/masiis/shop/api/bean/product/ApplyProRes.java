@@ -24,6 +24,8 @@ public class ApplyProRes extends BaseRes{
 
     private String levelStock;//代理等级拿货门槛
 
+    private Long orderCode;//订单id
+
     public ComUserAddress getComUserAddress() {
         return comUserAddress;
     }
@@ -78,5 +80,13 @@ public class ApplyProRes extends BaseRes{
 
     public void setLevelStock(String levelStock) {
         this.levelStock = levelStock;
+    }
+
+    public Long getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(Long orderCode) {
+        this.orderCode = orderCode;
     }
 }

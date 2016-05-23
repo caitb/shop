@@ -147,7 +147,7 @@ public class UserCertificateService {
         String fileName = null;
         try {
             fileName = userId+"_"+"certificate_"+ createGenerateStr()+"."+imageType;
-            OSSObjectUtils.uploadFile(fileName,fileSize,is,OSSObjectUtils.OSS_CERTIFICATE_TEMP + fileName);
+            OSSObjectUtils.uploadFile(fileName,fileSize,is,OSSObjectUtils.OSS_CERTIFICATE_TEMP );
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -75,7 +75,7 @@
         remark
         from pf_user_bill
         where user_id = #{0} and DATE_FORMAT(balance_date,'%Y%m')=#{1}
-        and status = 1
+        and status = 1 and bill_amount &gt; 0
         order by balance_date desc
     </select>
 

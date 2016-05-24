@@ -344,11 +344,11 @@
                                                     <c:forEach items="${productInfo.pfSkuAgents}" var="pfSkuAgent">
                                                         <div>
                                                             <c:forEach items="${agentLevels}" var="agentLevel">
-                                                                <c:if test="${agentLevel.id == pfSkuAgent.agentLevelId}"><label for="unitPrice">${agentLevel.name}</label></c:if>
+                                                                <c:if test="${agentLevel.id == pfSkuAgent.agentLevelId}"><label for="unitPrices">${agentLevel.name}</label></c:if>
                                                             </c:forEach>
                                                             <div class="input-group">
                                                                 <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
-                                                                <input type="text" class="form-control" id="unitPrice" name="unitPrice" value="${pfSkuAgent.unitPrice}" placeholder="">
+                                                                <input type="text" class="form-control" id="unitPrices" name="unitPrices" value="${pfSkuAgent.unitPrice}" placeholder="">
                                                                 <input type="hidden" name="totalPrices" value="${pfSkuAgent.totalPrice}" />
                                                                 <span class="input-group-addon">%</span>
                                                             </div>
@@ -623,19 +623,19 @@
 </script>
 <script>
 
-    $('#priceRetail, input[name="unitPrice"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(calculate);
+    $('#priceRetail, input[name="unitPrices"], input[name="quantitys"], input[name="distributionDiscounts"]').keyup(calculate);
 
     function calculate(){
         var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
         $('input[name="quantitys"]').each(function(i,o){
-            var unitPrice = $($('input[name="unitPrice"]').get(i)).val();
+            var unitPrice = $($('input[name="unitPrices"]').get(i)).val();
             unitPrice = unitPrice==null||unitPrice=='undefined' ? 0.00 : unitPrice;
             var quantity = $(o).val() ? $(o).val() : 0;
             var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
             distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
             $($('.dfenrun').get(i)).html(unitPrice);
             $($('.threshold').get(i)).html(unitPrice*quantity);
-            $($('input[name="totalPrices"]').get(i)).val(unitPrices*quantity);
+            $($('input[name="totalPrices"]').get(i)).val(unitPrice*quantity);
             $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
         });
     }

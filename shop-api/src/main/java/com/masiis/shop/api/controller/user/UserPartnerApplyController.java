@@ -1,8 +1,11 @@
 package com.masiis.shop.api.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
+import com.masiis.shop.api.bean.base.BaseReq;
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
+import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderService;
@@ -11,14 +14,19 @@ import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.PfUserRelationService;
 import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PhoneNumUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderConfirm;
+import com.masiis.shop.dao.beans.order.BorderAgentParamForAddress;
 import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -246,5 +254,93 @@ public class UserPartnerApplyController extends BaseController {
         return res;
     }
 
+    @RequestMapping("/boconfirm")
+    @ResponseBody
+    @SignValid(paramType = ConfirmBOrderReq.class)
+    public ConfirmBOrderRes confirmBorder(HttpServletRequest request, ConfirmBOrderReq req, ComUser user){
+        ConfirmBOrderRes res = new ConfirmBOrderRes();
+        Integer agentLevelId = req.getAgentLevelId();
+        Integer sendType = user.getSendType();
+        Integer skuId = req.getSkuId();
+        String weiXinId = req.getWxId();
+
+        if (agentLevelId == null || agentLevelId <= 0) {
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_AGENTLEVELID_INVALID_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_AGENTLEVELID_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_AGENTLEVELID_INVALID_MSG);
+            return res;
+        }
+        if(StringUtils.isBlank(weiXinId)){
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_WXID_INVALID_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_WXID_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_WXID_INVALID_MSG);
+            return res;
+        }
+        if(skuId == null || skuId <= 0){
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            return res;
+        }
+        //获取sku
+        ComSku comSku = skuService.getSkuById(skuId);
+        if(comSku == null){
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            return res;
+        }
+
+        //拿货方式
+        res.setSendType(sendType);
+        res.setSkuId(skuId);
+        res.setSkuName(comSku.getName());
+        //获取sku主图片
+        ComSkuImage comSkuImage = skuService.findComSkuImage(skuId);
+        String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+        res.setSkuImg(skuImg + comSkuImage.getImgUrl());
+        //获取用户代理等级
+        res.setAgentLevelId(agentLevelId);
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
+        res.setQuantity(pfSkuAgent.getQuantity());
+        res.setBailFee(pfSkuAgent.getBail().toString());
+
+        BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
+        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(res.getQuantity()));
+        res.setProductTotalFee(totalPrice.toString());
+        BigDecimal highProfit = (comSku.getPriceRetail().subtract(unitPrice))
+                .multiply(BigDecimal.valueOf(res.getQuantity()))
+                .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
+        res.setHighProfit(highProfit.toString());
+        Integer lowerAgentLevelId = agentLevelId + 1;
+        //获取下级代理信息
+        PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, lowerAgentLevelId);
+        BigDecimal lowProfit = BigDecimal.ZERO;
+        if (lowerSkuAgent == null) {
+            lowProfit = highProfit;
+        } else {
+            lowProfit = (lowerSkuAgent.getUnitPrice().subtract(pfSkuAgent.getUnitPrice()))
+                    .multiply(BigDecimal.valueOf(res.getQuantity()))
+                    .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
+        }
+
+        res.setLowProfit(lowProfit.toString());
+        res.setTotalFee(totalPrice.add(pfSkuAgent.getBail()).toString());
+        Long pUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
+        Integer isQueuing = 0;
+        Integer count = 0;
+        int status = skuService.getSkuStockStatus(skuId, 1, pUserId);
+        if (status == 1) {
+            isQueuing = 1;
+            count = bOrderService.selectQueuingOrderCount(skuId);
+        }
+
+        res.setIsQueuing(isQueuing);
+        res.setQueueNum(count);
+        // 请求成功
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        return res;
+    }
 
 }

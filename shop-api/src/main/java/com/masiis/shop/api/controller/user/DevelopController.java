@@ -118,7 +118,7 @@ public class DevelopController {
             ComSkuExtension skuExtension = skuExtensionService.getBySkuId(userSku.getSkuId());
 
             //下载海报和二维码
-            comUser = comUserService.getUserById(324L);
+            //comUser = comUserService.getUserById(324L);
             String headImg = "h-"+comUser.getId()+".png";
             String qrcodeName = "qrcode-"+comUser.getId()+"-"+userSku.getId()+".png";
             String bgPoster = "bg-"+skuExtension.getPoster();
@@ -162,6 +162,8 @@ public class DevelopController {
             DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
 
             popularizeRes.setPosterUrl("http://file.masiis.com/static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
+            popularizeRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            popularizeRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {
             log.error("获取海报失败![popularizeReq="+popularizeReq+"][comUser="+comUser+"]");
             e.printStackTrace();

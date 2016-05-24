@@ -57,21 +57,21 @@ public class PhoneController extends BaseController {
         if(StringUtils.isBlank(phoneNum)){
             // 手机号为空
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
             log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
             return res;
         }
         if(!PhoneNumUtils.isPhoneNum(phoneNum)){
             // 手机号格式不正确
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
             log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
             return res;
         }
         if(skuId == null || skuId == 0){
             // skuId为空
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
             log.error(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
             return res;
         }
@@ -79,7 +79,7 @@ public class PhoneController extends BaseController {
         if(sku == null){
             // skuId不存在
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
             log.info(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
             return res;
         }
@@ -87,7 +87,7 @@ public class PhoneController extends BaseController {
         if(pUser == null){
             // 手机号尚未注册
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
             log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
             return res;
         }
@@ -95,7 +95,7 @@ public class PhoneController extends BaseController {
         if(pPfUserSku == null){
             // 手机号用户尚未代理该产品
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT);
-            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
             log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
             return res;
         }
@@ -103,7 +103,7 @@ public class PhoneController extends BaseController {
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         res.setPhoneIsOk(1);
-        return null;
+        return res;
     }
 
 

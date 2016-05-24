@@ -72,7 +72,7 @@
     <div class="back_j">
         <h1>什么是结算中</h1>
         <p>
-            您的资金系统正在结算中，1天后即可转入可提现。
+            资金正在结算中，1天后即可转入可提现。
         </p>
         <botton onClick="hideDetail()">我知道了</botton>
     </div>

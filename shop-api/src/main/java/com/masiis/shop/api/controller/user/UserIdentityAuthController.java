@@ -121,8 +121,7 @@ public class UserIdentityAuthController extends BaseController {
     @SignValid(paramType = UploadIdentityReq.class)
     public UploadIdentityRes imgUpload(HttpServletRequest request, HttpServletResponse response,
                             ComUser comUser,
-                            UploadIdentityReq uploadIdentityReq,
-                            @RequestParam(value = "idCardImg", required = true) MultipartFile idCardImg) {
+                            UploadIdentityReq uploadIdentityReq) {
         UploadIdentityRes uploadIdentityRes = new UploadIdentityRes();
         try {
             isUploadParam(uploadIdentityReq,comUser);

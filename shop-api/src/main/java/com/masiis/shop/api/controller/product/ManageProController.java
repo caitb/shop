@@ -9,6 +9,7 @@ import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderAddService;
+import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.product.ProductService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserAddressService;
@@ -47,6 +48,8 @@ public class ManageProController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private BOrderAddService bOrderAddService;
+    @Resource
+    private BOrderService bOrderService;
     /**
       * @Author jjh
       * @Date 2016/5/19 0019 下午 5:49
@@ -134,7 +137,13 @@ public class ManageProController extends BaseController {
         try{
             PfUserSkuStock product = productService.getStockByUser(req.getId());
             Long orderCode = bOrderAddService.addProductTake(user.getId(), product.getSkuId(), req.getStock(), req.getMessage(), req.getSelectedAddressId());
+            PfBorder pfBorder = bOrderService.getPfBorderById(orderCode);
+            PfBorderConsignee pfBorderConsignee =null;
+            if(pfBorder!=null && pfBorder.getOrderType()==2){
+                 pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
+            }
             applyProRes.setOrderCode(orderCode);
+            applyProRes.setPfBorderConsignee(pfBorderConsignee);
             applyProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             applyProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){

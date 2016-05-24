@@ -23,14 +23,18 @@ public class DrawImageUtil {
                 g.setFont(element.getFont());
                 g.setColor(element.getColor());
 
-                for(int i=0; i<element.getContent().toString().length(); i++){
-                    int l = i%11;
-                    int t = i/11;
-                    g.drawString(
-                            ((String)element.getContent()).substring(i, i+1),
-                            element.getX()+element.getFont().getSize()*l,
-                            element.getY()+element.getFont().getSize()*(t+1)
-                    );
+                if(element.getLineStyle()==0){
+                    g.drawString(element.getContent().toString(), element.getX(), element.getY());
+                }else if(element.getLineStyle()==1){
+                    for(int i=0; i<element.getContent().toString().length(); i++){
+                        int l = i%11;
+                        int t = i/11;
+                        g.drawString(
+                                ((String)element.getContent()).substring(i, i+1),
+                                element.getX()+element.getFont().getSize()*l,
+                                element.getY()+(element.getFont().getSize()+8)*(t+1)
+                        );
+                    }
                 }
 
             }else if(element.getContent() instanceof BufferedImage){

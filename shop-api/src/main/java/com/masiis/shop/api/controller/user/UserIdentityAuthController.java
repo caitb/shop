@@ -1,9 +1,9 @@
 package com.masiis.shop.api.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.masiis.shop.api.bean.user.ComUserAddressReq;
-import com.masiis.shop.api.bean.user.IdentityAuthReq;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
+import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.user.UserIdentityAuthService;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -15,10 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by hzz on 2016/3/30.
@@ -38,26 +42,22 @@ public class UserIdentityAuthController extends BaseController {
      * @date 2016/3/31 15:25
      */
     @RequestMapping(value = "getIdentityAuthInfo.do")
-    public String getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
-                                      ComUser comUser,
-                                      Model model){
-        userIdentityAuthService.getIdentityAuthInfo(request,comUser);
-        String returnPagePath = null;
+    @SignValid(paramType = IdentityAuthReq.class)
+    public IdentityAuthRes getIdentityAuthInfo(HttpServletRequest request,HttpServletResponse response,
+                                      ComUser comUser){
+        IdentityAuthRes identityAuthRes = new IdentityAuthRes();
         switch (comUser.getAuditStatus()){
             case 3://审核失败
                 String basePath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY;
-                model.addAttribute("idCardFrontName", comUser.getIdCardFrontUrl());
-                model.addAttribute("idCardBackName", comUser.getIdCardBackUrl());
-                model.addAttribute("idCardFrontUrl", basePath+ comUser.getIdCardFrontUrl());
-                model.addAttribute("idCardBackUrl",  basePath + comUser.getIdCardBackUrl());
-                returnPagePath = "platform/user/shimingrenzhengfail";
+                identityAuthRes.setIdCardFrontName(comUser.getIdCardFrontUrl());
+                identityAuthRes.setIdCardBackName(comUser.getIdCardBackUrl());
+                identityAuthRes.setIdCardFrontUrl(basePath+ comUser.getIdCardFrontUrl());
+                identityAuthRes.setIdCardBackUrl(basePath + comUser.getIdCardBackUrl());
                 break;
             default:
-                returnPagePath = "platform/user/shimingyirenzheng";
                 break;
         }
-        model.addAttribute("comUser",comUser);
-        return returnPagePath;
+        return identityAuthRes;
     }
 
 
@@ -82,45 +82,99 @@ public class UserIdentityAuthController extends BaseController {
     @ResponseBody
     @RequestMapping("sumbitAudit.do")
     @SignValid(paramType = IdentityAuthReq.class)
-    public String sumbitAudit(HttpServletRequest request,
+    public IdentityAuthRes sumbitAudit(HttpServletRequest request,
                               IdentityAuthReq identityAuthReq,
-                              ComUser comUser
-
-    ) {
-        JSONObject object = new JSONObject();
+                              ComUser comUser) {
+        IdentityAuthRes identityAuthRes = new IdentityAuthRes();
         try {
-/*            if (comUser == null) {
-                throw new BusinessException("用户信息有误请重新登陆");
-            } else if (comUser.getAuditStatus()==AuditStatusEnum.AUDITING.getIndex()){
-                throw new BusinessException("已提交审核");
-            }*/
-            if (StringUtils.isBlank(identityAuthReq.getName())) {
-                throw new BusinessException("姓名不能为空");
-            }
-            if (StringUtils.isBlank(identityAuthReq.getIdCard())) {
-                throw new BusinessException("身份证不能为空");
-            }
-            if (StringUtils.isBlank(identityAuthReq.getIdCardFrontName())) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            if (StringUtils.isBlank(identityAuthReq.getIdCardBackName())) {
-                throw new BusinessException("身份证照片不能为空");
-            }
-            comUser.setRealName(identityAuthReq.getName());
-            comUser.setIdCard(identityAuthReq.getIdCard());
-            int i = userIdentityAuthService.sumbitAudit(request,comUser,identityAuthReq.getIdCardFrontName(),identityAuthReq.getIdCardBackName());
-            if (i == 1){
-                object.put("isError", false);
+            Boolean bl = isParamCorrect(identityAuthReq,comUser);
+            if (bl){
+                comUser.setRealName(identityAuthReq.getName());
+                comUser.setIdCard(identityAuthReq.getIdCard());
+                int i = userIdentityAuthService.sumbitAudit(request,comUser,identityAuthReq.getIdCardFrontName(),identityAuthReq.getIdCardBackName());
+                if (i == 1){
+                    identityAuthRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                    identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+                }else{
+                    identityAuthRes.setResCode(SysResCodeCons.RES_CODE_IDENTITY_AUTH_FAIL);
+                    identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_IDENTITY_AUTH_FAIL_MSG);
+                }
             }else{
-                object.put("isError", true);
+                identityAuthRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);
+                identityAuthRes.setResMsg(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID_MSG);
             }
         } catch (Exception ex) {
-            if (StringUtils.isNotBlank(ex.getMessage())) {
-                throw new BusinessException(ex.getMessage(), ex);
-            } else {
-                throw new BusinessException("网络错误", ex);
-            }
+            identityAuthRes.setResCode(SysResCodeCons.RES_CODE_IDENTITY_AUTH_FAIL);
+            identityAuthRes.setResMsg(ex.getMessage());
         }
-        return object.toJSONString();
+        return identityAuthRes;
+    }
+
+    /**
+     * 上传身份证正反面
+     *
+     * @author ZhaoLiang
+     * @date 2016/3/11 11:54
+     */
+    @ResponseBody
+    @RequestMapping("/idCardImgUpload.do")
+    @SignValid(paramType = UploadIdentityReq.class)
+    public UploadIdentityRes imgUpload(HttpServletRequest request, HttpServletResponse response,
+                            ComUser comUser,
+                            UploadIdentityReq uploadIdentityReq,
+                            @RequestParam(value = "idCardImg", required = true) MultipartFile idCardImg) {
+        UploadIdentityRes uploadIdentityRes = new UploadIdentityRes();
+        try {
+            isUploadParam(uploadIdentityReq,comUser);
+            String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
+            String fileName = userIdentityAuthService.uploadCertificateToOss(uploadIdentityReq.getInputStream(),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
+            if (StringUtils.isBlank(fileName)) {
+                uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
+                uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
+            } else {
+                uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+                uploadIdentityRes.setImageName(fileName);
+                uploadIdentityRes.setImagePath(savepath + fileName);
+            }
+        } catch (Exception e) {
+            uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
+            uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
+        }
+        return uploadIdentityRes;
+    }
+    private Boolean isUploadParam(UploadIdentityReq uploadIdentityReq,ComUser comUser){
+        if (uploadIdentityReq == null||comUser == null||comUser.getId()==null){
+            return  false;
+        }
+        if (uploadIdentityReq.getInputStream() == null){
+            return false;
+        }
+        if (uploadIdentityReq.getImageType() == null){
+            return false;
+        }
+        if (uploadIdentityReq.getSize() == null){
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean isParamCorrect( IdentityAuthReq identityAuthReq,ComUser comUser){
+        if (comUser == null||comUser.getId()==null) {
+            return false;
+        }
+        if (StringUtils.isBlank(identityAuthReq.getName())) {
+            return false;
+        }
+        if (StringUtils.isBlank(identityAuthReq.getIdCard())) {
+            return false;
+        }
+        if (StringUtils.isBlank(identityAuthReq.getIdCardFrontName())) {
+            return false;
+        }
+        if (StringUtils.isBlank(identityAuthReq.getIdCardBackName())) {
+            return false;
+        }
+        return true;
     }
 }

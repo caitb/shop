@@ -3,6 +3,7 @@ package com.masiis.shop.api.bean.product;
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUserAddress;
+import com.masiis.shop.dao.po.PfBorderConsignee;
 import com.masiis.shop.dao.po.PfUserSkuStock;
 
 /**
@@ -25,6 +26,8 @@ public class ApplyProRes extends BaseRes{
     private String levelStock;//代理等级拿货门槛
 
     private Long orderCode;//订单id
+
+    private PfBorderConsignee pfBorderConsignee;//订单地址
 
     public ComUserAddress getComUserAddress() {
         return comUserAddress;
@@ -88,5 +91,13 @@ public class ApplyProRes extends BaseRes{
 
     public void setOrderCode(Long orderCode) {
         this.orderCode = orderCode;
+    }
+
+    public PfBorderConsignee getPfBorderConsignee() {
+        return pfBorderConsignee;
+    }
+
+    public void setPfBorderConsignee(PfBorderConsignee pfBorderConsignee) {
+        this.pfBorderConsignee = pfBorderConsignee;
     }
 }

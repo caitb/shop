@@ -39,6 +39,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_REQ_BUSINESS_ERROR = "100006";
     public static final String RES_CODE_REQ_BUSINESS_ERROR_MSG = "系统业务错误";
 
+    public static final String RES_CODE_REQ_OPERATE_ERROR = "100007";
+    public static final String RES_CODE_REQ_OPERATE_ERROR_MSG = "业务操作失败";
+
     /**
      * 获取手机验证码返回码
      */

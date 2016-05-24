@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.masiis.shop.dao.platform.product.ProductMapper" >
-    <resultMap id="ProductResultMap" type="com.masiis.shop.dao.beans.product.Product" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="spu_id" property="spuId" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="create_man" property="createMan" jdbcType="BIGINT" />
-        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
-        <result column="modify_man" property="modifyMan" jdbcType="BIGINT" />
-        <result column="bar_code" property="barCode" jdbcType="VARCHAR" />
-        <result column="price_cost" property="priceCost" jdbcType="DECIMAL" />
-        <result column="price_market" property="priceMarket" jdbcType="DECIMAL" />
-        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
-        <result column="name" property="spuName" jdbcType="VARCHAR" />
-        <result column="content" property="content" jdbcType="VARCHAR" />
-        <result column="slogan" property="slogan" jdbcType="VARCHAR" />
-        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-        <result column="stock" property="stock" jdbcType="INTEGER" />
-        <result column="agent_num" property="agentNum" jdbcType="INTEGER" />
-        <result column="pfuid" property="pfuId" jdbcType="INTEGER" />
+<mapper namespace="com.masiis.shop.dao.platform.product.ProductMapper">
+    <resultMap id="ProductResultMap" type="com.masiis.shop.dao.beans.product.Product">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="spu_id" property="spuId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="create_man" property="createMan" jdbcType="BIGINT"/>
+        <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
+        <result column="modify_man" property="modifyMan" jdbcType="BIGINT"/>
+        <result column="bar_code" property="barCode" jdbcType="VARCHAR"/>
+        <result column="price_cost" property="priceCost" jdbcType="DECIMAL"/>
+        <result column="price_market" property="priceMarket" jdbcType="DECIMAL"/>
+        <result column="price_retail" property="priceRetail" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="name" property="spuName" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="slogan" property="slogan" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="stock" property="stock" jdbcType="INTEGER"/>
+        <result column="agent_num" property="agentNum" jdbcType="INTEGER"/>
+        <result column="pfuid" property="pfuId" jdbcType="INTEGER"/>
         <result column="custom_stock" property="customStock" jdbcType="INTEGER"/>
         <result column="is_queue" property="isQueue" jdbcType="INTEGER"/>
-        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL"/>
 
         <result column="is_trial" property="isTrial" jdbcType="INTEGER"/>
         <result column="frozen_stock" property="frozenStock" jdbcType="INTEGER"/>
         <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
-        <result column="img_name" property="imgName" jdbcType="VARCHAR" />
-        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-        <result column="sort" property="sort" jdbcType="INTEGER" />
-        <result column="is_default" property="isDefault" jdbcType="INTEGER" />
+    <resultMap id="SkuImgResultMap" type="com.masiis.shop.dao.po.ComSkuImage">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
+        <result column="img_name" property="imgName" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="is_default" property="isDefault" jdbcType="INTEGER"/>
     </resultMap>
-    <resultMap id="DiscountLevelResultMap" type="com.masiis.shop.dao.po.ComAgentLevel" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
-        <result column="lower" property="lower" jdbcType="DECIMAL" />
-        <result column="discount" property="discount" jdbcType="DECIMAL" />
-        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <resultMap id="DiscountLevelResultMap" type="com.masiis.shop.dao.po.ComAgentLevel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="lower" property="lower" jdbcType="DECIMAL"/>
+        <result column="discount" property="discount" jdbcType="DECIMAL"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
 
 
-    <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="int" >
+    <select id="getSkuDetailsBySkuId" resultMap="ProductResultMap" parameterType="int">
         SELECT sku.id,sku.name,sku.price_retail,sku.remark,sku.spu_id,
                 spu.name,spu.slogan,spu.content,spu.is_trial,
                 sku_stok.stock,sku_stok.frozen_stock,spu.ship_amount,sku_stok.is_queue,
@@ -69,7 +69,9 @@
     </select>
 
     <select id="maxDiscount" resultType="double" parameterType="int">
-        SELECT  MIN(discount) From  pf_sku_agent WHERE sku_id =#{skuId}
+        SELECT MIN(a.unit_price/b.price_retail) FROM pf_sku_agent a
+        INNER JOIN com_sku b ON a.sku_id=b.id
+        WHERE sku_id=#{skuId}
     </select>
     <!-->用户商品列表<-->
     <select id="getProductsByUser" resultMap="ProductResultMap" parameterType="Long">

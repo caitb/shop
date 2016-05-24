@@ -78,7 +78,7 @@ public class ControllerSignatureAspect implements Ordered {
                     return errRes;
                 }
 
-                if(req == null){
+                if(req == null && rl.hasData()){
                     setResUnknown((BaseRes) errRes);
                     return errRes;
                 }
@@ -100,7 +100,7 @@ public class ControllerSignatureAspect implements Ordered {
                 return res;
             } else {
                 req = getReqBean(parames, clazz, errRes, rl);
-                if(req == null){
+                if(req == null && rl.hasData()){
                     return errRes;
                 }
 
@@ -139,12 +139,15 @@ public class ControllerSignatureAspect implements Ordered {
         if(!rl.isPageReturn()){
             res = (BaseRes) res1;
         }
+        if(!rl.hasData()){
+            return null;
+        }
         // 解析参数
         for (Object obj : parames) {
             if (obj instanceof HttpServletRequest) {
                 HttpServletRequest request = (HttpServletRequest) obj;
                 String conType = request.getHeader("Content-Type");
-                if(StringUtils.isNotBlank(conType) && !conType.contains("application/x-www-form-urlencoded")){
+                if (StringUtils.isNotBlank(conType) && !conType.contains("application/x-www-form-urlencoded")) {
                     String result = getRequestBody(request);
                     System.out.println("aspect:" + result);
                     try {
@@ -155,7 +158,7 @@ public class ControllerSignatureAspect implements Ordered {
                 } else {
                     String data = request.getParameter(DATA_NAME);
                     log.info("data:" + data);
-                    if(StringUtils.isBlank(data)){
+                    if (StringUtils.isBlank(data)) {
                         // 类似表单提交,启用springmvc参数绑定
                         isSet = false;
                     } else {
@@ -181,7 +184,7 @@ public class ControllerSignatureAspect implements Ordered {
         }
 
         ComUser user = null;
-        if(rl.hasToken() == true) {
+        if(rl.hasToken()) {
             // 校验token
             Field toField = ReflectUtils.getFieldByNameAllInSuperClass(clazz, "token");
             toField.setAccessible(true);

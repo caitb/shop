@@ -1,5 +1,9 @@
 package com.masiis.shop.api.constants;
 
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.*;
+
 /**
  * @Date:2016/4/25
  * @auth:lzh
@@ -94,9 +98,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_ADDRESS_QUERY_FAIL = "100403";
     public static final String RES_CODE_ADDRESS_QUERY_FAIL_MSG = "查询地址失败";
     public static final String RES_CODE_ADDRESS_DELETE_FAIL = "100404";
-    public static final String RES_CODE_ADDRESS_DELETE_FAIL_MEG = "删除地址失败";
+    public static final String RES_CODE_ADDRESS_DELETE_FAIL_MSG = "删除地址失败";
     public static final String RES_CODE_ADDRESS_DEFAULT_FAIL = "100405";
-    public static final String RES_CODE_ADDRESS_DEFAULT_FAIL_MEG = "设置默认地址失败";
+    public static final String RES_CODE_ADDRESS_DEFAULT_FAIL_MSG = "设置默认地址失败";
 
     /**
      * 商品
@@ -105,13 +109,13 @@ public class SysResCodeCons {
     public static final String RES_CODE_SKU_NULL_MSG = "sku不合法,系统不存在该sku";
 
     public static final String RES_CODE_AREA_PROVINCE_QUERY_FAIL = "100601";
-    public static final String RES_CODE_AREA_PROVINCE_QUERY_FAIL_MEG = "查询所有的省失败";
+    public static final String RES_CODE_AREA_PROVINCE_QUERY_FAIL_MSG = "查询所有的省失败";
 
     public static final String RES_CODE_AREA_CITY_QUERY_FAIL = "100602";
-    public static final String RES_CODE_AREA_CITY_QUERY_FAIL_MEG = "查询所有的市失败";
+    public static final String RES_CODE_AREA_CITY_QUERY_FAIL_MSG = "查询所有的市失败";
 
     public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL = "100603";
-    public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MEG = "查询所有的区失败";
+    public static final String RES_CODE_AREA_COUNTY_QUERY_FAIL_MSG = "查询所有的区失败";
 
     /**
      * 合伙人申请
@@ -167,4 +171,37 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_WXPAY_PREORDER_FAIL = "900105";
     public static final String RES_CODE_WXPAY_PREORDER_FAIL_MSG = "微信预付单下单失败";
+
+    public static void main(String... args) throws IllegalAccessException, IOException {
+        Map<String, String> preMap = new HashMap<>();
+        Map<String, String> sufMap = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        Field[] fields = SysResCodeCons.class.getDeclaredFields();
+        for(Field f:fields){
+            String name = f.getName();
+            if(name.matches(".*\\_MSG")){
+                sufMap.put(name.substring(0, name.length() - 4), (String) f.get(SysResCodeCons.class));
+            } else {
+                preMap.put(name, (String) f.get(SysResCodeCons.class));
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for(String pre:preMap.keySet()){
+            String p = preMap.get(pre);
+            map.put(p, sufMap.get(pre));
+            list.add(p);
+        }
+        String[] arrayToSort = list.toArray(new String[list.size()]);
+        Arrays.sort(arrayToSort, String.CASE_INSENSITIVE_ORDER);
+        for (String s:arrayToSort){
+            res.append(s + ":" + map.get(s)).append("\n");
+        }
+        File file = new File("D:/doc.txt");
+        FileOutputStream os = new FileOutputStream(file);
+        BufferedOutputStream bos = new BufferedOutputStream(os);
+        bos.write(res.toString().getBytes());
+        bos.flush();
+        bos.close();
+    }
 }

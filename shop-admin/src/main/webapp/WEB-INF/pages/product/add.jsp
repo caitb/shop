@@ -106,6 +106,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="e_name" class="col-sm-2 control-label">商品英文名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="e_name" name="e_name" placeholder="商品别名">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">商品标志</label>
                                 <div class="col-sm-9">
                                     <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">
@@ -314,7 +321,7 @@
                                             </div>
 
                                             <div class="widget-body">
-                                                <div class="widget-main" id="discounts">
+                                                <div class="widget-main" id="unitPrices">
 
                                                 </div>
                                             </div>
@@ -623,26 +630,27 @@
     }
 
     $('#levelCount').change(function(){
-        $('#discounts').empty();
+        $('#unitPrices').empty();
         $('#quantitys').empty();
         $('#bails').empty();
         appendLevelInput($(this).val());
     });
 
     function appendLevelInput(levelCount){
-        var discounts = '';
+        var unitPrices = '';
         var quantitys = '';
         var bails     = '';
+        var totalPrices = '';
         for(var i=0; i<agentLevels.length; i++){
             if(i>levelCount){
                 break;
             }
-            discounts +=           '<div> \
+            unitPrices +=           '<div> \
                                         <label for="advanced">';
-            discounts +=     agentLevels[i].name;
-            discounts +=           '</label> \
+            unitPrices +=     agentLevels[i].name;
+            unitPrices +=           '</label> \
                                         <div class="input-group"> \
-                                            <input type="text" class="form-control" id="advanced" name="discounts" placeholder=""> \
+                                            <input type="text" class="form-control" id="advanced" name="unitPrices" placeholder=""> \
                                                 <span class="input-group-addon"> \
                                                     % \
                                                 </span> \
@@ -669,9 +677,12 @@
                                         </div> \
                                         &nbsp; \
                                     </div>';
+
+            totalPrices += '<input type="hidden" name="totalPrices" value="" />';
         }
 
-        $('#discounts').append(discounts);
+        $('#unitPrices').append(unitPrices);
+        $('#unitPrices').append(totalPrices);
         $('#quantitys').append(quantitys);
         $('#bails').append(bails);
     }
@@ -683,16 +694,17 @@
     });
 
     $(document).ready(function() {
-        $('body').on('keyup', '#priceRetail, input[name="discounts"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
+        $('body').on('keyup', '#priceRetail, input[name="unitPrice"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
             var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
             $('input[name="quantitys"]').each(function(i,o){
-                var discount = $($('input[name="discounts"]').get(i)).val();
-                discount = discount==null||discount=='undefined' ? 0.00 : discount*0.01;
+                var unitPrices = $($('input[name="unitPrices"]').get(i)).val();
+                unitPrices = unitPrices==null||unitPrices=='undefined' ? 0.00 : unitPrices;
                 var quantity = $(o).val() ? $(o).val() : 0;
                 var distributionDiscount = $($('input[name="distributionDiscounts"]').get(i)).val();
                 distributionDiscount = distributionDiscount==null||distributionDiscount=='undefined' ? 0.00 : distributionDiscount*0.01;
-                $($('.dfenrun').get(i)).html((priceRetail*discount).toFixed(2));
-                $($('.threshold').get(i)).html((priceRetail*discount*quantity).toFixed(2));
+                $($('.dfenrun').get(i)).html(unitPrices);
+                $($('.threshold').get(i)).html(unitPrices*quantity);
+                $($('input[name="totalPrices"]').get(i)).val(unitPrices*quantity);
                 $($('.ffenrun').get(i)).html((priceRetail*distributionDiscount).toFixed(2));
             });
         });

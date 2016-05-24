@@ -45,14 +45,14 @@
                 </h1>
             </div>
         </div>
-        <div class="sec1" style="background:white url('${path}/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px;">
+        <div id="bindPhoneId" class="sec1" style="background:white url('${path}/static/images/people.png') no-repeat 10px;  background-size: 13px;margin-top: 10px;">
             <p>手机号</p>
             <c:choose>
                 <c:when test="${comUser.mobile == null || comUser.mobile == ''}">
-                    <p id="bindPhoneId">点击绑定</p>
+                    <p><b>点击绑定</b><img src="${path}/static/images/next.png" style="margin-top: 4px;"/></p>
                 </c:when>
                 <c:otherwise>
-                    <p id="bindPhonedId">已绑定 ${comUser.mobile}</p>
+                    <p>已绑定 ${comUser.mobile}</p>
                 </c:otherwise>
             </c:choose>
             <input id="mobileId" style="display: none" value="${comUser.mobile}" />

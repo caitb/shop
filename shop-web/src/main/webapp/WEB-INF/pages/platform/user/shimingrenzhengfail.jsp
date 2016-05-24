@@ -118,6 +118,9 @@
     function submit() {
         var cd = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;//定义身份证匹配算法
         var legalIdCard = $("#idCard").val();//获取前台界面字段值
+        if (nameCheckFun($("#name")) == false) {
+            return;
+        }
         if (legalIdCard != null && legalIdCard != "") {//运用匹配方法直接判断
             if (cd.test(legalIdCard) == false) {
                 alert("身份证号不合法!");
@@ -125,9 +128,6 @@
             }
         } else {
             alert("身份证号不能为空!");
-            return;
-        }
-        if (nameCheckFun($("#name")) == false) {
             return;
         }
         var fCardUrl = $("#idCardFront").attr("src");
@@ -175,19 +175,24 @@
             alert("姓名不能为空");
             return false;
         }
-        if (!isCardName($(data).val())) {
-            alert("姓名是2-15字的汉字");
+        if (getStrLen($(data).val())>20) {
+            alert("姓名不能超过10个汉字");
             return false;
         }
-        return true;
-        //检验姓名：姓名是2-15字的汉字
-        function isCardName(s) {
-            var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/;
-            if (!patrn.exec(s)) {
-                return false;
+    }
+    function getStrLen(str){
+        var len = 0;
+        if (str!=null && str!=""){
+            for (var i = 0 ; i < str.length; i++){
+                var  c = str.charCodeAt(i);
+                if (c>127||c==94){
+                    len += 2;
+                }else{
+                    len++;
+                }
             }
-            return true;
         }
+        return len;
     }
 </script>
 </html>

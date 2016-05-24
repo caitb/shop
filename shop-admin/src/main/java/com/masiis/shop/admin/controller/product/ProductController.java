@@ -105,9 +105,10 @@ public class ProductController {
     public Object add(HttpServletRequest request, HttpServletResponse response,
                       ComSpu comSpu,
                       ComSku comSku,
-                      @RequestParam("discounts")String[] discounts,
+                      @RequestParam(value = "unitPrices")String[] unitPrices,
+                      @RequestParam(value = "totalPrices")String[] totalPrices,
                       @RequestParam("quantitys")Integer[] quantitys,
-                      @RequestParam("bails")Integer[] bails,
+                      @RequestParam("bails")String[] bails,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       String proIconUrl,
                       String proIconName,
@@ -145,12 +146,14 @@ public class ProductController {
                 log.info("保存商品-开始准备pfSkuAgents数据");
                 //代理分润
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
-                for(int i=0; i<discounts.length; i++){
+                for(int i=0; i<unitPrices.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setAgentLevelId(new Integer(i + 1));
                     //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
+                    pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setIsShow(1);
                     pfSkuAgent.setIcon(iconImgNames[i]);
 
@@ -248,7 +251,8 @@ public class ProductController {
                          @RequestParam("skuDistributionIds")Integer[] skuDistributionIds,
                          ComSpu comSpu,
                          ComSku comSku,
-                         @RequestParam("discounts")String[] discounts,
+                         @RequestParam("unitPrices")String[] unitPrices,
+                         @RequestParam("totalPrices")String[] totalPrices,
                          @RequestParam("quantitys")Integer[] quantitys,
                          @RequestParam("bails")String[] bails,
                          @RequestParam("distributionDiscounts")String[] distributionDiscounts,
@@ -292,12 +296,14 @@ public class ProductController {
 
                 //代理分润
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
-                for(int i=0; i<discounts.length; i++){
+                for(int i=0; i<unitPrices.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setId(skuAgentIds[i]);
                     //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
+                    pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
+                    pfSkuAgent.setTotalPrice(new BigDecimal(totalPrices[i]));
                     pfSkuAgent.setBackImg((i+1)+".png");
 
                     pfSkuAgents.add(pfSkuAgent);

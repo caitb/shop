@@ -109,7 +109,6 @@ public class UserCertificateController extends BaseController {
             String realpath = webappPath + savepath;
             //String imgPath = UploadImage.upload(idCardImg, realpath);
             String fileName = userCertificateService.uploadCertificateToOss(idCardImg,getComUser(request));
-            testPost(idCardImg.getInputStream());
             if (StringUtils.isBlank(fileName)) {
                 object.put("code", "0");
                 object.put("msg", "");
@@ -127,35 +126,6 @@ public class UserCertificateController extends BaseController {
         }
         return object.toJSONString();
     }
-
-    public static void testPost(InputStream is) throws IOException {
-        URL url = new URL("http://192.168.1.61：8081");
-        URLConnection connection = url.openConnection();
-        connection.setDoOutput(true);
-        OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "8859_1");
-        out.write("date={\"token\":\"db211253ffdb484e9b9ab24cfea060a9\",\"inputStream\":"+is+"}"); //向页面传递数据。post的关键所在！
-        // remember to clean up
-        out.flush();
-        out.close();
-        // 一旦发送成功，用以下方法就可以得到服务器的回应：
-        String sCurrentLine;
-        String sTotalString;
-        sCurrentLine = "";
-        sTotalString = "";
-        InputStream l_urlStream;
-        l_urlStream = connection.getInputStream();
-        // 传说中的三层包装阿！
-        BufferedReader l_reader = new BufferedReader(new InputStreamReader(
-                l_urlStream));
-        while ((sCurrentLine = l_reader.readLine()) != null) {
-            sTotalString += sCurrentLine + "/r/n";
-
-        }
-        System.out.println(sTotalString);
-    }
-
-
-
 
     /**
      * 授权书申请

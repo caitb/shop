@@ -139,7 +139,7 @@ public class ManageProController extends BaseController {
             Long orderCode = bOrderAddService.addProductTake(user.getId(), product.getSkuId(), req.getStock(), req.getMessage(), req.getSelectedAddressId());
             PfBorder pfBorder = bOrderService.getPfBorderById(orderCode);
             PfBorderConsignee pfBorderConsignee =null;
-            if(pfBorder!=null){
+            if(pfBorder!=null && pfBorder.getOrderType()==2){
                  pfBorderConsignee = bOrderService.findpfBorderConsignee(pfBorder.getId());
             }
             applyProRes.setOrderCode(orderCode);

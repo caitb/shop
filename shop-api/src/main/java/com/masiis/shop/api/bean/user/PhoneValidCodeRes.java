@@ -8,4 +8,21 @@ import com.masiis.shop.api.bean.base.BaseBusinessRes;
  */
 public class PhoneValidCodeRes extends BaseBusinessRes {
     private String validCode;
+    private Integer exTime;
+
+    public String getValidCode() {
+        return validCode;
+    }
+
+    public void setValidCode(String validCode) {
+        this.validCode = validCode;
+    }
+
+    public Integer getExTime() {
+        return exTime;
+    }
+
+    public void setExTime(Integer exTime) {
+        this.exTime = exTime;
+    }
 }

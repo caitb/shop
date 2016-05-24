@@ -50,6 +50,15 @@ public class SysResCodeCons {
     public static final String RES_CODE_VALIDCODE_REQ_OFTEN = "100104";
     public static final String RES_CODE_VALIDCODE_REQ_OFTEN_MSG = "验证码请求过于频繁";
 
+    public static final String RES_CODE_VALIDCODE_TYPE_NOTKNOWN = "100105";
+    public static final String RES_CODE_VALIDCODE_TYPE_NOTKNOWN_MSG = "验证码请求类型错误";
+
+    public static final String RES_CODE_PHONENUM_USER_BINDED = "100106";
+    public static final String RES_CODE_PHONENUM_USER_BINDED_MSG = "该用户已经绑定过手机号";
+
+    public static final String RES_CODE_PHONENUM_PHONE_BINDED = "100107";
+    public static final String RES_CODE_PHONENUM_PHONE_BINDED_MSG = "该手机号已经绑定过用户";
+
     /**
      * 手机号登录返回码
      */

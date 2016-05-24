@@ -12,6 +12,7 @@ import com.masiis.shop.api.utils.SysSignUtils;
 import com.masiis.shop.api.utils.TokenUtils;
 import com.masiis.shop.api.utils.ValidCodeUtils;
 import com.masiis.shop.common.constant.SMSConstants;
+import com.masiis.shop.common.enums.api.ValidCodeTypeEnum;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.common.util.MD5Utils;
@@ -137,7 +138,7 @@ public class LoginController extends BaseController {
             String validcode = req.getValidcode().trim();
             // 获取redis存在的验证码
             if(!"6666".equals(validcode)) {
-                String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), String.class);
+                String codeRd = SpringRedisUtil.get(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), String.class);
                 if (codeRd == null) {
                     // 验证码不存在或已过期
                     res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_IS_EXPIRED);
@@ -151,7 +152,7 @@ public class LoginController extends BaseController {
                     throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_IS_INVALID_MSG);
                 }
                 // 移除redis验证码
-                SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), "aa", 1);
+                SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), "aa", 1);
             }
             // 按照phoneNum来查询用户
             ComUser user = userService.getUserByMobile(phoneNum);
@@ -220,14 +221,14 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_PHONENUM_INVALID_MSG);
             }
             // 查询请求频率
-            Date exTime = SpringRedisUtil.get(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum), Date.class);
+            Date exTime = SpringRedisUtil.get(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), Date.class);
             if(exTime != null && exTime.compareTo(new Date()) > 0){
                 res.setResCode(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN);
                 res.setResMsg(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN_MSG);
                 throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_REQ_OFTEN_MSG);
             }
             // 获取验证码
-            String code = ValidCodeUtils.generareValidCode();
+            String code = ValidCodeUtils.generareValidCode(null);
             Date exNewTime = new Date();
             exNewTime.setTime(exNewTime.getTime() + 60 * 1000);
             // 发送短信
@@ -238,9 +239,9 @@ public class LoginController extends BaseController {
                 throw new BusinessException(SysResCodeCons.RES_CODE_VALIDCODE_SMS_FAIL_MSG);
             }
             // 保存验证码到redis
-            SpringRedisUtil.saveEx(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum),
+            SpringRedisUtil.saveEx(ValidCodeUtils.getRdPhoneNumVcodeNextOpTimeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE),
                     exNewTime, 60);
-            SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum), code,
+            SpringRedisUtil.saveEx(ValidCodeUtils.getRedisPhoneNumValidCodeName(phoneNum, ValidCodeTypeEnum.LOGIN_VCODE), code,
                     Integer.valueOf(SMSConstants.REGESTER_VALID_TIME) * 60);
             // 返回结果
             res.setValidcode(code);

@@ -102,7 +102,7 @@ public class ManageProController extends BaseController {
             ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
             String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), pfUserSkuStock.getSkuId());
-            Map<String, Object> objectMap = productService.getLowerCount(pfUserSkuStock.getSkuId(), req.getStock(), pfUserSku.getAgentLevelId());
+            Map<String, Object> objectMap = productService.getLowerCount(pfUserSkuStock.getSkuId(), userStock, pfUserSku.getAgentLevelId());
             applyProRes.setComSku(comSku);
             applyProRes.setComSkuImg(productImgValue + comSkuImage.getImgUrl());
             applyProRes.setPfUserSkuStock(pfUserSkuStock);

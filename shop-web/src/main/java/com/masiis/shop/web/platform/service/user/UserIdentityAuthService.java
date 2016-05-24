@@ -120,17 +120,13 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
             }*/
             //修改用户数据
-            log.info("idCardFrontName-------"+idCardFrontName);
-            log.info("idCardBackName-------"+idCardBackName);
-            if (!comUser.getIdCardFrontUrl().equals(idCardFrontName)){
-                log.info("----------删除身份证正面临时目录-------");
+            if (comUser.getIdCardFrontUrl()!=null&&!comUser.getIdCardFrontUrl().equals(idCardFrontName)){
                 //临时目录copy到正式目录
                 OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardFrontName);
                 //删除临时目录
                 OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName);
             }
-            if (!comUser.getIdCardBackUrl().equals(idCardBackName)){
-                log.info("----------删除身份证反面临时目录-------");
+            if (comUser.getIdCardBackUrl()!=null&&!comUser.getIdCardBackUrl().equals(idCardBackName)){
                 //临时目录copy到正式目录
                 OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardBackName);
                 //删除临时目录

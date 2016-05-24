@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-05-07 Created
+ * 2016-05-24 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -25,17 +25,21 @@ public class PfSkuAgent {
      */
     private String icon;
     /**
-     * 折扣(例如0.35为35%也就是3.5折)
+     * 单价
      */
-    private BigDecimal discount;
-    /**
-     * 保证金
-     */
-    private BigDecimal bail;
+    private BigDecimal unitPrice;
     /**
      * 拿货数量
      */
     private Integer quantity;
+    /**
+     * 总价(拿货门槛)
+     */
+    private BigDecimal totalPrice;
+    /**
+     * 保证金
+     */
+    private BigDecimal bail;
     /**
      * 证书等级背景图
      */
@@ -70,23 +74,29 @@ public class PfSkuAgent {
     public void setIcon(String icon) {
         this.icon = icon == null ? null : icon.trim();
     }
-    public BigDecimal getDiscount() {
-        return discount;
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
     }
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
-    public BigDecimal getBail() {
-        return bail;
-    }
-    public void setBail(BigDecimal bail) {
-        this.bail = bail;
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
     public Integer getQuantity() {
         return quantity;
     }
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    public BigDecimal getBail() {
+        return bail;
+    }
+    public void setBail(BigDecimal bail) {
+        this.bail = bail;
     }
     public String getBackImg() {
         return backImg;

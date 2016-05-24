@@ -21,6 +21,8 @@ public class Element<T> {
     private Color color;
     /* 内容 */
     private T content;
+    /* 行风格 */
+    private int lineStyle = 1;
 
     public Element() {
     }
@@ -95,5 +97,13 @@ public class Element<T> {
 
     public void setContent(T content) {
         this.content = content;
+    }
+
+    public int getLineStyle() {
+        return lineStyle;
+    }
+
+    public void setLineStyle(int lineStyle) {
+        this.lineStyle = lineStyle;
     }
 }

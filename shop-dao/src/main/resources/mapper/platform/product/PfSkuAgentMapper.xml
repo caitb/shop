@@ -2,20 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.masiis.shop.dao.platform.product.PfSkuAgentMapper">
     <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PfSkuAgent">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="sku_id" property="skuId" jdbcType="INTEGER"/>
-        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER"/>
-        <result column="icon" property="icon" jdbcType="VARCHAR"/>
-        <result column="discount" property="discount" jdbcType="DECIMAL"/>
-        <result column="bail" property="bail" jdbcType="DECIMAL"/>
-        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
-        <result column="back_img" property="backImg" jdbcType="VARCHAR"/>
-        <result column="is_show" property="isShow" jdbcType="INTEGER"/>
-        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="sku_id" property="skuId" jdbcType="INTEGER" />
+        <result column="agent_level_id" property="agentLevelId" jdbcType="INTEGER" />
+        <result column="icon" property="icon" jdbcType="VARCHAR" />
+        <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+        <result column="bail" property="bail" jdbcType="DECIMAL" />
+        <result column="back_img" property="backImg" jdbcType="VARCHAR" />
+        <result column="is_show" property="isShow" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectBySkuId" parameterType="Integer" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark
         FROM
                pf_sku_agent
         WHERE
@@ -29,13 +31,13 @@
 
     <insert id="insert" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
         insert into pf_sku_agent (id, sku_id, agent_level_id,
-            icon, discount, bail,
-            quantity, back_img, is_show,
-            remark)
+            icon, unit_price, quantity,
+            total_price, bail, back_img,
+            is_show, remark)
         values (#{id,jdbcType=INTEGER}, #{skuId,jdbcType=INTEGER}, #{agentLevelId,jdbcType=INTEGER},
-            #{icon,jdbcType=VARCHAR}, #{discount,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL},
-            #{quantity,jdbcType=INTEGER}, #{backImg,jdbcType=VARCHAR}, #{isShow,jdbcType=INTEGER},
-            #{remark,jdbcType=VARCHAR})
+            #{icon,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, #{quantity,jdbcType=INTEGER},
+            #{totalPrice,jdbcType=DECIMAL}, #{bail,jdbcType=DECIMAL}, #{backImg,jdbcType=VARCHAR},
+            #{isShow,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.PfSkuAgent">
@@ -43,9 +45,10 @@
         set sku_id = #{skuId,jdbcType=INTEGER},
             agent_level_id = #{agentLevelId,jdbcType=INTEGER},
             icon = #{icon,jdbcType=VARCHAR},
-            discount = #{discount,jdbcType=DECIMAL},
-            bail = #{bail,jdbcType=DECIMAL},
+            unit_price = #{unitPrice,jdbcType=DECIMAL},
             quantity = #{quantity,jdbcType=INTEGER},
+            total_price = #{totalPrice,jdbcType=DECIMAL},
+            bail = #{bail,jdbcType=DECIMAL},
             back_img = #{backImg,jdbcType=VARCHAR},
             is_show = #{isShow,jdbcType=INTEGER},
             remark = #{remark,jdbcType=VARCHAR}
@@ -53,13 +56,15 @@
     </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark
         from pf_sku_agent
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark
         from pf_sku_agent
     </select>
 
@@ -76,13 +81,15 @@
     </select>
 
     <select id="selectAllBySkuId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark
         from pf_sku_agent
         where sku_id = #{sku_id,jdbcType=INTEGER}
     </select>
 
     <select id="selectBySkuIdAndLevelId" resultMap="BaseResultMap">
-        select id, sku_id, agent_level_id, icon, discount, bail, quantity, back_img, is_show, remark
+        select id, sku_id, agent_level_id, icon, unit_price, quantity, total_price, bail,
+        back_img, is_show, remark
         from pf_sku_agent
         where sku_id = #{skuId}
         and agent_level_id =#{levelId}
@@ -98,14 +105,17 @@
             <if test="agentLevelId != null">
                 agent_level_id = #{agentLevelId,jdbcType=INTEGER},
             </if>
-            <if test="discount != null">
-                discount = #{discount,jdbcType=DECIMAL},
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
             </if>
             <if test="quantity != null">
                 quantity = #{quantity,jdbcType=INTEGER},
             </if>
-            <if test="icon != null">
-                icon = #{icon,jdbcType=VARCHAR},
+            <if test="totalPrice != null">
+                total_price = #{totalPrice,jdbcType=DECIMAL},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},

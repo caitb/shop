@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -126,7 +127,7 @@ public class UserIdentityAuthController extends BaseController {
         try {
             isUploadParam(uploadIdentityReq,comUser);
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            String fileName = userIdentityAuthService.uploadCertificateToOss(uploadIdentityReq.getInputStream(),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
+            String fileName = userIdentityAuthService.uploadCertificateToOss(new ByteArrayInputStream(uploadIdentityReq.getBytes()),uploadIdentityReq.getSize(), uploadIdentityReq.getImageType(),comUser.getId());
             if (StringUtils.isBlank(fileName)) {
                 uploadIdentityRes.setResCode(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL);
                 uploadIdentityRes.setResMsg(SysResCodeCons.RES_CODE_UPLOAD_IDENTITY_FAIL_MSG);
@@ -146,7 +147,7 @@ public class UserIdentityAuthController extends BaseController {
         if (uploadIdentityReq == null||comUser == null||comUser.getId()==null){
             return  false;
         }
-        if (uploadIdentityReq.getInputStream() == null){
+        if (uploadIdentityReq.getBytes() == null){
             return false;
         }
         if (uploadIdentityReq.getImageType() == null){

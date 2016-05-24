@@ -108,7 +108,7 @@ public class ProductController extends BaseController {
     /**
       * @Author jjh
       * @Date 2016/5/19 0019 下午 2:46
-      *
+      *x
       */
     @RequestMapping("/detail")
     @ResponseBody

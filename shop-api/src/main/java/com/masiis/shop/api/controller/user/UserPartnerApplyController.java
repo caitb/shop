@@ -53,10 +53,10 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/canagent")
     @ResponseBody
     @SignValid(paramType = PartnerPreApplyReq.class)
-    public canApplyRes isAgent(HttpServletRequest request, canApplyReq req, ComUser user){
+    public canApplyRes isAgent(HttpServletRequest request, canApplyReq req, ComUser user) {
         Integer skuId = req.getSkuId();
         canApplyRes res = new canApplyRes();
-        if(skuId == null){
+        if (skuId == null) {
             log.error(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL_MSG);
             res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL);
             res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_SKU_NULL_MSG);
@@ -76,7 +76,7 @@ public class UserPartnerApplyController extends BaseController {
             res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT);
             res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT_MSG);
         } else {
-            if(relation == null) {
+            if (relation == null) {
                 // 临时代理关系没有,不能申请
                 res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT);
                 res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
@@ -93,10 +93,10 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/toapply")
     @ResponseBody
     @SignValid(paramType = PartnerPreApplyReq.class)
-    public PartnerPreApplyRes toApply(HttpServletRequest request, PartnerPreApplyReq req, ComUser user){
+    public PartnerPreApplyRes toApply(HttpServletRequest request, PartnerPreApplyReq req, ComUser user) {
         PartnerPreApplyRes res = new PartnerPreApplyRes();
         Integer skuId = req.getSkuId();
-        if(skuId == null){
+        if (skuId == null) {
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
             res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
             return res;
@@ -131,10 +131,10 @@ public class UserPartnerApplyController extends BaseController {
                 pfUserRelationService.insert(pfUserRelation);
             }
         } catch (Exception e) {
-            if(e instanceof BusinessException) {
+            if (e instanceof BusinessException) {
                 res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PUSER_INVALID);
                 res.setResMsg(e.getMessage());
-            }else{
+            } else {
                 res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
                 res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
             }
@@ -160,7 +160,7 @@ public class UserPartnerApplyController extends BaseController {
     @RequestMapping("/register")
     @ResponseBody
     @SignValid(paramType = PartnerApplyRegisterReq.class)
-    public PartnerApplyRegisterRes partnerApplyRegister(HttpServletRequest request, PartnerApplyRegisterReq req, ComUser user){
+    public PartnerApplyRegisterRes partnerApplyRegister(HttpServletRequest request, PartnerApplyRegisterReq req, ComUser user) {
         PartnerApplyRegisterRes res = new PartnerApplyRegisterRes();
         Integer skuId = req.getSkuId();
         if (skuId == null || skuId < 0) {
@@ -184,8 +184,8 @@ public class UserPartnerApplyController extends BaseController {
         //上级代理等级
         Integer pUserLevelId = 0;
         PfUserRelation relation = pfUserRelationService.getRelation(user.getId(), skuId);
-        if(userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId) != null
-                    || relation == null){
+        if (userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId) != null
+                || relation == null) {
             log.error(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
             res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT);
             res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_NOTAGENT_MSG);
@@ -208,11 +208,11 @@ public class UserPartnerApplyController extends BaseController {
                     view.setLevelName(comAgentLevel.getName());
                 }
             }
-            BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+            BigDecimal amount = pfSkuAgent.getTotalPrice();
             // 总金额加上保证金
             amount = amount.add(pfSkuAgent.getBail()).setScale(2, RoundingMode.HALF_DOWN);
             view.setAgentFee(amount);
-            view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
+            view.setSinFee(pfSkuAgent.getUnitPrice());
             view.setIsShow(pfSkuAgent.getIsShow());
             agentSkuViews.add(view);
         }

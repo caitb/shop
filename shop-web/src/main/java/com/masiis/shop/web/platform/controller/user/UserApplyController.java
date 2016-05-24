@@ -156,11 +156,11 @@ public class UserApplyController extends BaseController {
                     view.setLevel(comAgentLevel);
                 }
             }
-            BigDecimal amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(pfSkuAgent.getQuantity())).multiply(pfSkuAgent.getDiscount());
+            BigDecimal amount = pfSkuAgent.getTotalPrice();
             // 总金额加上保证金
             amount = amount.add(pfSkuAgent.getBail()).setScale(2, RoundingMode.HALF_DOWN);
             view.setAgentFee(amount);
-            view.setSinFee(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, RoundingMode.HALF_DOWN));
+            view.setSinFee(pfSkuAgent.getUnitPrice());
             view.setIsShow(pfSkuAgent.getIsShow());
             agentSkuViews.add(view);
         }

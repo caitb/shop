@@ -86,16 +86,12 @@ public class ComUserAccountService {
                 log.info("增加上级总利润");
                 PfUserSku pUserSku = null;
                 PfSkuAgent pSkuAgent = null;
-                BigDecimal discountAh = BigDecimal.ZERO;
                 BigDecimal sumProfitFee = BigDecimal.ZERO;
                 for (PfBorderItem pfBorderItem : pfBorderItemMapper.getPfBorderItemDetail(order.getId())) {
                     pUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userPId, pfBorderItem.getSkuId());
                     pSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(pfBorderItem.getSkuId(), pUserSku.getAgentLevelId());
-                    discountAh = pfBorderItem.getDiscount().subtract(pSkuAgent.getDiscount());
-                    if (discountAh.compareTo(BigDecimal.ZERO) > 0) {
-                        BigDecimal profitFee = pfBorderItem.getOriginalPrice().multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())).multiply(discountAh);
-                        sumProfitFee = sumProfitFee.add(profitFee);
-                    }
+                    BigDecimal unit_profit = pfBorderItem.getUnitPrice().subtract(pSkuAgent.getUnitPrice());
+                    sumProfitFee = sumProfitFee.add(unit_profit.multiply(BigDecimal.valueOf(pfBorderItem.getQuantity())));
                 }
                 log.info("开始修改利润");
                 ComUserAccountRecord recordP = createAccountRecord(sumProfitFee, account, order.getId(), UserAccountRecordFeeType.AddProfitFee);

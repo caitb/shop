@@ -122,12 +122,11 @@ public class BOrderAddController extends BaseController {
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
         bOrderConfirm.setSkuQuantity(pfSkuAgent.getQuantity());
         bOrderConfirm.setBailAmount(pfSkuAgent.getBail().toString());
-        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_DOWN);
+        BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
         BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));
         bOrderConfirm.setProductTotalPrice(totalPrice.toString());
-        BigDecimal highProfit = comSku.getPriceRetail()
+        BigDecimal highProfit = (comSku.getPriceRetail().subtract(unitPrice))
                 .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
-                .multiply(BigDecimal.ONE.subtract(pfSkuAgent.getDiscount()))
                 .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
         bOrderConfirm.setHighProfit(highProfit.toString());
         Integer lowerAgentLevelId = agentLevelId + 1;
@@ -137,9 +136,8 @@ public class BOrderAddController extends BaseController {
         if (lowerSkuAgent == null) {
             lowProfit = highProfit;
         } else {
-            lowProfit = comSku.getPriceRetail()
+            lowProfit = (lowerSkuAgent.getUnitPrice().subtract(pfSkuAgent.getUnitPrice()))
                     .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
-                    .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
                     .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         }
         bOrderConfirm.setLowProfit(lowProfit.toString());
@@ -290,12 +288,11 @@ public class BOrderAddController extends BaseController {
         bOrderConfirm.setAgentLevelId(agentLevelId);
         PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, agentLevelId);
         bOrderConfirm.setSkuQuantity(quantity);
-        BigDecimal unitPrice = comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_DOWN);
-        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
+        BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));
         bOrderConfirm.setProductTotalPrice(totalPrice.toString());
-        BigDecimal highProfit = comSku.getPriceRetail()
-                .multiply(BigDecimal.valueOf(quantity))
-                .multiply(BigDecimal.ONE.subtract(pfSkuAgent.getDiscount()))
+        BigDecimal highProfit = (comSku.getPriceRetail().subtract(unitPrice))
+                .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
                 .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
         bOrderConfirm.setHighProfit(highProfit.toString());
         Integer lowerAgentLevelId = agentLevelId + 1;
@@ -305,9 +302,8 @@ public class BOrderAddController extends BaseController {
         if (lowerSkuAgent == null) {
             lowProfit = highProfit;
         } else {
-            lowProfit = comSku.getPriceRetail()
-                    .multiply(BigDecimal.valueOf(quantity))
-                    .multiply(lowerSkuAgent.getDiscount().subtract(pfSkuAgent.getDiscount()))
+            lowProfit = (lowerSkuAgent.getUnitPrice().subtract(pfSkuAgent.getUnitPrice()))
+                    .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
                     .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
         }
         bOrderConfirm.setLowProfit(lowProfit.toString());

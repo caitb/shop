@@ -213,14 +213,14 @@ public class ProductService {
         ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (level == endLevel || stock == 0) {
             param.put("countLevel", countLevel);
-            param.put("priceDiscount", comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
+            param.put("priceDiscount", pfSkuAgent.getUnitPrice());
             return param;
         } else {
             countLevel = stock / pfSkuAgent.getQuantity();
             param.put("countLevel", countLevel);
             param.put("levelStock", pfSkuAgent.getQuantity());
         }
-        param.put("priceDiscount", comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        param.put("priceDiscount", pfSkuAgent.getUnitPrice());
         return param;
     }
 }

@@ -9,7 +9,9 @@
                     window.location.href = personalInfoJS.basePath + "/personalInfo/selectSkuWeChatInfo.do";
                 })*/
                 $("#bindPhoneId").bind("click",function(){
-                    validateCodeJS.applyTrial("personalInfo");
+                    if ($("#mobileId").val()==null||$("#mobileId").val()==""){
+                        validateCodeJS.applyTrial("personalInfo");
+                    }
                 })
 
                 $("#identityAuthId").bind("click",function(){

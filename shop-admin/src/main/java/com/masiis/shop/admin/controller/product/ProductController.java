@@ -108,7 +108,7 @@ public class ProductController {
                       @RequestParam(value = "unitPrices")String[] unitPrices,
                       @RequestParam(value = "totalPrices")String[] totalPrices,
                       @RequestParam("quantitys")Integer[] quantitys,
-                      @RequestParam("bails")Integer[] bails,
+                      @RequestParam("bails")String[] bails,
                       @RequestParam("distributionDiscounts")String[] distributionDiscounts,
                       String proIconUrl,
                       String proIconName,

@@ -43,11 +43,7 @@ public class SfDistribution {
      */
     private Date createTime;
     /**
-     * 总数
-     */
-    private Integer count;
-    /**
-     * 参与总人数
+     * 参与分佣人数
      */
     private Integer sumLevel;
     /**
@@ -106,14 +102,6 @@ public class SfDistribution {
     }
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
     }
 
     public Integer getSumLevel() {

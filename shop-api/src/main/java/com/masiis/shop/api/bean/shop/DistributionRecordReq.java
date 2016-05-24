@@ -5,7 +5,7 @@ import com.masiis.shop.api.bean.base.BasePagingReq;
 /**
  * Created by wangbingjian on 2016/5/23.
  */
-public class ItemDistributionReq extends BasePagingReq {
+public class DistributionRecordReq extends BasePagingReq {
 
     private String token;
 

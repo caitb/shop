@@ -1,30 +1,48 @@
 package com.masiis.shop.api.bean.shop;
 
 import com.masiis.shop.api.bean.base.BasePagingRes;
+import com.masiis.shop.api.bean.base.BaseRes;
 
 
 /**
  * Created by wangbingjian on 2016/5/23.
  */
-public class ItemDistributionRes extends BasePagingRes {
+public class ItemDistributionRes extends BaseRes {
 
-    private boolean Last = false;
+    /**
+     * 店铺总参与人数
+     */
+    private Integer sumLevel;
+    /**
+     * 店铺总销售额
+     */
+    private String saleAmount;
+    /**
+     * 发放佣金总额
+     */
+    private String distributionAmount;
 
-    private DistributionRecord distributionRecord;
-
-    public boolean isLast() {
-        return Last;
+    public Integer getSumLevel() {
+        return sumLevel;
     }
 
-    public void setLast(boolean last) {
-        Last = last;
+    public void setSumLevel(Integer sumLevel) {
+        this.sumLevel = sumLevel;
     }
 
-    public DistributionRecord getDistributionRecord() {
-        return distributionRecord;
+    public String getSaleAmount() {
+        return saleAmount;
     }
 
-    public void setDistributionRecord(DistributionRecord distributionRecord) {
-        this.distributionRecord = distributionRecord;
+    public void setSaleAmount(String saleAmount) {
+        this.saleAmount = saleAmount;
+    }
+
+    public String getDistributionAmount() {
+        return distributionAmount;
+    }
+
+    public void setDistributionAmount(String distributionAmount) {
+        this.distributionAmount = distributionAmount;
     }
 }

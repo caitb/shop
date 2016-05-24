@@ -164,7 +164,7 @@ public class UserAddressController extends BaseController {
                 Long i = userAddressService.deleteUserAddressById(addressReq.getId(), comUser.getId(), Long.parseLong(addressReq.getIsDefault()+""));
                 if (i == 0) {
                     addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL);
-                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL_MEG);
+                    addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DELETE_FAIL_MSG);
                 } else {
                     addressRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
                     addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
@@ -201,7 +201,7 @@ public class UserAddressController extends BaseController {
                     addressRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
                 }else{
                     addressRes.setResCode(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL);
-                    addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL_MEG);
+                    addressRes.setResMsg(SysResCodeCons.RES_CODE_ADDRESS_DEFAULT_FAIL_MSG);
                 }
             }else{
                 addressRes.setResCode(SysResCodeCons.RES_CODE_REQ_STRUCT_INVALID);

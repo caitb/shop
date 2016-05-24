@@ -29,7 +29,7 @@ public class UserIdentityAuthService {
     private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
-    private UserService userService;
+    private ComUserService userService;
 
     private final Integer saveType = 0;//保存操作
     private final Integer updateType = 1;//更新操作

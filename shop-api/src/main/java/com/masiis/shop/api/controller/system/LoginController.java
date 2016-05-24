@@ -202,7 +202,6 @@ public class LoginController extends BaseController {
     public GetPhoneValidCodeRes getPhoneValidCode(HttpServletRequest request, GetPhoneValidCodeReq req){
         GetPhoneValidCodeRes res = new GetPhoneValidCodeRes();
         try {
-            //req = JSONObject.parseObject(getRequestBody(request), GetPhoneValidCodeReq.class);
             if(req == null){
                 throw new BusinessException();
             }

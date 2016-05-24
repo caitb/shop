@@ -1,5 +1,9 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.base.BaseReq;
+import com.masiis.shop.api.bean.base.BaseRes;
+import com.masiis.shop.api.bean.user.BindPhoneReq;
+import com.masiis.shop.api.bean.user.BindPhoneRes;
 import com.masiis.shop.api.bean.user.CheckPUserPhoneReq;
 import com.masiis.shop.api.bean.user.CheckPUserPhoneRes;
 import com.masiis.shop.api.constants.SignValid;
@@ -97,5 +101,12 @@ public class PhoneController extends BaseController {
     }
 
 
+    @RequestMapping("/bind")
+    @ResponseBody
+    @SignValid(paramType = BindPhoneReq.class)
+    public BindPhoneRes bindPhone(HttpServletRequest request, BindPhoneReq req, ComUser user){
+
+        return null;
+    }
 
 }

@@ -184,9 +184,9 @@ public class ManageProController extends BaseController {
             bOrderConfirm.setWeiXinId(pfUserCertificate.getWxId());
             //拿货方式
             bOrderConfirm.setSendType(sendType);
-            //获得地址
-            ComUserAddress comUserAddress = userAddressService.getOrderAddress(req.getUserAddressId(), user.getId());
-            bOrderConfirm.setComUserAddress(comUserAddress);
+//            //获得地址
+//            ComUserAddress comUserAddress = userAddressService.getOrderAddress(req.getUserAddressId(), user.getId());
+//            bOrderConfirm.setComUserAddress(comUserAddress);
             //获取sku
             ComSku comSku = skuService.getSkuById(req.getUserSkuId());
             bOrderConfirm.setSkuId(req.getUserSkuId());

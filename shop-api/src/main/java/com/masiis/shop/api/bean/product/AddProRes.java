@@ -8,21 +8,11 @@ import com.masiis.shop.dao.beans.order.BOrderConfirm;
  */
 public class AddProRes extends BaseRes{
 
-    private Long orderCode;//补货订单id
-
     private Boolean isQueuing;//是否排单
 
     private Integer count;//排单数量
 
-    private BOrderConfirm bOrderConfirm;//订单预览信息
-
-    public Long getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(Long orderCode) {
-        this.orderCode = orderCode;
-    }
+    private BOrderConfirm bOrderConfirm;//订单确认信息
 
     public Boolean getIsQueuing() {
         return isQueuing;

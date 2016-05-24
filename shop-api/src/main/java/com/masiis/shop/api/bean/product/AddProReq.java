@@ -13,8 +13,6 @@ public class AddProReq extends BaseReq{
 
     private Integer quantity;//补货数量
 
-    private Long userAddressId;//地址
-
     public String getToken() {
         return token;
     }
@@ -37,13 +35,5 @@ public class AddProReq extends BaseReq{
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public Long getUserAddressId() {
-        return userAddressId;
-    }
-
-    public void setUserAddressId(Long userAddressId) {
-        this.userAddressId = userAddressId;
     }
 }

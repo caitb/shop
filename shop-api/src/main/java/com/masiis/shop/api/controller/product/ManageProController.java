@@ -1,9 +1,7 @@
 package com.masiis.shop.api.controller.product;
 
 import com.masiis.shop.api.bean.common.CommonReq;
-import com.masiis.shop.api.bean.product.ApplyProReq;
-import com.masiis.shop.api.bean.product.ApplyProRes;
-import com.masiis.shop.api.bean.product.ProDetailRes;
+import com.masiis.shop.api.bean.product.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysConstants;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -11,10 +9,14 @@ import com.masiis.shop.api.controller.base.BaseController;
 import com.masiis.shop.api.service.order.BOrderAddService;
 import com.masiis.shop.api.service.order.BOrderService;
 import com.masiis.shop.api.service.product.ProductService;
+import com.masiis.shop.api.service.product.SkuAgentService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserAddressService;
+import com.masiis.shop.api.service.user.UserCertificateService;
 import com.masiis.shop.api.service.user.UserSkuService;
+import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +53,12 @@ public class ManageProController extends BaseController {
     private BOrderAddService bOrderAddService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private SkuAgentService skuAgentService;
+    @Resource
+    private UserCertificateService userCertificateService;
+
+
     /**
       * @Author jjh
       * @Date 2016/5/19 0019 下午 5:49
@@ -151,6 +160,85 @@ public class ManageProController extends BaseController {
             applyProRes.setResMsg(e.getMessage());
         }
          return applyProRes;
+    }
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/24 0024 下午 3:15
+      * 补货生成订单
+      */
+    @RequestMapping("/addPro.do")
+    @ResponseBody
+    @SignValid(paramType = AddProReq.class)
+    public AddProRes supplementBOrder(HttpServletRequest request, AddProReq req,
+                                      ComUser user){
+        AddProRes addProRes = new AddProRes();
+        try{
+            Integer sendType = user.getSendType();
+            Integer agentLevelId = 0;
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getUserSkuId());
+            agentLevelId = pfUserSku.getAgentLevelId();
+            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+            BOrderConfirm bOrderConfirm = new BOrderConfirm();
+            bOrderConfirm.setOrderType(BOrderType.agent.getCode());
+            bOrderConfirm.setWeiXinId(pfUserCertificate.getWxId());
+            //拿货方式
+            bOrderConfirm.setSendType(sendType);
+            //获得地址
+            ComUserAddress comUserAddress = userAddressService.getOrderAddress(req.getUserAddressId(), user.getId());
+            bOrderConfirm.setComUserAddress(comUserAddress);
+            //获取sku
+            ComSku comSku = skuService.getSkuById(req.getUserSkuId());
+            bOrderConfirm.setSkuId(req.getUserSkuId());
+            bOrderConfirm.setSkuName(comSku.getName());
+            //获取sku主图片
+            ComSkuImage comSkuImage = skuService.findComSkuImage(req.getUserSkuId());
+            String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+            bOrderConfirm.setSkuImg(skuImg + comSkuImage.getImgUrl());
+            //货币类型格式化
+//        NumberFormat rmb = NumberFormat.getCurrencyInstance(Locale.CHINA);
+            //获取用户代理等级
+            bOrderConfirm.setAgentLevelId(agentLevelId);
+            PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(req.getUserSkuId(), agentLevelId);
+            bOrderConfirm.setSkuQuantity(req.getQuantity());
+            BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
+            BigDecimal totalPrice = unitPrice.multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()));
+            bOrderConfirm.setProductTotalPrice(totalPrice.toString());
+            BigDecimal highProfit = (comSku.getPriceRetail().subtract(unitPrice))
+                    .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
+                    .setScale(2, BigDecimal.ROUND_DOWN);//最高利润
+            bOrderConfirm.setHighProfit(highProfit.toString());
+            Integer lowerAgentLevelId = agentLevelId + 1;
+            //获取下级代理信息
+            PfSkuAgent lowerSkuAgent = skuAgentService.getBySkuIdAndLevelId(req.getUserSkuId(), lowerAgentLevelId);
+            BigDecimal lowProfit = BigDecimal.ZERO;
+            if (lowerSkuAgent == null) {
+                lowProfit = highProfit;
+            } else {
+                lowProfit = (lowerSkuAgent.getUnitPrice().subtract(pfSkuAgent.getUnitPrice()))
+                        .multiply(BigDecimal.valueOf(bOrderConfirm.getSkuQuantity()))
+                        .setScale(2, BigDecimal.ROUND_DOWN);//最低利润
+            }
+            bOrderConfirm.setLowProfit(lowProfit.toString());
+            bOrderConfirm.setOrderTotalPrice(totalPrice.toString());
+            //获取排单信息
+            boolean isQueuing = false;
+            Integer count = 0;
+            int status = skuService.getSkuStockStatus(req.getUserSkuId(), req.getQuantity(), pfUserSku.getUserPid());
+            if (status == 1) {
+                isQueuing = true;
+                count = bOrderService.selectQueuingOrderCount(req.getUserSkuId());
+            }
+            addProRes.setIsQueuing(isQueuing);
+            addProRes.setCount(count);
+            addProRes.setbOrderConfirm(bOrderConfirm);
+            addProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            addProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            addProRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            addProRes.setResMsg(e.getMessage());
+        }
+        return addProRes;
     }
 
 }

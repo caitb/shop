@@ -42,7 +42,6 @@ public class UserAddressService {
      *
      * @param selectedAddressId
      * @param userId
-     * @param request
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED,readOnly = true)
@@ -78,23 +77,12 @@ public class UserAddressService {
     public String addOrUpdateAddress(HttpServletRequest request, Long id, Integer isDefault, ComUserAddress comUserAddress, String operateType, int addAddressJumpType) {
         try {
             if (operateType.equals("save")) {
-                addComUserAddress(comUserAddress);
-                String path = "";
-                if (!StringUtils.isEmpty(comUserAddress.getId())) {
-                    switch (addAddressJumpType) {
-                        case UserAddressController.addAddressPageToOrderPage:  //跳转到订单界面
-                            path = getOrderPagePath(request, comUserAddress.getId());
-                            break;
-                        case UserAddressController.getAddAddressPageToPersonalInfoPage://跳转到管理地址界面
-                            path = "/userAddress/toManageAddressPage.html?manageAddressJumpType=1&addAddressJumpType="+addAddressJumpType;
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
+                int i= addComUserAddress(comUserAddress);
+                if (i==1){
+                    return "success";
+                }else {
                     return "false";
                 }
-                return path;
             } else {
                 int i = 0;
                 comUserAddress.setIsDefault(isDefault);

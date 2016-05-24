@@ -148,7 +148,7 @@ public class ProductController {
                 for(int i=0; i<discounts.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setAgentLevelId(new Integer(i + 1));
-                    pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
+                    //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
                     pfSkuAgent.setIsShow(1);
@@ -295,7 +295,7 @@ public class ProductController {
                 for(int i=0; i<discounts.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setId(skuAgentIds[i]);
-                    pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
+                    //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
                     pfSkuAgent.setBackImg((i+1)+".png");

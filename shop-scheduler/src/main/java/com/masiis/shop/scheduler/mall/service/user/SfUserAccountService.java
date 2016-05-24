@@ -68,10 +68,11 @@ public class SfUserAccountService {
 
     /**
      * 根据用户id查询分销用户账户表
+     *
      * @param userId
      * @return
      */
-    public SfUserAccount findAccountByUserId(Long userId){
+    public SfUserAccount findAccountByUserId(Long userId) {
         return sfUserAccountMapper.selectByUserId(userId);
     }
 
@@ -100,19 +101,19 @@ public class SfUserAccountService {
      * @param order
      */
     @Transactional
-    public void countingSfOrder(SfOrder order){
-        try{
-            if(order == null || order.getId() == null){
+    public void countingSfOrder(SfOrder order) {
+        try {
+            if (order == null || order.getId() == null) {
                 log.error("传入订单对象为null");
                 throw new BusinessException();
             }
             order = orderMapper.selectByPrimaryKey(order.getId());
-            if(order.getOrderType() != 0){
+            if (order.getOrderType() != 0) {
                 log.error("订单类型不匹配");
                 throw new BusinessException();
             }
-            if(order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_SHIPED.getCode().intValue()
-                    || order.getPayStatus() != 1){
+            if (order.getOrderStatus().intValue() != SfOrderStatusEnum.ORDER_SHIPED.getCode().intValue()
+                    || order.getPayStatus() != 1) {
                 log.error("订单状态不匹配,订单不是" + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
                 throw new BusinessException("订单状态不匹配,订单不是"
                         + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
@@ -123,10 +124,10 @@ public class SfUserAccountService {
             ComUser shopKeeper = userService.getUserById(order.getShopUserId());
             // 计算店主待结算中金额(减去分润,减去运费)
             BigDecimal countFee = null;
-            if(order.getSendType() == 1){
+            if (order.getSendType() == 1) {
                 countFee = order.getPayAmount().subtract(order.getDistributionAmount())
                         .subtract(order.getShipAmount());
-            } else if(order.getSendType() == 2){
+            } else if (order.getSendType() == 2) {
                 countFee = order.getPayAmount().subtract(order.getDistributionAmount());
             } else {
                 throw new BusinessException("不合法的拿货方式");
@@ -141,7 +142,7 @@ public class SfUserAccountService {
             sfShop.setSaleAmount(sfShop.getSaleAmount().add(saleAmount));
             sfShop.setShipAmount(sfShop.getShipAmount().add(order.getShipAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
-            if(shopRes != 1){
+            if (shopRes != 1) {
                 throw new BusinessException("修改店铺总销售额失败");
             }
 
@@ -174,16 +175,16 @@ public class SfUserAccountService {
             // 每个分润用户的分润金额map,key:userId;value:fee
             Map<Long, BigDecimal> fenRunUserFeeMap = new HashMap<Long, BigDecimal>();
             List<SfOrderItem> sfOrderItems = sfOrderItemMapper.getOrderItemByOrderId(order.getId());
-            for(SfOrderItem item:sfOrderItems) {
+            for (SfOrderItem item : sfOrderItems) {
                 // 计算单个item的小铺店主利润
                 profit = profit.add(calculateShopkeeperProfitBySfOrder(item, shopKeeper));
 
                 // 计算单个item的分销分润
                 List<SfOrderItemDistribution> distributions = distributionMapper.selectBySfOrderItemId(item.getId());
-                for(SfOrderItemDistribution dis:distributions){
+                for (SfOrderItemDistribution dis : distributions) {
                     Long userId = dis.getUserId();
                     BigDecimal curFee = new BigDecimal(0);
-                    if(fenRunUserFeeMap.containsKey(userId)){
+                    if (fenRunUserFeeMap.containsKey(userId)) {
                         curFee = fenRunUserFeeMap.get(userId);
                     }
                     fenRunUserFeeMap.put(userId, curFee.add(dis.getDistributionAmount()));
@@ -192,7 +193,7 @@ public class SfUserAccountService {
                 }
             }
             profit = profit.subtract(order.getDistributionAmount());
-            if(profit.compareTo(BigDecimal.ZERO) < 0){
+            if (profit.compareTo(BigDecimal.ZERO) < 0) {
                 profit = BigDecimal.ZERO;
             }
             // 计算店主此次总利润
@@ -206,7 +207,7 @@ public class SfUserAccountService {
             log.info("小铺店主总利润增加:" + profit);
 
             int res = comUserAccountMapper.updateByIdWithVersion(comUserAccount);
-            if(res != 1){
+            if (res != 1) {
                 throw new BusinessException("小铺店主account修改失败!");
             }
             // 插入变动记录
@@ -217,7 +218,7 @@ public class SfUserAccountService {
             log.info("计算小铺订单分润");
 
             // 计算分销订单的分润
-            for(Long sfUserId:fenRunUserFeeMap.keySet()){
+            for (Long sfUserId : fenRunUserFeeMap.keySet()) {
                 BigDecimal fee = fenRunUserFeeMap.get(sfUserId);
                 SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserId);
                 SfUserBillItem sfBillItem = createSfUserBillItem(order, sfUserAccount, fee);
@@ -278,7 +279,7 @@ public class SfUserAccountService {
     }
 
     private SfUserAccountRecord createSfUserAccountRecordByAccount(SfUserAccount sfUserAccount,
-                                          BigDecimal fee, ComUser shopkeeper, SfOrder order) {
+                                                                   BigDecimal fee, ComUser shopkeeper, SfOrder order) {
         SfUserAccountRecord record = new SfUserAccountRecord();
 
         record.setHandler(String.valueOf(shopkeeper.getId()));
@@ -306,15 +307,15 @@ public class SfUserAccountService {
         ComSku sku = skuMapper.findBySkuId(item.getSkuId());
         PfUserSku userSku = userSkuMapper.selectByUserIdAndSkuId(shopKeeper.getId(), sku.getId());
         PfSkuAgent skuAgent = skuAgentMapper.selectBySkuIdAndLevelId(sku.getId(), userSku.getAgentLevelId());
-        BigDecimal itemProfit = sku.getPriceRetail().multiply(BigDecimal.ONE.subtract(skuAgent.getDiscount()));
-        if(itemProfit.compareTo(BigDecimal.ZERO) < 0){
+        BigDecimal itemProfit = sku.getPriceRetail().multiply(skuAgent.getUnitPrice());
+        if (itemProfit.compareTo(BigDecimal.ZERO) < 0) {
             itemProfit = BigDecimal.ZERO;
         }
         return itemProfit;
     }
 
     private ComUserAccountRecord createComUserAccountRecordBySfOrder(SfOrder order, BigDecimal countFee,
-                                                 Integer fee_type, ComUserAccount comAccount) {
+                                                                     Integer fee_type, ComUserAccount comAccount) {
         ComUserAccountRecord comRecord = new ComUserAccountRecord();
 
         comRecord.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(0));
@@ -330,7 +331,7 @@ public class SfUserAccountService {
         return comRecord;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         BigDecimal aa = new BigDecimal(1);
         System.out.println(aa);
         aa = aa.add(new BigDecimal(2));

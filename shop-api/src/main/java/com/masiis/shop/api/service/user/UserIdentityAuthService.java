@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -35,6 +37,11 @@ public class UserIdentityAuthService {
     private final Integer updateType = 1;//更新操作
 
     private String identityAuthRealPath = null;
+
+
+    private final static String[] charArrs = {"A", "D", "E", "C", "H", "Y", "6", "7", "8", "9",
+            "M", "N", "O", "Z", "1", "5", "P", "Q", "R", "S", "2", "3", "4", "T", "I", "J", "F",
+            "G", "B", "K", "L", "W", "X", "U", "V", "0"};
 
     /**
      * 获得身份证信息
@@ -167,5 +174,41 @@ public class UserIdentityAuthService {
         File frontFile = new File(filePath);
         OSSObjectUtils.uploadFile(frontFile, "static/user/idCard/");
         return frontFile.getName();
+    }
+
+
+    public String uploadCertificateToOss(MultipartFile idCardImg, ComUser comUser){
+        try {
+            String contentType = idCardImg.getContentType();
+            String imageType = contentType.substring(contentType.indexOf("/")+1);
+            return uploadCertificateToOss(idCardImg.getInputStream(),idCardImg.getSize(),imageType,comUser.getId());
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return null;
+    }
+    public String uploadCertificateToOss(InputStream is, Long fileSize, String imageType, Long userId){
+        String fileName = null;
+        try {
+            fileName = userId+"_"+"certificate_"+ createGenerateStr()+"."+imageType;
+            OSSObjectUtils.uploadFile(fileName,fileSize,is,OSSObjectUtils.OSS_CERTIFICATE_TEMP );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
+    /**
+     * 生成32位随机字符串
+     *
+     * @return
+     */
+    private static String createGenerateStr(){
+        int len = 10;
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < len; i++){
+            res.append(charArrs[(int)(Math.random() * charArrs.length)]);
+        }
+        return res.toString();
     }
 }

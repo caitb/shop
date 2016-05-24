@@ -54,7 +54,7 @@ public class ProductService {
      */
     public Product getSkuDetails(Integer skuId) throws Exception {
         Product product = productMapper.getSkuDetailsBySkuId(skuId);
-        product.setStock(product.getStock()-product.getFrozenStock());
+        product.setStock(product.getStock() - product.getFrozenStock());
         ComSpu comSpu = comSpuMapper.selectById(product.getSpuId());
         ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
         product.setLogoUrl(comBrand.getLogoUrl());
@@ -77,9 +77,10 @@ public class ProductService {
      * 代理商利润
      */
     public Integer getMaxDiscount(Integer skuId) throws Exception {
-        int bb= (int)((1-productMapper.maxDiscount(skuId))*100);
+        int bb = (int) ((1 - productMapper.maxDiscount(skuId)) * 100);
         return bb;
     }
+
     /**
      * 跳转到试用申请页
      *
@@ -90,8 +91,8 @@ public class ProductService {
         Product product = new Product();
         product.setId(skuId);
         try {
-           ComSku comSku = comSkuMapper.selectById(skuId);
-            if (comSku != null){
+            ComSku comSku = comSkuMapper.selectById(skuId);
+            if (comSku != null) {
                 product.setName(comSku.getName());
                 //获取运费
                 ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
@@ -131,10 +132,10 @@ public class ProductService {
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
         if (userProducts != null) {
             for (Product product : userProducts) {
-                int currentStock = product.getStock()-product.getFrozenStock();
-                if(currentStock>=0){
+                int currentStock = product.getStock() - product.getFrozenStock();
+                if (currentStock >= 0) {
                     product.setStock(currentStock);
-                }else{
+                } else {
                     product.setStock(0);
                 }
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(product.getId());
@@ -142,7 +143,7 @@ public class ProductService {
                 product.getComSkuImage().setFullImgUrl(productImgValue + comSkuImage.getImgUrl());
                 PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(product.getId());
                 product.setIsQueue(pfSkuStock.getIsQueue());
-                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId,product.getId());
+                PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(userId, product.getId());
                 product.setUserPid(pfUserSku.getUserPid());
             }
         }
@@ -160,16 +161,17 @@ public class ProductService {
         if (product != null) {
             param.put("selfStock", selfStock);
             param.put("id", id);
-            param.put("version",product.getVersion());
+            param.put("version", product.getVersion());
             ADD:
             productMapper.updateStock(param);
         }
     }
+
     /**
-      * @Author 贾晶豪
-      * @Date 2016/3/21 0021 上午 10:13
-      * 查看当前库存
-      */
+     * @Author 贾晶豪
+     * @Date 2016/3/21 0021 上午 10:13
+     * 查看当前库存
+     */
     public PfUserSkuStock getStockByUser(Long id) throws Exception {
         return pfUserSkuStockService.selectByPrimaryKey(id);
     }
@@ -180,40 +182,40 @@ public class ProductService {
     public Integer getUpperStock(Long UserId, Integer skuId) {
         Integer upperStock = 0;
         PfUserSku pfUserSku = pfUserSkuMapper.selectByUserIdAndSkuId(UserId, skuId);//当前代理关系
-        if (pfUserSku!=null && pfUserSku.getPid() == 0) {
+        if (pfUserSku != null && pfUserSku.getPid() == 0) {
             PfSkuStock pfSkuStock = pfSkuStockService.selectBySkuId(skuId);
             upperStock = pfSkuStock.getStock() - pfSkuStock.getFrozenStock();
         } else {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
             upperStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
-        if(upperStock<0){
-            upperStock=0;
+        if (upperStock < 0) {
+            upperStock = 0;
         }
         return upperStock;
     }
+
     /**
-      * @Author Jing Hao
-      * @Date 2016/3/31 0031 上午 11:07
-      * 发展直属下级的人数
-      */
-    public Map<String,Object> getLowerCount(Integer skuId,Integer stock,Integer level){
-        Map<String,Object> param = new HashMap();
+     * @Author Jing Hao
+     * @Date 2016/3/31 0031 上午 11:07
+     * 发展直属下级的人数
+     */
+    public Map<String, Object> getLowerCount(Integer skuId, Integer stock, Integer level) {
+        Map<String, Object> param = new HashMap();
         Integer countLevel = 0;
         int endLevel = comAgentLevelMapper.getMaxAgentLevel();
         PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
-        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (level == endLevel || stock == 0) {
-            param.put("countLevel",countLevel);
-            param.put("priceDiscount",comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
-            param.put("levelStock",pfSkuAgent.getQuantity());
+            param.put("countLevel", countLevel);
+            param.put("priceDiscount", pfSkuAgent.getUnitPrice());
+            param.put("levelStock", pfSkuAgent.getQuantity());
             return param;
         } else {
             countLevel = stock / pfSkuAgent.getQuantity();
             param.put("countLevel", countLevel);
-            param.put("levelStock",pfSkuAgent.getQuantity());
+            param.put("levelStock", pfSkuAgent.getQuantity());
         }
-        param.put("priceDiscount",comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).setScale(2, BigDecimal.ROUND_HALF_UP));
+        param.put("priceDiscount", pfSkuAgent.getUnitPrice());
         return param;
     }
 }

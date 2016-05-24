@@ -110,9 +110,9 @@ public class UserIdentityAuthService {
     @Transactional(propagation = Propagation.REQUIRED,readOnly = false)
     public int sumbitAudit(HttpServletRequest request, ComUser comUser,String idCardFrontName,String idCardBackName,Integer type){
         try{
-            String rootPath = request.getServletContext().getRealPath("/");
+            /*String rootPath = request.getServletContext().getRealPath("/");
             String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            /*String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
+            String frontFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
             String backFillFullName = uploadFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);
             if (type.equals(updateType)){
                 //第一次审核不通过重新提交身份证审核,删除服务器之前的身份证
@@ -120,13 +120,17 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
             }*/
             //修改用户数据
+            log.info("idCardFrontName-------"+idCardFrontName);
+            log.info("idCardBackName-------"+idCardBackName);
             if (!comUser.getIdCardFrontUrl().equals(idCardFrontName)){
+                log.info("----------删除身份证正面临时目录-------");
                 //临时目录copy到正式目录
                 OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardFrontName);
                 //删除临时目录
                 OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName);
             }
             if (!comUser.getIdCardBackUrl().equals(idCardBackName)){
+                log.info("----------删除身份证反面临时目录-------");
                 //临时目录copy到正式目录
                 OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardBackName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardBackName);
                 //删除临时目录
@@ -137,13 +141,16 @@ public class UserIdentityAuthService {
             comUser.setAuditStatus(1);
             int i = userService.updateComUser(comUser);
             if (i == 1){
-                //更新缓存
+                log.info("发送短信-------start");
                 if (!MobileMessageUtil.getInitialization("B").verifiedSubmitRemind(comUser.getMobile(),"1")){
                     throw new BusinessException("提交申请发送短信失败");
                 }
+                log.info("发送短信-------end");
                 //发送微信提示
+                log.info("发送微信-------start");
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
+                log.info("发送微信-------end");
                 //删除最新上传的本地服务器照片
                 /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/

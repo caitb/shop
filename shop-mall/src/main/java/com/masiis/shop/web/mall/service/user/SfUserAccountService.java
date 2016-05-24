@@ -311,7 +311,7 @@ public class SfUserAccountService {
         ComSku sku = skuMapper.findBySkuId(item.getSkuId());
         PfUserSku userSku = userSkuMapper.selectByUserIdAndSkuId(shopKeeper.getId(), sku.getId());
         PfSkuAgent skuAgent = skuAgentMapper.selectBySkuIdAndLevelId(sku.getId(), userSku.getAgentLevelId());
-        BigDecimal itemProfit = sku.getPriceRetail().multiply(BigDecimal.ONE.subtract(skuAgent.getDiscount()));
+        BigDecimal itemProfit = sku.getPriceRetail().multiply(skuAgent.getUnitPrice());
         if(itemProfit.compareTo(BigDecimal.ZERO) < 0){
             itemProfit = BigDecimal.ZERO;
         }

@@ -73,7 +73,6 @@ public class BOrderAddService {
             throw new BusinessException("bOrderAdd为空");
         }
         BigDecimal retailPrice = BigDecimal.ZERO;//微信零售价
-        BigDecimal discount = BigDecimal.ZERO;//折扣
         BigDecimal bailPrice = BigDecimal.ZERO;//代理保证金
         Integer quantity = 0;//数量
         Integer agentLevelId = 0;//代理等级
@@ -92,7 +91,6 @@ public class BOrderAddService {
         if (pfSkuAgent == null) {
             throw new BusinessException("找不到要代理的商品信息");
         }
-        discount = pfSkuAgent.getDiscount();
         //合伙订单需要缴纳保证金
         if (bOrderAdd.getOrderType() == 0) {
             bailPrice = pfSkuAgent.getBail();
@@ -112,7 +110,7 @@ public class BOrderAddService {
         pfBorder.setUserPid(bOrderAdd.getpUserId());
         pfBorder.setSupplierId(0);
         //商品折扣后价格
-        BigDecimal unitPrice = retailPrice.multiply(discount).setScale(2, BigDecimal.ROUND_DOWN);
+        BigDecimal unitPrice = pfSkuAgent.getUnitPrice();
         //商品总金额=商品微信销售价*折扣*数量
         BigDecimal productAmount = unitPrice.multiply(BigDecimal.valueOf(quantity));
         //订单总金额=商品总金额+保证金+运费
@@ -149,7 +147,6 @@ public class BOrderAddService {
         pfBorderItem.setWxId(weiXinId);
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setOriginalPrice(retailPrice);
-        pfBorderItem.setDiscount(discount);
         pfBorderItem.setUnitPrice(unitPrice);
         pfBorderItem.setTotalPrice(productAmount);
         pfBorderItem.setBailAmount(bailPrice);
@@ -222,7 +219,7 @@ public class BOrderAddService {
         }
         PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, levelId);
         ComSku comSku = skuService.getSkuById(skuId);
-        amount = comSku.getPriceRetail().multiply(BigDecimal.valueOf(quantity)).multiply(pfSkuAgent.getDiscount());
+        amount = pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity));
         //处理订单数据
         PfBorder order = new PfBorder();
         order.setCreateTime(new Date());
@@ -261,8 +258,8 @@ public class BOrderAddService {
         pfBorderItem.setQuantity(quantity);
         pfBorderItem.setAgentLevelId(levelId);
         pfBorderItem.setOriginalPrice(comSku.getPriceRetail());
-        pfBorderItem.setUnitPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()));
-        pfBorderItem.setTotalPrice(comSku.getPriceRetail().multiply(pfSkuAgent.getDiscount()).multiply(BigDecimal.valueOf(quantity)));
+        pfBorderItem.setUnitPrice(pfSkuAgent.getUnitPrice());
+        pfBorderItem.setTotalPrice(pfSkuAgent.getUnitPrice().multiply(BigDecimal.valueOf(quantity)));
         pfBorderItem.setIsComment(0);
         pfBorderItem.setIsReturn(0);
         pfBorderItemMapper.insert(pfBorderItem);

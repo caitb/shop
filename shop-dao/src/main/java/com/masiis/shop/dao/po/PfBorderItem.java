@@ -54,10 +54,6 @@ public class PfBorderItem extends PfBorderItemExtends {
      */
     private BigDecimal originalPrice;
     /**
-     * 折扣
-     */
-    private BigDecimal discount;
-    /**
      * 购买价格
      */
     private BigDecimal unitPrice;
@@ -165,13 +161,6 @@ public class PfBorderItem extends PfBorderItemExtends {
 
     public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
-    }
-
-    public BigDecimal getDiscount() {
-        return discount;
-    }
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
     }
 
     public BigDecimal getUnitPrice() {

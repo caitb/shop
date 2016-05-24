@@ -152,6 +152,13 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT = "100713";
     public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG = "手机号用户尚未代理该产品";
+
+    public static final String RES_CODE_UPAPPLY_AGENTLEVELID_INVALID = "100714";
+    public static final String RES_CODE_UPAPPLY_AGENTLEVELID_INVALID_MSG = "代理等级id不正确";
+
+    public static final String RES_CODE_UPAPPLY_WXID_INVALID = "100715";
+    public static final String RES_CODE_UPAPPLY_WXID_INVALID_MSG = "微信号为空";
+
     /**
      * 实名认证
      */
@@ -172,36 +179,4 @@ public class SysResCodeCons {
     public static final String RES_CODE_WXPAY_PREORDER_FAIL = "900105";
     public static final String RES_CODE_WXPAY_PREORDER_FAIL_MSG = "微信预付单下单失败";
 
-    public static void main(String... args) throws IllegalAccessException, IOException {
-        Map<String, String> preMap = new HashMap<>();
-        Map<String, String> sufMap = new HashMap<>();
-        Map<String, String> map = new HashMap<>();
-        List<String> list = new ArrayList<>();
-        Field[] fields = SysResCodeCons.class.getDeclaredFields();
-        for(Field f:fields){
-            String name = f.getName();
-            if(name.matches(".*\\_MSG")){
-                sufMap.put(name.substring(0, name.length() - 4), (String) f.get(SysResCodeCons.class));
-            } else {
-                preMap.put(name, (String) f.get(SysResCodeCons.class));
-            }
-        }
-        StringBuilder res = new StringBuilder();
-        for(String pre:preMap.keySet()){
-            String p = preMap.get(pre);
-            map.put(p, sufMap.get(pre));
-            list.add(p);
-        }
-        String[] arrayToSort = list.toArray(new String[list.size()]);
-        Arrays.sort(arrayToSort, String.CASE_INSENSITIVE_ORDER);
-        for (String s:arrayToSort){
-            res.append(s + ":" + map.get(s)).append("\n");
-        }
-        File file = new File("D:/doc.txt");
-        FileOutputStream os = new FileOutputStream(file);
-        BufferedOutputStream bos = new BufferedOutputStream(os);
-        bos.write(res.toString().getBytes());
-        bos.flush();
-        bos.close();
-    }
 }

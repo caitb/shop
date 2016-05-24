@@ -254,21 +254,27 @@ public class UserService {
             sfNewUserRelation.setCreateTime(new Date());
             sfNewUserRelation.setUserId(userId);
             if (sfUserPRelation == null) {
-                sfNewUserRelation.setLevel(1);
+                sfNewUserRelation.setTreeLevel(1);
                 sfNewUserRelation.setUserPid(0l);//如果上级还没有建立分销关系则设为0
-            } else if (sfUserPRelation.getLevel() != null) {
-                sfNewUserRelation.setLevel(sfUserPRelation.getLevel() + 1);
+                sfUserRelationMapper.insert(sfNewUserRelation);
+                String treeCode = sfNewUserRelation.getId() + ",";
+                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
+            } else {
+                sfNewUserRelation.setTreeLevel(sfUserPRelation.getTreeLevel() + 1);
                 sfNewUserRelation.setUserPid(userPid);
-            }
-            sfUserRelationMapper.insert(sfNewUserRelation);
-        } else {
-            if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
-                if (sfUserPRelation.getUserId() != null) {
-                    sfUserRelation.setUserPid(sfUserPRelation.getUserId());
-                }
-                sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+                sfUserRelationMapper.insert(sfNewUserRelation);
+                String treeCode = sfUserPRelation.getTreeCode() + sfNewUserRelation.getId() + ",";
+                sfUserRelationMapper.updateTreeCodeById(sfNewUserRelation.getId(), treeCode);
             }
         }
+//        else {
+//            if (sfUserRelation.getUserPid() == 0l && sfUserPRelation != null) {
+//                if (sfUserPRelation.getUserId() != null) {
+//                    sfUserRelation.setUserPid(sfUserPRelation.getUserId());
+//                }
+//                sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+//            }
+//        }
         log.info("分销关系");
     }
 

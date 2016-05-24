@@ -12,6 +12,7 @@ import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.shop.SfShopSkuMapper;
+import com.masiis.shop.dao.mall.user.SfUserRelationMapper;
 import com.masiis.shop.dao.platform.order.PfBorderItemMapper;
 import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
@@ -90,6 +91,8 @@ public class BOrderPayService {
     private PfUserSkuStockService pfUserSkuStockService;
     @Resource
     private SkuService skuService;
+    @Resource
+    private SfUserRelationMapper sfUserRelationMapper;
 
     /**
      * 订单支付回调入口
@@ -193,17 +196,19 @@ public class BOrderPayService {
             sfShop.setRemark("");
             sfShopMapper.insert(sfShop);
         }
-//        log.info("<6>初始化分销关系");
-//        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
-//        if (sfUserRelation == null) {
-//            sfUserRelation = new SfUserRelation();
-//            sfUserRelation.setCreateTime(new Date());
-//            sfUserRelation.setUserPid(0l);
-//            sfUserRelation.setUserId(comUser.getId());
-//            sfUserRelation.setLevel(1);
-//            sfUserRelation.setRemark("代理人初始分销关系");
-//            sfUserRelationMapper.insert(sfUserRelation);
-//        }
+        log.info("<6>初始化分销关系");
+        SfUserRelation sfUserRelation = sfUserRelationMapper.getSfUserRelationByUserId(comUser.getId());
+        if (sfUserRelation == null) {
+            sfUserRelation = new SfUserRelation();
+            sfUserRelation.setCreateTime(new Date());
+            sfUserRelation.setUserPid(0l);
+            sfUserRelation.setUserId(comUser.getId());
+            sfUserRelation.setTreeLevel(1);
+            sfUserRelation.setRemark("代理人初始分销关系");
+            sfUserRelationMapper.insert(sfUserRelation);
+            String treeCode = sfUserRelation.getId() + ",";
+            sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
+        }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());
             if (thisUS == null) {

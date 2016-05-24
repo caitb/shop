@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2016 麦士集团
  * All rights reserved.
  * -----------------------------------------------
- * 2016-04-08 Created
+ * 2016-05-24 Created
  */
 package com.masiis.shop.dao.po;
 
@@ -25,9 +25,13 @@ public class SfUserRelation {
      */
     private Long userPid;
     /**
-     * 分销阶级
+     * 树结构编码(方便查询)
      */
-    private Integer level;
+    private String treeCode;
+    /**
+     * 树结构等级(方便查询)
+     */
+    private Integer treeLevel;
     /**
      * 备注
      */
@@ -57,11 +61,17 @@ public class SfUserRelation {
     public void setUserPid(Long userPid) {
         this.userPid = userPid;
     }
-    public Integer getLevel() {
-        return level;
+    public String getTreeCode() {
+        return treeCode;
     }
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setTreeCode(String treeCode) {
+        this.treeCode = treeCode == null ? null : treeCode.trim();
+    }
+    public Integer getTreeLevel() {
+        return treeLevel;
+    }
+    public void setTreeLevel(Integer treeLevel) {
+        this.treeLevel = treeLevel;
     }
     public String getRemark() {
         return remark;

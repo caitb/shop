@@ -1,5 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
+import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
@@ -11,7 +12,9 @@ import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.PfUserRelationService;
 import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -242,4 +245,6 @@ public class UserPartnerApplyController extends BaseController {
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         return res;
     }
+
+
 }

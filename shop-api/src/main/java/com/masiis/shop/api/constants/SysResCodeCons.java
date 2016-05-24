@@ -127,6 +127,18 @@ public class SysResCodeCons {
 
     public static final String RES_CODE_UPAPPLY_PUSER_INVALID = "100709";
     public static final String RES_CODE_UPAPPLY_PUSER_INVALID_MSG = "其他";
+
+    public static final String RES_CODE_UPAPPLY_PHONENUM_NULL = "100710";
+    public static final String RES_CODE_UPAPPLY_PHONENUM_NULL_MSG = "电话号码为空";
+
+    public static final String RES_CODE_UPAPPLY_PHONENUM_INVALID = "100711";
+    public static final String RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG = "手机号码格式不正确";
+
+    public static final String RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN = "100712";
+    public static final String RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG = "手机号尚未注册";
+
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT = "100713";
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG = "手机号用户尚未代理该产品";
     /**
      * 微信支付
      */

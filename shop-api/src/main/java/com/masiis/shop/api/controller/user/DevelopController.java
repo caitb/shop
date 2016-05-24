@@ -1,7 +1,6 @@
 package com.masiis.shop.api.controller.user;
 
 import com.masiis.shop.api.bean.base.BaseBusinessReq;
-import com.masiis.shop.api.bean.base.BaseBusinessRes;
 import com.masiis.shop.api.bean.user.AgentSku;
 import com.masiis.shop.api.bean.user.AgentSkuRes;
 import com.masiis.shop.api.bean.user.PopularizeReq;
@@ -29,9 +28,10 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -140,14 +140,24 @@ public class DevelopController {
             //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
             //font1.deriveFont(Font.PLAIN, 32);
             Font font1 = new Font("华文细黑", Font.PLAIN, 32);
-            Element text1Element = new Element(92, 785, font1, new Color(51, 51, 51), "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName()));
-            Element text2Element = new Element(92, 835, font1, new Color(51, 51, 51), "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。");
+            Date curDate = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            String startTime = sdf.format(curDate);
+            curDate.setDate(curDate.getDate()+30);
+            String endDate = sdf.format(curDate);
+            Element text1Element = new Element(92, 785,   font1, new Color(51, 51, 51), "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName()));
+            Element text2Element = new Element(92, 825,   font1, new Color(51, 51, 51), "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。");
+            Element text3Element = new Element(598, 970, font1, new Color(51, 51, 51), "该二维码有效期为");
+            Element text4Element = new Element(575, 1046, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            text4Element.setLineStyle(0);
             List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);
             drawElements.add(bgPosterImgElement);
             drawElements.add(qrcodeImgElement);
             drawElements.add(text1Element);
             drawElements.add(text2Element);
+            drawElements.add(text3Element);
+            drawElements.add(text4Element);
 
             DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
 

@@ -140,6 +140,14 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT = "100713";
     public static final String RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG = "手机号用户尚未代理该产品";
     /**
+     * 实名认证
+     */
+    public static final String RES_CODE_IDENTITY_AUTH_FAIL = "100801";
+    public static final String RES_CODE_IDENTITY_AUTH_FAIL_MSG = "实名认证提交失败";
+    public static final String RES_CODE_UPLOAD_IDENTITY_FAIL = "100802";
+    public static final String RES_CODE_UPLOAD_IDENTITY_FAIL_MSG = "上传身份证失败";
+
+    /**
      * 微信支付
      */
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";

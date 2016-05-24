@@ -10,6 +10,7 @@ public enum ValidCodeTypeEnum {
             return 1;
         }
     },
+    // 绑定手机号验证码类型
     BIND_VCODE{
         public Integer getCode() {
             return 2;

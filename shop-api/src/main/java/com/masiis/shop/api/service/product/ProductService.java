@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,10 +209,10 @@ public class ProductService {
         Integer countLevel = 0;
         int endLevel = comAgentLevelMapper.getMaxAgentLevel();
         PfSkuAgent pfSkuAgent = pfSkuAgentMapper.selectBySkuIdAndLevelId(skuId, level);
-        ComSku comSku = comSkuMapper.selectByPrimaryKey(skuId);
         if (level == endLevel || stock == 0) {
             param.put("countLevel", countLevel);
             param.put("priceDiscount", pfSkuAgent.getUnitPrice());
+            param.put("levelStock", pfSkuAgent.getQuantity());
             return param;
         } else {
             countLevel = stock / pfSkuAgent.getQuantity();

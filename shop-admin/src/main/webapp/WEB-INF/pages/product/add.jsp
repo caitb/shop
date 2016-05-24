@@ -649,11 +649,8 @@
                                         <label for="advanced">';
             unitPrices +=     agentLevels[i].name;
             unitPrices +=           '</label> \
-                                        <div class="input-group"> \
+                                        <div class="input-group-"> \
                                             <input type="text" class="form-control" id="advanced" name="unitPrices" placeholder=""> \
-                                                <span class="input-group-addon"> \
-                                                    % \
-                                                </span> \
                                         </div> \
                                         每件商品<small class="text-info dfenrun"></small>元 \
                                     </div>';
@@ -694,7 +691,7 @@
     });
 
     $(document).ready(function() {
-        $('body').on('keyup', '#priceRetail, input[name="unitPrice"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
+        $('body').on('keyup', '#priceRetail, input[name="unitPrices"], input[name="quantitys"], input[name="distributionDiscounts"]', function(){
             var priceRetail = $('#priceRetail').val() ? $('#priceRetail').val() : 0 ;
             $('input[name="quantitys"]').each(function(i,o){
                 var unitPrices = $($('input[name="unitPrices"]').get(i)).val();

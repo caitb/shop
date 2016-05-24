@@ -430,10 +430,10 @@
                                                                 <c:if test="${sfSkuDistribution.sort == 2}">倒数第二</c:if>
                                                                 <c:if test="${sfSkuDistribution.sort == 3}">倒数第三</c:if>
                                                             </label>
-                                                            <div class="input-group">
+                                                            <div class="input-group-">
                                                                 <input type="hidden" name="skuDistributionIds" value="${sfSkuDistribution.id}" />
                                                                 <input type="text" class="form-control" id="distribution1" name="distributionDiscounts" value="${sfSkuDistribution.discount}" placeholder="">
-                                                                <span class="input-group-addon">%</span>
+                                                                <%--<span class="input-group-addon">%</span>--%>
                                                             </div>
                                                             返利<small class="text-info ffenrun"></small>元
                                                         </div>

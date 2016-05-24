@@ -8,10 +8,12 @@
 package com.masiis.shop.dao.mall.user;
 
 import com.masiis.shop.dao.po.SfUserRelation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 @Repository
 public interface SfUserRelationMapper {
     int deleteByPrimaryKey(Long id);
@@ -29,4 +31,12 @@ public interface SfUserRelationMapper {
     SfUserRelation getSfUserRelationByUserPid(Long userPid);
 
     List<SfUserRelation> getThreeDistributionList(Long userPid);
+
+    /**
+     * 修改树形编码
+     * @param id 主键id
+     * @param treeCode 属性编码
+     * @return
+     */
+    int updateTreeCodeById(@Param("id") Long id, @Param("treeCode") String treeCode);
 }

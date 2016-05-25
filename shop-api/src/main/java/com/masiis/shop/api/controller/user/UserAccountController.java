@@ -175,7 +175,7 @@ public class UserAccountController {
 
             NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
             String appliedFee = account == null?numberFormat.format(0):account.getAppliedFee() == null?numberFormat.format(0):numberFormat.format(account.getAppliedFee());
-            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee)));
+            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee.replace("￥",""))));
 //        if (extractwayInfo != null){
 //            String cardCode = extractwayInfo.getBankCard();
 //            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));

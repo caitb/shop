@@ -42,19 +42,20 @@ public class TeamController {
     @SignValid(paramType = TeamListReq.class, hasToken = false)
     public TeamListRes teamList(HttpServletRequest request, TeamListReq teamListReq, ComUser comUser){
         TeamListRes teamListRes = new TeamListRes();
-
+comUser = comUserService.getUserById(261L);
         try {
             List<Map<String, Object>> agentSkuMaps = teamService.listAgentSku(comUser.getId());
             ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(comUser.getId());
 
             Integer countTeamMember = 0;
-            BigDecimal totalIncomeFee = new BigDecimal(0);
+            BigDecimal totalIncomeFee = new BigDecimal("0");
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 countTeamMember += (Integer)agentSkuMap.get("countTeamMember");
-                totalIncomeFee.add((BigDecimal)agentSkuMap.get("totalIncomeFee"));
+                totalIncomeFee = totalIncomeFee.add((BigDecimal)agentSkuMap.get("totalIncomeFee"));
             }
             teamListRes.setCountTeamMember(countTeamMember);
-            teamListRes.setTotalIncomeFee(totalIncomeFee.subtract(comUserAccount.getTotalIncomeFee().multiply(new BigDecimal(agentSkuMaps.size()-1))));
+            if(agentSkuMaps.size()==1) teamListRes.setTotalIncomeFee(totalIncomeFee);
+            if(agentSkuMaps.size()>1) teamListRes.setTotalIncomeFee(totalIncomeFee.subtract(comUserAccount.getTotalIncomeFee().multiply(new BigDecimal(agentSkuMaps.size()-1))));
             teamListRes.setCountAgentSku(agentSkuMaps.size());
             teamListRes.setAgentSkuMaps(agentSkuMaps);
             teamListRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

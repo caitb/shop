@@ -92,13 +92,14 @@ main {
     text-indent: 35px;
     color: #666;
 }
-
+.wrap .main .Name p:nth-child(2) {
+    margin-left:-15px;
+}
 .wrap .main .Name p {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     text-align: left;
     width: 1px;
-    text-indent: 10px;
     color: #333;
 }
 

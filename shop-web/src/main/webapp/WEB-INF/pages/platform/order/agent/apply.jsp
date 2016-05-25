@@ -34,7 +34,7 @@
             <img src="${path}/static/images/shenqing_3.png" alt="">
             <div>
                 <h2>独立店铺</h2>
-                <p>拥有自己的独立店铺进行推广装修等</p>
+                <p>拥有自己的独立店铺进行推广、销售产品</p>
             </div>
             <%--<img src="${path}/static/images/down.png" alt="" class="down">--%>
         </section>
@@ -49,7 +49,7 @@
             <img src="${path}/static/images/shenqing_4.png" alt="">
             <div>
                 <h2>寻找合伙人</h2>
-                <p>可以用采购价格购买商品，赚取利差</p>
+                <p>寻找您的下级合伙人，赚取差价</p>
             </div>
         </section>
         <section class="sec1">

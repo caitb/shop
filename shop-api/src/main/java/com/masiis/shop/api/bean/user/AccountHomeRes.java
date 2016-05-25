@@ -18,6 +18,10 @@ public class AccountHomeRes extends BaseRes {
      */
     private String extractableFee;
     /**
+     * 申请中金额
+     */
+    private String appliedFee;
+    /**
      * 结算中金额
      */
     private String countingFee;
@@ -46,4 +50,11 @@ public class AccountHomeRes extends BaseRes {
         this.countingFee = countingFee;
     }
 
+    public String getAppliedFee() {
+        return appliedFee;
+    }
+
+    public void setAppliedFee(String appliedFee) {
+        this.appliedFee = appliedFee;
+    }
 }

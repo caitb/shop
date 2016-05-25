@@ -13,7 +13,18 @@ import java.util.List;
  */
 public class BorderDetailRes extends BasePagingRes {
     private BorderDetail borderDetail;
+    private String stringBuffer;
+    private Integer stockNum;
     private List<ComShipMan> comShipMans;
+
+    public void setStockNum(Integer stockNum) {
+        this.stockNum = stockNum;
+    }
+
+    public Integer getStockNum() {return stockNum;}
+    public void setStringBuffer(String stringBuffer) {this.stringBuffer = stringBuffer;}
+
+    public String getStringBuffer() {return stringBuffer;}
 
     public void setComShipMans(List<ComShipMan> comShipMans) {
         this.comShipMans = comShipMans;

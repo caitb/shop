@@ -56,6 +56,29 @@ public class COrderService {
 
     List<PfCorder> existTrilPfCorder = null;
 
+    public ComUserAddress getOrderAddress(Long selectedAddressId, Long userId){
+       return userAddressService.getOrderAddress( selectedAddressId, userId);
+    }
+    /**
+     * 根据订单id获取订单详情
+     * @author hanzengzhi
+     * @date 2016/5/25 15:46
+     */
+    public Map<String, Object> getOrderDetail(Long corderId){
+        Map<String, Object> pfCorderMap = new HashMap<String, Object>();
+        PfCorder pfCorder = queryPfCorderById(corderId);
+        PfCorderConsignee corderConsignee = null;
+        Product product = null;
+        if (pfCorder != null){
+            corderConsignee = pfCorderConsigneeService.getOrdConByOrdId(corderId);
+            product = getProductDetail(pfCorder.getSkuId());
+            pfCorderMap.put("corderConsignee",corderConsignee);
+            pfCorderMap.put("product",product);
+        }
+        pfCorderMap.put("pfCorder",pfCorder);
+        return pfCorderMap;
+    }
+
     /**
      * 确认订单
      * @author hanzengzhi
@@ -295,8 +318,8 @@ public class COrderService {
         wpspr.setSignType("MD5");
         wpspr.setNonceStr(SysSignUtils.createGenerateStr());
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
-        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?pfCorderId="+pfCorder.getId()+"&skuId=" + pfCorder.getSkuId() + "&addressId=" + addressId);
+        wpspr.setSuccessUrl(basePath + "corder/weChatCallBackSuccess.shtml?pfCorderId="+pfCorder.getId());
+        wpspr.setErrorUrl(basePath + "corder/weChatCallBackFail.shtml?pfCorderId="+pfCorder.getId());
         wpspr.setSign(SysSignUtils.toSignString(wpspr, WxConsAPP.WX_PAY_SIGNKEY));
         return wpspr;
     }

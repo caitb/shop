@@ -176,6 +176,12 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPLOAD_IDENTITY_FAIL_MSG = "上传身份证失败";
 
     /**
+     * 申请试用
+     */
+    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL = "100901";
+    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL_MSG = "申请试用获取地址失败";
+
+    /**
      * 微信支付
      */
     public static final String RES_CODE_WXPAY_ORDERCODE_NULL = "900101";

@@ -78,10 +78,12 @@ public class UserAccountController {
             res.setTotalIncomeFee(amount);
             res.setExtractableFee(amount);
             res.setCountingFee(amount);
+            res.setAppliedFee(amount);
         }else {
             res.setTotalIncomeFee(account.getTotalIncomeFee() == null?amount:account.getTotalIncomeFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setExtractableFee(account.getExtractableFee() == null?amount:account.getExtractableFee().subtract(account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setCountingFee(account.getCountingFee() == null?amount:account.getCountingFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+            res.setAppliedFee(account.getAppliedFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
         }
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

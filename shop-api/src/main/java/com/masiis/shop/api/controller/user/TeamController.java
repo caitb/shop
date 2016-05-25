@@ -2,8 +2,7 @@ package com.masiis.shop.api.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.api.bean.user.TeamListReq;
-import com.masiis.shop.api.bean.user.TeamListRes;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComUserAccountService;
@@ -41,6 +40,7 @@ public class TeamController {
     @ResponseBody
     @SignValid(paramType = TeamListReq.class, hasToken = false)
     public TeamListRes teamList(HttpServletRequest request, TeamListReq teamListReq, ComUser comUser){
+
         TeamListRes teamListRes = new TeamListRes();
 
         try {
@@ -66,6 +66,46 @@ public class TeamController {
         }
 
         return teamListRes;
+    }
+
+    @RequestMapping("/teamDetail")
+    @ResponseBody
+    @SignValid(paramType = TeamDetailReq.class, hasToken = false)
+    public TeamDetailRes teamDetail(HttpServletRequest request, TeamDetailReq teamDetailReq, ComUser comUser){
+
+        TeamDetailRes teamDetailRes = new TeamDetailRes();
+
+        try {
+            Map<String, Object> teamMap = teamService.teamDetail(teamDetailReq.getUserSkuId());
+            teamDetailRes.setTeamMap(teamMap);
+            teamDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            teamDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            log.error("获取团队明细出错![teamDetailReq="+teamDetailReq+"][comUser="+comUser+"]");
+            e.printStackTrace();
+        }
+
+        return teamDetailRes;
+    }
+
+    @RequestMapping("/memberInfo")
+    @ResponseBody
+    @SignValid(paramType = MemberInfoReq.class, hasToken = false)
+    public MemberInfoRes memberInfo(HttpServletRequest request, MemberInfoReq memberInfoReq, ComUser comUser){
+
+        MemberInfoRes memberInfoRes = new MemberInfoRes();
+
+        try {
+            Map<String, Object> memberMap = teamService.viewMember(memberInfoReq.getCode());
+            memberInfoRes.setMemberMap(memberMap);
+            memberInfoRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            memberInfoRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            log.error("获取团队成员信息出错![memberInfoReq="+memberInfoReq+"][comUser="+comUser+"]");
+            e.printStackTrace();
+        }
+
+        return memberInfoRes;
     }
 
 

@@ -5,9 +5,12 @@ import com.masiis.shop.api.bean.user.UserCertificateRes;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.UserCertificateService;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
+import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfUserCertificate;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +31,8 @@ public class UserCertificateController extends BaseController {
 
     @Resource
     private UserCertificateService userCertificateService;
-
+    @Resource
+    private SkuService skuService;
 
     /**
       * @Author jjh
@@ -48,6 +52,27 @@ public class UserCertificateController extends BaseController {
         } catch (Exception e) {
             userCertificateRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             userCertificateRes.setResMsg(e.getMessage());
+        }
+        return userCertificateRes;
+    }
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/25 0025 下午 5:29
+      * 授权书详情展示
+      */
+    @RequestMapping("/detail")
+    @ResponseBody
+    @SignValid(paramType = CommonReq.class)
+    public UserCertificateRes certificateDetail(HttpServletRequest request, CommonReq req, ComUser user){
+        UserCertificateRes userCertificateRes = new UserCertificateRes();
+        try {
+            PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(req.getId().intValue());
+            String ctName = userCertificateService.getCtname(cdetail.getAgentLevelId());
+            ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
+
+        }catch (Exception e){
+
         }
         return userCertificateRes;
     }

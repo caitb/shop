@@ -36,4 +36,5 @@ public class AddProReq extends BaseReq{
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
 }

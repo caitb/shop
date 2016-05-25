@@ -138,6 +138,8 @@ public class UserPartnerApplyController extends BaseController {
         res.setIsQueuing(isQueuing);
         res.setQueueNum(count);
         res.setIsCreditAudit(user.getAuditStatus());
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         return res;
     }
 

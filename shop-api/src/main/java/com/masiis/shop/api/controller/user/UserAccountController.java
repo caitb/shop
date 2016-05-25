@@ -301,6 +301,7 @@ public class UserAccountController {
         }
         try {
             ComUserExtractwayInfo extractway = extractwayInfoService.findByBankcardAndCardownername(req.getBankcard(),req.getBankOwner());
+            List<ComUserExtractwayInfo> infos = extractwayInfoService.findByUserId(user.getId());
             if (extractway == null){
                 extractway = new ComUserExtractwayInfo();
                 extractway.setBankCard(req.getBankcard());
@@ -311,7 +312,11 @@ public class UserAccountController {
                 extractway.setExtractWay(Long.valueOf(3));   //默认体现方式为银行卡提现
                 extractway.setCardImg(comBank.getBankImg());
                 extractway.setIsEnable(0);//新增用户体现方式，是否启用默认为启用
-                extractway.setIsDefault(0);//设置为提现默认银行卡
+                if (infos == null || infos.size() == 0){
+                    extractway.setIsDefault(0);//设置为提现默认银行卡
+                }else {
+                    extractway.setIsDefault(1);
+                }
                 extractway.setChangedBy("add");
                 extractway.setCreatedTime(new Date());
                 extractway.setChangedTime(new Date());
@@ -330,7 +335,11 @@ public class UserAccountController {
                     extractway.setExtractWay(comDictionary.getKey() == null ? 3 : comDictionary.getKey().longValue());
                     extractway.setCardImg(comBank.getBankImg());
                     extractway.setIsEnable(0);//将未启用状态改为启用状态
-                    extractway.setIsDefault(0);//设置为提现默认银行卡
+                    if (infos == null || infos.size() == 0){
+                        extractway.setIsDefault(0);//设置为提现默认银行卡
+                    }else {
+                        extractway.setIsDefault(1);
+                    }
                     extractway.setChangedBy("edit");
                     extractway.setChangedTime(new Date());
                     extractwayInfoService.updataComUserExtractwayInfo(extractway);
@@ -406,10 +415,15 @@ public class UserAccountController {
     public BaseRes delBank(HttpServletRequest request, CommonReq req, ComUser user){
         logger.info("删除银行卡信息");
         BaseRes res = new BaseRes();
+        logger.info("bankId = " + req.getId());
         try {
-            extractwayInfoService.deleteById(req.getId());
-            res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
-            res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            if (extractwayInfoService.deleteById(req.getId()) == 0){
+                res.setResCode(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR);
+                res.setResMsg(SysResCodeCons.RES_CODE_REQ_OPERATE_ERROR_MSG);
+            }else {
+                res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+                res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+            }
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e.getMessage());

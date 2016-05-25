@@ -37,7 +37,7 @@
     </select>
 
     <select id="selectCountByUserIdLimit" resultType="java.lang.Integer" >
-        select count(*) as count ,sum(re.level) as sumLevel
+        select count(*) as count ,sum(re.tree_level) as sumLevel
         from sf_order ord
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id
@@ -48,7 +48,7 @@
     </select>
 
     <select id="selectCountByUserId" resultMap="BaseCountResultMap">
-        select count(*) as count ,sum(re.level) as sumLevel ,sum(item.distribution_amount) as distributionAmount
+        select count(*) as count ,sum(re.tree_level) as sumLevel ,sum(item.distribution_amount) as distributionAmount
         from sf_order ord
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id

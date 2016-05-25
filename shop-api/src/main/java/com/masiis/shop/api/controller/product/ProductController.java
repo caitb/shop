@@ -126,9 +126,15 @@ public class ProductController extends BaseController {
             PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getSkuId());
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(req.getSkuId(), user.getId());
             proDetailRes.setProduct(product);
-            proDetailRes.setPfUserSku(pfUserSku);
+            if(pfUserSku==null){ //未代理
+                proDetailRes.setHasAgent(0);
+            }else{
+                proDetailRes.setHasAgent(1);
+            }
             if(pfBorder!=null){
                 proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            }else{
+                proDetailRes.setOrderStatus(-1);
             }
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

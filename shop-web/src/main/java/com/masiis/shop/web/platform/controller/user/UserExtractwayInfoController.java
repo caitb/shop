@@ -108,6 +108,7 @@ public class UserExtractwayInfoController extends BaseController {
             //根据银行id查询银行基础信息表
             ComBank comBank = comBankService.findById(Integer.valueOf(bankid));
             ComUserExtractwayInfo extractway = userExtractwayInfoService.findByBankcardAndCardownername(bankcard,cardownername);
+            List<ComUserExtractwayInfo> infos = userExtractwayInfoService.findByUserId(userId);
             if (extractway == null){
                 extractway = new ComUserExtractwayInfo();
                 extractway.setBankCard(bankcard);
@@ -118,7 +119,11 @@ public class UserExtractwayInfoController extends BaseController {
                 extractway.setExtractWay(Long.valueOf(3));   //默认体现方式为银行卡提现
                 extractway.setCardImg(comBank.getBankImg());
                 extractway.setIsEnable(0);//新增用户体现方式，是否启用默认为启用
-                extractway.setIsDefault(0);//设置为提现默认银行卡
+                if (infos == null || infos.size() == 0){
+                    extractway.setIsDefault(0);//设置为提现默认银行卡
+                }else {
+                    extractway.setIsDefault(1);
+                }
                 extractway.setChangedBy("add");
                 extractway.setCreatedTime(new Date());
                 extractway.setChangedTime(new Date());
@@ -137,7 +142,11 @@ public class UserExtractwayInfoController extends BaseController {
                     extractway.setExtractWay(comDictionary.getKey() == null ? 3 : comDictionary.getKey().longValue());
                     extractway.setCardImg(comBank.getBankImg());
                     extractway.setIsEnable(0);//将未启用状态改为启用状态
-                    extractway.setIsDefault(0);//设置为提现默认银行卡
+                    if (infos == null || infos.size() == 0){
+                        extractway.setIsDefault(0);//设置为提现默认银行卡
+                    }else {
+                        extractway.setIsDefault(1);
+                    }
                     extractway.setChangedBy("edit");
                     extractway.setChangedTime(new Date());
                     userExtractwayInfoService.updataComUserExtractwayInfo(extractway);

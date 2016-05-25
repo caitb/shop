@@ -182,6 +182,7 @@ public class UserAccountController {
 //        }
             res.setHasCard(hasCard);
             if (hasCard){
+                res.setId(extractwayInfo.getId());
                 res.setBankOwner(extractwayInfo.getCardOwnerName());
                 res.setBankName(extractwayInfo.getBankName());
                 res.setBankCode(extractwayInfo.getBankCard());
@@ -276,14 +277,14 @@ public class UserAccountController {
         if (StringUtils.isBlank(req.getBankcard())){
             logger.info("bankcard为空");
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
-            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG  + "【银行卡号为空】");
+            res.setResMsg("银行卡号为空");
             return res;
         }
         String checkBank = CheckBankCardUtil.luhmCheck(req.getBankcard());
         if (!"true".equals(checkBank)){
             logger.info(checkBank);
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
-            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG + "【" + checkBank + "】");
+            res.setResMsg(checkBank);
             logger.info("返回参数：" + JSONObject.toJSONString(res));
             return res;
         }
@@ -522,7 +523,8 @@ public class UserAccountController {
                 return res;
             }
             // 查询默认的支付方式
-            ComUserExtractwayInfo info = extractwayInfoService.findDefaultInfo(user.getId());
+//            ComUserExtractwayInfo info = extractwayInfoService.findDefaultInfo(user.getId());
+            ComUserExtractwayInfo info = extractwayInfoService.findById(req.getId());
             if(info == null){
                 res.setResCode(SysResCodeCons.RES_CODE_REQ_BUSINESS_ERROR);
                 res.setResMsg(SysResCodeCons.RES_CODE_REQ_BUSINESS_ERROR_MSG);

@@ -2,7 +2,6 @@ package com.masiis.shop.api.bean.product;
 
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.beans.product.Product;
-import com.masiis.shop.dao.po.PfUserSku;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class ProDetailRes extends BaseRes {
 
     private Product product; //商品详情
 
-    private PfUserSku pfUserSku;//代理关系
+    private Integer hasAgent;//代理关系 0:未代理 1 代理过
 
     private Integer orderStatus;// 订单状态
 
@@ -25,14 +24,6 @@ public class ProDetailRes extends BaseRes {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public PfUserSku getPfUserSku() {
-        return pfUserSku;
-    }
-
-    public void setPfUserSku(PfUserSku pfUserSku) {
-        this.pfUserSku = pfUserSku;
     }
 
     public Integer getOrderStatus() {
@@ -49,5 +40,13 @@ public class ProDetailRes extends BaseRes {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public Integer getHasAgent() {
+        return hasAgent;
+    }
+
+    public void setHasAgent(Integer hasAgent) {
+        this.hasAgent = hasAgent;
     }
 }

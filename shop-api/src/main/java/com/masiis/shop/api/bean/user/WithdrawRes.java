@@ -6,6 +6,8 @@ import com.masiis.shop.api.bean.base.BaseRes;
  * Created by wangbingjian on 2016/5/19.
  */
 public class WithdrawRes extends BaseRes {
+
+    private Long id;
     /**
      * 持卡人
      */
@@ -38,6 +40,14 @@ public class WithdrawRes extends BaseRes {
      * 是否有银行卡
      */
     private boolean hasCard;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getBankOwner() {
         return bankOwner;

@@ -58,6 +58,8 @@ public class UserIdentityAuthController extends BaseController {
             default:
                 break;
         }
+        identityAuthRes.setName(comUser.getRealName());
+        identityAuthRes.setIdCard(comUser.getIdCard());
         return identityAuthRes;
     }
 

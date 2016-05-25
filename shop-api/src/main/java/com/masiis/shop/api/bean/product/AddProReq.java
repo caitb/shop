@@ -13,6 +13,8 @@ public class AddProReq extends BaseReq{
 
     private Integer quantity;//补货数量
 
+    private String userMessage;//用户留言
+
     public String getToken() {
         return token;
     }
@@ -37,4 +39,11 @@ public class AddProReq extends BaseReq{
         this.quantity = quantity;
     }
 
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
+    }
 }

@@ -165,7 +165,7 @@ public class ManageProController extends BaseController {
     /**
       * @Author jjh
       * @Date 2016/5/24 0024 下午 3:15
-      * 补货生成订单
+      * 补货生成订单前预览
       */
     @RequestMapping("/addPro.do")
     @ResponseBody
@@ -264,5 +264,19 @@ public class ManageProController extends BaseController {
             stockStatusRes.setResMsg(e.getMessage());
         }
         return stockStatusRes;
+    }
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/25 0025 上午 10:57
+      * 1 提交补货订单
+     *  2 跳转到收银台
+      */
+    @RequestMapping("/supplementBOrder/add.do")
+    @ResponseBody
+    @SignValid(paramType = AddProReq.class)
+    public StockStatusRes supplementBOrderAdd(HttpServletRequest request, AddProReq req,
+                                     ComUser user){
+        return null;
     }
 }

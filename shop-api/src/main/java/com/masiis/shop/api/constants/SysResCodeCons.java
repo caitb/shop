@@ -158,6 +158,12 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPAPPLY_WXID_INVALID = "100715";
     public static final String RES_CODE_UPAPPLY_WXID_INVALID_MSG = "微信号为空";
 
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT = "100716";
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG = "手机号用户是该产品最后一级,不能作为上级";
+
+    public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT = "100717";
+    public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT_MSG = "您已经是该产品的临时合伙人";
+
     /**
      * 实名认证
      */

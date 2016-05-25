@@ -324,8 +324,94 @@ public class UserPartnerApplyController extends BaseController {
 
     @RequestMapping("/agentbind")
     @ResponseBody
-    @SignValid(paramType = BaseReq.class)
-    public BaseRes agentBind(){
+    @SignValid(paramType = AgentBindReq.class)
+    public AgentBindRes agentBind(HttpServletRequest request, AgentBindReq req, ComUser user){
+        AgentBindRes res = new AgentBindRes();
+        Integer skuId = req.getSkuId();
+        String phoneNum = req.getPhoneNum();
+        if(StringUtils.isBlank(phoneNum)){
+            // 手机号为空
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NULL_MSG);
+            return res;
+        }
+        if(!PhoneNumUtils.isPhoneNum(phoneNum)){
+            // 手机号格式不正确
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_INVALID_MSG);
+            return res;
+        }
+        if(skuId == null || skuId == 0){
+            // skuId为空
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            log.error(SysResCodeCons.RES_CODE_UPAPPLY_SKU_NULL_MSG);
+            return res;
+        }
+        ComSku sku = skuService.getSkuById(skuId);
+        if(sku == null){
+            // skuId不存在
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+            return res;
+        }
+        ComUser pUser = userService.getUserByMobile(phoneNum);
+        if(pUser == null){
+            // 手机号尚未注册
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUM_NOTKNOWN_MSG);
+            return res;
+        }
+        PfUserSku pPfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(pUser.getId(), skuId);
+        if(pPfUserSku == null){
+            // 手机号用户尚未代理该产品
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            return res;
+        }
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, pPfUserSku.getAgentLevelId() + 1);
+        if(pfSkuAgent == null){
+            // 手机号用户代理该产品最后一级,不能做上级
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG);
+            return res;
+        }
+        PfUserSku uPfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), skuId);
+        if(uPfUserSku != null){
+            // 该用户已经代理过
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_AGENT_MSG);
+            return res;
+        }
+        PfUserRelation relation = pfUserRelationService.getRelation(user.getId(), skuId);
+        if(relation != null){
+            // 该用户已经建立临时代理关系
+            res.setResCode(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_TEMPAGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_TEMPAGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_CANAGENT_ALREADY_TEMPAGENT_MSG);
+            return res;
+        }
+        try {
+            userSkuService.checkParentData(user, pUser.getId(), skuId);
+            PfUserRelation pfUserRelation = new PfUserRelation();
+            pfUserRelation.setUserId(user.getId());
+            pfUserRelation.setSkuId(skuId);
+            pfUserRelation.setCreateTime(new Date());
+            pfUserRelation.setIsEnable(1);
+            pfUserRelation.setUserPid(pUser.getId());
+            pfUserRelationService.insert(pfUserRelation);
+        } catch (Exception e) {
+            log.error("");
+
+        }
+
         return null;
     }
 }

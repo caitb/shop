@@ -303,14 +303,9 @@ public class SfUserAccountService {
      * @return
      */
     private BigDecimal calculateShopkeeperProfitBySfOrder(SfOrderItem item, ComUser shopKeeper) {
-        // 查询小铺店主的代理信息
-        ComSku sku = skuMapper.findBySkuId(item.getSkuId());
-        PfUserSku userSku = userSkuMapper.selectByUserIdAndSkuId(shopKeeper.getId(), sku.getId());
-        PfSkuAgent skuAgent = skuAgentMapper.selectBySkuIdAndLevelId(sku.getId(), userSku.getAgentLevelId());
-        BigDecimal itemProfit = sku.getPriceRetail().multiply(skuAgent.getUnitPrice());
-        if (itemProfit.compareTo(BigDecimal.ZERO) < 0) {
-            itemProfit = BigDecimal.ZERO;
-        }
+        PfUserSku userSku = userSkuMapper.selectByUserIdAndSkuId(shopKeeper.getId(), item.getSkuId());
+        PfSkuAgent skuAgent = skuAgentMapper.selectBySkuIdAndLevelId(item.getSkuId(), userSku.getAgentLevelId());
+        BigDecimal itemProfit = (item.getUnitPrice().subtract(skuAgent.getUnitPrice())).multiply(BigDecimal.valueOf(item.getQuantity()));
         return itemProfit;
     }
 

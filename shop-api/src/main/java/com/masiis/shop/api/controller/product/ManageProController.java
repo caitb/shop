@@ -241,4 +241,28 @@ public class ManageProController extends BaseController {
         return addProRes;
     }
 
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/25 0025 上午 10:06
+      * 校验库存
+      */
+    @RequestMapping("/checkStock.do")
+    @ResponseBody
+    @SignValid(paramType = AddProReq.class)
+    public StockStatusRes checkStock(HttpServletRequest request, AddProReq req,
+                                      ComUser user){
+        StockStatusRes stockStatusRes = new StockStatusRes();
+        try{
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getUserSkuId());
+            int status = skuService.getSkuStockStatus(req.getUserSkuId(), req.getQuantity(), pfUserSku.getUserPid());
+            stockStatusRes.setStatus(status);
+            stockStatusRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            stockStatusRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            stockStatusRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            stockStatusRes.setResMsg(e.getMessage());
+        }
+        return stockStatusRes;
+    }
 }

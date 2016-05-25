@@ -277,14 +277,14 @@ public class UserAccountController {
         if (StringUtils.isBlank(req.getBankcard())){
             logger.info("bankcard为空");
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
-            res.setResMsg(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN_MSG  + "【银行卡号为空】");
+            res.setResMsg("银行卡号为空");
             return res;
         }
         String checkBank = CheckBankCardUtil.luhmCheck(req.getBankcard());
         if (!"true".equals(checkBank)){
             logger.info(checkBank);
             res.setResCode(SysResCodeCons.RES_CODE_REQ_PARAMETER_MISTAKEN);
-            res.setResMsg("【" + checkBank + "】");
+            res.setResMsg(checkBank);
             logger.info("返回参数：" + JSONObject.toJSONString(res));
             return res;
         }

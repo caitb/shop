@@ -2,10 +2,7 @@ package com.masiis.shop.api.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.masiis.shop.api.bean.user.TeamDetailReq;
-import com.masiis.shop.api.bean.user.TeamDetailRes;
-import com.masiis.shop.api.bean.user.TeamListReq;
-import com.masiis.shop.api.bean.user.TeamListRes;
+import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.service.user.ComUserAccountService;
@@ -89,6 +86,26 @@ public class TeamController {
         }
 
         return teamDetailRes;
+    }
+
+    @RequestMapping("/memberInfo")
+    @ResponseBody
+    @SignValid(paramType = MemberInfoReq.class, hasToken = false)
+    public MemberInfoRes memberInfo(HttpServletRequest request, MemberInfoReq memberInfoReq, ComUser comUser){
+
+        MemberInfoRes memberInfoRes = new MemberInfoRes();
+
+        try {
+            Map<String, Object> memberMap = teamService.viewMember(memberInfoReq.getCode());
+            memberInfoRes.setMemberMap(memberMap);
+            memberInfoRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            memberInfoRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            log.error("获取团队成员信息出错![memberInfoReq="+memberInfoReq+"][comUser="+comUser+"]");
+            e.printStackTrace();
+        }
+
+        return memberInfoRes;
     }
 
 

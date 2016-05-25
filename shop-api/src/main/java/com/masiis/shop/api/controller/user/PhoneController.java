@@ -8,6 +8,7 @@ import com.masiis.shop.api.bean.user.*;
 import com.masiis.shop.api.constants.SignValid;
 import com.masiis.shop.api.constants.SysResCodeCons;
 import com.masiis.shop.api.controller.base.BaseController;
+import com.masiis.shop.api.service.product.SkuAgentService;
 import com.masiis.shop.api.service.product.SkuService;
 import com.masiis.shop.api.service.user.ComUserService;
 import com.masiis.shop.api.service.user.UserSkuService;
@@ -20,6 +21,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PhoneNumUtils;
 import com.masiis.shop.dao.po.ComSku;
 import com.masiis.shop.dao.po.ComUser;
+import com.masiis.shop.dao.po.PfSkuAgent;
 import com.masiis.shop.dao.po.PfUserSku;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,6 +48,8 @@ public class PhoneController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private ComUserService userService;
+    @Resource
+    private SkuAgentService skuAgentService;
 
     @RequestMapping("/parentcheck")
     @ResponseBody
@@ -97,6 +101,14 @@ public class PhoneController extends BaseController {
             res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT);
             res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
             log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_NOTAGENT_MSG);
+            return res;
+        }
+        PfSkuAgent pfSkuAgent = skuAgentService.getBySkuIdAndLevelId(skuId, pPfUserSku.getAgentLevelId() + 1);
+        if(pfSkuAgent == null){
+            // 该用户代理该产品最后一级,不能做
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG);
             return res;
         }
 

@@ -158,6 +158,15 @@ public class SysResCodeCons {
     public static final String RES_CODE_UPAPPLY_WXID_INVALID = "100715";
     public static final String RES_CODE_UPAPPLY_WXID_INVALID_MSG = "微信号为空";
 
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT = "100716";
+    public static final String RES_CODE_UPAPPLY_PHONENUMUSER_LASTAGENT_MSG = "手机号用户是该产品最后一级,不能作为上级";
+
+    public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT = "100717";
+    public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT_MSG = "您已经是该产品的临时合伙人";
+
+    public static final String RES_CODE_UPAPPLY_AGENTBIND_FAIL = "100718";
+    public static final String RES_CODE_UPAPPLY_AGENTBIND_FAIL_MSG = "绑定合伙人关系失败";
+
     /**
      * 实名认证
      */
@@ -165,6 +174,12 @@ public class SysResCodeCons {
     public static final String RES_CODE_IDENTITY_AUTH_FAIL_MSG = "实名认证提交失败";
     public static final String RES_CODE_UPLOAD_IDENTITY_FAIL = "100802";
     public static final String RES_CODE_UPLOAD_IDENTITY_FAIL_MSG = "上传身份证失败";
+
+    /**
+     * 申请试用
+     */
+    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL = "100901";
+    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL_MSG = "申请试用获取地址失败";
 
     /**
      * 微信支付

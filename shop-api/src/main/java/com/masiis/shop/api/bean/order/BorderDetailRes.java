@@ -24,7 +24,6 @@ public class BorderDetailRes extends BasePagingRes {
     public Integer getStockNum() {
         return stockNum;
     }
-
     public void setStringBuffer(String stringBuffer) {
         this.stringBuffer = stringBuffer;
     }

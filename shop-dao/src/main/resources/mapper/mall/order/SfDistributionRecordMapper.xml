@@ -26,7 +26,7 @@
 
     <select id="selectListByUserIdLimt" resultMap="BaseResultMap" >
         select ord.id as orderId,ord.pay_amount as orderAmount,u.wx_nk_name as wxNkName,item.id as itemId,item.sku_id as skuId,item.sku_name as skuName,
-                re.level as level,item.create_time as createTime
+                re.tree_level as level,item.create_time as createTime
         from sf_order ord
             LEFT JOIN sf_order_item item on ord.id = item.sf_order_id
             LEFT JOIN sf_user_relation re on ord.user_id = re.user_id

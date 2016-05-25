@@ -48,13 +48,14 @@ public class TeamController {
             ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(comUser.getId());
 
             Integer countTeamMember = 0;
-            BigDecimal totalIncomeFee = new BigDecimal(0);
+            BigDecimal totalIncomeFee = new BigDecimal("0");
             for(Map<String, Object> agentSkuMap : agentSkuMaps){
                 countTeamMember += (Integer)agentSkuMap.get("countTeamMember");
-                totalIncomeFee.add((BigDecimal)agentSkuMap.get("totalIncomeFee"));
+                totalIncomeFee = totalIncomeFee.add((BigDecimal)agentSkuMap.get("totalIncomeFee"));
             }
             teamListRes.setCountTeamMember(countTeamMember);
-            teamListRes.setTotalIncomeFee(totalIncomeFee.subtract(comUserAccount.getTotalIncomeFee().multiply(new BigDecimal(agentSkuMaps.size()-1))));
+            if(agentSkuMaps.size()==1) teamListRes.setTotalIncomeFee(totalIncomeFee);
+            if(agentSkuMaps.size()>1) teamListRes.setTotalIncomeFee(totalIncomeFee.subtract(comUserAccount.getTotalIncomeFee().multiply(new BigDecimal(agentSkuMaps.size()-1))));
             teamListRes.setCountAgentSku(agentSkuMaps.size());
             teamListRes.setAgentSkuMaps(agentSkuMaps);
             teamListRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

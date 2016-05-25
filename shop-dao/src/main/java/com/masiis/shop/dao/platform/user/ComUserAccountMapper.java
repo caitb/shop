@@ -56,4 +56,11 @@ public interface ComUserAccountMapper {
      * @return
      */
     Double sumIncomeFeeByUserIds(String userIds);
+
+    /**
+     * 统计销售额
+     * @param userIds
+     * @return
+     */
+    BigDecimal totalIncomeFeeByUserIds(List<Long> userIds);
 }

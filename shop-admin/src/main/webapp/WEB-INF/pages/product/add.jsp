@@ -106,9 +106,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="e_name" class="col-sm-2 control-label">商品英文名</label>
+                                <label for="eName" class="col-sm-2 control-label">商品英文名</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="e_name" name="e_name" placeholder="商品别名">
+                                    <input type="text" class="form-control" id="eName" name="eName" placeholder="商品别名">
                                 </div>
                             </div>
 

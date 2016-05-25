@@ -379,6 +379,11 @@
         update pf_user_sku set tree_code = #{treeCode}
         where id = #{id}
     </update>
+
+    <!-- 查找团队所有成员 -->
+    <select id="selectAllTeamMember" parameterType="String" resultType="Long">
+        SELECT user_id FROM pf_user_sku WHERE tree_code LIKE #{treeCode}
+    </select>
 </mapper>
 
 

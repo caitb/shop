@@ -127,7 +127,7 @@ public class UserPartnerApplyController extends BaseController {
         }
 
         try {
-            if (temPUserId == 0) {
+            if (temPUserId > 0) {
                 //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
                 userSkuService.checkParentData(user, temPUserId, skuId);
                 PfUserRelation pfUserRelation = new PfUserRelation();

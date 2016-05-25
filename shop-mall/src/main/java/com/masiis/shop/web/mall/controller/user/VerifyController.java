@@ -52,7 +52,7 @@ public class VerifyController extends BaseController {
         if(StringUtils.isBlank(code)
                 || StringUtils.isBlank(state)){
             log.error("请求参数不合法!");
-            return "common/500";
+            return "../../500";
         }
 
         HttpSession session = request.getSession();
@@ -67,7 +67,7 @@ public class VerifyController extends BaseController {
         } catch (Exception e) {
             log.error("json解析错误:" + e.getMessage());
             rp = null;
-            return "common/500";
+            return "../../500";
         }
         // 获取access_token
         log.info("开始获取access_token...");
@@ -89,11 +89,11 @@ public class VerifyController extends BaseController {
                 if(userRes == null || StringUtils.isBlank(userRes.getOpenid())){
                     // 没获取到信息
                     log.error("userRes:空!");
-                    return "common/500";
+                    return "../../500";
                 }
                 if(StringUtils.isBlank(res.getUnionid())){
                     log.error("没有unionid,逻辑错误");
-                    return "common/500";
+                    return "../../500";
                 }
 
                 ComUser user = null;
@@ -102,7 +102,7 @@ public class VerifyController extends BaseController {
                     user = userService.signWithCreateUserByWX(res, userRes);
                 } catch (Exception e) {
                     log.error("登录出错," + e.getMessage());
-                    return "common/500";
+                    return "../../500";
                 }
 
                 log.info("userid:" + user.getId());
@@ -117,7 +117,7 @@ public class VerifyController extends BaseController {
             }
         }
         // 请求失败
-        return "common/500";
+        return "../../500";
     }
 
     @RequestMapping("/wxcheck")
@@ -130,7 +130,7 @@ public class VerifyController extends BaseController {
 
         if(StringUtils.isBlank(state)) {
             log.error("state为空,调用异常,跳转错误页面!");
-            return "common/500";
+            return "../../500";
         }
 
         // 解析state,并验证有效性
@@ -145,7 +145,7 @@ public class VerifyController extends BaseController {
                 // 校验state参数完整性
                 || !SHAUtils.encodeSHA1(rp.toString().getBytes()).equals(rp.getSignCk())) {
             log.error("state参数不正确,调用异常,跳转错误页面!");
-            return "common/500";
+            return "../../500";
         }
 
         String stateStr = MD5Utils.encrypt(state);
@@ -262,7 +262,7 @@ public class VerifyController extends BaseController {
         if(StringUtils.isBlank(code)
                 || StringUtils.isBlank(state)){
             log.error("请求参数不合法!");
-            return "common/500";
+            return "../../500";
         }
 
         String basepath = request.getScheme()+"://"+request.getServerName()
@@ -279,7 +279,7 @@ public class VerifyController extends BaseController {
         } catch (Exception e) {
             log.error("json解析错误:" + e.getMessage());
             rp = null;
-            return "common/500";
+            return "../../500";
         }
 
         // 获取access_token
@@ -338,7 +338,7 @@ public class VerifyController extends BaseController {
             return createRedirectRes(rp.getSurl());
         }
         // 请求失败
-        return "common/500";
+        return "../../500";
     }
 
     private void loginByWx(HttpServletRequest request, HttpServletResponse response,

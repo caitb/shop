@@ -1,5 +1,6 @@
 package com.masiis.shop.common.constant.wx;
 
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.WxPropertiesUtils;
 
 /**
@@ -109,7 +110,7 @@ public class WxConsSF {
     /**
      * 企业给用户打款证书路径
      */
-    public static final String PATH_CERT = "WEB-INF/files/apiclient_cert.p12";
+    public static final String PATH_CERT = PropertiesUtils.getStringValue("sf.payuser.cert.path");
 
     /*==================================================================================================================*/
     /**

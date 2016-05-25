@@ -9,6 +9,8 @@ public class WithdrawConfirmReq extends BaseReq{
 
     private String token;
 
+    private Long id;
+
     private String money;
 
     public String getToken() {
@@ -17,6 +19,14 @@ public class WithdrawConfirmReq extends BaseReq{
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMoney() {

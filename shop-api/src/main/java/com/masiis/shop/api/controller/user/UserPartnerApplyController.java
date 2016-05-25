@@ -343,4 +343,10 @@ public class UserPartnerApplyController extends BaseController {
         return res;
     }
 
+    @RequestMapping("/agentbind")
+    @ResponseBody
+    @SignValid(paramType = BaseReq.class)
+    public BaseRes agentBind(){
+        return null;
+    }
 }

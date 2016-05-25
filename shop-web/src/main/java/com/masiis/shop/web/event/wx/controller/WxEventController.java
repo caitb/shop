@@ -114,13 +114,13 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=4bQM5R1JabYGZyE9W7p3r0WHGNLunf9-b9LgrhOpthVg1Sdg6_spCMdcOe6r-ar0-y6W_Rg_G8dnvB8fMflJcUPTzgPCQRc1LNjlI6pQv1sr9kg9IUQ4xKuhTLx1cdEDKOIfAAAVZT";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=4ujFLjCp4WbQTMSk_90_zFOzD9-QQrM98yR6tvVIXjDwA6TcYx5D78vG0fP8znaXVOuS6na6KZkKc4Wl5XhUAIUu5r_loSq6r6S2LAqgDYqf_bifvDPa7KULz49lPasrERFbAIAZMA";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
         List<Button> sub_button2 = new ArrayList<>();
         sub_button1.add(new Button("关于我们", "view", "http://mp.weixin.qq.com/s?__biz=MzAxMDg1NjY4Mw==&mid=100000035&idx=1&sn=8d77d86ffb986436b94cd3dfb6a08037&scene=23&srcid=0420B5a64GJHrlchm8mdF2O2#wechat_redirect"));
-        sub_button1.add(new Button("新闻报道", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
+        //sub_button1.add(new Button("新闻报道", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
         Button b2 = new Button("使用帮助", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html");
         //b2.setMedia_id("OaR_DFqGlj6npHbKS8AMfZr2Wjc2dG4KMkHDGIHI_54");
         sub_button1.add(b2);

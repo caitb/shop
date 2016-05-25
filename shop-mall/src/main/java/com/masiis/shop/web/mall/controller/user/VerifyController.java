@@ -63,7 +63,6 @@ public class VerifyController extends BaseController {
         try{
             rp = JSONObject.parseObject(URLDecoder.decode(stateStr, "UTF-8"), RedirectParam.class);
             log.info("微信访问授权通信成功,参数:" + rp.toString());
-            session.setMaxInactiveInterval(10 * 60);
         } catch (Exception e) {
             log.error("json解析错误:" + e.getMessage());
             rp = null;

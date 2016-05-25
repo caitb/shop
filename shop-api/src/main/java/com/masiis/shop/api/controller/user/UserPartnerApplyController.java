@@ -126,29 +126,6 @@ public class UserPartnerApplyController extends BaseController {
             return res;
         }
 
-        try {
-            if (temPUserId > 0) {
-                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                userSkuService.checkParentData(user, temPUserId, skuId);
-                PfUserRelation pfUserRelation = new PfUserRelation();
-                pfUserRelation.setUserId(user.getId());
-                pfUserRelation.setSkuId(skuId);
-                pfUserRelation.setCreateTime(new Date());
-                pfUserRelation.setIsEnable(1);
-                pfUserRelation.setUserPid(temPUserId);
-                pfUserRelationService.insert(pfUserRelation);
-            }
-        } catch (Exception e) {
-            if (e instanceof BusinessException) {
-                res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_PUSER_INVALID);
-                res.setResMsg(e.getMessage());
-            } else {
-                res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-                res.setResMsg(SysResCodeCons.RES_CODE_NOT_KNOWN_MSG);
-            }
-            log.error(res.getResMsg());
-            return res;
-        }
         Integer isQueuing = 0;
         Integer count = 0;
         int status = skuService.getSkuStockStatus(skuId, 1, temPUserId);

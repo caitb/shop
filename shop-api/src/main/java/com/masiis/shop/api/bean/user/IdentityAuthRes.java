@@ -10,7 +10,6 @@ import java.io.InputStream;
 public class IdentityAuthRes extends BaseRes {
     private String name; //姓名
     private String idCard; //身份证号码
-    private InputStream is; // 流
     private String idCardFrontName; //正面名字
     private String idCardBackName; //反面名字
     private String idCardFrontUrl;//正面地址
@@ -30,14 +29,6 @@ public class IdentityAuthRes extends BaseRes {
 
     public void setIdCard(String idCard) {
         this.idCard = idCard;
-    }
-
-    public InputStream getIs() {
-        return is;
-    }
-
-    public void setIs(InputStream is) {
-        this.is = is;
     }
 
     public String getIdCardFrontName() {

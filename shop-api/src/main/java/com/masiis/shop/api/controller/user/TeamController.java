@@ -2,6 +2,8 @@ package com.masiis.shop.api.controller.user;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.api.bean.user.TeamDetailReq;
+import com.masiis.shop.api.bean.user.TeamDetailRes;
 import com.masiis.shop.api.bean.user.TeamListReq;
 import com.masiis.shop.api.bean.user.TeamListRes;
 import com.masiis.shop.api.constants.SignValid;
@@ -41,6 +43,7 @@ public class TeamController {
     @ResponseBody
     @SignValid(paramType = TeamListReq.class, hasToken = false)
     public TeamListRes teamList(HttpServletRequest request, TeamListReq teamListReq, ComUser comUser){
+
         TeamListRes teamListRes = new TeamListRes();
 
         try {
@@ -66,6 +69,26 @@ public class TeamController {
         }
 
         return teamListRes;
+    }
+
+    @RequestMapping("/teamDetail")
+    @ResponseBody
+    @SignValid(paramType = TeamDetailReq.class, hasToken = false)
+    public TeamDetailRes teamDetail(HttpServletRequest request, TeamDetailReq teamDetailReq, ComUser comUser){
+
+        TeamDetailRes teamDetailRes = new TeamDetailRes();
+
+        try {
+            Map<String, Object> teamMap = teamService.teamDetail(teamDetailReq.getUserSkuId());
+            teamDetailRes.setTeamMap(teamMap);
+            teamDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            teamDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception e) {
+            log.error("获取团队明细出错![teamDetailReq="+teamDetailReq+"][comUser="+comUser+"]");
+            e.printStackTrace();
+        }
+
+        return teamDetailRes;
     }
 
 

@@ -46,7 +46,7 @@
                 转出金额<input id="extractMoneyId" type="text"  placeholder="输入金额" style="font-size:14px;">
             </h1>
             <h2>您当前可提现的金额为<span>￥${extractMoney}</span></h2>
-            <h2>您已经申请的提现金额为<span>￥${appliedFee}</span></h2>
+            <h2>您申请中的提现金额为<span>￥${appliedFee}</span></h2>
             <botton id="extractBtnId">
                 提现
             </botton>

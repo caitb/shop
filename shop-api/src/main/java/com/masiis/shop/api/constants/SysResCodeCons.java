@@ -1,9 +1,5 @@
 package com.masiis.shop.api.constants;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.util.*;
-
 /**
  * @Date:2016/4/25
  * @auth:lzh
@@ -182,4 +178,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_WXPAY_PREORDER_FAIL = "900105";
     public static final String RES_CODE_WXPAY_PREORDER_FAIL_MSG = "微信预付单下单失败";
 
+    /**
+     * 补货
+     */
+    public static final String RES_CODE_NO_SEND_TYPE = "100901";
+    public static final String RES_CODE_NO_SEND_MSG = "您还没有确定拿货状态不能补货";
 }

@@ -106,4 +106,11 @@ public interface PfUserSkuMapper {
      */
     int updateTreeCodeById(@Param("id") Integer id, @Param("treeCode") String treeCode);
 
+    /**
+     * 查找团队所有成员id
+     * @param treeCode
+     * @return
+     */
+    List<Long> selectAllTeamMember(String treeCode);
+
 }

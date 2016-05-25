@@ -16,9 +16,11 @@ import com.masiis.shop.api.service.user.UserCertificateService;
 import com.masiis.shop.api.service.user.UserSkuService;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.beans.product.Product;
 import com.masiis.shop.dao.po.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -275,8 +277,46 @@ public class ManageProController extends BaseController {
     @RequestMapping("/supplementBOrder/add.do")
     @ResponseBody
     @SignValid(paramType = AddProReq.class)
-    public StockStatusRes supplementBOrderAdd(HttpServletRequest request, AddProReq req,
+    public AddProRes supplementBOrderAdd(HttpServletRequest request, AddProReq req,
                                      ComUser user){
-        return null;
+        AddProRes addProRes = new AddProRes();
+        try {
+            Integer sendType = 0;
+            if (user.getSendType() <= 0) {
+                addProRes.setResCode(SysResCodeCons.RES_CODE_NO_SEND_TYPE);
+                addProRes.setResMsg(SysResCodeCons.RES_CODE_NO_SEND_MSG);
+                return addProRes;
+            }
+            sendType = user.getSendType();
+            if (req.getUserSkuId() == null || req.getUserSkuId() <= 0) {
+                addProRes.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID);
+                addProRes.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_SKU_INVALID_MSG);
+                return addProRes;
+            }
+            if (StringUtils.isBlank(req.getUserMessage())) {
+                req.setUserMessage("");
+            }
+            PfUserSku pfUserSku = userSkuService.getUserSkuByUserIdAndSkuId(user.getId(), req.getUserSkuId());
+            PfUserCertificate pfUserCertificate = userCertificateService.getCertificateBypfuId(pfUserSku.getId());
+            BOrderAdd bOrderAdd = new BOrderAdd();
+            bOrderAdd.setOrderType(BOrderType.Supplement.getCode());
+            bOrderAdd.setpUserId(pfUserSku.getUserPid());
+            bOrderAdd.setUserId(user.getId());
+            bOrderAdd.setSendType(sendType);
+            bOrderAdd.setSkuId(req.getUserSkuId());
+            bOrderAdd.setAgentLevelId(pfUserSku.getAgentLevelId());
+            bOrderAdd.setWeiXinId(pfUserCertificate.getWxId());
+            bOrderAdd.setUserMessage(req.getUserMessage());
+            bOrderAdd.setQuantity(req.getQuantity());
+            Long bOrderId = bOrderAddService.addBOrder(bOrderAdd);
+            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            addProRes.setPfBorder(pfBorder);
+            addProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            addProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        } catch (Exception ex) {
+            addProRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            addProRes.setResMsg(ex.getMessage());
+        }
+        return addProRes;
     }
 }

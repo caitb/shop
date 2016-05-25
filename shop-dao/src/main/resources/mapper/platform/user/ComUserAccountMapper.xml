@@ -130,4 +130,17 @@
         SELECT sum(total_income_fee) FROM com_user_account WHERE FIND_IN_SET(com_user_id,#{userIds})
     </select>
 
+    <!-- 统计销售额 -->
+    <select id="totalIncomeFeeByUserIds" parameterType="List" resultType="BigDecimal">
+        SELECT 
+               sum(total_income_fee) 
+        FROM 
+               com_user_account 
+        WHERE
+               com_user_id IN
+        <foreach collection="list" index="index" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
+
 </mapper>

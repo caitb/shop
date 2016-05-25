@@ -32,7 +32,7 @@ public class MenuController extends BaseController {
         if(user.getIsAgent().intValue() == 1){
             // 是合伙人,去到店铺页面
             SfShop shop = sfShopService.getSfShopByUserId(user.getId());
-            return "redirect:" + urlDomain + "/shop/getPoster?shopId=" + shop.getId();
+            return "redirect:" + urlDomain + "/shop/manage/getPoster?shopId=" + shop.getId();
         }
         // 非合伙人,提示页面
         model.addAttribute("redirectUrl", urlDomain);

@@ -133,6 +133,8 @@ public class ProductController extends BaseController {
             }
             if(pfBorder!=null){
                 proDetailRes.setOrderStatus(pfBorder.getOrderStatus());
+            }else{
+                proDetailRes.setOrderStatus(-1);
             }
             proDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             proDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

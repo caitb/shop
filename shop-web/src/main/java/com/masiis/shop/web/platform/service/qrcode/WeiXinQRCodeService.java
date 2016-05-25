@@ -37,6 +37,7 @@ public class WeiXinQRCodeService {
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsPF.APPID, WxConsPF.APPSECRET);
         String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+pfUserSkuId+"\"}}}";
 
+        log.info("[WxConsPF.APPID="+WxConsPF.APPID+"], [WxConsPF.APPSECRET="+WxConsPF.APPSECRET+"]");
         log.info("开始请求二维码ticket:[pfUserSkuId="+pfUserSkuId+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
         String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE+"?access_token="+access_token, jsonParam);
         log.info("请求二维码ticket返回结果[result="+result+"]");
@@ -77,6 +78,7 @@ public class WeiXinQRCodeService {
         String access_token = WxCredentialUtils.getInstance().getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
         String jsonParam = "{\"action_name\": \"QR_SCENE\", \"expire_seconds\": \"2592000\", \"action_info\": {\"scene\": {\"scene_id\": \""+scene_id+"\"}}}";
 
+        log.info("[WxConsPF.APPID="+WxConsPF.APPID+"], [WxConsPF.APPSECRET="+WxConsPF.APPSECRET+"]");
         log.info("开始请求二维码ticket:[scene_id="+scene_id+"][access_token="+access_token+"][jsonParam="+jsonParam+"]");
         String result = HttpClientUtils.httpPost(WxConsPF.URL_CREATE_WEIXIN_PUBLIC_NUMBER_QRCODE+"?access_token="+access_token, jsonParam);
         log.info("请求二维码ticket返回结果[result="+result+"]");

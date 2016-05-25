@@ -164,6 +164,9 @@ public class SysResCodeCons {
     public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT = "100717";
     public static final String RES_CODE_CANAGENT_ALREADY_TEMPAGENT_MSG = "您已经是该产品的临时合伙人";
 
+    public static final String RES_CODE_UPAPPLY_AGENTBIND_FAIL = "100718";
+    public static final String RES_CODE_UPAPPLY_AGENTBIND_FAIL_MSG = "绑定合伙人关系失败";
+
     /**
      * 实名认证
      */

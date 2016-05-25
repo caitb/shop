@@ -408,10 +408,14 @@ public class UserPartnerApplyController extends BaseController {
             pfUserRelation.setUserPid(pUser.getId());
             pfUserRelationService.insert(pfUserRelation);
         } catch (Exception e) {
-            log.error("");
-
+            res.setResCode(SysResCodeCons.RES_CODE_UPAPPLY_AGENTBIND_FAIL);
+            res.setResMsg(SysResCodeCons.RES_CODE_UPAPPLY_AGENTBIND_FAIL_MSG);
+            log.info(SysResCodeCons.RES_CODE_UPAPPLY_AGENTBIND_FAIL_MSG);
+            return res;
         }
 
-        return null;
+        res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+        res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        return res;
     }
 }

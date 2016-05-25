@@ -193,7 +193,7 @@ public class BOrderAddController extends BaseController {
             ComUser comUser = getComUser(request);
             PfBorder pfBorder = bOrderService.getPfBorderBySkuAndUserId(skuId, comUser.getId());
             if (pfBorder != null) {
-                throw new BusinessException("您已经有了此款产品的代理订单，订单号编码为:" + pfBorder.getOrderCode());
+                throw new BusinessException("您已经有了此款产品的合伙订单，订单号编码为:" + pfBorder.getOrderCode()+"，请去合伙人订单中完成合伙人申请。");
             }
             Long pUserId = pfUserRelationService.getPUserId(comUser.getId(), skuId);
             if (comUser.getSendType() > 0) {

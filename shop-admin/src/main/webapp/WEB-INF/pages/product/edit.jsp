@@ -111,6 +111,13 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="eName" class="col-sm-2 control-label">商品英文名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="eName" name="eName" placeholder="商品别名">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">商品标志</label>
                                 <div class="col-sm-9">
                                     <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">
@@ -346,11 +353,11 @@
                                                             <c:forEach items="${agentLevels}" var="agentLevel">
                                                                 <c:if test="${agentLevel.id == pfSkuAgent.agentLevelId}"><label for="unitPrices">${agentLevel.name}</label></c:if>
                                                             </c:forEach>
-                                                            <div class="input-group">
+                                                            <div class="input-group-">
                                                                 <input type="hidden" name="skuAgentIds" value="${pfSkuAgent.id}" />
                                                                 <input type="text" class="form-control" id="unitPrices" name="unitPrices" value="${pfSkuAgent.unitPrice}" placeholder="">
                                                                 <input type="hidden" name="totalPrices" value="${pfSkuAgent.totalPrice}" />
-                                                                <span class="input-group-addon">%</span>
+                                                                <%--<span class="input-group-addon">%</span>--%>
                                                             </div>
                                                             每件商品<small class="text-info dfenrun"></small>元
                                                         </div>

@@ -80,7 +80,7 @@ public class UserAccountController {
             res.setCountingFee(amount);
         }else {
             res.setTotalIncomeFee(account.getTotalIncomeFee() == null?amount:account.getTotalIncomeFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-            res.setExtractableFee(account.getExtractableFee() == null?amount:account.getExtractableFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+            res.setExtractableFee(account.getExtractableFee() == null?amount:account.getExtractableFee().subtract(account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setCountingFee(account.getCountingFee() == null?amount:account.getCountingFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
         }
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
@@ -174,8 +174,8 @@ public class UserAccountController {
             }
 
             NumberFormat numberFormat = DecimalFormat.getCurrencyInstance(Locale.CHINA);
-            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee());
             String appliedFee = account == null?numberFormat.format(0):account.getAppliedFee() == null?numberFormat.format(0):numberFormat.format(account.getAppliedFee());
+            String extractMoney = account == null?numberFormat.format(0):account.getExtractableFee() == null?numberFormat.format(0):numberFormat.format(account.getExtractableFee().subtract(new BigDecimal(appliedFee.replace("￥",""))));
 //        if (extractwayInfo != null){
 //            String cardCode = extractwayInfo.getBankCard();
 //            extractwayInfo.setBankCard(cardCode.substring(0,4)+"*********"+cardCode.substring(cardCode.length()-4,cardCode.length()));

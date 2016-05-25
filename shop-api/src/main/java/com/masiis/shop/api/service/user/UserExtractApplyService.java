@@ -38,6 +38,7 @@ public class UserExtractApplyService {
             ComUserExtractApply apply = new ComUserExtractApply();
             apply.setApplyTime(new Date());
             apply.setAuditType(0);
+            apply.setAuditCause("待审核");
             apply.setBankCard(info.getBankCard());
             apply.setBankName(info.getBankName());
             apply.setCardOwnerName(info.getCardOwnerName());

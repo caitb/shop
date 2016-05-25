@@ -21,16 +21,10 @@ public class BorderDetailRes extends BasePagingRes {
         this.stockNum = stockNum;
     }
 
-    public Integer getStockNum() {
-        return stockNum;
-    }
-    public void setStringBuffer(String stringBuffer) {
-        this.stringBuffer = stringBuffer;
-    }
+    public Integer getStockNum() {return stockNum;}
+    public void setStringBuffer(String stringBuffer) {this.stringBuffer = stringBuffer;}
 
-    public String getStringBuffer() {
-        return stringBuffer;
-    }
+    public String getStringBuffer() {return stringBuffer;}
 
     public void setComShipMans(List<ComShipMan> comShipMans) {
         this.comShipMans = comShipMans;

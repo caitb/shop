@@ -138,28 +138,26 @@ public class TeamService {
      * @param userSkuId
      * @return
      */
-    public Map<String, Object> findTeam(Integer userSkuId){
+    public Map<String, Object> teamDetail(Integer userSkuId){
         PfUserSku pfUserSku = pfUserSkuMapper.selectByPrimaryKey(userSkuId);
         List<Long> userIds = pfUserSkuMapper.selectChildrenByPId(pfUserSku.getId());
         List<ComUser> comUsers = new ArrayList<>();
         if(userIds != null && userIds.size() > 0){
             comUsers = comUserMapper.selectByIds(userIds);
         }
-        ComSku comSku = comSkuMapper.selectById(pfUserSku.getSkuId());
 
-        //下级userSkuId和userId数量
-        Map<String, String> curMap = countChild(pfUserSku.getId());
-        //下级人数
-        Integer countChild = StringUtils.isEmpty(curMap.get("childIds").toString())?0:curMap.get("childIds").split(",").length;
-        //销售额
-        Double countSales = comUserAccountMapper.sumIncomeFeeByUserIds(curMap.get("userIds"));
-        ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(pfUserSku.getUserId());
-
+        /* 下级合伙人id */
+        List<Long> teamUserIds = pfUserSkuMapper.selectAllTeamMember(pfUserSku.getTreeCode()+"%");
+        /* 团队总销售额 */
+        BigDecimal totalIncomeFee = comUserAccountMapper.totalIncomeFeeByUserIds(teamUserIds);
         Map<String, Object> teamMap = new HashMap<>();
-        teamMap.put("skuName", comSku.getName());//商品名称
-        teamMap.put("totalChildren", userIds.size());//直接下级人数
-        teamMap.put("countChild", countChild - userIds.size());//间接下级人数
-        teamMap.put("countSales", (countSales==null?0:countSales)+comUserAccount.getTotalIncomeFee().intValue());//总销售额
+        /* 直接下级人数 */
+        teamMap.put("countDirectly", userIds.size());
+        /* 间接下级人数 */
+        teamMap.put("countIndirect", teamUserIds.size()-userIds.size());
+        /* 总销售额 */
+        teamMap.put("totalIncomeFee", totalIncomeFee);
+
 
         List<Map<String, Object>> userAgentMaps = new ArrayList<>();
         for(ComUser comUser : comUsers){

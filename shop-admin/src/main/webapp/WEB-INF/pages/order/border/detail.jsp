@@ -357,7 +357,7 @@
                                             <td>-</td>
                                             <td>${product.comSku.priceMarket}</td>
                                             <td>${product.comSku.priceRetail}</td>
-                                            <td>1</td>
+                                            <td>${order.pfBorderItems[0].quantity}</td>
                                             <td>${order.pfBorder.productAmount}</td>
                                         </tr>
                                     </c:forEach>

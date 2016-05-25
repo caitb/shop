@@ -42,7 +42,7 @@ public class TeamController {
     @SignValid(paramType = TeamListReq.class, hasToken = false)
     public TeamListRes teamList(HttpServletRequest request, TeamListReq teamListReq, ComUser comUser){
         TeamListRes teamListRes = new TeamListRes();
-comUser = comUserService.getUserById(261L);
+
         try {
             List<Map<String, Object>> agentSkuMaps = teamService.listAgentSku(comUser.getId());
             ComUserAccount comUserAccount = comUserAccountService.findAccountByUserid(comUser.getId());

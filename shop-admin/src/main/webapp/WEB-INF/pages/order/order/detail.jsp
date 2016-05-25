@@ -350,7 +350,7 @@
                                             <td>-</td>
                                             <td>${product.comSku.priceMarket}</td>
                                             <td>${product.comSku.priceRetail}</td>
-                                            <td>1</td>
+                                            <td>${order.sfOrderItems[0].quantity}</td>
                                             <td>${order.sfOrder.productAmount}</td>
                                         </tr>
                                     </c:forEach>

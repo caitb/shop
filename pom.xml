@@ -353,6 +353,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>oss-my</artifactId>
+            <version>2.2.3</version>
+        </dependency>
     </dependencies>
 
     <build>

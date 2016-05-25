@@ -89,7 +89,7 @@
                 <label class="jia">+</label></b>
             </p>
 
-            <p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>
+            <%--<p><span>注</span>您的剩余库存可发展下级合伙人的数量为1~${lowerCount}</p>--%>
         </section>
         <section class="sec5">
             <div>
@@ -107,7 +107,7 @@
     <p>确认拿货?</p>
     <h4><b>在线库存:</b><span id="currentStock">${productInfo.stock}</span></h4>
     <h4><b>拿货数量:</b><span id="applyStock"></span></h4>
-    <h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>
+    <%--<h4><b>拿货后可发展下级人数:</b><span id="afterLowerCount"></span></h4>--%>
     <h4 style="color:#666666;"><em>注</em>您的拿货数量将不再能发展下级合伙人</h4>
 
     <h3>

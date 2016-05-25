@@ -61,7 +61,7 @@ public class UserCertificateController extends BaseController {
       * @Date 2016/5/25 0025 下午 5:29
       * 授权书详情展示
       */
-    @RequestMapping("/list")
+    @RequestMapping("/detail")
     @ResponseBody
     @SignValid(paramType = CommonReq.class)
     public UserCertificateRes certificateDetail(HttpServletRequest request, CommonReq req, ComUser user){

@@ -17,6 +17,8 @@ public class AddProRes extends BaseRes{
 
     private PfBorder pfBorder;//订单属性
 
+    private Long pfBorderId;//订单号
+
     public Boolean getIsQueuing() {
         return isQueuing;
     }
@@ -47,5 +49,13 @@ public class AddProRes extends BaseRes{
 
     public void setPfBorder(PfBorder pfBorder) {
         this.pfBorder = pfBorder;
+    }
+
+    public Long getPfBorderId() {
+        return pfBorderId;
+    }
+
+    public void setPfBorderId(Long pfBorderId) {
+        this.pfBorderId = pfBorderId;
     }
 }

@@ -309,8 +309,8 @@ public class ManageProController extends BaseController {
             bOrderAdd.setUserMessage(req.getUserMessage());
             bOrderAdd.setQuantity(req.getQuantity());
             Long bOrderId = bOrderAddService.addBOrder(bOrderAdd);
-            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
-            addProRes.setPfBorder(pfBorder);
+//            PfBorder pfBorder = bOrderService.getPfBorderById(bOrderId);
+            addProRes.setPfBorderId(bOrderId);
             addProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             addProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception ex) {

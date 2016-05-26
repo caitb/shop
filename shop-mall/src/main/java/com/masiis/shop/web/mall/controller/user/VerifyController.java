@@ -108,6 +108,7 @@ public class VerifyController extends BaseController {
 
                 session.invalidate();
                 session = request.getSession();
+                session.setAttribute(state, stateStr);
                 loginByWx(request, response, user, res.getOpenid(), res.getUnionid(),
                         res.getAccess_token(), res.getRefresh_token());
                 return createRedirectRes(rp.getSurl());

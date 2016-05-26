@@ -64,7 +64,7 @@ public class UserCertificateController extends BaseController {
     @RequestMapping("/detail")
     @ResponseBody
     @SignValid(paramType = CommonReq.class)
-    public UserCertificateRes certificateDetail(HttpServletRequest request, CommonReq req, ComUser user){
+    public UserCertificateRes certificateDetail(HttpServletRequest request, CommonReq req, ComUser user) {
         UserCertificateRes userCertificateRes = new UserCertificateRes();
         try {
             PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(req.getId().intValue());
@@ -77,10 +77,29 @@ public class UserCertificateController extends BaseController {
             userCertificateRes.setRealName(user.getRealName());
             userCertificateRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             userCertificateRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
-        }catch (Exception e){
+        } catch (Exception e) {
             userCertificateRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
             userCertificateRes.setResMsg(e.getMessage());
         }
         return userCertificateRes;
     }
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/26 0026 下午 1:51
+      * 授权书上级信息展示接口
+      */
+    @RequestMapping("/upperInfo")
+    @ResponseBody
+    @SignValid(paramType = CommonReq.class)
+    public UserCertificateRes upperInfoOfCertificate(HttpServletRequest request, CommonReq req, ComUser user){
+        UserCertificateRes userCertificateRes = new UserCertificateRes();
+        try {
+
+        } catch (Exception e) {
+
+        }
+        return userCertificateRes;
+    }
+
 }

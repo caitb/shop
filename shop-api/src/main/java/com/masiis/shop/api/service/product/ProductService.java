@@ -196,9 +196,11 @@ public class ProductService {
             PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(pfUserSku.getUserPid(), skuId);
             upperStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
         }
+        if (upperStock < 0) {
+            upperStock = 0;
+        }
         return upperStock;
     }
-
     /**
      * @Author Jing Hao
      * @Date 2016/3/31 0031 上午 11:07

@@ -178,8 +178,12 @@ public class SysResCodeCons {
     /**
      * 申请试用
      */
-    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL = "100901";
-    public static final String RES_CODE_TRIAL_APPLT_ADDRESS_FAIL_MSG = "申请试用获取地址失败";
+    public static final String RES_CODE_TRIAL_APPLY_ADDRESS_FAIL = "100901";
+    public static final String RES_CODE_TRIAL_APPLY_ADDRESS_FAIL_MSG = "申请试用获取地址失败";
+    public static final String RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL = "100902";
+    public static final String RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL_MSG = "申请试用支付成功获取订单详情失败";
+    public static final String RES_CODE_TRIAL_APPLY_FAIL = "100903";
+    public static final String RES_CODE_TRIAL_APPLY_FAIL_MSG = "申请使用微信支付失败";
 
     /**
      * 微信支付

@@ -8,7 +8,6 @@ import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.product.ComSkuImageMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,29 +44,34 @@ public class ManageShopProductService {
      * @Date 2016/4/13 0013 上午 10:29
      * 小铺中商品列表
      */
-    public List<SkuInfo> getShopProductsList(Long shopId, Integer isSale, Long userId) throws Exception {
+    public List<SkuInfo> getShopProductsList(Long shopId,Integer isSale,Long userId) throws Exception{
 
-        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId, isSale);
+        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectByShopIdAndSaleType(shopId,isSale);
         List<SkuInfo> skuInfoList = new ArrayList<>();
         ComUser comUser = ComUserMapper.selectByPrimaryKey(userId);
-        if (sfShopSkuList != null) {
+        if(sfShopSkuList!=null){
             String Value = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-            for (SfShopSku sfShopSku : sfShopSkuList) {
+            for(SfShopSku sfShopSku :sfShopSkuList){
                 SkuInfo skuInfo = new SkuInfo();
                 ComSku comsku = comSkuMapper.selectByPrimaryKey(sfShopSku.getSkuId());
                 ComSkuImage comSkuImage = comSkuImageMapper.selectDefaultImgBySkuId(sfShopSku.getSkuId());
-                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId, sfShopSku.getSkuId());
-                comSkuImage.setFullImgUrl(Value + comSkuImage.getImgUrl());
+                PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(userId,sfShopSku.getSkuId());
+                comSkuImage.setFullImgUrl(Value+comSkuImage.getImgUrl());
                 skuInfo.setComSku(comsku);
                 skuInfo.setComSkuImage(comSkuImage);
                 skuInfo.setShopSkuId(sfShopSku.getId());
                 skuInfo.setSaleNum(sfShopSku.getSaleNum());
-                if (pfUserSkuStock != null) {
-                    if (comUser.getSendType() == 1) {//平台代发
-                        skuInfo.setStock(pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock());
-                    } else if (comUser.getSendType() == 2) {//自己
+                if(pfUserSkuStock!=null){
+                    if(comUser.getSendType()==1){//平台代发
+                        int useStock = pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock();
+                        if(useStock >=0){
+                            skuInfo.setStock(pfUserSkuStock.getStock()-pfUserSkuStock.getFrozenStock());
+                        }else{
+                            skuInfo.setStock(0);
+                        }
+                    }else if(comUser.getSendType()==2){//自己
                         skuInfo.setStock(pfUserSkuStock.getCustomStock());
-                    } else {
+                    }else{
                         throw new BusinessException("发货方式未选择！");
                     }
                 }
@@ -82,9 +86,9 @@ public class ManageShopProductService {
      * @Date 2016/4/13 0013 下午 4:15
      * 商品上下架
      */
-    public void updateSale(Long shopSkuId, Integer isSale) throws Exception {
+    public void updateSale(Long shopSkuId,Integer isSale) throws Exception{
         SfShopSku sfShopSku = sfShopSkuMapper.selectByPrimaryKey(shopSkuId);
-        if (sfShopSku != null) {
+        if(sfShopSku!=null){
             sfShopSku.setIsSale(isSale);
             sfShopSkuMapper.updateByPrimaryKey(sfShopSku);
         }

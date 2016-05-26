@@ -144,8 +144,7 @@ public class BOrderPayService {
      * <10>处理发货库存
      * <11>处理收货库存
      */
-    @Transactional
-    private void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    public void payBOrderTypeI(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
         log.info("<1>修改订单支付信息");
         pfBorderPayment.setOutOrderId(outOrderId);
         pfBorderPayment.setIsEnabled(1);//设置为有效
@@ -286,6 +285,7 @@ public class BOrderPayService {
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
+                String newIdCard = "****" + comUser.getIdCard().substring(4, comUser.getIdCard().length() - 4) + "****";
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号
@@ -293,7 +293,7 @@ public class BOrderPayService {
                         comAgentLevel.getName(),//levelName - 代理等级名称
                         pfBorderItem.getSkuName(),//skuName - 商品名称
                         comSku.geteName(),
-                        comUser.getIdCard(),//idCard - 身份证号
+                        newIdCard,//idCard - 身份证号
                         comUser.getMobile(),//mobile - 手机号
                         pfBorderItem.getWxId(),//wxId - 微信号
                         DateUtil.Date2String(pfUserCertificate.getBeginTime(), "yyyy-MM-dd", null),//beginDate - 开始日期

@@ -52,5 +52,26 @@ public class ManageShopProController extends BaseController{
         }
       return shopProRe;
     }
+  
+    /**
+      * @Author jjh
+      * @Date 2016/5/26 0026 下午 3:48
+      * 小铺商品上下架操作
+      */
+    @RequestMapping("/updateSale.do")
+    @ResponseBody
+    @SignValid(paramType = ShopProReq.class)
+    public ShopProRes deliverSaleOfProduct(HttpServletRequest request, ShopProReq req, ComUser user){
+        ShopProRes shopProRe = new ShopProRes();
+        try {
+            manageShopProductService.updateSale(req.getShopSkuId(),req.getIsSale());
+            shopProRe.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            shopProRe.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
+        }catch (Exception e){
+            shopProRe.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            shopProRe.setResMsg(e.getMessage());
+        }
+        return shopProRe;
+    }
 
 }

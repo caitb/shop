@@ -13,6 +13,8 @@ public class ShopProReq extends BaseReq{
 
     private Integer isSale;//上下架标志
 
+    private Long shopSkuId;//库存id
+
     public String getToken() {
         return token;
     }
@@ -35,5 +37,13 @@ public class ShopProReq extends BaseReq{
 
     public void setIsSale(Integer isSale) {
         this.isSale = isSale;
+    }
+
+    public Long getShopSkuId() {
+        return shopSkuId;
+    }
+
+    public void setShopSkuId(Long shopSkuId) {
+        this.shopSkuId = shopSkuId;
     }
 }

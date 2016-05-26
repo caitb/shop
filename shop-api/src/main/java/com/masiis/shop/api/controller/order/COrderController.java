@@ -19,6 +19,7 @@
  import com.masiis.shop.dao.po.ComUser;
  import com.masiis.shop.dao.po.ComUserAddress;
  import com.masiis.shop.dao.po.PfCorder;
+ import com.masiis.shop.dao.po.PfCorderConsignee;
  import org.apache.log4j.Logger;
  import org.springframework.stereotype.Controller;
  import org.springframework.ui.Model;
@@ -48,8 +49,6 @@
      @Resource
      PfCorderPaymentMapper pfCorderPaymentMapper;
 
-     private final int wxPayIdentity = 0; //第一次支付微信支付(控制界面显示文字内容)
-     private final int continuePayIdentity = 1;//继续支付(控制界面显示文字内容)
 
 
      @RequestMapping("/getOrderAddress.do")
@@ -72,44 +71,6 @@
          }
          return comUserAddressRes;
     }
-
-     /**
-      * 验证商品是否试用过
-      *
-      * @author hanzengzhi
-      * @date 2016/3/9 11:10
-      */
-     @RequestMapping("/isApplyTrial.do")
-     @ResponseBody
-     public String isApplyTrial(HttpServletRequest request,
-                                HttpServletResponse response,
-                                ComUser comUser,
-                                @RequestParam(value = "skuId", required = true) Integer skuId) {
-         try{
-             ObjectMapper objectMapper = new ObjectMapper();
-             Long userId = null;
-             if (comUser != null) {
-                 userId = comUser.getId();
-             } else {
-                 throw new BusinessException("请重新登录");
-             }
-             if (StringUtils.isEmpty(userId)) {
-                 throw new BusinessException("请重新登录");
-             }
-             if (StringUtils.isEmpty(skuId)) {
-                 throw new BusinessException("商品不存在");
-             }
-             List<PfCorder> pfCorders = cOrderService.isApplyTrial(userId, skuId);
-             String returnJson = objectMapper.writeValueAsString(pfCorders);
-             return returnJson;
-         }catch (Exception ex){
-             if (org.apache.commons.lang.StringUtils.isNotBlank(ex.getMessage())) {
-                 throw new BusinessException(ex.getMessage(), ex);
-             } else {
-                 throw new BusinessException("数据有误请核对", ex);
-             }
-         }
-     }
      /**
       * 试用申请支付
       *
@@ -149,13 +110,25 @@
      @RequestMapping(value = "/weChatCallBackSuccess.do")
      @SignValid(paramType = TrialApplyPayReq.class)
      public TrialApplyPayOrderDetailRes weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                              @RequestParam(value = "pfCorderId", required = false) Long pfCorderId)throws Exception {
+                                                              @RequestParam(value = "pfCorderId", required = false) Long pfCorderId){
          TrialApplyPayOrderDetailRes orderDetailRes = new TrialApplyPayOrderDetailRes();
          try {
              Map<String, Object> map = cOrderService.getOrderDetail(pfCorderId);
              orderDetailRes.setCorder((PfCorder) map.get("pfCorder"));
+             orderDetailRes.setCorderConsignee((PfCorderConsignee) map.get("corderConsignee"));
+             Product product = (Product)map.get("product");
+             if (product != null) {
+                 String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
+                 if (product.getComSkuImages() != null && product.getComSkuImages().size() > 0) {
+                     orderDetailRes.setSkuDefaultImg(skuImg + product.getComSkuImages().get(0).getImgUrl());
+                     orderDetailRes.setSkuImgAlt(product.getComSkuImages().get(0).getImgName());
+                 }
+             }
+             orderDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+             orderDetailRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
          } catch (Exception e) {
-             e.getStackTrace();
+             orderDetailRes.setResCode(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL);
+             orderDetailRes.setResMsg(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL_MSG);
          }
          return orderDetailRes;
      }
@@ -167,11 +140,12 @@
       * @date 2016/3/17 16:45
       */
      @RequestMapping(value = "/weChatCallBackFail.shtml")
-     public String weChatCallBackFail(HttpServletRequest request, HttpServletResponse response,
-                                      @RequestParam(value = "pfCorderId", required = true) Long pfCorderId,
-                                      @RequestParam(value = "skuId", required = true) Integer skuId,
-                                      @RequestParam(value = "addressId", required = true) Long addressId,
-                                      Model model)throws Exception {
-         return "platform/order/zhifushiyong";
+     @SignValid(paramType = TrialApplyPayReq.class)
+     public TrialApplyPayOrderDetailRes weChatCallBackFail(HttpServletRequest request, HttpServletResponse response,
+                                      @RequestParam(value = "pfCorderId", required = false) Long pfCorderId) {
+         TrialApplyPayOrderDetailRes orderDetailRes = new TrialApplyPayOrderDetailRes();
+         orderDetailRes.setResCode(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL);
+         orderDetailRes.setResMsg(SysResCodeCons.RES_CODE_TRIAL_APPLY_GET_ORDER_DETAIL_FAIL_MSG);
+         return orderDetailRes;
      }
  }

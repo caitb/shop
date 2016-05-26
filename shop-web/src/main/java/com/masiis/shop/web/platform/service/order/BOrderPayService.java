@@ -284,7 +284,7 @@ public class BOrderPayService {
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
-                String newIdCard = "****" + comUser.getIdCard().substring(4, comUser.getIdCard().length() - 4) + "****";
+                String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号

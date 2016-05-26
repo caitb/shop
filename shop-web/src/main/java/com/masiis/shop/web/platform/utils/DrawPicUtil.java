@@ -268,8 +268,7 @@ public class DrawPicUtil {
     public static void main(String[] args) {
         String str = "210381198711261611";
 
-        String result = "****" + str.substring(4, str.length() - 4);
-        result += "****";
+        String result = str.substring(0, 4) + "**********" + str.substring(str.length() - 4, str.length());
         System.out.print(result);
 
 //        DrawPicUtil drawPicUtil = new DrawPicUtil();

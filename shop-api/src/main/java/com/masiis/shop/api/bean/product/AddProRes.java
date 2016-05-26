@@ -4,6 +4,8 @@ import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
 import com.masiis.shop.dao.po.PfBorder;
 
+import java.math.BigDecimal;
+
 /**
  * Created by JingHao on 2016/5/24 0024.
  */
@@ -18,6 +20,8 @@ public class AddProRes extends BaseRes{
     private PfBorder pfBorder;//订单属性
 
     private Long pfBorderId;//订单号
+
+    private BigDecimal unitPrice; //合伙人价
 
     public Boolean getIsQueuing() {
         return isQueuing;
@@ -57,5 +61,13 @@ public class AddProRes extends BaseRes{
 
     public void setPfBorderId(Long pfBorderId) {
         this.pfBorderId = pfBorderId;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

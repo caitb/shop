@@ -234,6 +234,7 @@ public class ManageProController extends BaseController {
             addProRes.setIsQueuing(isQueuing);
             addProRes.setCount(count);
             addProRes.setbOrderConfirm(bOrderConfirm);
+            addProRes.setUnitPrice(pfSkuAgent.getUnitPrice());
             addProRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             addProRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){

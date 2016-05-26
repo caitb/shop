@@ -111,7 +111,7 @@ public class SfShopController extends BaseController {
 
         try {
             ComUser comUser = getComUser(request);
-            comUser = comUserMapper.selectByPrimaryKey(3L);
+            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
 
 
             String headImg = "h-"+comUser.getId()+".png";

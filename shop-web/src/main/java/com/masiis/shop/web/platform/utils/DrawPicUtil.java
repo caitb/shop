@@ -266,10 +266,10 @@ public class DrawPicUtil {
 
 
     public static void main(String[] args) {
-        String str = "210381198711261611";
-
-        String result = str.substring(0, 4) + "**********" + str.substring(str.length() - 4, str.length());
-        System.out.print(result);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, 11);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+        System.out.print(calendar.getTime());
 
 //        DrawPicUtil drawPicUtil = new DrawPicUtil();
 //        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");

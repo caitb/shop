@@ -261,13 +261,11 @@ public class BOrderPayService {
                 pfUserCertificate.setIdCard(comUser.getIdCard());
                 pfUserCertificate.setMobile(comUser.getMobile());
                 pfUserCertificate.setWxId(pfBorderItem.getWxId());
-                pfUserCertificate.setBeginTime(new Date());
                 Calendar calendar = Calendar.getInstance();
-                Date date = new Date(System.currentTimeMillis());
-                calendar.setTime(date);
-                calendar.add(Calendar.YEAR, 2);
-                date = calendar.getTime();
-                pfUserCertificate.setEndTime(date);
+                pfUserCertificate.setBeginTime(calendar.getTime());
+                calendar.set(Calendar.MONTH, 11);
+                calendar.set(Calendar.DAY_OF_MONTH, 31);
+                pfUserCertificate.setEndTime(calendar.getTime());
                 pfUserCertificate.setAgentLevelId(pfBorderItem.getAgentLevelId());
                 pfUserCertificate.setStatus(1);
                 pfUserCertificate.setRemark("");

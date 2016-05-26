@@ -222,7 +222,7 @@ public class SfShopManageController extends BaseController {
             Element qrcodeImgElement = new Element(212, 450, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
             Element text2Element = new Element(240, 648, font1, new Color(51, 51, 51), "该二维码有效期为");
-            Element text3Element = new Element(210, 710, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            Element text3Element = new Element(210, 715, font1, new Color(51, 51, 51), startTime+"-"+endDate);
             text3Element.setLineStyle(0);
             java.util.List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);

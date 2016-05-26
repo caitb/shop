@@ -142,7 +142,7 @@ public class SfShopController extends BaseController {
             Element bgPosterImgElement = new Element(0, 0, 520, 710, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
             Element qrcodeImgElement = new Element(160, 338, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
             Element text1Element = new Element((520-("我是"+comUser.getWxNkName()).length()*font2.getSize())/2, 245,   font2, new Color(247, 60, 140), "我是"+comUser.getWxNkName());
-            Element text2Element = new Element(180, 530, font1, new Color(51, 51, 51), "该二维码有效期为");
+            Element text2Element = new Element(190, 530, font1, new Color(51, 51, 51), "该二维码有效期为");
             Element text3Element = new Element(165, 585, font1, new Color(51, 51, 51), startTime+"-"+endDate);
             text3Element.setLineStyle(0);
             java.util.List<Element> drawElements = new ArrayList<>();

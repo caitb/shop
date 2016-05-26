@@ -259,10 +259,8 @@ public class OrderService {
             }
 
             // 计算回退销售额
-            BigDecimal saleAmount = order.getPayAmount().subtract(order.getShipAmount());
             SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
-            sfShop.setSaleAmount(sfShop.getSaleAmount().subtract(saleAmount));
-            sfShop.setShipAmount(sfShop.getShipAmount().subtract(order.getShipAmount()));
+            sfShop.setSaleAmount(sfShop.getSaleAmount().subtract(order.getPayAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
             if (shopRes != 1) {
                 res.put("resCode", 6);
@@ -290,7 +288,7 @@ public class OrderService {
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
                     UserAccountRecordFeeType.SF_Refund_SubTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().subtract(saleAmount));
+            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().subtract(order.getPayAmount()));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
             log.info("小铺店主的结算中和总销售额减少金额:" + countFee);
 

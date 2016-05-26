@@ -74,16 +74,20 @@ public class UserAccountController {
         logger.info("userId=" + comUser.getId());
         ComUserAccount account = comUserAccountService.findAccountByUserid(comUser.getId());
         String amount = new BigDecimal(0).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+        Map<String, BigDecimal> map = applyService.findSumExtractfeeByUserId(comUser.getId());
+        BigDecimal withdraw = map == null?new BigDecimal(0.00):map.get("extractFee");
         if (account == null){
             res.setTotalIncomeFee(amount);
             res.setExtractableFee(amount);
             res.setCountingFee(amount);
             res.setAppliedFee(amount);
+            res.setWithdrawedFee(amount);
         }else {
             res.setTotalIncomeFee(account.getTotalIncomeFee() == null?amount:account.getTotalIncomeFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setExtractableFee(account.getExtractableFee() == null?amount:account.getExtractableFee().subtract(account.getAppliedFee() == null?new BigDecimal(0):account.getAppliedFee()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setCountingFee(account.getCountingFee() == null?amount:account.getCountingFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
             res.setAppliedFee(account.getAppliedFee().setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+            res.setWithdrawedFee(withdraw.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
         }
         res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
         res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);

@@ -129,7 +129,7 @@ public class DevelopController {
             }
             DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             DownloadImage.download(weiXinQRCodeService.createAgentQRCode(userSku.getSkuId()), qrcodeName, posterDirPath);
-            OSSObjectUtils.downloadFile("static/user/background_poster/kangyinli.png", posterDirPath+"/"+bgPoster);
+            OSSObjectUtils.downloadFile("static/user/background_poster/"+skuExtension.getPoster(), posterDirPath+"/"+bgPoster);
 
             //画图
             Element headImgElement = new Element(88, 619, 132, 132, ImageIO.read(new File(posterDirPath+"/"+headImg)));

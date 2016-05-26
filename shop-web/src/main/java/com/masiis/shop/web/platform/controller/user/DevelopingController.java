@@ -178,9 +178,10 @@ public class DevelopingController extends BaseController {
                     qrcodePath += File.separator+qrcodeName;
                     //生成海报并上传到OSS
                     String posterBGImgPath = request.getServletContext().getRealPath("/")+"static"+File.separator+"images"+File.separator+"poster"+File.separator+comSkuExtension.getPoster();
-                    contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
+                    //contents[0] = "Hi,我是"+(comUser.getRealName()==null?comUser.getWxNkName():comUser.getRealName());
                     ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
-                    contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。";
+                    //contents[1] = "我在麦链合伙人做"+comSku.getName()+comAgentLevel.getName()+"，赚了不少钱，邀请你也来，长按二维码识别即可。";
+                    contents[0] = "Hi，我是"+comSku.getName()+"的"+comAgentLevel.getName()+comUser.getWxNkName()+"，我在麦链实现了创业梦想！长按识别二维码，加入麦链合伙人，一起赚钱吧";
                     if(comSkuExtension.getPoster() != null && "kangyinli.png".equals(comSkuExtension.getPoster())){
                         drawPost(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     }else if(comSkuExtension.getPoster() != null && "mss.png".equals(comSkuExtension.getPoster())){
@@ -246,12 +247,12 @@ public class DevelopingController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 32));
         g.setColor(new Color(51,51,51));
-        g.drawString(contents[0], 92, 785);
+        //g.drawString(contents[0], 92, 785);
 
-        for(int i=0; i<contents[1].length(); i++){
+        for(int i=0; i<contents[0].length(); i++){
             int l = i%11;
             int t = i/11;
-            g.drawString(contents[1].substring(i, i+1), 92+32*l, 785+50*(t+1));
+            g.drawString(contents[0].substring(i, i+1), 92+32*l, 785+40*t);
         }
 
         Date curDate = new Date();
@@ -304,12 +305,12 @@ public class DevelopingController extends BaseController {
 
         g.setFont(new Font("华文细黑", Font.PLAIN, 28));
         g.setColor(new Color(51,51,51));
-        g.drawString(contents[0], 176, 905);
+        //g.drawString(contents[0], 176, 905);
 
-        for(int i=0; i<contents[1].length(); i++){
+        for(int i=0; i<contents[0].length(); i++){
             int l = i%13;
             int t = i/13;
-            g.drawString(contents[1].substring(i, i+1), 176+28*l, 905+40*(t+1));
+            g.drawString(contents[0].substring(i, i+1), 176+28*l, 905+40*t);
         }
 
         Date curDate = new Date();

@@ -25,6 +25,10 @@ public class AccountHomeRes extends BaseRes {
      * 结算中金额
      */
     private String countingFee;
+    /**
+     * 已提现金额
+     */
+    private String withdrawedFee;
 
     public String getTotalIncomeFee() {
         return totalIncomeFee;
@@ -56,5 +60,13 @@ public class AccountHomeRes extends BaseRes {
 
     public void setAppliedFee(String appliedFee) {
         this.appliedFee = appliedFee;
+    }
+
+    public String getWithdrawedFee() {
+        return withdrawedFee;
+    }
+
+    public void setWithdrawedFee(String withdrawedFee) {
+        this.withdrawedFee = withdrawedFee;
     }
 }

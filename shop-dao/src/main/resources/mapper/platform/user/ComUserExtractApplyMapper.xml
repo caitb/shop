@@ -250,6 +250,6 @@
     </select>
 
     <select id="selectSumExtractfeeByUserId" resultType="java.util.HashMap" parameterType="java.lang.Long">
-        select sum(extract_fee) as extractFee from com_user_extract_apply where com_user_id = #{userId} and audit_type in (2,3)
+        select sum(extract_fee) as extractFee from com_user_extract_apply where com_user_id = #{userId} and audit_type = 3
     </select>
 </mapper>

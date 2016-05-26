@@ -4,6 +4,7 @@ import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
+import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
@@ -20,6 +21,8 @@ import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.DownloadImage;
+import com.masiis.shop.web.mall.utils.image.DrawImageUtil;
+import com.masiis.shop.web.mall.utils.image.Element;
 import com.masiis.shop.web.mall.utils.qrcode.CreateParseCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +40,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Date:2016/4/7
@@ -111,66 +112,56 @@ public class SfShopController extends BaseController {
         try {
             ComUser comUser = getComUser(request);
             comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
-            SfShop sfShop = sfShopService.getSfShopById(shopId);
-            String realPath = request.getServletContext().getRealPath("/");
-            String posterName = "shop-" + comUser.getId() + "-" + shopId + ".jpg";
-
-            File posterDir = new File(realPath + "static/images/shop/poster/");
-            if (!posterDir.exists()) posterDir.mkdirs();
-
-            //二维码
-            String path = request.getContextPath();
-            String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-            String qrCodePath = posterDir.getAbsolutePath();
-            String shopUrl = basePath + shopId + "/" + comUser.getId() + "/shop.shtml";
-            //CreateParseCode.createCode(200, 200, shopUrl, qrCodePath);
-            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), posterName, qrCodePath);
-            qrCodePath += "/"+posterName;
 
 
-            //用户头像
-            String headImgPath = posterDir.getAbsolutePath() + "/h-" + comUser.getId() + ".jpg";
-            DownloadImage.download(comUser.getWxHeadImg(), "h-" + comUser.getId() + ".jpg", posterDir.getAbsolutePath());
-            //ImageUtils.scale2(headImgPath, headImgPath, 130, 130, false);
+            String headImg = "h-"+comUser.getId()+".png";
+            String qrcodeName = "qrcode-shop-"+comUser.getId()+"-"+shopId+".png";
+            String bgPoster = "shop-"+shopId+".png";
+            String posterDirPath = request.getServletContext().getRealPath("/")+"static/images/poster";
+            File  posterDir = new File(posterDirPath);
+            if(!posterDir.exists()){
+                posterDir.mkdirs();
+            }
+            DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
+            DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
+            OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
 
-            //画专属海报
-            String bgPath = realPath + "static/images/shop/background-img/bg-shop.png";
-            String shopPosterPath = realPath + "static/images/shop/poster/shop-poster-" + comUser.getId() + ".jpg";
-            String content = "我是" + comUser.getWxNkName();
-            Map<String, Integer> positionMap = new HashMap<>();
-            positionMap.put("headImg-left", 195);
-            positionMap.put("headImg-top", 100);
-            positionMap.put("bgImg-left", 0);
-            positionMap.put("bgImg-top", 0);
-            positionMap.put("qrCodeImg-left", 170);
-            positionMap.put("qrCodeImg-top", 330);
-            positionMap.put("content-left", 520 / 2 - content.length() / 2 * 28 - (content.length() % 2 * 14));
-            positionMap.put("content-top", 270);
-            drawPoster(headImgPath, qrCodePath, bgPath, new String[]{content}, shopPosterPath, positionMap, new Font("微软雅黑", Font.PLAIN, 28), new Color(247, 60, 140));
+            //画图
+            String fontPath = request.getServletContext().getRealPath("/")+"static/font";
+            //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
+            //font1.deriveFont(Font.PLAIN, 32);
+            Font font1 = new Font("华文细黑", Font.PLAIN, 20);
+            Date curDate = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            String startTime = sdf.format(curDate);
+            curDate.setDate(curDate.getDate()+30);
+            String endDate = sdf.format(curDate);
 
-            //删除头像和二维码
-            new File(headImgPath).delete();
-            new File(qrCodePath).delete();
+            Element headImgElement = new Element(72, 328, 90, 90, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+            Element bgPosterImgElement = new Element(0, 0, 620, 774, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+            Element qrcodeImgElement = new Element(212, 450, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
+            Element text2Element = new Element(230, 644, font1, new Color(51, 51, 51), "该二维码有效期为");
+            Element text3Element = new Element(190, 700, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            text3Element.setLineStyle(0);
+            java.util.List<Element> drawElements = new ArrayList<>();
+            drawElements.add(headImgElement);
+            drawElements.add(bgPosterImgElement);
+            drawElements.add(qrcodeImgElement);
+            drawElements.add(text1Element);
+            drawElements.add(text2Element);
+            drawElements.add(text3Element);
 
+            DrawImageUtil.drawImage(620, 774, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
-            String curUrl = request.getRequestURL().toString() + "?shopId=" + shopId;
-            /** 获取调用jssdk所需数据 **/
-            Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
-            //要分享的数据
-            shareMap.put("shareTitle", "我是" + comUser.getRealName() + ",我为朋友呐喊!");
-            shareMap.put("shareDesc", "在家靠父母，出外靠朋友。我为朋友呐喊，分享赚佣金。");
-            shareMap.put("shareImg", sfShop.getLogo());
-            shareMap.put("shareLink", shopUrl);
+            mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
-            mav.addObject("shopPoster", basePath + "static/images/shop/poster/shop-poster-" + comUser.getId() + ".jpg");
-            mav.addObject("shareMap", shareMap);
             return mav;
         } catch (Exception e) {
             log.error("获取专属海报失败![shopId=" + shopId + "][comUser=" + getComUser(request) + "]");
             e.printStackTrace();
         }
 
-        //mav.setViewName("error");
         return mav;
     }
 

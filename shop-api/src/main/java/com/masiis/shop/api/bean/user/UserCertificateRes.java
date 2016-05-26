@@ -2,6 +2,7 @@ package com.masiis.shop.api.bean.user;
 
 import com.masiis.shop.api.bean.base.BaseRes;
 import com.masiis.shop.dao.beans.certificate.CertificateInfo;
+import com.masiis.shop.dao.po.PfUserCertificate;
 
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class UserCertificateRes extends BaseRes{
     private String sjName;//上级合伙人姓名
 
     private String imgUrl;//证书路径
+
+    private PfUserCertificate pfUserCertificate; //证书属性
+
+    private String sDate;//加入时间
 
     public String getRealName() {
         return realName;
@@ -69,5 +74,21 @@ public class UserCertificateRes extends BaseRes{
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public PfUserCertificate getPfUserCertificate() {
+        return pfUserCertificate;
+    }
+
+    public void setPfUserCertificate(PfUserCertificate pfUserCertificate) {
+        this.pfUserCertificate = pfUserCertificate;
+    }
+
+    public String getsDate() {
+        return sDate;
+    }
+
+    public void setsDate(String sDate) {
+        this.sDate = sDate;
     }
 }

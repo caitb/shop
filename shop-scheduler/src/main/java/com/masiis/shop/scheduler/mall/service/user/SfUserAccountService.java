@@ -140,7 +140,6 @@ public class SfUserAccountService {
 
             SfShop sfShop = shopMapper.selectByPrimaryKey(order.getShopId());
             sfShop.setSaleAmount(sfShop.getSaleAmount().add(saleAmount));
-            sfShop.setShipAmount(sfShop.getShipAmount().add(order.getShipAmount()));
             int shopRes = shopMapper.updateWithVersion(sfShop);
             if (shopRes != 1) {
                 throw new BusinessException("修改店铺总销售额失败");
@@ -165,7 +164,7 @@ public class SfUserAccountService {
             ComUserAccountRecord pfIncomeRecord = createComUserAccountRecordBySfOrder(order, order.getPayAmount(),
                     UserAccountRecordFeeType.SF_AddTotalIncomeFee.getCode(), comUserAccount);
             pfIncomeRecord.setPrevFee(comUserAccount.getTotalIncomeFee());
-            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(saleAmount));
+            comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
             log.info("小铺店主的结算中和总销售额增加金额:" + countFee);
@@ -230,7 +229,10 @@ public class SfUserAccountService {
                 sfUserAccount.setCountingFee(sfUserAccount.getCountingFee().add(fee));
                 sfRecord.setNextFee(sfUserAccount.getCountingFee());
                 sfRecordMapper.insert(sfRecord);
-                sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
+                int resNum = sfUserAccountMapper.updateByIdAndVersion(sfUserAccount);
+                if (resNum != 1) {
+                    throw new BusinessException("用户id:" + sfUserId + ",分润退回失败");
+                }
 
                 log.info("用户id:{" + sfUserId + "}" + ",分润金额:{" + fee + "}");
             }

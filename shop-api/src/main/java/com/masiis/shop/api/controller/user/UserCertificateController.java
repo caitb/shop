@@ -70,9 +70,16 @@ public class UserCertificateController extends BaseController {
             PfUserCertificate cdetail = userCertificateService.CertificateDetailsByUser(req.getId().intValue());
             String ctName = userCertificateService.getCtname(cdetail.getAgentLevelId());
             ComSku comSku = skuService.getSkuById(cdetail.getSkuId());
-
+            userCertificateRes.setCtname(ctName);
+            userCertificateRes.setSkuName(comSku.getName());
+            userCertificateRes.setSjName(cdetail.getSjName());
+            userCertificateRes.setImgUrl(cdetail.getImgUrl());
+            userCertificateRes.setRealName(user.getRealName());
+            userCertificateRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
+            userCertificateRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         }catch (Exception e){
-
+            userCertificateRes.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
+            userCertificateRes.setResMsg(e.getMessage());
         }
         return userCertificateRes;
     }

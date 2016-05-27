@@ -17,7 +17,7 @@
 <input type="hidden" id="currentPage" name="currentPage" value="${currentPage}"/>
 <input type="hidden" id="count" name="count" value="${count}">
     <header>
-        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/toBorderManagement?fm=${fm}'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
+        <a href="javascript:window.location.href='${basepath}sfOrderManagerController/borderManagement.html'"><img src="${path}/static/images/xq_rt.png" alt=""></a>
         <p>分享赚佣金</p>
     </header>
     <div class="wrap" >

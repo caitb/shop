@@ -2,7 +2,7 @@
  * 隐藏微信分享功能
  * @config json字符串或json对象
  */
-function hideWXShare(config, wx){
+function hideWXShare(config){
     if((typeof config)=='string'){
         config = window.eval('('+config+')');
     }
@@ -36,7 +36,7 @@ $(function(){
         data: {hideUrl: window.location.href},
         async: false,
         success: function(config){
-            hideWXShare(config, wx);
+            hideWXShare(config);
         }
     })
 });

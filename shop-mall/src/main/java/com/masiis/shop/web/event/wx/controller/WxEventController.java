@@ -49,7 +49,7 @@ public class WxEventController extends BaseController {
     @RequestMapping("/check")
     @ResponseBody
     public String receiveWxEvent(HttpServletRequest request, WxEventCheck req) throws IOException {
-        System.out.println(req.toString());
+        log.info("getReq:" + req.toString());
         try {
             if (StringUtils.isBlank(req.getTimestamp())
                     || StringUtils.isBlank(req.getNonce())
@@ -72,7 +72,7 @@ public class WxEventController extends BaseController {
 
             // 解析消息参数
             String requestBody = getRequestBody(request);
-            System.out.println(requestBody);
+            log.info("wxEvent:" + requestBody);
             XStream xStream = new XStream(new DomDriver("UTF-8", new XmlFriendlyNameCoder("-_", "_")));
             xStream.ignoreUnknownElements();
             xStream.processAnnotations(WxEventBody.class);
@@ -92,7 +92,7 @@ public class WxEventController extends BaseController {
                 return "success";
             }
             String resStr = toXML(xStream, res);
-            System.out.println(resStr);
+            log.info("eventRes:" + resStr);
             return resStr;
 
         } catch (Exception e) {
@@ -102,41 +102,24 @@ public class WxEventController extends BaseController {
     }
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        /*WxEventBody reqBody = new WxEventBody();
-        reqBody.setToUserName("gh_150ec2776586");
-        reqBody.setFromUserName("o6wZ2s2y3DkS4RBZ_7G0R0bLvWIY");
-        reqBody.setCreateTime(1462521876l);
-        reqBody.setEvent("SCAN");
-        reqBody.setMsgType("event");
-        reqBody.setEventKey("622");
-        reqBody.setTicket("gQFn7zoAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL1kwaWFrajdsNWZHY1RzbWV0MlF2AAIEQE0sVwMEAAAAAA==");
-        XStream xStream = new XStream(new DomDriver("UTF-8"));
-        xStream.processAnnotations(WxEventBody.class);
-        String res = HttpClientUtils.httpPost("http://localhost:8080/wxevent/check?signature=ec0fa853ecb7270b4db4a6372431901a18cfec3e&timestamp=1462521876&nonce=833666333",
-                xStream.toXML(reqBody));
-        xStream.processAnnotations(WxBaseEvent.class);
-        System.out.println(res);
-        Object obj = xStream.fromXML(res);
-        System.out.println(obj.getClass().getName());*/
-
-        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=AoObCAj-huY0XHRt-tQLUhx1QOC74VPSvW4q31hnDZtckCJaTTnjdubE8HKHw1M4KEJlSZynmrNf_Eh8AqfyOVleeoejkFOuJq8pwwp5UY9tkOzQPbYhHYtlV1FfZwWsDKUjAFAUBL";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=wmkhCHk7jrg_vWXovHxCtrOcb5pJ-7siqSIvk0_Uhpgkygdpe9FxlNtTY-GoQJ0M2eZpl5gwu1THUtZ04wQoQTlDjxYJxhkMksEbcZaUOVoGIUbAGAMOA";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
-        sub_button1.add(new Button("关于麦链", "view", "http://mp.weixin.qq.com/s?__biz=MzAxMDg1NjY4Mw==&mid=100000035&idx=1&sn=8d77d86ffb986436b94cd3dfb6a08037&scene=23&srcid=0420B5a64GJHrlchm8mdF2O2#wechat_redirect"));
+        sub_button1.add(new Button("关于麦链", "view", "http://mp.weixin.qq.com/s?__biz=MzI1OTIxNzgwNA==&mid=100000004&idx=1&sn=d50e511bed4075a46d9a649d254edcbd&scene=18#wechat_redirect"));
         sub_button1.add(new Button("新闻报道", "view", "http://invest.china.com.cn/html/2016/zhuantibaodao_0108/46155.html"));
-        sub_button1.add(new Button("模式介绍", "view", "http://www.QQ.com"));
         Button b1 = new Button("联系我们", "click", null);
         b1.setKey("menu_click_event_contact_us");
         sub_button1.add(b1);
 
         buttons.add(new Button("关于麦链", sub_button1));
+        buttons.add(new Button("分享赚钱", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
         buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 

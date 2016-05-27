@@ -7,6 +7,7 @@ import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.SfOrderItemDistributionMapper;
 import com.masiis.shop.dao.mall.order.SfOrderItemMapper;
 import com.masiis.shop.dao.mall.order.SfOrderMapper;
+import com.masiis.shop.dao.mall.shop.SfShopBillItemMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
@@ -61,7 +62,7 @@ public class SfUserAccountService {
     @Resource
     private SfUserAccountRecordMapper sfRecordMapper;
     @Resource
-    private PfUserBillItemMapper billItemMapper;
+    private SfShopBillItemMapper shopBillItemMapper;
     @Resource
     private SfUserBillItemMapper sfBillItemMapper;
     @Resource
@@ -150,9 +151,9 @@ public class SfUserAccountService {
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
-            // 插入店主pf_user_bill_item
-            PfUserBillItem billItem = createPfUserBillItemBySfOrder(order, shopKeeper, countFee);
-            billItemMapper.insert(billItem);
+            // 插入店主sf_shop_bill_item
+            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee);
+            shopBillItemMapper.insert(billItem);
 
             // 计算订单结算中金额计入到account中
             ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
@@ -241,6 +242,21 @@ public class SfUserAccountService {
             log.error(e.getMessage());
             throw new BusinessException(e);
         }
+    }
+
+    private SfShopBillItem createSfShopBillItemBySfOrder(SfOrder order, ComUser shopKeeper, BigDecimal countFee) {
+        SfShopBillItem item = new SfShopBillItem();
+
+        item.setSourceId(order.getId());
+        item.setShopId(order.getShopId());
+        item.setComUserId(shopKeeper.getId());
+        item.setCreateTime(new Date());
+        item.setSourceCreateTime(order.getCreateTime());
+        item.setAmount(countFee);
+        item.setItemType(1);
+        item.setIsCount(0);
+
+        return item;
     }
 
     private SfUserBillItem createSfUserBillItem(SfOrder order, SfUserAccount sfUserAccount, BigDecimal fee) {

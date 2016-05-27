@@ -17,6 +17,7 @@ import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.common.util.SysBeanUtils;
 import com.masiis.shop.dao.mall.order.*;
+import com.masiis.shop.dao.mall.shop.SfShopBillItemMapper;
 import com.masiis.shop.dao.mall.shop.SfShopMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserAccountRecordMapper;
@@ -65,6 +66,8 @@ public class OrderService {
     private ComUserAccountMapper comUserAccountMapper;
     @Resource
     private PfUserBillItemMapper pfUserBillItemMapper;
+    @Resource
+    private SfShopBillItemMapper shopBillItemMapper;
     @Resource
     private SfShopMapper shopMapper;
     @Resource
@@ -273,8 +276,8 @@ public class OrderService {
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
             // 插入退货店主pf_user_bill_item
-            PfUserBillItem billItem = createPfUserBillItemBySfOrderRefund(order, shopKeeper, countFee, receiveTime);
-            pfUserBillItemMapper.insert(billItem);
+            SfShopBillItem billItem = createSfShopBillItemBySfOrderRefund(order, shopKeeper, countFee, receiveTime);
+            shopBillItemMapper.insert(billItem);
             log.info("店主结算中减少");
 
             // 退货订单扣除结算中金额计
@@ -390,6 +393,21 @@ public class OrderService {
             log.error(e.getMessage(), e);
             throw new BusinessException(e);
         }
+    }
+
+    private SfShopBillItem createSfShopBillItemBySfOrderRefund(SfOrder order, ComUser shopKeeper, BigDecimal countFee, Date receiveTime) {
+        SfShopBillItem item = new SfShopBillItem();
+
+        item.setSourceId(order.getId());
+        item.setShopId(order.getShopId());
+        item.setComUserId(shopKeeper.getId());
+        item.setCreateTime(new Date());
+        item.setSourceCreateTime(order.getCreateTime());
+        item.setAmount(countFee);
+        item.setItemType(2);
+        item.setIsCount(0);
+
+        return item;
     }
 
     private SfUserBillItem createSfUserBillItemByType(SfOrder order, SfUserAccount sfUserAccount, BigDecimal fee, Date opTime) {

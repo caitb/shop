@@ -143,6 +143,24 @@ public enum UserAccountRecordFeeType {
         public String getDesc() {
             return "小铺订单退货减少总利润";
         }
+    },
+    SFSHOP_COUNTING_SUB{
+        public Integer getCode() {
+            return 15;
+        }
+
+        public String getDesc() {
+            return "小铺店铺账单结算,结算中减少";
+        }
+    },
+    SFSHOP_EXTRACTABLE_ADD{
+        public Integer getCode() {
+            return 16;
+        }
+
+        public String getDesc() {
+            return "小铺店铺账单结算,可提现增加";
+        }
     };
 
     public abstract Integer getCode();

@@ -14,6 +14,7 @@ import com.masiis.shop.scheduler.utils.wx.WxSFNoticeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -39,6 +40,7 @@ public class SfUserBillService {
     @Resource
     private SfUserAccountRecordMapper sfRecordMapper;
 
+    @Transactional
     public void createBillByUserAndDate(ComUser user, Date countStartDay, Date countEndDay, Date balanceDate) {
         try{
             // 组织账单对象

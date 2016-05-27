@@ -142,13 +142,15 @@ public class DevelopingController extends BaseController {
 
         try {
             ComUser comUser = null;
+            String curUrl = null;
             if(fromUserId != null){
                 comUser = comUserMapper.selectByPrimaryKey(fromUserId);
+                curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&fromUserId="+comUser.getId();
             }else{
                 comUser = getComUser(request);
+                curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
             }
 
-            String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&fromUserId="+comUser.getId();
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
 

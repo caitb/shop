@@ -19,7 +19,7 @@
         }
         .wrap>img{
             display: block;
-            width: 90%;
+            width: 80%;
             margin: 1em auto 0 auto;
             border-radius: 5px;
             box-shadow:1px 2px 2px 1px #ccc;
@@ -29,6 +29,7 @@
             text-align: center;
             color: #F73C8C;
             width: 100%;
+            margin-top: 5%;
         }
         .back_box{
             width:100%;
@@ -106,6 +107,13 @@
             right: 5px;
             top: 4px;
         }
+        .floor{
+                background: url("/static/images/floorbg.png") no-repeat;
+                background-size: 100% 100%;
+            width:90%;
+            margin:1em auto 0 auto;
+            padding: 18% 0;
+        }
     </style>
 </head>
 <body>
@@ -117,8 +125,11 @@
     <p>我的专属海报</p>
 </header>
 <div class="wrap">
+        <div class="floor">
+
+        </div>
         <img src="${shopPoster}" alt="获取海报失败,刷新试试吧"/>
-        <b id="downloadPoster2">长按图片保存到手机</b>
+        <b id="downloadPoster2">长按二维码保存图片到手机</b>
 </div>
 <div class="back_box">
     <div class="back"></div>

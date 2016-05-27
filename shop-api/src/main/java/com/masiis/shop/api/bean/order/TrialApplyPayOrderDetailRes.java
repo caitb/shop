@@ -13,7 +13,6 @@ public class TrialApplyPayOrderDetailRes extends BaseBusinessRes {
     private PfCorderConsignee corderConsignee;
     private String skuName;
     private String skuDefaultImg;
-    private String skuImgAlt;
 
     public PfCorder getCorder() {
         return corder;
@@ -45,13 +44,5 @@ public class TrialApplyPayOrderDetailRes extends BaseBusinessRes {
 
     public void setSkuDefaultImg(String skuDefaultImg) {
         this.skuDefaultImg = skuDefaultImg;
-    }
-
-    public String getSkuImgAlt() {
-        return skuImgAlt;
-    }
-
-    public void setSkuImgAlt(String skuImgAlt) {
-        this.skuImgAlt = skuImgAlt;
     }
 }

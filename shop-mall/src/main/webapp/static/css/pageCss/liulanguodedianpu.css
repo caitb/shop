@@ -92,3 +92,7 @@
   color: #FF6633;
   font-size: 12px;
 }
+.wrap #viewedShop div span{
+  text-align:center;
+  display:block;
+}

@@ -108,12 +108,12 @@
       * @date 2016/3/17 16:45
       */
      @RequestMapping(value = "/weChatCallBackSuccess.do")
+     @ResponseBody
      @SignValid(paramType = TrialApplyPayReq.class)
-     public TrialApplyPayOrderDetailRes weChatCallBackSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                              @RequestParam(value = "pfCorderId", required = false) Long pfCorderId){
+     public TrialApplyPayOrderDetailRes weChatCallBackSuccess(HttpServletRequest request,TrialApplyPayReq trialApplyPayReq){
          TrialApplyPayOrderDetailRes orderDetailRes = new TrialApplyPayOrderDetailRes();
          try {
-             Map<String, Object> map = cOrderService.getOrderDetail(pfCorderId);
+             Map<String, Object> map = cOrderService.getOrderDetail(trialApplyPayReq.getPfCorderId());
              orderDetailRes.setCorder((PfCorder) map.get("pfCorder"));
              orderDetailRes.setCorderConsignee((PfCorderConsignee) map.get("corderConsignee"));
              Product product = (Product)map.get("product");
@@ -121,7 +121,6 @@
                  String skuImg = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
                  if (product.getComSkuImages() != null && product.getComSkuImages().size() > 0) {
                      orderDetailRes.setSkuDefaultImg(skuImg + product.getComSkuImages().get(0).getImgUrl());
-                     orderDetailRes.setSkuImgAlt(product.getComSkuImages().get(0).getImgName());
                  }
              }
              orderDetailRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);

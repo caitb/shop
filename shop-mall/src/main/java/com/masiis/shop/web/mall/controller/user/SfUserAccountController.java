@@ -346,6 +346,13 @@ public class SfUserAccountController extends BaseController {
         }else {
             withdraw = new BigDecimal(map.get("extractFee").toString());
         }
+        List<SfOrder> sfOrders = sfOrderService.findByUserId(userId);
+        //是否购买过商品
+        if (sfOrders != null && sfOrders.size() > 0){
+            mv.addObject("hasOrder",1);
+        }else {
+            mv.addObject("hasOrder",0);
+        }
         mv.addObject("withdraw",withdraw);
         mv.addObject("isPayDistribution",isPayDistribution.subtract(userAccount.getExtractableFee().add(withdraw)));
         mv.addObject("isNotPayDistribution",isNotPayDistribution);

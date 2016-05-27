@@ -10,6 +10,8 @@ public class TrialApplyPayReq extends BaseBusinessReq {
     private Integer skuId;
     private Long addressId;
     private String reason;
+    private Long pfCorderId;
+
 
     public Integer getSkuId() {
         return skuId;
@@ -33,5 +35,13 @@ public class TrialApplyPayReq extends BaseBusinessReq {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public Long getPfCorderId() {
+        return pfCorderId;
+    }
+
+    public void setPfCorderId(Long pfCorderId) {
+        this.pfCorderId = pfCorderId;
     }
 }

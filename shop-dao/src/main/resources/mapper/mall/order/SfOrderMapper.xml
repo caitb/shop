@@ -300,4 +300,8 @@
         </foreach>
     </select>
 
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select * from sf_order where user_id = #{userId}
+    </select>
+
 </mapper>

@@ -20,7 +20,7 @@
         .wrap>img{
             display: block;
             width: 90%;
-            margin: 1em auto 1em auto;
+            margin: 1em auto 0 auto;
             border-radius: 5px;
             box-shadow:1px 2px 2px 1px #ccc;
         }
@@ -124,8 +124,8 @@
     <%--<canvas id="canvasOne" style="display: none;">--%>
         <%--Your browser does not support HTML5 Canvas.--%>
     <%--</canvas>--%>
-    <img src="${shopPoster}" alt="获取海报失败,刷新试试吧" />
-    <b id="downloadPoster2">长按图片保存海报</b>
+        <img src="${shopPoster}" alt="获取海报失败,刷新试试吧"/>
+        <b id="downloadPoster2">长按图片保存到手机</b>
 </div>
 <div class="back_box">
     <div class="back"></div>
@@ -136,8 +136,8 @@
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="<%=basePath%>static/js/plugins/jquery-1.8.3.min.js"></script>
-<script src="<%=basePath%>static/js/pageJs/hideWXShare.js"></script>
+<%--<script src="<%=basePath%>static/js/plugins/jquery-1.8.3.min.js"></script>--%>
+<%--<script src="<%=basePath%>static/js/pageJs/hideWXShare.js"></script>--%>
 <%--<script>--%>
     <%--/*--%>
      <%--* 注意：--%>
@@ -204,16 +204,16 @@
     <%--};--%>
 
 <%--</script>--%>
-<%--<script src="<%=basePath%>static/js/pageJs/zepto.min.js"></script>--%>
-<%--<script src="<%=basePath%>static/js/pageJs/share.js"> </script>--%>
-<%--<script>--%>
-    <%--$(".add").on("tap",function () {--%>
-        <%--$(".back_box").show()--%>
-        <%--$(".back_f").show()--%>
-    <%--})--%>
-    <%--$(".close").on("tap",function () {--%>
-        <%--$(".back_box").hide()--%>
-        <%--$(this).parent().hide()--%>
-    <%--})--%>
-<%--</script>--%>
+<script src="<%=basePath%>static/js/pageJs/zepto.min.js"></script>
+<script src="<%=basePath%>static/js/pageJs/share.js"> </script>
+<script>
+    $(".add").on("tap",function () {
+        $(".back_box").show()
+        $(".back_f").show()
+    })
+    $(".close").on("tap",function () {
+        $(".back_box").hide()
+        $(this).parent().hide()
+    })
+</script>
 </html>

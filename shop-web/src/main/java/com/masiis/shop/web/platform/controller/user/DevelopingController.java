@@ -19,6 +19,7 @@ import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.qrcode.QRCodeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -132,24 +133,48 @@ public class DevelopingController extends BaseController {
     }
 
     @RequestMapping("/sharelink")
-    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response, Integer skuId){
+    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response,
+                                  Integer skuId,
+                                  @RequestParam(value = "fromUserId", required = false)Long fromUserId
+    ){
 
         ModelAndView mav = new ModelAndView("platform/user/sharePage");
 
         try {
-            String curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
+            ComUser comUser = null;
+            String curUrl = null;
+            String shareLink = null;
+            if(fromUserId != null){
+                comUser = comUserMapper.selectByPrimaryKey(fromUserId);
+                curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&fromUserId="+comUser.getId();
+            }else{
+                comUser = getComUser(request);
+                curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
+            }
+
+            if(request.getParameter("from") != null){
+                curUrl += "&from=" + request.getParameter("from");
+            }
+            if(request.getParameter("isappinstalled") != null){
+                curUrl += "&isappinstalled=" + request.getParameter("isappinstalled");
+            }
 
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
+            if(fromUserId != null){
+                shareLink = curUrl;
+            }else{
+                shareLink = curUrl + "&fromUserId="+comUser.getId();
+            }
 
-            ComUser comUser = getComUser(request);
+
             log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
+            //String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
 
             PfUserCertificate puc = new PfUserCertificate();
             puc.setUserId(comUser.getId());
@@ -203,8 +228,8 @@ public class DevelopingController extends BaseController {
 
 
             resultMap.put("appId", WxConsPF.APPID);
-            resultMap.put("shareTitle", "麦链合伙");
-            resultMap.put("shareDesc", contents[1]);
+            resultMap.put("shareTitle", "麦链合伙人邀请");
+            resultMap.put("shareDesc", contents[0]);
             resultMap.put("shareLink", shareLink);
             resultMap.put("shareImg", comUser.getWxHeadImg());
 

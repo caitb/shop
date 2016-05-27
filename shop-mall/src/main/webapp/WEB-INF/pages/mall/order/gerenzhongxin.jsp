@@ -36,7 +36,7 @@
     </div>
     <nav>
         <ul>
-            <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder');">
+            <li onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/stockOrder?shopId=${shopId}');">
                 <span><img src="<%=path%>/static/images/my.png" alt="" style="width:23px;"><%--<b></b>--%></span>
                 <span>我的订单</span>
             </li>

@@ -35,8 +35,8 @@
 </div>
 </body>
 <%--<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>--%>
-<%--<script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>--%>
-<%--<script src="<%=basePath%>static/js/hideWXShare.js"></script>--%>
+<script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+<script src="<%=basePath%>static/js/hideWXShare.js"></script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
     /*

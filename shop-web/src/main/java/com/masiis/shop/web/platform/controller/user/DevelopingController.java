@@ -152,18 +152,19 @@ public class DevelopingController extends BaseController {
                 curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
             }
 
+            if(request.getParameter("from") != null){
+                shareLink += "&from=" + request.getParameter("from");
+            }
+            if(request.getParameter("isappinstalled") != null){
+                shareLink += "&isappinstalled=" + request.getParameter("isappinstalled");
+            }
+
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
             if(fromUserId != null){
                 shareLink = curUrl;
             }else{
                 shareLink = curUrl + "&fromUserId="+comUser.getId();
-            }
-            if(request.getParameter("from") != null){
-                shareLink += "&from=" + request.getParameter("from");
-            }
-            if(request.getParameter("isappinstalled") != null){
-                shareLink += "&isappinstalled=" + request.getParameter("isappinstalled");
             }
 
 

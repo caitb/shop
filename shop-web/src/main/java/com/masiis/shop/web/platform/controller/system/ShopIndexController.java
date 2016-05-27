@@ -1,10 +1,12 @@
 package com.masiis.shop.web.platform.controller.system;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.order.BOrderService;
+import com.masiis.shop.web.platform.service.shop.JSSDKService;
 import com.masiis.shop.web.platform.service.system.IndexShowService;
 import com.masiis.shop.web.platform.service.user.ComUserAccountService;
 import com.masiis.shop.web.platform.service.user.MyTeamService;
@@ -40,6 +42,8 @@ public class ShopIndexController extends BaseController {
     private UserSkuService userSkuService;
     @Resource
     private BOrderService bOrderService;
+    @Resource
+    private JSSDKService jssdkService;
 
     @RequestMapping("/index")
     public ModelAndView shopIndexList(HttpServletRequest req) throws Exception {
@@ -96,6 +100,12 @@ public class ShopIndexController extends BaseController {
         modelAndView.addObject("pbBanner", pbBanner);//封装图片地址集合
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
+
+
+        String curUrl = req.getRequestURL().toString();
+        Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
+        modelAndView.addObject("shareMap", new ObjectMapper().writeValueAsString(shareMap));
+
         return modelAndView;
     }
 }

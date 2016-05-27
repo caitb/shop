@@ -20,7 +20,7 @@
     <script src="<%=path%>/static/js/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/plugins/swipwr/swiper.3.1.7.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="<%=path%>/static/js/hideWXShare.js"></script>
+    <%--<script src="<%=path%>/static/js/hideWXShare.js"></script>--%>
 </head>
 <body>
 <%--<c:if test="${forcusPF!=true}">--%>
@@ -214,6 +214,24 @@
             $(".back").hide()
             $(".back_f").hide()
         })
+
+        var config = window.eval('('+shareMap+')');
+        wx.config({
+            debug: false,
+            appId: config.appId,
+            timestamp: config.timestamp,
+            nonceStr: config.nonceStr,
+            signature: config.signature,
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideOptionMenu',
+            ]
+        });
     </script>
 </body>
 </html>

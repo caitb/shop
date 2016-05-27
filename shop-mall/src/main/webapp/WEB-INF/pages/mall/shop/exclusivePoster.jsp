@@ -17,7 +17,7 @@
         .wrap{
             background: #fff;
         }
-        .wrap>img{
+        .wrap img{
             display: block;
             width: 90%;
             margin: 1em auto 0 auto;

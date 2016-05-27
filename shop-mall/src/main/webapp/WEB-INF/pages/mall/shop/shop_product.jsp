@@ -76,9 +76,6 @@
             <section class="sec1">
                 ${skuInfo.content}
             </section>
-            <section class="sec1">
-                <img src="<%=path%>/static/images/chanpin%20(1).jpg" alt="">
-            </section>
             <section class="sec2">
                 <p>Copyright2005-2016 iimai.com 版权所有</p>
                 <p>京ICP备16001661号-3</p>

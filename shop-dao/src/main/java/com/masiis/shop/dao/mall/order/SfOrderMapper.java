@@ -77,4 +77,6 @@ public interface SfOrderMapper {
 
     List<SfOrder> selectByUserIds(@Param("userId") Long userId,
                                   @Param("userIds") List<Long> userIds);
+
+    List<SfOrder> selectByUserId(@Param("userId") Long userId);
 }

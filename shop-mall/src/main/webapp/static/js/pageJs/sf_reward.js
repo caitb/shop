@@ -57,9 +57,18 @@ function viewMore(){
         });
     }
 }
-function withdrawRequest(isBuy){
-    if (parseInt(isBuy) != 1){
-        alert("您需要至少购买一件商品，确认收货7天后即可提现。");
+function withdrawRequest(isBuy,hasOrder,extractableFee){
+
+    if (parseInt(extractableFee) == 0 && /^0\.[1-9]\d*$/.test(extractableFee) == false){
+        alert("亲，您的可提现佣金为0。赶快去分享赚佣金吧~");
+        return;
+    }
+    if (parseInt(hasOrder) == 0){
+        alert("您需要至少购买一件商品，才可提现。去店铺看看吧~");
+        return;
+    }
+    if (parseInt(isBuy) == 0){
+        alert("您购买的商品还没超过7天，暂时无法提现，请耐心等待。");
         return;
     }
     validateCodeJS.applyTrial('withdrawRequest');

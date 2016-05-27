@@ -53,4 +53,8 @@ public class SfOrderService {
     public List<SfOrder> findByUserIds(Long userId,List<Long> userIds){
         return sfOrderMapper.selectByUserIds(userId,userIds);
     }
+
+    public List<SfOrder> findByUserId(Long userId){
+        return sfOrderMapper.selectByUserId(userId);
+    }
 }

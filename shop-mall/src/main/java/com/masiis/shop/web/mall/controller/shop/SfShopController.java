@@ -114,6 +114,7 @@ public class SfShopController extends BaseController {
         ModelAndView mav = new ModelAndView("mall/shop/exclusivePoster");
 
         try {
+
             ComUser comUser = null;
             String curUrl = null;
             String shareLink = null;

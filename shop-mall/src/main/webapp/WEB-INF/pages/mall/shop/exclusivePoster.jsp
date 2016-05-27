@@ -117,13 +117,6 @@
     <p>我的专属海报</p>
 </header>
 <div class="wrap">
-    <%--<div class="na">--%>
-        <%--<p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>--%>
-        <%--<label class="close">×</label>--%>
-    <%--</div>--%>
-    <%--<canvas id="canvasOne" style="display: none;">--%>
-        <%--Your browser does not support HTML5 Canvas.--%>
-    <%--</canvas>--%>
         <img src="${shopPoster}" alt="获取海报失败,刷新试试吧"/>
         <b id="downloadPoster2">长按图片保存到手机</b>
 </div>

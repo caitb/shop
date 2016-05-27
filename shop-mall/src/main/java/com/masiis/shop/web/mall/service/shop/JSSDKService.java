@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.service.shop;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.constant.wx.WxConsSF;
 import com.masiis.shop.web.mall.task.JsapiTicketTask;
 import com.masiis.shop.web.mall.utils.JSSDKUtil;
@@ -25,14 +26,14 @@ public class JSSDKService {
      * @return
      */
     public Map<String, String> requestJSSDKData(String curUrl){
-        String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
+        String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
         if(jsapi_ticket == null){
-            log.info("从redis获取的mall_jsapi_ticket=null");
+            log.info("从redis获取的jsapi_ticket=null");
             jsapi_ticket = new JsapiTicketTask().requestTicket();
         }
 
         Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
-                            shareMap.put("appId", WxConsSF.APPID);
+        shareMap.put("appId", WxConsPF.APPID);
 
         return shareMap;
     }

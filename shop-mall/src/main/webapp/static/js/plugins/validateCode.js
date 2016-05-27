@@ -202,7 +202,6 @@
         },
         skipPage: function () {
             var path;
-            alert(validateCodeJS.skipPageId);
             switch (validateCodeJS.skipPageId) {
                 case "buy":
                     $(".back_j").hide();

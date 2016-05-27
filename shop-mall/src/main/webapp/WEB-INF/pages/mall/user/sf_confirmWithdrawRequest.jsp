@@ -29,7 +29,7 @@
         <h1>您的提现申请提交成功，工作人员会在一个工作日内处理，提现结果会通过短信和微信的方式通知您，请注意查收。</h1>
         <a href="${basepath}sfOrderManagerController/borderManagement.html">返回个人中心</a>
     </div>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script src="${path}/static/js/pageJs/hideWXShare.js"></script>
 </body>
 </html>

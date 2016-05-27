@@ -39,7 +39,7 @@
 </header>
 <div class="wrap">
     <img src="${shopPoster}" />
-    <b id="hideOptionMenu">长按图片保存海报</b>
+    <b id="hideOptionMenu">长按图片保存海报,分享给好友</b>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

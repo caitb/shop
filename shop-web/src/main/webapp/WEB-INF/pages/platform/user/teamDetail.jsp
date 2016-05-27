@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/wodetuandui.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
     <script src="<%=basePath%>static/js/iscroll.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="<%=basePath%>static/js/jquery-1.8.3.min.js"></script>
+    <script src="<%=basePath%>static/js/hideWXShare.js"></script>
 </head>
 <body>
 <div class="wrap">

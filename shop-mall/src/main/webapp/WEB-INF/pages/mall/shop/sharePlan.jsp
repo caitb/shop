@@ -49,7 +49,7 @@
         </p>
         <p class="active" onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
             <span><img src="<%=path%>/static/images/footer_x%20(1).png" alt=""></span>
-            <span>分享计划</span>
+            <span>分享赚钱</span>
         </p>
         <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');" >
             <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
@@ -58,6 +58,7 @@
     </div>
 </footer>
 <script src="<%=basePath%>static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script type="application/javascript" src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </body>
 </html>

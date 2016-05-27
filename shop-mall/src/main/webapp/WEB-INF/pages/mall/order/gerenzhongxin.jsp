@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/reset.css">
     <link rel="stylesheet" href="<%=path%>/static/css/pageCss/gerenzhongxin.css">
     <script src="<%=path%>/static/js/plugins/jquery-1.8.3.min.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <script src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </head>
 <body>
@@ -71,7 +71,7 @@
         </p>
         <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${shopId}');">
             <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-            <span>分享计划</span>
+            <span>分享赚钱</span>
         </p>
         <p class="active">
             <span><img src="<%=path%>/static/images/footer_x%20(2).png" alt=""></span>

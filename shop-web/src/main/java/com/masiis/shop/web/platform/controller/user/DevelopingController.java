@@ -159,6 +159,12 @@ public class DevelopingController extends BaseController {
             }else{
                 shareLink = curUrl + "&fromUserId="+comUser.getId();
             }
+            if(request.getParameter("from") != null){
+                shareLink += "&from=" + request.getParameter("from");
+            }
+            if(request.getParameter("isappinstalled") != null){
+                shareLink += "&isappinstalled=" + request.getParameter("isappinstalled");
+            }
 
 
             log.info("发展合伙人[comUser="+comUser+"]");

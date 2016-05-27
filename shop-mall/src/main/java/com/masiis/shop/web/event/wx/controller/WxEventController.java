@@ -102,13 +102,13 @@ public class WxEventController extends BaseController {
     }
 
     public static void main(String... args) throws UnsupportedEncodingException {
-        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
-        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
+        //String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+ WxConsSF.APPID+"&secret=" + WxConsSF.APPSECRET;
+        String url1 = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5afa1deb29c6197&secret=d0c6c73cbc769450a554a2623d2c45ea";
         String urlEn = URLEncoder.encode(url1, "UTF-8");
         /*System.out.println(urlEn);
         System.out.println(HttpClientUtils.httpGet(urlEn));*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=wmkhCHk7jrg_vWXovHxCtrOcb5pJ-7siqSIvk0_Uhpgkygdpe9FxlNtTY-GoQJ0M2eZpl5gwu1THUtZ04wQoQTlDjxYJxhkMksEbcZaUOVoGIUbAGAMOA";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=GDEeLsyVgBxKtIhozCHFkVrp_iC6BecT4rd3A_buBGpB99sKWNfRClyzcL0XqNTCM7QkcuBbZst24C9T-7zcizN24tRWZl0cTCSCDPW5lDevjx2NmzgM7qRlmMuaStMzNIAbAHAFAS";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();
@@ -119,7 +119,7 @@ public class WxEventController extends BaseController {
         sub_button1.add(b1);
 
         buttons.add(new Button("关于麦链", sub_button1));
-        buttons.add(new Button("分享赚钱", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
+        buttons.add(new Button("浏览店铺", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/shopview/home.shtml?fm=0"));
         buttons.add(new Button("个人中心", "view", PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/toBorderManagement?fm=0"));
         menu.setButton(buttons);
 

@@ -23,6 +23,7 @@
 
         <!-- mall订单相关job -->
         <task:scheduled ref="sfOrderTask" method="sfBillCountJob" cron="0 30 8 * * ?" />
+        <task:scheduled ref="sfShopTask" method="sfShopBillCountJob" cron="0 40 8 * * ?" />
         <task:scheduled ref="sfOrderTask" method="unPaySfOrderCancelJob" cron="0 0/10 * * * ?" />
         <task:scheduled ref="sfOrderTask" method="orderReceivedConfirmJob" cron="0 0/10 * * * ?" />
 

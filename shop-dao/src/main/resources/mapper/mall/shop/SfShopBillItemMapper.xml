@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.mall.shop.SfShopBillItemMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.SfShopBillItem" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="com_user_id" property="comUserId" jdbcType="BIGINT" />
+        <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+        <result column="sf_shop_bill_id" property="sfShopBillId" jdbcType="BIGINT" />
+        <result column="source_id" property="sourceId" jdbcType="BIGINT" />
+        <result column="item_type" property="itemType" jdbcType="INTEGER" />
+        <result column="source_create_time" property="sourceCreateTime" jdbcType="TIMESTAMP" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="is_count" property="isCount" jdbcType="INTEGER" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from sf_shop_bill_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.masiis.shop.dao.po.SfShopBillItem" useGeneratedKeys="true" keyProperty="id">
+        insert into sf_shop_bill_item (id, create_time, com_user_id, 
+            shop_id, sf_shop_bill_id, source_id, 
+            item_type, source_create_time, amount, 
+            is_count, remark)
+        values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{comUserId,jdbcType=BIGINT}, 
+            #{shopId,jdbcType=BIGINT}, #{sfShopBillId,jdbcType=BIGINT}, #{sourceId,jdbcType=BIGINT}, 
+            #{itemType,jdbcType=INTEGER}, #{sourceCreateTime,jdbcType=TIMESTAMP}, #{amount,jdbcType=DECIMAL}, 
+            #{isCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.masiis.shop.dao.po.SfShopBillItem" >
+        update sf_shop_bill_item
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+            com_user_id = #{comUserId,jdbcType=BIGINT},
+            shop_id = #{shopId,jdbcType=BIGINT},
+            sf_shop_bill_id = #{sfShopBillId,jdbcType=BIGINT},
+            source_id = #{sourceId,jdbcType=BIGINT},
+            item_type = #{itemType,jdbcType=INTEGER},
+            source_create_time = #{sourceCreateTime,jdbcType=TIMESTAMP},
+            amount = #{amount,jdbcType=DECIMAL},
+            is_count = #{isCount,jdbcType=INTEGER},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, com_user_id, shop_id, sf_shop_bill_id, source_id, item_type, 
+        source_create_time, amount, is_count, remark
+        from sf_shop_bill_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, com_user_id, shop_id, sf_shop_bill_id, source_id, item_type, 
+        source_create_time, amount, is_count, remark
+        from sf_shop_bill_item
+    </select>
+
+    <select id="selectByShopIdAndDate" resultMap="BaseResultMap">
+        select id, create_time, com_user_id, shop_id, sf_shop_bill_id, source_id, item_type,
+        source_create_time, amount, is_count, remark
+        from sf_shop_bill_item
+        WHERE shop_id = #{shopId,jdbcType=BIGINT}
+        AND create_time <![CDATA[ >= ]]> #{start,jdbcType=TIMESTAMP}
+        AND create_time <![CDATA[ < ]]> #{end,jdbcType=TIMESTAMP}
+    </select>
+
+</mapper>

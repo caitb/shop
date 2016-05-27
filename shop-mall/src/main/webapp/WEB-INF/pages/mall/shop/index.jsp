@@ -117,6 +117,7 @@
 </div>
 <div class="back"></div>
 <script src="<%=basePath%>static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
+<script type="application/javascript" src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 <script>
     $(".close").on("click",function(){
         $(this).parent().hide();

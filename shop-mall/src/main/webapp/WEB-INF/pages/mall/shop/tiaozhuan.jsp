@@ -18,6 +18,7 @@
     <script src="<%=path%>/static/js/plugins/iscroll.js"></script>
     <script src="<%=path%>/static/js/plugins/jquery/jquery-1.8.3.min.js"></script>
     <script src="<%=path%>/static/js/common/commonAjax.js"></script>
+    <script type="application/javascript" src="<%=path%>/static/js/pageJs/hideWXShare.js"></script>
 </head>
 <body>
    <div class="wrap">

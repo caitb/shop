@@ -134,7 +134,7 @@ public class SfShopController extends BaseController {
             }
 
             /** 获取调用JSSDK所需要的数据 **/
-            Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
+            //Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
             if(fromUserId != null){
                 shareLink = curUrl;
             }else{
@@ -189,13 +189,13 @@ public class SfShopController extends BaseController {
 
             DrawImageUtil.drawImage(520, 710, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
-            resultMap.put("appId", WxConsPF.APPID);
-            resultMap.put("shareTitle", "我是"+comUser.getWxNkName()+",我为朋友代言!");
-            resultMap.put("shareDesc", "这是ta在麦链商城认证的小店,识别二维码进店购买,获取自己的专属海报还可以赚钱");
-            resultMap.put("shareLink", shareLink);
-            resultMap.put("shareImg", comUser.getWxHeadImg());
-
-            mav.addObject("shareMap", resultMap);
+//            resultMap.put("appId", WxConsPF.APPID);
+//            resultMap.put("shareTitle", "我是"+comUser.getWxNkName()+",我为朋友代言!");
+//            resultMap.put("shareDesc", "这是ta在麦链商城认证的小店,识别二维码进店购买,获取自己的专属海报还可以赚钱");
+//            resultMap.put("shareLink", shareLink);
+//            resultMap.put("shareImg", comUser.getWxHeadImg());
+//
+//            mav.addObject("shareMap", resultMap);
             mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
             return mav;

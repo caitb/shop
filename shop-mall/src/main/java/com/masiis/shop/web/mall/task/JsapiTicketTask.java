@@ -23,12 +23,9 @@ public class JsapiTicketTask {
         String jsonResult = null;
 
         try {
-            String accessTocken = SpringRedisUtil.get("mall_jsapi_access_tocken", String.class);
-            if(accessTocken == null){
-                log.info("从redis获取的mall_jsapi_access_tocken=null");
-                accessTocken = WxCredentialUtils.getInstance()
-                        .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
-            }
+            String accessTocken = WxCredentialUtils.getInstance()
+                    .getCredentialAccessToken(WxConsSF.APPID, WxConsSF.APPSECRET);
+
             log.info("[mall_jsapi_access_tocken="+accessTocken+"]");
 
             jsapiTicketUrl = WxConsSF.URL_JSSDK_JSAPI_TICKET

@@ -26,14 +26,14 @@ public class JSSDKService {
      * @return
      */
     public Map<String, String> requestJSSDKData(String curUrl){
-        String jsapi_ticket = SpringRedisUtil.get("jsapi_ticket", String.class);
+        String jsapi_ticket = SpringRedisUtil.get("mall_jsapi_ticket", String.class);
         if(jsapi_ticket == null){
-            log.info("从redis获取的jsapi_ticket=null");
+            log.info("从redis获取的mall_jsapi_ticket=null");
             jsapi_ticket = new JsapiTicketTask().requestTicket();
         }
 
         Map<String, String> shareMap = JSSDKUtil.sign(jsapi_ticket, curUrl);
-        shareMap.put("appId", WxConsPF.APPID);
+        shareMap.put("appId", WxConsSF.APPID);
 
         return shareMap;
     }

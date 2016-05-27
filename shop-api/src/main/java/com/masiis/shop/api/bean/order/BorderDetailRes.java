@@ -2,6 +2,7 @@ package com.masiis.shop.api.bean.order;
 
 import com.masiis.shop.api.bean.base.BasePagingRes;
 import com.masiis.shop.dao.beans.order.BorderDetail;
+import com.masiis.shop.dao.mallBeans.OrderMallDetail;
 import com.masiis.shop.dao.po.ComShipMan;
 import com.masiis.shop.dao.po.PfBorder;
 
@@ -13,12 +14,21 @@ import java.util.List;
  */
 public class BorderDetailRes extends BasePagingRes {
     private BorderDetail borderDetail;
+    private OrderMallDetail orderMallDetail;
     private String stringBuffer;
     private Integer stockNum;
     private List<ComShipMan> comShipMans;
 
     public void setStockNum(Integer stockNum) {
         this.stockNum = stockNum;
+    }
+
+    public void setOrderMallDetail(OrderMallDetail orderMallDetail) {
+        this.orderMallDetail = orderMallDetail;
+    }
+
+    public OrderMallDetail getOrderMallDetail() {
+        return orderMallDetail;
     }
 
     public Integer getStockNum() {return stockNum;}

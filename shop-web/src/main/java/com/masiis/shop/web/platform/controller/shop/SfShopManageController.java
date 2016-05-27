@@ -242,19 +242,21 @@ public class SfShopManageController extends BaseController {
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
             //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
             //font1.deriveFont(Font.PLAIN, 32);
-            Font font1 = new Font("华文细黑", Font.PLAIN, 20);
+            Font font1 = new Font("华文细黑", Font.BOLD, 28);
+            Font font2 = new Font("华文细黑", Font.PLAIN, 20);
             Date curDate = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
             String startTime = sdf.format(curDate);
             curDate.setDate(curDate.getDate()+30);
             String endDate = sdf.format(curDate);
 
-            Element headImgElement = new Element(72, 328, 90, 90, ImageIO.read(new File(posterDirPath+"/"+headImg)));
-            Element bgPosterImgElement = new Element(0, 0, 620, 774, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-            Element qrcodeImgElement = new Element(212, 450, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
-            Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
-            Element text2Element = new Element(240, 648, font1, new Color(51, 51, 51), "该二维码有效期为");
-            Element text3Element = new Element(210, 715, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            Element headImgElement = new Element(34, 52, 90, 90, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+            Element bgPosterImgElement = new Element(0, 0, 520, 710, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+            Element qrcodeImgElement = new Element(150, 184, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            //Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
+            Element text1Element = new Element(134, 82, font1, new Color(247,60,140), "我是"+comUser.getWxNkName());
+            Element text2Element = new Element(34, 640, font2, new Color(102,102,102), "该二维码有效期:");
+            Element text3Element = new Element(34, 695, font2, new Color(102,102,102), startTime+"-"+endDate);
             text3Element.setLineStyle(0);
             java.util.List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);
@@ -264,7 +266,7 @@ public class SfShopManageController extends BaseController {
             drawElements.add(text2Element);
             drawElements.add(text3Element);
 
-            DrawImageUtil.drawImage(620, 774, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            DrawImageUtil.drawImage(520, 710, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "我在麦链商城的小店");

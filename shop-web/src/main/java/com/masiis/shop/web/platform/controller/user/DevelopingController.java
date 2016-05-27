@@ -153,10 +153,10 @@ public class DevelopingController extends BaseController {
             }
 
             if(request.getParameter("from") != null){
-                shareLink += "&from=" + request.getParameter("from");
+                curUrl += "&from=" + request.getParameter("from");
             }
             if(request.getParameter("isappinstalled") != null){
-                shareLink += "&isappinstalled=" + request.getParameter("isappinstalled");
+                curUrl += "&isappinstalled=" + request.getParameter("isappinstalled");
             }
 
             /** 获取调用JSSDK所需要的数据 **/

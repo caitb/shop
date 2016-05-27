@@ -203,10 +203,10 @@ public class DevelopingController extends BaseController {
 
 
             resultMap.put("appId", WxConsPF.APPID);
-            resultMap.put("shareTitle", contents[0]);
+            resultMap.put("shareTitle", "麦链合伙");
             resultMap.put("shareDesc", contents[1]);
             resultMap.put("shareLink", shareLink);
-            resultMap.put("shareImg", comBrand.getLogoUrl());
+            resultMap.put("shareImg", comUser.getWxHeadImg());
 
             //TODO
 

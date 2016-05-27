@@ -68,14 +68,14 @@
 <div id="contactSellerDivId" class="back_l">
     <p>联系卖家</p>
     <p>请联系客服</p>
-    <p>电话:400-961-9616</p>
+    <p>电话:<a href="tel:400-961-961">400-961-9616</a></p>
     <button  onclick="closeContactSeller()">知道了</button>
     <span class="close" onclick="closeContactSeller()">×</span>
 </div>
 <div id="askForInvoiceDivId" class="back_l back_s">
     <p>索要发票</p>
     <p>请联系客服</p>
-    <p>电话:400-961-9616</p>
+    <p>电话:<a href="tel:400-961-961">400-961-9616</a></p>
     <button onclick="closeAskForInvoice()">知道了</button>
     <span onclick="closeAskForInvoice()" class="close">×</span>
 </div>

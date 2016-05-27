@@ -143,6 +143,7 @@ public class DevelopingController extends BaseController {
         try {
             ComUser comUser = null;
             String curUrl = null;
+            String shareLink = null;
             if(fromUserId != null){
                 comUser = comUserMapper.selectByPrimaryKey(fromUserId);
                 curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&fromUserId="+comUser.getId();
@@ -151,9 +152,20 @@ public class DevelopingController extends BaseController {
                 curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
             }
 
+            if(request.getParameter("from") != null){
+                curUrl += "&from=" + request.getParameter("from");
+            }
+            if(request.getParameter("isappinstalled") != null){
+                curUrl += "&isappinstalled=" + request.getParameter("isappinstalled");
+            }
+
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
-
+            if(fromUserId != null){
+                shareLink = curUrl;
+            }else{
+                shareLink = curUrl + "&fromUserId="+comUser.getId();
+            }
 
 
             log.info("发展合伙人[comUser="+comUser+"]");
@@ -162,7 +174,7 @@ public class DevelopingController extends BaseController {
             ComSpu comSpu = comSpuMapper.selectById(comSku.getSpuId());
             ComBrand comBrand = comBrandMapper.selectById(comSpu.getBrandId());
             String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-            String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
+            //String shareLink = basePath + "product/skuDetails.shtml?skuId="+skuId+"&pUserId="+comUser.getId();
 
             PfUserCertificate puc = new PfUserCertificate();
             puc.setUserId(comUser.getId());
@@ -218,7 +230,7 @@ public class DevelopingController extends BaseController {
             resultMap.put("appId", WxConsPF.APPID);
             resultMap.put("shareTitle", "麦链合伙人邀请");
             resultMap.put("shareDesc", contents[0]);
-            resultMap.put("shareLink", curUrl);
+            resultMap.put("shareLink", shareLink);
             resultMap.put("shareImg", comUser.getWxHeadImg());
 
             //TODO

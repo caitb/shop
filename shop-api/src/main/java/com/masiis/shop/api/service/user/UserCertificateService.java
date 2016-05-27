@@ -51,8 +51,8 @@ public class UserCertificateService {
      * @Date 2016/3/17 0017 下午 4:30
      * 个人中心授权书
      */
-    public List<CertificateInfo> CertificateByUser(Integer userId) throws Exception{
-        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId.longValue());
+    public List<CertificateInfo> CertificateByUser(Long userId) throws Exception{
+        List<CertificateInfo> certificateInfoList = certificateMapper.getCertificatesByUser(userId);
         if (certificateInfoList != null) {
             String ctValue = PropertiesUtils.getStringValue("product_icon_url");
             for (CertificateInfo certificateInfo : certificateInfoList) {

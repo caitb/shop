@@ -27,14 +27,15 @@ function hideWXShare(config){
         ]
     });
 
-    wx.hideOptionMenu();
+    wx.ready(function() {
+        wx.hideOptionMenu();
+    });
 }
 
 $(function(){
     $.ajax({
         url: '/hideWXShare',
         data: {hideUrl: window.location.href},
-        async: false,
         success: function(config){
             hideWXShare(config);
         }

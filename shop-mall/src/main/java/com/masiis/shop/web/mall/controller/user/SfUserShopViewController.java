@@ -41,7 +41,7 @@ public class SfUserShopViewController extends BaseController {
      * @author:wbj
      */
     @RequestMapping(value = "/home.shtml")
-    public ModelAndView viewedShop(HttpServletRequest request) throws Exception{
+    public ModelAndView viewedShop(HttpServletRequest request,Integer fm) throws Exception{
 
         logger.info("用户查看浏览过的店铺");
         ComUser user = getComUser(request);
@@ -74,6 +74,7 @@ public class SfUserShopViewController extends BaseController {
         mv.addObject("totalPage",totalPage);
         mv.addObject("currentPage",1);
         mv.addObject("sfUserShopViews",sfUserShopViews);
+        mv.addObject("fm",fm);
         mv.setViewName("mall/shop/viewedShop");
         return mv;
     }

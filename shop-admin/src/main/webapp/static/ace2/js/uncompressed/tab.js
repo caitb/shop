@@ -32,6 +32,7 @@ jQuery.fn.extend({
                                 '<i class="green ace-icon fa fa-home bigger-120"></i>' +
                                  title                                                 +
                              '</a>'                                                    +
+                            '<span></span>'
                           '</li>';
 
         var tabContent =  '<div class="tab-pane fade active in" id="' + key + '" key="' + key + '">' +

@@ -163,6 +163,9 @@ public class DevelopingController extends BaseController {
                     String headImgPath = request.getServletContext().getRealPath("/")+"static" + File.separator + "images" + File.separator + "poster";
                     String qrcodeName = "qrcode"+pfUserCertificate.getPfUserSkuId()+".png";
                     String qrcodePath = request.getServletContext().getRealPath("/")+"static";
+
+                    //删除本地头像
+                    new File(headImgPath+"/"+headImgName).delete();
                     //下载用户微信头像
                     if(comUser.getWxHeadImg() != null){
                         String headImgHttpUrl = comUser.getWxHeadImg();
@@ -174,6 +177,8 @@ public class DevelopingController extends BaseController {
                     //生成二维码
                     log.info("发展合伙人[headImgPath="+headImgPath+"]");
                     //QRCodeUtil.createLogoQrCode(220 ,shareLink, headImgPath, qrcodePath, true);
+                    //删除本地二维码图片
+                    new File(qrcodePath+"/"+qrcodeName).delete();
                     DownloadImage.download(weiXinQRCodeService.createAgentQRCode(pfUserCertificate.getPfUserSkuId()), qrcodeName, qrcodePath);
                     qrcodePath += File.separator+qrcodeName;
                     //生成海报并上传到OSS
@@ -187,10 +192,8 @@ public class DevelopingController extends BaseController {
                     }else if(comSkuExtension.getPoster() != null && "mss.png".equals(comSkuExtension.getPoster())){
                         drawPost2(posterBGImgPath, qrcodePath, headImgPath, pfUserCertificate.getCode()+".png", contents);
                     }
-                    //删除本地二维码图片
-                    new File(qrcodePath).delete();
-                    //删除本地头像
-                    new File(headImgPath).delete();
+
+
                     //保存二维码海报图片地址
                     pfUserCertificate.setPoster(PropertiesUtils.getStringValue("index_user_poster_url")+pfUserCertificate.getCode()+".png");
                     pfUserCertificateMapper.updateById(pfUserCertificate);

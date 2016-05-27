@@ -22,6 +22,11 @@
     </header>
     <div class="wrap" >
         <div id="viewedShop">
+            <c:if test="${sfUserShopViews == null || fn:length(sfUserShopViews) == 0}">
+                <div>
+                    <span>您还没有浏览过别人的店铺~</span>
+                </div>
+            </c:if>
             <c:forEach var="userShopView" items="${sfUserShopViews}">
                 <section class="sec1">
                     <p class="photo">

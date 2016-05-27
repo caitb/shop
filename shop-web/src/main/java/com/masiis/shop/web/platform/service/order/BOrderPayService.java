@@ -260,13 +260,11 @@ public class BOrderPayService {
                 pfUserCertificate.setIdCard(comUser.getIdCard());
                 pfUserCertificate.setMobile(comUser.getMobile());
                 pfUserCertificate.setWxId(pfBorderItem.getWxId());
-                pfUserCertificate.setBeginTime(new Date());
                 Calendar calendar = Calendar.getInstance();
-                Date date = new Date(System.currentTimeMillis());
-                calendar.setTime(date);
-                calendar.add(Calendar.YEAR, 2);
-                date = calendar.getTime();
-                pfUserCertificate.setEndTime(date);
+                pfUserCertificate.setBeginTime(calendar.getTime());
+                calendar.set(Calendar.MONTH, 11);
+                calendar.set(Calendar.DAY_OF_MONTH, 31);
+                pfUserCertificate.setEndTime(calendar.getTime());
                 pfUserCertificate.setAgentLevelId(pfBorderItem.getAgentLevelId());
                 pfUserCertificate.setStatus(1);
                 pfUserCertificate.setRemark("");
@@ -284,7 +282,7 @@ public class BOrderPayService {
                 pfUserCertificate.setCode(code);
                 ComAgentLevel comAgentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
                 ComSku comSku = skuService.getSkuById(pfBorderItem.getSkuId());
-                String newIdCard = "****" + comUser.getIdCard().substring(4, comUser.getIdCard().length() - 4) + "****";
+                String newIdCard = comUser.getIdCard().substring(0, 4) + "**********" + comUser.getIdCard().substring(comUser.getIdCard().length() - 4, comUser.getIdCard().length());
                 String picName = uploadFile(rootPath + "/static/images/certificate/" + comAgentLevel.getImgUrl(),//filePath - 原图的物理路径
                         rootPath + "/static/font/",//字体路径
                         pfUserCertificate.getCode(),//certificateCode - 证书编号

@@ -122,27 +122,34 @@ public class SfShopController extends BaseController {
             if(!posterDir.exists()){
                 posterDir.mkdirs();
             }
+
+            //先删除旧的图片,再下载新的图片
+            new File(posterDirPath+"/"+headImg).delete();
+            new File(posterDirPath+"/"+bgPoster).delete();
+            new File(posterDirPath+"/"+qrcodeName).delete();
             DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
-            OSSObjectUtils.downloadFile("static/user/background_poster/bg-shop.png", posterDirPath+"/"+bgPoster);
+            OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);
 
             //画图
             String fontPath = request.getServletContext().getRealPath("/")+"static/font";
             //Font font1 = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath+"/msyh.ttc"));
             //font1.deriveFont(Font.PLAIN, 32);
             Font font1 = new Font("华文细黑", Font.PLAIN, 20);
+            Font font2 = new Font("华文细黑", Font.PLAIN, 28);
             Date curDate = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
             String startTime = sdf.format(curDate);
             curDate.setDate(curDate.getDate()+30);
             String endDate = sdf.format(curDate);
 
-            Element headImgElement = new Element(72, 328, 90, 90, ImageIO.read(new File(posterDirPath+"/"+headImg)));
-            Element bgPosterImgElement = new Element(0, 0, 620, 774, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
-            Element qrcodeImgElement = new Element(212, 450, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
-            Element text1Element = new Element(186, 304,   font1, new Color(51, 51, 51), "我是"+comUser.getWxNkName()+",正品特供,好友专享价,尽在我的麦链小店,不是好友看不到哦。长按二维码识别进入麦链小店。");
-            Element text2Element = new Element(240, 648, font1, new Color(51, 51, 51), "该二维码有效期为");
-            Element text3Element = new Element(210, 715, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            Element headImgElement = new Element(195, 100, 130, 130, ImageIO.read(new File(posterDirPath+"/"+headImg)));
+            Element bgPosterImgElement = new Element(0, 0, 520, 710, ImageIO.read(new File(posterDirPath+"/"+bgPoster)));
+            Element qrcodeImgElement = new Element(160, 338, 220, 200, ImageIO.read(new File(posterDirPath+"/"+qrcodeName)));
+            Element text1Element = new Element((520-("我是"+comUser.getWxNkName()).length()*font2.getSize())/2, 280,   font2, new Color(247, 60, 140), "我是"+comUser.getWxNkName());
+            Element text2Element = new Element(190, 530, font1, new Color(51, 51, 51), "该二维码有效期为");
+            Element text3Element = new Element(165, 585, font1, new Color(51, 51, 51), startTime+"-"+endDate);
+            text1Element.setLineStyle(0);
             text3Element.setLineStyle(0);
             java.util.List<Element> drawElements = new ArrayList<>();
             drawElements.add(headImgElement);
@@ -152,9 +159,9 @@ public class SfShopController extends BaseController {
             drawElements.add(text2Element);
             drawElements.add(text3Element);
 
-            DrawImageUtil.drawImage(620, 774, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            DrawImageUtil.drawImage(520, 710, drawElements, "static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
-            mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
             return mav;
         } catch (Exception e) {

@@ -11,6 +11,15 @@ public class OrderListPagingReq extends BasePagingReq {
     private Integer orderStatus;
     private Integer index;
     private Integer sendType;
+    private Long shopId;
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
 
     public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;

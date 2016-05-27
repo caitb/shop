@@ -215,13 +215,13 @@
             $(".back_f").hide()
         })
 
-        var config = window.eval('('+shareMap+')');
+        //var config = window.eval('('+shareMap+')');
         wx.config({
             debug: false,
-            appId: config.appId,
-            timestamp: config.timestamp,
-            nonceStr: config.nonceStr,
-            signature: config.signature,
+            appId: '${shareMap.appId}',
+            timestamp: '${shareMap.timestamp}',
+            nonceStr: '${shareMap.nonceStr}',
+            signature: '${shareMap.signature}',
             jsApiList: [
                 'checkJsApi',
                 'onMenuShareTimeline',

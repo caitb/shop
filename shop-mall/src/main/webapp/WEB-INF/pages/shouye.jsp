@@ -37,7 +37,7 @@
     <div class="header">
         <div>
             <p>${sfShop.name}</p>
-            <p>${sfShop.explanation}</p>
+            <p>${sfShop.explanation}　</p>
             <%--<img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">--%>
         </div>
         <div>
@@ -91,7 +91,7 @@
             </p>
             <p onclick="javascript:window.location.replace('<%=basePath%>shop/sharePlan?shopId=${sfShop.id}');">
                 <span><img src="<%=path%>/static/images/footer%20(1).png" alt=""></span>
-                <span>分享计划</span>
+                <span>分享赚钱</span>
             </p>
             <p onclick="javascript:window.location.replace('<%=path%>/sfOrderManagerController/toBorderManagement?fm=1');">
                 <span><img src="<%=path%>/static/images/footer%20(2).png" alt=""></span>
@@ -103,20 +103,20 @@
 <div id="ok" class="back_f" style="display: none">
     <h1>呐喊成功！</h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>获取您的专属海报，分享到朋友圈或微信好友。通过您分享的海报产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span  id="okCloss">×</span>
 </div>
 <div id="no" class="back_f" style="display: none">
     <h1>您已呐喊过，请明天再来 </h1>
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>获取您的专属海报，分享到朋友圈或微信好友。通过您分享的海报产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close" >×</span>
 </div>
 <div id="fen" class="back_f" style="display: none">
     <img src="<%=path%>/static/images/qwe%20(1).png" alt="">
-    <p>分享店铺到朋友圈，为您的朋友呐喊，通过您分享的链接产生购买后，您将获得佣金</p>
+    <p>获取您的专属海报，分享到朋友圈或微信好友。通过您分享的海报产生购买后，您将获得佣金</p>
     <button onclick="javascript:window.location.replace('<%=basePath%>shop/getPoster?shopId=${sfShop.id}');">获取我的专属海报</button>
     <span class="close">×</span>
 </div>

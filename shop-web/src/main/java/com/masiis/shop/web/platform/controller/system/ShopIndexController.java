@@ -104,7 +104,7 @@ public class ShopIndexController extends BaseController {
 
         String curUrl = req.getRequestURL().toString();
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
-        modelAndView.addObject("shareMap", new ObjectMapper().writeValueAsString(shareMap));
+        modelAndView.addObject("shareMap", shareMap);
 
         return modelAndView;
     }

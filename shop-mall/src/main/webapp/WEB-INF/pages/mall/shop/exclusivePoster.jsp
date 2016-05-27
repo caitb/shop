@@ -17,7 +17,7 @@
         .wrap{
             background: #fff;
         }
-        .wrap img{
+        .wrap>img{
             display: block;
             width: 90%;
             margin: 1em auto 0 auto;
@@ -124,8 +124,7 @@
     <%--<canvas id="canvasOne" style="display: none;">--%>
         <%--Your browser does not support HTML5 Canvas.--%>
     <%--</canvas>--%>
-        <img src="${path}/static/images/img_1.png" alt="">
-        <img src="${shopPoster}" alt="获取海报失败,刷新试试吧" style="width: 80%"/>
+        <img src="${shopPoster}" alt="获取海报失败,刷新试试吧"/>
         <b id="downloadPoster2">长按图片保存到手机</b>
 </div>
 <div class="back_box">

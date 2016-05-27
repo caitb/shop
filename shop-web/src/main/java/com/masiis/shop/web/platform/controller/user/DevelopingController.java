@@ -19,6 +19,7 @@ import com.masiis.shop.web.platform.utils.DownloadImage;
 import com.masiis.shop.web.platform.utils.qrcode.QRCodeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -132,17 +133,27 @@ public class DevelopingController extends BaseController {
     }
 
     @RequestMapping("/sharelink")
-    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response, Integer skuId){
+    public ModelAndView shareLink(HttpServletRequest request, HttpServletResponse response,
+                                  Integer skuId,
+                                  @RequestParam(value = "fromUserId", required = false)Long fromUserId
+    ){
 
         ModelAndView mav = new ModelAndView("platform/user/sharePage");
 
         try {
-            String curUrl = request.getRequestURL().toString()+"?skuId="+skuId;
+            ComUser comUser = null;
+            if(fromUserId != null){
+                comUser = comUserMapper.selectByPrimaryKey(fromUserId);
+            }else{
+                comUser = getComUser(request);
+            }
 
+            String curUrl = request.getRequestURL().toString()+"?skuId="+skuId+"&fromUserId="+comUser.getId();
             /** 获取调用JSSDK所需要的数据 **/
             Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
 
-            ComUser comUser = getComUser(request);
+
+
             log.info("发展合伙人[comUser="+comUser+"]");
             ComSku comSku = comSkuMapper.selectById(skuId);
             ComSkuExtension comSkuExtension = skuService.findSkuExteBySkuId(skuId);
@@ -203,9 +214,9 @@ public class DevelopingController extends BaseController {
 
 
             resultMap.put("appId", WxConsPF.APPID);
-            resultMap.put("shareTitle", "麦链合伙");
-            resultMap.put("shareDesc", contents[1]);
-            resultMap.put("shareLink", shareLink);
+            resultMap.put("shareTitle", "麦链合伙人邀请");
+            resultMap.put("shareDesc", contents[0]);
+            resultMap.put("shareLink", curUrl);
             resultMap.put("shareImg", comUser.getWxHeadImg());
 
             //TODO

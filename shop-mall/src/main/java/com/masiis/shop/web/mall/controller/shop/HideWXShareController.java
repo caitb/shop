@@ -36,7 +36,9 @@ public class HideWXShareController {
     public Map<String, String> hideWXShare(HttpServletRequest request, HttpServletResponse response, String hideUrl){
 
         try {
+            log.info("--开始获取隐藏分享功能的数据");
             Map<String, String> shareMap = jssdkService.requestJSSDKData(hideUrl);
+            log.info("--隐藏分享功能的数据[shareMap="+shareMap+"]");
 
             return shareMap;
         } catch (Exception e) {

@@ -37,6 +37,7 @@ $(function(){
     $.ajax({
         url: '/hideWXShare',
         data: {hideUrl: window.location.href},
+        ansync: false,
         success: function(config){
             hideWXShare(config);
         }

@@ -1,5 +1,7 @@
 package com.masiis.shop.web.platform.controller.system;
 
+import com.alibaba.druid.support.logging.Log;
+import com.alibaba.druid.support.logging.LogFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -31,6 +33,8 @@ import java.util.Map;
 @Controller
 //@RequestMapping("/index")
 public class ShopIndexController extends BaseController {
+
+    private final static Log log = LogFactory.getLog(ShopIndexController.class);
 
     @Resource
     private IndexShowService indexShowService;
@@ -103,8 +107,9 @@ public class ShopIndexController extends BaseController {
 
 
         String curUrl = req.getRequestURL().toString();
+        log.info("===========================B-index[curUrl="+curUrl+"]");
         Map<String, String> shareMap = jssdkService.requestJSSDKData(curUrl);
-        modelAndView.addObject("shareMap", new ObjectMapper().writeValueAsString(shareMap));
+        modelAndView.addObject("shareMap", shareMap);
 
         return modelAndView;
     }

@@ -216,21 +216,25 @@
         })
 
         //var config = window.eval('('+shareMap+')');
-        wx.config({
-            debug: false,
-            appId: '${shareMap.appId}',
-            timestamp: '${shareMap.timestamp}',
-            nonceStr: '${shareMap.nonceStr}',
-            signature: '${shareMap.signature}',
-            jsApiList: [
-                'checkJsApi',
-                'onMenuShareTimeline',
-                'onMenuShareAppMessage',
-                'onMenuShareQQ',
-                'onMenuShareWeibo',
-                'onMenuShareQZone',
-                'hideOptionMenu',
-            ]
+        $(function(){
+            wx.ready(function(){
+                wx.config({
+                    debug: false,
+                    appId: '${shareMap.appId}',
+                    timestamp: '${shareMap.timestamp}',
+                    nonceStr: '${shareMap.nonceStr}',
+                    signature: '${shareMap.signature}',
+                    jsApiList: [
+                        'checkJsApi',
+//                        'onMenuShareTimeline',
+//                        'onMenuShareAppMessage',
+//                        'onMenuShareQQ',
+//                        'onMenuShareWeibo',
+//                        'onMenuShareQZone',
+                        'hideOptionMenu',
+                    ]
+                });
+            });
         });
     </script>
 </body>

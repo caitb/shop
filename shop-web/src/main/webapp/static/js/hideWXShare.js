@@ -24,10 +24,13 @@ function hideWXShare(config){
             'onMenuShareWeibo',
             'onMenuShareQZone',
             'hideOptionMenu',
+            'hideAllNonBaseMenuItem',
         ]
     });
 
-    wx.hideOptionMenu();
+    wx.ready(function() {
+        wx.hideAllNonBaseMenuItem();
+    });
 }
 
 $(function(){

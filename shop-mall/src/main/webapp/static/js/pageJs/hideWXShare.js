@@ -24,11 +24,12 @@ function hideWXShare(config){
             'onMenuShareWeibo',
             'onMenuShareQZone',
             'hideOptionMenu',
+            'hideAllNonBaseMenuItem',
         ]
     });
 
     wx.ready(function() {
-        wx.hideOptionMenu();
+        wx.hideAllNonBaseMenuItem();
     });
 }
 
@@ -36,6 +37,7 @@ $(function(){
     $.ajax({
         url: '/hideWXShare',
         data: {hideUrl: window.location.href},
+        async: false,
         success: function(config){
             hideWXShare(config);
         }

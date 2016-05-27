@@ -1,5 +1,6 @@
 package com.masiis.shop.web.platform.controller.shop;
 
+import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
@@ -24,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -186,12 +188,38 @@ public class SfShopManageController extends BaseController {
      * @return
      */
     @RequestMapping("/getPoster")
-    public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response, Long shopId){
+    public ModelAndView getPoster(HttpServletRequest request, HttpServletResponse response,
+                                  Long shopId,
+                                  @RequestParam(value = "fromUserId", required = false)Long fromUserId
+    ){
         ModelAndView mav = new ModelAndView("platform/shop/exclusivePoster");
 
         try {
-            ComUser comUser = getComUser(request);
-            comUser = comUserMapper.selectByPrimaryKey(comUser.getId());
+            ComUser comUser = null;
+            String curUrl = null;
+            String shareLink = null;
+            if(fromUserId != null){
+                comUser = comUserMapper.selectByPrimaryKey(fromUserId);
+                curUrl = request.getRequestURL().toString()+"?shopId="+shopId+"&fromUserId="+comUser.getId();
+            }else{
+                comUser = getComUser(request);
+                curUrl = request.getRequestURL().toString()+"?shopId="+shopId;
+            }
+
+            if(request.getParameter("from") != null){
+                curUrl += "&from=" + request.getParameter("from");
+            }
+            if(request.getParameter("isappinstalled") != null){
+                curUrl += "&isappinstalled=" + request.getParameter("isappinstalled");
+            }
+
+            /** 获取调用JSSDK所需要的数据 **/
+            Map<String, String> resultMap = jssdkService.requestJSSDKData(curUrl);
+            if(fromUserId != null){
+                shareLink = curUrl;
+            }else{
+                shareLink = curUrl + "&fromUserId="+comUser.getId();
+            }
 
 
             String headImg = "h-"+comUser.getId()+".png";
@@ -238,6 +266,13 @@ public class SfShopManageController extends BaseController {
 
             DrawImageUtil.drawImage(620, 774, drawElements, "static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
+            resultMap.put("appId", WxConsPF.APPID);
+            resultMap.put("shareTitle", "我在麦链商城的小店");
+            resultMap.put("shareDesc", "我是"+comUser.getWxNkName()+",邀请您来我的店铺逛逛~");
+            resultMap.put("shareLink", shareLink);
+            resultMap.put("shareImg", comUser.getWxHeadImg());
+
+            mav.addObject("shareMap", resultMap);
             mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
             return mav;

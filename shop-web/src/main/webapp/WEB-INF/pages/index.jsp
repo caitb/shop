@@ -226,11 +226,11 @@
                     signature: '${shareMap.signature}',
                     jsApiList: [
                         'checkJsApi',
-                        'onMenuShareTimeline',
-                        'onMenuShareAppMessage',
-                        'onMenuShareQQ',
-                        'onMenuShareWeibo',
-                        'onMenuShareQZone',
+//                        'onMenuShareTimeline',
+//                        'onMenuShareAppMessage',
+//                        'onMenuShareQQ',
+//                        'onMenuShareWeibo',
+//                        'onMenuShareQZone',
                         'hideOptionMenu',
                     ]
                 });

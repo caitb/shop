@@ -1,7 +1,9 @@
 package com.masiis.shop.api.bean.order;
 
 import com.masiis.shop.api.bean.base.BasePagingRes;
+import com.masiis.shop.dao.po.ComShipMan;
 import com.masiis.shop.dao.po.PfBorder;
+import com.masiis.shop.dao.po.SfOrder;
 
 import java.util.List;
 
@@ -17,8 +19,35 @@ public class OrderListPagingRes extends BasePagingRes {
     private Integer isMPS;
     private Integer mpsNum;
     private String index;
+    private Integer sfOrderSize;
     private List<PfBorder> pfBorders;
+    private List<SfOrder> sfOrders;
+    private List<ComShipMan> comShipMans;
     private List<OrderDetail> oList;
+
+    public void setSfOrders(List<SfOrder> sfOrders) {
+        this.sfOrders = sfOrders;
+    }
+
+    public List<SfOrder> getSfOrders() {
+        return sfOrders;
+    }
+
+    public void setSfOrderSize(Integer sfOrderSize) {
+        this.sfOrderSize = sfOrderSize;
+    }
+
+    public Integer getSfOrderSize() {
+        return sfOrderSize;
+    }
+
+    public void setComShipMans(List<ComShipMan> comShipMans) {
+        this.comShipMans = comShipMans;
+    }
+
+    public List<ComShipMan> getComShipMans() {
+        return comShipMans;
+    }
 
     public void setIndex(String index) {
         this.index = index;

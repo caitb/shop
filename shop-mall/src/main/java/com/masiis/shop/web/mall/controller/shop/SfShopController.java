@@ -122,6 +122,11 @@ public class SfShopController extends BaseController {
             if(!posterDir.exists()){
                 posterDir.mkdirs();
             }
+
+            //先删除旧的图片,再下载新的图片
+            new File(posterDirPath+"/"+headImg).delete();
+            new File(posterDirPath+"/"+bgPoster).delete();
+            new File(posterDirPath+"/"+qrcodeName).delete();
             DownloadImage.download(comUser.getWxHeadImg(), headImg, posterDirPath);
             DownloadImage.download(weiXinQRCodeService.createShopOrSkuQRCode(comUser.getId(), shopId, null), qrcodeName, posterDirPath);
             OSSObjectUtils.downloadFile("static/user/background_poster/exclusive.png", posterDirPath+"/"+bgPoster);

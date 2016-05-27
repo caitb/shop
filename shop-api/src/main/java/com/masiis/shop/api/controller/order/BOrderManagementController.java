@@ -409,10 +409,12 @@ public class BOrderManagementController extends BaseController {
             res.setIndex(index);
             res.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             res.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
-        }catch(Exception e){
-            e.printStackTrace();
-            res.setResCode(SysResCodeCons.RES_CODE_NOT_KNOWN);
-            res.setResMsg(e.getMessage());
+        }catch(Exception ex){
+            if (StringUtils.isNotBlank(ex.getMessage())) {
+                res.setResMsg(ex.getMessage());
+            } else {
+                res.setResMsg("分页查询出货订单");
+            }
         }
         return res;
     }
@@ -463,7 +465,7 @@ public class BOrderManagementController extends BaseController {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 res.setResMsg(ex.getMessage());
             } else {
-                res.setResMsg("网络错误");
+                res.setResMsg("异步查询出货订单");
             }
         }
         return res;

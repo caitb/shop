@@ -9200,7 +9200,15 @@ input[type=checkbox].ace.ace-switch.ace-switch-5:checked + .lbl::before {
   top: 1px;
 }
 .nav-tabs > li > a {
-  padding: 7px 12px 8px;
+  padding:7px 60px 8px 8px;
+}
+.nav-tabs > li > a+i {
+  position:absolute;
+  right:5px;
+  top: 9px;
+  font-size: 15px;
+  z-index: 2;
+  cursor: pointer;
 }
 .nav-tabs > li > a,
 .nav-tabs > li > a:focus {

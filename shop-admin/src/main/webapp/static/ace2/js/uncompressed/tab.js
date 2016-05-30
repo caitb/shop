@@ -16,15 +16,14 @@ jQuery.fn.extend({
         this.tabContentParent().children().removeClass('active in');
 
         //如果已存在key选项卡,则直接显示
-        for(var k in this.keys){
-            if(key == this.keys[k]){
-
-                this.tabParent().children('[key='+key+']').addClass('active');
-                this.tabContentParent().children('[key='+key+']').addClass('active in');
-
-                return;
-            }
-        }
+        //for(var k in this.keys){
+        //    if(key == this.keys[k]){
+        //
+        //        this.tabParent().children('[key='+key+']').addClass('active');
+        //        this.tabContentParent().children('[key='+key+']').addClass('active in');
+        //        return;
+        //    }
+        //}
 
         //如果不存在选项卡,则添加
         var tab =         '<li class="active" key="' + key + '">'                      +
@@ -32,6 +31,7 @@ jQuery.fn.extend({
                                 '<i class="green ace-icon fa fa-home bigger-120"></i>' +
                                  title                                                 +
                              '</a>'                                                    +
+                            '<i class="red ace-icon fa fa-times end"></i>'
                           '</li>';
 
         var tabContent =  '<div class="tab-pane fade active in" id="' + key + '" key="' + key + '">' +

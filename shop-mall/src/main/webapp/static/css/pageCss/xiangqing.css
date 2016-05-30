@@ -420,6 +420,7 @@ footer .sec3 p a {
     float: left;
     width: 40px;
     text-align: center;
+    border-radius: 1px;
 }
 .shoping button{
     display: block;
@@ -433,6 +434,8 @@ footer .sec3 p a {
     display: -webkit-box;
     padding: 5px 10px;
     background: #F7E911;
+
+
     position: relative;
     box-shadow: 0px 4px 6px -4px rgba(0,0,0,0.5);
 }

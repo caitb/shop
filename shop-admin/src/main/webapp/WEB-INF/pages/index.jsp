@@ -672,7 +672,15 @@
             if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
             return 'left';
         }
-
+//        close tap卡
+        $(document).on('click', '.end' , function(){
+            var i=$(this).parent().index();
+            $(this).parent().remove();
+            $("div.tab-pane").eq(i).remove();
+            /*alert(i);*/
+            $(".nav-tabs li:last-child").addClass("active").siblings().removeClass("active");;
+            $(".tab-pane:last-child").addClass("active in").siblings().removeClass("active in");;
+        });
     })
 </script>
 

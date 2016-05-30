@@ -12,7 +12,9 @@
         <result column="shout_num" property="shoutNum" jdbcType="BIGINT" />
         <result column="pageviews" property="pageviews" jdbcType="BIGINT" />
         <result column="sale_amount" property="saleAmount" jdbcType="DECIMAL" />
+        <result column="ship_type" property="shipType" jdbcType="INTEGER" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="agent_ship_amount" property="agentShipAmount" jdbcType="DECIMAL" />
         <result column="qr_code" property="qrCode" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="version" property="version" jdbcType="BIGINT" />
@@ -35,7 +37,9 @@
                     shout_num,
                     pageviews,
                     sale_amount,
+                    ship_type,
                     ship_amount,
+                    agent_ship_amount,
                     qr_code,
                     remark,
                     version
@@ -51,7 +55,9 @@
                     #{shoutNum,jdbcType=BIGINT},
                     #{pageviews,jdbcType=BIGINT},
                     #{saleAmount,jdbcType=DECIMAL},
+                    #{shipType,jdbcType=INTEGER},
                     #{shipAmount,jdbcType=DECIMAL},
+                    #{agentShipAmount,jdbcType=DECIMAL},
                     #{qrCode,jdbcType=VARCHAR},
                     #{remark,jdbcType=VARCHAR},
                     #{version,jdbcType=BIGINT}
@@ -88,8 +94,14 @@
             <if test="saleAmount != null" >
                 sale_amount = #{saleAmount,jdbcType=DECIMAL},
             </if>
+            <if test="shipType != null" >
+                ship_type = #{shipType,jdbcType=INTEGER},
+            </if>
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="agentShipAmount != null" >
+                agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},
             </if>
             <if test="qrCode != null" >
                 qr_code = #{qrCode,jdbcType=VARCHAR},
@@ -116,7 +128,9 @@
                shout_num,
                pageviews,
                sale_amount,
+               ship_type,
                ship_amount,
+               agent_ship_amount,
                qr_code,
                remark,
                version
@@ -138,7 +152,9 @@
                shout_num,
                pageviews,
                sale_amount,
+               ship_type,
                 ship_amount,
+                agent_ship_amount,
                qr_code,
                remark,
                version
@@ -158,7 +174,9 @@
         shout_num,
         pageviews,
         sale_amount,
+        ship_type,
         ship_amount,
+        agent_ship_amount,
         qr_code,
         remark,
         version
@@ -179,7 +197,9 @@
         shout_num,
         pageviews,
         sale_amount,
+        ship_type,
         ship_amount,
+        agent_ship_amount,
         qr_code,
         remark,
         version
@@ -201,7 +221,9 @@
                 shout_num,
                 pageviews,
                 sale_amount,
+                ship_type,
                 ship_amount,
+                agent_ship_amount,
                 qr_code,
                 remark,
                 version
@@ -250,8 +272,14 @@
             <if test="saleAmount != null" >
                 sale_amount = #{saleAmount,jdbcType=DECIMAL},
             </if>
+            <if test="shipType != null" >
+                ship_type = #{shipType,jdbcType=INTEGER},
+            </if>
             <if test="shipAmount != null" >
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="agentShipAmount != null" >
+                agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},
             </if>
             <if test="qrCode != null" >
                 qr_code = #{qrCode,jdbcType=VARCHAR},

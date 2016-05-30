@@ -396,7 +396,7 @@ public class WxPFNoticeUtils {
         order.setKeyword3(new WxNoticeDataItem(params[2], null));
         order.setKeyword4(new WxNoticeDataItem("补货", null));
         order.setKeyword5(new WxNoticeDataItem(params[3], null));
-        order.setRemark(new WxNoticeDataItem("您的补货订单支付成功，我们将尽快发货请耐心等待收获。", null));
+        order.setRemark(new WxNoticeDataItem("您的补货订单支付成功，我们将尽快发货请耐心等待收货。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id
@@ -474,7 +474,7 @@ public class WxPFNoticeUtils {
         order.setKeyword3(new WxNoticeDataItem(params[2], null));
         order.setKeyword4(new WxNoticeDataItem(params[3], null));
         order.setKeyword5(new WxNoticeDataItem(params[4], null));
-        order.setRemark(new WxNoticeDataItem("您的排单订单已发货，请耐心等待收获。", null));
+        order.setRemark(new WxNoticeDataItem("您的排单订单已发货，请耐心等待收货。", null));
 
         req.setTouser(getOpenIdByComUser(user));
         // 调用新订单提醒模板id

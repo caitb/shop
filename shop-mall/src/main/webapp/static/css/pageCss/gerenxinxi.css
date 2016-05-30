@@ -54,12 +54,12 @@ body .back_j {
 }
 body .back_j .biao {
   margin: 0 5px;
-  border-bottom: 1px solid #F74A11;
+  border-bottom: 1px solid #f73c8c;
   text-indent: 10px;
   line-height: 50px;
   font-weight: 600;
   margin-bottom: 5px;
-  color: #FF5200;
+  color: #f73c8c;
   letter-spacing: 1px;
 }
 body .back_j div {
@@ -105,7 +105,7 @@ body .back_j .d p button {
   display: block;
   padding: 5px 10px;
   border-radius: 5px;
-  background: #F74A11;
+  background: #f73c8c;
   color: white;
   float: right;
   margin-top: 8px;
@@ -121,7 +121,7 @@ body .back_j .j_qu {
   width: 100px;
   height: 30px;
   line-height: 30px;
-  background: #ff5200;
+  background: #f73c8c;
   margin: 40px auto 20px auto;
   text-align: center;
   border-radius: 5px;

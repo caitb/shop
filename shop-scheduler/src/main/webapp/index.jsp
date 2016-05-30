@@ -4,6 +4,7 @@
 <%@ page import="com.masiis.shop.scheduler.utils.ApplicationContextUtil" %>
 <%@ page import="com.masiis.shop.scheduler.task.platform.PfOrderTask" %>
 <%@ page import="com.masiis.shop.scheduler.task.mall.SfOrderTask" %>
+<%@ page import="com.masiis.shop.scheduler.task.mall.SfShopTask" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -27,6 +28,9 @@
     } else if(type.equals("offline")){
         PfOrderTask pfOrderTask = (PfOrderTask) ac.getBean("pfOrderTask");
         pfOrderTask.offlineBorderCancelJob();
+    } else if(type.equals("sfshop")){
+        SfShopTask pfOrderTask = (SfShopTask) ac.getBean("sfShopTask");
+        pfOrderTask.sfShopBillCountJob();
     }
 %>
 </body>

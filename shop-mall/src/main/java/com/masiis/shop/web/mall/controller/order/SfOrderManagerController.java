@@ -132,7 +132,7 @@ public class SfOrderManagerController extends BaseController {
 //            SfShop shop = sfShopService.getSfShopById(shopId);
 //            request.getSession().setAttribute("shipAmount", shop.getShipAmount());
 //        }
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, shopId);
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null);
         String index=null;
         if(orderStatus==null){
             index="0";//全部
@@ -179,15 +179,15 @@ public class SfOrderManagerController extends BaseController {
             }
             Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
             }else if(index==1){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, shopId);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 0, null);
             }else if(index==2){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, shopId);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 7, null);
             }else if(index==3){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, shopId);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 8, null);
             }else if(index==4){
-                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, shopId);
+                sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), 3, null);
             }
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
@@ -230,7 +230,7 @@ public class SfOrderManagerController extends BaseController {
         }*/
         ComUser userPid = userService.getUserById(sfUserRelation == null ? null : sfUserRelation.getUserPid());
         Long shopId =(Long) request.getSession().getAttribute("shopId");
-        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, shopId);
+        List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
         List<SfOrder> sfOrders0 = new ArrayList<>();
         List<SfOrder> sfOrders7 = new ArrayList<>();
         List<SfOrder> sfOrders8 = new ArrayList<>();

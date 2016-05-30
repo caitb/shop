@@ -49,6 +49,7 @@ public class SfOrderPurchaseController extends BaseController {
         model.addAttribute("shopCartSkuDetails",map.get("shopCartSkuDetails"));
         model.addAttribute("skuTotalPrice",map.get("skuTotalPrice"));
         model.addAttribute("skuTotalShipAmount",map.get("skuTotalShipAmount"));
+        model.addAttribute("isFreeShipAmount",map.get("isFreeShipAmount"));
         model.addAttribute("totalQuantity",map.get("totalQuantity"));
         model.addAttribute("totalPrice",map.get("totalPrice"));
         return "mall/order/tijiaodingdan";

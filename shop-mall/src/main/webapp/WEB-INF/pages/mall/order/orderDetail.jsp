@@ -56,7 +56,10 @@
     </section>
     <section class="sec4">
         <p><b>合计：</b><span>￥${order.productAmount}</span></p>
-        <p><b>运费：</b><span>包邮</span></p>
+        <p><b>运费：</b><span>
+            <c:if test="${isFreeShipAmount==true}">包邮</c:if>
+            <c:if test="${isFreeShipAmount==false}">￥${skuTotalShipAmount}</c:if>
+        </span></p>
         <p><b>需付：</b><span>￥${order.orderAmount}</span></p>
     </section>
     <div class="back"></div>

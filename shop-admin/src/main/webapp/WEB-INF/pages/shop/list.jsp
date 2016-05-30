@@ -78,24 +78,15 @@
                             <div class="col-xs-12">
 
                                 <div>
-                                    <div id="toolbar" style="display: none;">
-                                        <form class="form-inline">
-                                            <%--<button id="remove" class="btn btn-danger" disabled>--%>
-                                            <%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
-                                            <%--</button>--%>
-                                            <%--<a class="btn btn-info" id="add" href="<%=basePath%>product/add.shtml">--%>
-                                            <%--<i class="glyphicon glyphicon-add"></i> 添加--%>
-                                            <%--</a>--%>
-                                            <div class="form-group">
-                                                <label for="skuName">商品名称</label>
-                                                <input type="text" class="form-control" id="skuName" name="skuName" placeholder="商品名称">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="categoryName">商品分类</label>
-                                                <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="商品分类">
-                                            </div>
-                                            <button type="button" class="btn btn-default" id="searchBtn">查询</button>
-                                        </form>
+                                    <div id="toolbar">
+                                        <%--<div class="form-inline">--%>
+                                            <%--<div class="form-group">--%>
+                                                <%--<label for="orderCode">订单号</label>--%>
+                                                <%--<input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">--%>
+                                            <%--</div>--%>
+                                            <%--<button type="button" class="btn btn-default" id="searchBtn">查询</button>--%>
+                                            <button type="button" class="btn btn-default" id="batchShipSetup">批量设置运费</button>
+                                        </div>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover dataTable no-footer" id="table" role="grid" aria-describedby="sample-table-2_info"
                                            data-toolbar="#toolbar"
@@ -121,7 +112,7 @@
                         </div>
 
 
-                        <div id="modal-audit" class="modal fade" tabindex="-1">
+                        <div id="ship-setup" class="modal fade" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header no-padding">
@@ -129,7 +120,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                                                 <span class="white">&times;</span>
                                             </button>
-                                            提现申请审核
+                                            运费设置
                                         </div>
                                     </div>
 
@@ -141,89 +132,52 @@
                                                     <!-- #section:pages/profile.info -->
                                                     <div class="profile-user-info profile-user-info-striped">
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请时间 </div>
+                                                        <form id="shipSetupForm">
+                                                            <input type="hidden" name="id" id="shopId" value="" />
 
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="applyTime"> </span>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 店主 </div>
+
+                                                                <div class="profile-info-value">
+                                                                    <span class="" id="shopName"> </span>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请人 </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 承担运费方 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <span class="editable editable-click" id="realName"> </span>
+                                                                <div class="profile-info-value">
+                                                                    <div class="radio">
+                                                                        <label>
+                                                                            <input type="radio" name="shipType" id="shipType" value="0" />
+                                                                            <span class="lbl"> 消费者 </span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="radio">
+                                                                        <label>
+                                                                            <input type="radio" name="shipType" id="shipType2" value="1" />
+                                                                            <span class="lbl"> 代理商 </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 申请金额 </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 消费者运费金额 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractFee"> </span>
+                                                                <div class="profile-info-value">
+                                                                    <input type="text" name="shipAmount" id="shipAmount" value="" />
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 账户余额 </div>
+                                                            <div class="profile-info-row">
+                                                                <div class="profile-info-name"> 代理运费金额 </div>
 
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractableFee"> </span>
+                                                                <div class="profile-info-value">
+                                                                    <input type="text" name="agentShipAmount" id="agentShipAmount" value="" />
+                                                                </div>
                                                             </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 提现方式 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="extractWay"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 银行卡号 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="bankCard"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 银行名称 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="bankName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 开户行名称 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="depositBankName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row">
-                                                            <div class="profile-info-name"> 持卡人姓名 </div>
-
-                                                            <div class="profile-info-value">
-                                                                <span class="" id="cardOwnerName"> </span>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="profile-info-row" id="auditReason">
-                                                            <div class="profile-info-name" id="jjT"> 审核记录 </div>
-
-                                                            <div class="profile-info-value" id="jjF">
-                                                                <form id="auditForm">
-                                                                  <input type="hidden" name="id" id="applyId" value="" />
-                                                                  <input type="hidden" name="auditType" id="auditType" value="2" />
-                                                                  <textarea name="auditCause" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
-                                                                </form>
-                                                            </div>
-                                                        </div>
+                                                        </form>
 
                                                     </div>
 
@@ -234,18 +188,104 @@
 
                                     <div class="modal-footer no-margin-top">
                                         <div class="col-xs-5 col-sm-5 col-sm-offset-4">
-                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="1">
-                                                拒绝
+                                            <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+                                                取消
                                             </button>
-                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
-                                                通过
+                                            <button class="btn btn-sm btn-info pull-left" id="submitBtn" >
+                                                提交
                                             </button>
                                         </div>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
                         </div><!-- PAGE CONTENT ENDS -->
+
+                        <div id="batch-ship-setup" class="modal fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header no-padding">
+                                    <div class="table-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            <span class="white">&times;</span>
+                                        </button>
+                                        批量运费设置
+                                    </div>
+                                </div>
+
+                                <div class="modal-body no-padding">
+                                    <div>
+                                        <div id="user-profile-01" class="user-profile row">
+                                            <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+
+                                                <!-- #section:pages/profile.info -->
+                                                <div class="profile-user-info profile-user-info-striped">
+
+                                                    <form id="batchShipSetupForm">
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 店主 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="shopNames"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 承担运费方 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="shipTypes" id="shipTypes" value="0" />
+                                                                        <span class="lbl"> 消费者 </span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input type="radio" name="shipTypes" id="shipTypes2" value="1" />
+                                                                        <span class="lbl"> 代理商 </span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 消费者运费金额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <input type="text" name="shipAmounts" id="shipAmounts" value="0" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 代理运费金额 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <input type="text" name="agentShipAmounts" id="agentShipAmounts" value="0" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer no-margin-top">
+                                    <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                        <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
+                                            取消
+                                        </button>
+                                        <button class="btn btn-sm btn-info pull-left" id="submitBtns" >
+                                            提交
+                                        </button>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- PAGE CONTENT ENDS -->
 
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -430,12 +470,31 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             var sArr = ['<a class="v-detail" href="javascript:void(0);">查看</a>'];
+                                sArr.push('&nbsp;&nbsp;<a class="ship-setup" href="javascript:void(0);">设置运费</a>')
 
                             return sArr.join('');
                         },
                         events: {
                             'click .v-detail': function(e, value, row, index){
                                 parent.window.$('#myTabbable').add('shop-'+row.sfShop.id, '店铺信息', '<%=basePath%>shop/detail.shtml?shopId='+row.sfShop.id);
+                            },
+                            'click .ship-setup': function(e, value, row, index){
+                                $.ajax({
+                                    url: '<%=basePath%>shop/getShop.do',
+                                    data: {shopId: row.sfShop.id},
+                                    success: function(shop){
+                                        shop = window.eval('('+shop+')');
+                                        $('#shopId').val(shop.id);
+                                        $('#shopName').html(shop.name);
+                                        $('input[name="shipAmount"]').val(shop.shipAmount);
+                                        $('input[name="agentShipAmount"]').val(shop.agentShipAmount);
+                                        $('input[name="shipType"]').each(function(i, obj){
+                                            if($(this).val() == shop.shipType) $(this).attr('checked', 'checked');
+                                            if($(this).val() != shop.shipType) $(this).removeAttr('checked');
+                                        });
+                                    }
+                                });
+                                $('#ship-setup').modal('show');
                             }
                         }
                     }
@@ -601,29 +660,16 @@
 
     });
 
-    $('.audit').on('click', function(){
-        var auditType = $(this).attr('audit-status');
-        var auditCause = $('textarea[name="auditCause"]').val();
-
-        $('#auditType').val(auditType);
-        if(!auditCause){
-            $.gritter.add({
-                title: '温馨提示',
-                text: '请填写审核记录!',
-                class_name: 'gritter-error' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
-            });
-
-            return false;
-        }
-
+    $('#submitBtn').on('click', function(){
         $.ajax({
-            url: '<%=basePath%>fundmanage/com-extract/audit.do',
+            url: '<%=basePath%>shop/update.do',
             type: 'POST',
-            data: $('#auditForm').serialize(),
+            data: $('#shipSetupForm').serialize(),
             success: function(msg){
                 if('success' == msg){
-                    $('#modal-audit').modal('hide');
+                    $('#ship-setup').modal('hide');
                 }
+                msg = msg=='success'?'运费设置成功':'运费设置失败';
                 $.gritter.add({
                     title: '消息',
                     text: msg,
@@ -634,6 +680,51 @@
         })
     });
 
+    var ids = [];
+    $('#batchShipSetup').on('click', function(){
+        var selectRows = $table.bootstrapTable('getSelections');
+        if(selectRows.length == 0){
+            $.gritter.add({
+                title: '消息',
+                text: '请选择要设置的店铺!',
+                class_name: 'gritter-info'
+            });
+            return;
+        }
+
+
+        var shopNames = selectRows[0].sfShop.name + ',';
+        var shop = [];
+        for(var i=0; i<selectRows.length; i++){
+            shopNames += selectRows[i].sfShop.name+',';
+
+            ids.push(selectRows[i].sfShop.id);
+            ids.push(',');
+        }
+        ids.pop();
+        $('#shopName').html(shopNames);
+        $('#batch-ship-setup').modal('show');
+    });
+
+    $('#submitBtns').on('click', function(){
+        $.ajax({
+            url: '<%=basePath%>shop/batchUpdate.do',
+            type: 'POST',
+            data: {ids: ids.join(''), shipTypes: $('input[name="shipTypes"]:checked').val(), shipAmounts: $('input[name="shipAmounts"]').val(), agentShipAmounts: $('input[name="agentShipAmounts"]').val()},
+            success: function(msg){
+                if('success' == msg){
+                    $('#batch-ship-setup').modal('hide');
+                }
+                msg = msg=='success'?'运费设置成功':'运费设置失败';
+                $.gritter.add({
+                    title: '消息',
+                    text: msg,
+                    class_name: 'gritter-success'
+                });
+                $('#table').bootstrapTable('refresh');
+            }
+        })
+    });
 
 </script>
 </body>

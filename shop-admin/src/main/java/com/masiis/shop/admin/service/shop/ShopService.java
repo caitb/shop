@@ -10,6 +10,7 @@ import com.masiis.shop.dao.po.SfShop;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,5 +71,34 @@ public class ShopService {
         shop.setComUser(comUser);
 
         return shop;
+    }
+
+    /**
+     * 获取店铺信息
+     * @param shopId
+     * @return
+     */
+    public SfShop findShop(Long shopId){
+        return sfShopMapper.selectByPrimaryKey(shopId);
+    }
+
+    /**
+     * 更新店铺信息
+     * @param sfShop
+     */
+    public void updateShop(SfShop sfShop){
+        sfShopMapper.updateByPrimaryKey(sfShop);
+    }
+
+    public void batchUpdateShop(String[] ids, Integer shipTypes, BigDecimal shipAmounts, BigDecimal agentShipAmounts){
+        for(String id : ids){
+            SfShop sfShop = new SfShop();
+            sfShop.setId(Long.valueOf(id));
+            sfShop.setShipType(shipTypes);
+            sfShop.setShipAmount(shipAmounts);
+            sfShop.setAgentShipAmount(agentShipAmounts);
+
+            sfShopMapper.updateByPrimaryKey(sfShop);
+        }
     }
 }

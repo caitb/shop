@@ -136,7 +136,7 @@ public class SfUserAccountService {
             }
 
             // 计算销售额
-            BigDecimal saleAmount = order.getPayAmount().subtract(order.getShipAmount());
+            BigDecimal saleAmount = order.getPayAmount(); //.subtract(order.getShipAmount());
 
             log.info("计算店铺的总销售额");
 
@@ -175,7 +175,8 @@ public class SfUserAccountService {
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
-            log.info("小铺店主的结算中和总销售额增加金额:" + countFee);
+            log.info("小铺店主的结算中增加金额:" + countFee);
+            log.info("小铺店主的总销售额增加金额:" + order.getPayAmount());
 
             // 小铺店主利润
             BigDecimal profit = new BigDecimal(0);
@@ -201,7 +202,7 @@ public class SfUserAccountService {
             }
             profit = profit.subtract(order.getDistributionAmount());
             if (profit.compareTo(BigDecimal.ZERO) < 0) {
-                profit = BigDecimal.ZERO;
+                throw new BusinessException("店主此订单利润小于0,异常!");
             }
             // 计算店主此次总利润
             ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,

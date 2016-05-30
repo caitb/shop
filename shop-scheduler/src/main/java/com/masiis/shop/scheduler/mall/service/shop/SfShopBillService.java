@@ -96,7 +96,8 @@ public class SfShopBillService {
             shopBillMapper.updateByPrimaryKey(bill);
             log.info("修改用户资产账户结算中和可提现额成功!");
         } catch (Exception e) {
-
+            log.error(e.getMessage(), e);
+            throw new BusinessException(e);
         }
     }
 

@@ -46,6 +46,10 @@ public class SfShopBill {
      */
     private BigDecimal returnAmount;
     /**
+     * 代理商负担的运费
+     */
+    private BigDecimal agentShipAmount;
+    /**
      * 结算单据开始时间
      */
     private Date sourceStartTime;
@@ -139,5 +143,13 @@ public class SfShopBill {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public BigDecimal getAgentShipAmount() {
+        return agentShipAmount;
+    }
+
+    public void setAgentShipAmount(BigDecimal agentShipAmount) {
+        this.agentShipAmount = agentShipAmount;
     }
 }

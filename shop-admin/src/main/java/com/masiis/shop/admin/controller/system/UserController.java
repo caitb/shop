@@ -1,13 +1,14 @@
 package com.masiis.shop.admin.controller.system;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.admin.service.system.PbUserMenuService;
 import com.masiis.shop.admin.service.system.PbUserService;
+import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.AESUtils;
-import com.masiis.shop.common.util.KeysUtil;
 import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.PbUserMenu;
 import org.apache.commons.lang.StringUtils;
@@ -246,4 +247,32 @@ public class UserController {
         return "success";
     }
 
+
+    /**
+      * @Author jjh
+      * @Date 2016/5/27 0027 下午 5:35
+      * 修改密码
+      */
+    @RequestMapping("/updatePsd.do")
+    @ResponseBody
+    public String updatePassword(HttpServletRequest request, HttpServletResponse response,
+                                 @RequestParam(value="oldPsd",required = true) String oldPsd,
+                                 @RequestParam(value="newPsd",required = true) String newPsd){
+        JSONObject object = new JSONObject();
+        try{
+            HttpSession session = request.getSession();
+            PbUser pbUser = (PbUser)session.getAttribute("pbUser");
+            String pasd = AESUtils.encrypt(oldPsd, key);
+            if(!pbUser.getPassword().equals(pasd)){
+               throw new BusinessException("原密码输入有误！");
+            }
+            pbUser.setPassword(AESUtils.encrypt(newPsd, key));
+            pbUserService.updateById(pbUser);
+            object.put("isError",false);
+        }catch (Exception e){
+            object.put("isError",true);
+            object.put("msg",e.getMessage());
+        }
+       return "";
+    }
 }

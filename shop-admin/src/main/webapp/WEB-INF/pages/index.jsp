@@ -350,10 +350,10 @@
                     </a>
 
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
+                        <li class="mlkj">
                             <a href="#">
-                                <i class="ace-icon fa fa-cog"></i>
-                                设置
+                                <i class="ace-icon fa fa-unlock " data-toggle="modal" data-target="#myModal"></i>
+                                修改密码
                             </a>
                         </li>
 
@@ -507,7 +507,38 @@
             <!-- /section:basics/footer -->
         </div>
     </div>
-
+    <!-- 修改密码模态框-->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="psdForm">
+                        <div class="form-group">
+                            <label for="oldPsd" class="control-label">旧密码:</label>
+                            <input type="password" class="form-control" id="oldPsd">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPsd" class="control-label">新密码:</label>
+                            <input type="password" class="form-control" id="newPsd">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPsd" class="control-label">确认密码:</label>
+                            <input type="password" class="form-control" id="confirmPsd">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="UpdatePsd()">确认修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end-->
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
         <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
     </a>
@@ -657,5 +688,51 @@
 <script src="<%=basePath%>static/ace2/docs/assets/js/language/html.js"></script>
 <script src="<%=basePath%>static/ace2/docs/assets/js/language/css.js"></script>
 <script src="<%=basePath%>static/ace2/docs/assets/js/language/javascript.js"></script>
+<!--修改密码-->
+<script>
+    $(".mlkj").on("click",function(){
+        $("#oldPsd").val("");
+        $("#newPsd").val("");
+        $("#confirmPsd").val("");
+        $('#myModal').modal('toggle');
+    })
+
+    function UpdatePsd(){
+        var paraData={};
+        paraData.oldPsd = $("#oldPsd").val();
+        paraData.newPsd = $("#newPsd").val();
+        paraData.confirmPsd = $("#confirmPsd").val();
+        if(paraData.oldPsd==null || paraData.oldPsd==""){
+           alert("旧密码不能为空！");
+            return;
+        }else if(paraData.newPsd==null || paraData.newPsd==""){
+            alert("新密码不能为空！");
+            return;
+        }else if(paraData.confirmPsd==null || paraData.confirmPsd==""){
+            alert("确认密码不能为空！");
+            return;
+        }
+        if(paraData.newPsd !=paraData.confirmPsd){
+            alert("两次密码输入不一致，请重新输入！");
+            $("#confirmPsd").val("");
+            return;
+        }
+        $.ajax({
+            url: '<%=basePath%>user/updatePsd.do',
+            type: 'post',
+            dataType:'json',
+            data: paraData,
+            success: function(data){
+                if(data.isError==true){
+                   alert(data.msg);
+                    return;
+                }else{
+                    alert("恭喜您，密码修改成功！请重新登录");
+                    window.location.href= "<%=basePath%>user/login.shtml";
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>

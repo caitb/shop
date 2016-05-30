@@ -152,8 +152,14 @@ public class SfUserAccountService {
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
             // 插入店主sf_shop_bill_item
-            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee);
+            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 1);
             shopBillItemMapper.insert(billItem);
+
+            // 计算物流费用
+            if(order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0){
+                SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 3);
+                shopBillItemMapper.insert(shipbillItem);
+            }
 
             // 计算订单结算中金额计入到account中
             ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
@@ -244,7 +250,7 @@ public class SfUserAccountService {
         }
     }
 
-    private SfShopBillItem createSfShopBillItemBySfOrder(SfOrder order, ComUser shopKeeper, BigDecimal countFee) {
+    private SfShopBillItem createSfShopBillItemBySfOrder(SfOrder order, ComUser shopKeeper, BigDecimal countFee, Integer itemType) {
         SfShopBillItem item = new SfShopBillItem();
 
         item.setSourceId(order.getId());
@@ -253,7 +259,7 @@ public class SfUserAccountService {
         item.setCreateTime(new Date());
         item.setSourceCreateTime(order.getCreateTime());
         item.setAmount(countFee);
-        item.setItemType(1);
+        item.setItemType(itemType);
         item.setIsCount(0);
 
         return item;

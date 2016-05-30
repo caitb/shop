@@ -49,8 +49,19 @@ public class SfShop {
      * 小铺销售额
      */
     private BigDecimal saleAmount;
+
     /**
-     * 运费，0为包邮
+     * 运费类型0：消费者出运费1：代理商出运费
+     */
+    private Integer shipType;
+
+    /**
+     * 代理运费金额, 0为包邮
+     */
+    private BigDecimal agentShipAmount;
+
+    /**
+     * 消费者运费金额，0为包邮
      */
     private BigDecimal shipAmount;
     /**
@@ -148,5 +159,21 @@ public class SfShop {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public Integer getShipType() {
+        return shipType;
+    }
+
+    public void setShipType(Integer shipType) {
+        this.shipType = shipType;
+    }
+
+    public BigDecimal getAgentShipAmount() {
+        return agentShipAmount;
+    }
+
+    public void setAgentShipAmount(BigDecimal agentShipAmount) {
+        this.agentShipAmount = agentShipAmount;
     }
 }

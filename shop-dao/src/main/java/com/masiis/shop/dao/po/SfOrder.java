@@ -60,9 +60,13 @@ public class SfOrder extends BaseOrder {
      */
     private BigDecimal productAmount;
     /**
-     * 运费
+     * 消费者运费金额，0为包邮
      */
     private BigDecimal shipAmount;
+    /**
+     * 代理运费金额，0为包邮
+     */
+    private BigDecimal agentShipAmount;
     /**
      * 应收费用
      */
@@ -351,5 +355,13 @@ public class SfOrder extends BaseOrder {
     }
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public BigDecimal getAgentShipAmount() {
+        return agentShipAmount;
+    }
+
+    public void setAgentShipAmount(BigDecimal agentShipAmount) {
+        this.agentShipAmount = agentShipAmount;
     }
 }

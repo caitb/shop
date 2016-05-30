@@ -62,6 +62,10 @@ public class SfShopBillService {
                     log.info("此账单子项是店铺分销订单退货");
                     bill.setCountAmount(bill.getCountAmount().subtract(item.getAmount()));
                     bill.setReturnAmount(bill.getReturnAmount().add(item.getAmount()));
+                } else if (item.getItemType().intValue() == 3) {
+                    log.info("此账单子项是店铺订单由代理商负担运费");
+                    bill.setCountAmount(bill.getCountAmount().subtract(item.getAmount()));
+                    bill.setAgentShipAmount(bill.getAgentShipAmount().add(item.getAmount()));
                 }
                 item.setIsCount(1);
                 shopBillItemMapper.updateByPrimaryKey(item);
@@ -128,6 +132,7 @@ public class SfShopBillService {
         bill.setComUserId(pa.getUserId());
         bill.setShopId(pa.getId());
         bill.setReturnAmount(new BigDecimal(0));
+        bill.setAgentShipAmount(new BigDecimal(0));
         bill.setSourceStartTime(countStartDay);
         bill.setSourceEndTime(countEndDay);
         bill.setStatus(0);

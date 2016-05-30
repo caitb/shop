@@ -15,6 +15,7 @@
         <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
         <result column="product_amount" property="productAmount" jdbcType="DECIMAL" />
         <result column="ship_amount" property="shipAmount" jdbcType="DECIMAL" />
+        <result column="agent_ship_amount" property="agentShipAmount" jdbcType="DECIMAL" />
         <result column="receivable_amount" property="receivableAmount" jdbcType="DECIMAL" />
         <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
         <result column="distribution_amount" property="distributionAmount" jdbcType="DECIMAL" />
@@ -48,7 +49,7 @@
             order_code, user_id, shop_id, 
             shop_user_id, user_message, modify_time, 
             modify_man, order_amount, product_amount, 
-            ship_amount, receivable_amount, pay_amount, 
+            ship_amount,agent_ship_amount, receivable_amount, pay_amount,
             distribution_amount, pay_time, ship_man_id, 
             ship_man_name, ship_type, ship_time, 
             ship_remark, send_type, order_type, 
@@ -60,7 +61,7 @@
             #{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, 
             #{shopUserId,jdbcType=BIGINT}, #{userMessage,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
             #{modifyMan,jdbcType=BIGINT}, #{orderAmount,jdbcType=DECIMAL}, #{productAmount,jdbcType=DECIMAL}, 
-            #{shipAmount,jdbcType=DECIMAL}, #{receivableAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, 
+            #{shipAmount,jdbcType=DECIMAL},#{agentShipAmount,jdbcType=DECIMAL}, #{receivableAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL},
             #{distributionAmount,jdbcType=DECIMAL}, #{payTime,jdbcType=TIMESTAMP}, #{shipManId,jdbcType=INTEGER}, 
             #{shipManName,jdbcType=VARCHAR}, #{shipType,jdbcType=INTEGER}, #{shipTime,jdbcType=TIMESTAMP}, 
             #{shipRemark,jdbcType=VARCHAR}, #{sendType,jdbcType=INTEGER}, #{orderType,jdbcType=INTEGER}, 
@@ -109,6 +110,9 @@
             </if>
             <if test="shipAmount != null">
                 ship_amount = #{shipAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="agentShipAmount != null">
+                agent_ship_amount = #{agentShipAmount,jdbcType=DECIMAL},
             </if>
             <if test="receivableAmount != null">
                 receivable_amount = #{receivableAmount,jdbcType=DECIMAL},
@@ -180,7 +184,7 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
-        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount, 
+        modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
         ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
@@ -190,7 +194,7 @@
 
     <select id="selectAll" resultMap="BaseResultMap" >
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message, 
-        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount, 
+        modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type, 
         ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status, 
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
@@ -199,7 +203,7 @@
 
     <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String">
       select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
-        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount,
+        modify_time, modify_man, order_amount, product_amount, ship_amount, agent_ship_amount,receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark
@@ -226,6 +230,7 @@
                order_amount,
                product_amount,
                ship_amount,
+               agent_ship_amount,
                receivable_amount,
                pay_amount,
                distribution_amount,
@@ -264,7 +269,7 @@
 
     <select id="selectByStatusAndDate" resultMap="BaseResultMap">
         select id, create_time, create_man, order_code, user_id, shop_id, shop_user_id, user_message,
-        modify_time, modify_man, order_amount, product_amount, ship_amount, receivable_amount,
+        modify_time, modify_man, order_amount, product_amount, ship_amount,agent_ship_amount, receivable_amount,
         pay_amount, distribution_amount, pay_time, ship_man_id, ship_man_name, ship_type,
         ship_time, ship_remark, send_type, order_type, order_status, ship_status, pay_status,
         is_counting, is_ship, is_replace, is_receipt, receipt_time, replace_order_id, remark

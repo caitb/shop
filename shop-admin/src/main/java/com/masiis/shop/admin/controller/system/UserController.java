@@ -90,7 +90,7 @@ public class UserController {
 
         /* 已登陆 */
         HttpSession session = request.getSession();
-        if (!session.isNew() && session.getAttribute("user") != null) {
+        if (!session.isNew() && session.getAttribute("pbUser") != null) {
             mav.setViewName("redirect:/main/index.shtml");
             return mav;
         }

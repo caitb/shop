@@ -488,9 +488,9 @@
                                         $('#shopName').html(shop.name);
                                         $('input[name="shipAmount"]').val(shop.shipAmount);
                                         $('input[name="agentShipAmount"]').val(shop.agentShipAmount);
+                                        $('input[name="shipType"]').removeProp('checked');
                                         $('input[name="shipType"]').each(function(i, obj){
-                                            if($(this).val() == shop.shipType) $(this).attr('checked', 'checked');
-                                            if($(this).val() != shop.shipType) $(this).removeAttr('checked');
+                                            if($(this).val() == shop.shipType) $(this).prop('checked', 'checked');
                                         });
                                     }
                                 });
@@ -673,7 +673,7 @@
                 $.gritter.add({
                     title: '消息',
                     text: msg,
-                    class_name: 'gritter-success' + (!$('#gritter-light').get(0).checked ? ' gritter-light' : '')
+                    class_name: 'gritter-success'
                 });
                 $('#table').bootstrapTable('refresh');
             }

@@ -44,4 +44,16 @@ public class PfUserRelationService {
     public PfUserRelation getRelation(Long userId, Integer skuId) {
         return pfUserRelationMapper.selectEnableByUserId(userId, skuId);
     }
+
+    public PfUserRelation getRelationByUserIdAndSkuIdAndPUserId(Long userId, Integer skuId, Long pUserId) {
+        return pfUserRelationMapper.selectRelationByUserIdAndSkuIdAndPUserId(userId, skuId, pUserId);
+    }
+
+    public int update(PfUserRelation existRelation) {
+        return pfUserRelationMapper.updateByPrimaryKey(existRelation);
+    }
+
+    public int updateAllToUnableByUserIdAndSkuId(Long userId, Integer skuId) {
+        return pfUserRelationMapper.updateAllToUnableByUserIdAndSkuId(userId, skuId);
+    }
 }

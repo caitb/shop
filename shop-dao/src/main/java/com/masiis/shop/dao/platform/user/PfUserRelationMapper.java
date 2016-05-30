@@ -33,4 +33,26 @@ public interface PfUserRelationMapper {
      * @return
      */
     PfUserRelation selectLastRecordByUserId(Long userId);
+
+    /**
+     * 根据userid skuid pUserid来查询临时代理关系
+     *
+     * @param userId
+     * @param skuId
+     * @param pUserId
+     * @return
+     */
+    PfUserRelation selectRelationByUserIdAndSkuIdAndPUserId(@Param("userId") Long userId,
+                                                            @Param("skuId") Integer skuId,
+                                                            @Param("pUserId") Long pUserId);
+
+    /**
+     * 根据userId和skuId修改为不可用
+     *
+     * @param userId
+     * @param skuId
+     * @return
+     */
+    int updateAllToUnableByUserIdAndSkuId(@Param("userId") Long userId,
+                                          @Param("skuId") Integer skuId);
 }

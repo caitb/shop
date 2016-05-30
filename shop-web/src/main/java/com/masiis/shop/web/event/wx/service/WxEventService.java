@@ -132,19 +132,24 @@ public class WxEventService {
             throw new BusinessException();
         }
 
+        log.info("获取代理关系");
         // 用户注册或者查询用户
         ComUser user = scanEventUserSignUp(body);
         if(user == null){
             return null;
         }
+        log.info("获取用户");
 
         Integer skuId = userSku.getSkuId();
         Long pUserId = userSku.getUserId();
-        Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
-        if (temPUserId == 0) {
+        //Long temPUserId = pfUserRelationService.getPUserId(user.getId(), skuId);
+        try {
             if (pUserId != null && pUserId > 0) {
-                //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
-                try {
+                PfUserRelation existRelation = pfUserRelationService
+                        .getRelationByUserIdAndSkuIdAndPUserId(user.getId(), skuId, pUserId);
+                pfUserRelationService.updateAllToUnableByUserIdAndSkuId(user.getId(), skuId);
+                if(existRelation == null) {
+                    //校验上级合伙人数据是否合法,如果合法则建立临时绑定关系
                     userSkuService.checkParentData(user, pUserId, skuId);
                     PfUserRelation pfUserRelation = new PfUserRelation();
                     pfUserRelation.setUserId(user.getId());
@@ -153,12 +158,16 @@ public class WxEventService {
                     pfUserRelation.setIsEnable(1);
                     pfUserRelation.setUserPid(pUserId);
                     pfUserRelationService.insert(pfUserRelation);
-                } catch (Exception e) {
-                    log.error("扫描二维码注册失败:" + e.getMessage(), e);
+                } else {
+                    existRelation.setIsEnable(1);
+                    pfUserRelationService.update(existRelation);
                 }
             }
+        } catch (Exception e) {
+            log.error("扫描二维码注册失败:" + e.getMessage(), e);
         }
 
+        log.info("处理代理关系结束");
         ComSku sku = skuService.getSkuById(skuId);
 //        ComSkuImage skuImage = skuService.findComSkuImage(skuId);
 //        String imgUrl = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN) + skuImage.getImgUrl();

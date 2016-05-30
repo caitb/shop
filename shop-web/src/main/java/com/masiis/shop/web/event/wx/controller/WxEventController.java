@@ -114,7 +114,7 @@ public class WxEventController extends BaseController {
         Object obj = xStream.fromXML(res);
         System.out.println(obj.getClass().getName());*/
 
-        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=FI8IjkO5n92EHrOWsI5n2dVXV0Yuo5eecxranrbgGTO95Eb3bJJa82lLWMv8QwbFJbXLmw0rwsjlZmIFRK4rDLR6qJp1qDpSwPpv9-h2uv4J3TcR014_UaGn_t9JzZ3tIFAfAFAXUP";
+        String createMenu = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=OJ5vepCRU8RwU22hVCGd1bh5H8yzbwzWKQg9lM8TA2qLlWC4D8Y8vrHgD3_wJP5ywK1pINR27RLZRxWEAF1O9SpApIQ7jJV5FxyXZOiBvJXLo4jCG4fSvCoEzXB-2maBEEQiAFALLX";
         Menu menu = new Menu();
         List<Button> buttons = new ArrayList<>();
         List<Button> sub_button1 = new ArrayList<>();

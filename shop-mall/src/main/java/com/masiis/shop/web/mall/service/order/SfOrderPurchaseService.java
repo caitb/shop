@@ -411,12 +411,10 @@ public class SfOrderPurchaseService {
         sfOrder.setCreateTime(new Date());
         sfOrder.setModifyTime(new Date());
         sfOrder.setProductAmount(skuTotalPrice);//商品总费用
+        sfOrder.setShipAmount(skuTotalShipAmount);
         SfShop sfShop = sfShopService.getSfShopById(sfOrder.getShopId());
         if (sfShop!=null){
-            sfOrder.setShipType(sfShop.getShipType());
-            sfOrder.setShipAmount(skuTotalShipAmount);
             if (sfShop.getShipType().equals(1)){
-
                 sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
             }else{
                 sfOrder.setAgentShipAmount(new BigDecimal(0));

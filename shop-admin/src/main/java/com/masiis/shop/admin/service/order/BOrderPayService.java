@@ -209,6 +209,7 @@ public class BOrderPayService {
             sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
         } else {
             sfUserRelation.setUserPid(0l);
+            sfUserRelation.setRemark("代理人解除分销关系");
             int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
             if (i != 1) {
                 throw new BusinessException("分销关系修改失败");

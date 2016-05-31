@@ -65,18 +65,18 @@
 <script src="${path}/static/js/pay/wxpay.js"></script>
 <script>
     $(function () {
-        $("#submit").initWxPay("${paramReq}", "${basePath}");
-        <%--if ("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1") {--%>
         <%--$("#submit").initWxPay("${paramReq}", "${basePath}");--%>
-        <%--} else {--%>
-        <%--$("#submit").click(function () {--%>
-        <%--if ($(this).html() == "正在提交...") {--%>
-        <%--return;--%>
-        <%--}--%>
-        <%--$(this).html("正在提交...");--%>
-        <%--window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";--%>
-        <%--})--%>
-        <%--}--%>
+        if ("<%=PropertiesUtils.getStringValue(SysConstants.SYS_RUN_ENVIROMENT_KEY)%>" == "1") {
+            $("#submit").initWxPay("${paramReq}", "${basePath}");
+        } else {
+            $("#submit").click(function () {
+                if ($(this).html() == "正在提交...") {
+                    return;
+                }
+                $(this).html("正在提交...");
+                window.location.href = "${basePath}border/payBOrder.shtml?bOrderId=${pfBorder.id}";
+            })
+        }
     });
 
     $("#downPay").click(function (event) {

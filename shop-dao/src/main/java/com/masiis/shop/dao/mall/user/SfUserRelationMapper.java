@@ -34,9 +34,19 @@ public interface SfUserRelationMapper {
 
     /**
      * 修改树形编码
-     * @param id 主键id
+     *
+     * @param id       主键id
      * @param treeCode 属性编码
      * @return
      */
     int updateTreeCodeById(@Param("id") Long id, @Param("treeCode") String treeCode);
+
+    /**
+     * 批量修改树形编码
+     * @param treeCode
+     * @param idIndex
+     * @param treeLevelDiff
+     * @return
+     */
+    int updateTreeCodes(@Param("treeCode") String treeCode, @Param("idIndex") Integer idIndex, @Param("treeLevelDiff") Integer treeLevelDiff);
 }

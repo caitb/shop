@@ -157,8 +157,10 @@ public class SfUserAccountService {
 
             // 计算物流费用
             if(order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0){
-                SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 3);
+                SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, order.getAgentShipAmount(), 3);
                 shopBillItemMapper.insert(shipbillItem);
+                // 减去代理商承担的运费
+                countFee = countFee.subtract(order.getAgentShipAmount());
             }
 
             // 计算订单结算中金额计入到account中
@@ -201,6 +203,8 @@ public class SfUserAccountService {
                 }
             }
             profit = profit.subtract(order.getDistributionAmount());
+            // 减去代理商承担的运费
+            profit = profit.subtract(order.getAgentShipAmount());
             if (profit.compareTo(BigDecimal.ZERO) < 0) {
                 throw new BusinessException("店主此订单利润小于0,异常!");
             }

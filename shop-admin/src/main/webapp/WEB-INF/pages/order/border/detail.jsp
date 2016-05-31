@@ -109,6 +109,18 @@
                                         </div>
 
                                         <div class="profile-info-row">
+                                            <div class="profile-info-name"> 订单类型 </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="" id="orderType">
+                                                    <c:if test="${order.pfBorder.orderType == 0}">代理订单</c:if>
+                                                    <c:if test="${order.pfBorder.orderType == 1}">补货订单</c:if>
+                                                    <c:if test="${order.pfBorder.orderType == 2}">拿货订单</c:if>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
                                             <div class="profile-info-name"> 订单状态 </div>
 
                                             <div class="profile-info-value">
@@ -356,7 +368,7 @@
                                             <td>${product.comSpu.artNo}</td>
                                             <td>-</td>
                                             <td>${product.comSku.priceMarket}</td>
-                                            <td>${product.comSku.priceRetail}</td>
+                                            <td>${order.pfBorderItems[0].unitPrice}</td>
                                             <td>${order.pfBorderItems[0].quantity}</td>
                                             <td>${order.pfBorder.productAmount}</td>
                                         </tr>
@@ -369,33 +381,33 @@
                 </div>
 
                 <div></div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>操作者</th>
-                                        <th>操作时间</th>
-                                        <th>操作类型</th>
-                                        <th>操作备注</th>
-                                    </tr>
-                                    </thead>
+                <%--<div class="row">--%>
+                    <%--<div class="col-xs-12">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-xs-12 col-sm-8 col-sm-offset-2">--%>
+                                <%--<table id="sample-table-2" class="table table-striped table-bordered table-hover">--%>
+                                    <%--<thead>--%>
+                                    <%--<tr>--%>
+                                        <%--<th>操作者</th>--%>
+                                        <%--<th>操作时间</th>--%>
+                                        <%--<th>操作类型</th>--%>
+                                        <%--<th>操作备注</th>--%>
+                                    <%--</tr>--%>
+                                    <%--</thead>--%>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@TwBootstrap</td>
-                                        <td>@TwBootstrap</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div><!-- /.span -->
-                        </div><!-- /.row -->
-                    </div><!-- /.col -->
-                </div>
+                                    <%--<tbody>--%>
+                                    <%--<tr>--%>
+                                        <%--<td>Mark</td>--%>
+                                        <%--<td>Otto</td>--%>
+                                        <%--<td>@TwBootstrap</td>--%>
+                                        <%--<td>@TwBootstrap</td>--%>
+                                    <%--</tr>--%>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div><!-- /.span -->--%>
+                        <%--</div><!-- /.row -->--%>
+                    <%--</div><!-- /.col -->--%>
+                <%--</div>--%>
 
             </div><!-- /.page-content-area -->
         </div><!-- /.page-content -->

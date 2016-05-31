@@ -108,7 +108,7 @@ public class BOrderPayService {
      * @throws Exception
      */
     @Transactional
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath,PbUser pbUser) throws Exception {
+    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath, PbUser pbUser) throws Exception {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
 //        System.out.println(dateFormat.format(new Date()));
         if (pfBorderPayment == null) {
@@ -141,7 +141,7 @@ public class BOrderPayService {
         pbOperationLog.setRemark("实名认证");
         pbOperationLog.setOperateContent(pbOperationLog.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
-        if(updateByPrimaryKey==0){
+        if (updateByPrimaryKey == 0) {
             throw new Exception("日志新建实名认证失败!");
         }
 //        System.out.println(dateFormat.format(new Date()));
@@ -228,6 +228,20 @@ public class BOrderPayService {
             sfUserRelationMapper.insert(sfUserRelation);
             String treeCode = sfUserRelation.getId() + ",";
             sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
+        } else {
+            sfUserRelation.setUserPid(0l);
+            int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+            if (i != 1) {
+                throw new BusinessException("分销关系修改失败");
+            }
+            Long id = sfUserRelation.getId();
+            String treeCode = sfUserRelation.getTreeCode();
+            Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+            Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
+            i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
+            if (i <= 0) {
+                throw new BusinessException("分销关系树结构修改失败");
+            }
         }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());

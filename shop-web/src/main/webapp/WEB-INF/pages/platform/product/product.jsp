@@ -47,15 +47,14 @@
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
         <div class="dlpople">
-            <p>库存</p>
             <c:choose>
                 <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
                     <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
                     </p>
                 </c:when>
-                <c:otherwise>
-                    <p><span>${productDetails.stock}件</span></p>
-                </c:otherwise>
+                <%--<c:otherwise>--%>
+                    <%--<p><span>${productDetails.stock}件</span></p>--%>
+                <%--</c:otherwise>--%>
             </c:choose>
         </div>
         <div class="dlpople">

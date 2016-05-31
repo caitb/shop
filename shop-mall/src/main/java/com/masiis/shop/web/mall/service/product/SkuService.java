@@ -190,6 +190,7 @@ public class SkuService {
         PfUserSkuStock pfUserSkuStock = pfUserSkuStockService.selectByUserIdAndSkuId(sfShop.getUserId(), skuId);
         if (pfUserSkuStock != null && sfShop != null) {
             if (shopUser.getSendType() == 1) {//平台代发
+                skuInfo.setShipAmount(sfShop.getShipAmount());
                 int currentStock = pfUserSkuStock.getStock() - pfUserSkuStock.getFrozenStock();
                 if(currentStock>=0){
                     skuInfo.setStock(currentStock);
@@ -199,8 +200,8 @@ public class SkuService {
             }
             if (shopUser.getSendType() == 2) {//自己发货
                 skuInfo.setStock(pfUserSkuStock.getCustomStock());
-                skuInfo.setShipAmount(sfShop.getShipAmount());
             }
+
         }
         return skuInfo;
     }

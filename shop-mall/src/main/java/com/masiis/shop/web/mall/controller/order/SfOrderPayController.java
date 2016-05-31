@@ -100,6 +100,8 @@ public class SfOrderPayController extends BaseController {
         Map<String,Object> map = orderPayService.getOrderDetail(orderId);
         model.addAttribute("orderConsignee",map.get("orderConsignee"));
         model.addAttribute("order",map.get("order"));
+        model.addAttribute("isFreeShipAmount",map.get("isFreeShipAmount"));
+        model.addAttribute("skuTotalShipAmount",map.get("skuTotalShipAmount"));
         model.addAttribute("orderItems",map.get("orderItems"));
         model.addAttribute("userPid",map.get("userPid"));
         model.addAttribute("mallDomainNameAddress", SysConstants.MALL_DOMAIN_NAME_ADDRESS);

@@ -72,4 +72,8 @@
         where id = #{id}
     </update>
 
+    <update id="updateTreeCodes">
+        update sf_user_relation set tree_code = SUBSTRING(tree_code,#{idIndex}),tree_level=tree_level-#{treeLevelDiff}
+        where tree_code LIKE CONCAT(#{treeCode},'%')
+    </update>
 </mapper>

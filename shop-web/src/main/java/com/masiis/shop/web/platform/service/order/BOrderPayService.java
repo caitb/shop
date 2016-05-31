@@ -190,7 +190,9 @@ public class BOrderPayService {
             sfShop.setPageviews(0l);
             sfShop.setQrCode("");
             sfShop.setSaleAmount(BigDecimal.ZERO);
+            sfShop.setShipType(1);//运费类型0：消费者出运费1：代理商出运费
             sfShop.setShipAmount(BigDecimal.ZERO);
+            sfShop.setAgentShipAmount(new BigDecimal(8));
             sfShop.setShoutNum(0l);
             sfShop.setVersion(0l);
             sfShop.setRemark("");
@@ -208,6 +210,20 @@ public class BOrderPayService {
             sfUserRelationMapper.insert(sfUserRelation);
             String treeCode = sfUserRelation.getId() + ",";
             sfUserRelationMapper.updateTreeCodeById(sfUserRelation.getId(), treeCode);
+        } else {
+            sfUserRelation.setUserPid(0l);
+            int i = sfUserRelationMapper.updateByPrimaryKey(sfUserRelation);
+            if (i != 1) {
+                throw new BusinessException("分销关系修改失败");
+            }
+            Long id = sfUserRelation.getId();
+            String treeCode = sfUserRelation.getTreeCode();
+            Integer id_index = treeCode.indexOf(String.valueOf(id)) + 1;
+            Integer treeLevel = sfUserRelation.getTreeLevel() - 1;
+            i = sfUserRelationMapper.updateTreeCodes(treeCode, id_index, treeLevel);
+            if (i <= 0) {
+                throw new BusinessException("分销关系树结构修改失败");
+            }
         }
         for (PfBorderItem pfBorderItem : pfBorderItemMapper.selectAllByOrderId(bOrderId)) {
             PfUserSku thisUS = pfUserSkuMapper.selectByUserIdAndSkuId(comUser.getId(), pfBorderItem.getSkuId());

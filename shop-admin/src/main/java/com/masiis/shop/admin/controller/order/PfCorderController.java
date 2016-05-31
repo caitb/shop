@@ -3,6 +3,7 @@ package com.masiis.shop.admin.controller.order;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.COrderService;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderFreight;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/order/corder")
-public class PfCorderController {
+public class PfCorderController extends BaseController{
 
     private final static Log log = LogFactory.getLog(PfCorderController.class);
 
@@ -87,7 +88,7 @@ public class PfCorderController {
                 return "请填写运单号";
             }
 
-            cOrderService.delivery(pfCorderFreight);
+            cOrderService.delivery(pfCorderFreight,getPbUser(request));
 
             return "success";
         } catch (Exception e) {

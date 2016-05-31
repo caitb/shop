@@ -5,15 +5,18 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.base.BaseService;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -38,6 +41,8 @@ public class COrderService extends BaseService {
     private ComSpuMapper comSpuMapper;
     @Resource
     private PfCorderOperationLogMapper pfCorderOperationLogMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, PfCorder pfCorder){
         String sort = "create_time desc";
@@ -112,7 +117,7 @@ public class COrderService extends BaseService {
      * 发货
      * @param pfCorderFreight
      */
-    public void delivery(PfCorderFreight pfCorderFreight){
+    public void delivery(PfCorderFreight pfCorderFreight,PbUser pbUser) throws Exception {
         PfCorder pfCorder = pfCorderMapper.selectById(pfCorderFreight.getPfCorderId());
         pfCorder.setOrderStatus(8);
         pfCorder.setShipStatus(5);
@@ -131,6 +136,19 @@ public class COrderService extends BaseService {
         pfCorderOperationLog.setPfCorderId(pfCorder.getId());
         pfCorderOperationLog.setRemark("订单完成");
         pfCorderOperationLogMapper.insert(pfCorderOperationLog);
+
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("发货");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建试用发货失败!");
+        }
     }
 
 }

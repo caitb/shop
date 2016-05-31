@@ -75,8 +75,8 @@
 
                 <h3>${sd.slogan}</h3>
 
-                <%--<h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
-                <h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>
+                <h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>
+                <%--<h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
                 <p>
                     <button>立即购买</button>
                 </p>

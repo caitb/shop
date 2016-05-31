@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class SfOrderManagerController extends BaseController {
     @Resource
     private UserService userService;
     @Resource
-    private SfUserAccountService sfUserAccountService;
+    private SfShopService sfShopService;
     @Resource
     private SfOrderItemDistributionService sfOrderItemDistributionService;
 
@@ -128,10 +129,19 @@ public class SfOrderManagerController extends BaseController {
     @RequestMapping("/stockOrder")
     public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
         ComUser comUser = getComUser(request);
-//        if(shopId!= null){
-//            SfShop shop = sfShopService.getSfShopById(shopId);
-//            request.getSession().setAttribute("shipAmount", shop.getShipAmount());
-//        }
+        Boolean OK =true;
+        SfShop shop =null;
+        if(shopId!= null){
+            shop = sfShopService.getSfShopById(shopId);
+            if (shop.getShipAmount().longValue() == 0.00) {
+                OK = false;
+            }
+//            String shipAmount=shop.getShipAmount().toString();
+            DecimalFormat myformat=new DecimalFormat("0.00");
+            String shipAmount = myformat.format(shop.getShipAmount());
+            request.getSession().setAttribute("shipAmount", shipAmount);
+        }
+        request.getSession().setAttribute("OK", OK);
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null);
         String index=null;
         if(orderStatus==null){
@@ -145,21 +155,11 @@ public class SfOrderManagerController extends BaseController {
         } else if (orderStatus == 3) {
             index="4";//已完成
         }
-//        String skuValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);
-//        if (sfOrders != null && sfOrders.size() != 0) {
-//            for (SfOrder sfOrder : sfOrders) {
-//                List<SfOrderItem> sfOrderItems = sfOrderManageService.findSfOrderItemBySfOrderId(sfOrder.getId());
-//                for (SfOrderItem sfOrderItem : sfOrderItems) {
-//                    sfOrderItem.setSkuUrl(skuValue + sfOrderManageService.findComSkuImage(sfOrderItem.getSkuId()).getImgUrl());
-//                    sfOrder.setTotalQuantity(sfOrder.getTotalQuantity() + sfOrderItem.getQuantity());//订单商品总量
-//                }
-//                sfOrder.setSfOrderItems(sfOrderItems);
-//            }
-//        }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
-//        modelAndView.addObject("shipAmount", shop.getShipAmount());
+        modelAndView.addObject("OK", OK);
+//        modelAndView.addObject("shipAmount", shop.getShipAmount().toString());
         modelAndView.setViewName("mall/order/wodedingdan");
         return modelAndView;
     }
@@ -177,7 +177,7 @@ public class SfOrderManagerController extends BaseController {
             if (user == null) {
                 throw new BusinessException("user不能为空");
             }
-            Long shopId =(Long) request.getSession().getAttribute("shopId");
+//            Long shopId =(Long) request.getSession().getAttribute("shopId");
             if(index==0){
                 sfOrders = sfOrderManageService.findOrdersByUserId(user.getId(), null, null);
             }else if(index==1){

@@ -64,7 +64,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">(运费：￥${shipAmount})</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">

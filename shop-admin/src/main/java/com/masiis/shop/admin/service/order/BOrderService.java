@@ -20,6 +20,7 @@ import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -28,6 +29,7 @@ import java.util.*;
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Service
+@Transactional
 public class BOrderService {
 
     @Resource

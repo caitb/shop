@@ -161,6 +161,9 @@
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
             </if>
+            <if test="isQueue != null">
+                is_queue = #{isQueue},
+            </if>
             <if test="version != null">
                 version = #{version,jdbcType=INTEGER}+1
             </if>

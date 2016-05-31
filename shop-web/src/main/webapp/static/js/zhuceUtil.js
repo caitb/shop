@@ -5,12 +5,12 @@ $(function () {
             return false;
         }
         if (!isNumber($(data).val())) {
-            alert("请输入6~20个字符，字母、数字、下划线或减号。");
+            alert("请输入字母、数字、下划线或减号。");
             return false;
         }
         return true;
         function isNumber(s) {
-            var patrn = /^[a-z]+[a-zA-Z0-9_-]{5,19}$/;
+            var patrn = /[a-zA-Z0-9_-]{5,19}$/;
             if (!patrn.exec(s)) {
                 return false;
             }

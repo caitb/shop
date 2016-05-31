@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -289,7 +291,7 @@ public class UserService {
     }
 
     @Transactional
-    public ComUser signWithCreateUserByWX(AccessTokenRes res, WxUserInfo userRes) {
+    public synchronized ComUser signWithCreateUserByWX(AccessTokenRes res, WxUserInfo userRes) {
         // 检查openid是否已经存在数据库
         List<ComWxUser> wxUsers = wxUserMapper.selectByUnionid(userRes.getUnionid());
         ComWxUser wxUser = null;
@@ -425,5 +427,10 @@ public class UserService {
             }
         }
         return user;
+    }
+
+    public static void main(String... args) throws UnsupportedEncodingException {
+        String xx = URLDecoder.decode("d%E2%80%86y%E2%80%86c%E2%80%86286588441", "UTF-8");
+        System.out.println(xx);
     }
 }

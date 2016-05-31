@@ -42,11 +42,11 @@
                            <p>时间：<span><fmt:formatDate value="${pb.createTime}" pattern="yyyy-MM-dd HH:mm" /></span></p>
                             <h2>
                                 订单号：<span>${pb.orderCode}</span>
-                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}" >待付款</b ></c:if>
+                                <c:if test="${pb.orderStatus ==0}"><b class="querenshouhuo_${pb.id}">待付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==7}"> <b class="querenshouhuo_${pb.id}">待发货</b></c:if>
                                 <c:if test="${pb.orderStatus ==8}"><b class="querenshouhuo_${pb.id}">待收货</b></c:if>
                                 <c:if test="${pb.orderStatus ==3}"><b class="querenshouhuo_${pb.id}">已完成</b></c:if>
-                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}" >已付款</b ></c:if>
+                                <c:if test="${pb.orderStatus ==1}"><b class="querenshouhuo_${pb.id}">已付款</b ></c:if>
                                 <c:if test="${pb.orderStatus ==2}"> <b class="querenshouhuo_${pb.id}">已取消</b></c:if>
                                 <c:if test="${pb.orderStatus ==4}"><b class="querenshouhuo_${pb.id}">退款中</b></c:if>
                                 <c:if test="${pb.orderStatus ==5}"><b class="querenshouhuo_${pb.id}">已退款</b></c:if>

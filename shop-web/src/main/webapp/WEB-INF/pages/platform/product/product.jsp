@@ -38,7 +38,7 @@
             <p style="padding-right:30px">${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999;float:right;margin:4px 10px 0 0;">代理人数：
+            </span><span style="color: #999999;float:right;margin:4px 0 0 0;">代理人数：
                 <c:if test="${productDetails.agentNum >9999}">
                    超过9999</span>
                 </c:if>
@@ -49,7 +49,7 @@
         <c:choose>
         <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
         <div class="dlpople">
-                    <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
+                    <p class="laba" style="margin-right: 10px;"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
                     </p>
                 <%--<c:otherwise>--%>
                     <%--<p><span>${productDetails.stock}件</span></p>--%>

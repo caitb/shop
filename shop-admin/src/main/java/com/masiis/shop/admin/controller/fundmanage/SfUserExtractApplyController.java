@@ -2,6 +2,7 @@ package com.masiis.shop.admin.controller.fundmanage;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.fundmanage.SfUserExtractApplyService;
 import com.masiis.shop.admin.utils.WxNoticeUtils;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/fundmanage/sf-extract")
-public class SfUserExtractApplyController {
+public class SfUserExtractApplyController extends BaseController{
 
     private final static Log log = LogFactory.getLog(SfUserExtractApplyController.class);
 
@@ -62,7 +63,7 @@ public class SfUserExtractApplyController {
                         Integer auditType,
                         String auditCause){
         try {
-            sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"));
+            sfUserExtractApplyService.audit(id, auditType, auditCause, request.getSession().getServletContext().getRealPath("/"),getPbUser(request));
             // 发送微信通知
             sfUserExtractApplyService.sendWxNotice(id);
             // 发送短信

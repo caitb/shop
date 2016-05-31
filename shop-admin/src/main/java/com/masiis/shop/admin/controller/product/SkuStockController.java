@@ -2,6 +2,7 @@ package com.masiis.shop.admin.controller.product;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.product.SkuStockService;
 import com.masiis.shop.dao.po.PfSkuStock;
 import com.masiis.shop.dao.po.PfUserSku;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/stock")
-public class SkuStockController {
+public class SkuStockController extends BaseController{
 
     private final static Log log = LogFactory.getLog(SkuStockController.class);
 
@@ -56,7 +57,7 @@ public class SkuStockController {
                          PfSkuStock pfSkuStock){
 
         try {
-            skuStockService.update(pfSkuStock);
+            skuStockService.update(pfSkuStock,getPbUser(request));
 
             return "success";
         } catch (Exception e) {

@@ -3,10 +3,12 @@ package com.masiis.shop.admin.controller.order;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.BOrderPayService;
 import com.masiis.shop.admin.service.order.BOrderPaymentService;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.order.OrderQueueDealService;
+import com.masiis.shop.dao.po.PbUser;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderFreight;
 import com.masiis.shop.dao.po.PfBorderPayment;
@@ -27,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/order/border")
-public class PfBorderController {
+public class PfBorderController extends BaseController {
 
     private final static Log log = LogFactory.getLog(PfBorderController.class);
 
@@ -135,7 +137,7 @@ public class PfBorderController {
 
         try {
             PfBorderPayment borderPayment = bOrderPaymentService.findOfflinePayByBOrderId(bOrderId);
-            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"));
+            bOrderPayService.mainPayBOrder(borderPayment, outOrderId, request.getServletContext().getRealPath("/"),getPbUser(request));
 
             return "success";
         } catch (Exception e) {
@@ -195,8 +197,7 @@ public class PfBorderController {
             if(StringUtils.isBlank(pfBorderFreight.getFreight())){
                 return "请填写运单号";
             }
-
-            bOrderService.delivery(pfBorderFreight);
+            bOrderService.delivery(pfBorderFreight,getPbUser(request));
 
             return "success";
         } catch (Exception e) {

@@ -8,6 +8,7 @@ import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.enums.UserAccountRecordFeeType;
 import com.masiis.shop.common.enums.mall.SfOrderStatusEnum;
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
@@ -26,6 +27,7 @@ import com.masiis.shop.dao.mall.user.SfUserBillMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.SfSkuDistributionMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.apache.log4j.Logger;
@@ -34,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -82,6 +85,8 @@ public class OrderService {
     private SfUserAccountRecordMapper sfRecordMapper;
     @Resource
     private PfUserSkuStockService pfUserSkuStockService;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     /**
      * 店铺订单列表
@@ -199,6 +204,19 @@ public class OrderService {
         //短信和微信通知
         MobileMessageUtil.getInitialization("C").consumerShipRemind(sfOrderConsignee.getMobile(), sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight());
         WxSFNoticeUtils.getInstance().orderShipNotice(comUser, new String[]{sfOrder.getOrderCode(), sfOrderFreight.getShipManName(), sfOrderFreight.getFreight()}, PropertiesUtils.getStringValue("mall.domain.name.address") + "/sfOrderManagerController/borderDetils.html?id=" + sfOrder.getId());
+
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(operationUser.getId());
+        pbOperationLog.setPbUserName(operationUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("发货");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建店铺发货失败!");
+        }
     }
 
     public void updateOrderStock(SfOrder sfOrder) throws Exception {

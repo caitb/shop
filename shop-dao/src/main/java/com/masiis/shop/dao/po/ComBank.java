@@ -50,4 +50,14 @@ public class ComBank {
     public void setBankMobile(String bankMobile) {
         this.bankMobile = bankMobile == null ? null : bankMobile.trim();
     }
+
+    @Override
+    public String toString() {
+        return "ComBank{" +
+                "id=" + id +
+                ", bankName='" + bankName + '\'' +
+                ", bankImg='" + bankImg + '\'' +
+                ", bankMobile='" + bankMobile + '\'' +
+                '}';
+    }
 }

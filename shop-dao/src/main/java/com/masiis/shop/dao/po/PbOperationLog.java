@@ -86,4 +86,18 @@ public class PbOperationLog {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "PbOperationLog{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", pbUserId=" + pbUserId +
+                ", pbUserName='" + pbUserName + '\'' +
+                ", operateContent='" + operateContent + '\'' +
+                ", operateType=" + operateType +
+                ", operateIp='" + operateIp + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

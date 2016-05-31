@@ -87,16 +87,39 @@ public class ShopService {
      * @param sfShop
      */
     public void updateShop(SfShop sfShop){
+        if(sfShop.getShipType().intValue() == 0){
+            sfShop.setAgentShipAmount(new BigDecimal(0));
+        }
+
+        if(sfShop.getShipType().intValue() == 1){
+            sfShop.setShipAmount(new BigDecimal(0));
+        }
+
         sfShopMapper.updateByPrimaryKey(sfShop);
     }
 
+    /**
+     * 批量更新店铺信息
+     * @param ids
+     * @param shipTypes
+     * @param shipAmounts
+     * @param agentShipAmounts
+     */
     public void batchUpdateShop(String[] ids, Integer shipTypes, BigDecimal shipAmounts, BigDecimal agentShipAmounts){
         for(String id : ids){
             SfShop sfShop = new SfShop();
             sfShop.setId(Long.valueOf(id));
             sfShop.setShipType(shipTypes);
-            sfShop.setShipAmount(shipAmounts);
-            sfShop.setAgentShipAmount(agentShipAmounts);
+
+            if(shipTypes.intValue() == 0){
+                sfShop.setShipAmount(shipAmounts);
+                sfShop.setAgentShipAmount(new BigDecimal(0));
+            }
+
+            if(shipTypes.intValue() == 1){
+                sfShop.setShipAmount(new BigDecimal(0));
+                sfShop.setAgentShipAmount(agentShipAmounts);
+            }
 
             sfShopMapper.updateByPrimaryKey(sfShop);
         }

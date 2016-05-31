@@ -266,11 +266,9 @@ public class DrawPicUtil {
 
 
     public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, 11);
-        calendar.set(Calendar.DAY_OF_MONTH, 31);
-        System.out.print(calendar.getTime());
-
+        String s = "1,96,146,149,159,175,191,207,213,";
+        s = s.substring(s.indexOf("175,"), s.length());
+        System.out.println(s);
 //        DrawPicUtil drawPicUtil = new DrawPicUtil();
 //        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
 //        List<DrawPicParam> drawPicParams = new ArrayList<>();

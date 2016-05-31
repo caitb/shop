@@ -489,8 +489,18 @@
                                         $('input[name="shipAmount"]').val(shop.shipAmount);
                                         $('input[name="agentShipAmount"]').val(shop.agentShipAmount);
                                         $('input[name="shipType"]').removeProp('checked');
+                                        $('input[name="agentShipAmount"]').removeAttr('disabled');
+                                        $('input[name="shipAmount"]').removeAttr('disabled');
                                         $('input[name="shipType"]').each(function(i, obj){
                                             if($(this).val() == shop.shipType) $(this).prop('checked', 'checked');
+                                            if(shop.shipType == 0){
+                                                $('input[name="agentShipAmount"]').val(0);
+                                                $('input[name="agentShipAmount"]').prop('disabled', 'disabled');
+                                            }
+                                            if(shop.shipType == 1){
+                                                $('input[name="shipAmount"]').val(0);
+                                                $('input[name="shipAmount"]').prop('disabled', 'disabled');
+                                            }
                                         });
                                     }
                                 });
@@ -726,6 +736,32 @@
         })
     });
 
+
+    $('input[name="shipType"]').change(function(){
+        if($(this).val() == 0){
+            $('input[name="agentShipAmount"]').val(0);
+            $('input[name="agentShipAmount"]').prop('disabled', 'disabled');
+            $('input[name="shipAmount"]').removeAttr('disabled');
+        }
+        if($(this).val() == 1){
+            $('input[name="shipAmount"]').val(0);
+            $('input[name="shipAmount"]').prop('disabled', 'disabled');
+            $('input[name="agentShipAmount"]').removeAttr('disabled');
+        }
+    });
+
+    $('input[name="shipTypes"]').change(function(){
+        if($(this).val() == 0){
+            $('input[name="agentShipAmounts"]').val(0);
+            $('input[name="agentShipAmounts"]').prop('disabled', 'disabled');
+            $('input[name="shipAmounts"]').removeAttr('disabled');
+        }
+        if($(this).val() == 1){
+            $('input[name="shipAmounts"]').val(0);
+            $('input[name="shipAmounts"]').prop('disabled', 'disabled');
+            $('input[name="agentShipAmounts"]').removeAttr('disabled');
+        }
+    });
 </script>
 </body>
 </html>

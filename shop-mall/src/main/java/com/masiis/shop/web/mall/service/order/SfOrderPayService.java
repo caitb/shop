@@ -293,28 +293,12 @@ public class SfOrderPayService {
             map.put("order", order);
             //运费
             if(order!=null){
-                SfShop sfShop = sfShopService.getSfShopById(order.getShopId());
-                if (sfShop!=null){
-                    Integer shipType =  sfShop.getShipType();
-                    if (shipType.equals(0)){
-                        //消费者提供运费
-                        BigDecimal shipAmount = order.getShipAmount();
-                        if (shipAmount.compareTo(new BigDecimal(0))==0){
-                            map.put("isFreeShipAmount","true");
-                        }else{
-                            map.put("isFreeShipAmount","false");
-                            map.put("skuTotalShipAmount", shipAmount);
-                        }
-                    }else if (shipType.equals(1)){
-                        //代理商出运费
-                        BigDecimal agentShipAmount = order.getAgentShipAmount();
-                        if (agentShipAmount.compareTo(new BigDecimal(0))==0){
-                            map.put("isFreeShipAmount","true");
-                        }else{
-                            map.put("isFreeShipAmount","false");
-                            map.put("skuTotalShipAmount", agentShipAmount);
-                        }
-                    }
+                BigDecimal shipAmount = order.getShipAmount();
+                if (shipAmount.compareTo(new BigDecimal(0))==0){
+                    map.put("isFreeShipAmount","true");
+                }else{
+                    map.put("isFreeShipAmount","false");
+                    map.put("skuTotalShipAmount", shipAmount);
                 }
             }
             //订单详情信息

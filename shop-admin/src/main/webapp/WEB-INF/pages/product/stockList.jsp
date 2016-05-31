@@ -363,7 +363,7 @@
                                     if(result) {
                                         $.ajax({
                                             url: '<%=basePath%>stock/update.do',
-                                            data: {id:row.pfSkuStock.id, isQueue: row.pfSkuStock.isQueue==0 ? 1:0},
+                                            data: {id:row.pfSkuStock.id, isQueue: row.pfSkuStock.isQueue==0 ? 1:0, version: row.pfSkuStock.version},
                                             success: function(msg){
                                                 $('#table').bootstrapTable('refresh');
                                                 $.gritter.add({

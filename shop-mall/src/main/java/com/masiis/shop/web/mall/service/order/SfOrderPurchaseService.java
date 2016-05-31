@@ -87,16 +87,14 @@ public class SfOrderPurchaseService {
             map.put("skuTotalPrice", skuTotalPrice);
             map.put("totalQuantity", totalQuantity);
             //获得运费
-            Map<String,Object> shipAmountAndTypeMap = getShopShipAmountAndType(sfShopId);
-            map.put("shipType",shipAmountAndTypeMap.get("shipType"));
-            BigDecimal shipAmount = (BigDecimal)shipAmountAndTypeMap.get("shipAmount");
+            BigDecimal shipAmount = getShopShipAmount(sfShopId);
             if (shipAmount.compareTo(new BigDecimal(0))==0){
                 map.put("isFreeShipAmount","true");
             }else{
                 map.put("isFreeShipAmount","false");
             }
-            map.put("skuTotalShipAmount", shipAmountAndTypeMap.get("shipAmount"));
-            map.put("totalPrice", skuTotalPrice.add((BigDecimal) shipAmountAndTypeMap.get("shipAmount")));
+            map.put("skuTotalShipAmount", shipAmount);
+            map.put("totalPrice", skuTotalPrice.add(shipAmount));
         } catch (Exception e) {
             throw new BusinessException(e);
         }
@@ -170,27 +168,14 @@ public class SfOrderPurchaseService {
      * @author hanzengzhi
      * @date 2016/4/9 12:00
      */
-    private Map<String,Object> getShopShipAmountAndType(Long sfShopId) {
+    private BigDecimal getShopShipAmount(Long sfShopId) {
         SfShop sfShop = sfShopService.getSfShopById(sfShopId);
-        Map<String,Object> map = null;
-        if (sfShop!=null&&sfShop.getShipType()!=null){
-            map = new HashMap<String,Object>();
-            map.put("shipType",sfShop.getShipType());
-            if (sfShop.getShipType().equals(0)){
-                //消费者运费
-                map.put("shipAmount",sfShop.getShipAmount());
-            } else if (sfShop.getShipType().equals(1)){
-                //代理商出运费
-                map.put("shipAmount",sfShop.getAgentShipAmount());
-            }else {
-                log.info("小铺的运费类型出错----类型id为----"+sfShop.getShipType());
-                throw new BusinessException("小铺的运费类型出错");
-            }
+        if (sfShop!=null){
+            return sfShop.getShipAmount();
         }else{
-            log.info("小铺的运费类型出错----类型id为null");
-            throw new BusinessException("小铺的运费类型出错");
+            log.info("获得小铺的运费时小铺不存在");
+            throw new BusinessException("获得小铺的运费时小铺不存在");
         }
-        return map;
     }
 
     /**
@@ -208,7 +193,6 @@ public class SfOrderPurchaseService {
             map = getConfirmOrderInfo(purchaseUserId, selectedAddressId, shopId);
             ComUserAddress comUserAddress = (ComUserAddress) map.get("comUserAddress");
             List<SfShopCartSkuDetail> sfShopCartSkuDetails = (List<SfShopCartSkuDetail>) map.get("shopCartSkuDetails");
-            Integer shipType = (Integer) map.get("shipType");
             BigDecimal skuTotalPrice = (BigDecimal) map.get("skuTotalPrice");
             BigDecimal skuTotalShipAmount = (BigDecimal) map.get("skuTotalShipAmount");
             if (sfShopCartSkuDetails == null || sfShopCartSkuDetails.size() == 0) {
@@ -230,7 +214,7 @@ public class SfOrderPurchaseService {
                 }
                 //插入订单表
                 log.info("插入订单---start");
-                sfOrder = generateSfOrder(purchaseUserId, sfShopCartSkuDetails, message, skuTotalPrice, shipType,skuTotalShipAmount);
+                sfOrder = generateSfOrder(purchaseUserId, sfShopCartSkuDetails, message, skuTotalPrice,skuTotalShipAmount);
                 int i = sfOrderService.insert(sfOrder);
                 if (i == 1) {
                     log.info("插入订单成功---end");
@@ -407,7 +391,7 @@ public class SfOrderPurchaseService {
      */
     private SfOrder generateSfOrder(Long purchaseUserId,
                                     List<SfShopCartSkuDetail> sfShopCartSkuDetails, String message,
-                                    BigDecimal skuTotalPrice,Integer shipType, BigDecimal skuTotalShipAmount) {
+                                    BigDecimal skuTotalPrice, BigDecimal skuTotalShipAmount) {
         SfShopCartSkuDetail sfShopCartSkuDetail = null;
         SfOrder sfOrder = new SfOrder();
         sfOrder.setUserId(purchaseUserId);
@@ -427,15 +411,14 @@ public class SfOrderPurchaseService {
         sfOrder.setCreateTime(new Date());
         sfOrder.setModifyTime(new Date());
         sfOrder.setProductAmount(skuTotalPrice);//商品总费用
-        sfOrder.setShipType(shipType);
-        if (shipType.equals(0)){
-            //消费者出运费
-            sfOrder.setShipAmount(skuTotalShipAmount);
-            sfOrder.setAgentShipAmount(new BigDecimal(0));
-        }else if (shipType.equals(1)){
-            //代理商出运费
-            sfOrder.setShipAmount(new BigDecimal(0));
-            sfOrder.setAgentShipAmount(skuTotalShipAmount);
+        sfOrder.setShipAmount(skuTotalShipAmount);
+        SfShop sfShop = sfShopService.getSfShopById(sfOrder.getShopId());
+        if (sfShop!=null){
+            if (sfShop.getShipType().equals(1)){
+                sfOrder.setAgentShipAmount(sfShop.getAgentShipAmount());
+            }else{
+                sfOrder.setAgentShipAmount(new BigDecimal(0));
+            }
         }
         sfOrder.setShipType(0);
         sfOrder.setShipStatus(0);

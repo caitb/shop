@@ -58,7 +58,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -91,7 +91,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -124,7 +124,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -157,7 +157,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥${pbi.unitPrice}</span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} （包邮）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计：￥${pb.orderAmount} <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -190,7 +190,7 @@
                                     <p class="defult"><span style="float:none;color:#f73c8c;">￥<fmt:formatNumber value="${pbi.unitPrice}" pattern="##.##" minFractionDigits="2"></fmt:formatNumber></span><b>x${pbi.quantity}</b></p>
                                 </div>
                             </div></c:forEach>
-                            <h1>共${pb.totalQuantity}件商品 合计:￥<fmt:formatNumber value="${pb.orderAmount}" pattern="##.##" minFractionDigits="2"></fmt:formatNumber> （包邮）</h1>
+                            <h1>共${pb.totalQuantity}件商品 合计:￥<fmt:formatNumber value="${pb.orderAmount}" pattern="##.##" minFractionDigits="2"></fmt:formatNumber> <c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：${shipAmount}</c:if></h1>
                             <div class="ding">
                                 <p><a href="<%=path%>/sfOrderManagerController/borderDetils.html?id=${pb.id}">查看订单详情</a></p>
                                 <c:if test="${pb.orderStatus ==8 ||pb.orderStatus ==0}">
@@ -252,6 +252,8 @@
                        dataType:"Json",
                        success:function(data){
                            var trHtml = "";
+                           var OK=${OK};
+                           var shipAmount =${shipAmount}.toFixed(2);
                            $.each(data, function(i, sfOrder) {
 //                               alert(data);
                                var time2 = new Date(sfOrder.createTime).Format("yyyy-MM-dd hh:mm");
@@ -274,7 +276,12 @@
                                    trHtml+="<div><h2>"+sfOrderItem.skuName+"</h2><p class=\"defult\"><span style=\"float:none;color:#f73c8c;\">￥"+sfOrderItem.skuMoney+"</span><b>x"+sfOrderItem.quantity+"</b></p></div></div>";
                                })
 //                               if(sfOrder.orderAmount){}
-                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderMoney+"（包邮）</h1>";
+                               trHtml+=" <h1>共"+sfOrder.totalQuantity+"件商品 合计：￥"+sfOrder.orderMoney+" ";
+                               if(OK==false){
+                                   trHtml+=" （包邮）</h1>";
+                               }else if(OK==true){
+                                   trHtml+="运费："+shipAmount+"</h1>";
+                               }
                                trHtml+="<div class=\"ding\"><p><a href=\"<%=path%>/sfOrderManagerController/borderDetils.html?id="+sfOrder.id+"\">查看订单详情</a></p>";
                                if(sfOrder.orderStatus ==8 ||sfOrder.orderStatus ==0){
                                    trHtml+="<p>";

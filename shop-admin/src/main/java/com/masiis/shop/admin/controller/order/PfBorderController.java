@@ -8,7 +8,8 @@ import com.masiis.shop.admin.service.order.BOrderPayService;
 import com.masiis.shop.admin.service.order.BOrderPaymentService;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.order.OrderQueueDealService;
-import com.masiis.shop.dao.po.PbUser;
+import com.masiis.shop.dao.platform.system.ComDictionarysMapper;
+import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderFreight;
 import com.masiis.shop.dao.po.PfBorderPayment;
@@ -22,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +43,8 @@ public class PfBorderController extends BaseController {
     private BOrderPaymentService bOrderPaymentService;
     @Resource
     private BOrderPayService bOrderPayService;
+    @Resource
+    private ComDictionarysMapper comDictionarysMapper;
 
     @RequestMapping("/list.shtml")
     public String list() {
@@ -54,11 +58,21 @@ public class PfBorderController extends BaseController {
                        Integer pageSize,
                        String sortName,
                        String sortOrder,
-                       PfBorder pfBorder) {
-
+                       PfBorder pfBorder,
+                       Integer  payTypeId
+                       ){
         try {
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder);
-
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,payTypeId);
+            if(pfBorder.getOrderType()==null && pfBorder.getShipType()==null && pfBorder.getOrderStatus()==null && payTypeId==null){
+                List<ComDictionary> orderTypeList = comDictionarysMapper.PickListByCode("PF_BORDER_TYPE");//订单类型
+                List<ComDictionary> payTypeList = comDictionarysMapper.PickListByCode("COM_USER_EXTRACT_WAY");//支付方式
+                List<ComDictionary> orderStatusList = comDictionarysMapper.PickListByCode("PF_BORDER_STATUS");//订单状态
+                List<ComDictionary> wuliuList = comDictionarysMapper.PickListByCode("PF_BORDER_SHIP_STATUS");//物流状态
+                pageMap.put("orderTypeList",orderTypeList);
+                pageMap.put("payTypeList",payTypeList);
+                pageMap.put("orderStatusList",orderStatusList);
+                pageMap.put("wuliuList",wuliuList);
+            }
             return pageMap;
         } catch (Exception e) {
             log.error("查询合伙人列表失败![pfBorder=" + pfBorder + "]");
@@ -113,7 +127,7 @@ public class PfBorderController extends BaseController {
 
         try {
             pfBorder.setOrderStatus(9);
-            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder);
+            Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,null);
 
             return pageMap;
         } catch (Exception e) {
@@ -202,7 +216,7 @@ public class PfBorderController extends BaseController {
             if (StringUtils.isBlank(pfBorderFreight.getFreight())) {
                 return "请填写运单号";
             }
-            bOrderService.delivery(pfBorderFreight, getPbUser(request));
+            bOrderService.delivery(pfBorderFreight);
 
             return "success";
         } catch (Exception e) {

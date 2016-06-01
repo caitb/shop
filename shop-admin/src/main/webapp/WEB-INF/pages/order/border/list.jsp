@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-skins.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/jquery.gritter.css" />
-
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-ie.min.css" />
     <![endif]-->
@@ -83,6 +83,35 @@
                                             <div class="form-group">
                                                 <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <%--<div class="form-group">--%>
+                                                <%--<input type="text" class="form-control" id="phone" name="phone" placeholder="手机号">--%>
+                                            <%--</div>--%>
+                                            <div class="form-group">
+                                                <label for="orderType">订单类型</label>
+                                                <select id="orderType" name="orderType">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="payTypeId">支付方式</label>
+                                                <select id="payTypeId" name="payTypeId">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderStatus">订单状态</label>
+                                                <select id="orderStatus" name="orderStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipStatus">物流状态</label>
+                                                <select id="shipStatus" name="shipStatus">
+                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -193,14 +222,20 @@
 <script src="<%=basePath%>static/ace2/js/jquery.dataTables.bootstrap.js"></script>
 <script src="<%=basePath%>static/ace2/js/jquery.gritter.min.js"></script>
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
-
+<script src="<%=basePath%>static/js/laydate.js"></script>
 <script src="<%=basePath%>static/js/date-util.js"></script>
-
+<script>
+    laydate({
+        elem: '#beginTime'
+    });
+    laydate({
+        elem: '#endTime'
+    });
+</script>
 <script>
     var $table = $('#table'),
             $remove = $('#remove'),
             selections = [];
-
     function initTable() {
         $table.bootstrapTable({
             url: '<%=basePath%>order/border/list.do',
@@ -211,6 +246,24 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                if($('#orderType').val()){
+                    params.orderType = $('#orderType').val();
+                }
+                if($('#orderStatus').val()){
+                    params.orderStatus = $('#orderStatus').val();
+                }
+                if($('#shipStatus').val()){
+                    params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#payTypeId').val()){
+                    params.payTypeId = $('#payTypeId').val();
+                }
+                if($('#beginTime').val()){
+                    params.beginTime = $('#beginTime').val();
+                }
+                if($('#endTime').val()){
+                    params.endTime = $('#endTime').val();
+                }
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -523,6 +576,34 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
+        //订单类型
+        if($('#orderType').val()==null){
+            var $select = $('#orderType');
+            for(var i=0, len = res.orderTypeList.length;i<len;i++){
+                $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
+            }
+        }
+        //支付方式
+        if($('#payTypeId').val()==null){
+            var $select = $('#payTypeId');
+            for(var i=0, len = res.payTypeList.length;i<len;i++){
+                $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
+            }
+        }
+        //订单状态
+        if($('#orderStatus').val()==null){
+            var $select = $('#orderStatus');
+            for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            }
+        }
+        //物流状态
+        if($('#shipStatus').val()==null){
+            var $select = $('#shipStatus');
+            for(var i=0, len = res.wuliuList.length;i<len;i++){
+                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            }
+        }
         return res;
     }
 

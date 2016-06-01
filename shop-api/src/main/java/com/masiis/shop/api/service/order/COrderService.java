@@ -371,7 +371,7 @@ public class COrderService {
             //<4>修改sku试用人数
             log.info("修改sku试用人数 pfskustatistic---start--");
             PfSkuStatistic pfSkuStatistic = pfSkuStatisticMapper.selectBySkuId(pfCorder.getSkuId());
-            pfSkuStatistic.setAgentNum(pfSkuStatistic.getAgentNum() + 1);
+            pfSkuStatistic.setTrialNum(pfSkuStatistic.getTrialNum()+1);
             pfSkuStatisticMapper.updateById(pfSkuStatistic);
             log.info("修改sku试用人数 pfskustatistic---end--");
         } catch (Exception e) {

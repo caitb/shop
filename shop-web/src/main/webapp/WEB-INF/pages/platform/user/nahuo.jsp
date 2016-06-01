@@ -78,6 +78,7 @@
             </div>
         </section>
         <section class="sec3">
+            <p>运费：<span>到付</span></p>
             <p>留言：<input type="text" id="msg"></p>
             <input type="hidden" id="levelStock" value="${levelStock}"/>
         </section>

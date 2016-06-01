@@ -15,11 +15,10 @@ import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
-import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.platform.user.PfUserSkuStockMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -28,6 +27,7 @@ import java.util.*;
  * Created by ZhaoLiang on 2016/3/2.
  */
 @Service
+@Transactional
 public class BOrderService {
 
     @Resource
@@ -63,7 +63,7 @@ public class BOrderService {
      * @param pfBorder
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, PfBorder pfBorder) {
+    public Map<String, Object> listByCondition(Integer pageNo, Integer pageSize, String sortName, String sortOrder, PfBorder pfBorder,Integer payTypeId) {
         String sort = "create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
         PageHelper.startPage(pageNo, pageSize, sort);
@@ -74,6 +74,12 @@ public class BOrderService {
         for (PfBorder pbo : pfBorders) {
             ComUser comUser = comUserMapper.selectByPrimaryKey(pbo.getUserId());
             PfBorderConsignee pfBorderConsignee = pfBorderConsigneeMapper.selectByBorderId(pbo.getId());
+            PfBorderPayment pfBorderPayment = new PfBorderPayment();
+            pfBorderPayment.setPfBorderId(pbo.getId());
+            pfBorderPayment.setIsEnabled(1);
+            if(payTypeId !=null){
+                pfBorderPayment.setPayTypeId(payTypeId);
+            }
             List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(pbo.getId());
             List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pbo.getId());
 

@@ -40,12 +40,12 @@
         <div class="dlpople">
 
             <p>运费：
-                <%--<c:if test="${empty skuInfo.shipAmount}">--%>
+                <c:if test="${sfShop.shipType==1}">
                 <span>包邮</span></p>
-            <%--</c:if>--%>
-            <%--<c:if test="${ not empty skuInfo.shipAmount}">--%>
-            <%--<span>${skuInfo.shipAmount}</span></p>--%>
-            <%--</c:if>--%>
+            </c:if>
+            <c:if test="${sfShop.shipType==0}">
+                <span>${skuInfo.shipAmount}</span></p>
+            </c:if>
             <p>总销量：<b>${skuInfo.saleNum}</b></p>
             <%--<p>分享量：<b>${skuInfo.shareNum}</b></p>--%>
         </div>

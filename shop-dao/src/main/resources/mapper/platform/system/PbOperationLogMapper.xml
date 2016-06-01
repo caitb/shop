@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.masiis.shop.dao.platform.system.PbOperationLogMapper" >
+    <resultMap id="BaseResultMap" type="com.masiis.shop.dao.po.PbOperationLog" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="pb_user_id" property="pbUserId" jdbcType="BIGINT" />
+        <result column="pb_user_name" property="pbUserName" jdbcType="VARCHAR" />
+        <result column="operate_content" property="operateContent" jdbcType="VARCHAR" />
+        <result column="operate_type" property="operateType" jdbcType="INTEGER" />
+        <result column="operate_ip" property="operateIp" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from pb_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" >
+        insert into pb_operation_log (id, create_time, pb_user_id,
+        pb_user_name, operate_content, operate_type,
+        operate_ip, remark)
+        values (#{pbOperationLog.id}, #{pbOperationLog.createTime}, #{pbOperationLog.pbUserId},
+        #{pbOperationLog.pbUserName}, #{pbOperationLog.operateContent}, #{pbOperationLog.operateType},
+        #{pbOperationLog.operateIp}, #{pbOperationLog.remark})
+    </insert>
+
+    <update id="updateByPrimaryKey" >
+        update pb_operation_log
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        pb_user_id = #{pbUserId,jdbcType=BIGINT},
+        pb_user_name = #{pbUserName,jdbcType=VARCHAR},
+        operate_content = #{operateContent,jdbcType=VARCHAR},
+        operate_type = #{operateType,jdbcType=INTEGER},
+        operate_ip = #{operateIp,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR}
+        where id = #{record.id,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select id, create_time, pb_user_id, pb_user_name, operate_content, operate_type,
+        operate_ip, remark
+        from pb_operation_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select id, create_time, pb_user_id, pb_user_name, operate_content, operate_type,
+        operate_ip, remark
+        from pb_operation_log
+    </select>
+
+</mapper>

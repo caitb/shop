@@ -135,7 +135,7 @@ public class SfUserAccountService {
             }
 
             // 计算销售额
-            BigDecimal saleAmount = order.getPayAmount().subtract(order.getShipAmount());
+            BigDecimal saleAmount = order.getPayAmount(); //.subtract(order.getShipAmount());
 
             log.info("计算店铺的总销售额");
 
@@ -150,9 +150,17 @@ public class SfUserAccountService {
             // 店主account
             ComUserAccount comUserAccount = comUserAccountMapper.findByUserId(order.getShopUserId());
 
-            // 插入店主pf_user_bill_item
-            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee);
+            // 插入店主sf_shop_bill_item
+            SfShopBillItem billItem = createSfShopBillItemBySfOrder(order, shopKeeper, countFee, 1);
             shopBillItemMapper.insert(billItem);
+
+            // 计算物流费用
+            if(order.getAgentShipAmount() != null && order.getAgentShipAmount().compareTo(BigDecimal.ZERO) > 0){
+                SfShopBillItem shipbillItem = createSfShopBillItemBySfOrder(order, shopKeeper, order.getAgentShipAmount(), 3);
+                shopBillItemMapper.insert(shipbillItem);
+                // 减去代理商承担的运费
+                countFee = countFee.subtract(order.getAgentShipAmount());
+            }
 
             // 计算订单结算中金额计入到account中
             ComUserAccountRecord countRecord = createComUserAccountRecordBySfOrder(order, countFee,
@@ -168,7 +176,8 @@ public class SfUserAccountService {
             comUserAccount.setTotalIncomeFee(comUserAccount.getTotalIncomeFee().add(order.getPayAmount()));
             pfIncomeRecord.setNextFee(comUserAccount.getTotalIncomeFee());
 
-            log.info("小铺店主的结算中和总销售额增加金额:" + countFee);
+            log.info("小铺店主的结算中增加金额:" + countFee);
+            log.info("小铺店主的总销售额增加金额:" + order.getPayAmount());
 
             // 小铺店主利润
             BigDecimal profit = new BigDecimal(0);
@@ -193,8 +202,10 @@ public class SfUserAccountService {
                 }
             }
             profit = profit.subtract(order.getDistributionAmount());
+            // 减去代理商承担的运费
+            profit = profit.subtract(order.getAgentShipAmount());
             if (profit.compareTo(BigDecimal.ZERO) < 0) {
-                profit = BigDecimal.ZERO;
+                throw new BusinessException("店主此订单利润小于0,异常!");
             }
             // 计算店主此次总利润
             ComUserAccountRecord pfprofitRecord = createComUserAccountRecordBySfOrder(order, profit,
@@ -243,7 +254,7 @@ public class SfUserAccountService {
         }
     }
 
-    private SfShopBillItem createSfShopBillItemBySfOrder(SfOrder order, ComUser shopKeeper, BigDecimal countFee) {
+    private SfShopBillItem createSfShopBillItemBySfOrder(SfOrder order, ComUser shopKeeper, BigDecimal countFee, Integer itemType) {
         SfShopBillItem item = new SfShopBillItem();
 
         item.setSourceId(order.getId());
@@ -252,7 +263,7 @@ public class SfUserAccountService {
         item.setCreateTime(new Date());
         item.setSourceCreateTime(order.getCreateTime());
         item.setAmount(countFee);
-        item.setItemType(1);
+        item.setItemType(itemType);
         item.setIsCount(0);
 
         return item;

@@ -76,6 +76,9 @@
             <if test="isEnabled != null">
                 AND is_enabled = #{isEnabled}
             </if>
+            <if test="payTypeId != null">
+                AND pay_type_id = #{payTypeId}
+            </if>
         </where>
     </select>
 

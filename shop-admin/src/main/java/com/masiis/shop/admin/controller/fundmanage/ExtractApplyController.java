@@ -2,6 +2,7 @@ package com.masiis.shop.admin.controller.fundmanage;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.fundmanage.ExtractApplyService;
 import com.masiis.shop.dao.po.ComUserExtractApply;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/fundmanage/com-extract")
-public class ExtractApplyController {
+public class ExtractApplyController extends BaseController{
 
     private final static Log log = LogFactory.getLog(ExtractApplyController.class);
 
@@ -64,7 +65,7 @@ public class ExtractApplyController {
     @ResponseBody
     public Object audit(HttpServletRequest request, HttpServletResponse response, ComUserExtractApply comUserExtractApply){
         try {
-            extractApplyService.audit(comUserExtractApply);
+            extractApplyService.audit(comUserExtractApply,getPbUser(request));
 
             return "success";
         } catch (Exception e) {

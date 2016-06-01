@@ -325,6 +325,9 @@
             <if test="sendType != null">
                 AND send_type=#{sendType,jdbcType=INTEGER}
             </if>
+            <if test="beginTime != null and endTime !=null"  >
+                AND create_time BETWEEN #{beginTime} AND #{endTime}
+            </if>
         </where>
     </select>
 

@@ -38,7 +38,7 @@
             <p style="padding-right:30px">${productDetails.name}</p>
             <p><span style="padding:0;">${productDetails.slogan}</span></p>
             <p>￥<b>${productDetails.priceRetail}</b><span>最高利润${productDetails.maxDiscount}%
-            </span><span style="color: #999999;float:right;margin:4px 10px 0 0;">代理人数：
+            </span><span style="color: #999999;float:right;margin:4px 0 0 0;">代理人数：
                 <c:if test="${productDetails.agentNum >9999}">
                    超过9999</span>
                 </c:if>
@@ -46,18 +46,17 @@
             </p>
             <%--<p style="padding-bottom: 5px;"><b style="color:#999999;font-weight: normal;font-size: 12px">利润率超过${productDetails.maxDiscount}%</b>超过<span style="color: #FF7D54">${productDetails.agentNum}</span>人代理</p>--%>
         </div>
+        <c:choose>
+        <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
         <div class="dlpople">
-            <p>库存</p>
-            <c:choose>
-                <c:when test="${productDetails.stock<=0 || productDetails.isQueue==1}">
-                    <p class="laba"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
+                    <p class="laba" style="margin-right: 10px;"><img src="<%=path%>/static/images/laba.png" alt="">此商品已经进入排单期<b class="paidan">?</b>
                     </p>
-                </c:when>
-                <c:otherwise>
-                    <p><span>${productDetails.stock}件</span></p>
-                </c:otherwise>
-            </c:choose>
+                <%--<c:otherwise>--%>
+                    <%--<p><span>${productDetails.stock}件</span></p>--%>
+                <%--</c:otherwise>--%>
         </div>
+         </c:when>
+        </c:choose>
         <div class="dlpople">
             <p>运费</p>
             <p><span>到付</span></p>

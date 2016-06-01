@@ -65,7 +65,7 @@
             <h4>商品:　　<span id="addsku"></span></h4>
             <input type="text" id="addSkuId" style="display: none">
             <input type="text" id="userPid" style="display: none">
-            <h4 id="xianshi">本次最多可补货数量:　　<span id="maxStock"></span></h4>
+            <%--<h4 id="xianshi">本次最多可补货数量:　　<span id="maxStock"></span></h4>--%>
             <h4>补货数量:　　
                 <div>
                     <span class="jian">-</span>
@@ -108,10 +108,10 @@
         i=1;
         $(".queue").hide();//init
         $("#addsku").html(a);
-        $("#maxStock").html(b);
+        /*$("#maxStock").html(b);*/
         if (c == 1) { //进入排单
             $(".queue").show();
-            $("#xianshi").hide();
+//            $("#xianshi").hide();
         }
         $("#addSkuId").val(d);
         $("#userPid").val(e);

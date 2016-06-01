@@ -1,6 +1,7 @@
 package com.masiis.shop.admin.controller.user;
 
 import com.masiis.shop.admin.beans.user.User;
+import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.user.ComUserService;
 import com.masiis.shop.dao.po.ComUser;
 import org.apache.commons.logging.Log;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/comuser")
-public class ComUserController {
+public class ComUserController extends BaseController{
 
     private final static Log log = LogFactory.getLog(ComUserController.class);
 
@@ -115,7 +116,7 @@ public class ComUserController {
     @ResponseBody
     public Object audit(HttpServletRequest request, HttpServletResponse response, ComUser comUser){
         try {
-            comUserService.audit(comUser);
+            comUserService.audit(comUser,getPbUser(request));
 
             return "success";
         } catch (Exception e) {

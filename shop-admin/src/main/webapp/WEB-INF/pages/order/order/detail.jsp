@@ -197,7 +197,7 @@
 
                                             <div class="profile-info-value">
                                                 <span class="" id="extractableFee">
-                                                    <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                    <c:forEach items="${order.sfOrderFreights}" var="sfOrderFreight">
                                                         ${sfOrderFreight.shipManName}
                                                     </c:forEach>
                                                 </span>
@@ -208,7 +208,7 @@
                                             <div class="profile-info-name"> 发货时间 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                <c:forEach items="${order.sfOrderFreights}" var="sfOrderFreight">
                                                     <span class="" id="bfCreateTime"><fmt:formatDate value="${sfOrderFreight.createTime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /></span>
                                                 </c:forEach>
                                             </div>
@@ -218,7 +218,7 @@
                                             <div class="profile-info-name"> 运单单号 </div>
 
                                             <div class="profile-info-value">
-                                                <c:forEach items="${order.sfOrderFreights}" var="pfBorderFreight">
+                                                <c:forEach items="${order.sfOrderFreights}" var="sfOrderFreight">
                                                     <span class="" id="freight">${sfOrderFreight.freight}</span>
                                                 </c:forEach>
                                             </div>
@@ -362,33 +362,33 @@
                 </div>
 
                 <div></div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                <table id="sample-table-2" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>操作者</th>
-                                        <th>操作时间</th>
-                                        <th>操作类型</th>
-                                        <th>操作备注</th>
-                                    </tr>
-                                    </thead>
+                <%--<div class="row">--%>
+                    <%--<div class="col-xs-12">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-xs-12 col-sm-8 col-sm-offset-2">--%>
+                                <%--<table id="sample-table-2" class="table table-striped table-bordered table-hover">--%>
+                                    <%--<thead>--%>
+                                    <%--<tr>--%>
+                                        <%--<th>操作者</th>--%>
+                                        <%--<th>操作时间</th>--%>
+                                        <%--<th>操作类型</th>--%>
+                                        <%--<th>操作备注</th>--%>
+                                    <%--</tr>--%>
+                                    <%--</thead>--%>
 
-                                    <tbody>
-                                    <tr>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@TwBootstrap</td>
-                                        <td>@TwBootstrap</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div><!-- /.span -->
-                        </div><!-- /.row -->
-                    </div><!-- /.col -->
-                </div>
+                                    <%--<tbody>--%>
+                                    <%--<tr>--%>
+                                        <%--<td>Mark</td>--%>
+                                        <%--<td>Otto</td>--%>
+                                        <%--<td>@TwBootstrap</td>--%>
+                                        <%--<td>@TwBootstrap</td>--%>
+                                    <%--</tr>--%>
+                                    <%--</tbody>--%>
+                                <%--</table>--%>
+                            <%--</div><!-- /.span -->--%>
+                        <%--</div><!-- /.row -->--%>
+                    <%--</div><!-- /.col -->--%>
+                <%--</div>--%>
 
             </div><!-- /.page-content-area -->
         </div><!-- /.page-content -->

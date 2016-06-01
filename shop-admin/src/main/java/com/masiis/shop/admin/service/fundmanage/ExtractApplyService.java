@@ -6,19 +6,20 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserExtractApplyMapper;
 import com.masiis.shop.dao.platform.user.ComUserExtractwayInfoMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.ComUserExtractApply;
-import com.masiis.shop.dao.po.ComUserExtractwayInfo;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -27,6 +28,7 @@ import java.util.*;
  * Created by cai_tb on 16/3/31.
  */
 @Service
+@Transactional
 public class ExtractApplyService {
 
     private final static Log log = LogFactory.getLog(ExtractApplyService.class);
@@ -39,6 +41,8 @@ public class ExtractApplyService {
     private ComUserExtractApplyMapper comUserExtractApplyMapper;
     @Resource
     private ComUserExtractwayInfoMapper comUserExtractwayInfoMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
 
     /**
@@ -84,7 +88,7 @@ public class ExtractApplyService {
      * 合伙人提现申请审核
      * @param comUserExtractApply
      */
-    public void audit(ComUserExtractApply comUserExtractApply){
+    public void audit(ComUserExtractApply comUserExtractApply,PbUser pbUser)throws Exception{
         int auditType = comUserExtractApply.getAuditType();
         String auditCause = comUserExtractApply.getAuditCause();
 
@@ -142,6 +146,18 @@ public class ExtractApplyService {
                             new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(new Date())
                     }
             );
+        }
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("合伙人提现");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建合伙人提现失败!");
         }
     }
 }

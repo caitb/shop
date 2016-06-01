@@ -9,6 +9,7 @@ import com.masiis.shop.dao.po.*;
 import com.masiis.shop.common.beans.wxpay.WxPaySysParamReq;
 import com.masiis.shop.web.mall.constants.SysConstants;
 import com.masiis.shop.web.mall.service.product.PfUserSkuStockService;
+import com.masiis.shop.web.mall.service.shop.SfShopService;
 import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserRelationService;
 import com.masiis.shop.web.mall.service.user.UserService;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -57,6 +59,8 @@ public class SfOrderPayService {
     private SfShopSkuService shopSkuService;
     @Resource
     private SfOrderItemDistributionService  ordItemDisService;
+    @Resource
+    private SfShopService sfShopService;
 
     /**
      * 获得需要支付的订单的信息
@@ -287,6 +291,16 @@ public class SfOrderPayService {
             //订单信息
             SfOrder order = getOrderById(orderId);
             map.put("order", order);
+            //运费
+            if(order!=null){
+                BigDecimal shipAmount = order.getShipAmount();
+                if (shipAmount.compareTo(new BigDecimal(0))==0){
+                    map.put("isFreeShipAmount","true");
+                }else{
+                    map.put("isFreeShipAmount","false");
+                    map.put("skuTotalShipAmount", shipAmount);
+                }
+            }
             //订单详情信息
             List<SfOrderItem> orderItems = getOrderItem(orderId);
             map.put("orderItems", orderItems);

@@ -7,8 +7,6 @@
  */
 package com.masiis.shop.dao.po;
 
-import com.masiis.shop.dao.beans.order.StockManage;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -154,6 +152,9 @@ public class PfBorder {
      */
     private List<PfBorderItem> pfBorderItems;
     private PfBorderConsignee pfBorderConsignee;
+
+    private String beginTime;
+    private String endTime;
 
     public String getBailMoney() {
         return bailMoney;
@@ -473,6 +474,22 @@ public class PfBorder {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @Override

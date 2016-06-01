@@ -66,10 +66,14 @@ public class IndexController extends BaseController {
         sfUserShopViewService.addShopView(user.getId(), shopId);
         SfShop sfShop = null;
         List<SfShopSku> sfShopSkus = null;
+        boolean ok = true;
         if (shopId == null) {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
+            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
+                ok = false;
+            }
             if (sfShop == null) {
                 throw new BusinessException("进入方式异常，请联系管理员");
             }
@@ -103,6 +107,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("ok", ok);
         modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;
@@ -115,8 +120,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =131L;
-        userPid = 247L;
+        shopId =132L;
+        userPid = 255L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -132,7 +137,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().longValue() == 0.00) {
+            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
                 ok = false;
             }
             if (sfShop == null) {

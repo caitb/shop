@@ -63,14 +63,20 @@ public class PfBorderController extends BaseController {
                        ){
         try {
             Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,payTypeId);
-            if (pfBorder.getOrderType() == null && pfBorder.getShipType() == null && pfBorder.getOrderStatus() == null && payTypeId == null) {
+            if(pfBorder.getOrderType() == null){
                 List<ComDictionary> orderTypeList = dictionaryService.pickListOfBaseData("PF_BORDER_TYPE");//订单类型
-                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_EXTRACT_WAY");//支付方式
-                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
-                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
                 pageMap.put("orderTypeList", orderTypeList);
+            }
+            if(pfBorder.getShipType() == null){
+                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_EXTRACT_WAY");//支付方式
                 pageMap.put("payTypeList", payTypeList);
+            }
+            if(pfBorder.getOrderStatus() == null){
+                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", orderStatusList);
+            }
+            if (payTypeId == null) {
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
                 pageMap.put("wuliuList", wuliuList);
             }
             return pageMap;

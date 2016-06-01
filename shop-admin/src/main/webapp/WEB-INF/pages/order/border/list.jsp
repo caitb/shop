@@ -96,21 +96,25 @@
                                             <div class="form-group">
                                                 <label for="orderType">订单类型</label>
                                                 <select id="orderType" name="orderType">
+                                                    <option value="" selected="selected">所有订单</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="payTypeId">支付方式</label>
                                                 <select id="payTypeId" name="payTypeId">
+                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orderStatus">订单状态</label>
                                                 <select id="orderStatus" name="orderStatus">
+                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
+                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -576,34 +580,34 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
-        //订单类型
-        if($('#orderType').val()==null){
-            var $select = $('#orderType');
-            for(var i=0, len = res.orderTypeList.length;i<len;i++){
-                $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
+            //订单类型
+            if($('#orderType').val() !=null && res.orderTypeList !=null){
+                var $select = $('#orderType');
+                for(var i=0, len = res.orderTypeList.length;i<len;i++)  {
+                    $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
+                }
             }
-        }
-        //支付方式
-        if($('#payTypeId').val()==null){
-            var $select = $('#payTypeId');
-            for(var i=0, len = res.payTypeList.length;i<len;i++){
-                $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
+            //支付方式
+            if($('#payTypeId').val()!=null && res.payTypeList !=null){
+                var $select = $('#payTypeId');
+                for(var i=0, len = res.payTypeList.length;i<len;i++){
+                    $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
+                }
             }
-        }
-        //订单状态
-        if($('#orderStatus').val()==null){
-            var $select = $('#orderStatus');
-            for(var i=0, len = res.orderStatusList.length;i<len;i++){
-                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            //订单状态
+            if($('#orderStatus').val()!=null && res.orderStatusList !=null){
+                var $select = $('#orderStatus');
+                for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                    $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+                }
             }
-        }
-        //物流状态
-        if($('#shipStatus').val()==null){
-            var $select = $('#shipStatus');
-            for(var i=0, len = res.wuliuList.length;i<len;i++){
-                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            //物流状态
+            if($('#shipStatus').val()!=null && res.wuliuList !=null){
+                var $select = $('#shipStatus');
+                for(var i=0, len = res.wuliuList.length;i<len;i++){
+                    $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+                }
             }
-        }
         return res;
     }
 
@@ -711,7 +715,7 @@
         return undefined;
     }
 
-    $('#searchBtn').on('click', function(){
+    $('#').on('click', function(){
 
     });
 

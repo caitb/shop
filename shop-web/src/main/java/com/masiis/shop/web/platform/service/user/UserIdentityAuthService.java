@@ -120,11 +120,16 @@ public class UserIdentityAuthService {
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + comUser.getIdCardBackUrl());
             }*/
             //修改用户数据
+
             if (StringUtils.isEmpty(comUser.getIdCardFrontUrl())||(comUser.getIdCardFrontUrl()!=null&&!comUser.getIdCardFrontUrl().equals(idCardFrontName))){
+                log.info("身份证正面-----临时目录移动到正式目录-----start");
                 //临时目录copy到正式目录
+                log.info("上传身份证临时目录--------bucket--"+ OSSObjectUtils.BUCKET +"------临时目录----"+OSSObjectUtils.OSS_CERTIFICATE_TEMP + "----正面名字"+idCardFrontName);
                 OSSObjectUtils.copyObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName ,OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_DOWN_LOAD_IMG_KEY + idCardFrontName);
                 //删除临时目录
+                log.info("删除临时目录---------------");
                 OSSObjectUtils.deleteObject(OSSObjectUtils.BUCKET,OSSObjectUtils.OSS_CERTIFICATE_TEMP + idCardFrontName);
+                log.info("身份证正面-----临时目录移动到正式目录-----end");
             }
             if (StringUtils.isEmpty(comUser.getIdCardBackUrl())||(comUser.getIdCardBackUrl()!=null&&!comUser.getIdCardBackUrl().equals(idCardBackName))){
                 //临时目录copy到正式目录
@@ -143,10 +148,10 @@ public class UserIdentityAuthService {
                 }
                 log.info("发送短信-------end");
                 //发送微信提示
-                log.info("发送微信-------start");
+                /*log.info("发送微信-------start");
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
-                log.info("发送微信-------end");
+                log.info("发送微信-------end");*/
                 //删除最新上传的本地服务器照片
                 /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/

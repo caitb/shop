@@ -17,6 +17,8 @@ import com.masiis.shop.web.platform.service.user.UserService;
 import com.masiis.shop.web.platform.service.user.UserSkuService;
 import com.masiis.shop.web.platform.utils.UploadImage;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +47,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/userCertificate")
 public class UserCertificateController extends BaseController {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserSkuService userSkuService;
@@ -102,13 +106,10 @@ public class UserCertificateController extends BaseController {
 
         JSONObject object = new JSONObject();
         try {
-            String rootPath = request.getServletContext().getRealPath("/");
-            String webappPath = rootPath.substring(0, rootPath.lastIndexOf(File.separator));
-            //String savepath = SysConstants.ID_CARD_PATH;
             String savepath = "http://" + OSSObjectUtils.BUCKET + "." + OSSObjectUtils.ENDPOINT + "/" + OSSObjectUtils.OSS_CERTIFICATE_TEMP;
-            String realpath = webappPath + savepath;
-            //String imgPath = UploadImage.upload(idCardImg, realpath);
             String fileName = userCertificateService.uploadCertificateToOss(idCardImg,getComUser(request));
+            log.info("上传服务器根路径---------"+savepath);
+            log.info("上传服务器文件名----------"+fileName);
             if (StringUtils.isBlank(fileName)) {
                 object.put("code", "0");
                 object.put("msg", "");
@@ -117,6 +118,8 @@ public class UserCertificateController extends BaseController {
                 object.put("code", "1");
                 object.put("msg", "上传成功");
                 object.put("fileName",fileName);
+
+                log.info("上传身份证路径------------"+savepath + fileName);
                 object.put("imgPath", savepath + fileName);// java.net.URLEncoder.encode(savepath + imgPath, "UTF-8")
             }
         } catch (Exception e) {

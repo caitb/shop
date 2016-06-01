@@ -182,7 +182,12 @@ public class ProductController extends BaseController {
         }
         mav.addObject("pfUserSkuStockId", id);
         PfUserSkuStock product = productService.getStockByUser(id);
-        product.setStock(product.getStock()-product.getFrozenStock());
+        Integer currentStock = product.getStock()-product.getFrozenStock();
+        if (currentStock < 0) {
+            product.setStock(0);
+        } else {
+            product.setStock(product.getStock() - product.getFrozenStock());
+        }
         ComSku comSku = skuService.getSkuById(product.getSkuId());
         ComSkuImage comSkuImage = skuService.findComSkuImage(comSku.getId());
         String productImgValue = PropertiesUtils.getStringValue(SysConstants.INDEX_PRODUCT_IMAGE_MIN);

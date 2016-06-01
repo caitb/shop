@@ -445,7 +445,7 @@
                                 var sHtm = '';
                                 for(var i in row.pfBorderPayments){
                                     if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
-                                    if(row.pfBorderPayments[i].payTypeId == 9) sHtm += '线下支付';
+                                    if(row.pfBorderPayments[i].payTypeId == 1) sHtm += '线下支付';
                                 }
                                 return sHtm;
                             }

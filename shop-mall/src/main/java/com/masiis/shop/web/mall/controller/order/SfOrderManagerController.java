@@ -127,21 +127,22 @@ public class SfOrderManagerController extends BaseController {
      * @date 2016/4/8 18:00
      */
     @RequestMapping("/stockOrder")
-    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus, Long shopId) throws Exception {
+    public ModelAndView stockOrder(HttpServletRequest request, Integer orderStatus) throws Exception {
         ComUser comUser = getComUser(request);
-        Boolean OK =true;
-        SfShop shop =null;
-        if(shopId!= null){
-            shop = sfShopService.getSfShopById(shopId);
-            if (shop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
-                OK = false;
-            }
+//        Boolean OK =true;
+//        SfShop shop =null;
+//        Long shopId =(Long)request.getSession().getAttribute("shopId");
+//        if(shopId!= null){
+//            shop = sfShopService.getSfShopById(shopId);
+//            if (shop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
+//                OK = false;
+//            }
 //            String shipAmount=shop.getShipAmount().toString();
-            DecimalFormat myformat=new DecimalFormat("0.00");
-            String shipAmount = myformat.format(shop.getShipAmount());
-            request.getSession().setAttribute("shipAmount", shipAmount);
-        }
-        request.getSession().setAttribute("OK", OK);
+//            DecimalFormat myformat=new DecimalFormat("0.00");
+//            String shipAmount = myformat.format(shop.getShipAmount());
+//            request.getSession().setAttribute("shipAmount", shipAmount);
+//        }
+//        request.getSession().setAttribute("OK",OK);
         List<SfOrder> sfOrders = sfOrderManageService.findOrdersByUserId(comUser.getId(), orderStatus, null);
         String index=null;
         if(orderStatus==null){
@@ -158,7 +159,7 @@ public class SfOrderManagerController extends BaseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("index",index);
         modelAndView.addObject("sfOrders", sfOrders);
-        modelAndView.addObject("OK", OK);
+//        modelAndView.addObject("OK", OK);
 //        modelAndView.addObject("shipAmount", shop.getShipAmount().toString());
         modelAndView.setViewName("mall/order/wodedingdan");
         return modelAndView;

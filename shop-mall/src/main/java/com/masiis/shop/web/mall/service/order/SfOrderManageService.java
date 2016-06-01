@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -75,6 +77,13 @@ public class SfOrderManageService {
                 sfOrder.setOrderMoney(sfOrder.getOrderAmount().toString());
             }
             sfOrder.setSfOrderItems(sfOrderItems);
+            if (sfOrder.getShipAmount().compareTo(BigDecimal.ZERO)==0) {
+                sfOrder.setShipMoney("(包邮)");
+            }else{
+                DecimalFormat myFormat=new DecimalFormat("0.00");
+                String shipAmount = myFormat.format(sfOrder.getShipAmount());
+                sfOrder.setShipMoney("(运费：￥"+shipAmount+")");
+            }
         }
         return sfOrders;
     }

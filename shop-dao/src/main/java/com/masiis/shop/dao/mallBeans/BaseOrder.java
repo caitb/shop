@@ -21,6 +21,7 @@ public class BaseOrder {
     private Integer totalQuantity = 0;
     private String pidUserName;
     private String orderMoney;
+    private String shipMoney;
     /**
      * 订单商品
      */
@@ -29,6 +30,14 @@ public class BaseOrder {
 
     public void setOrderSkuStatus(String orderSkuStatus) {
         this.orderSkuStatus = orderSkuStatus;
+    }
+
+    public void setShipMoney(String shipMoney) {
+        this.shipMoney = shipMoney;
+    }
+
+    public String getShipMoney() {
+        return shipMoney;
     }
 
     public String getOrderMoney() {

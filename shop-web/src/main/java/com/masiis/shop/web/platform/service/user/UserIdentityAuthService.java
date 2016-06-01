@@ -148,10 +148,10 @@ public class UserIdentityAuthService {
                 }
                 log.info("发送短信-------end");
                 //发送微信提示
-                /*log.info("发送微信-------start");
+                log.info("发送微信-------start");
                 String[] param = new String[]{comUser.getMobile(), DateUtil.Date2String(new Date(),DateUtil.CHINESEALL_DATE_FMT)};
                 WxPFNoticeUtils.getInstance().partnerRealNameSubmit(comUser,param);
-                log.info("发送微信-------end");*/
+                log.info("发送微信-------end");
                 //删除最新上传的本地服务器照片
                 /*UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardFrontUrl);
                 UploadImage.deleteFile(webappPath + SysConstants.ID_CARD_PATH + idCardBackUrl);*/

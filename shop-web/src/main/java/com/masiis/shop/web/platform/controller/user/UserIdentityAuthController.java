@@ -11,6 +11,7 @@ import com.masiis.shop.web.platform.controller.base.BaseController;
 import com.masiis.shop.web.platform.service.user.UserIdentityAuthService;
 import com.masiis.shop.web.platform.utils.wx.WxUserUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "identityAuth")
 public class UserIdentityAuthController extends BaseController {
+
+    private Logger log = Logger.getLogger(this.getClass());
 
     @Resource
     private UserIdentityAuthService userIdentityAuthService;
@@ -89,7 +92,9 @@ public class UserIdentityAuthController extends BaseController {
                 model.addAttribute("skuId", skuId);
                 model.addAttribute("idCardFrontName", comUser.getIdCardFrontUrl());
                 model.addAttribute("idCardBackName", comUser.getIdCardBackUrl());
+                log.info("实名认证审核拒绝---正面身份证路径------"+basePath+ comUser.getIdCardFrontUrl());
                 model.addAttribute("idCardFrontUrl", basePath+ comUser.getIdCardFrontUrl());
+                log.info("实名认证审核拒绝---反面身份证路径------"+basePath+ comUser.getIdCardBackUrl());
                 model.addAttribute("idCardBackUrl",  basePath + comUser.getIdCardBackUrl());
                 returnPagePath = "platform/user/shimingrenzhengfail";
                 break;

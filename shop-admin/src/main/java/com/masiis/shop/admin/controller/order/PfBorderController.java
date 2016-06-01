@@ -8,7 +8,7 @@ import com.masiis.shop.admin.service.order.BOrderPayService;
 import com.masiis.shop.admin.service.order.BOrderPaymentService;
 import com.masiis.shop.admin.service.order.BOrderService;
 import com.masiis.shop.admin.service.order.OrderQueueDealService;
-import com.masiis.shop.dao.platform.system.ComDictionarysMapper;
+import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.PfBorder;
 import com.masiis.shop.dao.po.PfBorderFreight;
@@ -44,7 +44,7 @@ public class PfBorderController extends BaseController {
     @Resource
     private BOrderPayService bOrderPayService;
     @Resource
-    private ComDictionarysMapper comDictionarysMapper;
+    private DictionaryService dictionaryService;
 
     @RequestMapping("/list.shtml")
     public String list() {
@@ -63,15 +63,15 @@ public class PfBorderController extends BaseController {
                        ){
         try {
             Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,payTypeId);
-            if(pfBorder.getOrderType()==null && pfBorder.getShipType()==null && pfBorder.getOrderStatus()==null && payTypeId==null){
-                List<ComDictionary> orderTypeList = comDictionarysMapper.PickListByCode("PF_BORDER_TYPE");//订单类型
-                List<ComDictionary> payTypeList = comDictionarysMapper.PickListByCode("COM_USER_EXTRACT_WAY");//支付方式
-                List<ComDictionary> orderStatusList = comDictionarysMapper.PickListByCode("PF_BORDER_STATUS");//订单状态
-                List<ComDictionary> wuliuList = comDictionarysMapper.PickListByCode("PF_BORDER_SHIP_STATUS");//物流状态
-                pageMap.put("orderTypeList",orderTypeList);
-                pageMap.put("payTypeList",payTypeList);
-                pageMap.put("orderStatusList",orderStatusList);
-                pageMap.put("wuliuList",wuliuList);
+            if (pfBorder.getOrderType() == null && pfBorder.getShipType() == null && pfBorder.getOrderStatus() == null && payTypeId == null) {
+                List<ComDictionary> orderTypeList = dictionaryService.pickListOfBaseData("PF_BORDER_TYPE");//订单类型
+                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_EXTRACT_WAY");//支付方式
+                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
+                pageMap.put("orderTypeList", orderTypeList);
+                pageMap.put("payTypeList", payTypeList);
+                pageMap.put("orderStatusList", orderStatusList);
+                pageMap.put("wuliuList", wuliuList);
             }
             return pageMap;
         } catch (Exception e) {

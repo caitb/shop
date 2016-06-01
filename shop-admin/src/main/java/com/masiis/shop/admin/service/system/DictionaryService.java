@@ -17,11 +17,11 @@ public class DictionaryService {
     private ComDictionarysMapper comDictionarysMapper;
 
     /**
-      * @Author jjh
-      * @Date 2016/5/30 0030 下午 4:06
-      * 根据code查询字典表对象
-      */
-     public List<ComDictionary> pickListOfBaseData(String code) throws Exception{
-         return  comDictionarysMapper.PickListByCode(code);
-     }
+     * @Author jjh
+     * @Date 2016/5/30 0030 下午 4:06
+     * 根据code查询字典表对象
+     */
+    public List<ComDictionary> pickListOfBaseData(String code) throws Exception {
+        return comDictionarysMapper.PickListByCode(code);
+    }
 }

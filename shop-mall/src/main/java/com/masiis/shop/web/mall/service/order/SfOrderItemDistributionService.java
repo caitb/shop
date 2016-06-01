@@ -85,8 +85,8 @@ public class SfOrderItemDistributionService {
     public int findCommissionRecordCountByUserId(Long userId){
         return sfOrderItemDistributionExtendMapper.selectCommissionRecordCountByUserId(userId);
     }
-    public Map<String,BigDecimal> selectSumAmount(Long userId, List<Long> orderIds){
-        return sfOrderItemDistributionExtendMapper.selectSumAmount(userId, orderIds);
+    public List<Map<String,Object>> selectSumAmount(Long userId){
+        return sfOrderItemDistributionExtendMapper.selectSumAmount(userId);
     }
 
     public Map<String,BigDecimal> selectUserAmounts(Long userId){

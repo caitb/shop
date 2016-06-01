@@ -50,4 +50,10 @@
         from com_dictionary
         where code = #{code,jdbcType=VARCHAR} and `key` = #{key,jdbcType=INTEGER}
     </select>
+
+    <select id="PickListByCode" resultMap="BaseResultMap">
+        select id, code, `key`, `value`, remark
+        from com_dictionary
+        where code = #{code,jdbcType=VARCHAR}
+    </select>
 </mapper>

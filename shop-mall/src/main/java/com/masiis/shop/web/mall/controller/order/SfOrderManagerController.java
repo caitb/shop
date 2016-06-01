@@ -133,7 +133,7 @@ public class SfOrderManagerController extends BaseController {
         SfShop shop =null;
         if(shopId!= null){
             shop = sfShopService.getSfShopById(shopId);
-            if (shop.getShipAmount().longValue() == 0.00) {
+            if (shop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
                 OK = false;
             }
 //            String shipAmount=shop.getShipAmount().toString();

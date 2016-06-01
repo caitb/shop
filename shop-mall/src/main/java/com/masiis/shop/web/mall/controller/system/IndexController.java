@@ -71,7 +71,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().longValue() == 0.00) {
+            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
                 ok = false;
             }
             if (sfShop == null) {
@@ -137,7 +137,7 @@ public class IndexController extends BaseController {
             throw new BusinessException("shopId不能为空");
         } else {
             sfShop = sfShopService.getSfShopById(shopId);
-            if (sfShop.getShipAmount().longValue() == 0.00) {
+            if (sfShop.getShipAmount().compareTo(BigDecimal.ZERO) == 0) {
                 ok = false;
             }
             if (sfShop == null) {

@@ -80,7 +80,7 @@
             </section>
             <section class="sec4">
                 <p>商品合计：<span>￥${orderMallDetail.sfOrder.productAmount}</span></p>
-                <p>运费：<span>包邮</span></p>
+                <p>运费：<span><c:if test="${OK==false}">（包邮）</c:if><c:if test="${OK==true}">运费：￥${shipAmount}</c:if></span></p>
                 <h1>共<b>${orderMallDetail.sfOrder.totalQuantity}</b>件商品　<b style="color:#333333">合计：</b><span>￥${orderMallDetail.sfOrder.orderAmount}</span></h1>
             </section>
             <div class="sec5">

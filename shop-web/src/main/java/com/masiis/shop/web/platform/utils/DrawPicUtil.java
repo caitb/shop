@@ -266,60 +266,62 @@ public class DrawPicUtil {
 
 
     public static void main(String[] args) {
-        String s = "1,96,146,149,159,175,191,207,213,";
-        s = s.substring(s.indexOf("175,"), s.length());
-        System.out.println(s);
-//        DrawPicUtil drawPicUtil = new DrawPicUtil();
-//        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level1.jpg");
-//        List<DrawPicParam> drawPicParams = new ArrayList<>();
-//        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
-//        drawPicParam1.setX(90);
-//        drawPicParam1.setY(200);
-//        drawPicParam1.setContent("MASIIS200461600268");//
-//        drawPicParam1.setFont(new Font("微软雅黑", Font.PLAIN, 30));
-//        drawPicParams.add(drawPicParam1);
-//        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
-//        drawPicParam5.setY(200);
-//        drawPicParam5.setContent("BOSS");
-//        drawPicParam5.setFont(new Font("微软雅黑", Font.PLAIN, 100));
-//        drawPicParam5.setColor(Color.WHITE);
-//        drawPicParams.add(drawPicParam5);
-//        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
-//        drawPicParam3.setX(900);
-//        drawPicParam3.setY(565);
-//        drawPicParam3.setContent("赵 亮");
-//        drawPicParam3.setFont(new Font("宋体", Font.PLAIN, 50));
-//        drawPicParams.add(drawPicParam3);
-//        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
-//        drawPicParam4.setY(690);
-//        drawPicParam4.setContent("Has the right to sell the product of Beijing Masiis Biotech Co., Ltd.(kang yin li)");
-//        drawPicParam4.setFont(new Font("微软雅黑", Font.PLAIN, 25));
-//        drawPicParams.add(drawPicParam4);
-//        DrawPicParam drawPicParam11 = drawPicUtil.getDrawPicParam();
-//        drawPicParam11.setY(725);
-//        drawPicParam11.setContent("via both e-commerce channel and physical store. ");
-//        drawPicParam11.setFont(new Font("微软雅黑", Font.PLAIN, 25));
-//        drawPicParams.add(drawPicParam11);
-//        DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
-//        drawPicParam9.setY(770);
-//        drawPicParam9.setContent("抗引力光感精华液");
-//        drawPicParam9.setFont(new Font("宋体", Font.PLAIN, 30));
-//        drawPicParam9.setColor(Color.decode("#FF4B21"));
-//        drawPicParams.add(drawPicParam9);
-//        DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
-//        drawPicParam6.setY(850);
-//        drawPicParam6.setContent("证件号：210381111111223455，手机：18612111522，微信：nevermore1126");
-//        drawPicParam6.setFont(new Font("宋体", Font.PLAIN, 45));
-//        drawPicParams.add(drawPicParam6);
-//        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
-//        drawPicParam2.setY(920);
-//        drawPicParam2.setContent("授权期限：2016年05月09日至2018年05月09日");
-//        drawPicParam2.setFont(new Font("宋体", Font.PLAIN, 45));
-//        drawPicParams.add(drawPicParam2);
-//
-////        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
-//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
-//        System.out.print("success");
+//        String s = "1,96,146,149,159,175,191,207,213,";
+//        s = s.substring(s.indexOf("175,"), s.length());
+//        System.out.println(s);
+        DrawPicUtil drawPicUtil = new DrawPicUtil();
+        BufferedImage bufferedImage = drawPicUtil.loadImageLocal("D:\\level4.jpg");
+        List<DrawPicParam> drawPicParams = new ArrayList<>();
+        DrawPicParam drawPicParam1 = drawPicUtil.getDrawPicParam();
+        drawPicParam1.setX(90);
+        drawPicParam1.setY(200);
+        drawPicParam1.setContent("MASIIS400021600335");//
+        drawPicParam1.setFont(new Font("微软雅黑", Font.PLAIN, 30));
+        drawPicParams.add(drawPicParam1);
+        DrawPicParam drawPicParam5 = drawPicUtil.getDrawPicParam();
+        drawPicParam5.setY(200);
+        drawPicParam5.setContent("执行董事");
+        drawPicParam5.setFont(new Font("微软雅黑", Font.PLAIN, 100));
+        drawPicParam5.setColor(Color.WHITE);
+        drawPicParams.add(drawPicParam5);
+        DrawPicParam drawPicParam3 = drawPicUtil.getDrawPicParam();
+        drawPicParam3.setX(900);
+        drawPicParam3.setY(565);
+        drawPicParam3.setContent("段永成");
+        drawPicParam3.setFont(new Font("宋体", Font.PLAIN, 50));
+        drawPicParams.add(drawPicParam3);
+        DrawPicParam drawPicParam4 = drawPicUtil.getDrawPicParam();
+        drawPicParam4.setY(690);
+        drawPicParam4.setContent("Has the right to sell the product of Beijing Masiis Biotech Co., Ltd.(Total Lighting Velvet Cream)");
+        drawPicParam4.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+        drawPicParams.add(drawPicParam4);
+        DrawPicParam drawPicParam11 = drawPicUtil.getDrawPicParam();
+        drawPicParam11.setY(725);
+        drawPicParam11.setContent("via both e-commerce channel and physical store. ");
+        drawPicParam11.setFont(new Font("微软雅黑", Font.PLAIN, 25));
+        drawPicParams.add(drawPicParam11);
+        DrawPicParam drawPicParam9 = drawPicUtil.getDrawPicParam();
+        drawPicParam9.setY(770);
+        drawPicParam9.setContent("麦士抗引力焕颜新漾丝绒面纱霜");
+        drawPicParam9.setFont(new Font("宋体", Font.PLAIN, 30));
+        drawPicParam9.setColor(Color.decode("#FF4B21"));
+        drawPicParams.add(drawPicParam9);
+        String idCard = "620402198509270019";
+        String newIdCard = idCard.substring(0, 4) + "**********" + idCard.substring(idCard.length() - 4, idCard.length());
+        DrawPicParam drawPicParam6 = drawPicUtil.getDrawPicParam();
+        drawPicParam6.setY(850);
+        drawPicParam6.setContent("证件号：" + newIdCard + "，手机：13893036663，微信：dyc286588441");
+        drawPicParam6.setFont(new Font("宋体", Font.PLAIN, 45));
+        drawPicParams.add(drawPicParam6);
+        DrawPicParam drawPicParam2 = drawPicUtil.getDrawPicParam();
+        drawPicParam2.setY(920);
+        drawPicParam2.setContent("授权期限：2016年05月30日至2016年12月31日");
+        drawPicParam2.setFont(new Font("宋体", Font.PLAIN, 45));
+        drawPicParams.add(drawPicParam2);
+
+//        drawPicUtil.writeImageLocal("D:\\level1_result.jpg", drawPicUtil.modifyImage(bufferedImage, "AAA", 200, 200));
+        drawPicUtil.writeImageLocal("D:\\level4_result.jpg", drawPicUtil.modifyImage(bufferedImage, drawPicParams));
+        System.out.print("success");
     }
 
 }

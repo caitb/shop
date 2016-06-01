@@ -4,18 +4,19 @@ $(function () {
             alert("微信号不能为空");
             return false;
         }
-        if(!CheckChinese($(data).val())){
-            alert("微信号不能有汉字");
+        if (!isNumber($(data).val())) {
+            alert("请输入6~20个字符，字母、数字、下划线或减号。");
             return false;
         }
         return true;
-        function CheckChinese(val) {
-            var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
-            if (reg.test(val)) {
+        function isNumber(s) {
+            var patrn = /^[a-zA-Z0-9_-]{6,20}$/;
+            if (!patrn.exec(s)) {
                 return false;
             }
             return true;
         }
+
     }
     var mobileCheckFun = function (data) {
         var bl = false;
@@ -168,11 +169,11 @@ $(function () {
     $(".row").on("click", function () {
         $(".paidanqi").show();
     });
-    $(".kNow").on("click", function(){
+    $(".kNow").on("click", function () {
         $(this).parent().parent().hide();
     });
 
-    $(".daili").on("click",function(){
+    $(".daili").on("click", function () {
         $(".xieyi").show();
     })
 });

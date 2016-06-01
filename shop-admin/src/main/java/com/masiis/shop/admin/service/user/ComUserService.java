@@ -4,18 +4,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.user.User;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * Created by cai_tb on 16/3/5.
@@ -35,6 +35,8 @@ public class ComUserService {
     private ComSkuMapper comSkuMapper;
     @Resource
     private PfUserRelationMapper pfUserRelationMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     /**
      * 根据id查找合伙人
@@ -145,7 +147,7 @@ public class ComUserService {
      * 审核会员信息
      * @param comUser
      */
-    public void audit(ComUser comUser){
+    public void audit(ComUser comUser,PbUser pbUser) throws Exception{
         comUserMapper.updateByPrimaryKey(comUser);
         if(comUser.getAuditStatus()==2 || comUser.getAuditStatus()==3){
             MobileMessageUtil.getInitialization("B").certificationVerifyResult(comUser.getMobile(), comUser.getAuditStatus()==2?true:false);
@@ -159,6 +161,18 @@ public class ComUserService {
             WxPFNoticeUtils.getInstance().partnerRealNameAuthNotice(comUser,
                                                                     comUser.getAuditStatus()==2?true:false,
                                                                     comUser.getAuditStatus()==2?url:PropertiesUtils.getStringValue("web.domain.name.address")+"/identityAuth/toInentityAuthPage.html?defaultValue=3");
+            PbOperationLog pbOperationLog = new PbOperationLog();
+            pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+            pbOperationLog.setCreateTime(new Date());
+            pbOperationLog.setPbUserId(pbUser.getId());
+            pbOperationLog.setPbUserName(pbUser.getUserName());
+            pbOperationLog.setOperateType(OperationType.Update.getCode());
+            pbOperationLog.setRemark("实名认证");
+            pbOperationLog.setOperateContent(pbOperationLog.toString());
+            int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+            if(updateByPrimaryKey==0){
+                throw new Exception("日志新建实名认证失败!");
+            }
         }
     }
 

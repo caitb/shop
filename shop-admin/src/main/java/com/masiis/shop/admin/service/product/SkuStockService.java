@@ -3,24 +3,24 @@ package com.masiis.shop.admin.service.product;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.product.ProductInfo;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStockMapper;
-import com.masiis.shop.dao.po.ComSku;
-import com.masiis.shop.dao.po.ComSpu;
-import com.masiis.shop.dao.po.PfSkuStock;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.InetAddress;
+import java.util.*;
 
 /**
  * Created by cai_tb on 16/3/12.
  */
 @Service
+@Transactional
 public class SkuStockService {
 
     @Resource
@@ -29,6 +29,8 @@ public class SkuStockService {
     private ComSkuMapper comSkuMapper;
     @Resource
     private ComSpuMapper comSpuMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     /**
      * 根据条件查询记录
@@ -68,10 +70,23 @@ public class SkuStockService {
      *
      * @param pfSkuStock
      */
-    public void update(PfSkuStock pfSkuStock) {
+    public void update(PfSkuStock pfSkuStock,PbUser pbUser) throws Exception{
         if (pfSkuStock.getStock() != null && pfSkuStock.getStock().intValue() < 0) {
             pfSkuStock.setStock(0);
         }
         pfSkuStockService.updateByIdAndVersions(pfSkuStock);
+
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("更新库存");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("新建更新库存日志失败!");
+        }
     }
 }

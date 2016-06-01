@@ -5,25 +5,27 @@ import com.github.pagehelper.PageInfo;
 import com.masiis.shop.admin.beans.fundmanage.ExtractApply;
 import com.masiis.shop.admin.service.wx.WxPayUserService;
 import com.masiis.shop.admin.utils.WxSFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.util.DateUtil;
 import com.masiis.shop.dao.mall.user.SfUserAccountMapper;
 import com.masiis.shop.dao.mall.user.SfUserExtractApplyMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserAccountMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
-import com.masiis.shop.dao.po.ComUser;
-import com.masiis.shop.dao.po.ComUserAccount;
-import com.masiis.shop.dao.po.SfUserAccount;
-import com.masiis.shop.dao.po.SfUserExtractApply;
+import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.util.*;
 
 /**
  * Created by cai_tb on 16/4/18.
  */
 @Service
+@Transactional
 public class SfUserExtractApplyService {
 
     @Resource
@@ -32,6 +34,8 @@ public class SfUserExtractApplyService {
     private ComUserMapper comUserMapper;
     @Resource
     private SfUserAccountMapper sfUserAccountMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     @Resource
     private WxPayUserService wxPayUserService;
@@ -72,7 +76,7 @@ public class SfUserExtractApplyService {
         return pageMap;
     }
 
-    public void audit(Long id, Integer auditType, String auditCause, String rootPath){
+    public void audit(Long id, Integer auditType, String auditCause, String rootPath,PbUser pbUser)throws Exception{
         SfUserExtractApply sfUserExtractApply = sfUserExtractApplyMapper.selectByPrimaryKey(id);
         SfUserAccount sfUserAccount = sfUserAccountMapper.selectByUserId(sfUserExtractApply.getComUserId());
 
@@ -92,6 +96,19 @@ public class SfUserExtractApplyService {
         sfUserExtractApply.setAuditType(auditType);
         sfUserExtractApply.setAuditCause(auditCause);
         sfUserExtractApplyMapper.updateByPrimaryKey(sfUserExtractApply);
+
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("消费者提现");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建消费者提现失败!");
+        }
     }
 
     public void sendWxNotice(Long id) {

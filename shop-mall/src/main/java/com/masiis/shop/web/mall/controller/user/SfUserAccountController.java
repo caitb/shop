@@ -287,65 +287,28 @@ public class SfUserAccountController extends BaseController {
         mv.addObject("orderItemDistributions",list);
         log.info("处理可提现的财富、佣金记录end");
 
-        log.info("处理已付款、未付款订单财富");
+        log.info("处理已付款、未付款订单财富begin");
         BigDecimal isPayDistribution = new BigDecimal(0);
         BigDecimal isNotPayDistribution = new BigDecimal(0);
-        List<Long> isPayOrderIds;
-        List<Long> isNotPayOrderIds;
-        if (allOrders.size() > 0){
-            isPayOrderIds = new ArrayList<>();
-            isNotPayOrderIds = new ArrayList<>();
-            for (SfOrder sfOrder : allOrders){
-                log.info("小铺订单id：" + sfOrder.getId());
-                if (sfOrder.getPayStatus() == 1 ){
-                    if (sfOrder.getOrderStatus() != BOrderStatus.Complete.getCode()){
-                        isPayOrderIds.add(sfOrder.getId());
-                        log.info("isPayDistribution = " + isPayDistribution);
-                    }else {
-                        //处理订单完成七天后的订单
-                        //当前时间处理
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.HOUR_OF_DAY, 0);
-                        cal.set(Calendar.MINUTE, 0);
-                        cal.set(Calendar.SECOND, 0);
-                        cal.set(Calendar.MILLISECOND, 0);
-                        //给定时间处理
-                        Calendar setCal = Calendar.getInstance();
-                        setCal.setTime(sfOrder.getReceiptTime());
-                        setCal.set(Calendar.HOUR_OF_DAY, 0);
-                        setCal.set(Calendar.MINUTE, 0);
-                        setCal.set(Calendar.SECOND, 0);
-                        setCal.set(Calendar.MILLISECOND, 0);
-                        long dayDiff =(setCal.getTimeInMillis()-cal.getTimeInMillis())/(1000*60*60*24);
-                        if (dayDiff <= 7){
-                            isPayOrderIds.add(sfOrder.getId());
-                        }
-                    }
-                }else {
-                    isNotPayOrderIds.add(sfOrder.getId());
-                }
+        List<Map<String,Object>> mapList = sfOrderItemDistributionService.selectSumAmount(userId);
+        for (Map<String,Object> map : mapList){
+            if ("0".equals(map.get("paystatus").toString())){
+                isNotPayDistribution = isNotPayDistribution.add(new BigDecimal(map.get("amount").toString()));
             }
-            log.info("处理财富值");
-            if (isPayOrderIds.size() > 0){
-                log.info("查询已付款订单财富");
-                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isPayOrderIds);
-                isPayDistribution = isPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
-            }
-            if (isNotPayOrderIds.size() > 0){
-                log.info("查询未付款订单财富");
-                Map<String,BigDecimal> map = sfOrderItemDistributionService.selectSumAmount(userId, isNotPayOrderIds);
-                isNotPayDistribution = isNotPayDistribution.add(map == null?new BigDecimal(0):map.get("sumAmount"));
+            if ("1".equals(map.get("paystatus").toString())){
+                isPayDistribution = isPayDistribution.add(new BigDecimal(map.get("amount").toString()));
             }
         }
-        log.info("查询已经提现成功的金额");
+        log.info("处理已付款、未付款订单财富end");
+        log.info("查询已经提现成功的金额begin");
         Map<String,BigDecimal> map = sfUserExtractApplyService.selectextractFeeByUserId(userId);
-
         BigDecimal withdraw;
         if (map == null){
             withdraw = new BigDecimal(0);
         }else {
             withdraw = new BigDecimal(map.get("extractFee").toString());
         }
+        log.info("查询已经提现成功的金额end");
         List<SfOrder> sfOrders = sfOrderService.findByUserId(userId);
         //是否购买过商品
         if (sfOrders != null && sfOrders.size() > 0){

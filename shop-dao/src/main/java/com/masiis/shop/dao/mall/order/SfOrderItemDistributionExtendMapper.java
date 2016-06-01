@@ -20,7 +20,6 @@ public interface SfOrderItemDistributionExtendMapper {
 
     Integer selectCommissionRecordCountByUserId(@Param("userId") Long userId);
 
-    Map<String,BigDecimal> selectSumAmount(@Param("userId") Long userId,
-                                           @Param("orderIds") List<Long> orderIds);
+    List<Map<String,Object>> selectSumAmount(@Param("userId") Long userId);
     Map<String,BigDecimal> selectUserAmount( Long userId);
 }

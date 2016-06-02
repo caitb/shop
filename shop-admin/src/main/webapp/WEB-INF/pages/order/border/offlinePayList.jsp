@@ -449,6 +449,9 @@
                             if(row.pfBorder && row.pfBorder.orderStatus == 8){
                                 return '已发货';
                             }
+                            if(row.pfBorder && row.pfBorder.orderStatus == 9){
+                                return '线下支付未付款';
+                            }
                         }
                     },
                     {

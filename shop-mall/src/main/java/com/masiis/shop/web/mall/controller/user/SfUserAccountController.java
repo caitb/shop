@@ -168,7 +168,7 @@ public class SfUserAccountController extends BaseController {
         List<SfUserRelation> threeDistributions = new ArrayList<>();
         log.info("分销用户数量：" + sfUserRelations.size());
         log.info("处理分销begin");
-        List<SfOrder> allOrders = new ArrayList<>();
+//        List<SfOrder> allOrders = new ArrayList<>();
         if (sfUserRelations != null && sfUserRelations.size() > 0){
             List<Long> userPids_two = new ArrayList<>();
             List<Long> userPids_three = new ArrayList<>();
@@ -223,7 +223,7 @@ public class SfUserAccountController extends BaseController {
                 List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
-                    allOrders.add(sfOrder);
+//                    allOrders.add(sfOrder);
                 }
                 mv.addObject("oneBuy",map.size());
             }
@@ -238,7 +238,7 @@ public class SfUserAccountController extends BaseController {
                 List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
-                    allOrders.add(sfOrder);
+//                    allOrders.add(sfOrder);
                 }
                 mv.addObject("twoBuy",map.size());
             }
@@ -253,7 +253,7 @@ public class SfUserAccountController extends BaseController {
                 List<SfOrder> oneSfOrders = sfOrderService.findByUserIds(userId,userPids);
                 for (SfOrder sfOrder : oneSfOrders){
                     map.put(sfOrder.getUserId(),"");
-                    allOrders.add(sfOrder);
+//                    allOrders.add(sfOrder);
                 }
                 mv.addObject("threeBuy",map.size());
             }

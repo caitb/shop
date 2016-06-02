@@ -68,4 +68,17 @@
         and create_date <![CDATA[<]]> #{end,jdbcType=TIMESTAMP}
     </select>
 
+    <select id="selectPfCountindFee" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT
+	      sum(order_pay_amount) AS amount,
+	      order_sub_type AS orderSubType
+        FROM
+	      pf_user_bill_item
+        WHERE
+	      user_id = #{userId}
+        AND is_count = 0
+        AND order_type = 0
+        GROUP BY
+	      order_sub_type;
+    </select>
 </mapper>

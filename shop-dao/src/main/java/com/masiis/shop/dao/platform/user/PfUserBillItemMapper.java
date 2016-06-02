@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PfUserBillItemMapper {
@@ -30,4 +31,5 @@ public interface PfUserBillItemMapper {
                                              @Param("start") Date start,
                                              @Param("end") Date end);
 
+    List<Map<String, Object>> selectPfCountindFee(@Param("userId") Long userId);
 }

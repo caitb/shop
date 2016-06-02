@@ -2,6 +2,8 @@ package com.masiis.shop.web.platform.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.DateUtil;
+import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.dao.po.ComUserAccount;
 import com.masiis.shop.dao.po.PfUserBill;
@@ -18,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lzh on 2016/3/18.
@@ -44,7 +46,7 @@ public class UserAccountController extends BaseController{
     @Resource
     private UserExtractApplyService userExtractApplyService;
 
-    @RequestMapping("/home")
+    /*@RequestMapping("/home")
     public String accountHome(HttpServletRequest request, Model model) throws Exception{
         ComUser user = getComUser(request);
         log.info("进入我的资产首页");
@@ -85,7 +87,83 @@ public class UserAccountController extends BaseController{
         model.addAttribute("totalIncom",account.getExtractableFee().add(withdraw).add(account.getCountingFee()));
         model.addAttribute("account", account);
         model.addAttribute("userBills",userBills);
-        return "platform/user/account";
+        return "platform/user/account_bak";
+    }*/
+
+    @RequestMapping("/home")
+    public ModelAndView accountHomeEdit1(HttpServletRequest request) throws Exception{
+        log.info("我的资产首页（需求修改）");
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if(comUser == null){
+            throw new BusinessException("用户未登录!");
+        }
+        String currentDate = DateUtil.Date2String(new Date(),"yyyy-MM-dd");
+        //查询用户资产表，用于展示累计收入和可提现金额
+        ComUserAccount account = accountService.findAccountByUserid(comUser.getId());
+        if (account == null){
+            BigDecimal fee = new BigDecimal(0.00);
+            account = new ComUserAccount();
+            account.setTotalIncomeFee(fee);
+            account.setExtractableFee(fee);
+            account.setCountingFee(fee);
+            account.setProfitFee(fee);
+        }else {
+            if (account.getAppliedFee() == null){
+                account.setAppliedFee(new BigDecimal(0.00));
+            }
+        }
+        NumberFormat rmbFormat = NumberFormat.getCurrencyInstance(Locale.CHINA);
+        log.info("查询b端结算中金额begin");
+        BigDecimal agentAmount = new BigDecimal(0);
+        List<Map<String, Object>> billAmountMaps = accountService.getPfCountindFee(comUser.getId());
+        if (billAmountMaps != null && billAmountMaps.size() > 0){
+            for (Map<String, Object> map : billAmountMaps){
+                if ("0".equals(map.get("orderSubType").toString())){
+                    agentAmount = agentAmount.add(new BigDecimal(map.get("amount").toString()));
+                }else {
+                    agentAmount = agentAmount.subtract(new BigDecimal(map.get("amount").toString()));
+                }
+            }
+        }
+        log.info("查询b端结算中金额end");
+        log.info("查询已提现金额begin");
+        Map<String, BigDecimal> map = userExtractApplyService.findSumExtractfeeByUserId(comUser.getId());
+        BigDecimal withdrawd = map == null?new BigDecimal(0.00):map.get("extractFee");
+        log.info("查询已提现金额end");
+        mv.addObject("account",account);
+        mv.addObject("agentAmount",rmbFormat.format(agentAmount));
+        mv.addObject("shopAmount",account.getCountingFee().subtract(agentAmount));
+        mv.addObject("applicationed",rmbFormat.format(account.getAppliedFee()));
+        mv.addObject("withdrawd",rmbFormat.format(withdrawd));
+        mv.addObject("currentDate",currentDate);
+        mv.addObject("totalIncom",account.getExtractableFee().add(withdrawd).add(account.getCountingFee()));
+        mv.setViewName("platform/user/account");
+        return mv;
+    }
+
+    @RequestMapping(value = "/getIncomRecord.shtml")
+    public ModelAndView getIncomRecord(HttpServletRequest request) throws Exception{
+        ModelAndView mv = new ModelAndView();
+        ComUser comUser = getComUser(request);
+        if(comUser == null){
+            throw new BusinessException("用户未登录!");
+        }
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DATE);
+        String monthString = "";
+        if (month<10){
+            monthString = "0"+month;
+        }else {
+            monthString += month;
+        }
+        String currentMonth = String.valueOf(year)+monthString;
+        List<PfUserBill> userBills = pfUserBillService.findByUserIdLimtPage(comUser.getId(),currentMonth,0,0);
+        mv.addObject("record",userBills);
+        mv.setViewName("platform/user/incomeRecord");
+        return mv;
     }
 
     /**

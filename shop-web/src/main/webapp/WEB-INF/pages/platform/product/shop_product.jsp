@@ -39,7 +39,7 @@
                     <div>
                         <h1>${sku.comSku.name}</h1>
 
-                        <p style="color: #ff5200;">￥${sku.comSku.priceMarket}</p>
+                        <p style="color: #ff5200;">￥${sku.comSku.priceRetail}</p>
 
                         <p>已售：<span style="margin-right: 5px;">${sku.saleNum}</span>  库存: <span>${sku.stock}</span></p>
                     </div>

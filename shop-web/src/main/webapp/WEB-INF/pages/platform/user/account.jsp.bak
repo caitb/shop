@@ -33,64 +33,46 @@
         </header>
         <main>
             <div class="ban">
-                <p>累计收入:￥${totalIncom}</p>
-                <h2>(截止到<span>${currentDate}</span>)</h2>
-                <h1 style="font-weight: normal;font-size: 14px;">可提现</h1>
-                <h1 style="margin-top: 0">￥<b>${account.extractableFee}</b></h1>
-                <button onclick="withdrawRequest()">申请提现</button>
+                <img src="<%=basePath%>static/images/icon_55.png" alt="">
+                <h1>￥<b>${totalIncom}</b></h1>
+                <p>累计收入</p>
+                <h2>(截止到<span>${year}-${month}-${day}</span>)</h2>
             </div>
             <nav>
                 <ul>
-                    <li>申请中： ${applicationed}</li>
-                    <li>已提现： ${withdrawd}</li>
+                    <li>
+                        <p>可提现<span><a href="<%=basePath%>extract/toapply">申请提现</a></span></p>
+                        <h1><span>￥</span>${account.extractableFee}</h1>
+                        <h2><a href="#" onclick="toExtract()">提现记录</a></h2>
+                    </li>
+                    <li>
+                        <p>结算中：</p>
+                        <h1><span>￥</span>${account.countingFee}</h1>
+                        <h2><a onclick="showDetail()">查看说明</a></h2>
+                    </li>
                 </ul>
             </nav>
-            <div class="floor">
-                <p><b>￥</b>${account.countingFee}</p>
-                <h1>结算中<img src="${path}/static/images/what.png" alt="?" onclick="showDetail()" /></h1>
-                <nav>
-                    <ul>
-                        <li>
-                            <p>${agentAmount}</p>
-                            <h1>结算中(合伙人)<img src="${path}/static/images/what.png" alt="?" onclick="showHedetail()"></h1>
-                        </li>
-                        <li>
-                            <p><b>￥</b>${shopAmount}</p>
-                            <h1>结算中（店铺）<img src="${path}/static/images/what.png" alt="?" onclick="showDidetail()"></h1>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="floor2">
-                <p><a href="#" onclick="toIncomRecord()">收入记录</a></p>
-                <p><a href="#" onclick="toExtract()">提现记录</a></p>
+            <div class="sec1" id="sec1">
+                <p>收入记录：<label id="lable" for="beginTime" ><b>${year}</b>年<b>  ${month}</b>月</label><input  id="beginTime" class="kbtn" style="display:none;"/></p>
+                <div id="divall">
+                    <c:forEach var="userBill" items="${userBills}">
+                        <c:if test="${userBill.billAmount > 0}">
+                            <div>
+                                <p><span class="sd"><fmt:formatDate value="${userBill.balanceDate}"  type="time" pattern="MM-dd"/></span><span>${year}</span></p>
+                                <h1>+${userBill.billAmount}</h1>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </main>
     </div>
 </div>
 <div class="back" id="detail">
     <div class="back_j">
-        <h1>什么是结算中？</h1>
+        <h1>什么是结算中</h1>
         <p>
-            结算中=结算中（合伙人）+结算中（店铺）
-        </p>
-        <botton onClick="hideDetail()">我知道了</botton>
-    </div>
-</div>
-<div class="back" id="Hedetail">
-    <div class="back_j">
-        <h1>什么是合伙人结算中？</h1>
-        <p>
-            合伙人在成为您的下级或补货后会产生结算中的资金，结算资金=合伙人订单+合伙人补货订单资金。1天后即可转入可提现。
-        </p>
-        <botton onClick="hideDetail()">我知道了</botton>
-    </div>
-</div>
-<div class="back" id="Didetail">
-    <div class="back_j">
-        <h1>什么是店铺结算中？</h1>
-        <p>
-            店铺结算资金是指消费者通过您的店铺购买商品后产生的资金，由于消费者可以退货，所以结算中的资金需要7天后转入可提现。结算中资金=订单金额-运费金额-分销佣金
+            资金正在结算中，1天后即可转入可提现。
         </p>
         <botton onClick="hideDetail()">我知道了</botton>
     </div>
@@ -141,10 +123,6 @@
             }
         });
     }
-    function withdrawRequest(){
-        fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>extract/toapply";
-    }
     function backLastPage(){
         fullShow();//跳转页面钱展示全屏遮罩loading...
         window.location.href="<%=basePath%>personalInfo/personalHomePageInfo.html";
@@ -152,20 +130,8 @@
     function showDetail(){
         $("#detail").show();
     }
-    function showHedetail(){
-        $("#Hedetail").show();
-    }
-    function showDidetail(){
-        $("#Didetail").show();
-    }
     function hideDetail(){
         $("#detail").hide();
-        $("#Hedetail").hide();
-        $("#Didetail").hide();
-    }
-    function toIncomRecord(){
-        fullShow();//跳转页面钱展示全屏遮罩loading...
-        window.location.href="<%=basePath%>account/getIncomRecord.shtml";
     }
     function toExtract(){
         fullShow();//跳转页面钱展示全屏遮罩loading...

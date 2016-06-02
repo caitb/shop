@@ -273,6 +273,6 @@ public class UserController {
             object.put("isError",true);
             object.put("msg",e.getMessage());
         }
-       return "";
+       return object.toJSONString();
     }
 }

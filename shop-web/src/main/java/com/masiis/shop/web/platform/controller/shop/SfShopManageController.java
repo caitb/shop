@@ -275,7 +275,7 @@ public class SfShopManageController extends BaseController {
             resultMap.put("shareImg", comUser.getWxHeadImg());
 
             mav.addObject("shareMap", resultMap);
-            mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
+            mav.addObject("shopPoster", PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/user/poster/shop-"+comUser.getId()+"-"+shopId+".png");
 
             return mav;
         } catch (Exception e) {

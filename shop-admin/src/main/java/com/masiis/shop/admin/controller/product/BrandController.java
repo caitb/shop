@@ -5,6 +5,7 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.github.pagehelper.StringUtil;
 import com.masiis.shop.admin.service.product.BrandService;
 import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.ComBrand;
 import com.masiis.shop.dao.po.PbUser;
 import org.springframework.stereotype.Controller;
@@ -68,7 +69,7 @@ public class BrandController {
             if(pbUser != null) {
                 log.info("保存品牌-开始准备comBrand数据");
                 comBrand.setCreateTime(new Date());
-                comBrand.setLogoUrl("http://file.masiis.com/static/brand/"+logoName);
+                comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
                 //上传商品标志到OSS
                 String logoAbsoluteUrl = realPath + logoUrl;
                 File logoFile = new File(logoAbsoluteUrl);
@@ -115,7 +116,7 @@ public class BrandController {
             PbUser pbUser = (PbUser)request.getSession().getAttribute("pbUser");
             if(pbUser != null && logoUrl != null) {
                 log.info("保存品牌-开始准备comBrand数据");
-                comBrand.setLogoUrl("http://file.masiis.com/static/brand/"+logoName);
+                comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
                 //上传商品标志到OSS
                 String logoAbsoluteUrl = realPath + logoUrl;
                 File logoFile = new File(logoAbsoluteUrl);

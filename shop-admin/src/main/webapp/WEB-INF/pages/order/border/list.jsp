@@ -456,6 +456,24 @@
                         }
                     },
                     {
+                        field: 'orderType',
+                        title: '订单类型',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder && row.pfBorder.orderType == 0){
+                                return '代理订单';
+                            }
+                            if(row.pfBorder && row.pfBorder.orderType == 1){
+                                return '补货订单';
+                            }
+                            if(row.pfBorder && row.pfBorder.orderType == 2){
+                                return '拿货订单';
+                            }
+                        }
+                    },
+                    {
                         field: 'pay_status',
                         title: '支付状态',
                         sortable: true,

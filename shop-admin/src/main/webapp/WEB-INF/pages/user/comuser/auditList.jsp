@@ -160,6 +160,109 @@
                                                         </div>
 
                                                         <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 上级信息 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <table class="table table-bordered table-striped">
+                                                                    <thead class="thin-border-bottom">
+                                                                    <tr>
+                                                                        <th>
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>name
+                                                                        </th>
+
+                                                                        <th>
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>price
+                                                                        </th>
+
+                                                                        <th class="hidden-480">
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>status
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>internet.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red">$29.99</s>
+                                                                            </small>
+                                                                            <b class="green">$19.99</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-info arrowed-right arrowed-in">on sale</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>online.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$16.45</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-success arrowed-in arrowed-in-right">approved</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>newnet.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$15.00</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-danger arrowed">pending</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>web.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red">$24.99</s>
+                                                                            </small>
+                                                                            <b class="green">$19.95</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+																	<span class="label arrowed">
+																		<s>out of stock</s>
+																	</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>domain.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$12.00</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-warning arrowed arrowed-right">SOLD</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
                                                             <div class="profile-info-name"> 身份证号 </div>
 
                                                             <div class="profile-info-value">
@@ -379,16 +482,17 @@
                                     url: '<%=basePath%>comuser/toaudit.do',
                                     data: {id: row.id},
                                     success: function(data){
-                                        data = window.eval('('+data+')');
-                                        $('#userId').val(data.id);
-                                        $('#mobile').val(data.mobile);
-                                        $('#nickName').html(data.wxNkName);
-                                        $('#realName').html(data.realName);
-                                        $('#linkmanIDCard').html(data.idCard);
-                                        $('#idCardF').attr('src', data.idCardFrontUrl);
-                                        $('#idCardB').attr('src', data.idCardBackUrl);
-
-                                        $('#auditReason').val('');
+//                                        data = window.eval('('+data+')');
+//                                        $('#userId').val(data.id);
+//                                        $('#mobile').val(data.mobile);
+//                                        $('#nickName').html(data.wxNkName);
+//                                        $('#realName').html(data.realName);
+//                                        $('#linkmanIDCard').html(data.idCard);
+//                                        $('#idCardF').attr('src', data.idCardFrontUrl);
+//                                        $('#idCardB').attr('src', data.idCardBackUrl);
+//
+//                                        $('#auditReason').val('');
+                                        $('#modal-audit').replaceWith(data);
                                         $('#modal-audit').modal('show');
                                     }
                                 })
@@ -557,7 +661,7 @@
 
     });
 
-    $('.audit').on('click', function(){
+    $(document).on('click', '.audit', function(){
         var auditStatus = $(this).attr('audit-status');
         var auditReason = $('textarea[name="auditReason"]').val();
 

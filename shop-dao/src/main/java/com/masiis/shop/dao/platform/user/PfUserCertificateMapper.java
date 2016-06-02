@@ -8,6 +8,7 @@
 package com.masiis.shop.dao.platform.user;
 
 import com.masiis.shop.dao.po.PfUserCertificate;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface PfUserCertificateMapper {
     List<PfUserCertificate> selectByUserId(Long userId);
 
     List<PfUserCertificate> selectByMap(Map<String, Object> conditionMap);
+
+    PfUserCertificate selectByUserIdAndSkuId(@Param("userId")Long userId, @Param("skuId")Integer skuId);
 }

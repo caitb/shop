@@ -103,6 +103,14 @@
                                                 <select id="shipStatus" name="shipStatus">
                                                 </select>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="isCounting">是否结算：</label>
+                                                <select id="isCounting" name="isCounting">
+                                                    <option value="">全部</option>
+                                                    <option value="0">未结算</option>
+                                                    <option value="1">已结算</option>
+                                                </select>
+                                            </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
                                     </div>
@@ -323,6 +331,10 @@
                 if($('#endTime').val()){
                     params.endTime = $('#endTime').val();
                 }
+                if($('#isCounting').val()){
+                    params.isCounting = $('#isCounting').val();
+                }
+
                 return params;
             },
 
@@ -646,7 +658,7 @@
         if(res.wuliuList !=null){
             var $select = $('#shipStatus');
             $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">ALL</option>');
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
             for(var i=0, len = res.wuliuList.length;i<len;i++){
                 $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
             }
@@ -655,7 +667,7 @@
         if(res.orderStatusList !=null){
             var $select = $('#orderStatus');
             $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">ALL</option>');
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
             for(var i=0, len = res.orderStatusList.length;i<len;i++){
                 $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
             }

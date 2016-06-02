@@ -55,7 +55,8 @@ public class SfOrderController extends BaseController {
                        String sortOrder,
                        String orderCode,
                        Integer orderStatus,
-                       Integer  shipStatus
+                       Integer  shipStatus,
+                       Integer isCounting
                        ){
 
         Map<String, Object> conditionMap = new HashMap<>();
@@ -71,6 +72,9 @@ public class SfOrderController extends BaseController {
             }
             if (!StringUtils.isEmpty(endTime)){
                 conditionMap.put("endTime",endTime);
+            }
+            if (isCounting!=null){
+                conditionMap.put("isCounting",isCounting);
             }
             conditionMap.put("orderCode", orderCode);
 

@@ -102,7 +102,7 @@
                                                 <label for="payStatus">支付状态：</label>
                                                 <select id="payStatus" name="payStatus">
                                                     <option value="">全部</option>
-                                                    <option value="0">代付款</option>
+                                                    <option value="0">待付款</option>
                                                     <option value="1">已付款</option>
                                                 </select>
                                             </div>

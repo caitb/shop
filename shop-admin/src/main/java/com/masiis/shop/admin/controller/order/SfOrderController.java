@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.OrderService;
+import com.masiis.shop.admin.service.system.DictionaryService;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.SysBeanUtils;
-import com.masiis.shop.dao.po.PbUser;
-import com.masiis.shop.dao.po.SfOrderFreight;
+import com.masiis.shop.dao.po.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,9 @@ public class SfOrderController extends BaseController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private DictionaryService dictionaryService;
+
 
     @RequestMapping("/list.shtml")
     public String list(){
@@ -46,15 +50,39 @@ public class SfOrderController extends BaseController {
                        Integer pageNumber,
                        Integer pageSize,
                        String sortName,
+                       String beginTime,
+                       String endTime,
                        String sortOrder,
-                       String orderCode
+                       String orderCode,
+                       Integer orderStatus,
+                       Integer  shipStatus
                        ){
 
         Map<String, Object> conditionMap = new HashMap<>();
         try {
+            if (shipStatus!=null){
+                conditionMap.put("shipStatus",shipStatus);
+            }
+            if (orderStatus!=null){
+                conditionMap.put("orderStatus",orderStatus);
+            }
+            if (!StringUtils.isEmpty(beginTime)){
+                conditionMap.put("beginTime",beginTime);
+            }
+            if (!StringUtils.isEmpty(endTime)){
+                conditionMap.put("endTime",endTime);
+            }
             conditionMap.put("orderCode", orderCode);
 
-            Map<String, Object> pageMap = orderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap);
+            Map<String, Object> pageMap = orderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, conditionMap,shipStatus);
+            if (shipStatus == null) {
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
+                pageMap.put("wuliuList", wuliuList);
+            }
+            if(orderStatus == null){
+                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("SF_ORDER_STATUS");//订单状态
+                pageMap.put("orderStatusList", orderStatusList);
+            }
             return pageMap;
         } catch (Exception e) {
             log.error("获取店铺订单列表失败![conditionMap="+conditionMap+"]");

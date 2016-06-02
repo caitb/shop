@@ -96,7 +96,7 @@ public class OrderService {
      * @param conditionMap
      * @return
      */
-    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap) {
+    public Map<String, Object> listByCondition(Integer pageNumber, Integer pageSize, String sortName, String sortOrder, Map<String, Object> conditionMap,Integer payTypeId) {
         String sort = "create_time desc";
         if (sortName != null) sort = sortName + " " + sortOrder;
 

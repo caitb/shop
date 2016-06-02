@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,18 +130,21 @@ public class PfBorderController extends BaseController {
                               Integer pageSize,
                               String sortName,
                               String sortOrder,
+                              Integer orderStatus,
                               PfBorder pfBorder) {
 
         try {
             pfBorder.setOrderStatus(9);
             Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,null);
             if (pfBorder.getShipStatus() == null) {
-                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_CORDER_SHIP_STATUS");//物流状态
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_BORDER_SHIP_STATUS");//物流状态
                 pageMap.put("wuliuList", wuliuList);
             }
-            if(pfBorder.getOrderStatus() == null){
-                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_CORDER_STATUS");//订单状态
-                pageMap.put("orderStatusList", orderStatusList);
+            if(orderStatus == null){
+                ComDictionary comDictionary = dictionaryService.pickListOfBaseDataByCodeAndKey("PF_BORDER_STATUS",9);//订单状态
+                List<ComDictionary> comDictionaryList = new ArrayList<ComDictionary>();
+                comDictionaryList.add(comDictionary);
+                pageMap.put("orderStatusList", comDictionaryList);
             }
             return pageMap;
         } catch (Exception e) {

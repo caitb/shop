@@ -614,7 +614,6 @@
         if(res.orderStatusList !=null){
             var $select = $('#orderStatus');
             $select.empty();
-            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
             for(var i=0, len = res.orderStatusList.length;i<len;i++){
                 $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
             }

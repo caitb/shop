@@ -24,4 +24,8 @@ public class DictionaryService {
     public List<ComDictionary> pickListOfBaseData(String code) throws Exception {
         return comDictionarysMapper.PickListByCode(code);
     }
+
+    public ComDictionary pickListOfBaseDataByCodeAndKey(String code,Integer key) throws Exception {
+        return comDictionarysMapper.pickListByCodeAndKey(code,key);
+    }
 }

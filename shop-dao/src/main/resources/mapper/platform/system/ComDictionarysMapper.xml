@@ -56,4 +56,11 @@
         from com_dictionary
         where code = #{code,jdbcType=VARCHAR}
     </select>
+
+    <select id="pickListByCodeAndKey" resultMap="BaseResultMap" parameterType="java.util.Map">
+       select id, code, `key`, `value`, remark
+        from com_dictionary
+        where code = #{code,jdbcType=VARCHAR}
+        AND `key` = #{key,jdbcType=INTEGER}
+    </select>
 </mapper>

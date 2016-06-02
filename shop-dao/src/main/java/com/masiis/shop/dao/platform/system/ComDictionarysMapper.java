@@ -1,6 +1,7 @@
 package com.masiis.shop.dao.platform.system;
 
 import com.masiis.shop.dao.po.ComDictionary;
+import com.masiis.shop.dao.po.PfSkuAgent;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,7 @@ public interface ComDictionarysMapper {
     ComDictionary selectByCodeAndKey(Map<String, Object> map);
 
     List<ComDictionary> PickListByCode(@Param("code")String code);
+
+    ComDictionary pickListByCodeAndKey(@Param("code")String code,@Param("key")Integer key);
+
 }

@@ -126,6 +126,21 @@
             <if test="orderCode != null">
                 AND order_code = #{orderCode}
             </if>
+            <if test="createMan != null">
+                AND create_man = #{createMan}
+            </if>
+            <if test="shipStatus != null">
+                AND ship_status = #{shipStatus}
+            </if>
+            <if test="orderStatus != null">
+                AND order_status = #{orderStatus}
+            </if>
+            <if test="payStatus != null">
+                AND payStatus = #{pay_status}
+            </if>
+            <if test="beginTime != null and endTime !=null"  >
+                AND create_time BETWEEN #{beginTime} AND #{endTime}
+            </if>
         </where>
     </select>
 

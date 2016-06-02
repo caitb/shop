@@ -5,6 +5,8 @@ import com.alibaba.druid.support.logging.LogFactory;
 import com.masiis.shop.admin.beans.order.Order;
 import com.masiis.shop.admin.controller.base.BaseController;
 import com.masiis.shop.admin.service.order.COrderService;
+import com.masiis.shop.admin.service.system.DictionaryService;
+import com.masiis.shop.dao.po.ComDictionary;
 import com.masiis.shop.dao.po.PfCorder;
 import com.masiis.shop.dao.po.PfCorderFreight;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,8 @@ public class PfCorderController extends BaseController{
 
     @Resource
     private COrderService cOrderService;
+    @Resource
+    private DictionaryService dictionaryService;
 
     @RequestMapping("/list.shtml")
     public String list(){
@@ -46,7 +51,14 @@ public class PfCorderController extends BaseController{
 
         try {
             Map<String, Object> pageMap = cOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfCorder);
-
+            if (pfCorder.getShipStatus() == null) {
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_CORDER_SHIP_STATUS");//物流状态
+                pageMap.put("wuliuList", wuliuList);
+            }
+            if(pfCorder.getOrderStatus() == null){
+                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_CORDER_STATUS");//订单状态
+                pageMap.put("orderStatusList", orderStatusList);
+            }
             return pageMap;
         } catch (Exception e) {
             log.error("查询试用订单列表出错![pageNumber="+pageNumber+"][pageSize="+pageSize+"][pfCorder="+pfCorder+"]");

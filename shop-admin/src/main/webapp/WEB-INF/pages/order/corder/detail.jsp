@@ -294,7 +294,7 @@
                                         </div>
 
                                         <div class="profile-info-row">
-                                            <div class="profile-info-name"> 实付金额 </div>
+                                            <div class="profile-info-name"> 实付金额</div>
 
                                             <div class="profile-info-value">
                                                 <span class="bgarea" id="payAmount">${order.pfCorder.payAmount}</span>

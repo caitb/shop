@@ -142,6 +142,9 @@ public class PfCorder {
      */
     private Integer skuId;
 
+    private String beginTime;
+    private String endTime;
+
     public Integer getSkuId() {
         return skuId;
     }
@@ -388,6 +391,22 @@ public class PfCorder {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @Override

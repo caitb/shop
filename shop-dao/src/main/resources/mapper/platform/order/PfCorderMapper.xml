@@ -136,7 +136,7 @@
                 AND order_status = #{orderStatus}
             </if>
             <if test="payStatus != null">
-                AND payStatus = #{pay_status}
+                AND pay_status = #{payStatus}
             </if>
             <if test="beginTime != null and endTime !=null"  >
                 AND create_time BETWEEN #{beginTime} AND #{endTime}

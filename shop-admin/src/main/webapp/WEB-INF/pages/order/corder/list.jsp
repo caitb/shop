@@ -100,6 +100,14 @@
                                                 </select>
                                             </div>
                                             <div class="form-group">
+                                                <label for="payStatus">支付状态：</label>
+                                                <select id="payStatus" name="payStatus">
+                                                    <option value="">全部</option>
+                                                    <option value="0">代付款</option>
+                                                    <option value="1">已付款</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="shipStatus">物流状态：</label>
                                                 <select id="shipStatus" name="shipStatus">
                                                 </select>
@@ -314,6 +322,9 @@
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
                 if($('#shipStatus').val()){
                     params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#payStatus').val()){
+                    params.payStatus = $('#payStatus').val();
                 }
                 if($('#orderStatus').val()){
                     params.orderStatus = $('#orderStatus').val();

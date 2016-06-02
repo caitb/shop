@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>u
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -102,19 +102,16 @@
                                             <div class="form-group">
                                                 <label for="payTypeId">支付方式</label>
                                                 <select id="payTypeId" name="payTypeId">
-                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="orderStatus">订单状态</label>
                                                 <select id="orderStatus" name="orderStatus">
-                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
-                                                    <option value="" selected="selected">ALL</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -599,29 +596,37 @@
             row.state = $.inArray(row.id, selections) !== -1;
         });
             //订单类型
-            if($('#orderType').val() !=null && res.orderTypeList !=null){
+            if( res.orderTypeList !=null){
                 var $select = $('#orderType');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
                 for(var i=0, len = res.orderTypeList.length;i<len;i++)  {
                     $select.append('<option value="'+res.orderTypeList[i].key+'">'+res.orderTypeList[i].value+'</option>');
                 }
             }
             //支付方式
-            if($('#payTypeId').val()!=null && res.payTypeList !=null){
+            if(res.payTypeList !=null){
                 var $select = $('#payTypeId');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
                 for(var i=0, len = res.payTypeList.length;i<len;i++){
                     $select.append('<option value="'+res.payTypeList[i].key+'">'+res.payTypeList[i].value+'</option>');
                 }
             }
             //订单状态
-            if($('#orderStatus').val()!=null && res.orderStatusList !=null){
+            if( res.orderStatusList !=null){
                 var $select = $('#orderStatus');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
                 for(var i=0, len = res.orderStatusList.length;i<len;i++){
                     $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
                 }
             }
             //物流状态
-            if($('#shipStatus').val()!=null && res.wuliuList !=null){
+            if( res.wuliuList !=null){
                 var $select = $('#shipStatus');
+                $select.empty();
+                $select.append('<option value="" selected="selected">全部</option>')
                 for(var i=0, len = res.wuliuList.length;i<len;i++){
                     $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
                 }

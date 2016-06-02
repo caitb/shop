@@ -85,5 +85,10 @@
         from sf_shop_sku
         where shop_id = #{shopId,jdbcType=BIGINT} and is_sale = #{isSale,jdbcType=INTEGER}
     </select>
-
+    <select id="selectBySkuId" resultMap="BaseResultMap">
+        select id, create_time, shop_id, shop_user_id, spu_id, sku_id, is_sale, agent_level_id,
+        bail,sale_num, share_num, qr_code, remark
+        from sf_shop_sku
+        where sku_id = #{skuId,jdbcType=BIGINT}
+</select>
 </mapper>

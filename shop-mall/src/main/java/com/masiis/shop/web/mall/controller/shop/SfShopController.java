@@ -6,6 +6,7 @@ import com.masiis.shop.common.constant.wx.WxConsPF;
 import com.masiis.shop.common.exceptions.BusinessException;
 import com.masiis.shop.common.util.ImageUtils;
 import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.mallBeans.SkuInfo;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.ComSku;
@@ -196,7 +197,7 @@ public class SfShopController extends BaseController {
 //            resultMap.put("shareImg", comUser.getWxHeadImg());
 //
 //            mav.addObject("shareMap", resultMap);
-            mav.addObject("shopPoster", "http://file.masiis.com/static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
+            mav.addObject("shopPoster", PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/user/poster/exclusive-"+comUser.getId()+"-"+shopId+".png");
 
             return mav;
         } catch (Exception e) {

@@ -201,7 +201,7 @@ public class WxEventService {
         res.setArticleCount(1);
         List<Article> articles = new ArrayList<>();
         Article article = new Article("点击继续", url);
-        article.setPicUrl("http://file.masiis.com/static/wx_notice_pic.jpg");
+        article.setPicUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/wx_notice_pic.jpg");
         article.setDescription("您正在申请" + skuName + "合伙人，点击继续");
         articles.add(article);
         res.setArticles(articles);

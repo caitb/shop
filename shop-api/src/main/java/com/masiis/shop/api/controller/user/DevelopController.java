@@ -17,6 +17,7 @@ import com.masiis.shop.api.utils.image.DownloadImage;
 import com.masiis.shop.api.utils.image.DrawImageUtil;
 import com.masiis.shop.api.utils.image.Element;
 import com.masiis.shop.common.util.OSSObjectUtils;
+import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.po.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -161,7 +162,7 @@ public class DevelopController {
 
             DrawImageUtil.drawImage(904, 1200, drawElements, "static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
 
-            popularizeRes.setPosterUrl("http://file.masiis.com/static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
+            popularizeRes.setPosterUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/user/poster/agent-"+comUser.getId()+"-"+userSku.getId()+".png");
             popularizeRes.setResCode(SysResCodeCons.RES_CODE_SUCCESS);
             popularizeRes.setResMsg(SysResCodeCons.RES_CODE_SUCCESS_MSG);
         } catch (Exception e) {

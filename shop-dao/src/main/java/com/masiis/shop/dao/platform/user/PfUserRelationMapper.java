@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PfUserRelationMapper {
@@ -55,4 +56,6 @@ public interface PfUserRelationMapper {
      */
     int updateAllToUnableByUserIdAndSkuId(@Param("userId") Long userId,
                                           @Param("skuId") Integer skuId);
+
+    List<PfUserRelation> selectByCondition(Map<String, Object> conditionMap);
 }

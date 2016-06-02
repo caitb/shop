@@ -7,6 +7,7 @@ import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.util.MobileMessageUtil;
 import com.masiis.shop.common.util.PropertiesUtils;
+import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
@@ -37,6 +38,8 @@ public class ComUserService {
     private PfUserRelationMapper pfUserRelationMapper;
     @Resource
     private PbOperationLogMapper pbOperationLogMapper;
+    @Resource
+    private ComAgentLevelMapper comAgentLevelMapper;
 
     /**
      * 根据id查找合伙人
@@ -133,14 +136,41 @@ public class ComUserService {
      * @param id
      * @return
      */
-    public ComUser toAudit(Long id){
+    public Map<String, Object> toAudit(Long id){
+        Map<String, Object> auditMap = new HashMap<>();
+
+        /* 被审核人信息 */
         ComUser comUser = comUserMapper.selectByPrimaryKey(id);
         String idCardImgUrl = PropertiesUtils.getStringValue("index_user_idCard_url");
-
         comUser.setIdCardFrontUrl(idCardImgUrl+comUser.getIdCardFrontUrl());
         comUser.setIdCardBackUrl(idCardImgUrl+comUser.getIdCardBackUrl());
 
-        return comUser;
+        /* 上级人信息 */
+        List<Map<String, Object>> pUserMaps = new ArrayList<>();
+
+        Map<String, Object> userRelationMap = new HashMap<>();
+        userRelationMap.put("userId", comUser.getId());
+        userRelationMap.put("isEnable", 1);
+        List<PfUserRelation> pfUserRelations = pfUserRelationMapper.selectByCondition(userRelationMap);
+        for(PfUserRelation pfUserRelation : pfUserRelations){
+            PfUserCertificate pfUserCertificate = pfUserCertificateMapper.selectByUserIdAndSkuId(pfUserRelation.getUserPid(), pfUserRelation.getSkuId());
+            ComUser pUser = comUserMapper.selectByPrimaryKey(pfUserCertificate.getUserId());
+            ComAgentLevel agentLevel = comAgentLevelMapper.selectByPrimaryKey(pfUserCertificate.getAgentLevelId());
+            ComSku sku = comSkuMapper.selectByPrimaryKey(pfUserCertificate.getSkuId());
+
+            Map<String, Object> pUserMap = new HashMap<>();
+            pUserMap.put("userName", pUser.getWxNkName());
+            pUserMap.put("mobile", pUser.getMobile());
+            pUserMap.put("agentLevelName", agentLevel.getName());
+            pUserMap.put("agentSkuName", sku.getName());
+
+            pUserMaps.add(pUserMap);
+        }
+
+        auditMap.put("comUser", comUser);
+        auditMap.put("pUserMaps", pUserMaps);
+
+        return auditMap;
     }
 
     /**

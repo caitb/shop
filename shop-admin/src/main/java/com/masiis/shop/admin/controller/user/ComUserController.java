@@ -97,19 +97,27 @@ public class ComUserController extends BaseController{
         return new ModelAndView("error");
     }
 
+    /**
+     * 获取被审核人信息
+     * @param request
+     * @param response
+     * @param id
+     * @return
+     */
     @RequestMapping("toaudit.do")
-    @ResponseBody
-    public Object toAudit(HttpServletRequest request, HttpServletResponse response, Long id){
-        try {
-            ComUser comUser = comUserService.toAudit(id);
+    public ModelAndView toAudit(HttpServletRequest request, HttpServletResponse response, Long id){
+        ModelAndView mav = new ModelAndView("user/comuser/modalAudit");
 
-            return comUser;
+        try {
+            Map<String, Object> auditMap = comUserService.toAudit(id);
+            mav.addObject("auditMap", auditMap);
+
         } catch (Exception e) {
             log.error("获取待审核人信息失败![id="+id+"]");
             e.printStackTrace();
         }
 
-        return "error";
+        return mav;
     }
 
     @RequestMapping("/audit.do")

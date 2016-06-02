@@ -55,6 +55,7 @@ public class SfOrderController extends BaseController {
                        String sortOrder,
                        String orderCode,
                        Integer orderStatus,
+                       Integer payStatus,
                        Integer  shipStatus,
                        Integer isCounting
                        ){
@@ -66,6 +67,9 @@ public class SfOrderController extends BaseController {
             }
             if (orderStatus!=null){
                 conditionMap.put("orderStatus",orderStatus);
+            }
+            if (payStatus!=null){
+                conditionMap.put("payStatus",payStatus);
             }
             if (!StringUtils.isEmpty(beginTime)){
                 conditionMap.put("beginTime",beginTime);

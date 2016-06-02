@@ -10,7 +10,6 @@ import com.masiis.shop.dao.platform.user.ComUserAccountRecordMapper;
 import com.masiis.shop.dao.platform.user.PfUserBillItemMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
 import com.masiis.shop.dao.po.*;
-import com.masiis.shop.web.platform.utils.WXBeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lzh on 2016/3/19.
@@ -206,6 +207,10 @@ public class ComUserAccountService {
         comUserAccountRecord.setHandleSerialNum(SysBeanUtils.createAccountRecordSerialNum(userAccountRecordFeeType.getCode()));
         comUserAccountRecord.setHandleTime(new Date());
         return comUserAccountRecord;
+    }
+
+    public List<Map<String, Object>> getPfCountindFee(Long userId){
+        return itemMapper.selectPfCountindFee(userId);
     }
 }
 

@@ -181,9 +181,17 @@ public class SkuService {
         }
         SfShopSku sfShopSku = sfShopSkuMapper.selectByShopIdAndSkuId(shopId, skuId);
         if (sfShopSku != null) {
-            skuInfo.setSaleNum(sfShopSku.getSaleNum());
+//            skuInfo.setSaleNum(sfShopSku.getSaleNum());
             skuInfo.setShareNum(sfShopSku.getShareNum());
             skuInfo.setIsSale(sfShopSku.getIsSale());
+        }
+        List<SfShopSku> sfShopSkuList = sfShopSkuMapper.selectBySkuId(skuId);
+        if (sfShopSkuList != null) {
+            Long saleNum = 0L;
+            for (SfShopSku sfShopSku1 : sfShopSkuList) {
+                saleNum = saleNum + sfShopSku1.getSaleNum();
+            }
+            skuInfo.setSaleNum(saleNum);
         }
         SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
         ComUser shopUser = comUserMapper.selectByPrimaryKey(sfShop.getUserId());

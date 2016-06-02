@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/tab.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="<%=basePath%>static/css/laydate.css" />
 
     <!-- page specific plugin styles -->
 
@@ -83,6 +84,25 @@
                                             <div class="form-group">
                                                 <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderCode">订单日期：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="endTime" name="endTime" placeholder="结束日期" data-date-format="yyyy-mm-dd hh:ii">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderStatus">订单状态：</label>
+                                                <select id="orderStatus" name="orderStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="shipStatus">物流状态：</label>
+                                                <select id="shipStatus" name="shipStatus">
+                                                </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
                                         </div>
@@ -210,6 +230,15 @@
 <script src="<%=basePath%>static/ace2/js/uncompressed/bootbox.js"></script>
 
 <script src="<%=basePath%>static/js/date-util.js"></script>
+<script src="<%=basePath%>static/js/laydate.js"></script>
+<script>
+    laydate({
+        elem: '#beginTime'
+    });
+    laydate({
+        elem: '#endTime'
+    });
+</script>
 
 <script>
     var $table = $('#table'),
@@ -225,6 +254,18 @@
             queryParamsType: 'pageNo',
             queryParams: function(params){
                 if($('#orderCode').val()) params.orderCode = $('#orderCode').val();
+                if($('#shipStatus').val()){
+                    params.shipStatus = $('#shipStatus').val();
+                }
+                if($('#orderStatus').val()){
+                    params.orderStatus = $('#orderStatus').val();
+                }
+                if($('#beginTime').val()){
+                    params.beginTime = $('#beginTime').val();
+                }
+                if($('#endTime').val()){
+                    params.endTime = $('#endTime').val();
+                }
                 return params;
             },
             rowStyle: function rowStyle(value, row, index) {
@@ -546,6 +587,24 @@
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, selections) !== -1;
         });
+        //物流状态
+        if(res.wuliuList !=null){
+            var $select = $('#shipStatus');
+            $select.empty();
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
+            for(var i=0, len = res.wuliuList.length;i<len;i++){
+                $select.append('<option value="'+res.wuliuList[i].key+'">'+res.wuliuList[i].value+'</option>');
+            }
+        }
+        //订单状态
+        if(res.orderStatusList !=null){
+            var $select = $('#orderStatus');
+            $select.empty();
+            $select.append('<option value=\"\" selected=\"selected\">全部</option>');
+            for(var i=0, len = res.orderStatusList.length;i<len;i++){
+                $select.append('<option value="'+res.orderStatusList[i].key+'">'+res.orderStatusList[i].value+'</option>');
+            }
+        }
         return res;
     }
 

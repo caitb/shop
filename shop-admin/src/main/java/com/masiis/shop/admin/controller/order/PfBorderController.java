@@ -134,7 +134,14 @@ public class PfBorderController extends BaseController {
         try {
             pfBorder.setOrderStatus(9);
             Map<String, Object> pageMap = bOrderService.listByCondition(pageNumber, pageSize, sortName, sortOrder, pfBorder,null);
-
+            if (pfBorder.getShipStatus() == null) {
+                List<ComDictionary> wuliuList = dictionaryService.pickListOfBaseData("PF_CORDER_SHIP_STATUS");//物流状态
+                pageMap.put("wuliuList", wuliuList);
+            }
+            if(pfBorder.getOrderStatus() == null){
+                List<ComDictionary> orderStatusList = dictionaryService.pickListOfBaseData("PF_CORDER_STATUS");//订单状态
+                pageMap.put("orderStatusList", orderStatusList);
+            }
             return pageMap;
         } catch (Exception e) {
             log.error("查询合伙人线下支付订单列表失败![pfBorder=" + pfBorder + "]");

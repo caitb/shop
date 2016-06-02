@@ -299,7 +299,9 @@
 
     <select id="selectByUserIds" resultMap="BaseResultMap">
         select * from sf_order
-        where shop_user_id &lt;&gt; #{userId} and user_id in
+        where
+        <!--shop_user_id &lt;&gt; #{userId} and-->
+        user_id in
         <foreach item="item" collection="userIds" open="(" separator="," close=")">
             #{item}
         </foreach>

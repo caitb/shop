@@ -141,9 +141,7 @@ public class PfBorderController extends BaseController {
                 pageMap.put("wuliuList", wuliuList);
             }
             if(orderStatus == null){
-                ComDictionary comDictionary = dictionaryService.pickListOfBaseDataByCodeAndKey("PF_BORDER_STATUS",9);//订单状态
-                List<ComDictionary> comDictionaryList = new ArrayList<ComDictionary>();
-                comDictionaryList.add(comDictionary);
+                List<ComDictionary> comDictionaryList = dictionaryService.pickListOfBaseData("PF_BORDER_STATUS");//订单状态
                 pageMap.put("orderStatusList", comDictionaryList);
             }
             return pageMap;

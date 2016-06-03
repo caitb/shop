@@ -13,6 +13,7 @@ import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.net.InetAddress;
@@ -22,6 +23,7 @@ import java.util.*;
  * Created by cai_tb on 16/3/5.
  */
 @Service
+@Transactional
 public class ComUserService {
 
     @Resource

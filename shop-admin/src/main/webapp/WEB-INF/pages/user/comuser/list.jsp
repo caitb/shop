@@ -119,6 +119,197 @@
                             </div>
                         </div>
 
+                        <div id="modal-audit" class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header no-padding">
+                                        <div class="table-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                <span class="white">&times;</span>
+                                            </button>
+                                            会员信息审核
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-body no-padding">
+                                        <div>
+                                            <div id="user-profile-1" class="user-profile row">
+                                                <div class="col-xs-12 col-sm-12 col-sm-offset-0">
+
+                                                    <!-- #section:pages/profile.info -->
+                                                    <div class="profile-user-info profile-user-info-striped">
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 会员信息 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="nickName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 姓名 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="editable editable-click" id="realName"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 上级信息 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <table class="table table-bordered table-striped">
+                                                                    <thead class="thin-border-bottom">
+                                                                    <tr>
+                                                                        <th>
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>name
+                                                                        </th>
+
+                                                                        <th>
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>price
+                                                                        </th>
+
+                                                                        <th class="hidden-480">
+                                                                            <i class="ace-icon fa fa-caret-right blue"></i>status
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>internet.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red">$29.99</s>
+                                                                            </small>
+                                                                            <b class="green">$19.99</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-info arrowed-right arrowed-in">on sale</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>online.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$16.45</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-success arrowed-in arrowed-in-right">approved</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>newnet.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$15.00</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-danger arrowed">pending</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>web.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red">$24.99</s>
+                                                                            </small>
+                                                                            <b class="green">$19.95</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+																	<span class="label arrowed">
+																		<s>out of stock</s>
+																	</span>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>domain.com</td>
+
+                                                                        <td>
+                                                                            <small>
+                                                                                <s class="red"></s>
+                                                                            </small>
+                                                                            <b class="green">$12.00</b>
+                                                                        </td>
+
+                                                                        <td class="hidden-480">
+                                                                            <span class="label label-warning arrowed arrowed-right">SOLD</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 身份证号 </div>
+
+                                                            <div class="profile-info-value">
+                                                                <span class="" id="linkmanIDCard"> </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name"> 身份证扫描件 </div>
+
+                                                            <div class="profile-info-value" style="height: 200px;">
+                                                                <img data-action="zoom" class="img-thumbnail" id="idCardF" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px;height: 200px;">
+                                                                <img data-action="zoom" class="img-thumbnail" id="idCardB" alt="200x200" src="#" data-holder-rendered="true" style="width: 245px;height: 200px">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="profile-info-row">
+                                                            <div class="profile-info-name" id="jjT"> 审核备注 </div>
+
+                                                            <div class="profile-info-value" id="jjF">
+                                                                <form id="auditForm">
+                                                                    <input type="hidden" name="id" id="userId" value="" />
+                                                                    <input type="hidden" name="mobile" id="mobile" value="" />
+                                                                    <input type="hidden" name="auditStatus" id="auditStatus" value="2" />
+                                                                    <textarea name="auditReason" id="auditReason" placeholder="请填写审核记录" rows="3" cols="50"></textarea>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer no-margin-top">
+                                        <div class="col-xs-5 col-sm-5 col-sm-offset-4">
+                                            <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                                                拒绝
+                                            </button>
+                                            <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                                                通过
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- PAGE CONTENT ENDS -->
+
                         <div id="modal-table" class="modal fade active in" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -422,7 +613,15 @@
                         },
                         events: {
                             'click .view': function (e, value, row, index) {
-                                window.parent.TabControlAppend('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
+                                //window.parent.TabControlAppend('tab-'+row.comUser.id, '会员信息', '<%=basePath%>comuser/detail.shtml?id='+row.comUser.id);
+                                $.ajax({
+                                    url: '<%=basePath%>comuser/toaudit.do',
+                                    data: {id: row.comUser.id},
+                                    success: function(data){
+                                        $('#modal-audit').replaceWith(data);
+                                        $('#modal-audit').modal('show');
+                                    }
+                                });
                             }
                         }
                     }

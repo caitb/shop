@@ -170,7 +170,7 @@ public class SfOrderItemDistributionController extends BaseController {
                 amount = amount.add(sfDistributionPerson.getAmount());
             }
             str.append("<div class=\"record\">");
-            str.append("<p><span><b>"+sfDistributionRecord.getLevel()+"</b>人参加</span><span>抗引力-瘦脸精华</span><span onclick=\"viewOrder("+sfDistributionRecord.getOrderId()+")\">查看订单></span></p>");
+            str.append("<p><span><b>"+sfDistributionRecord.getLevel()+"</b>人参加</span><span>"+sfDistributionRecord.getSkuName()+"</span><span onclick=\"viewOrder("+sfDistributionRecord.getOrderId()+")\">查看订单></span></p>");
             str.append("<h1><span>"+sdf.format(sfDistributionRecord.getCreateTime())+"日</span><span>购买人："+sfDistributionRecord.getWxNkName()+"</span><span>￥"+sfDistributionRecord.getOrderAmount()+"}</span></h1>");
             str.append("<h1><span><b>"+persons.size()+"</b>人分佣</span><span>￥"+amount+"</span><span onclick=\"showDetails('"+buffer+"')\">分佣明细></span></h1></div>");
         }

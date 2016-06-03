@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/zhucelianjie.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/css/zhucelianjie.css">
 
     <link rel="stylesheet" href="<%=basePath%>static/js/test/style.css">
 </head>
@@ -31,6 +31,9 @@
          <%--</h1>--%>
         <img src="${shareMap.poster}" alt="">
         <p>长按图片保存到手机，发送给好友</p>
+        <div class="floor">
+            <p>由于网络原因,海报加载失败,请刷新。</p>
+        </div>
     </div>
 </div>
 </body>

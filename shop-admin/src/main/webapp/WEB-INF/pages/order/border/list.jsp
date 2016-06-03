@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>u
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css" />
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
+    <link rel="stylesheet" href="<%=basePath%>/static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css" />
@@ -58,7 +58,6 @@
 </head>
 
 <body class="no-skin">
-
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -474,6 +473,7 @@
                                 for(var i in row.pfBorderPayments){
                                     if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
                                     if(row.pfBorderPayments[i].payTypeId == 1) sHtm += '线下支付';
+                                    if(row.pfBorderPayments[i].payTypeId == 2) sHtm += '支付宝支付';
                                 }
                                 return sHtm;
                             }
@@ -487,7 +487,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row.pfBorder && row.pfBorder.orderType == 0){
-                                return '代理订单';
+                                return '合伙人订单';
                             }
                             if(row.pfBorder && row.pfBorder.orderType == 1){
                                 return '补货订单';

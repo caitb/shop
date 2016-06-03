@@ -85,7 +85,7 @@ public class BOrderService {
             if(payTypeId !=null){
                 pfBorderPayment.setPayTypeId(payTypeId);
             }
-            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(pbo.getId());
+            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByCondition(pfBorderPayment);
             List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pbo.getId());
 
             Order order = new Order();

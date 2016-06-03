@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +68,7 @@ public class PfBorderController extends BaseController {
                 pageMap.put("orderTypeList", orderTypeList);
             }
             if(pfBorder.getShipType() == null){
-                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_EXTRACT_WAY");//支付方式
+                List<ComDictionary> payTypeList = dictionaryService.pickListOfBaseData("COM_USER_PAY_TYPE");//支付方式
                 pageMap.put("payTypeList", payTypeList);
             }
             if(pfBorder.getOrderStatus() == null){

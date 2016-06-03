@@ -3,6 +3,7 @@ package com.masiis.shop.web.platform.controller.order;
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.common.util.PropertiesUtils;
 import com.masiis.shop.dao.beans.order.BOrderAdd;
 import com.masiis.shop.dao.beans.order.BOrderConfirm;
@@ -207,6 +208,8 @@ public class BOrderAddController extends BaseController {
             if (StringUtils.isBlank(userMessage)) {
                 userMessage = "";
             }
+            // 过滤表情留言
+            userMessage = EmojiUtils.removeNonBmpUnicode(userMessage);
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }

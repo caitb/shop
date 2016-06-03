@@ -2,6 +2,7 @@ package com.masiis.shop.web.mall.controller.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.masiis.shop.common.exceptions.BusinessException;
+import com.masiis.shop.common.util.EmojiUtils;
 import com.masiis.shop.dao.po.ComUser;
 import com.masiis.shop.web.mall.controller.base.BaseController;
 import com.masiis.shop.web.mall.service.order.SfOrderPurchaseService;
@@ -78,6 +79,9 @@ public class SfOrderPurchaseController extends BaseController {
                 message = new String(message.getBytes("ISO-8859-1"), "UTF-8");
             }*/
             log.info("message------"+message);
+            if(StringUtils.isNotBlank(message)){
+                message = EmojiUtils.removeNonBmpUnicode(message);
+            }
             Long orderId = sfOrderPurchaseService.submitOrder(comUser.getId(),selectedAddressId,sfShopId,message);
             if (orderId != null && orderId >0 ){
                 obj.put("isSubmitOrder","true");

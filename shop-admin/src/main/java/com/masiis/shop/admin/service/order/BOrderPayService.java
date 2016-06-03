@@ -9,6 +9,7 @@ import com.masiis.shop.admin.utils.WxPFNoticeUtils;
 import com.masiis.shop.common.enums.BOrder.BOrderShipStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderStatus;
 import com.masiis.shop.common.enums.BOrder.BOrderType;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.enums.product.SkuStockLogType;
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.exceptions.BusinessException;
@@ -24,6 +25,7 @@ import com.masiis.shop.dao.platform.order.PfBorderMapper;
 import com.masiis.shop.dao.platform.order.PfBorderPaymentMapper;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.PfSkuStatisticMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.platform.user.PfUserCertificateMapper;
 import com.masiis.shop.dao.platform.user.PfUserSkuMapper;
@@ -42,6 +44,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -89,6 +92,8 @@ public class BOrderPayService {
     private SkuService skuService;
     @Resource
     private SfUserRelationMapper sfUserRelationMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     /**
      * 订单支付回调入口
@@ -99,7 +104,7 @@ public class BOrderPayService {
      * @throws Exception
      */
     @Transactional
-    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath) throws Exception {
+    public void mainPayBOrder(PfBorderPayment pfBorderPayment, String outOrderId, String rootPath,PbUser pbUser) throws Exception {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd h:m:s");
 //        System.out.println(dateFormat.format(new Date()));
         if (pfBorderPayment == null) {
@@ -122,6 +127,18 @@ public class BOrderPayService {
             payEndPushMessage(pfBorderPayment);
         } catch (Exception ex) {
             throw new Exception(ex.getMessage());
+        }
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("订单支付回调");
+        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建订单支付回调失败!");
         }
 //        System.out.println(dateFormat.format(new Date()));
     }

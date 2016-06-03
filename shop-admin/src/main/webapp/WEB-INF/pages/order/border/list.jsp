@@ -50,6 +50,11 @@
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .form-inline .form-group{
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 
 <body class="no-skin">
@@ -120,6 +125,14 @@
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="isCounting">是否结算：</label>
+                                                <select id="isCounting" name="isCounting">
+                                                    <option value="">全部</option>
+                                                    <option value="0">未结算</option>
+                                                    <option value="1">已结算</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -275,6 +288,9 @@
                 }
                 if($('#endTime').val()){
                     params.endTime = $('#endTime').val();
+                }
+                if($('#isCounting').val()){
+                    params.isCounting = $('#isCounting').val();
                 }
                 return params;
             },
@@ -511,6 +527,22 @@
                             }
                             if(row.pfBorder && row.pfBorder.shipStatus == 9){
                                 return '已收货';
+                            }
+
+                        }
+                    },
+                    {
+                        field: 'isCounting',
+                        title: '是否结算',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder && row.pfBorder.isCounting == 0){
+                                return '未结算';
+                            }
+                            if(row.pfBorder && row.pfBorder.isCounting == 1){
+                                return '已结算';
                             }
 
                         }

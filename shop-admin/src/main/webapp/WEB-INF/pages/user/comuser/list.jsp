@@ -609,7 +609,7 @@
                         title: '操作项',
                         align: 'center',
                         formatter: function(value, row, index){
-                            return '<a class="view" href="javascript:void(0);">查看</a>';
+                            //return '<a class="view" href="javascript:void(0);">查看</a>';
                         },
                         events: {
                             'click .view': function (e, value, row, index) {

@@ -102,6 +102,33 @@ public class IndexController extends BaseController {
 
             SfShopDetails.add(sfShopDetail);
         }
+
+        String shoutNum= String.valueOf(sfShop.getShoutNum());
+        Long moth= sfShop.getShoutNum();
+        int length = shoutNum.length();
+        List num = new LinkedList();
+        if(length>5){
+            for (int i=0;i<length;i++) {
+                num.add(i,0);
+            }
+            for (int i=length-1;i>=0;i--) {
+                String s = String.valueOf(moth % 10);
+                num.remove(num.get(i));
+                num.add(i,s);
+                moth=moth/10;
+            }
+        }else{
+            for (int i=0;i<5;i++) {
+                num.add(i,0);
+            }
+            for (int i=4;i>=5-length;i--) {
+                String s = String.valueOf(moth % 10);
+                num.remove(num.get(i));
+                num.add(i,s);
+                moth=moth/10;
+            }
+        }
+
         ModelAndView modelAndView = new ModelAndView();
 //        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
 //        modelAndView.addObject("forcusSF",forcusSF);
@@ -109,7 +136,8 @@ public class IndexController extends BaseController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
-        modelAndView.addObject("ok", ok);
+        modelAndView.addObject("num", num);
+        modelAndView.addObject("ok", ok);//保证金
         modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
         return modelAndView;
@@ -122,8 +150,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =138L;
-        userPid = 248L;
+        shopId =249L;
+        userPid = 356L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 

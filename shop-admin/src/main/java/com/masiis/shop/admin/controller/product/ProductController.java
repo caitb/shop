@@ -134,22 +134,14 @@ public class ProductController {
                 comSku.setCreateTime(new Date());
                 comSku.setCreateMan(pbUser.getId());
                 comSku.setIcon(proIconName);
-
-                //上传商品标志到OSS
-                String proIconAbsoluteUrl = realPath + proIconUrl;
-                File proIconFile = new File(proIconAbsoluteUrl);
-                OSSObjectUtils.uploadFile(proIconFile, "static/product/product_icon/");
-
-                proIconFile.delete();
                 log.info("保存商品-comSpu数据[comSpu="+comSpu+"]");
 
-                log.info("保存商品-开始准备pfSkuAgents数据");
                 //代理分润
+                log.info("保存商品-开始准备pfSkuAgents数据");
                 List<PfSkuAgent> pfSkuAgents = new ArrayList<>();
                 for(int i=0; i<unitPrices.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setAgentLevelId(new Integer(i + 1));
-                    //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
@@ -158,18 +150,11 @@ public class ProductController {
                     pfSkuAgent.setIcon(iconImgNames[i]);
 
                     pfSkuAgents.add(pfSkuAgent);
-
-                    //上传代理等级图标到OSS
-                    String imgAbsoluteUrl = realPath + iconImgUrls[i];
-                    File iconFile = new File(imgAbsoluteUrl);
-                    OSSObjectUtils.uploadFile(iconFile, "static/product/agent_icon/");
-
-                    iconFile.delete();
                 }
                 log.info("保存商品-comSpu数据[pfSkuAgents="+pfSkuAgents+"]");
 
-                log.info("保存商品-开始准备sfSkuDistributions数据");
                 //分销分润
+                log.info("保存商品-开始准备sfSkuDistributions数据");
                 List<SfSkuDistribution> sfSkuDistributions = new ArrayList<>();
                 for(int i=0; i<distributionDiscounts.length; i++){
                     SfSkuDistribution sfSkuDistribution = new SfSkuDistribution();
@@ -182,12 +167,7 @@ public class ProductController {
 
                 log.info("保存商品-开始准备comSkuImages数据");
                 List<ComSkuImage> comSkuImages = new ArrayList<>();
-                String folderPath = realPath + "/current";
                 int[] imgPxs = {220, 308, 800};
-                File folder = new File(folderPath);
-                if(!folder.exists()){
-                    folder.mkdir();
-                }
                 for(int i=0; i<mainImgUrls.length; i++){
                     ComSkuImage comSkuImage = new ComSkuImage();
                     comSkuImage.setCreateTime(new Date());
@@ -196,39 +176,13 @@ public class ProductController {
                     comSkuImage.setImgName(mainImgOriginalNames[i]);
                     comSkuImage.setIsDefault(i==1?1:0);
 
-                    String imgAbsoluteUrl = realPath + mainImgUrls[i];
-                    String resultPath = folderPath + "/" + mainImgNames[i];
                     for(int px=0; px<imgPxs.length; px++){
-                        ImageUtils.scale2(imgAbsoluteUrl, resultPath, imgPxs[px], imgPxs[px], true);
-                        File curFile = new File(resultPath);
-                        OSSObjectUtils.uploadFile(curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
-
-                        //删除缩放的图片
-                        curFile.delete();
-
                         comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
                     }
-
-                    //上传原图
-                    OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "static/product/prototype/");
-                    //删除原图
-                    new File(imgAbsoluteUrl).delete();
 
                     comSkuImages.add(comSkuImage);
                 }
                 log.info("保存商品-comSpu数据[comSkuImages="+comSkuImages+"]");
-
-            log.info("保存商品-开始上传商品详情图片");
-            /* 上传商品详情图 */
-            File detailDir = new File(realPath + "/static/product/detail_img");
-            if(detailDir.exists() && detailDir.listFiles().length > 0){
-                File[] files = detailDir.listFiles();
-                for(File f : files){
-                    OSSObjectUtils.uploadFile(f, "static/product/detail_img/");
-                    f.delete();
-                }
-            }
-            log.info("保存商品-结束上传商品详情图片");
 
                 productService.save(comSpu, comSku, comSkuImages, pfSkuAgents, sfSkuDistributions);
                 return "保存成功!";
@@ -285,13 +239,6 @@ public class ProductController {
 
                 if(proIconName != null){
                     comSku.setIcon(proIconName);
-
-                    //上传代理等级图标到OSS
-                    String proIconAbsoluteUrl = realPath + proIconUrl;
-                    File proIconFile = new File(proIconAbsoluteUrl);
-                    OSSObjectUtils.uploadFile(proIconFile, "static/product/product_icon/");
-
-                    proIconFile.delete();
                 }
 
                 //代理分润
@@ -299,7 +246,6 @@ public class ProductController {
                 for(int i=0; i<unitPrices.length; i++){
                     PfSkuAgent pfSkuAgent = new PfSkuAgent();
                     pfSkuAgent.setId(skuAgentIds[i]);
-                    //pfSkuAgent.setDiscount(new BigDecimal(Double.parseDouble(discounts[i])*0.01));
                     pfSkuAgent.setQuantity(quantitys[i]);
                     pfSkuAgent.setUnitPrice(new BigDecimal(unitPrices[i]));
                     pfSkuAgent.setBail(new BigDecimal(bails[i]));
@@ -310,13 +256,6 @@ public class ProductController {
 
                     if(iconImgNames != null){
                         pfSkuAgent.setIcon(iconImgNames[i]);
-
-                        //上传代理等级图标到OSS
-                        String imgAbsoluteUrl = realPath + iconImgUrls[i];
-                        File iconFile = new File(imgAbsoluteUrl);
-                        OSSObjectUtils.uploadFile(iconFile, "static/product/agent_icon/");
-
-                        iconFile.delete();
                     }
                 }
 
@@ -334,12 +273,7 @@ public class ProductController {
                 List<ComSkuImage> comSkuImages = null;
                 if(mainImgUrls != null){//更新了图片
                     comSkuImages = new ArrayList<>();
-                    String folderPath = realPath + "/current";
                     int[] imgPxs = {220, 308, 800};
-                    File folder = new File(folderPath);
-                    if(!folder.exists()){
-                        folder.mkdir();
-                    }
                     for(int i=0; i<skuImageIds.length; i++){
                         ComSkuImage comSkuImage = new ComSkuImage();
                         comSkuImage.setId(skuImageIds[i]);
@@ -349,35 +283,11 @@ public class ProductController {
                         comSkuImage.setImgName(mainImgOriginalNames[i]);
                         comSkuImage.setIsDefault(i==1?1:0);
 
-                        String imgAbsoluteUrl = realPath + mainImgUrls[i];
-                        String resultPath = folderPath + "/" + mainImgNames[i];
                         for(int px=0; px<imgPxs.length; px++){
-                            ImageUtils.scale2(imgAbsoluteUrl, resultPath, imgPxs[px], imgPxs[px], true);
-                            File curFile = new File(resultPath);
-                            OSSObjectUtils.uploadFile(curFile, "static/product/"+imgPxs[px]+"_"+imgPxs[px]+"/");
-
-                            //删除缩放的图片
-                            curFile.delete();
-
                             comSkuImage.setFullImgUrl(PropertiesUtils.getStringValue("index_product_"+imgPxs[px]+"_"+imgPxs[px]+"_url") + mainImgNames[i]);
                         }
 
-                        //上传原图
-                        OSSObjectUtils.uploadFile(new File(imgAbsoluteUrl), "static/product/prototype/");
-                        //删除原图
-                        new File(imgAbsoluteUrl).delete();
-
                         comSkuImages.add(comSkuImage);
-                    }
-                }
-
-                /* 上传商品详情图 */
-                File detailDir = new File(realPath + "/static/product/detail_img");
-                if(detailDir.exists() && detailDir.listFiles().length > 0){
-                    File[] files = detailDir.listFiles();
-                    for(File f : files){
-                        OSSObjectUtils.uploadFile(f, "static/product/detail_img/");
-                        f.delete();
                     }
                 }
 

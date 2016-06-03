@@ -29,7 +29,7 @@
         b{
             display: block;
             text-align: center;
-            color: #F73C8C;
+            color: #f74a11;
             width: 100%;
         }
         .floor{

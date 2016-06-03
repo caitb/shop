@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">商品标志</label>
                                 <div class="col-sm-9">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/product_icon/" class="dropzone" id="dropzone2">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -305,7 +305,7 @@
                             <div class="form-group">
                                 <label for="brandId" class="col-sm-2 control-label">代理等级图标</label>
                                 <div class="col-sm-9" id="levelIcon">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone1">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/agent_icon/" class="dropzone" id="dropzone1">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>
@@ -459,7 +459,7 @@
                         <div class="row">
                             <div class="col-xs-10 col-xs-offset-1">
                                 <div>
-                                    <form action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone">
+                                    <form action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/product/prototype/&scale=scale" class="dropzone" id="dropzone">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>

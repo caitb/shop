@@ -118,7 +118,7 @@ public class SfUserAccountService {
                     || order.getPayStatus() != 1) {
                 log.error("订单状态不匹配,订单不是" + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
                 throw new BusinessException("订单状态不匹配,订单不是"
-                        + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态");
+                        + SfOrderStatusEnum.ORDER_SHIPED.getDesc() + "状态" + ",sf_order_id:" + order.getId());
             }
 
             // 计算店主的各种钱

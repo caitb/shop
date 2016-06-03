@@ -212,7 +212,7 @@ public class OrderService {
         pbOperationLog.setPbUserName(operationUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
         pbOperationLog.setRemark("发货");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setOperateContent(sfOrderFreight.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建店铺发货失败!");

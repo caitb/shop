@@ -237,13 +237,12 @@ public class DevelopingController extends BaseController {
 
             mav.addObject("shareMap", resultMap);
 
-            return mav;
         } catch (Exception e) {
             log.error("获取分享链接失败![skuId="+skuId+"]");
             e.printStackTrace();
         }
 
-        return null;
+        return mav;
     }
 
     public static void main(String[] args){

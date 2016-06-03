@@ -13,6 +13,7 @@ import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.*;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.net.InetAddress;
@@ -22,6 +23,7 @@ import java.util.*;
  * Created by cai_tb on 16/3/5.
  */
 @Service
+@Transactional
 public class ComUserService {
 
     @Resource
@@ -198,7 +200,7 @@ public class ComUserService {
             pbOperationLog.setPbUserName(pbUser.getUserName());
             pbOperationLog.setOperateType(OperationType.Update.getCode());
             pbOperationLog.setRemark("实名认证");
-            pbOperationLog.setOperateContent(pbOperationLog.toString());
+            pbOperationLog.setOperateContent(comUser.toString());
             int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
             if(updateByPrimaryKey==0){
                 throw new Exception("日志新建实名认证失败!");

@@ -14,6 +14,7 @@ import com.masiis.shop.web.mall.service.shop.SfShopSkuService;
 import com.masiis.shop.web.mall.service.user.SfUserShopViewService;
 import com.masiis.shop.web.mall.service.user.UserService;
 import com.masiis.shop.web.mall.utils.wx.WxUserUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -120,8 +122,8 @@ public class IndexController extends BaseController {
         if (user == null) {
             throw new BusinessException("user不能为空");
         }
-        shopId =132L;
-        userPid = 255L;
+        shopId =138L;
+        userPid = 248L;
         req.getSession().setAttribute("userPid", userPid);
         req.getSession().setAttribute("shopId", shopId);
 
@@ -167,6 +169,33 @@ public class IndexController extends BaseController {
 
             SfShopDetails.add(sfShopDetail);
         }
+
+        String shoutNum= String.valueOf(sfShop.getShoutNum());
+        Long moth= sfShop.getShoutNum();
+        int length = shoutNum.length();
+        List num = new LinkedList();
+        if(length>5){
+            for (int i=0;i<length;i++) {
+                num.add(i,0);
+            }
+            for (int i=length-1;i>=0;i--) {
+                String s = String.valueOf(moth % 10);
+                num.remove(num.get(i));
+                num.add(i,s);
+                moth=moth/10;
+            }
+        }else{
+            for (int i=0;i<5;i++) {
+                num.add(i,0);
+            }
+            for (int i=4;i>=5-length;i--) {
+                String s = String.valueOf(moth % 10);
+                num.remove(num.get(i));
+                num.add(i,s);
+                moth=moth/10;
+            }
+        }
+
         ModelAndView modelAndView = new ModelAndView();
 //        Boolean forcusSF = WxUserUtils.getInstance().isUserForcusSF(user);
 //        modelAndView.addObject("forcusSF",forcusSF);
@@ -174,6 +203,7 @@ public class IndexController extends BaseController {
         modelAndView.addObject("user", user);
         modelAndView.addObject("userPid", userPid);
         modelAndView.addObject("sfShop", sfShop);
+        modelAndView.addObject("num", num);
         modelAndView.addObject("ok", ok);//保证金
         modelAndView.addObject("SfShopDetails", SfShopDetails);
         modelAndView.setViewName("shouye");
@@ -199,6 +229,7 @@ public class IndexController extends BaseController {
         try {
             boolean mallShout = sfShopService.mallShout(user.getId(), shopId);
             SfShop sfShop = null;
+            List num = new LinkedList();
             if (mallShout) {
                 sfShop = sfShopMapper.selectByPrimaryKey(shopId);
                 sfShop.setShoutNum(sfShop.getShoutNum() + 1);
@@ -212,8 +243,35 @@ public class IndexController extends BaseController {
 
                 sfShopMapper.updateByPrimaryKey(sfShop);
                 sfShopShoutLogMapper.insert(sfShopShoutLog);
+
+                //呐喊人数
+                String shoutNum= String.valueOf(sfShop.getShoutNum());
+                Long moth= sfShop.getShoutNum();
+                int length = shoutNum.length();
+                if(length>5){
+                    for (int i=0;i<length;i++) {
+                        num.add(i,0);
+                    }
+                    for (int i=length-1;i>=0;i--) {
+                        String s = String.valueOf(moth % 10);
+                        num.remove(num.get(i));
+                        num.add(i,s);
+                        moth=moth/10;
+                    }
+                }else{
+                    for (int i=0;i<5;i++) {
+                        num.add(i,0);
+                    }
+                    for (int i=4;i>=5-length;i--) {
+                        String s = String.valueOf(moth % 10);
+                        num.remove(num.get(i));
+                        num.add(i,s);
+                        moth=moth/10;
+                    }
+                }
             }
             json.put("mallShout", mallShout);
+            json.put("num", num);
         } catch (Exception ex) {
             if (StringUtils.isNotBlank(ex.getMessage())) {
                 throw new BusinessException(ex.getMessage(), ex);

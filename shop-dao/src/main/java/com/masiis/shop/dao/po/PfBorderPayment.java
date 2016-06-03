@@ -110,4 +110,20 @@ public class PfBorderPayment {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    @Override
+    public String toString() {
+        return "PfBorderPayment{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", pfBorderId=" + pfBorderId +
+                ", amount=" + amount +
+                ", payTypeId=" + payTypeId +
+                ", payTypeName='" + payTypeName + '\'' +
+                ", isEnabled=" + isEnabled +
+                ", outOrderId='" + outOrderId + '\'' +
+                ", paySerialNum='" + paySerialNum + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

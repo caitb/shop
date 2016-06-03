@@ -111,4 +111,20 @@ public class PfSkuStock {
     public void setIsQueue(Integer isQueue) {
         this.isQueue = isQueue;
     }
+
+    @Override
+    public String toString() {
+        return "PfSkuStock{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", supplierId=" + supplierId +
+                ", spuId=" + spuId +
+                ", skuId=" + skuId +
+                ", stock=" + stock +
+                ", frozenStock=" + frozenStock +
+                ", remark='" + remark + '\'' +
+                ", isQueue=" + isQueue +
+                ", version=" + version +
+                '}';
+    }
 }

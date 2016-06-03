@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/css/base.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/reset.css">
     <link rel="stylesheet" href="<%=basePath%>static/css/header.css">
-    <link rel="stylesheet" href="<%=basePath%>static/css/zhucelianjie.css">
+    <link rel="stylesheet" href="<%=basePath%>/static/css/zhucelianjie.css">
 
     <link rel="stylesheet" href="<%=basePath%>static/js/test/style.css">
 </head>
@@ -26,11 +26,16 @@
         <p>合伙人海报</p>
     </header>
     <div id="box">
-        <%--<h1>--%>
-            <%--宣传海报，将海报发到您的朋友圈--%>
-         <%--</h1>--%>
+        <c:if test="${shareMap.poster != null}">
         <img src="${shareMap.poster}" alt="">
         <p>长按图片保存到手机，发送给好友</p>
+        </c:if>
+
+        <c:if test="${shareMap.poster == null}">
+        <div class="floor">
+            <p>由于网络原因,海报加载失败,请刷新。</p>
+        </div>
+        </c:if>
     </div>
 </div>
 </body>

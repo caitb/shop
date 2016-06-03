@@ -104,7 +104,7 @@ public class SfUserExtractApplyService {
         pbOperationLog.setPbUserName(pbUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
         pbOperationLog.setRemark("消费者提现");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setOperateContent(id.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建消费者提现失败!");

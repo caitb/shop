@@ -273,8 +273,11 @@
             <if test="payStatus != null">
                 AND pay_status = #{payStatus}
             </if>
-            <if test="beginTime != null and endTime !=null"  >
-                AND create_time BETWEEN #{beginTime} AND #{endTime}
+            <if test="beginTime != null"  >
+                AND create_time &gt;=#{beginTime}
+            </if>
+            <if test="endTime != null"  >
+                AND create_time &lt;=#{endTime}
             </if>
             <if test="isCounting!= null">
                 AND is_counting = #{isCounting}

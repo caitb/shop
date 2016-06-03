@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; utf-8" pageEncoding="UTF-8" %>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>u
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-fonts.css" />
 
     <!-- ace styles -->
-    <link rel="stylesheet" href="<%=basePath%>static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
+    <link rel="stylesheet" href="<%=basePath%>/static/ace2/css/uncompressed/ace.css" id="main-ace-style" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="<%=basePath%>static/ace2/css/ace-part2.min.css" />
@@ -50,10 +50,14 @@
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .form-inline .form-group{
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 
 <body class="no-skin">
-
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -120,6 +124,14 @@
                                             <div class="form-group">
                                                 <label for="shipStatus">物流状态</label>
                                                 <select id="shipStatus" name="shipStatus">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="isCounting">是否结算：</label>
+                                                <select id="isCounting" name="isCounting">
+                                                    <option value="">全部</option>
+                                                    <option value="0">未结算</option>
+                                                    <option value="1">已结算</option>
                                                 </select>
                                             </div>
                                             <button type="button" class="btn btn-default" id="searchBtn">查询</button>
@@ -275,6 +287,9 @@
                 }
                 if($('#endTime').val()){
                     params.endTime = $('#endTime').val();
+                }
+                if($('#isCounting').val()){
+                    params.isCounting = $('#isCounting').val();
                 }
                 return params;
             },
@@ -458,6 +473,7 @@
                                 for(var i in row.pfBorderPayments){
                                     if(row.pfBorderPayments[i].payTypeId == 0) sHtm += '微信支付';
                                     if(row.pfBorderPayments[i].payTypeId == 1) sHtm += '线下支付';
+                                    if(row.pfBorderPayments[i].payTypeId == 2) sHtm += '支付宝支付';
                                 }
                                 return sHtm;
                             }
@@ -471,7 +487,7 @@
                         align: 'center',
                         formatter: function(value, row, index){
                             if(row.pfBorder && row.pfBorder.orderType == 0){
-                                return '代理订单';
+                                return '合伙人订单';
                             }
                             if(row.pfBorder && row.pfBorder.orderType == 1){
                                 return '补货订单';
@@ -511,6 +527,22 @@
                             }
                             if(row.pfBorder && row.pfBorder.shipStatus == 9){
                                 return '已收货';
+                            }
+
+                        }
+                    },
+                    {
+                        field: 'isCounting',
+                        title: '是否结算',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.pfBorder && row.pfBorder.isCounting == 0){
+                                return '未结算';
+                            }
+                            if(row.pfBorder && row.pfBorder.isCounting == 1){
+                                return '已结算';
                             }
 
                         }

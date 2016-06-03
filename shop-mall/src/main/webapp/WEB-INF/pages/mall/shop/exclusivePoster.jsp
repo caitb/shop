@@ -136,11 +136,16 @@
         <div class="floor">
 
         </div>
+        <c:if test="${shopPoster != null}">
         <img src="${shopPoster}">
+        <b id="downloadPoster2">长按二维码保存图片到手机</b>
+        </c:if>
+
+        <c:if test="${shopPoster == null}">
         <div class="floor2">
             <p>由于网络原因,海报加载失败,请刷新。</p>
         </div>
-        <b id="downloadPoster2">长按二维码保存图片到手机</b>
+        </c:if>
 </div>
 <div class="back_box">
     <div class="back"></div>

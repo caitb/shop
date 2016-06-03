@@ -46,11 +46,16 @@
     <p>店铺分享</p>
 </header>
 <div class="wrap">
+    <c:if test="${shopPoster != null}">
     <img src="${shopPoster}" />
     <b id="hideOptionMenu">长按图片保存海报,分享给好友</b>
+    </c:if>
+
+    <c:if test="${shopPoster == null}">
     <div class="floor">
         <p>由于网络原因,海报加载失败,请刷新。</p>
     </div>
+    </c:if>
 </div>
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

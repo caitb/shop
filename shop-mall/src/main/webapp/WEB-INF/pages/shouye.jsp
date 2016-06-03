@@ -20,23 +20,24 @@
 <body>
 <%--<c:if test="${forcusSF!=true}">--%>
 <%--<div class="addb">--%>
-    <%--<p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>--%>
-    <%--<label class="close">×</label>--%>
+<%--<p>关注麦链公众微信号“<span class="add">麦链商城</span>”，查佣金，查订单。</p>--%>
+<%--<label class="close">×</label>--%>
 <%--</div>--%>
 <%--</c:if>--%>
 <div class="wrap">
     <c:if test="${userPid!=user.id && userPid != sfShop.userId && userPid !=null}">
-    <div class="na">
-        <p><img src="${pUser.wxHeadImg}" alt=""></p>
-        <h1>
-            <span>我是${pUser.wxNkName}<br>我为好友代言，跟我一起分享赚佣金！</span>
-            <%--<span>跟我一起：呐喊得红包，分享赚佣金</span>--%>
-        </h1>
-    </div>
-        </c:if>
+        <div class="na">
+            <p><img src="${pUser.wxHeadImg}" alt=""></p>
+            <h1>
+                <span>我是${pUser.wxNkName}<br>我为好友代言，跟我一起分享赚佣金！</span>
+                    <%--<span>跟我一起：呐喊得红包，分享赚佣金</span>--%>
+            </h1>
+        </div>
+    </c:if>
     <div class="header">
         <div>
-            <p>${sfShop.name}</p>
+            <img src="${path}/static/images/qwe%20(2).png" alt="">
+            <p>${sfShop.name}<c:if test="${not empty sfShop.logo}"><img src="${sfShop.logo}" alt=""></c:if></p>
             <p>${sfShop.explanation}　</p>
             <%--<img id="fenxiang" src="<%=path%>/static/images/fen.png" alt="">--%>
         </div>
@@ -52,16 +53,23 @@
             </p>
             <%--</c:forEach>--%>
         </div>
-        <c:if test="${not empty sfShop.logo}"><img src="${sfShop.logo}" alt=""></c:if>
+
         <c:if test="${empty sfShop.logo}"><img src="<%=path%>/static/images/touxiang.png" alt=""></c:if>
     </div>
     <div class="banner">
-        <p  class="shout">
+        <div class="shout">
+            <img src="${path}/static/images/yuan.png" alt="">
             <span>已有</span>
-            <span><em id="nahhan">${sfShop.shoutNum}</em>人</span>
+            <%--<span><em id="nahhan">${sfShop.shoutNum}</em>人</span>--%>
+            <span id="shout">
+                <p><c:forEach  items="${num}" var="i" >
+                    <b>${i}</b>
+                    <%--<b>1</b><b>2</b><b>3</b><b>4</b><b>5</b>--%>
+                </c:forEach>
+                    <em>人</em></p>
+            </span>
             <span>为ta呐喊</span>
-            <img src="<%=path%>/static/images/an.png" alt="">
-        </p>
+        </div>
     </div>
     <div class="content">
         <h1>在售商品</h1><c:forEach items="${SfShopDetails}" var="sd">
@@ -75,8 +83,8 @@
 
                 <h3>${sd.slogan}</h3>
 
-                <h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">￥${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>
-                <%--<h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
+                    <%--<h2>运费：<span><c:if test="${ok==false}">包邮</c:if><c:if test="${ok==true}">${sfShop.shipAmount}</c:if></span><b><i>￥</i>${sd.priceRetail}</b></h2>--%>
+                <h2>运费：<span>包邮</span><b><i>￥</i>${sd.priceRetail}</b></h2>
                 <p>
                     <button>立即购买</button>
                 </p>
@@ -143,13 +151,13 @@
         $(".back").hide();
 //        location.reload(true);
     })
-//    $("#fenxiang").on("click",function(){
-//        $("#fen").show();
-//        $(".back").show();
-//    })
+    //    $("#fenxiang").on("click",function(){
+    //        $("#fen").show();
+    //        $(".back").show();
+    //    })
 
-    var naNum =${sfShop.shoutNum+1};
-    $(".shout").on("click",function(){
+    <%--var naNum =${sfShop.shoutNum+1};--%>
+    $(".banner").on("click",function(){
         var shopId =${sfShop.id};
         $.ajax({
             type:"POST",
@@ -160,7 +168,14 @@
                 if(data.mallShout){
                     $("#ok").show();
                     $(".back").show();
-                    $("#nahhan").html(naNum);
+                    $("#shout").html("");
+                    var trHtml = "";
+                    trHtml+="<span class=\"shout\"> <p>";
+                    $.each(data.num, function(i, String) {
+                        trHtml+="<b>"+String+"</b>";
+                    })
+                    trHtml+="<em>人</em></p> </span>";
+                    $("#shout").html(trHtml);
 //                    location.reload(true);
                 } else{
                     $("#no").show();

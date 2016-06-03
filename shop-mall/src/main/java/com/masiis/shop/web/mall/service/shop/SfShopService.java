@@ -101,18 +101,6 @@ public class SfShopService {
                 return false;
             }else{
                 log.info("用户未呐喊。。。");
-//                SfShop sfShop = sfShopMapper.selectByPrimaryKey(shopId);
-//                sfShop.setShoutNum(sfShop.getShoutNum()+1);
-//
-//                sfShopShoutLog = new SfShopShoutLog();
-//                sfShopShoutLog.setCreateTime(new Date());
-//                sfShopShoutLog.setNum(1);
-//                sfShopShoutLog.setUserId(userId);
-//                sfShopShoutLog.setShopId(shopId);
-//                sfShopShoutLog.setShopUserId(sfShop.getUserId());
-//
-//                sfShopMapper.updateByPrimaryKey(sfShop);
-//                sfShopShoutLogMapper.insert(sfShopShoutLog);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

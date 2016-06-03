@@ -45,19 +45,19 @@
                                             <thead class="thin-border-bottom">
                                             <tr>
                                                 <th>
-                                                    <i class="ace-icon fa fa-caret-right blue"></i>上级人员
+                                                    上级人员
                                                 </th>
 
                                                 <th>
-                                                    <i class="ace-icon fa fa-caret-right blue"></i>电话
+                                                    电话
                                                 </th>
 
                                                 <th class="hidden-480">
-                                                    <i class="ace-icon fa fa-caret-right blue"></i>所属等级
+                                                    所属等级
                                                 </th>
 
                                                 <th class="hidden-480">
-                                                    <i class="ace-icon fa fa-caret-right blue"></i>代理产品
+                                                    代理产品
                                                 </th>
                                             </tr>
                                             </thead>

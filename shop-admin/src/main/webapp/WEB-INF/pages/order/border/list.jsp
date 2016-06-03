@@ -50,11 +50,6 @@
     <script src="<%=basePath%>static/ace2/js/html5shiv.min.js"></script>
     <script src="<%=basePath%>static/ace2/js/respond.min.js"></script>
     <![endif]-->
-    <style>
-        .form-inline .form-group{
-            margin-bottom: 15px;
-        }
-    </style>
 </head>
 
 <body class="no-skin">
@@ -87,6 +82,9 @@
                                             <div class="form-group">
                                                 <label for="orderCode">订单号</label>
                                                 <input type="text" class="form-control" id="orderCode" name="orderCode" placeholder="订单号">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="orderCode">订单日期：</label>
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" class="form-control" id="beginTime" name="beginTime" placeholder="开始日期" data-date-format="yyyy-mm-dd hh:ii">

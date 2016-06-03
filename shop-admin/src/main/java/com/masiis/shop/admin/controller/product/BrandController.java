@@ -70,26 +70,8 @@ public class BrandController {
                 log.info("保存品牌-开始准备comBrand数据");
                 comBrand.setCreateTime(new Date());
                 comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
-                //上传商品标志到OSS
-                String logoAbsoluteUrl = realPath + logoUrl;
-                File logoFile = new File(logoAbsoluteUrl);
-                OSSObjectUtils.uploadFile(logoFile, "static/brand/");
-
-                logoFile.delete();
                 log.info("保存品牌-comBrand数据[comBrand=" + comBrand + "]");
             }
-
-            log.info("保存品牌-开始上传品牌介绍图片");
-            /* 上传商品详情图 */
-            File detailDir = new File(realPath + "/static/product/detail_img");
-            if(detailDir.exists() && detailDir.listFiles().length > 0){
-                File[] files = detailDir.listFiles();
-                for(File f : files){
-                    OSSObjectUtils.uploadFile(f, "static/product/detail_img/");
-                    f.delete();
-                }
-            }
-            log.info("保存品牌-结束上传品牌介绍图片");
 
             brandService.add(comBrand);
 
@@ -117,26 +99,9 @@ public class BrandController {
             if(pbUser != null && logoUrl != null) {
                 log.info("保存品牌-开始准备comBrand数据");
                 comBrand.setLogoUrl(PropertiesUtils.getStringValue("oss.BASE_URL") + "/static/brand/"+logoName);
-                //上传商品标志到OSS
-                String logoAbsoluteUrl = realPath + logoUrl;
-                File logoFile = new File(logoAbsoluteUrl);
-                OSSObjectUtils.uploadFile(logoFile, "static/brand/");
-
-                logoFile.delete();
                 log.info("保存品牌-comBrand数据[comBrand=" + comBrand + "]");
             }
 
-            log.info("保存品牌-开始上传品牌介绍图片");
-            /* 上传商品详情图 */
-            File detailDir = new File(realPath + "/static/product/detail_img");
-            if(detailDir.exists() && detailDir.listFiles().length > 0){
-                File[] files = detailDir.listFiles();
-                for(File f : files){
-                    OSSObjectUtils.uploadFile(f, "static/product/detail_img/");
-                    f.delete();
-                }
-            }
-            log.info("保存品牌-结束上传品牌介绍图片");
 
             if(StringUtil.isEmpty(comBrand.getContent())) comBrand.setContent(null);
 

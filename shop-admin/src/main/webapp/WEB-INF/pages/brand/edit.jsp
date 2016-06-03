@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label for="dropzone2" class="col-sm-2 control-label">Logo</label>
                                 <div class="col-sm-9">
-                                    <div action="<%=basePath%>ueditor.do?action=uploadimage" class="dropzone" id="dropzone2">
+                                    <div action="<%=basePath%>ueditor.do?action=uploadimage&osspath=static/brand/" class="dropzone" id="dropzone2">
                                         <div class="fallback">
                                             <input name="file" type="file" multiple=""/>
                                         </div>

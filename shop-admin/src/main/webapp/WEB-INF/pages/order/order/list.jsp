@@ -53,7 +53,6 @@
 </head>
 
 <body class="no-skin">
-
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -549,6 +548,22 @@
                             if(row.sfOrder && row.sfOrder.shipStatus == 9){
                                 return '已收货';
                             }
+                        }
+                    },
+                    {
+                        field: 'isCounting',
+                        title: '是否结算',
+                        sortable: true,
+                        footerFormatter: totalNameFormatter,
+                        align: 'center',
+                        formatter: function(value, row, index){
+                            if(row.sfOrder && row.sfOrder.isCounting == 0){
+                                return '未结算';
+                            }
+                            if(row.sfOrder && row.sfOrder.isCounting == 1){
+                                return '已结算';
+                            }
+
                         }
                     },
                     {

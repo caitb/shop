@@ -10,6 +10,8 @@
 #box{
   background: #fff;
   -webkit-box-flex:1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 h1{
   padding: 15px 0 5px 0;
@@ -25,4 +27,10 @@ img+p{
   text-align: center;
   color: #f74a11;
   padding:15px;
+}
+.floor{
+  -webkit-box-flex: 1;
+  display: -webkit-box;
+  -webkit-box-align:center;
+  -webkit-box-pack: center;
 }

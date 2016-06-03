@@ -7,6 +7,7 @@ import com.masiis.shop.admin.beans.product.ProductInfo;
 import com.masiis.shop.admin.service.product.PfSkuStockService;
 import com.masiis.shop.admin.service.product.PfUserSkuStockService;
 import com.masiis.shop.admin.utils.WxPFNoticeUtils;
+import com.masiis.shop.common.enums.BOrder.OperationType;
 import com.masiis.shop.common.enums.product.SkuStockLogType;
 import com.masiis.shop.common.enums.product.UserSkuStockLogType;
 import com.masiis.shop.common.util.MobileMessageUtil;
@@ -15,12 +16,14 @@ import com.masiis.shop.dao.platform.order.*;
 import com.masiis.shop.dao.platform.product.ComAgentLevelMapper;
 import com.masiis.shop.dao.platform.product.ComSkuMapper;
 import com.masiis.shop.dao.platform.product.ComSpuMapper;
+import com.masiis.shop.dao.platform.system.PbOperationLogMapper;
 import com.masiis.shop.dao.platform.user.ComUserMapper;
 import com.masiis.shop.dao.po.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -54,6 +57,8 @@ public class BOrderService {
     private BOrderOperationLogService bOrderOperationLogService;
     @Resource
     private ComAgentLevelMapper comAgentLevelMapper;
+    @Resource
+    private PbOperationLogMapper pbOperationLogMapper;
 
     /**
      * 根据条件查询记录
@@ -80,7 +85,7 @@ public class BOrderService {
             if(payTypeId !=null){
                 pfBorderPayment.setPayTypeId(payTypeId);
             }
-            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByBorderId(pbo.getId());
+            List<PfBorderPayment> pfBorderPayments = pfBorderPaymentMapper.selectByCondition(pfBorderPayment);
             List<PfBorderItem> pfBorderItems = pfBorderItemMapper.selectAllByOrderId(pbo.getId());
 
             Order order = new Order();
@@ -149,7 +154,7 @@ public class BOrderService {
      *
      * @param pfBorderFreight
      */
-    public void delivery(PfBorderFreight pfBorderFreight) throws Exception {
+    public void delivery(PfBorderFreight pfBorderFreight,PbUser pbUser) throws Exception {
         PfBorder pfBorder = pfBorderMapper.selectByPrimaryKey(pfBorderFreight.getPfBorderId());
         pfBorder.setOrderStatus(8);
         pfBorder.setShipStatus(5);
@@ -177,6 +182,19 @@ public class BOrderService {
         }
         MobileMessageUtil.getInitialization("B").goodsOrderShipRemind(pfBorderConsignee.getMobile(), pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight());
         WxPFNoticeUtils.getInstance().orderShippedNotice(comUser, new String[]{skuNames, levelNames, pfBorder.getOrderCode(), pfBorderFreight.getShipManName(), pfBorderFreight.getFreight()}, PropertiesUtils.getStringValue("web.domain.name.address") + "/borderManage/borderDetils.html?id=" + pfBorder.getId());
+
+        PbOperationLog pbOperationLog = new PbOperationLog();
+        pbOperationLog.setOperateIp(InetAddress.getLocalHost().getHostAddress());
+        pbOperationLog.setCreateTime(new Date());
+        pbOperationLog.setPbUserId(pbUser.getId());
+        pbOperationLog.setPbUserName(pbUser.getUserName());
+        pbOperationLog.setOperateType(OperationType.Update.getCode());
+        pbOperationLog.setRemark("发货");
+        pbOperationLog.setOperateContent(pfBorderFreight.toString());
+        int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
+        if(updateByPrimaryKey==0){
+            throw new Exception("日志新建平台发货失败!");
+        }
     }
 
     /**

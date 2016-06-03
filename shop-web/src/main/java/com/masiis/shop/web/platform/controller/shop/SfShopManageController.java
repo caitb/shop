@@ -283,7 +283,6 @@ public class SfShopManageController extends BaseController {
             e.printStackTrace();
         }
 
-        mav.setViewName("error");
         return mav;
     }
 

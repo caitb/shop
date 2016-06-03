@@ -114,6 +114,14 @@
             margin:1em auto 0 auto;
             padding: 18% 0;
         }
+        .floor2 {
+            width: 90%;
+            margin:1em auto 0 auto;
+            padding: 25% 0;
+        }
+        .floor2 p{
+            text-align: center;;
+        }
     </style>
 </head>
 <body>
@@ -128,8 +136,16 @@
         <div class="floor">
 
         </div>
-        <img src="${shopPoster}" alt="获取海报失败,刷新试试吧"/>
+        <c:if test="${shopPoster != null}">
+        <img src="${shopPoster}">
         <b id="downloadPoster2">长按二维码保存图片到手机</b>
+        </c:if>
+
+        <c:if test="${shopPoster == null}">
+        <div class="floor2">
+            <p>由于网络原因,海报加载失败,请刷新。</p>
+        </div>
+        </c:if>
 </div>
 <div class="back_box">
     <div class="back"></div>

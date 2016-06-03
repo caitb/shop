@@ -154,7 +154,7 @@ public class ExtractApplyService {
         pbOperationLog.setPbUserName(pbUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
         pbOperationLog.setRemark("合伙人提现");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setOperateContent(comUserExtractApply.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建合伙人提现失败!");

@@ -83,7 +83,7 @@ public class SkuStockService {
         pbOperationLog.setPbUserName(pbUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
         pbOperationLog.setRemark("更新库存");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setOperateContent(pfSkuStock.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("新建更新库存日志失败!");

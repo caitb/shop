@@ -661,7 +661,7 @@
 
     });
 
-    $(document).on('click', '.audit', function(){
+    $(document).on('click', '.auditing', function(){
         var auditStatus = $(this).attr('audit-status');
         var auditReason = $('textarea[name="auditReason"]').val();
 

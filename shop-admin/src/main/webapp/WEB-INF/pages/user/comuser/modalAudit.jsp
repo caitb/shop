@@ -116,10 +116,10 @@
             <div class="modal-footer no-margin-top">
                 <div class="col-xs-5 col-sm-5 col-sm-offset-4">
                     <input id="gritter-light" checked="" type="checkbox" class="ace ace-switch ace-switch-5">
-                    <button class="btn btn-sm btn-danger pull-left audit" audit-status="3">
+                    <button class="btn btn-sm btn-danger pull-left auditing" audit-status="3">
                         拒绝
                     </button>
-                    <button class="btn btn-sm btn-info pull-left audit" audit-status="2">
+                    <button class="btn btn-sm btn-info pull-left auditing" audit-status="2">
                         通过
                     </button>
                 </div>

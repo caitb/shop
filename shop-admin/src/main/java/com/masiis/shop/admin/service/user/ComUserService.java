@@ -198,7 +198,7 @@ public class ComUserService {
             pbOperationLog.setPbUserName(pbUser.getUserName());
             pbOperationLog.setOperateType(OperationType.Update.getCode());
             pbOperationLog.setRemark("实名认证");
-            pbOperationLog.setOperateContent(pbOperationLog.toString());
+            pbOperationLog.setOperateContent(comUser.toString());
             int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
             if(updateByPrimaryKey==0){
                 throw new Exception("日志新建实名认证失败!");

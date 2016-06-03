@@ -134,8 +134,8 @@ public class BOrderPayService {
         pbOperationLog.setPbUserId(pbUser.getId());
         pbOperationLog.setPbUserName(pbUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
-        pbOperationLog.setRemark("订单支付回调");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setRemark("订单线下支付处理");
+        pbOperationLog.setOperateContent(pfBorderPayment.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建订单支付回调失败!");

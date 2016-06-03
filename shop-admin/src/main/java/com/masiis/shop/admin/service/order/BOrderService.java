@@ -190,7 +190,7 @@ public class BOrderService {
         pbOperationLog.setPbUserName(pbUser.getUserName());
         pbOperationLog.setOperateType(OperationType.Update.getCode());
         pbOperationLog.setRemark("发货");
-        pbOperationLog.setOperateContent(pbOperationLog.toString());
+        pbOperationLog.setOperateContent(pfBorderFreight.toString());
         int updateByPrimaryKey = pbOperationLogMapper.insert(pbOperationLog);
         if(updateByPrimaryKey==0){
             throw new Exception("日志新建平台发货失败!");

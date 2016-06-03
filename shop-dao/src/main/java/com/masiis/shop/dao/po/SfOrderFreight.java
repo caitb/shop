@@ -69,4 +69,16 @@ public class SfOrderFreight {
     public void setFreight(String freight) {
         this.freight = freight == null ? null : freight.trim();
     }
+
+    @Override
+    public String toString() {
+        return "SfOrderFreight{" +
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", sfOrderId=" + sfOrderId +
+                ", shipManId=" + shipManId +
+                ", shipManName='" + shipManName + '\'' +
+                ", freight='" + freight + '\'' +
+                '}';
+    }
 }

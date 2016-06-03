@@ -346,6 +346,7 @@ public class BOrderAddController extends BaseController {
             if (StringUtils.isBlank(userMessage)) {
                 userMessage = "";
             }
+            userMessage = EmojiUtils.removeNonBmpUnicode(userMessage);
             if (sendType == 2 && (userAddressId == null || userAddressId <= 0)) {
                 throw new BusinessException("参数校验失败：userAddressId:" + userAddressId);
             }

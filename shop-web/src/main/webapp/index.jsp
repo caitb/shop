@@ -14,4 +14,5 @@
     response.sendRedirect("/index");
 %>
 </body>
+<%----%>
 </html>
